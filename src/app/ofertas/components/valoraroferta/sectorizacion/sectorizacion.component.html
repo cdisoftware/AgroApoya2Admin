@@ -7,34 +7,44 @@
     </div>
     <div class="br row">
         <div class="col-sm-4">
-            <select class="col-sm-12 form-control">
-                <option value="">Seleccione...</option>
-            </select>
+            <ng-autocomplete [data]="data" [searchKeyword]="keyword" placeholder="Sector" (selected)='selectSector($event)' [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio">
+            </ng-autocomplete>
+            <ng-template #templateRes let-item>
+                <a [innerHTML]="item.name"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
         </div>
         <div class="col-sm-4">
-            <input class="col-sm-12 form-control" type="text" placeholder="Cantidad">
+            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Cantidad">
         </div>
         <div class="col-sm-4">
-            <input class="col-sm-12 form-control" type="text" placeholder="Coordenadas">
+            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Coordenadas">
         </div>
     </div>
     <div class="row br">
         <div class="col-sm-4">
-            <input class="col-sm-12 form-control" type="text" placeholder="Descripción">
+            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Descripción">
         </div>
         <div class="col-sm-4">
-            <input class="col-sm-12 form-control" type="text" placeholder="Valor flete">
+            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Valor flete">
         </div>
     </div>
     <div class="row br justify-content-center">
-        <div class="col-sm-2">
+        <div class="col-sm-2 col-2">
             <button class="btn btn-agro-prin col-sm-12">
                 Asociar
             </button>
         </div>
-        <div class="col-sm-2">
-            <button class="btn btn-agro-prin col-sm-12">
+        <div class="col-sm-2 col-2">
+            <button class="btn btn-agro-prin col-sm-12" (click)="open(content)">
                 Crear sector
+            </button>
+        </div>
+        <div class="col-sm-2 col-2">
+            <button class="btn btn-agro-sec col-sm-12">
+                Limpiar
             </button>
         </div>
     </div>
@@ -67,3 +77,15 @@
         </table>
     </div>
 </div>
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Crear sector</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Guardar</button>
+    </div>
+    <br>
+</ng-template>
