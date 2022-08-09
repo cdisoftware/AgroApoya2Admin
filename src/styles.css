@@ -1,104 +1,130 @@
-h1{
-  text-align: center;
-  color: #397c97;
-  font-size: x-large;
+h1 {
+    text-align: center;
+    color: #397c97;
+    font-size: x-large;
+}
+
+h2 {
+    text-align: center;
+    color: #397c97;
+    font-size: large;
 }
 
 .TituloDetalle {
-  color: #96989B;
+    color: #96989B;
 }
 
 .SubTituloForm {
-  color: #397c97;
-  text-transform: uppercase;
+    color: #397c97;
+    text-transform: uppercase;
 }
 
 .Llave {
-  color: #181D23;
-  font-weight: 600;
+    color: #181D23;
+    font-weight: 600;
 }
 
 .Valor {
-  color: #575A5F;
+    color: #575A5F;
 }
 
 .CentrarText {
-  text-align: center !important;
+    text-align: center !important;
 }
-
 
 .CardRedonda {
-  border-radius: 15px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 3px;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 3px 3px;
 }
-
 
 .image-upload>input {
-  display: none;
+    display: none;
 }
 
-
 .image-upload img {
-  width: 100px;
-  cursor: pointer;
+    width: 100px;
+    cursor: pointer;
 }
 
 .btn-agro-prin {
-  color: white;
-  border-color: #397c97;
-  background-color: #397c97;
+    color: white;
+    border-color: #397c97;
+    background-color: #397c97;
 }
 
 .btn-agro-sec {
-  color: white;
-  border-color: #575A5F;
-  background-color: #575A5F;
+    color: white;
+    border-color: #575A5F;
+    background-color: #575A5F;
 }
 
 .btn-agro-sec:hover,
 .btn-agro-prin:hover {
-  color: #397c97;
-  border-color: #397c97;
+    color: #397c97;
+    border-color: #397c97;
+}
+
+body {
+    background: url(./assets/ImagenesAgroApoya2Admin/FondoVerdurasDos.png);
 }
 
 .Fondo {
-  background: url(./assets/ImagenesAgroApoya2Admin/FondoVerdurasDos.png) scroll;
-
-  background-position: 50% 50%
+    background: url(./assets/ImagenesAgroApoya2Admin/FondoVerdurasDos.png) scroll;
+    background-position: 50% 50%
 }
 
 .ImagenOferta {
-  max-width: 450px;
-  max-height: 298;
-  border-radius: 2%;
+    max-width: 450px;
+    max-height: 298;
+    border-radius: 2%;
 }
 
 .br {
-  margin-top: 10px;
+    margin-top: 20px;
 }
 
 .ImgOfer {
-  border-radius: 25px;
-  height: 250px;
-  width: auto;
-  margin: 10px;
+    border-radius: 25px;
+    height: 250px;
+    width: auto;
+    margin: 10px;
 }
 
 .DivImgOfer {
-  border-radius: 15px;
-  margin-bottom: 10px;
+    border-radius: 15px;
+    margin-bottom: 10px;
 }
 
-
 .tarjetadetalle {
-  border-radius: 25px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 25px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .SinEstilo {
-  background: none;
-  border: none;
-  margin: none !important;
+
+    background: none;
+    border: none;
+    margin: none !important;
+}
+
+.TableAgro td,
+th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.TableAgro th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #397c97;
+    color: white;
+}
+
+.TableAgro td {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
 }
 
 .textBox{
