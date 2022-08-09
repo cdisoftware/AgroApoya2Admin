@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CrearofertaComponent } from './ofertas/components/crearoferta/crearoferta.component';
 import { LoginComponent} from './usuario/components/login/login.component';
 import { BuscarofertaComponent } from './ofertas/components/valoraroferta/buscaroferta/buscaroferta.component';
+import { SectorizacionComponent } from './ofertas/components/valoraroferta/sectorizacion/sectorizacion.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'buscaroferta',
     component: BuscarofertaComponent
+  },
+  {
+    path: 'sectorizaoferta',
+    component: SectorizacionComponent
   }
 
 ];
