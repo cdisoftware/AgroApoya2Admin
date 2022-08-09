@@ -1,0 +1,202 @@
+<form class="Fondo">
+    <br><br>
+    <div class="container bg-white">
+        <h1 class="br">Buscar Oferta</h1>
+        <div class="row justify-content-center">
+            <img src="./../../../../../assets/ImagenesAgroApoya2Admin/barra1.png" style="width: 65%;">
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-5">
+                <input type="text" class="form-control" placeholder="Producto" [(ngModel)]="Producto">
+            </div>
+            <div class="col-sm-1">
+                <button class="SinEstilo">
+                    <img src="./../../../../../assets/ImagenesAgroApoya2Admin/lupa.png" title="Buscar">
+                </button>
+
+            </div>
+
+            <div class="col-sm-5">
+                <input type="text" class="form-control" placeholder="Productor" [(ngModel)]="Producto">
+            </div>
+            <div class="col-sm-1">
+                <button class="SinEstilo">
+                    <img src="./../../../../../assets/ImagenesAgroApoya2Admin/lupa.png" title="Buscar">
+                </button>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-sm-5 br">
+                <p>Fecha oferta</p>
+                <input type="date" class="form-control">
+            </div>
+            <div class="col-sm-1"></div>
+
+            <div class="col-sm-5 br">
+                <p>Estado</p>
+                <select class="form-control" #SelectProducto id="SelectProducto">
+                    <option value="0">Selecciona...</option>
+                    <option value="1">Aprobada</option>
+                    <option value="2">Rechazada</option>
+                    <option value="3">Pendiente</option>
+                    <option value="4">Declinada</option>
+                </select>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+        <div class="row br justify-content-center mt-3">
+            <div class="col-sm-3 col-12 br">
+                <button class="col-sm-12 btn btn-agro-prin" (click)="Buscar()">Buscar</button>
+            </div>
+            <div class="col-sm-3 col-12 br">
+                <button class="col-sm-12 btn btn-agro-sec" (click)="Limpiar()">Limpiar</button>
+            </div>
+        </div>
+        <hr>
+        <div class="row justify-content-center" *ngIf="ValidaBusqueda == '1'">
+            <div class="col-sm-11 tarjetadetalle">
+                <div class="row">
+                    <div class="col-sm-3" style="padding-top: 10%;">
+                        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/papapastusa.png" class="col-sm-12">
+                    </div>
+                    <div class="col-sm-9">
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="Llave">Resumen:</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <label class="Valor">En este campo van los detalles del producto ingresados por el
+                                    productor.</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="Llave">Nombre productor:</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <label class="Valor">Pepito Perez</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="Llave">Producto:</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <label class="Valor">Papa pastusa lavada</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="Llave">Tamaño:</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <label class="Valor">Pareja</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="Llave">Presentacion empaque:</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <label class="Valor">15 KG</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="Llave">Descripción producto:</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <label class="Valor">En este campo va la descripcion general del producto</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="Llave">Caracterización:</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <label class="Valor">25 papas por empaque</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="Llave">Valor unidad empaque:</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <label class="Valor">$25.200</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="Llave">Unidades disponibles:</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <label class="Valor">950</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="Llave">Fecha recogida:</label>
+                            </div>
+                            <div class="col-sm-2">
+                                <label class="Valor">01/09/2022</label>
+                            </div>
+                            <div class="col-sm-1">
+                                <label class="Llave">Jornada:</label>
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="Valor">Mañana</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="Llave">Direccion o coordenadas:</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <label class="Valor">5.751264866649164, -73.00769873109168</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="Llave">Valor total oferta:</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <label class="Valor">$25.000.000</label>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+
+                    <hr>
+                    <div class="row justify-content-center">
+                        <div class="col-sm-1">
+                            <button class="SinEstilo">
+                                <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Editar.png"
+                                    title="Editar oferta">
+                            </button>
+                        </div>
+                        <div class="col-sm-1">
+                            <button class="SinEstilo">
+                                <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Cerrar.png"
+                                    title="Cerrar oferta">
+                            </button>
+                        </div>
+                        <div class="col-sm-1">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Admin/EstadoP.png"
+                                title="Estado oferta">
+                        </div>
+                    </div>
+                    <br><br>
+                </div>
+            </div>
+        </div>
+        <div class="row br justify-content-center mt-3" *ngIf="ValidaBusqueda == '1'">
+            <div class="col-sm-3 col-12 br">
+                <button class="col-sm-12 btn btn-agro-prin">Siguiente</button>
+            </div>
+        </div>
+        <br><br>
+    </div>
+</form>
