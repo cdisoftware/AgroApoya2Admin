@@ -10,6 +10,7 @@ import { LoginComponent} from './usuario/components/login/login.component';
 import { CommonModule, HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BuscarofertaComponent } from './ofertas/components/valoraroferta/buscaroferta/buscaroferta.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +26,6 @@ import { BuscarofertaComponent } from './ofertas/components/valoraroferta/buscar
     HttpClientModule,
     CommonModule,
     NgbModule,
-
   ],
   providers: [
     
