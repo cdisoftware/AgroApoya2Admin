@@ -4,6 +4,12 @@ h1 {
     font-size: x-large;
 }
 
+h2 {
+    text-align: center;
+    color: #397c97;
+    font-size: large;
+}
+
 .TituloDetalle {
     color: #96989B;
 }
@@ -58,6 +64,10 @@ h1 {
     border-color: #397c97;
 }
 
+body {
+    background: url(./assets/ImagenesAgroApoya2Admin/FondoVerdurasDos.png);
+}
+
 .Fondo {
     background: url(./assets/ImagenesAgroApoya2Admin/FondoVerdurasDos.png) scroll;
     background-position: 50% 50%
@@ -70,7 +80,7 @@ h1 {
 }
 
 .br {
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .ImgOfer {
@@ -94,4 +104,24 @@ h1 {
     background: none;
     border: none;
     margin: none !important;
+}
+
+.TableAgro td,
+th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.TableAgro th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #397c97;
+    color: white;
+}
+
+.TableAgro td {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
 }
