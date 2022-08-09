@@ -8,6 +8,7 @@ import { MetodosglobalesService } from './../../../../core/metodosglobales.servi
 })
 export class BuscarofertaComponent implements OnInit {
   Producto: string = '';
+  Productor: string = '';
   IdProducto: string = '0';
   ValidaBusqueda: string = '0'
 
@@ -26,6 +27,33 @@ export class BuscarofertaComponent implements OnInit {
   Limpiar(){
     this.ValidaBusqueda = '0';
   }
+
+  keyword = 'name';
+  data = [
+    {
+      id: 1,
+      name: 'Georgia'
+    },
+     {
+       id: 2,
+       name: 'Usa'
+     },
+     {
+       id: 3,
+       name: 'England'
+     }
+  ];
+
+  selectProducto(item: any) {
+    // do something with selected item
+    console.log(item)
+  }
+
+  selectProductor(item: any) {
+    // do something with selected item
+    console.log(item)
+  }
+
 
   
 

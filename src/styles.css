@@ -101,6 +101,7 @@ body {
 }
 
 .SinEstilo {
+
     background: none;
     border: none;
     margin: none !important;
@@ -124,4 +125,11 @@ th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: center;
+}
+
+.textBox{
+  border-top: solid 0.5px #f3f3f3;
+  border-radius: 1px;
+  height: 40px;
+  box-shadow: 0px 1px #adadad;
 }
