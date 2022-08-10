@@ -4,6 +4,7 @@ import { CrearofertaComponent } from './ofertas/components/crearoferta/crearofer
 import { LoginComponent} from './usuario/components/login/login.component';
 import { BuscarofertaComponent } from './ofertas/components/valoraroferta/buscaroferta/buscaroferta.component';
 import { MenuComponent } from './usuario/components/menu/menu.component';
+import { SectorizacionComponent } from './ofertas/components/valoraroferta/sectorizacion/sectorizacion.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'menu',
     component: MenuComponent
+},
+{
+    path: 'sectorizaoferta',
+    component: SectorizacionComponent
   }
 
 ];

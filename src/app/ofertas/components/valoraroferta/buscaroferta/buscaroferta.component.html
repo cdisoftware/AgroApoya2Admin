@@ -7,44 +7,48 @@
         </div>
         <br>
         <div class="row">
-            <div class="col-sm-5">
-                <input type="text" class="form-control" placeholder="Producto" [(ngModel)]="Producto">
-            </div>
-            <div class="col-sm-1">
-                <button class="SinEstilo">
-                    <img src="./../../../../../assets/ImagenesAgroApoya2Admin/lupa.png" title="Buscar">
-                </button>
+            <div class="col-sm-4 br">
+                <ng-autocomplete [data]="data" [searchKeyword]="keyword" placeholder="Producto"
+                    (selected)='selectProducto($event)' [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio">
+                </ng-autocomplete>
 
-            </div>
+                <ng-template #templateRes let-item id="templateRes">
+                    <a [innerHTML]="item.name"></a>
+                </ng-template>
 
-            <div class="col-sm-5">
-                <input type="text" class="form-control" placeholder="Productor" [(ngModel)]="Producto">
+                <ng-template #templateVacio let-SinRegistro>
+                    <label for="">Sin registro</label>
+                </ng-template>
             </div>
-            <div class="col-sm-1">
-                <button class="SinEstilo">
-                    <img src="./../../../../../assets/ImagenesAgroApoya2Admin/lupa.png" title="Buscar">
-                </button>
-            </div>
-        </div>
-        <div class="row">
+            <div class="col-sm-4 br">
+                <ng-autocomplete [data]="data" [searchKeyword]="keyword" placeholder="Productor"
+                    (selected)='selectProductor($event)' [itemTemplate]="templateResPr" [notFoundTemplate]="templateVacioPr">
+                </ng-autocomplete>
 
-            <div class="col-sm-5 br">
-                <p>Fecha oferta</p>
-                <input type="date" class="form-control">
-            </div>
-            <div class="col-sm-1"></div>
+                <ng-template #templateResPr let-item id="templateRes">
+                    <a [innerHTML]="item.name"></a>
+                </ng-template>
 
-            <div class="col-sm-5 br">
-                <p>Estado</p>
-                <select class="form-control" #SelectProducto id="SelectProducto">
-                    <option value="0">Selecciona...</option>
+                <ng-template #templateVacioPr let-SinRegistro>
+                    <label for="">Sin registro</label>
+                </ng-template>
+            </div>
+            <div class="col-sm-4 br">
+                <select class="form-control form-control-sm textBox" #SelectProducto id="SelectProducto" >
+                    <option hidden selected value="0">Estado</option>
                     <option value="1">Aprobada</option>
                     <option value="2">Rechazada</option>
                     <option value="3">Pendiente</option>
                     <option value="4">Declinada</option>
                 </select>
             </div>
-            <div class="col-sm-1"></div>
+
+        </div>
+        <div class="row br">
+            <div class="col-sm-4 br">
+                <input placeholder="Fecha oferta" type="text" class="form-control form-control-sm textBox" onfocus="(this.type='date')"
+                    onblur="(this.type='date')">
+            </div>
         </div>
         <div class="row br justify-content-center mt-3">
             <div class="col-sm-3 col-12 br">
@@ -176,6 +180,7 @@
                                 <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Editar.png"
                                     title="Editar oferta">
                             </button>
+                            <label>Editar Oferta</label>
                         </div>
                         <div class="col-sm-1">
                             <button class="SinEstilo">
@@ -198,5 +203,7 @@
             </div>
         </div>
         <br><br>
+
+
     </div>
 </form>
