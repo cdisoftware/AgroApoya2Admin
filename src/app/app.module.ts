@@ -12,6 +12,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BuscarofertaComponent } from './ofertas/components/valoraroferta/buscaroferta/buscaroferta.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { SectorizacionComponent } from './ofertas/components/valoraroferta/sectorizacion/sectorizacion.component';
+import { TransportistaComponent } from './ofertas/components/valoraroferta/transportista/transportista.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SectorizacionComponent } from './ofertas/components/valoraroferta/secto
     CrearofertaComponent,
     LoginComponent,
     BuscarofertaComponent,
-    SectorizacionComponent
+    SectorizacionComponent,
+    TransportistaComponent
   ],
   imports: [
     BrowserModule,

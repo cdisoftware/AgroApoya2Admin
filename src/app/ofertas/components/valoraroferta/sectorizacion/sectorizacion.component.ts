@@ -7,10 +7,19 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./sectorizacion.component.css']
 })
 export class SectorizacionComponent implements OnInit {
+  DesSect: string = '';
+  CoordeSect: string = '';
+  Cant: string ='';
+  VlrFle: string ='';
 
   constructor(private modalService: NgbModal) { }
 
   ngOnInit(): void {
+    this.DesSect = '';
+    this.CoordeSect='';
+    this.Cant='';
+    this.VlrFle='';
+
   }
 
   keyword = 'name';
@@ -29,12 +38,17 @@ export class SectorizacionComponent implements OnInit {
     }
   ];
 
-  selectSector(item: any) {
 
+  open(content: any) {
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
   }
 
-  open(content:any) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'})
+  selectSector(item: any) {
+    console.log(item)
+  }
+
+  LimpiaForm() {
+    window.location.reload();
   }
 
 }

@@ -17,18 +17,18 @@
             </ng-template>
         </div>
         <div class="col-sm-4">
-            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Cantidad">
+            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Descripción" [(ngModel)]="DesSect">
         </div>
         <div class="col-sm-4">
-            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Coordenadas">
+            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Coordenadas" disabled [(ngModel)]="CoordeSect">
         </div>
     </div>
     <div class="row br">
         <div class="col-sm-4">
-            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Descripción">
+            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Cantidad" [(ngModel)]="Cant">
         </div>
         <div class="col-sm-4">
-            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Valor flete">
+            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Valor flete" [(ngModel)]="VlrFle">
         </div>
     </div>
     <div class="row br justify-content-center">
@@ -43,7 +43,7 @@
             </button>
         </div>
         <div class="col-sm-2 col-2">
-            <button class="btn btn-agro-sec col-sm-12">
+            <button class="btn btn-agro-sec col-sm-12" (click)="LimpiaForm()">
                 Limpiar
             </button>
         </div>
@@ -83,6 +83,24 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <input type="text" class="Col-sm-12 form-control" placeholder="Nombre sector">
+            </div>
+        </div>
+        <div class="row br">
+            <div class="col-sm-12">
+                <input type="text" class="Col-sm-12 form-control" placeholder="Descripción sector">
+            </div>
+        </div>
+        <div class="row br">
+            <div class="col-sm-6">
+                <input type="text" class="Col-sm-12 form-control" placeholder="Coordenada 1">
+            </div>
+            <div class="col-sm-6">
+                <input type="text" class="Col-sm-12 form-control" placeholder="Coordenada 2">
+            </div>
+        </div>
     </div>
     <div class="row justify-content-center">
         <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Guardar</button>
