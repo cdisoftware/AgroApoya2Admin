@@ -27,7 +27,7 @@ export class SectorizacionComponent implements OnInit {
     {
       id: 1,
       name: 'Georgia'
-    },
+    },  
     {
       id: 2,
       name: 'Usa'
