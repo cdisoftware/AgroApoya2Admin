@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MetodosglobalesService } from './../../../../core/metodosglobales.service'
 import { ValorarofertaService } from './../../../../core/valoraroferta.service'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-buscaroferta',
@@ -37,7 +38,8 @@ export class BuscarofertaComponent implements OnInit {
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
-    private ServiciosValorar: ValorarofertaService
+    private ServiciosValorar: ValorarofertaService,
+    private modalService: NgbModal
   ) { }
 
 
@@ -110,6 +112,13 @@ export class BuscarofertaComponent implements OnInit {
     this.IdEstado = item.CD_ESTDO;
   }
 
+  EditaOferta(modalEditar: any){
+    this.modalService.open(modalEditar, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+  }
+
+  CerrarOferta(modalCerrar: any){
+    this.modalService.open(modalCerrar, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+  }
 
 
 }

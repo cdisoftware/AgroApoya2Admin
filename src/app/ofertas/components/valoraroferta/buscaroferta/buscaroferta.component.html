@@ -174,14 +174,14 @@
                     <hr>
                     <div class="row justify-content-center">
                         <div class="col-sm-1">
-                            <button class="SinEstilo">
+                            <button class="SinEstilo" (click)="EditaOferta(templateEditar)">
                                 <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Editar.png"
                                     title="Editar oferta">
                             </button>
                             <label>Editar</label>
                         </div>
                         <div class="col-sm-1">
-                            <button class="SinEstilo">
+                            <button class="SinEstilo" (click)="CerrarOferta(templateCerrar)">
                                 <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Cerrar.png"
                                     title="Cerrar oferta">
                             </button>
@@ -190,9 +190,9 @@
                         <div class="col-sm-1">
                             <button class="SinEstilo" disabled>
                                 <img src="./../../../../../assets/ImagenesAgroApoya2Admin/EstadoP.png"
-                                title="Estado oferta">
+                                    title="Estado oferta">
                             </button>
-                                <label>Estado</label>
+                            <label>Estado</label>
                         </div>
                     </div>
                     <br><br>
@@ -205,7 +205,56 @@
             </div>
         </div>
         <br><br>
-
-
     </div>
+    <ng-template #templateEditar let-modal>
+        <div class="modal-header">
+            <h1 class="modal-title" id="modal-basic-title">Editar oferta</h1>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row br">
+                <div class="col-sm-12">
+                    <textarea name="mcaracteriza" id="mcaracteriza" class="Col-sm-12 form-control"
+                        placeholder="Caracterización" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="row br">
+                <div class="col-sm-12">
+                    <input type="date" class="Col-sm-12 form-control" placeholder="Fecha recogida">
+                </div>
+            </div>
+            <div class="row br">
+                <div class="col-sm-12">
+                    <input type="text" class="Col-sm-12 form-control" placeholder="Jornada">
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Guardar</button>
+        </div>
+        <br>
+    </ng-template>
+    <ng-template #templateCerrar let-modal>
+        <div class="modal-header">
+            <h1 class="modal-title" id="modal-basic-title">Cerrar oferta</h1>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row br">
+                <div class="col-sm-12">
+                    <textarea name="mObservacion" id="mObservacion" class="Col-sm-12 form-control"
+                        placeholder="Observación" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="row br">
+                <div class="col-sm-12">
+                    <input type="date" class="Col-sm-12 form-control" placeholder="Fecha cierre oferta">
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Guardar</button>
+        </div>
+        <br>
+    </ng-template>
 </form>
