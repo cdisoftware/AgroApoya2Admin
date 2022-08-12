@@ -1,0 +1,67 @@
+.container {
+    background-color: #fff;
+}
+
+.tituloPortada {
+    font-family: "fuenteAgroApoyaDos";
+    font-size: 40px;
+    line-height: 50px;
+}
+
+.text-info {
+    color: #397c97 !important;
+}
+
+.imgLogin {
+    width: 100px;
+}
+
+.sinborde {
+    border-left: 0;
+    border-right: 0;
+    border-top: 0;
+}
+
+.conborde {
+    max-width: 450px;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 10px;
+    border-radius: 10px;
+    margin: auto;
+}
+
+.img_login {
+    margin-top: 80px;
+    padding: 50px;
+}
+
+
+.cursorPointer {
+    cursor: pointer;
+}
+
+.disppleflex {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mld {
+    margin-right: 20px;
+}
+
+.padiLados {
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.form_login_user {
+    padding: 30px;
+    margin-top: 5px;
+}
+
+.fondo_agroapoya {
+    height: 100%;
+}
