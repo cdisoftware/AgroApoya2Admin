@@ -38,7 +38,7 @@ export class SectorizacionComponent implements OnInit {
     this.VlrFle = '';
     this.SectSelec = '';
     this.SessionOferta = '1011'
-    this.SessionIdUsuario = '1'
+    this.SessionIdUsuario = '265'
     this.ConsultaSectores();
     this.ConsultaCiudadOferta();
     this.ConsultaSectoresOferta();
