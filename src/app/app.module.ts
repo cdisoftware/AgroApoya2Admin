@@ -11,6 +11,7 @@ import { CommonModule, HashLocationStrategy, LocationStrategy } from "@angular/c
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BuscarofertaComponent } from './ofertas/components/valoraroferta/buscaroferta/buscaroferta.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+import { SidebarModule } from 'ng-sidebar'
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
     HttpClientModule,
     CommonModule,
     NgbModule,
-    AutocompleteLibModule
+    AutocompleteLibModule,
+    SidebarModule.forRoot()
   ],
   providers: [
     
