@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-sectorizacion',
@@ -21,13 +21,14 @@ export class SectorizacionComponent implements OnInit {
   ValidaConsulta: string = '';
   txtValidaCons: string = '';
   NombreSec: string = '';
-  DescSec: string = '';
   Coor1: string = '';
   Coor2: string = '';
   SessionCDMunicipio: any;
   SessionCDRegion: any;
   SessionCiudad: any;
   SessionIdUsuario: any;
+  ModalInsert : NgbModalRef | undefined ;
+
 
   constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService) { }
 
@@ -39,16 +40,19 @@ export class SectorizacionComponent implements OnInit {
     this.SectSelec = '';
     this.SessionOferta = '1011'
     this.SessionIdUsuario = '265'
-    this.ConsultaSectores();
+    this.SessionCDMunicipio = '0';
+    this.SessionCDRegion = '0';
+    this.SessionCiudad = '0';
     this.ConsultaCiudadOferta();
     this.ConsultaSectoresOferta();
-
   }
   ConsultaCiudadOferta() {
-    this.sectoresservices.ConsultaCiudadOferta('1',this.SessionOferta).subscribe(ResultadoCons=>{
-      this.SessionCiudad=ResultadoCons[0].Cuidad;  
-      this.SessionCDMunicipio=ResultadoCons[0].CD_MNCPIO;
-      this.SessionCDRegion=ResultadoCons[0].CD_RGION;      
+    this.sectoresservices.ConsultaCiudadOferta('1', this.SessionOferta).subscribe(ResultadoCons => {
+      console.log(ResultadoCons)        
+      this.SessionCiudad = ResultadoCons[0].Cuidad;
+      this.SessionCDMunicipio = ResultadoCons[0].CD_MNCPIO;
+      this.SessionCDRegion = ResultadoCons[0].CD_RGION;
+      this.ConsultaSectores();
     })
   }
   ConsultaSectoresOferta() {
@@ -65,8 +69,8 @@ export class SectorizacionComponent implements OnInit {
     })
   }
 
-  ConsultaSectores() {
-    this.sectoresservices.ConsultaSectores('1', '0', '0', '0', '0').subscribe(Result => {
+  ConsultaSectores() {    
+    this.sectoresservices.ConsultaSectores('1', '0', '0', this.SessionCDRegion, this.SessionCDMunicipio).subscribe(Result => {    
       this.DataSectores = Result;
       this.keyword = 'DSCRPCION_SCTOR';
     })
@@ -81,8 +85,7 @@ export class SectorizacionComponent implements OnInit {
         ID_SCTOR_OFRTA: this.SectSelec,
         CNTDAD: this.Cant,
         VLOR_FLTE_SGRDO: this.VlrFle
-      }
-      console.log(BodyInsert)
+      }      
       this.sectoresservices.OperacionSectores('3', BodyInsert).subscribe(ResultInsert => {
         var respuesta = ResultInsert.split('|')
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
@@ -113,22 +116,47 @@ export class SectorizacionComponent implements OnInit {
     })
   }
 
-  CreaSector(content: any) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
-    const BodyInsert={
-      USUCODIG: this.SessionIdUsuario,
-      SCTOR_OFR: 0,
-      DSCRPCION_SCTOR: "PRUEBA JJ",
-      LAT_NORTE: "4.7009775788652295",
-      LONG_NORTE: "-74.04076423783454",
-      LAT_SUR:"4.673272942743481",
-      LONG_SUR: "-74.01566563955751",
-      CD_RGION: this.SessionCDRegion,
-      CD_MNCPIO: this.SessionCDMunicipio
+  AbreCreaSector(content: any) {    
+    this.ModalInsert = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+  }
+
+  CreaSector(templateRespuesta: any) {
+    if (this.NombreSec != '' && this.Coor1 != '' && this.Coor2 != '') {
+      var latitudes1 = this.Coor1.split(',')
+      var latitudes2 = this.Coor2.split(',')
+      var lat_norte = latitudes1[0].replace(',', '').trim();
+      var lon_norte = latitudes1[1].trim();
+      var lat_sur = latitudes2[0].replace(',', '').trim();
+      var lon_sur = latitudes2[1].trim();
+      const BodyInsert = {
+        USUCODIG: this.SessionIdUsuario,
+        SCTOR_OFR: 0,
+        DSCRPCION_SCTOR: this.NombreSec,
+        LAT_NORTE: lat_norte,
+        LONG_NORTE: lon_norte,
+        LAT_SUR: lat_sur,
+        LONG_SUR: lon_sur,
+        CD_RGION: this.SessionCDRegion,
+        CD_MNCPIO: this.SessionCDMunicipio
+      }      
+      this.sectoresservices.InsertarSector('3', BodyInsert).subscribe(ResultInsert => {
+        this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })        
+        this.Respuesta = ResultInsert;
+        this.ModalInsert?.close();
+        this.ConsultaCiudadOferta();
+      })
     }
-    this.sectoresservices.InsertarSector('3', BodyInsert).subscribe(ResultInsert=>{
-      console.log(ResultInsert)
-    })
+    else {
+      this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+      this.Respuesta = "Los campos Nombre sector, Coordenada norte y Coordenada sur son obligatorios, favor valida tu información."
+    }
+
+  }
+  
+  LimpiaModal() {
+    this.NombreSec = '';
+    this.Coor1 = '';
+    this.Coor2 = '';
   }
 
   selectSector(item: any) {
