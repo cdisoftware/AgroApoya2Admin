@@ -24,5 +24,7 @@ export class MenuComponent implements OnInit {
   CerrarSession(){
     this.rutas.navigateByUrl('');
   }
-
+active(){
+  var boton = document.createElement("active")
+}
 }
