@@ -203,8 +203,8 @@
             <div class="col-sm-2">
                 <button class="btn btn-agro-prin col-sm-12" (click)="DeclinarOferta(templateDeclinar)" >Declinar</button>
             </div>
-            <div class="col-sm-2">
-                <button class="btn btn-agro-prin col-sm-12" (click)="Enviar()" *ngIf="ValidaSiguiente == '1'">Siguiente</button>
+            <div class="col-sm-2" *ngIf="ValidaSiguiente == '1'">
+                <button class="btn btn-agro-prin col-sm-12" (click)="Enviar()">Siguiente</button>
             </div>
         </div>
     </div>
