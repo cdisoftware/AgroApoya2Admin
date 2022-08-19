@@ -5,25 +5,20 @@
     <div class="br row justify-content-center">
         <img src="./../../../../../assets/ImagenesAgroApoya2Admin/barra3.png" style="width: 65%;">
     </div>
+    <div class="row">
+        <label><small><b><i>Ciudad : {{SessionCiudad}}</i></b></small></label>
+    </div>
     <div class="br row">
         <div class="col-sm-4">
-            <ng-autocomplete [data]="data" [searchKeyword]="keyword" placeholder="Sector" (selected)='selectSector($event)' [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio">
+            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keyword" placeholder="Sector" (selected)='selectSector($event)' [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio">
             </ng-autocomplete>
             <ng-template #templateRes let-item>
-                <a [innerHTML]="item.name"></a>
+                <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
             </ng-template>
             <ng-template #templateVacio let-SinRegistro>
                 <label for="">Sin registros</label>
             </ng-template>
         </div>
-        <div class="col-sm-4">
-            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Descripción" [(ngModel)]="DesSect">
-        </div>
-        <div class="col-sm-4">
-            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Coordenadas" disabled [(ngModel)]="CoordeSect">
-        </div>
-    </div>
-    <div class="row br">
         <div class="col-sm-4">
             <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Cantidad" [(ngModel)]="Cant">
         </div>
@@ -33,12 +28,12 @@
     </div>
     <div class="row br justify-content-center">
         <div class="col-sm-2 col-2">
-            <button class="btn btn-agro-prin col-sm-12">
+            <button class="btn btn-agro-prin col-sm-12" (click)="AsociaSector(ModalRespuesta)">
                 Asociar
             </button>
         </div>
         <div class="col-sm-2 col-2">
-            <button class="btn btn-agro-prin col-sm-12" (click)="open(content)">
+            <button class="btn btn-agro-prin col-sm-12" (click)="AbreCreaSector(ModalInsert)">
                 Crear sector
             </button>
         </div>
@@ -57,27 +52,26 @@
             <tr>
                 <th>Sector</th>
                 <th>Cantidad</th>
-                <th>Coordenadas</th>
-                <th>Descripción</th>
                 <th>Valor flete</th>
                 <th>Eliminar</th>
             </tr>
-            <tr>
-                <td>Usaquen</td>
-                <td>Celda 2</td>
-                <td>Celda 3</td>
-                <td>Celda 3</td>
-                <td>Celda 3</td>
+            <tr *ngFor="let sector of DataSectorOferta">
+                <td>{{sector.DSCRPCION_SCTOR}}</td>
+                <td>{{sector.CNTDAD}}</td>
+                <td>${{sector.VLOR_FLTE_SGRDO}}</td>
                 <td>
-                    <button class="SinEstilo">
+                    <button class="SinEstilo" (click)="EliminaSector(sector, ModalRespuesta)">
                         <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Cerrar.png">
                     </button>
                 </td>
             </tr>
+            <tr *ngIf="ValidaConsulta=='1'">
+                <td colspan="4">{{txtValidaCons}}</td>
+            </tr>
         </table>
     </div>
 </div>
-<ng-template #content let-modal>
+<ng-template #ModalInsert let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Crear sector</h4>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
@@ -85,25 +79,44 @@
     <div class="modal-body">
         <div class="row br">
             <div class="col-sm-12">
-                <input type="text" class="Col-sm-12 form-control" placeholder="Nombre sector">
+                <input type="text" class="Col-sm-12 form-control" placeholder="Nombre sector" [(ngModel)]="NombreSec">
             </div>
         </div>
-        <div class="row br">
-            <div class="col-sm-12">
-                <input type="text" class="Col-sm-12 form-control" placeholder="Descripción sector">
-            </div>
-        </div>
-        <div class="row br">
+        <div class="row mt-2">
+            <label><small><b><i>Recuerda separar longitud y latitud ayudandote con una coma</i></b></small></label>
             <div class="col-sm-6">
-                <input type="text" class="Col-sm-12 form-control" placeholder="Coordenada 1">
+                <input type="text" class="Col-sm-12 form-control" placeholder="Coordenada norte" [(ngModel)]="Coor1">
             </div>
             <div class="col-sm-6">
-                <input type="text" class="Col-sm-12 form-control" placeholder="Coordenada 2">
+                <input type="text" class="Col-sm-12 form-control" placeholder="Coordenada sur" [(ngModel)]="Coor2">
             </div>
         </div>
     </div>
     <div class="row justify-content-center">
-        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Guardar</button>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-agro-prin col-sm-12" (click)="CreaSector(ModalRespuesta)">Guardar</button>
+        </div>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-agro-sec col-sm-12" (click)="LimpiaModal()">Limpiar</button>
+        </div>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalRespuesta let-modal>
+    <div class="modal-header">
+        <h1>Respuesta</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">{{Respuesta}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
     </div>
     <br>
 </ng-template>

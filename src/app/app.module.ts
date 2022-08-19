@@ -22,6 +22,7 @@ import { TransportistaComponent } from './ofertas/components/valoraroferta/trans
     BuscarofertaComponent,
     SectorizacionComponent,
     TransportistaComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -30,8 +31,8 @@ import { TransportistaComponent } from './ofertas/components/valoraroferta/trans
     FormsModule,
     HttpClientModule,
     CommonModule,
-    NgbModule,
-    AutocompleteLibModule
+    NgbModule,    
+    AutocompleteLibModule    
   ],
   providers: [
 
