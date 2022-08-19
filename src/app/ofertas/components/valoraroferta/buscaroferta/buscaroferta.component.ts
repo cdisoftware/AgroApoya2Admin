@@ -87,19 +87,20 @@ export class BuscarofertaComponent implements OnInit {
     console.log(this.IdProducto + '/' + this.IdProductor + '/' + this.IdEstado + '/' + this.FechaOferta)
     this.modalService.open(modalBuscar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
     const datosbusqueda = {
-      UsuCodig: 1,
-      Producto: this.IdProducto,
+      UsuCodig: 0,
+      Producto: 0,
       NombreCompletoProductor: 0,
       DescripcionProducto: 0,
       Cd_cndcion: 0,
       Cd_tmno: 0,
       ID_EMPAQUE: 0,
-      VigenciaDesde: 0,
+      VigenciaDesde: this.FechaOferta,
       VigenciaHasta: 0,
-      IdEstado_Oferta: 0,
+      IdEstado_Oferta: this.IdEstado,
       CD_RGION: 0,
       CD_MNCPIO: 0
     }
+    console.log(datosbusqueda);
     this.ServiciosValorar.BusquedaOferta('1', '0', this.IdProducto, this.IdProductor, datosbusqueda).subscribe(Resultado => {
       console.log(Resultado);
       this.ArrayBusqueda = Resultado;
