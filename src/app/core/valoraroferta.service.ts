@@ -76,4 +76,8 @@ export class ValorarofertaService {
     return this.http.post<any[]>(this.url_servidor + 'cofertamod/' + Bandera + '/' + idempaque, datos)
   }
 
+  ConsultaConductoresOferta(bandera:string,CD_CNSCTVO:string){
+    return this.http.get<any[]>(this.url_servidor+'consconductorsectorofert/'+bandera+'/'+CD_CNSCTVO)
+  }
+
 }

@@ -15,6 +15,7 @@ import { SidebarModule } from 'ng-sidebar';
 import { SectorizacionComponent } from './ofertas/components/valoraroferta/sectorizacion/sectorizacion.component';
 import { TransportistaComponent } from './ofertas/components/valoraroferta/transportista/transportista.component';
 import { ConciliacionComponent } from './ofertas/components/valoraroferta/conciliacion/conciliacion.component';
+import { ValoracionComponent} from './ofertas/components/valoraroferta/valoracion/valoracion.component';
 import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
@@ -25,7 +26,8 @@ import { CookieService } from 'ngx-cookie-service';
     BuscarofertaComponent,
     SectorizacionComponent,
     TransportistaComponent,
-    ConciliacionComponent
+    ConciliacionComponent,
+    ValoracionComponent
   ],
   imports: [
     BrowserModule,
