@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MetodosglobalesService } from './../../../../core/metodosglobales.service'
 import { ValorarofertaService } from './../../../../core/valoraroferta.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-buscaroferta',
@@ -50,7 +51,8 @@ export class BuscarofertaComponent implements OnInit {
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
     private ServiciosValorar: ValorarofertaService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    public rutas: Router
   ) { }
 
 
@@ -199,5 +201,9 @@ export class BuscarofertaComponent implements OnInit {
       this.ValorTotal = Resultado[0].VR_TOTAL_OFRTA;
       this.ImagenOferta = this.SeriviciosGenerales.RecuperaRutaImagenes() + Resultado[0].IMAGEN;
     })
+  }
+
+  Enviar(){
+    this.rutas.navigateByUrl('home/conciliacion');
   }
 }

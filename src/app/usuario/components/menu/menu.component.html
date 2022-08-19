@@ -16,20 +16,15 @@
                 </div>
             </div>
             <ul class="list-unstyled components mb-5">
-                <li class="active">
-                    <a href="#"><span class="fa fa-caret-right mr-3"></span> Modulos Generales</a>
+            
+                <li>
+                    <a (click)="CrearOferta()"><span class="fa fa-caret-right mr-3"></span>Crear Oferta</a>
                 </li>
                 <li>
-                    <a href="#"><span class="fa fa-caret-right mr-3"></span> Ofertas</a>
+                    <a (click)="ValorarOferta()"><span class="fa fa-caret-right mr-3"></span>Valorar Oferta</a>
                 </li>
                 <li>
-                    <a href="#"><span class="fa fa-caret-right mr-3"></span> Administracion</a>
-                </li>
-                <li>
-                    <a href="#"><span class="fa fa-caret-right mr-3"></span> Reportes</a>
-                </li>
-                <li>
-                    <a href="#"><span class="fa fa-sign-out mr-3"></span> Cerrar Sesion</a>
+                    <a (click)="CerrarSession()"><span class="fa fa-sign-out mr-3"></span> Cerrar Sesion</a>
                 </li>
             </ul>
 
@@ -37,7 +32,7 @@
 
         <!-- Page Content  -->
         <div id="content" class="p-4 p-md-5 pt-5">
-            <h2 class="mb-4">CONTENIDO</h2>
+            <router-outlet></router-outlet>
         </div>
     </div>
 

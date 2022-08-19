@@ -14,6 +14,8 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { SidebarModule } from 'ng-sidebar';
 import { SectorizacionComponent } from './ofertas/components/valoraroferta/sectorizacion/sectorizacion.component';
 import { TransportistaComponent } from './ofertas/components/valoraroferta/transportista/transportista.component';
+import { ConciliacionComponent } from './ofertas/components/valoraroferta/conciliacion/conciliacion.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -22,8 +24,8 @@ import { TransportistaComponent } from './ofertas/components/valoraroferta/trans
     LoginComponent,
     BuscarofertaComponent,
     SectorizacionComponent,
-    TransportistaComponent
-    
+    TransportistaComponent,
+    ConciliacionComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +39,8 @@ import { TransportistaComponent } from './ofertas/components/valoraroferta/trans
     SidebarModule.forRoot()
   ],
   providers: [
-    { provide: LocationStrategy, useClass: HashLocationStrategy }
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

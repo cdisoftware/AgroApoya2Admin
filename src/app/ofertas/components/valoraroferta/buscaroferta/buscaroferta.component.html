@@ -202,7 +202,7 @@
         </div>
         <div class="row br justify-content-center mt-3" *ngIf="ValidaBusqueda == '1'">
             <div class="col-sm-3 col-12 br">
-                <button class="col-sm-12 btn btn-agro-prin">Siguiente</button>
+                <button class="col-sm-12 btn btn-agro-prin" (click)="Enviar()">Siguiente</button>
             </div>
         </div>
         <br><br>
@@ -272,7 +272,7 @@
                     <div class="col-sm-10">
                         <input type="text"
                             value="{{seleccion.Producto}} - {{seleccion.Empaque}} - {{seleccion.NombreCompletoProductor}} - {{seleccion.VigenciaDesde}}"
-                            class="form-control form-control-sm textBox" disabled>
+                            class="form-control" disabled>
                     </div>
                     <div class="col-sm-1">
                         <button class="bot col-sm-1 SinEstilo" (click)="CargaBusqueda(seleccion)">

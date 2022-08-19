@@ -1,6 +1,7 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-sectorizacion',
@@ -30,7 +31,7 @@ export class SectorizacionComponent implements OnInit {
   ModalInsert : NgbModalRef | undefined ;
 
 
-  constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService) { }
+  constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router) { }
 
   ngOnInit(): void {
     this.DesSect = '';
@@ -167,6 +168,10 @@ export class SectorizacionComponent implements OnInit {
 
   LimpiaForm() {
     window.location.reload();
+  }
+
+  Enviar(){
+    this.rutas.navigateByUrl('/home/transportista');
   }
 
 }

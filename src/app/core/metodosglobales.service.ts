@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service'
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,8 @@ import { HttpClient } from '@angular/common/http';
 export class MetodosglobalesService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private Cookies: CookieService
   ) { }
 
   //ambiente de trabajo 1 desarrollo 2 produccion
@@ -39,5 +41,9 @@ export class MetodosglobalesService {
     else{
       return "Valida ambiente seleccionado";
     }    
+  }
+
+  CrearCookie(Llave: string, Valor: string) {
+    this.Cookies.set(Llave, Valor)
   }
 }
