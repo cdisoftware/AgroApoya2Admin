@@ -6,19 +6,26 @@ import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CrearofertaComponent } from './ofertas/components/crearoferta/crearoferta.component';
-import { LoginComponent} from './usuario/components/login/login.component';
+import { LoginComponent } from './usuario/components/login/login.component';
 import { CommonModule, HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BuscarofertaComponent } from './ofertas/components/valoraroferta/buscaroferta/buscaroferta.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
+<<<<<<< HEAD
 import { SidebarModule } from 'ng-sidebar'
+=======
+import { SectorizacionComponent } from './ofertas/components/valoraroferta/sectorizacion/sectorizacion.component';
+import { TransportistaComponent } from './ofertas/components/valoraroferta/transportista/transportista.component';
+>>>>>>> master
 
 @NgModule({
   declarations: [
     AppComponent,
     CrearofertaComponent,
     LoginComponent,
-    BuscarofertaComponent
+    BuscarofertaComponent,
+    SectorizacionComponent,
+    TransportistaComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +39,7 @@ import { SidebarModule } from 'ng-sidebar'
     SidebarModule.forRoot()
   ],
   providers: [
-    
+
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]
