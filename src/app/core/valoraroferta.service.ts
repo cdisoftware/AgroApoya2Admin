@@ -27,6 +27,7 @@ export class ValorarofertaService {
     return this.http.get<any[]>(this.url_servidor + 'conscoferta/' + Bandera + '/' + idOferta)
   }
 
+
   ConsultaSectores(Bandera: string, NomSector: string, CdPais: String, Cd_Region: string, Cd_Mncpio: string) {
     return this.http.get<any[]>(this.url_servidor + 'consectores/' + Bandera + '/' + NomSector + '/' + CdPais + '/' + Cd_Region + '/' + Cd_Mncpio)
   }
@@ -54,4 +55,25 @@ export class ValorarofertaService {
   OperacionTransportista(bandera: string, Body: any) {
     return this.http.post<any>(this.url_servidor + 'cconductorofertamod/' + bandera, Body)
   }
+
+  CerrarOferta(bandera: string, datos: any) {
+    return this.http.post<any[]>(this.url_servidor + 'aestadofertamod/' + bandera, datos)
+  }
+
+  EditaOferta(Bandera: string, datos: any) {
+    return this.http.post<any[]>(this.url_servidor + 'conscpersons/' + Bandera, datos)
+  }
+
+  BusquedaOferta(bandera: string, cnctivoOferta: string, IdProducto: string, IdProductor: string, datos: any) {
+    return this.http.post<any[]>(this.url_servidor + 'consaofertas/' + bandera + '/' + cnctivoOferta + '/' + IdProducto + '/' + IdProductor, datos)
+  }
+
+  ConsultaJornada(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consjorndofertas/' + Bandera)
+  }
+
+  EditarOfertaBusqueda(Bandera: string, idempaque: string, datos: any) {
+    return this.http.post<any[]>(this.url_servidor + 'cofertamod/' + Bandera + '/' + idempaque, datos)
+  }
+
 }
