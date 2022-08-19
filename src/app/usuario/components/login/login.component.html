@@ -1,65 +1,63 @@
-<div class="Fondo fondo_agroapoya">
-    <div class="row w-100 m-auto text-center">
-        <label class="tituloPortada text-info w-100 m-auto">AgroApoya2</label>
-    </div>
-
-    <!-- Box Login-->
-    <div class="row">
-
-        <div class="col-md-6 col-sm-12  mt-5 pl-4 pr-4">
-            <div class="conborde">
-                <div class="col-sm-12 text-center img_login">
-                    <img class="imgLogin" src="../../../../assets/ImagenesAgroApoya2Admin/user.png">
-                    <h3>Iniciar Sesion</h3>
-                </div>
-                <div class="form_login_user">
-                    <form class="col-12">
-                        <div class="col-12 p-10 m-10 mb-4">
-                            <div class="col-sm-12 col-12">
-                                <input type="text" class="form-control sinborde" name="Usuario" placeholder="Usuario"
-                                    required="required">
-                            </div>
-                        </div>
-                    </form>
-                    <form class="col-12 ">
-                        <div class="row col-12  mb-4">
-                            <div class="col-sm-12 col-12">
-                                <input type="password" required="required" class="form-control sinborde" name="Password"
-                                    id="Password" placeholder="Contraseña">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-sm-2 col-2">
-                        <button id="btnIngresar" class="btn btn-agro-prin">Ingresar</button>
+<div class="Fondo ">
+    <div class="container ">
+        <div class="row centrarvertical">
+            <div class="col-md-7 col-sm-12  mt-5 pl-4 pr-4">
+                <div class="conborde col-sm-12 col-md-12">
+                    <div class="col-sm-12 text-center img_login">
+                        <img class="imgLogin" src="../../../../assets/ImagenesAgroApoya2Admin/user.png">
+                        <h3>Iniciar Sesion</h3>
                     </div>
-                </div>
+                    <div class="form_login_user">
+                        <form class="col-12">
+                            <div class="col-12 p-10 m-10 mb-4">
+                                <div class="col-sm-12 col-12">
+                                    <input type="text" class="form-control sinborde" name="Usuario"
+                                        placeholder="Usuario" required="required" [(ngModel)]="Usuario">
+                                </div>
+                            </div>
+                        </form>
+                        <form class="col-12 ">
+                            <div class="row col-12  mb-4">
+                                <div class="col-sm-12 col-12">
+                                    <input type="password" required="required" class="form-control sinborde"
+                                        name="Password" id="Password" placeholder="Contraseña" [(ngModel)]="Password">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-sm-2 col-2">
+                            <button id="btnIngresar" class="btn btn-agro-prin" (click)="Login()">Ingresar</button>
+                        </div>
+                    </div>
 
+                </div>
             </div>
-        </div>
-        <!--  Box Login-->
-        <div class="col-md-6 col-sm-12 mt-5 pl-4 pr-4 form_text_right">
-            <div class="d-inline-flex mt-5">
-                <h5 class="FontFamilyFutura mr-3 textColorVerdeOsucuro">Te damos la bienvenida a nuestra plataforma 👋
-                </h5>
+            <!--  Box Login-->
+            <div class="col-md-5 col-sm-12 mt-5 pl-4 pr-4 form_text_right">
+                <div class="d-inline-flex mt-5">
+                    <h5 class="FontFamilyFutura mr-3 textColorVerdeOsucuro">Te damos la bienvenida a nuestra plataforma
+                        👋
+                    </h5>
+                </div>
+                <p class="tituloPortada mt-4 text-info">
+                    <label class="tituloPortadaSignos text-info">¿</label>Sabes qué nos diferencia<label
+                        class="tituloPortadaSignos text-info">?</label>
+                </p>
+                <ul class="menu mt-4 FontFamilyFutura" style="max-width: 500px">
+                    <li>¡Queremos Dar a cada uno lo <strong>MEJOR</strong>!</li>
+                    <li>Mayor beneficio económico.</li>
+                    <li>Minimizar la cadena de intermediación.</li>
+                    <li>Ser una opción en la disminución del desperdicio de la cadena de distribución.</li>
+                </ul>
+                <label class="text-info LabelUno FontFamilyFutura">¡Llegar con productos <strong>FRESCOS</strong> al
+                    precio
+                    <strong>JUSTO!</strong></label>
+                <br>
+                <a href="https://www.agroapoya2.com/" class="btn btn-agro-prin pl-5 pr-5 ml-5 mt-3">Más Información</a>
+                <br>
+                <br>
             </div>
-            <p class="tituloPortada mt-4 text-info">
-                <label class="tituloPortadaSignos text-info">¿</label>Sabes qué nos diferencia<label
-                    class="tituloPortadaSignos text-info">?</label>
-            </p>
-            <ul class="menu mt-4 FontFamilyFutura" style="max-width: 500px">
-                <li>¡Queremos Dar a cada uno lo <strong>MEJOR</strong>!</li>
-                <li>Mayor beneficio económico.</li>
-                <li>Minimizar la cadena de intermediación.</li>
-                <li>Ser una opción en la disminución del desperdicio de la cadena de distribución.</li>
-            </ul>
-            <label class="text-info LabelUno FontFamilyFutura">¡Llegar con productos <strong>FRESCOS</strong> al precio
-                <strong>JUSTO!</strong></label>
-            <br>
-            <a href="https://www.agroapoya2.com/" class="btn btn-agro-prin pl-5 pr-5 ml-5 mt-3">Más Información</a>
-            <br>
-            <br>
         </div>
     </div>
 </div>
