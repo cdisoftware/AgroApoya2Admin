@@ -2,10 +2,10 @@
     <br><br>
     <div class="container bg-white">
         <br>
-        <h3 class="TituloForm CentrarText">Crear Oferta</h3>
+        <h1>Crear Oferta</h1>
         <div class="row">
             <div class="col-sm-6 br">
-                <select class="form-control" #SelectProducto id="SelectProducto" (change)='SelProducto(SelectProducto.value)'>
+                <select class="form-control form-control-sm textBox" #SelectProducto id="SelectProducto" (change)='SelProducto(SelectProducto.value)'>
                     <option value="0">Producto(Obligatorio)</option>
                     <option *ngFor="let Producto of ArrayProductos;" [value]="Producto.id_producto"
                         [selected]="Producto.id_producto == IdProducto">
@@ -14,7 +14,7 @@
                 </select>
             </div>
             <div class="col-sm-6 br">
-                <select class="form-control" #SelectEmpaque id="SelectEmpaque" (change)='SelEmpaque(SelectEmpaque.value)'>
+                <select class="form-control form-control-sm textBox" #SelectEmpaque id="SelectEmpaque" (change)='SelEmpaque(SelectEmpaque.value)'>
                     <option value="0">Presentación Empaque(Obligatorio)</option>
                     <option *ngFor="let Empaque of ArrayEmpaque;" [value]="Empaque.id_empaque"
                         [selected]="Empaque.id_empaque == IdEmpaque">
@@ -25,7 +25,7 @@
         </div>
         <div class="row">
             <div class="col-sm-6 br">
-                <select class="form-control" #SelectCondicion id="SelectCondicion" (change)='SelCondicion(SelectCondicion.value)'>
+                <select class="form-control form-control-sm textBox" #SelectCondicion id="SelectCondicion" (change)='SelCondicion(SelectCondicion.value)'>
                     <option value="0">Condición(Obligatorio)</option>
                     <option *ngFor="let Condicion of ArrayCondicion;" [value]="Condicion.id_condicion"
                         [selected]="Condicion.id_condicion == IdCondicion">
@@ -34,7 +34,7 @@
                 </select>
             </div>
             <div class="col-sm-6 br">
-                <select class="form-control" #SelectTamano id="SelectTamano" (change)='SelTamano(SelectTamano.value)'>
+                <select class="form-control form-control-sm textBox" #SelectTamano id="SelectTamano" (change)='SelTamano(SelectTamano.value)'>
                     <option value="0">Tamaño(Obligatorio)</option>
                     <option *ngFor="let Tamano of ArrayTamano;" [value]="Tamano.id_tamano"
                         [selected]="Tamano.id_tamano == IdCondicion">
@@ -45,24 +45,24 @@
         </div>
         <div class="row">
             <div class="col-sm-12 br">
-                <textarea required="required" name="caracteristicas" id="caracteristicas" class="form-control" cols="30"
+                <textarea required="required" name="caracteristicas" id="caracteristicas" class="form-control form-control-sm textBox" cols="30"
                     rows="3"
                     placeholder="Caracteristicas que el comprador debe saber de tu producto (Obligatorio)" [(ngModel)]="DesProducto"></textarea>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6 br">
-                <input type="number" class="form-control" placeholder="Valor unidad empaque (Obligatorio)"
+                <input type="number" class="form-control form-control-sm textBox" placeholder="Valor unidad empaque (Obligatorio)"
                     required="required" [(ngModel)]="ValorOferta" name="ValorOferta">
             </div>
             <div class="col-sm-6 br">
-                <input type="numebr" class="form-control" placeholder="Unidades (Obligatorio)" required="required" [(ngModel)]="Unidades" name="Unidades" (change)="CalculaValorTotal();">
+                <input type="numebr" class="form-control form-control-sm textBox" placeholder="Unidades (Obligatorio)" required="required" [(ngModel)]="Unidades" name="Unidades" (change)="CalculaValorTotal();">
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12 br">
                 <label for="ValorTOferta" class="Valor">Valor Total Oferta</label>
-                <input type="number" class="form-control" id="ValorTOferta"
+                <input type="number" class="form-control form-control-sm textBox" id="ValorTOferta"
                     placeholder="Valor Total Oferta (Obligatorio)" disabled [(ngModel)]="ValorTotalOferta" name="ValorTotalOferta">
             </div>
         </div>
@@ -70,10 +70,10 @@
         <div class="row">
             <label for="VigenciaOferta" class="Valor">Vigencia Oferta Desde</label>
             <div class="col-sm-6 br">
-                <input type="date" class="form-control" id="VigenciaOferta" [(ngModel)]="Vigencia" name="Vigencia">
+                <input type="date" class="form-control form-control-sm textBox" id="VigenciaOferta" [(ngModel)]="Vigencia" name="Vigencia">
             </div>
             <div class="col-sm-6 br">
-                <select name="Jornada" id="Jornada" class="form-control">
+                <select name="Jornada" id="Jornada" class="form-control form-control-sm textBox">
                     <option value="0">Jornada (Obligatorio)</option>
                     <option value="1">Mañana</option>
                     <option value="2">Tarde</option>
@@ -83,7 +83,7 @@
         </div>
         <div class="row">
             <div class="col-sm-6 br">
-                <select name="SelectDepa"  #SelectDepa id="SelectDepa" class="form-control" (change)='SelDepa(SelectDepa.value)'>
+                <select name="SelectDepa"  #SelectDepa id="SelectDepa" class="form-control form-control-sm textBox" (change)='SelDepa(SelectDepa.value)'>
                     <option value="0">Departamento (Obligatorio)</option>
                     <option *ngFor="let Departamento of ArrayDepa;" [value]="Departamento.CD_RGION"
                         [selected]="Departamento.CD_RGION == IdDepartamento">
@@ -92,7 +92,7 @@
                 </select>
             </div>
             <div class="col-sm-6 br">
-                <select name="Ciudad" id="Ciudad" class="form-control" #SelectCiud (change)='SelCiud(SelectCiud.value)'>
+                <select name="Ciudad" id="Ciudad" class="form-control form-control-sm textBox" #SelectCiud (change)='SelCiud(SelectCiud.value)'>
                     <option value="0">Ciudad (Obligatorio)</option>
                     <option *ngFor="let Ciudad of ArrayCiud;" [value]="Ciudad.CD_MNCPIO"
                         [selected]="Ciudad.CD_MNCPIO == IdCiudad">
@@ -103,7 +103,7 @@
         </div>
         <div class="row">
             <div class="col-sm-12 br">
-                <input type="text" class="form-control" placeholder="Ubicación Parcela">
+                <input type="text" class="form-control form-control-sm textBox" placeholder="Ubicación Parcela">
             </div>
         </div>
         <br>
