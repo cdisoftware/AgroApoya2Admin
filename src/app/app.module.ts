@@ -11,12 +11,9 @@ import { CommonModule, HashLocationStrategy, LocationStrategy } from "@angular/c
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BuscarofertaComponent } from './ofertas/components/valoraroferta/buscaroferta/buscaroferta.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
-<<<<<<< HEAD
-import { SidebarModule } from 'ng-sidebar'
-=======
+import { SidebarModule } from 'ng-sidebar';
 import { SectorizacionComponent } from './ofertas/components/valoraroferta/sectorizacion/sectorizacion.component';
 import { TransportistaComponent } from './ofertas/components/valoraroferta/transportista/transportista.component';
->>>>>>> master
 
 @NgModule({
   declarations: [
@@ -26,6 +23,7 @@ import { TransportistaComponent } from './ofertas/components/valoraroferta/trans
     BuscarofertaComponent,
     SectorizacionComponent,
     TransportistaComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -39,7 +37,6 @@ import { TransportistaComponent } from './ofertas/components/valoraroferta/trans
     SidebarModule.forRoot()
   ],
   providers: [
-
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [AppComponent]
