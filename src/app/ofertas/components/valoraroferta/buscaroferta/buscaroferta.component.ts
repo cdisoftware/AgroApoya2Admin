@@ -47,6 +47,7 @@ export class BuscarofertaComponent implements OnInit {
   EFechaRecogida: string = '';
   EJornada: string = '0';
   ArrayJornada: any = [];
+  
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -147,7 +148,7 @@ export class BuscarofertaComponent implements OnInit {
       descripcion: this.mcObservacion,
       estado: 6
     }
-    this.ServiciosValorar.CerrarOferta('3', datosCerrar).subscribe(Resultado => {
+    this.ServiciosValorar.ModificaEstadoOferta('3', datosCerrar).subscribe(Resultado => {
       console.log(Resultado);
       this.modalService.dismissAll();
     })
@@ -190,8 +191,8 @@ export class BuscarofertaComponent implements OnInit {
       console.log(Resultado)
       this.NombreProductor = Resultado[0].Nombre_productor;
       this.DesProducto = Resultado[0].Nombre_Producto;
-      this.Tamano = Resultado[0].Tamaño;
-      this.Presentacion = Resultado[0].Descripción_empaque;
+      this.Tamano = Resultado[0].Tamano;
+      this.Presentacion = Resultado[0].Descripcion_empaque;
       this.Descripcion = Resultado[0].caracteristicas;
       this.Caracterizacion = Resultado[0].caracterizacion;
       this.ValorUnidad = Resultado[0].VR_UNDAD_EMPQUE;
@@ -200,11 +201,15 @@ export class BuscarofertaComponent implements OnInit {
       this.Jornada = Resultado[0].Nombre_jornada;
       this.Direccion = Resultado[0].coordenadas_parcela;
       this.ValorTotal = Resultado[0].VR_TOTAL_OFRTA;
+      this.IdProducto = Resultado[0].Producto;
       this.ImagenOferta = this.SeriviciosGenerales.RecuperaRutaImagenes() + Resultado[0].IMAGEN;
+      this.SeriviciosGenerales.CrearCookie('IDO', this.IdOferta);
+      this.SeriviciosGenerales.CrearCookie('IDP', this.IdProducto);
     })
+
   }
 
-  Enviar(){
+  Enviar() {
     this.rutas.navigateByUrl('home/conciliacion');
   }
 }

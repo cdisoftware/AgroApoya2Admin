@@ -17,55 +17,16 @@
                     <th>Tamaño</th>
                     <th>Unidades</th>
                     <th>Precio</th>
+                    <th>Fecha</th>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                <tr *ngFor="let oferta of ArrayUOfertas.slice(0,6)">
+                    <td>{{oferta.Producto}}</td>
+                    <td>{{oferta.NombreCompletoProductor}}</td>
+                    <td>{{oferta.Tamano}}</td>
+                    <td>{{oferta.unidadesOfertadas}}</td>
+                    <td>{{oferta.VrTotalOfForm}}</td>
+                    <td>{{oferta.VigenciaDesde}}</td>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <!-- <tr *ngFor="let sector of DataSectorOferta">
-                    <td>{{sector.DSCRPCION_SCTOR}}</td>
-                    <td>{{sector.CNTDAD}}</td>
-                    <td>${{sector.VLOR_FLTE_SGRDO}}</td>
-                    <td>
-                        <button class="SinEstilo" (click)="EliminaSector(sector, ModalRespuesta)">
-                            <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Cerrar.png">
-                        </button>
-                    </td>
-                </tr>
-                <tr *ngIf="ValidaConsulta=='1'">
-                    <td colspan="4">{{txtValidaCons}}</td>
-                </tr> -->
             </table>
         </div>
         <div class="row br">
@@ -153,10 +114,10 @@
                             <div class="col-sm-2">
                                 <label class="Valor">{{FechaRecogida}}</label>
                             </div>
-                            <div class="col-sm-1">
+                            <div class="col-1 col-sm-2">
                                 <label class="Llave">Jornada:</label>
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-2 col-sm-3">
                                 <label class="Valor">{{Jornada}}</label>
                             </div>
                         </div>
@@ -179,8 +140,8 @@
                         <br>
                     </div>
 
-                    <hr>
-                    <div class="row justify-content-center">
+                    <hr *ngIf="ValidaSiguiente == '0'">
+                    <div class="row justify-content-center" *ngIf="ValidaSiguiente == '0'">
                         <div class="col-sm-1">
                             <button class="SinEstilo" (click)="EditaOferta(templateEditar)">
                                 <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Editar.png"
@@ -194,17 +155,17 @@
             </div>
         </div>
         <div class="row justify-content-center br">
-            <div class="col-sm-2">
-                <button class="btn btn-agro-prin col-sm-12">Enviar Propuesta</button>
+            <div class="col-2 col-sm-3" *ngIf="ValidaSiguiente == '0'">
+                <button class="btn btn-agro-prin col-sm-12" (click)="EnviarPropuesta()">Enviar Propuesta</button>
             </div>
-            <div class="col-sm-2">
-                <button class="btn btn-agro-prin col-sm-12" (click)="AprobarOferta(templateAprobar)">Aprobar</button>
+            <div class="col-2 col-sm-3" *ngIf="ValidaSiguiente == '0'">
+                <button class="btn btn-agro-prin col-sm-12" (click)="AprobarOferta(templateAprobar)" >Aprobar</button>
             </div>
-            <div class="col-sm-2">
+            <div class="col-2 col-sm-3" *ngIf="ValidaSiguiente == '0'">
                 <button class="btn btn-agro-prin col-sm-12" (click)="DeclinarOferta(templateDeclinar)" >Declinar</button>
             </div>
-            <div class="col-sm-2">
-                <button class="btn btn-agro-prin col-sm-12" (click)="Enviar()" *ngIf="ValidaSiguiente == '1'">Siguiente</button>
+            <div class="col-2 col-sm-3" *ngIf="ValidaSiguiente == '1'">
+                <button class="btn btn-agro-prin col-sm-12" (click)="Enviar()">Siguiente</button>
             </div>
         </div>
     </div>
@@ -216,49 +177,55 @@
         <div class="modal-body">
             <div class="row br">
                 <div class="col-sm-6">
-                    <textarea name="ECaracteriza" id="ECaracteriza" class="col-sm-12 form-control form-control-sm textBox"
-                        placeholder="Caracterización" rows="3"></textarea>
+                    <textarea name="ECaracteriza" id="ECaracteriza" class="col-sm-12 form-control form-control-sm textArea"
+                        placeholder="Caracterización" rows="3" [(ngModel)]="ECaracteriza"></textarea>
                 </div>
                 <div class="col-sm-6">
-                    <input type="text" class="col-sm-12 form-control form-control-sm textBox" placeholder="Presentación Empaque">
-                </div>
-            </div>
-            <div class="row br">
-                <div class="col-sm-6">
-                    <input type="text" class="col-sm-12 form-control form-control-sm textBox" placeholder="Valor Unidad">
-                </div>
-                <div class="col-sm-6">
-                    <input type="text" class="col-sm-12 form-control form-control-sm textBox" placeholder="Unidades Disponibles">
-                </div>
-            </div>
-            <div class="row br">
-                <div class="col-sm-6">
-                    <input type="text" class="col-sm-12 form-control form-control-sm textBox" placeholder="Fecha recogida"
-                        onfocus="(this.type='date')" onblur="(this.type='date')" name="EFechaRecogida">
-                </div>
-                <div class="col-sm-6">
-                    <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox"
-                    (change)='SelEJornada(ejornada.value)'>
-                        <option value="1">Jornada</option>
-                        <option *ngFor="let jornada of ArrayJornada" [value]="jornada.CD_JRNDA" >
-                            {{jornada.DESCRIPCION}}
+                    <select name="EEmpaque" id="EEmpaque" #eempaque class="form-control form-control-sm textBox"
+                    (change)='SelEEmpaque(eempaque.value)'>
+                        <option value="0">Presentación</option>
+                        <option *ngFor="let empaque of ArrayEmpaque" [value]="empaque.id_empaque" >
+                            {{empaque.des_empaque}}
                         </option>
                     </select>
                 </div>
             </div>
             <div class="row br">
                 <div class="col-sm-6">
-                    <textarea  class="col-sm-12 form-control form-control-sm textBox"
-                        placeholder="Descripción Producto" rows="3"></textarea>
+                    <input type="text" class="col-sm-12 form-control form-control-sm textBox" placeholder="Valor Unidad" name="EVUnidad" [(ngModel)]="EVUnidad">
                 </div>
                 <div class="col-sm-6">
-                    <textarea  class="col-sm-12 form-control form-control-sm textBox"
-                        placeholder="Observación Edición" rows="3"></textarea>
+                    <input type="text" class="col-sm-12 form-control form-control-sm textBox" placeholder="Unidades Disponibles" name="EUnidadesDis" [(ngModel)]="EUnidadesDis">
+                </div>
+            </div>
+            <div class="row br">
+                <div class="col-sm-6">
+                    <input type="text" class="col-sm-12 form-control form-control-sm textBox" placeholder="Fecha recogida" name="EFechaRecogida" [(ngModel)]="EFechaRecogida"
+                        onfocus="(this.type='date')" onblur="(this.type='date')" name="EFechaRecogida">
+                </div>
+                <div class="col-sm-6">
+                    <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox"
+                    (change)='SelEJornada(ejornada.value)'>
+                        <option value="0">Jornada</option>
+                        <option  *ngFor="let jor of ArrayJornada" [value]="jor.CD_JRNDA" [selected]=" jor.jornada == IdEJornada" >
+                            {{jor.DESCRIPCION}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row br">
+                <div class="col-sm-6">
+                    <textarea  class="col-sm-12 form-control form-control-sm textArea"
+                        placeholder="Descripción Producto" rows="3" name="EDescripcion" [(ngModel)]="EDescripcion"></textarea>
+                </div>
+                <div class="col-sm-6">
+                    <textarea  class="col-sm-12 form-control form-control-sm textArea"
+                        placeholder="Observación Edición" name="EOpservacion" [(ngModel)]="EObservacion" rows="3"></textarea>
                 </div>
             </div>
         </div>
         <div class="row justify-content-center">
-            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptaEditar()">Guardar</button>
+            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptaEditar(ModalRespuesta)">Guardar</button>
         </div>
         <br>
     </ng-template>
@@ -271,12 +238,12 @@
             <div class="row br">
                 <div class="col-sm-12">
                     <textarea [(ngModel)]="mcObservacion" name="mcObservacion" id="mcObservacion"
-                        class="Col-sm-12 form-control form-control-sm textBox" placeholder="Observación" rows="3"></textarea>
+                        class="Col-sm-12 form-control form-control-sm textArea" placeholder="Observación" rows="3"></textarea>
                 </div>
             </div>
         </div>
         <div class="row justify-content-center">
-            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptarDeclinar()">Guardar</button>
+            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptarDeclinar(ModalRespuesta)">Guardar</button>
         </div>
         <br>
     </ng-template>
@@ -288,18 +255,41 @@
         <div class="modal-body">
             <div class="row br">
                 <div class="col-sm-12">
-                    <textarea [(ngModel)]="mcObservacion" name="mcObservacion" id="mcObservacion"
-                        class="Col-sm-12 form-control form-control-sm textBox" placeholder="Observaciónes" rows="3"></textarea>
+                    <textarea [(ngModel)]="maObservacion" name="maObservacion" id="maObservacion"
+                        class="Col-sm-12 form-control form-control-sm textArea" placeholder="Observaciónes" rows="3"></textarea>
                 </div>
             </div>
             <div class="row br">
                 <div class="col-sm-12">
-                    <input type="text" class="col-sm-12 form-control form-control-sm textBox" placeholder="Ciudad Aplica Oferta">
+                    <select name="ACiudad" id="Aciudad" #aciudad class="form-control form-control-sm textBox"
+                    (change)='SelACiudad(aciudad.value)'>
+                        <option value="1">Ciudad Aplica</option>
+                        <option *ngFor="let ciudad of ArrayCiudades" [value]="ciudad.CD_MNCPIO" >
+                            {{ciudad.DSCRPCION}}
+                        </option>
+                    </select>
                 </div>
             </div>
         </div>
         <div class="row justify-content-center">
-            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptarAprobar()">Guardar</button>
+            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptarAprobar(ModalRespuesta)">Guardar</button>
+        </div>
+        <br>
+    </ng-template>
+    <ng-template #ModalRespuesta let-modal>
+        <div class="modal-header">
+            <h1>Respuesta</h1>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row br">
+                <div class="col-sm-12">
+                    <h2 class="TituloDetalle">{{Respuesta}}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
         </div>
         <br>
     </ng-template>
