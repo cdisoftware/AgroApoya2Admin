@@ -190,10 +190,12 @@ export class BuscarofertaComponent implements OnInit {
       CRCTRZCION: this.ECaracteriza,
       OBS_EDICION: "0"
     }
+    console.log(DatosEditar);
     this.ServiciosValorar.EditarOfertaBusqueda('4', '0', DatosEditar).subscribe(Resultado => {
       console.log(Resultado)
       this.Respuesta = Resultado.toString()
     })
+    this.CargaInfoOferta();
     this.modalService.dismissAll();
     this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
     
@@ -204,6 +206,10 @@ export class BuscarofertaComponent implements OnInit {
     this.IdOferta = seleccion.cd_cnsctvo;
     this.modalService.dismissAll();
     this.ValidaBusqueda = '1';
+    this.CargaInfoOferta();
+  }
+
+  CargaInfoOferta(){
     this.ServiciosValorar.ConsultaOferta('1', this.IdOferta).subscribe(Resultado => {
       this.ArrayOferta = Resultado;
       console.log(Resultado)
@@ -224,7 +230,6 @@ export class BuscarofertaComponent implements OnInit {
       this.SeriviciosGenerales.CrearCookie('IDO', this.IdOferta);
       this.SeriviciosGenerales.CrearCookie('IDP', this.IdProducto);
     })
-
   }
 
   Enviar() {
@@ -234,7 +239,6 @@ export class BuscarofertaComponent implements OnInit {
   LimpiarCampos(campo: string) {
     if (campo == 'pd') {
       this.IdProducto = '0';
-      alert(this.IdProducto)
     }
     if(campo == 'pt'){
       this.IdProductor = '0'
@@ -245,7 +249,6 @@ export class BuscarofertaComponent implements OnInit {
     if(campo == 'fe'){
       
       this.FechaOferta = ''
-      alert(this.FechaOferta)
     }
   }
 }

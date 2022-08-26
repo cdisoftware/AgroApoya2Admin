@@ -4,6 +4,7 @@ import { LoginService } from './../../../core/login.service';
 import { MetodosglobalesService } from './../../../core/metodosglobales.service';
 import { EncryptionService } from './encryption.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
@@ -27,10 +28,11 @@ export class LoginComponent implements OnInit {
     private servicioslogin: LoginService,
     private ServiciosGlobales: MetodosglobalesService,
     private encryption: EncryptionService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal,
+    public cookies: CookieService) { }
 
   ngOnInit(): void {
-
+    this.cookies.deleteAll();
   }
 
   Login(templateMensaje: any) {
