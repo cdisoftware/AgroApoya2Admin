@@ -17,7 +17,7 @@
                             </div>
                         </form>
                         <form class="col-12 ">
-                            <div class="row col-12  mb-4">
+                            <div class="col-12 p-10 m-10 mb-4">
                                 <div class="col-sm-12 col-12">
                                     <input type="password" required="required" class="form-control sinborde"
                                         name="Password" id="Password" placeholder="Contraseña" [(ngModel)]="Password">
@@ -27,7 +27,7 @@
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-sm-2 col-2">
-                            <button id="btnIngresar" class="btn btn-agro-prin" (click)="Login()">Ingresar</button>
+                            <button id="btnIngresar" class="btn btn-agro-prin" (click)="Login(templateMensaje)">Ingresar</button>
                         </div>
                     </div>
 
@@ -61,3 +61,20 @@
         </div>
     </div>
 </div>
+
+
+<ng-template #templateMensaje>
+    <div class="row col-12">
+        <div class="col-10 mt-2 m-auto" style="font-size: 20px;">
+            <p class="pModals">{{ lblModalMsaje }}</p>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-0">
+            <button class="btn btn-agro-prin" (click)="modalMensaje.hide();" title="Cerrar ventana">
+                Aceptar
+            </button>
+        </div>
+    </div>
+    <br>
+</ng-template>

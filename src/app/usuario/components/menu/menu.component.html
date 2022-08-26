@@ -1,8 +1,8 @@
 <div class="Fondo">
 
     <div class="wrapper d-flex align-items-stretch">
-        <nav id="sidebar">
-            <div class="custom-menu">
+        <nav id="sidebar" class="">
+            <div class="custom-menu" >
                 <button type="button" id="sidebarCollapse" class="btn btn-primary">
                 </button>
             </div>
@@ -16,7 +16,9 @@
                 </div>
             </div>
             <ul class="list-unstyled components mb-5">
-            
+                <li class="active">
+                    <a (click)="Home()"><span class="fa fa-home mr-3"></span> Home</a>
+                  </li>
                 <li>
                     <a (click)="CrearOferta()"><span class="fa fa-caret-right mr-3"></span>Crear Oferta</a>
                 </li>
