@@ -2,6 +2,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router'
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-sectorizacion',
@@ -31,7 +32,7 @@ export class SectorizacionComponent implements OnInit {
   ModalInsert : NgbModalRef | undefined ;
 
 
-  constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router) { }
+  constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies:CookieService) { }
 
   ngOnInit(): void {
     this.DesSect = '';
@@ -39,8 +40,8 @@ export class SectorizacionComponent implements OnInit {
     this.Cant = '';
     this.VlrFle = '';
     this.SectSelec = '';
-    this.SessionOferta = '1011'
-    this.SessionIdUsuario = '265'
+    this.SessionOferta = this.cookies.get('IDO');
+    this.SessionIdUsuario = this.cookies.get('IDU');        
     this.SessionCDMunicipio = '0';
     this.SessionCDRegion = '0';
     this.SessionCiudad = '0';

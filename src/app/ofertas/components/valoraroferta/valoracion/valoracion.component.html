@@ -142,7 +142,8 @@
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave mb-1">Tipo comisión</label>
-                            <ng-autocomplete [data]="DataTipoComisiono" [searchKeyword]="keyword" (inputCleared)='LimpiaTipoComision($event)' (selected)='selectTipComiI($event)' placeholder="Fija o por Porcentaje" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio">
+                            <ng-autocomplete [data]="DataTipoComisiono" [searchKeyword]="keyword" [initialValue]="ArrayTipoComICon[0]" (inputCleared)='LimpiaTipoComision($event)' (selected)='selectTipComiI($event)' placeholder="Fija o por Porcentaje" [itemTemplate]="templateSec"
+                                [notFoundTemplate]="templateVacio">
                             </ng-autocomplete>
                             <ng-template #templateSec let-item>
                                 <a [innerHTML]="item.name"></a>
@@ -202,7 +203,7 @@
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave mb-1">Tipo comisión</label>
-                            <ng-autocomplete [data]="DataTipoComisiono" [searchKeyword]="keyword" (inputCleared)='LimpiaTipoComision($event)' [initialValue]="DataTipoComisiono[0]" (selected)='selectTipComiG($event)' placeholder="Fija o por Porcentaje" [itemTemplate]="templateSec"
+                            <ng-autocomplete [data]="DataTipoComisiono" [searchKeyword]="keyword" (inputCleared)='LimpiaTipoComision($event)' [initialValue]="ArrayTipoComGCon[0]" (selected)='selectTipComiG($event)' placeholder="Fija o por Porcentaje" [itemTemplate]="templateSec"
                                 [notFoundTemplate]="templateVacio">
                             </ng-autocomplete>
                             <ng-template #templateSec let-item>
@@ -346,7 +347,7 @@
     </div>
     <div class="row justify-content-center br">
         <div class="col-sm-2 ">
-            <button class="btn btn-agro-prin col-sm-12">Publicar</button>
+            <button class="btn btn-agro-prin col-sm-12" (click)="PublicarOferta(ModalRespuesta)">Publicar</button>
         </div>
     </div>
     <ng-template #ModalRespuesta let-modal>

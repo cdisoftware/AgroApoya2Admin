@@ -101,4 +101,8 @@ export class ValorarofertaService {
 
   }
 
+  PublicarOferta(Bandera:string, Body: any){
+    return this.http.post<any>(this.url_servidor+'aestadofertamod/'+Bandera, Body)
+  }
+
 }
