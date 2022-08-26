@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-transportista',
@@ -25,7 +26,7 @@ export class TransportistaComponent implements OnInit {
   ValidaConsulta: string = '';
   txtValidaCons: string = '';
 
-  constructor(public sectoresservices: ValorarofertaService, private modalService: NgbModal) { }
+  constructor(public sectoresservices: ValorarofertaService, private modalService: NgbModal, private rutas:Router) { }
 
   ngOnInit(): void {
     this.CodTransSelec = '';
@@ -35,8 +36,22 @@ export class TransportistaComponent implements OnInit {
     this.SectorSelec = '';
     this.SessionCDRegion = '0';
     this.SessionCDMunicipio = '0';
-    this.SessionOferta = '1011'
+    this.SessionOferta = '1011';
     this.ConsultaCiudadOferta();
+    this.ConsultaCondOferta();
+  }
+  ConsultaCondOferta() {
+    this.sectoresservices.ConsultaConductoresOferta('1', this.SessionOferta).subscribe(ResultConsult => {
+      if (ResultConsult.length > 0) {
+        this.ValidaConsulta = '0';
+        this.DataTransOferta = ResultConsult;
+      }
+      else {
+        this.ValidaConsulta = '1';
+        this.DataTransOferta = [];
+        this.txtValidaCons = 'No se encuentran registros de transportistas asociados a la oferta'
+      }
+    })
   }
 
   ConsultaCiudadOferta() {
@@ -50,10 +65,12 @@ export class TransportistaComponent implements OnInit {
   }
 
   ConsultaSectores() {
-    this.sectoresservices.ConsultaSectores('1', '0', '0', this.SessionCDRegion, this.SessionCDMunicipio).subscribe(Result => {
-      this.DataSectores = Result;
-      this.keyword = 'DSCRPCION_SCTOR';
-    })
+    this.sectoresservices.ConsultaSectoresOferta('1', this.SessionOferta).subscribe(ResultConsulta => {
+      if (ResultConsulta.length > 0) {
+        this.keyword = 'DSCRPCION_SCTOR';
+        this.DataSectores = ResultConsulta;
+      }
+    })   
   }
 
   ConsultaTransportistas() {
@@ -76,10 +93,13 @@ export class TransportistaComponent implements OnInit {
         USUCODIG_TRANS: this.CodTransSelec,
         VLOR_FLTE_PCTDO: this.VlrFlete
       }
+      console.log(BodyInsert)
       this.sectoresservices.OperacionTransportista('3', BodyInsert).subscribe(ResultInsert => {
         var arrayrespuesta = ResultInsert.split('|')
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
         this.Respuesta = arrayrespuesta[1];
+        this.ConsultaCiudadOferta();
+        this.ConsultaCondOferta();
       })
     }
     else {
@@ -88,24 +108,28 @@ export class TransportistaComponent implements OnInit {
     }
   }
 
-  EliminaTransportista(transportista: any, templateRespuesta: any) {
-    // const BodyDelete = {
-    //   ID: "0",
-    //   CD_CNSCTVO: transportista,
-    //   ID_SCTOR_OFRTA: transportista,
-    //   ID_CNDCTOR: transportista,
-    //   USUCODIG_TRANS: transportista,
-    //   VLOR_FLTE_PCTDO: transportista
-    // }
-    // this.sectoresservices.OperacionTransportista('4', BodyDelete).subscribe(ResultInsert => {
-    //   var arrayrespuesta = ResultInsert.split('|')
-    //   this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-    //   this.Respuesta = arrayrespuesta[1];
-    // })
+  EliminaTransportista(transportista: any, templateRespuesta: any) {    
+    console.log(transportista)
+    const BodyDelete = {
+      ID: transportista.ID,
+      CD_CNSCTVO: this.SessionOferta,
+      ID_SCTOR_OFRTA: transportista.ID_SCTOR_OFRTA,
+      ID_CNDCTOR: transportista.ID_CNDCTOR,
+      USUCODIG_TRANS: transportista.USUCODIG_TRANS,
+      VLOR_FLTE_PCTDO: transportista.VLOR_FLTE_PCTDO
+    }
+    console.log(BodyDelete)
+    this.sectoresservices.OperacionTransportista('4', BodyDelete).subscribe(ResultInsert => {
+      var arrayrespuesta = ResultInsert.split('|')
+      this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+      this.Respuesta = arrayrespuesta[1];
+      this.ConsultaCiudadOferta();
+      this.ConsultaCondOferta();
+    })
   }
 
-  selectSector(item: any) {
-    this.SectorSelec = item.SCTOR_OFRTA;
+  selectSector(item: any) {    
+    this.SectorSelec = item.ID_SCTOR_OFRTA;
   }
 
   selectTrans(item: any) {
@@ -116,6 +140,10 @@ export class TransportistaComponent implements OnInit {
 
   LimpiaForm() {
     window.location.reload();
+  }
+
+  Enviar(){
+    this.rutas.navigateByUrl('/home/valoracion')
   }
 
 }

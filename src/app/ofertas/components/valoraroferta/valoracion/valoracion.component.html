@@ -1,1 +1,369 @@
-<p>valoracion works!</p>
+<br>
+<div class="container bg-white">
+    <br>
+    <h1>Valorar Oferta</h1>
+    <div class="row justify-content-center br ">
+        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/barra5.png" style="width: 65%;">
+    </div>
+    <div class="row justify-content-center br" *ngFor="let oferta of DataOferta">
+        <div class="row">
+            <div class="col-sm-3 mt-5">
+                <img src={{oferta.IMAGEN}} class="col-sm-12">
+            </div>
+            <div class="col-sm-9">
+                <br>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label class="Llave">Nombre productor:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="Valor">{{oferta.Nombre_productor}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label class="Llave">Producto:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="Valor">{{oferta.Nombre_Producto}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label class="Llave">Tamaño:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="Valor">{{oferta.Tamano}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label class="Llave">Presentacion empaque:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="Valor">{{oferta.Descripcion_empaque}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label class="Llave">Descripción producto:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="Valor">{{oferta.caracteristicas}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label class="Llave">Caracterización:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="Valor">{{oferta.caracterizacion}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label class="Llave">Valor unidad empaque:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="Valor">{{oferta.VR_UNDAD_EMPQUE}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label class="Llave">Unidades disponibles:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="Valor">{{oferta.Unidades_disponibles}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label class="Llave">Fecha recogida:</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="Valor">{{oferta.fecha_recogida}}</label>
+                    </div>
+                    <div class="col-sm-1">
+                        <label class="Llave">Jornada:</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <label class="Valor">{{oferta.Nombre_jornada}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label class="Llave">Direccion o coordenadas:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="Valor">{{oferta.Ubicacion_parsela +' ('+oferta.coordenadas_parcela}})</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label class="Llave">Valor total oferta:</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="Valor">{{oferta.VR_TOTAL_OFRTA}}</label>
+                    </div>
+                </div>
+                <br>
+            </div>
+            <hr>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label class="col-sm-12 Llave">Valor pactado productor</label>
+                <h3>{{oferta.vlor_pactado_productor}}</h3>
+            </div>
+            <div class="col-sm-6">
+                <label class="col-sm-12 Llave">Valor flete por unidad</label>
+                <h3>{{oferta.vlor_flte_xunidad}}</h3>
+            </div>
+        </div>
+    </div>
+    <div class="row br">
+        <div class="col-sm-12">
+            <label class="col-sm-12 Llave mb-1">Definición tipo oferta</label>
+            <ng-autocomplete [data]="DataTipoOferta" [searchKeyword]="keyword" [initialValue]="ArrayTipoOferCon[0]" (selected)='selectTipOferta($event)' (inputCleared)='LimpiaTipoOferta($event)' placeholder="Individual, Grupal o Mixta" [itemTemplate]="templateSec"
+                [notFoundTemplate]="templateVacio">
+            </ng-autocomplete>
+            <ng-template #templateSec let-item>
+                <a [innerHTML]="item.name"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+    </div>
+    <div class="row br">
+        <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-one" *ngIf="MuestraIndividual=='1'">
+            <ngb-panel title="Compra individual" id="config-panel-one">
+                <ng-template ngbPanelContent>
+                    <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave mb-1">Tipo comisión</label>
+                            <ng-autocomplete [data]="DataTipoComisiono" [searchKeyword]="keyword" (inputCleared)='LimpiaTipoComision($event)' (selected)='selectTipComiI($event)' placeholder="Fija o por Porcentaje" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio">
+                            </ng-autocomplete>
+                            <ng-template #templateSec let-item>
+                                <a [innerHTML]="item.name"></a>
+                            </ng-template>
+                            <ng-template #templateVacio let-SinRegistro>
+                                <label for="">Sin registros</label>
+                            </ng-template>
+                        </div>
+                        <div class="col-sm-6" *ngIf="MuestraPorcentaje=='1'">
+                            <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100" onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" [(ngModel)]="VlrComPorI">
+                        </div>
+                        <div class="col-sm-6" *ngIf="MuestraFijo=='1'">
+                            <label class="col-sm-12 Llave">Valor comisión fija</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrComFijaI">
+                        </div>
+                    </div>
+                    <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Minimo unidades</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidI">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Maximo unidades</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidI">
+                        </div>
+                    </div>
+                    <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Valor domicilio</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiI">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Precio final</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PreFinI">
+                        </div>
+                    </div>
+                    <div class="row br">
+                        <div class="col-sm-12">
+                            <label class="col-sm-2 Llave">Descuentos adicionales</label>
+                            <button class="bot col-sm-1 SinEstilo">
+                                <img src="../../../../../assets/ImagenesAgroApoya2Admin/lupa.png" alt="Agregar descuento adicional">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center br">
+                        <div class="col-sm-2 ">
+                            <button class="btn btn-agro-prin col-sm-12" (click)="GuardaIndividual(ModalRespuesta)">Guardar</button>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+        <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-two" *ngIf="MuestraGrupal=='1'">
+            <ngb-panel title="Compra grupal" id="config-panel-two">
+                <ng-template ngbPanelContent>
+                    <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave mb-1">Tipo comisión</label>
+                            <ng-autocomplete [data]="DataTipoComisiono" [searchKeyword]="keyword" (inputCleared)='LimpiaTipoComision($event)' [initialValue]="DataTipoComisiono[0]" (selected)='selectTipComiG($event)' placeholder="Fija o por Porcentaje" [itemTemplate]="templateSec"
+                                [notFoundTemplate]="templateVacio">
+                            </ng-autocomplete>
+                            <ng-template #templateSec let-item>
+                                <a [innerHTML]="item.name"></a>
+                            </ng-template>
+                            <ng-template #templateVacio let-SinRegistro>
+                                <label for="">Sin registros</label>
+                            </ng-template>
+                        </div>
+                        <div class="col-sm-6" *ngIf="MuestraPorcentaje=='1'">
+                            <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100" onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" [(ngModel)]="VlrComPorG">
+                        </div>
+                        <div class="col-sm-6" *ngIf="MuestraFijo=='1'">
+                            <label class="col-sm-12 Llave">Valor comisión fija</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrComFijaG">
+                        </div>
+                    </div>
+                    <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Minimo unidades lider</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidLider">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Maximo unidades lider</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidLider">
+                        </div>
+                    </div>
+                    <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Minimo unidades participante</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidPart">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Maximo unidades participante</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidPart">
+                        </div>
+                    </div>
+                    <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Valor domicilio</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiG">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Porcentaje descuento lider</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100" onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" [(ngModel)]="PorcDescLider">
+                        </div>
+                    </div>
+                    <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Cantidad de grupos</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="CantGrupos">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Unidades por grupo</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidXGrupos">
+                        </div>
+                    </div>
+                    <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Cantidad de compras individuales</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="CantComprI">
+                        </div>
+                    </div>
+                    <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Precio final lider</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PrecioFinLider">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Precio final participante</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PrecioFinPart">
+                        </div>
+                    </div>
+                    <div class="row br">
+                        <div class="col-sm-12">
+                            <label class="col-sm-2 Llave">Descuentos adicionales</label>
+                            <button class="bot col-sm-1 SinEstilo">
+                                <img src="../../../../../assets/ImagenesAgroApoya2Admin/lupa.png" alt="Agregar descuento adicional">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center br">
+                        <div class="col-sm-2 ">
+                            <button class="btn btn-agro-prin col-sm-12" (click)="GuardaGrupal(ModalRespuesta)">Guardar</button>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+    </div>
+    <div class="row br" *ngIf="MuestraVigencial=='1'">
+        <div class="col-sm-12">
+            <label class="col-sm-12 Llave mb-1">Definición vigencia oferta</label>
+        </div>
+    </div>
+    <div class="row br" *ngIf="MuestraVigencial=='1'">
+        <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+            <ngb-panel title="Definición vigencia oferta" id="config-panel-three">
+                <ng-template ngbPanelContent>
+                    <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Vigencia desde</label>
+                            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VigenDesde">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Vigencia hasta</label>
+                            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VigenHasta">
+                        </div>
+                    </div>
+                    <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Hora inicio oferta</label>
+                            <input type="time" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="HoraIni">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Hora fin oferta</label>
+                            <input type="time" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="HoraFin">
+                        </div>
+                    </div>
+                    <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Fecha entrega</label>
+                            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="FechaEntrega">
+                        </div>
+                    </div>
+                    <div class="row br">
+                        <div class="col-sm-12">
+                            <label class="col-sm-12 Llave">Observaciones</label>
+                            <textarea class="col-sm-12 form-control mt-1 textArea" cols="30" rows="3" [(ngModel)]="Observaciones"></textarea>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center br">
+                        <div class="col-sm-2 ">
+                            <button class="btn btn-agro-prin col-sm-12" (click)="GuardaVigencia(ModalRespuesta)">Guardar</button>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+    </div>
+    <div class="row justify-content-center br">
+        <div class="col-sm-2 ">
+            <button class="btn btn-agro-prin col-sm-12">Publicar</button>
+        </div>
+    </div>
+    <ng-template #ModalRespuesta let-modal>
+        <div class="modal-header">
+            <h1>Respuesta</h1>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row br">
+                <div class="col-sm-12">
+                    <h2 class="TituloDetalle">{{Respuesta}}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+        </div>
+        <br>
+    </ng-template>
+</div>

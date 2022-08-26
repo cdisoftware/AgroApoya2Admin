@@ -101,7 +101,6 @@ body {
 }
 
 .SinEstilo {
-
     background: none;
     border: none;
     margin: none !important;
@@ -127,9 +126,15 @@ th {
     text-align: center;
 }
 
-.textBox{
-  border-top: solid 0.5px #f3f3f3;
-  border-radius: 1px;
-  height: 40px;
-  box-shadow: 0px 1px #adadad;
+.textBox {
+    border-top: solid 0.5px #f3f3f3;
+    border-radius: 1px;
+    height: 40px;
+    box-shadow: 0px 1px #adadad;
+}
+
+.textArea {
+    border-top: solid 0.5px #f3f3f3;
+    border-radius: 1px;
+    box-shadow: 0px 1px #adadad;
 }

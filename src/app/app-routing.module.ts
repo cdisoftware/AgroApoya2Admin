@@ -8,6 +8,7 @@ import { SectorizacionComponent } from './ofertas/components/valoraroferta/secto
 import { TransportistaComponent } from './ofertas/components/valoraroferta/transportista/transportista.component';
 import { LayoutprincipalComponent } from './shared/layoutprincipal/layoutprincipal.component';
 import { ConciliacionComponent} from './ofertas/components/valoraroferta/conciliacion/conciliacion.component'
+import { ValoracionComponent } from './ofertas/components/valoraroferta/valoracion/valoracion.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
       {
         path: 'transportista',
         component: TransportistaComponent
+      },
+      {
+        path: 'valoracion',
+        component: ValoracionComponent
       }
     ]
   },
