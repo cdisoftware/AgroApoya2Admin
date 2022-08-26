@@ -17,6 +17,8 @@ import { TransportistaComponent } from './ofertas/components/valoraroferta/trans
 import { ConciliacionComponent } from './ofertas/components/valoraroferta/conciliacion/conciliacion.component';
 import { ValoracionComponent} from './ofertas/components/valoraroferta/valoracion/valoracion.component';
 import { CookieService } from 'ngx-cookie-service';
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 
 @NgModule({
   declarations: [
@@ -38,10 +40,11 @@ import { CookieService } from 'ngx-cookie-service';
     CommonModule,
     NgbModule,
     AutocompleteLibModule,
-    SidebarModule.forRoot()
+    SidebarModule.forRoot(),
+    ModalModule.forRoot() 
   ],
   providers: [
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
+     { provide: LocationStrategy, useClass: HashLocationStrategy },
     CookieService
   ],
   bootstrap: [AppComponent]
