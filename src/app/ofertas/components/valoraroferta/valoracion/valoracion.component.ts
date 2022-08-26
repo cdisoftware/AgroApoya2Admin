@@ -87,13 +87,24 @@ export class ValoracionComponent implements OnInit {
         name: 'Porcentaje'
       }
     ]
+    this.MuestraVigencial='0';
+    this.MuestraGrupal='0';
+    this.MuestraIndividual='0';
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');
     this.ConsultaDetalleOferta();
     this.ConsultaValoracionOferta();
   }
+
+  ConsultaDetalleOferta() {
+    this.serviciosvaloracion.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
+      this.DataOferta = ResultConsu;
+    })
+  }
+
   ConsultaValoracionOferta() {
     this.serviciosvaloracion.ConsultaValoracionOferta('1', this.SessionOferta).subscribe(ResultCons => {
+      console.log(ResultCons)
       this.ArrayTipoOferCon = [
         {
           id: ResultCons[0].TPO_OFRTA,
@@ -147,18 +158,12 @@ export class ValoracionComponent implements OnInit {
       this.HoraIni = ResultCons[0].hora_desde;
       this.HoraFin = ResultCons[0].hora_hasta;
       this.FechaEntrega = ResultCons[0].fcha_vgncia;
-      this.Observaciones = ResultCons[0].observaciones;
-      console.log(ResultCons)
-    })
-  }
-
-  ConsultaDetalleOferta() {
-    this.serviciosvaloracion.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
-      this.DataOferta = ResultConsu;
+      this.Observaciones = ResultCons[0].observaciones;      
     })
   }
 
   selectTipOferta(item: any) {
+    console.log(item)
     this.SessionTipoOferta = item.id;
     this.MuestraVigencial = '1';
     if (item.id == 1) {
@@ -169,9 +174,14 @@ export class ValoracionComponent implements OnInit {
       this.MuestraIndividual = '0';
       this.MuestraGrupal = '1';
     }
-    else {
+    else if(item.id == 3){
       this.MuestraIndividual = '1';
       this.MuestraGrupal = '1';
+    }
+    else {
+      this.MuestraVigencial = '0';
+      this.MuestraIndividual = '0';
+      this.MuestraGrupal = '0';
     }
   }
 
