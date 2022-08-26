@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MetodosglobalesService } from './../../../../core/metodosglobales.service'
 import { ValorarofertaService } from './../../../../core/valoraroferta.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'app-buscaroferta',
@@ -39,7 +41,7 @@ export class BuscarofertaComponent implements OnInit {
   ValorTotal: string = '';
   IdOferta: string = '';
   mcObservacion: string = '';
-  IdUsuario: string = '495';
+  IdUsuario: string = '';
   ArrayBusqueda: any = [];
   ImagenOferta: string = ''
   //Editar Oferta
@@ -54,12 +56,18 @@ export class BuscarofertaComponent implements OnInit {
     private SeriviciosGenerales: MetodosglobalesService,
     private ServiciosValorar: ValorarofertaService,
     private modalService: NgbModal,
-    public rutas: Router
+    public rutas: Router,
+    public cookies: CookieService
   ) { }
 
 
   ngOnInit(): void {
-    this.CargaObjetosIniciales();
+    this.IdUsuario = this.cookies.get('IDU');
+    if(this.IdUsuario == ''){
+      this.rutas.navigateByUrl('');
+    }else{
+      this.CargaObjetosIniciales();
+    }
   }
 
   CargaObjetosIniciales() {
@@ -86,7 +94,7 @@ export class BuscarofertaComponent implements OnInit {
   }
 
   Buscar(modalBuscar: any) {
-    this.modalService.open(modalBuscar, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    this.modalService.open(modalBuscar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
     const datosbusqueda = {
       UsuCodig: 0,
       Producto: 0,
@@ -188,6 +196,7 @@ export class BuscarofertaComponent implements OnInit {
     })
     this.modalService.dismissAll();
     this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    
   }
 
   CargaBusqueda(seleccion: any) {

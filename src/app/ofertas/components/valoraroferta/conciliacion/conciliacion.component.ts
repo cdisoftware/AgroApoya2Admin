@@ -27,7 +27,7 @@ export class ConciliacionComponent implements OnInit {
   ValorTotal: string = '';
   IdOferta: string = '0';
   mcObservacion: string = '';
-  IdUsuario: string = '495';
+  IdUsuario: string = '';
   ArrayOferta: any = [];
   ImagenOferta: string = '';
   ArrayJornada: any = [];
@@ -63,11 +63,18 @@ export class ConciliacionComponent implements OnInit {
     this.ValidaSiguiente = '0';
     this.IdProducto = this.cookies.get('IDP');
     this.IdOferta = this.cookies.get('IDO');
-    if (this.IdOferta == '0' || this.IdOferta == '') {
-      this.rutas.navigateByUrl('/home/buscaroferta')
+    this.IdUsuario = this.cookies.get('IDU');
+    if (this.IdUsuario == '') {
+      this.rutas.navigateByUrl('');
     } else {
-      this.CargaObjetosIniciales();
+      if (this.IdOferta == '0' || this.IdOferta == '') {
+        this.rutas.navigateByUrl('/home/buscaroferta')
+      } else {
+        this.CargaObjetosIniciales();
+      }
     }
+
+
 
   }
 
@@ -218,7 +225,7 @@ export class ConciliacionComponent implements OnInit {
     const datosaprueba = {
       usucodig: this.IdUsuario,
       cnctivoOferta: this.IdOferta,
-      descripcion: this.mcObservacion,
+      descripcion: this.maObservacion,
       estado: 5
     }
     this.modalService.dismissAll();
@@ -228,6 +235,7 @@ export class ConciliacionComponent implements OnInit {
       CD_DPTO: "261",
       CD_MNCPIO: this.IdACiudad
     }
+    console.log(datosaprueba)
     this.ServiciosValorar.ModificaEstadoOferta('3', datosaprueba).subscribe(Resultado => {
       this.Respuesta = Resultado.toString()
     })
@@ -249,7 +257,7 @@ export class ConciliacionComponent implements OnInit {
     this.Respuesta = 'No esta disponible en este momento'
     this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
   }
-  Atras(){
+  Atras() {
     this.rutas.navigateByUrl('/home/buscaroferta');
     this.cookies.delete('IDO');
     this.cookies.delete('IDP');

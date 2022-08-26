@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Component({
@@ -9,11 +10,16 @@ import { Router } from '@angular/router'
 })
 export class MenuComponent implements OnInit {
 
-  constructor(public rutas: Router,) {
+  IdUsuario: string = '';
+  constructor(public rutas: Router, public cookies: CookieService) {
 
   }
 
   ngOnInit(): void {
+    this.IdUsuario = this.cookies.get('IDU');
+    if(this.IdUsuario == ''){
+      this.rutas.navigateByUrl('');
+    }
   }
   Home() {
     this.rutas.navigateByUrl('/home');
@@ -28,6 +34,7 @@ export class MenuComponent implements OnInit {
   }
 
   CerrarSession() {
+    this.cookies.deleteAll();
     this.rutas.navigateByUrl('');
   }
 
