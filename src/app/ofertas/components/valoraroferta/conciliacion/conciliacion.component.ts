@@ -25,7 +25,7 @@ export class ConciliacionComponent implements OnInit {
   Jornada: string = '';
   Direccion: string = '';
   ValorTotal: string = '';
-  IdOferta: string = '1006';
+  IdOferta: string = '0';
   mcObservacion: string = '';
   IdUsuario: string = '495';
   ArrayOferta: any = [];
@@ -63,7 +63,12 @@ export class ConciliacionComponent implements OnInit {
     this.ValidaSiguiente = '0';
     this.IdProducto = this.cookies.get('IDP');
     this.IdOferta = this.cookies.get('IDO');
-    this.CargaObjetosIniciales();
+    if (this.IdOferta == '0' || this.IdOferta == '') {
+      this.rutas.navigateByUrl('/home/buscaroferta')
+    } else {
+      this.CargaObjetosIniciales();
+    }
+
   }
 
   CargaObjetosIniciales() {
@@ -124,7 +129,7 @@ export class ConciliacionComponent implements OnInit {
     this.EFechaRecogida = this.FechaRecogida;
     this.EDescripcion = this.Descripcion;
     this.EObservacion = ''
-    this.IdEJornada = this.IdEJornada;
+    this.IdEJornada = this.Jornada;
     this.ServiciosValorar.ConsultaJornada('1').subscribe(Resultado => {
       this.ArrayJornada = Resultado;
       console.log(Resultado)
@@ -239,8 +244,15 @@ export class ConciliacionComponent implements OnInit {
     this.IdACiudad = ciudad;
   }
 
-  EnviarPropuesta() {
+  EnviarPropuesta(ModalRespuesta: any) {
     //enviar propuesta a campesino por sms pendiente servicio
+    this.Respuesta = 'No esta disponible en este momento'
+    this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+  }
+  Atras(){
+    this.rutas.navigateByUrl('/home/buscaroferta');
+    this.cookies.delete('IDO');
+    this.cookies.delete('IDP');
   }
 
 }

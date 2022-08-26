@@ -47,7 +47,8 @@ export class BuscarofertaComponent implements OnInit {
   EFechaRecogida: string = '';
   EJornada: string = '0';
   ArrayJornada: any = [];
-  
+  Respuesta: string = '';
+
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -85,8 +86,7 @@ export class BuscarofertaComponent implements OnInit {
   }
 
   Buscar(modalBuscar: any) {
-    console.log(this.IdProducto + '/' + this.IdProductor + '/' + this.IdEstado + '/' + this.FechaOferta)
-    this.modalService.open(modalBuscar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
+    this.modalService.open(modalBuscar, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     const datosbusqueda = {
       UsuCodig: 0,
       Producto: 0,
@@ -101,10 +101,14 @@ export class BuscarofertaComponent implements OnInit {
       CD_RGION: 0,
       CD_MNCPIO: 0
     }
-    console.log(datosbusqueda);
+    //console.log(datosbusqueda);
     this.ServiciosValorar.BusquedaOferta('1', '0', this.IdProducto, this.IdProductor, datosbusqueda).subscribe(Resultado => {
-      console.log(Resultado);
       this.ArrayBusqueda = Resultado;
+      if (Resultado.length > 0) {
+        this.Respuesta = '';
+      } else {
+        this.Respuesta = 'No hay resultados.'
+      }
     })
 
 
@@ -141,7 +145,7 @@ export class BuscarofertaComponent implements OnInit {
     this.modalService.open(modalCerrar, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
   }
 
-  AceptaCerrar() {
+  AceptaCerrar(modalRespuesta: any) {
     const datosCerrar = {
       usucodig: this.IdUsuario,
       cnctivoOferta: this.IdOferta,
@@ -149,12 +153,14 @@ export class BuscarofertaComponent implements OnInit {
       estado: 6
     }
     this.ServiciosValorar.ModificaEstadoOferta('3', datosCerrar).subscribe(Resultado => {
-      console.log(Resultado);
-      this.modalService.dismissAll();
+      console.log(Resultado)
+      this.Respuesta = Resultado.toString();
     })
+    this.modalService.dismissAll();
+    this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
   }
 
-  AceptaEditar() {
+  AceptaEditar(modalRespuesta: any) {
     const DatosEditar = {
       CD_PRDCTO: this.IdProducto,
       UND_EMPQUE: "0",
@@ -178,7 +184,10 @@ export class BuscarofertaComponent implements OnInit {
     }
     this.ServiciosValorar.EditarOfertaBusqueda('4', '0', DatosEditar).subscribe(Resultado => {
       console.log(Resultado)
+      this.Respuesta = Resultado.toString()
     })
+    this.modalService.dismissAll();
+    this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
   }
 
   CargaBusqueda(seleccion: any) {
@@ -211,5 +220,23 @@ export class BuscarofertaComponent implements OnInit {
 
   Enviar() {
     this.rutas.navigateByUrl('home/conciliacion');
+  }
+
+  LimpiarCampos(campo: string) {
+    if (campo == 'pd') {
+      this.IdProducto = '0';
+      alert(this.IdProducto)
+    }
+    if(campo == 'pt'){
+      this.IdProductor = '0'
+    }
+    if(campo == 'es'){
+      this.IdEstado = '1';
+    }
+    if(campo == 'fe'){
+      
+      this.FechaOferta = ''
+      alert(this.FechaOferta)
+    }
   }
 }

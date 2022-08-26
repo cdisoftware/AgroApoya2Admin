@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-sm-4 br">
                 <ng-autocomplete [data]="ArrayProductos" [searchKeyword]="producto" placeholder="Producto"
-                    (selected)='selectProducto($event)' [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio">
+                    (selected)='selectProducto($event)' (inputCleared)="LimpiarCampos('pd')" [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio">
                 </ng-autocomplete>
 
                 <ng-template #templateRes let-item id="templateRes">
@@ -23,7 +23,7 @@
 
             <div class="col-sm-4 br">
                 <ng-autocomplete [data]="ArrayProductor" [searchKeyword]="productor" placeholder="Productor"
-                    (selected)='selectProductor($event)' [itemTemplate]="templateResPr"
+                    (selected)='selectProductor($event)' (inputCleared)="LimpiarCampos('pt')" [itemTemplate]="templateResPr"
                     [notFoundTemplate]="templateVacioPr">
                 </ng-autocomplete>
 
@@ -37,7 +37,7 @@
             </div>
             <div class="col-sm-4 br">
                 <ng-autocomplete [data]="ArrayEstado" [searchKeyword]="estado" placeholder="Estado"
-                    (selected)='selectEstado($event)' [itemTemplate]="templateResEs"
+                    (selected)='selectEstado($event)' (inputCleared)="LimpiarCampos('es')" [itemTemplate]="templateResEs"
                     [notFoundTemplate]="templateVacioPr">
                 </ng-autocomplete>
 
@@ -54,7 +54,7 @@
         <div class="row br">
             <div class="col-sm-4 br">
                 <input placeholder="Fecha oferta" type="text" class="form-control form-control-sm textBox"
-                    onfocus="(this.type='date')" onblur="(this.type='date')" [(ngModel)]="FechaOferta"
+                    onfocus="(this.type='date')" onblur="(this.type='date')"  [(ngModel)]="FechaOferta"
                     name="FechaOferta">
             </div>
         </div>
@@ -71,7 +71,7 @@
             <div class="col-sm-11 tarjetadetalle">
                 <div class="row">
                     <div class="col-sm-3" style="padding-top: 5%;">
-                        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/papapastusa.png" class="col-sm-12">
+                        <img src="{{ImagenOferta}}" class="col-sm-12">
                     </div>
                     <div class="col-sm-9">
                         <br>
@@ -238,7 +238,7 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptaEditar()">Guardar</button>
+            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptaEditar(ModalRespuesta)">Guardar</button>
         </div>
         <br>
     </ng-template>
@@ -256,7 +256,7 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptaCerrar()">Guardar</button>
+            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptaCerrar(ModalRespuesta)">Guardar</button>
         </div>
         <br>
     </ng-template>
@@ -281,6 +281,33 @@
                     </div>
                 </li>
             </ul>
+            <div class="row br">
+                <div class="col-sm-12">
+                    <h2 class="TituloDetalle">{{Respuesta}}</h2>
+                </div>
+            </div>
+            <br>
+            <div class="row justify-content-center">
+                <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+            </div>
+            <br>
         </div>
+    </ng-template>
+    <ng-template #ModalRespuesta let-modal>
+        <div class="modal-header">
+            <h1>Respuesta</h1>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row br">
+                <div class="col-sm-12">
+                    <h2 class="TituloDetalle">{{Respuesta}}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+        </div>
+        <br>
     </ng-template>
 </form>
