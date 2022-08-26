@@ -56,7 +56,7 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'cconductorofertamod/' + bandera, Body)
   }
 
-  CerrarOferta(bandera: string, datos: any) {
+  ModificaEstadoOferta(bandera: string, datos: any) {
     return this.http.post<any[]>(this.url_servidor + 'aestadofertamod/' + bandera, datos)
   }
 
@@ -86,6 +86,18 @@ export class ValorarofertaService {
 
   ConsultaValoracionOferta(BANDERA:string, CD_CNSCTVO:string){
     return this.http.get<any[]>(this.url_servidor+'conscvaloracionoferta/'+BANDERA+'/'+CD_CNSCTVO)
+
+  ConsultaCiudades(Bandera: string){
+    return this.http.get<any[]>(this.url_servidor + 'consciudadesactivs/' + Bandera)
+  }
+
+  InsertaCiudadOferta(Bandera: string, Datos: any){
+    return this.http.post<any[]>(this.url_servidor + 'ciudadofertamod/' + Bandera, Datos)
+  }
+
+  ConsultaUltimasOfertas(Bandera: string, idoferta: string, idproducto: string, idproductor: string, Datos: any){
+    return this.http.post<any[]>(this.url_servidor + 'consaofertas/' + Bandera + '/' + idoferta + '/' + idproducto + '/' + idproductor, Datos)
+
   }
 
 }

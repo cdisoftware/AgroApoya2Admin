@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {Router } from '@angular/router'
+import { Router } from '@angular/router'
+
 
 @Component({
   selector: 'app-menu',
@@ -8,23 +9,27 @@ import {Router } from '@angular/router'
 })
 export class MenuComponent implements OnInit {
 
-  constructor(public rutas: Router) { }
+  constructor(public rutas: Router,) {
+
+  }
 
   ngOnInit(): void {
   }
+  Home() {
+    this.rutas.navigateByUrl('/home');
+  }
 
-  CrearOferta(){
+  CrearOferta() {
     this.rutas.navigateByUrl('/home/crearoferta');
   }
 
-  ValorarOferta(){
+  ValorarOferta() {
     this.rutas.navigateByUrl('/home/buscaroferta');
   }
 
-  CerrarSession(){
+  CerrarSession() {
     this.rutas.navigateByUrl('');
   }
-active(){
-  var boton = document.createElement("active")
-}
+
+
 }
