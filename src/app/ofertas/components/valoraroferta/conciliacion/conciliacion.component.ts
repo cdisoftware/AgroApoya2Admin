@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MetodosglobalesService } from './../../../../core/metodosglobales.service'
 import { ValorarofertaService } from './../../../../core/valoraroferta.service'
+import { CrearofertaService } from './../../../../core/crearoferta.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-conciliacion',
@@ -23,60 +25,62 @@ export class ConciliacionComponent implements OnInit {
   Jornada: string = '';
   Direccion: string = '';
   ValorTotal: string = '';
-  IdOferta: string = '1006';
+  IdOferta: string = '0';
   mcObservacion: string = '';
   IdUsuario: string = '495';
   ArrayOferta: any = [];
   ImagenOferta: string = '';
   ArrayJornada: any = [];
-  ValidaSiguiente: string = '0'
+  ValidaSiguiente: string = '0';
+  IdACiudad: string = '0';
+  maObservacion: string = '';
+  ArrayCiudades: any = [];
+  IdEJornada: string = '0';
+  //Variables Editar Oferta
+  ECaracteriza: string = '';
+  IdEEmpaque: string = '0';
+  EVUnidad: string = '';
+  EUnidadesDis: string = '';
+  EFechaRecogida: string = '';
+  EDescripcion: string = '';
+  EObservacion: string = '';
+  ArrayUOfertas: any = [];
+  IdProducto: string = '0';
+  ArrayEmpaque: any = [];
+  Respuesta: string = '';
+
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
     private ServiciosValorar: ValorarofertaService,
+    private ServiciosCreaOferta: CrearofertaService,
     private modalService: NgbModal,
-    public rutas: Router
+    public rutas: Router,
+    private cookies: CookieService
   ) { }
 
   ngOnInit(): void {
-    this.ConsultaOferta();
-  }
-
-  Enviar() {
-    this.rutas.navigateByUrl('/home/sectorizar')
-  }
-
-  EditaOferta(modalEditar: any) {
-    this.ServiciosValorar.ConsultaJornada('1').subscribe(Resultado => {
-      this.ArrayJornada = Resultado;
-    })
-    this.modalService.open(modalEditar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
-  }
-
-  DeclinarOferta(modalDeclinar: any) {
-    this.modalService.open(modalDeclinar, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-  }
-
-  SelEJornada(seleccion: string) {
+    this.ValidaSiguiente = '0';
+    this.IdProducto = this.cookies.get('IDP');
+    this.IdOferta = this.cookies.get('IDO');
+    if (this.IdOferta == '0' || this.IdOferta == '') {
+      this.rutas.navigateByUrl('/home/buscaroferta')
+    } else {
+      this.CargaObjetosIniciales();
+    }
 
   }
 
-  AceptarDeclinar() {
-    this.modalService.dismissAll();
-  }
-
-  AceptaEditar() {
-    this.modalService.dismissAll();
-  }
-
-  ConsultaOferta() {
+  CargaObjetosIniciales() {
+    //consulta y asigna variables de la oferta seleccionada
     this.ServiciosValorar.ConsultaOferta('1', this.IdOferta).subscribe(Resultado => {
       this.ArrayOferta = Resultado;
       console.log(Resultado)
+      this.IdProducto = Resultado[0].Producto;
       this.NombreProductor = Resultado[0].Nombre_productor;
       this.DesProducto = Resultado[0].Nombre_Producto;
-      this.Tamano = Resultado[0].Tamaño;
-      this.Presentacion = Resultado[0].Descripción_empaque;
+      this.Tamano = Resultado[0].Tamano;
+      this.Presentacion = Resultado[0].Descripcion_empaque;
       this.Descripcion = Resultado[0].caracteristicas;
       this.Caracterizacion = Resultado[0].caracterizacion;
       this.ValorUnidad = Resultado[0].VR_UNDAD_EMPQUE;
@@ -85,17 +89,170 @@ export class ConciliacionComponent implements OnInit {
       this.Jornada = Resultado[0].Nombre_jornada;
       this.Direccion = Resultado[0].coordenadas_parcela;
       this.ValorTotal = Resultado[0].VR_TOTAL_OFRTA;
+      this.IdEJornada = Resultado[0].jornada;
       this.ImagenOferta = this.SeriviciosGenerales.RecuperaRutaImagenes() + Resultado[0].IMAGEN;
+    })
+    //Consulta datos de las ultimas ofertas 
+    const DatosOfertas =
+    {
+      UsuCodig: 1,
+      Producto: 0,
+      NombreCompletoProductor: 0,
+      DescripcionProducto: 0,
+      Cd_cndcion: 0,
+      Cd_tmno: 0,
+      ID_EMPAQUE: 0,
+      VigenciaDesde: 0,
+      VigenciaHasta: 0,
+      IdEstado_Oferta: 0,
+      CD_RGION: 0,
+      CD_MNCPIO: 0
+    }
+    this.ServiciosValorar.ConsultaUltimasOfertas('1', '0', this.IdProducto, '0', DatosOfertas).subscribe(Resultado => {
+      this.ArrayUOfertas = Resultado;
+
+      console.log(this.ArrayUOfertas)
     })
   }
 
-  AprobarOferta(modalAprobar: any){
-    this.modalService.open(modalAprobar, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+  Enviar() {
+    //envia a la siguiente etapa de la valoracion
+    this.rutas.navigateByUrl('/home/sectorizar')
   }
 
-  AceptarAprobar(){
+  EditaOferta(modalEditar: any) {
+    //abre popup editar, carga campos oferta y ejecuta servicio para consulta de las jornadas
+    this.ECaracteriza = this.Caracterizacion;
+    this.IdEEmpaque = this.Presentacion;
+    this.EVUnidad = this.ValorUnidad;
+    this.EUnidadesDis = this.Unidades;
+    this.EFechaRecogida = this.FechaRecogida;
+    this.EDescripcion = this.Descripcion;
+    this.EObservacion = ''
+    this.IdEJornada = this.Jornada;
+    this.ServiciosValorar.ConsultaJornada('1').subscribe(Resultado => {
+      this.ArrayJornada = Resultado;
+      console.log(Resultado)
+    })
+    this.ServiciosCreaOferta.ConsultaEmpaque(this.IdProducto).subscribe(Resultado => {
+      this.ArrayEmpaque = Resultado;
+    })
+    this.modalService.open(modalEditar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+  }
+
+  DeclinarOferta(modalDeclinar: any) {
+    //abre modal declinar oferta
+    this.modalService.open(modalDeclinar, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+  }
+
+  SelEJornada(seleccion: string) {
+    //asocia jornada seleccionda para edicion de la oferta
+    this.IdEJornada = seleccion
+  }
+  SelEEmpaque(seleccion: string) {
+    this.IdEEmpaque = seleccion
+  }
+
+  AceptarDeclinar(modalRespuesta: any) {
+    //ejecuta servicio para declinar oferta
+    const datosdesclinar = {
+      usucodig: this.IdUsuario,
+      cnctivoOferta: this.IdOferta,
+      descripcion: this.mcObservacion,
+      estado: 7
+    }
+    this.ServiciosValorar.ModificaEstadoOferta('3', datosdesclinar).subscribe(Resultado => {
+      console.log(Resultado)
+      this.Respuesta = Resultado.toString();
+    })
     this.modalService.dismissAll();
+    this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    this.rutas.navigateByUrl('/home/buscaroferta')
+
+  }
+
+  AceptaEditar(modalRespuesta: any) {
+    //realiza update de campos editados de la oferta en popup
+    const datosUpdate = {
+      CD_PRDCTO: '0',
+      UND_EMPQUE: '0',
+      CD_CNDCION: '0',
+      CD_TMNO: '0',
+      DSCRPCION_PRDCTO: this.EDescripcion,
+      VR_UNDAD_EMPQUE: this.EVUnidad,
+      CD_UNDAD: this.EUnidadesDis,
+      VR_TOTAL_OFRTA: '0',
+      VGNCIA_DESDE: this.EFechaRecogida,
+      CD_JRNDA: this.IdEJornada,
+      CD_RGION: '0',
+      CD_MNCPIO: '0',
+      UBCCION_PRCLA: '0',
+      COORDENADAS_PRCLA: '0',
+      USUCODIG: '0',
+      ID_PRODUCTOR: '0',
+      CD_CNSCTVO: this.IdOferta,
+      CRCTRZCION: this.ECaracteriza,
+      OBS_EDICION: this.EObservacion
+    }
+    console.log(datosUpdate)
+    this.ServiciosValorar.EditarOfertaBusqueda('5', this.IdEEmpaque, datosUpdate).subscribe(Resultado => {
+      this.CargaObjetosIniciales();
+      this.Respuesta = Resultado.toString();
+    })
+    this.modalService.dismissAll();
+    this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+  }
+
+
+  AprobarOferta(modalAprobar: any) {
+    //Abre popup de aprobar oferta y ejecuta servicio de consulta ciudades
+    this.ServiciosValorar.ConsultaCiudades('1').subscribe(Resultado => {
+      this.ArrayCiudades = Resultado;
+    })
+    this.modalService.open(modalAprobar, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+
+  }
+
+  AceptarAprobar(ModalRespuesta: any) {
+    //inserta oferta aprueba y actualiza o inserta ciudad aplica oferta
+    const datosaprueba = {
+      usucodig: this.IdUsuario,
+      cnctivoOferta: this.IdOferta,
+      descripcion: this.mcObservacion,
+      estado: 5
+    }
+    this.modalService.dismissAll();
+    const datosciudad = {
+      CD_CNSCTVO: this.IdOferta,
+      CD_PAIS: "6",
+      CD_DPTO: "261",
+      CD_MNCPIO: this.IdACiudad
+    }
+    this.ServiciosValorar.ModificaEstadoOferta('3', datosaprueba).subscribe(Resultado => {
+      this.Respuesta = Resultado.toString()
+    })
+    this.ServiciosValorar.InsertaCiudadOferta('3', datosciudad).subscribe(Resultado => {
+      console.log(Resultado)
+    })
+    this.modalService.dismissAll();
+    this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     this.ValidaSiguiente = '1';
+  }
+
+  SelACiudad(ciudad: string) {
+    //Captura ciudad seleccionada
+    this.IdACiudad = ciudad;
+  }
+
+  EnviarPropuesta(ModalRespuesta: any) {
+    //enviar propuesta a campesino por sms pendiente servicio
+    this.Respuesta = 'No esta disponible en este momento'
+    this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+  }
+  Atras(){
+    this.rutas.navigateByUrl('/home/buscaroferta');
+    this.cookies.delete('IDO');
+    this.cookies.delete('IDP');
   }
 
 }
