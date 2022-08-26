@@ -17,19 +17,19 @@ import { TransportistaComponent } from './ofertas/components/valoraroferta/trans
 import { ConciliacionComponent } from './ofertas/components/valoraroferta/conciliacion/conciliacion.component';
 import { ValoracionComponent} from './ofertas/components/valoraroferta/valoracion/valoracion.component';
 import { CookieService } from 'ngx-cookie-service';
-import { ModalModule } from 'ngx-bootstrap/modal';
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
     CrearofertaComponent,
-    LoginComponent,
     BuscarofertaComponent,
     SectorizacionComponent,
     TransportistaComponent,
     ConciliacionComponent,
-    ValoracionComponent
+    ValoracionComponent, 
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -40,8 +40,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     CommonModule,
     NgbModule,
     AutocompleteLibModule,
-    SidebarModule.forRoot(),
-    ModalModule.forRoot() 
+    SidebarModule.forRoot()
   ],
   providers: [
      { provide: LocationStrategy, useClass: HashLocationStrategy },

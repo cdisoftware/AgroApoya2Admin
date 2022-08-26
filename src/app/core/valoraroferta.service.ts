@@ -86,6 +86,7 @@ export class ValorarofertaService {
 
   ConsultaValoracionOferta(BANDERA:string, CD_CNSCTVO:string){
     return this.http.get<any[]>(this.url_servidor+'conscvaloracionoferta/'+BANDERA+'/'+CD_CNSCTVO)
+  }
 
   ConsultaCiudades(Bandera: string){
     return this.http.get<any[]>(this.url_servidor + 'consciudadesactivs/' + Bandera)

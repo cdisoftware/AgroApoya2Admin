@@ -4,8 +4,6 @@ import { LoginService } from './../../../core/login.service';
 import { MetodosglobalesService } from './../../../core/metodosglobales.service';
 import { EncryptionService } from './encryption.service';
 import { CookieService } from 'ngx-cookie-service';
-import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -18,7 +16,6 @@ export class LoginComponent implements OnInit {
   IdUsuario: string = '12';
   loading = false;
 
-  modalMensaje: BsModalRef;
   lblModalMsaje: string = '';
 
 
@@ -27,8 +24,7 @@ export class LoginComponent implements OnInit {
     private servicioslogin: LoginService,
     private ServiciosGlobales: MetodosglobalesService,
     private encryption: EncryptionService,
-    private cookies: CookieService,
-    private modalService: BsModalService) { }
+    private cookies: CookieService) { }
 
   ngOnInit(): void {
     this.desencrip();
@@ -54,13 +50,13 @@ export class LoginComponent implements OnInit {
 
         } else {
           //modal usuario no existe
-          this.modalMensaje = this.modalService.show(templateMensaje);
+          //this.modalMensaje = this.modalService.show(templateMensaje);
           this.lblModalMsaje = 'No pudimos traer tu información, por favor valide las credenciales que ingreso.';
         }
 
       })
     }else{
-      this.modalMensaje = this.modalService.show(templateMensaje);
+     // this.modalMensaje = this.modalService.show(templateMensaje);
       this.lblModalMsaje = "El campo usuario y contraseña son obligatorios";
     }
   }
