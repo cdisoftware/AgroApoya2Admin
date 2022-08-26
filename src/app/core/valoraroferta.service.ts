@@ -88,4 +88,8 @@ export class ValorarofertaService {
     return this.http.get<any[]>(this.url_servidor+'conscvaloracionoferta/'+BANDERA+'/'+CD_CNSCTVO)
   }
 
+  PublicarOferta(Bandera:string, Body: any){
+    return this.http.post<any>(this.url_servidor+'aestadofertamod/'+Bandera, Body)
+  }
+
 }

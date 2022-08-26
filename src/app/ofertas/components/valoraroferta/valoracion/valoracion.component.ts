@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbAccordionConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { CookieService } from 'ngx-cookie-service';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 
 @Component({
@@ -8,7 +9,7 @@ import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
   styleUrls: ['./valoracion.component.css']
 })
 export class ValoracionComponent implements OnInit {
-  SessionOferta: string = '';
+  SessionOferta: any;
   DataOferta: any[] = [];
   keyword: string = '';
   DataTipoOferta: any[] = []
@@ -50,10 +51,13 @@ export class ValoracionComponent implements OnInit {
   PrecioFinPart: any;
   TipoOferta: any;
   ArrayTipoOferCon: any = [];
+  ArrayTipoComICon: any = [];
+  ArrayTipoComGCon: any = [];
+  SessionIdUsuario: any;
 
 
 
-  constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal) {
+  constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies : CookieService) {
     ConfigAcord.closeOthers = true;
   }
 
@@ -76,25 +80,74 @@ export class ValoracionComponent implements OnInit {
     this.DataTipoComisiono = [
       {
         id: 1,
-        name: 'Fija'
+        name: 'Valor Fijo'
       },
       {
         id: 2,
         name: 'Porcentaje'
       }
     ]
-    this.SessionOferta = '1011';    
+    this.SessionOferta = this.cookies.get('IDO');
+    this.SessionIdUsuario = this.cookies.get('IDU');
     this.ConsultaDetalleOferta();
-    this.ConsultaValoracionOferta();    
+    this.ConsultaValoracionOferta();
   }
   ConsultaValoracionOferta() {
-    this.serviciosvaloracion.ConsultaValoracionOferta('1', this.SessionOferta).subscribe(ResultCons => {      
+    this.serviciosvaloracion.ConsultaValoracionOferta('1', this.SessionOferta).subscribe(ResultCons => {
       this.ArrayTipoOferCon = [
         {
           id: ResultCons[0].TPO_OFRTA,
           name: ResultCons[0].Dscpcion_tpo_ofrta
         }
       ]
+      this.ArrayTipoComICon = [
+        {
+          id: ResultCons[0].tpo_cmsion_indvdual,
+          name: ResultCons[0].Nom_tpo_cmsion_indvdual
+        }
+      ]
+      this.ArrayTipoComGCon = [
+        {
+          id: ResultCons[0].tpo_cmsion_grpal,
+          name: ResultCons[0].Nom_tpo_cmsion_grpal
+        }
+      ]
+      if (ResultCons[0].TPO_OFRTA == '1') {
+        if (ResultCons[0].tpo_cmsion_indvdual == '1') {
+          this.VlrComFijaI = ResultCons[0].vlor_cmsion_indvdual;
+        }
+        else {
+          this.VlrComPorI = ResultCons[0].vlor_cmsion_indvdual;
+        }
+        this.MinUnidI = ResultCons[0].mnmo_unddes_indvdual;
+        this.MaxUnidI = ResultCons[0].mxmo_unddes_indvdual;
+        this.VlrDomiI = ResultCons[0].vlor_dmnclio_indvdual;
+        this.PreFinI = ResultCons[0].vlor_fnal_indvdual;
+      }
+      else if (ResultCons[0].TPO_OFRTA == '2') {
+        if (ResultCons[0].tpo_cmsion_grpal == '1') {
+          this.VlrComFijaG = ResultCons[0].vlor_cmsion_grpal;
+        }
+        else {
+          this.VlrComPorG = ResultCons[0].vlor_cmsion_grpal;
+        }
+        this.MinUnidLider = ResultCons[0].mnmo_unddes_lider;
+        this.MinUnidPart = ResultCons[0].mnmo_unddes_prcpnte
+        this.MaxUnidPart = ResultCons[0].mxmo_unddes_prcpnte;
+        this.VlrDomiG = ResultCons[0].vlor_dmnclio_grpal;
+        this.PorcDescLider = ResultCons[0].prcntje_dcto_lider;
+        this.CantGrupos = ResultCons[0].cntdad_grpos;
+        this.UnidXGrupos = ResultCons[0].unddes_xgrpo;
+        this.CantComprI = ResultCons[0].cntdad_cmpras_indvdles;
+        this.PrecioFinLider = ResultCons[0].vlor_fnal_lider;
+        this.PrecioFinPart = ResultCons[0].vlor_fnal_prtcpnte;
+      }
+      this.VigenDesde = ResultCons[0].vgncia_desde;
+      this.VigenHasta = ResultCons[0].vgncia_hasta;
+      this.HoraIni = ResultCons[0].hora_desde;
+      this.HoraFin = ResultCons[0].hora_hasta;
+      this.FechaEntrega = ResultCons[0].fcha_vgncia;
+      this.Observaciones = ResultCons[0].observaciones;
       console.log(ResultCons)
     })
   }
@@ -123,8 +176,9 @@ export class ValoracionComponent implements OnInit {
   }
 
   selectTipComiI(item: any) {
+    console.log(item)
     this.SessionTipoComI = item.id;
-    if (item.id == 1) {
+    if (item.name == 'Valor Fijo') {
       this.MuestraFijo = '1';
       this.MuestraPorcentaje = '0';
     }
@@ -158,12 +212,20 @@ export class ValoracionComponent implements OnInit {
   }
 
   GuardaIndividual(templateMensaje: any) {
+    console.log(this.SessionTipoComI)
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    var validacomision = '';
+    if (this.SessionTipoComI == '1') {
+      validacomision = this.VlrComFijaI
+    }
+    else {
+      validacomision = this.VlrComPorI
+    }
     const Body = {
       CD_CNSCTVO: this.SessionOferta,
-      TPO_OFRTA: 1,
+      TPO_OFRTA: this.SessionTipoOferta,
       TPO_CMSION_INDVDUAL: Number(this.SessionTipoComI),
-      VLOR_CMSION_INDVDUAL: this.VlrComFijaI,
+      VLOR_CMSION_INDVDUAL: validacomision,
       MNMO_UNDDES_INDVDUAL: this.MinUnidI,
       MXMO_UNDDES_INDVDUAL: this.MaxUnidI,
       VLOR_DMNCLIO_INDVDUAL: this.VlrDomiI,
@@ -188,6 +250,7 @@ export class ValoracionComponent implements OnInit {
       FCHA_ENTRGA: "",
       OBSERVACIONES: ""
     }
+    console.log(Body)
     this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
       var arreglores = ResultUpdate.split('|')
       this.Respuesta = arreglores[1];
@@ -263,6 +326,21 @@ export class ValoracionComponent implements OnInit {
       OBSERVACIONES: this.Observaciones
     }
     this.serviciosvaloracion.ActualizarOfertaValoracion('4', Body).subscribe(ResultUpdate => {
+      var arreglores = ResultUpdate.split('|')
+      this.Respuesta = arreglores[1];
+    })
+  }
+
+  PublicarOferta(templateMensaje: any) {
+    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })    
+    const BodyUpdate = {
+      usucodig: this.SessionIdUsuario,
+      cnctivoOferta: this.SessionOferta,
+      descripcion: "Publicacion oferta",
+      estado: 8
+    }    
+    this.serviciosvaloracion.PublicarOferta('3', BodyUpdate).subscribe(ResultUpdate => {
+      console.log(ResultUpdate)
       var arreglores = ResultUpdate.split('|')
       this.Respuesta = arreglores[1];
     })

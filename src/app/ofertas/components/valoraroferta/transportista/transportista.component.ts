@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-transportista',
@@ -25,8 +26,9 @@ export class TransportistaComponent implements OnInit {
   DataTransOferta: any[] = [];
   ValidaConsulta: string = '';
   txtValidaCons: string = '';
+  SessionIdUsuario: any;
 
-  constructor(public sectoresservices: ValorarofertaService, private modalService: NgbModal, private rutas:Router) { }
+  constructor(public sectoresservices: ValorarofertaService, private modalService: NgbModal, private rutas:Router, private cookies:CookieService) { }
 
   ngOnInit(): void {
     this.CodTransSelec = '';
@@ -36,7 +38,8 @@ export class TransportistaComponent implements OnInit {
     this.SectorSelec = '';
     this.SessionCDRegion = '0';
     this.SessionCDMunicipio = '0';
-    this.SessionOferta = '1011';
+    this.SessionOferta = this.cookies.get('IDO');
+    this.SessionIdUsuario = this.cookies.get('IDU');
     this.ConsultaCiudadOferta();
     this.ConsultaCondOferta();
   }
