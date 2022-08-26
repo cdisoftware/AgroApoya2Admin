@@ -124,7 +124,8 @@
     <div class="row br">
         <div class="col-sm-12">
             <label class="col-sm-12 Llave mb-1">Definición tipo oferta</label>
-            <ng-autocomplete [data]="DataTipoOferta" [searchKeyword]="keyword" (selected)='selectTipOferta($event)' (inputCleared)='LimpiaTipoOferta($event)' placeholder="Individual, Grupal o Mixta" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio">
+            <ng-autocomplete [data]="DataTipoOferta" [searchKeyword]="keyword" [initialValue]="ArrayTipoOferCon[0]" (selected)='selectTipOferta($event)' (inputCleared)='LimpiaTipoOferta($event)' placeholder="Individual, Grupal o Mixta" [itemTemplate]="templateSec"
+                [notFoundTemplate]="templateVacio">
             </ng-autocomplete>
             <ng-template #templateSec let-item>
                 <a [innerHTML]="item.name"></a>
@@ -141,8 +142,7 @@
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave mb-1">Tipo comisión</label>
-                            <ng-autocomplete [data]="DataTipoComisiono" [searchKeyword]="keyword" (inputCleared)='LimpiaTipoComision($event)' [initialValue]="DataTipoComisiono[0]" (selected)='selectTipComiI($event)' placeholder="Fija o por Porcentaje" [itemTemplate]="templateSec"
-                                [notFoundTemplate]="templateVacio">
+                            <ng-autocomplete [data]="DataTipoComisiono" [searchKeyword]="keyword" (inputCleared)='LimpiaTipoComision($event)' (selected)='selectTipComiI($event)' placeholder="Fija o por Porcentaje" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio">
                             </ng-autocomplete>
                             <ng-template #templateSec let-item>
                                 <a [innerHTML]="item.name"></a>
@@ -153,7 +153,7 @@
                         </div>
                         <div class="col-sm-6" *ngIf="MuestraPorcentaje=='1'">
                             <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100" onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100" onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" [(ngModel)]="VlrComPorI">
                         </div>
                         <div class="col-sm-6" *ngIf="MuestraFijo=='1'">
                             <label class="col-sm-12 Llave">Valor comisión fija</label>
@@ -214,57 +214,67 @@
                         </div>
                         <div class="col-sm-6" *ngIf="MuestraPorcentaje=='1'">
                             <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100" onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100" onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" [(ngModel)]="VlrComPorG">
                         </div>
                         <div class="col-sm-6" *ngIf="MuestraFijo=='1'">
                             <label class="col-sm-12 Llave">Valor comisión fija</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrComFijaG">
                         </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Minimo unidades lider</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidLider">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Maximo unidades lider</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidLider">
+                        </div>
+                    </div>
+                    <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Minimo unidades participante</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidPart">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Maximo unidades participante</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidPart">
                         </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Valor domicilio</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiG">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Porcentaje descuento lider</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100" onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100" onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" [(ngModel)]="PorcDescLider">
                         </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Cantidad de grupos</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="CantGrupos">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Unidades por grupo</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidXGrupos">
                         </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Cantidad de compras individuales</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="CantComprI">
                         </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Precio final lider</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PrecioFinLider">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Precio final participante</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PrecioFinPart">
                         </div>
                     </div>
                     <div class="row br">
@@ -277,7 +287,7 @@
                     </div>
                     <div class="row justify-content-center br">
                         <div class="col-sm-2 ">
-                            <button class="btn btn-agro-prin col-sm-12" (click)="GuardaGrupal()">Guardar</button>
+                            <button class="btn btn-agro-prin col-sm-12" (click)="GuardaGrupal(ModalRespuesta)">Guardar</button>
                         </div>
                     </div>
                 </ng-template>
@@ -327,7 +337,7 @@
                     </div>
                     <div class="row justify-content-center br">
                         <div class="col-sm-2 ">
-                            <button class="btn btn-agro-prin col-sm-12" (click)="GuardaVigencia(modalRespuesta)">Guardar</button>
+                            <button class="btn btn-agro-prin col-sm-12" (click)="GuardaVigencia(ModalRespuesta)">Guardar</button>
                         </div>
                     </div>
                 </ng-template>

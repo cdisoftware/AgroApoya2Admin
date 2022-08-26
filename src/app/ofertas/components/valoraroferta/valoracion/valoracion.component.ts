@@ -18,13 +18,13 @@ export class ValoracionComponent implements OnInit {
   MuestraFijo: string = '';
   MuestraPorcentaje: string = '';
   MuestraVigencial: string = '';
-  VlrComFijaI: string ='';
+  VlrComFijaI: string = '';
   MinUnidI: any;
   MaxUnidI: any;
   PreFinI: any;
   VlrDomiI: any;
-  Respuesta : string ='';
-  modalRespuesta : NgbModalRef | undefined
+  Respuesta: string = '';
+  modalRespuesta: NgbModalRef | undefined
   SessionTipoOferta: any;
   SessionTipoComI: any;
   SessionTipoComG: any;
@@ -34,6 +34,22 @@ export class ValoracionComponent implements OnInit {
   HoraFin: any;
   FechaEntrega: any;
   Observaciones: any;
+  VlrComPorI: string = '';
+  VlrComPorG: string = '';
+  VlrComFijaG: any;
+  MinUnidLider: any;
+  MaxUnidLider: any;
+  PorcDescLider: any;
+  VlrDomiG: any;
+  CantGrupos: any;
+  UnidXGrupos: any;
+  MinUnidPart: any;
+  MaxUnidPart: any;
+  CantComprI: any;
+  PrecioFinLider: any;
+  PrecioFinPart: any;
+  TipoOferta: any;
+  ArrayTipoOferCon: any = [];
 
 
 
@@ -67,19 +83,30 @@ export class ValoracionComponent implements OnInit {
         name: 'Porcentaje'
       }
     ]
-    this.SessionOferta = '1011';
+    this.SessionOferta = '1011';    
     this.ConsultaDetalleOferta();
+    this.ConsultaValoracionOferta();    
+  }
+  ConsultaValoracionOferta() {
+    this.serviciosvaloracion.ConsultaValoracionOferta('1', this.SessionOferta).subscribe(ResultCons => {      
+      this.ArrayTipoOferCon = [
+        {
+          id: ResultCons[0].TPO_OFRTA,
+          name: ResultCons[0].Dscpcion_tpo_ofrta
+        }
+      ]
+      console.log(ResultCons)
+    })
   }
 
   ConsultaDetalleOferta() {
     this.serviciosvaloracion.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
       this.DataOferta = ResultConsu;
-      console.log(ResultConsu)
     })
   }
 
   selectTipOferta(item: any) {
-    this.SessionTipoOferta=item.id;
+    this.SessionTipoOferta = item.id;
     this.MuestraVigencial = '1';
     if (item.id == 1) {
       this.MuestraIndividual = '1';
@@ -96,7 +123,7 @@ export class ValoracionComponent implements OnInit {
   }
 
   selectTipComiI(item: any) {
-    this.SessionTipoComI=item.id;
+    this.SessionTipoComI = item.id;
     if (item.id == 1) {
       this.MuestraFijo = '1';
       this.MuestraPorcentaje = '0';
@@ -108,7 +135,7 @@ export class ValoracionComponent implements OnInit {
   }
 
   selectTipComiG(item: any) {
-    this.SessionTipoComG=item.id;
+    this.SessionTipoComG = item.id;
     if (item.id == 1) {
       this.MuestraFijo = '1';
       this.MuestraPorcentaje = '0';
@@ -130,13 +157,13 @@ export class ValoracionComponent implements OnInit {
     this.MuestraPorcentaje = '0';
   }
 
-  GuardaIndividual(templateMensaje:any) {
+  GuardaIndividual(templateMensaje: any) {
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     const Body = {
       CD_CNSCTVO: this.SessionOferta,
       TPO_OFRTA: 1,
       TPO_CMSION_INDVDUAL: Number(this.SessionTipoComI),
-      VLOR_CMSION_INDVDUAL: this.VlrComFijaI,   
+      VLOR_CMSION_INDVDUAL: this.VlrComFijaI,
       MNMO_UNDDES_INDVDUAL: this.MinUnidI,
       MXMO_UNDDES_INDVDUAL: this.MaxUnidI,
       VLOR_DMNCLIO_INDVDUAL: this.VlrDomiI,
@@ -163,21 +190,54 @@ export class ValoracionComponent implements OnInit {
     }
     this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
       var arreglores = ResultUpdate.split('|')
-      this.Respuesta=arreglores[1];      
+      this.Respuesta = arreglores[1];
     })
   }
 
-  GuardaGrupal() {
-
-  }
-
-  GuardaVigencia(templateMensaje:any) {
+  GuardaGrupal(templateMensaje: any) {
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     const Body = {
       CD_CNSCTVO: this.SessionOferta,
       TPO_OFRTA: Number(this.SessionTipoOferta),
       TPO_CMSION_INDVDUAL: 0,
-      VLOR_CMSION_INDVDUAL: "0",   
+      VLOR_CMSION_INDVDUAL: "0",
+      MNMO_UNDDES_INDVDUAL: "0",
+      MXMO_UNDDES_INDVDUAL: "0",
+      VLOR_DMNCLIO_INDVDUAL: "0",
+      VLOR_FNAL_INDVDUAL: "0",
+      TPO_CMSION_GRPAL: this.SessionTipoComG,
+      VLOR_CMSION_GRPAL: this.VlrComFijaG,
+      MNMO_UNDDES_LIDER: this.MinUnidLider,
+      MXMO_UNDDES_LIDER: this.MaxUnidLider,
+      PRCNTJE_DCTO_LIDER: this.PorcDescLider,
+      VLOR_DMNCLIO_GRPAL: this.VlrDomiG,
+      CNTDAD_GRPOS: this.CantGrupos,
+      UNDDES_XGRPO: this.UnidXGrupos,
+      MNMO_UNDDES_PRCPNTE: this.MinUnidPart,
+      MXMO_UNDDES_PRCPNTE: this.MaxUnidPart,
+      CNTDAD_CMPRAS_INDVDLES: this.CantComprI,
+      VLOR_FNAL_LIDER: this.PrecioFinLider,
+      VLOR_FNAL_PRTCPNTE: this.PrecioFinPart,
+      VGNCIA_DESDE: "",
+      VGNCIA_HASTA: "",
+      HORA_DESDE: 0,
+      HORA_HASTA: 0,
+      FCHA_ENTRGA: "",
+      OBSERVACIONES: ""
+    }
+    this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
+      var arreglores = ResultUpdate.split('|')
+      this.Respuesta = arreglores[1];
+    })
+  }
+
+  GuardaVigencia(templateMensaje: any) {
+    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    const Body = {
+      CD_CNSCTVO: this.SessionOferta,
+      TPO_OFRTA: Number(this.SessionTipoOferta),
+      TPO_CMSION_INDVDUAL: 0,
+      VLOR_CMSION_INDVDUAL: "0",
       MNMO_UNDDES_INDVDUAL: "0",
       MXMO_UNDDES_INDVDUAL: "0",
       VLOR_DMNCLIO_INDVDUAL: "0",
@@ -204,7 +264,7 @@ export class ValoracionComponent implements OnInit {
     }
     this.serviciosvaloracion.ActualizarOfertaValoracion('4', Body).subscribe(ResultUpdate => {
       var arreglores = ResultUpdate.split('|')
-      this.Respuesta=arreglores[1];      
+      this.Respuesta = arreglores[1];
     })
   }
 }
