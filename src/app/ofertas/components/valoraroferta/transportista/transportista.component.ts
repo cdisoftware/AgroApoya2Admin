@@ -149,4 +149,8 @@ export class TransportistaComponent implements OnInit {
     this.rutas.navigateByUrl('/home/valoracion')
   }
 
+  Volver(){
+    this.rutas.navigateByUrl('/home/sectorizar')
+  }
+
 }

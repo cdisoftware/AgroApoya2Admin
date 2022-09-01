@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbAccordionConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-valoracion',
@@ -57,7 +58,7 @@ export class ValoracionComponent implements OnInit {
 
 
 
-  constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies : CookieService) {
+  constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies : CookieService, public rutas : Router) {
     ConfigAcord.closeOthers = true;
   }
 
@@ -354,5 +355,10 @@ export class ValoracionComponent implements OnInit {
       var arreglores = ResultUpdate.split('|')
       this.Respuesta = arreglores[1];
     })
+    this.rutas.navigateByUrl('/home')
+  }
+
+  Volver(){
+    this.rutas.navigateByUrl('/home/transportista');
   }
 }

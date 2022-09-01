@@ -170,7 +170,7 @@ export class BuscarofertaComponent implements OnInit {
 
   AceptaEditar(modalRespuesta: any) {
     const DatosEditar = {
-      CD_PRDCTO: this.IdProducto,
+      CD_PRDCTO: '0',
       UND_EMPQUE: "0",
       CD_CNDCION: "0",
       CD_TMNO: "0",
@@ -185,8 +185,8 @@ export class BuscarofertaComponent implements OnInit {
       UBCCION_PRCLA: "0",
       COORDENADAS_PRCLA: "0",
       USUCODIG: "0",
-      ID_PRODUCTOR: this.IdProductor,
-      CD_CNSCTVO: "0",
+      ID_PRODUCTOR: '0',
+      CD_CNSCTVO: this.IdOferta,
       CRCTRZCION: this.ECaracteriza,
       OBS_EDICION: "0"
     }

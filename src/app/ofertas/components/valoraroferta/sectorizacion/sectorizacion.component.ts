@@ -175,4 +175,8 @@ export class SectorizacionComponent implements OnInit {
     this.rutas.navigateByUrl('/home/transportista');
   }
 
+  Volver(){
+    this.rutas.navigateByUrl('/home/conciliacion')
+  }
+
 }
