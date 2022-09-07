@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CrearofertaComponent } from './ofertas/components/crearoferta/crearoferta.component';
 import { LoginComponent } from './usuario/components/login/login.component';
@@ -9,7 +9,7 @@ import { TransportistaComponent } from './ofertas/components/valoraroferta/trans
 import { LayoutprincipalComponent } from './shared/layoutprincipal/layoutprincipal.component';
 import { ConciliacionComponent} from './ofertas/components/valoraroferta/conciliacion/conciliacion.component'
 import { ValoracionComponent } from './ofertas/components/valoraroferta/valoracion/valoracion.component';
-
+import { PlantillascorreoComponent } from './usuario/components/plantillascorreo/plantillascorreo.component'
 const routes: Routes = [
   {
     path: '',
@@ -46,7 +46,12 @@ const routes: Routes = [
       {
         path: 'valoracion',
         component: ValoracionComponent
-      }
+      },
+      {
+        path: 'plantillaCorreo',
+        component: PlantillascorreoComponent
+      },
+     
     ]
   },
   

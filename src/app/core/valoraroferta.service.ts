@@ -28,7 +28,7 @@ export class ValorarofertaService {
   }
 
 
-  ConsultaSectores(Bandera: string, NomSector: string, CdPais: String, Cd_Region: string, Cd_Mncpio: string) {
+  ConsultaSectores(Bandera: string, NomSector: string, CdPais: string, Cd_Region: string, Cd_Mncpio: string) {
     return this.http.get<any[]>(this.url_servidor + 'consectores/' + Bandera + '/' + NomSector + '/' + CdPais + '/' + Cd_Region + '/' + Cd_Mncpio)
   }
 
