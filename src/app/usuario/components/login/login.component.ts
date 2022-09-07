@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
 
   Usuario: string = '';
   Password: string = '';
+  nombre: string = '';
   IdUsuario: string = '';
   loading: boolean = false;
   Respuesta: string = '';
@@ -22,6 +23,10 @@ export class LoginComponent implements OnInit {
   Encripta: string = '';
   des: string = '';
 
+  password: string;
+  ver: string;
+  verUno: string;
+  verDos: string;
 
 
   constructor(public rutas: Router,
@@ -33,22 +38,27 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.cookies.deleteAll();
+    this.password = '';
+    this.ver = '2';
+    this.verUno = '2';
+    this.verDos = '2';
   }
 
-  Login(templateMensaje: any) {
+  login(templateMensaje: any) {
     if (this.Usuario != '' && this.Password != '') {
       const DatosLogin = {
-        USUCODIG: 0,
-        CORREO_PERSONA: this.Usuario
+        CorreoPersona: this.Usuario
       }
-      this.servicioslogin.ConsultaUsuario('2', DatosLogin).subscribe(Resultado => {
-        console.log(Resultado)
+      this.servicioslogin.ConsultaUsuario('1', DatosLogin).subscribe(Resultado => {
+
         this.Encripta = this.encryption.encryptUsingTripleDES(this.Password, true);
-        if (this.Encripta == Resultado[0].TOKEN_PERSONA) {
+        if (this.Encripta == Resultado[0].Token) {
           this.IdUsuario = Resultado[0].USUCODIG;
+          this.nombre = Resultado[0].NombrePersona + ' ' + Resultado[0].ApellidoPersona;
           this.ServiciosGlobales.CrearCookie('IDU', this.IdUsuario);
-          this.rutas.navigateByUrl('/home')          
-        } 
+          this.ServiciosGlobales.CrearCookie('nombreuser', this.nombre);
+          this.rutas.navigateByUrl('/home')
+        }
         else {
           this.Respuesta = 'Credenciales invalidas, valida tus datos.';
           this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -59,6 +69,42 @@ export class LoginComponent implements OnInit {
       this.Respuesta = "Los campos usuario y contraseña son obligatorios";
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     }
+  }
+
+  cambiarType(Bandera: string) {
+    if (Bandera == "1") {
+      let elemento: any = document.getElementById('Password');
+      if (elemento.type == "text") {
+        elemento.type = "password";
+        this.ver = '2';
+      } else {
+        elemento.type = "text";
+        this.ver = '1';
+      }
+    }
+
+    if (Bandera == "2") {
+      let elemento: any = document.getElementById('PasswordUno');
+      if (elemento.type == "text") {
+        elemento.type = "password";
+        this.verUno = '2';
+      } else {
+        elemento.type = "text";
+        this.verUno = '1';
+      }
+    }
+
+    if (Bandera == "3") {
+      let elemento: any = document.getElementById('PasswordDos');
+      if (elemento.type == "text") {
+        elemento.type = "password";
+        this.verDos = '2';
+      } else {
+        elemento.type = "text";
+        this.verDos = '1';
+      }
+    }
+
   }
 
 }

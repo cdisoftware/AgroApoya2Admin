@@ -5,29 +5,43 @@
                 <div class="conborde col-sm-12 col-md-12">
                     <div class="col-sm-12 text-center img_login">
                         <img class="imgLogin" src="../../../../assets/ImagenesAgroApoya2Admin/user.png">
-                        <h3>Iniciar Sesion</h3>
                     </div>
+                    <div class="col-sm-12 text-center">
+                        <h3 class="TituloDetalle">Iniciar Sesion</h3>
+                    </div>
+
                     <div class="form_login_user">
-                        <form class="col-12">
-                            <div class="col-12 p-10 m-10 mb-4">
-                                <div class="col-sm-12 col-12">
-                                    <input type="text" class="form-control sinborde" name="Usuario"
-                                        placeholder="Usuario" required="required" [(ngModel)]="Usuario">
-                                </div>
+                        <form (keyup.enter)="login(ModalRespuesta)" class="col-12 containerFlex">
+
+                            <div class="col-11 mb-4">
+                                <input type="text" class="form-control sinborde" name="Usuario" placeholder="Usuario"
+                                    required="required" [(ngModel)]="Usuario">
                             </div>
+
                         </form>
-                        <form class="col-12 ">
-                            <div class="col-12 p-10 m-10 mb-4">
-                                <div class="col-sm-12 col-12">
-                                    <input type="password" required="required" class="form-control sinborde"
-                                        name="Password" id="Password" placeholder="Contraseña" [(ngModel)]="Password">
-                                </div>
+                        <form (keyup.enter)="login(ModalRespuesta)" class="col-12 containerFlex">
+
+                            <div class="w-100 mb-4">
+                                <input type="password" required="required" [(ngModel)]="Password"
+                                    class="form-control sinborde" name="Password" id="Password"
+                                    placeholder="Contraseña/Password">
+                            </div>
+
+                            <div class="m-0 p-0">
+                                <button id="pass" class="SinEstilo" (click)="cambiarType('1')">
+                                    <img src="../../../../assets/ImagenesAgroApoya2Admin/ver.png"
+                                        class="BtnimgTamanoPeque" *ngIf="ver == '1'">
+                                    <img src="../../../../assets/ImagenesAgroApoya2Admin/novisible.png"
+                                        class="BtnimgTamanoPeque" *ngIf="ver == '2'">
+                                </button>
                             </div>
                         </form>
                     </div>
+
                     <div class="row justify-content-center">
-                        <div class="col-sm-2 col-2">
-                            <button id="btnIngresar" class="btn btn-agro-prin" (click)="Login(ModalRespuesta)">Ingresar</button>
+                        <div class="col-3 col-2">
+                            <button id="btnIngresar" class="btn btn-agro-prin"
+                                (click)="login(ModalRespuesta)">Ingresar</button>
                         </div>
                     </div>
 

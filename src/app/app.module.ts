@@ -17,7 +17,8 @@ import { TransportistaComponent } from './ofertas/components/valoraroferta/trans
 import { ConciliacionComponent } from './ofertas/components/valoraroferta/conciliacion/conciliacion.component';
 import { ValoracionComponent} from './ofertas/components/valoraroferta/valoracion/valoracion.component';
 import { CookieService } from 'ngx-cookie-service';
-
+import { PlantillascorreoComponent } from './usuario/components/plantillascorreo/plantillascorreo.component'
+import { AngularEditorModule } from '@kolkov/angular-editor';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { CookieService } from 'ngx-cookie-service';
     TransportistaComponent,
     ConciliacionComponent,
     ValoracionComponent, 
-    LoginComponent
+    LoginComponent,
+    PlantillascorreoComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +42,8 @@ import { CookieService } from 'ngx-cookie-service';
     CommonModule,
     NgbModule,
     AutocompleteLibModule,
-    SidebarModule.forRoot()
+    SidebarModule.forRoot(),
+    AngularEditorModule 
   ],
   providers: [
      { provide: LocationStrategy, useClass: HashLocationStrategy },

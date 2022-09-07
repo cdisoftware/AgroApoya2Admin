@@ -11,7 +11,11 @@ export class LoginService {
 
   url_servidor = this.metodosglobales.SeleccionAmbiente();
 
-  ConsultaUsuario(bandera: string, Datos: any){
-    return this.http.post<any>(this.url_servidor + 'consinfobascuser/' + bandera, Datos)
+  ConsultaUsuario(Bandera: string, Datos: any){
+    return this.http.post<any>(this.url_servidor + 'consusuarioadmin/' + Bandera, Datos)
   }
+  ConsultaMenu(Bandera: string, IdTipoUsuario: string){
+    return this.http.get<any>(this.url_servidor + 'consmenu/' + Bandera + '/' + IdTipoUsuario)
+  }
+
 }

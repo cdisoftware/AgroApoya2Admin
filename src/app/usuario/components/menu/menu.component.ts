@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
+import { Sidebar } from 'ng-sidebar';
 import { CookieService } from 'ngx-cookie-service';
-
+import { LoginService } from './../../../core/login.service';
 
 @Component({
   selector: 'app-menu',
@@ -11,32 +12,45 @@ import { CookieService } from 'ngx-cookie-service';
 export class MenuComponent implements OnInit {
 
   IdUsuario: string = '';
-  constructor(public rutas: Router, public cookies: CookieService) {
+  NombreUsuario: string = '';
+
+  constructor(public rutas: Router,
+    public cookies: CookieService,
+    private servicioslogin: LoginService,) {
 
   }
+  //cookies nombre usuario
+  NombreUsu: string = this.cookies.get('nombreuser');
+  idusua33: string = this.cookies.get('IDU');
+
+  ListaMenu: any;
 
   ngOnInit(): void {
     this.IdUsuario = this.cookies.get('IDU');
-    if(this.IdUsuario == ''){
+    this.NombreUsuario = this.cookies.get('nombreuser');
+    if (this.IdUsuario == '') {
       this.rutas.navigateByUrl('');
+
+    } else {
+      this.Cargar();
     }
   }
-  Home() {
-    this.rutas.navigateByUrl('/home');
+
+  Cargar() {
+    this.servicioslogin.ConsultaMenu('1', '4').subscribe(Resultado => {
+      this.ListaMenu = Resultado;
+      console.log(Resultado)
+    })
   }
 
-  CrearOferta() {
-    this.rutas.navigateByUrl('/home/crearoferta');
+  EsconderMenu(elemento: any){
+    document.getElementById('sidebar')?.hidden
+    console.log(elemento);
   }
+ 
 
-  ValorarOferta() {
-    this.rutas.navigateByUrl('/home/buscaroferta');
-  }
 
-  CerrarSession() {
-    this.cookies.deleteAll();
-    this.rutas.navigateByUrl('');
-  }
+
 
 
 }

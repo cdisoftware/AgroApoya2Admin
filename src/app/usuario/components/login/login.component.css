@@ -66,3 +66,7 @@
 .fondo_agroapoya {
     height: 100%;
 }
+.containerFlex{
+    display: flex;
+    justify-content: space-between;
+}
