@@ -45,6 +45,7 @@ export class TransportistaComponent implements OnInit {
   }
   ConsultaCondOferta() {
     this.sectoresservices.ConsultaConductoresOferta('1', this.SessionOferta).subscribe(ResultConsult => {
+      console.log(ResultConsult)
       if (ResultConsult.length > 0) {
         this.ValidaConsulta = '0';
         this.DataTransOferta = ResultConsult;

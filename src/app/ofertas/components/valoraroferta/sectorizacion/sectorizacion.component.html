@@ -6,7 +6,10 @@
         <img src="./../../../../../assets/ImagenesAgroApoya2Admin/barra3.png" style="width: 65%;">
     </div>
     <div class="row">
-        <label><small><b><i>Ciudad : {{SessionCiudad}}</i></b></small></label>
+        <label class="col-sm-6"><small><b><i>Nombre oferta : {{SessionNomOferta}}</i></b></small></label>
+        <label class="col-sm-2"><small><b><i>Ciudad : {{SessionCiudad}}</i></b></small></label>
+        <label class="col-sm-2"><small><b><i>Cantidades de la oferta : {{SessionCantSecOferta}}</i></b></small></label>
+        <label class="col-sm-2 TextAlert"><small><b><i>Cantidades ya asignadas : {{CantidadSectores}}</i></b></small></label>
     </div>
     <div class="br row">
         <div class="col-sm-4">
@@ -33,7 +36,7 @@
             </button>
         </div>
         <div class="col-sm-2 col-2">
-            <button class="btn btn-agro-prin col-sm-12" (click)="AbreCreaSector(ModalInsert)">
+            <button class="btn btn-agro-prin col-sm-12" (click)="AbreCreaSector(ModalInsert, ModalRespuesta)">
                 Crear sector
             </button>
         </div>
@@ -75,7 +78,7 @@
             <button class="btn btn-agro-prin col-sm-12" (click)="Volver()">Atras</button>
         </div>
         <div class="col-sm-2 ">
-            <button class="btn btn-agro-prin col-sm-12" (click)="Enviar()">Siguiente</button>
+            <button class="btn btn-agro-prin col-sm-12" (click)="Enviar(ModalRespuesta)">Siguiente</button>
         </div>
     </div>
 </div>
@@ -124,7 +127,7 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="LimpiaForm()">Aceptar</button>
     </div>
     <br>
 </ng-template>
