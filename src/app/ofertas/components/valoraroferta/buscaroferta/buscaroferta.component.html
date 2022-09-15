@@ -215,18 +215,21 @@
         <div class="modal-body">
             <div class="row br">
                 <div class="col-sm-12">
+                    <label class="col-sm-12 Llave">Caractrización</label>
                     <textarea name="ECaracteriza" id="ECaracteriza" class="col-sm-12 form-control form-control-sm textArea"
                         placeholder="Caracterización" rows="3" [(ngModel)]="ECaracteriza"></textarea>
                 </div>
             </div>
             <div class="row br">
                 <div class="col-sm-12">
+                    <label class="col-sm-12 Llave">Fecha Recogida</label>
                     <input type="text" class="col-sm-12 form-control form-control-sm textBox" placeholder="Fecha recogida"
                         onfocus="(this.type='date')" onblur="(this.type='date')" [(ngModel)]="EFechaRecogida" name="EFechaRecogida">
                 </div>
             </div>
             <div class="row br">
                 <div class="col-sm-12">
+                    <label class="col-sm-12 Llave">Jornada</label>
                     <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox"
                     (change)='SelEJornada(ejornada.value)'>
                         <option value="1">Jornada</option>
