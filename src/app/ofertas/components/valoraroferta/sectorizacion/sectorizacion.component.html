@@ -94,7 +94,6 @@
             </div>
         </div>
         <div class="row mt-2">
-            <label><small><b><i>Recuerda separar longitud y latitud ayudandote con una coma</i></b></small></label>
             <div class="col-sm-6">
                 <input type="text" class="Col-sm-12 form-control" placeholder="Coordenada norte" [(ngModel)]="Coor1">
             </div>
@@ -102,7 +101,11 @@
                 <input type="text" class="Col-sm-12 form-control" placeholder="Coordenada sur" [(ngModel)]="Coor2">
             </div>
         </div>
-        <google-map></google-map>
+        <div class="row mt-2 justify-content-center">
+            <div class="col-sm-10">
+                <div id="map" class="map"></div>
+            </div>
+        </div>
     </div>
     <div class="row justify-content-center">
         <div class="col-sm-2">

@@ -33,7 +33,7 @@ export class SectorizacionComponent implements OnInit {
   CantidadSectores: number;
   SessionCantSecOferta: any;
   SessionNomOferta: string;
-
+  markers: google.maps.Marker[] = [];
 
   constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService) { }
 
@@ -53,6 +53,17 @@ export class SectorizacionComponent implements OnInit {
     this.ConsultaDetalleOferta();
   }
 
+  AgregarMarcador(latLng: google.maps.LatLng, map: google.maps.Map) {
+    if (this.markers.length > 0) {
+      this.markers[0].setMap(null)
+    }
+    const marker = new google.maps.Marker({
+      position: latLng,
+      map: map,
+    });
+    this.markers = [];
+    this.markers.push(marker);
+  }
 
   ConsultaDetalleOferta() {
     this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
@@ -115,9 +126,9 @@ export class SectorizacionComponent implements OnInit {
         this.sectoresservices.OperacionSectores('3', BodyInsert).subscribe(ResultInsert => {
           var respuesta = ResultInsert.split('|')
           this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-          this.Respuesta = respuesta[1];          
+          this.Respuesta = respuesta[1];
           this.ConsultaSectoresOferta();
-        })        
+        })
       }
       else {
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
@@ -144,6 +155,27 @@ export class SectorizacionComponent implements OnInit {
 
   AbreCreaSector(content: any, templateRespuesta: any) {
     this.ModalInsert = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+    //Creamos nuevo mapa cada vez que se abre el modal de CrearSector
+    const map = new google.maps.Map(
+      document.getElementById("map") as HTMLElement,
+      {
+        zoom: 15,
+        center: {
+          lat: 5.745986,
+          lng: -73.003634
+        },
+      }
+    );
+    //Agregamos evento click al mapa, para agregar marcador
+    map.addListener("click", (e: any) => {
+      this.AgregarMarcador(e.latLng, map);
+      console.log(e.latLng.toString())
+      this.Coor1=e.latLng.toString()
+      this.Coor1 = this.Coor1.substring(1,17)
+      this.Coor2=e.latLng.toString()
+      this.Coor2 = this.Coor2.substring(19,this.Coor2.length-1)
+    });
+
   }
 
   CreaSector(templateRespuesta: any) {
