@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MetodosglobalesService } from './../../../core/metodosglobales.service'
 import { CrearofertaService } from './../../../core/crearoferta.service'
+import { ValorarofertaService } from './../../../core/valoraroferta.service'
 
 @Component({
   selector: 'app-crearoferta',
@@ -11,6 +12,7 @@ export class CrearofertaComponent implements OnInit {
 
   public respuestaImagenEnviada: any;
   public resultadoCarga: any;
+  productor = 'nombre_persona';
   //Declaracion de variables
   ArrayProductos: any = [];
   ArrayEmpaque: any = [];
@@ -18,13 +20,14 @@ export class CrearofertaComponent implements OnInit {
   ArrayTamano: any = [];
   ArrayDepa: any = [];
   ArrayCiud: any = [];
+  ArrayProductor: any = [];
   IdProducto: string = '0';
   IdEmpaque: string = '0';
   IdCondicion: string = '0';
   IdTamano: string = '0';
   DesProducto: string = '';
-  ValorOferta: number = 0;
-  Unidades: number = 0;
+  ValorOferta: number;
+  Unidades: number;
   ValorTotalOferta: number = 0;
   Vigencia: string = '';
   IdDepartamento: string = '0';
@@ -38,16 +41,39 @@ export class CrearofertaComponent implements OnInit {
   RutaImagenes: string = '';
   ImagenCargada: string = '';
   file: FileList | undefined;
+  IdProductor: string = '';
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
-    private ServiciosOferta: CrearofertaService
+    private ServiciosOferta: CrearofertaService,
+    private ServiciosValorar: ValorarofertaService
   ) { }
 
   ngOnInit(): void {
     this.RutaImagenes = this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.CargaProductos();
     this.CargaDepartamento();
+    this.CargarObjetosIniciales();
+  }
+
+  CargarObjetosIniciales() {
+    const datosproductor = {
+      nombre_persona: ''
+    }
+    this.ServiciosValorar.ConsultaProductor('1', '1', datosproductor).subscribe(Resultado => {
+      this.ArrayProductor = Resultado;
+      console.log(this.ArrayProductor);
+    })
+  }
+
+  selectProductor(item: any) {
+    this.IdProductor = item.codigo_persona;
+  }
+
+  LimpiarCampos(campo: string) {
+    if (campo == 'pd') {
+      this.IdProducto = '0';
+    }
   }
 
   CargaProductos() {
@@ -126,6 +152,30 @@ export class CrearofertaComponent implements OnInit {
 
 
   Guardar() {
+    const datosinsert = {
+      CD_PRDCTO: this.IdProducto,
+      UND_EMPQUE: this.IdEmpaque,
+      CD_CNDCION: this.IdCondicion,
+      CD_TMNO: "1",
+      DSCRPCION_PRDCTO: this.DesProducto,
+      VR_UNDAD_EMPQUE: this.ValorOferta,
+      CD_UNDAD: this.Unidades,
+      VR_TOTAL_OFRTA: this.ValorTotalOferta,
+      VGNCIA_DESDE: this.Vigencia,
+      CD_JRNDA: "0",
+      CD_RGION: "261",
+      CD_MNCPIO: this.IdCiudad,
+      UBCCION_PRCLA: "Vereda Tamabioy pasto",
+      COORDENADAS_PRCLA: "12312312 - 43534534",
+      USUCODIG: "495",
+      ID_PRODUCTOR: "",
+      CD_CNSCTVO: "",
+      CRCTRZCION: "",
+      OBS_EDICION: ""
+    }
+    this.ServiciosOferta.CrearOferta('3',datosinsert).subscribe(Resultado => {
+      console.log(Resultado)
+    })
 
   }
 
