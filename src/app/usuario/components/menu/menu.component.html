@@ -1,13 +1,11 @@
 <div class="Fondo">
 
-    <div class="wrapper">
+    <div class="wrapper d-flex align-items-stretch">
         <!-- Sidebar -->
         <nav id="sidebar">
-
-
             <!-- Boton -->
             <div class="custom-menu">
-                <button type="button" id="sidebarCollapse" class="btn btn-primary"></button>
+                <button type="button" id="sidebarCollapse" onclick="toggleSidebar()" class="btn btn-primary"></button>
             </div>
 
 
@@ -32,7 +30,6 @@
                 </li>
             </ul>
 
-
         </nav>
 
         <!-- Page Content  -->
@@ -40,18 +37,5 @@
             <router-outlet></router-outlet>
         </div>
     </div>
+
 </div>
-
-<script>
-    $(document).ready(function () {
-
-        $("#sidebar").mCustomScrollbar({
-            theme: "minimal"
-        });
-
-        $('#sidebarCollapse').on('click', function () {
-            $('#sidebar').toggleClass('active');
-        });
-
-    });
-</script>

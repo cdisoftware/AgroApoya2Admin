@@ -13,8 +13,8 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class LoginComponent implements OnInit {
 
-  Usuario: string = '';
-  Password: string = '';
+  user: string = '';
+  pass: string = '';
   nombre: string = '';
   IdUsuario: string = '';
   loading: boolean = false;
@@ -45,15 +45,15 @@ export class LoginComponent implements OnInit {
   }
 
   login(templateMensaje: any) {
-    if (this.Usuario != '' && this.Password != '') {
+    if (this.user != '' && this.pass != '') {
       const DatosLogin = {
-        CorreoPersona: this.Usuario
+        CorreoPersona: this.user
       }
       this.servicioslogin.ConsultaUsuario('1', DatosLogin).subscribe(Resultado => {
 
-        this.Encripta = this.encryption.encryptUsingTripleDES(this.Password, true);
+        this.Encripta = this.encryption.encryptUsingTripleDES(this.pass, true);
         if (this.Encripta == Resultado[0].Token) {
-          this.IdUsuario = Resultado[0].USUCODIG;
+          this.IdUsuario = Resultado[0].Usucodig;
           this.nombre = Resultado[0].NombrePersona + ' ' + Resultado[0].ApellidoPersona;
           this.ServiciosGlobales.CrearCookie('IDU', this.IdUsuario);
           this.ServiciosGlobales.CrearCookie('nombreuser', this.nombre);
