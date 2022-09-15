@@ -31,7 +31,7 @@
     "ng-sidebar": "^9.4.3",
     "ngx-cookie-service": "^14.0.1",
     "rxjs": "~7.5.0",
-    "tslib": "^2.3.0",
+    "tslib": "^2.4.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

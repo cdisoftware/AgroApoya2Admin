@@ -19,6 +19,7 @@ import { ValoracionComponent} from './ofertas/components/valoraroferta/valoracio
 import { CookieService } from 'ngx-cookie-service';
 import { PlantillascorreoComponent } from './usuario/components/plantillascorreo/plantillascorreo.component'
 import { AngularEditorModule } from '@kolkov/angular-editor';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     NgbModule,
     AutocompleteLibModule,
     SidebarModule.forRoot(),
-    AngularEditorModule 
+    AngularEditorModule,
+    GoogleMapsModule
   ],
   providers: [
      { provide: LocationStrategy, useClass: HashLocationStrategy },
