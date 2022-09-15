@@ -38,10 +38,17 @@ export class CrearofertaComponent implements OnInit {
   Imagen3: string = '../../../../assets/ImagenesAgroApoya2Admin/SubirImagen.png';
   Imagen4: string = '../../../../assets/ImagenesAgroApoya2Admin/SubirImagen.png';
   Imagen5: string = '../../../../assets/ImagenesAgroApoya2Admin/SubirImagen.png';
+  NomImagen1: string = '0';
+  NomImagen2: string = '0';
+  NomImagen3: string = '0';
+  NomImagen4: string = '0';
+  NomImagen5: string = '0';
   RutaImagenes: string = '';
   ImagenCargada: string = '';
   file: FileList | undefined;
   IdProductor: string = '';
+  EJornada: string = '0';
+  ArrayJornada: any = [];
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -63,6 +70,9 @@ export class CrearofertaComponent implements OnInit {
     this.ServiciosValorar.ConsultaProductor('1', '1', datosproductor).subscribe(Resultado => {
       this.ArrayProductor = Resultado;
       console.log(this.ArrayProductor);
+    })
+    this.ServiciosValorar.ConsultaJornada('1').subscribe(Resultado => {
+      this.ArrayJornada = Resultado;
     })
   }
 
@@ -154,29 +164,40 @@ export class CrearofertaComponent implements OnInit {
   Guardar() {
     const datosinsert = {
       CD_PRDCTO: this.IdProducto,
-      UND_EMPQUE: this.IdEmpaque,
+      UND_EMPQUE: '0',
       CD_CNDCION: this.IdCondicion,
-      CD_TMNO: "1",
+      CD_TMNO: this.IdTamano,
       DSCRPCION_PRDCTO: this.DesProducto,
       VR_UNDAD_EMPQUE: this.ValorOferta,
       CD_UNDAD: this.Unidades,
       VR_TOTAL_OFRTA: this.ValorTotalOferta,
       VGNCIA_DESDE: this.Vigencia,
-      CD_JRNDA: "0",
-      CD_RGION: "261",
+      CD_JRNDA: this.EJornada,
+      CD_RGION: this.IdDepartamento,
       CD_MNCPIO: this.IdCiudad,
-      UBCCION_PRCLA: "Vereda Tamabioy pasto",
+      UBCCION_PRCLA: this.UbicacionPar,
       COORDENADAS_PRCLA: "12312312 - 43534534",
-      USUCODIG: "495",
-      ID_PRODUCTOR: "",
-      CD_CNSCTVO: "",
-      CRCTRZCION: "",
-      OBS_EDICION: ""
+      USUCODIG: this.IdProductor,
+      ID_PRODUCTOR: "0",
+      CD_CNSCTVO: "0",
+      CRCTRZCION: "0",
+      OBS_EDICION: "0",
+      IMAGEN1: this.NomImagen1,
+      IMAGEN2: this.NomImagen2,
+      IMAGEN3: this.NomImagen3,
+      IMAGEN4: this.NomImagen4,
+      IMAGEN5: this.NomImagen5
     }
-    this.ServiciosOferta.CrearOferta('3',datosinsert).subscribe(Resultado => {
+    //console.log(datosinsert)
+    //console.log(this.IdEmpaque)
+    this.ServiciosOferta.CrearOferta('3', this.IdEmpaque,datosinsert).subscribe(Resultado => {
       console.log(Resultado)
     })
 
+  }
+
+  SelEJornada(jornada: string) {
+    this.EJornada = jornada;
   }
 
   Limpiar() {
@@ -214,18 +235,23 @@ export class CrearofertaComponent implements OnInit {
           if (this.respuestaImagenEnviada == 'Archivo Subido Correctamente') {
             if (this.ImagenCargada == '1') {
               this.Imagen1 = this.RutaImagenes + event.target.files[0].name;
+              this.NomImagen1 = event.target.files[0].name;
             }
             if (this.ImagenCargada == '2') {
               this.Imagen2 = this.RutaImagenes + event.target.files[0].name;
+              this.NomImagen2 = event.target.files[0].name;
             }
             if (this.ImagenCargada == '3') {
               this.Imagen3 = this.RutaImagenes + event.target.files[0].name;
+              this.NomImagen3 = event.target.files[0].name;
             }
             if (this.ImagenCargada == '4') {
               this.Imagen4 = this.RutaImagenes + event.target.files[0].name;
+              this.NomImagen4 = event.target.files[0].name;
             }
             if (this.ImagenCargada == '5') {
               this.Imagen5 = this.RutaImagenes + event.target.files[0].name;
+              this.NomImagen5 = event.target.files[0].name;
             }
           } else {
             this.resultadoCarga = 2;

@@ -35,8 +35,8 @@ export class CrearofertaService {
     return this.http.get<any[]>(this.url_servidor + 'consultmncpio/' + CodRegion)
   }
 
-  CrearOferta(bandera: string, Body: any) {
-    return this.http.post<any>(this.url_servidor + 'cofertamod/' + bandera, Body)
+  CrearOferta(bandera: string, IdEmpaque: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'cofertamod/' + bandera + '/' + IdEmpaque, Body)
   }
 
   public postFileImagen(imagenParaSubir: File) {
