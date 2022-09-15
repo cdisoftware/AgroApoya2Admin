@@ -116,9 +116,22 @@
                 <h3>{{oferta.vlor_pactado_productor}}</h3>
             </div>
             <div class="col-sm-6">
-                <label class="col-sm-12 Llave">Valor flete por unidad</label>
+                <label class="col-sm-12 Llave">Valor costeo</label>
                 <h3>{{oferta.vlor_flte_xunidad}}</h3>
             </div>
+        </div>
+    </div>
+    <div class="row br">
+        <div class="col-sm-12">
+            <label class="col-sm-12 Llave mb-1">Sector a valorizar</label>
+            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" [initialValue]="ArrayTipoOferCon[0]" (selected)='selectTipOferta($event)' (inputCleared)='LimpiaTipoOferta($event)' placeholder="Sector" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio">
+            </ng-autocomplete>
+            <ng-template #templateSec let-item>
+                <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
         </div>
     </div>
     <div class="row br">
@@ -258,7 +271,7 @@
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="CantGrupos">
                         </div>
                         <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Unidades por grupo</label>
+                            <label class="col-sm-12 Llave">Numero minimo de personas por grupo</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidXGrupos">
                         </div>
                     </div>
@@ -270,7 +283,7 @@
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Precio final lider</label>
+                            <label class="col-sm-12 Llave">Precio arranque lider</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PrecioFinLider">
                         </div>
                         <div class="col-sm-6">

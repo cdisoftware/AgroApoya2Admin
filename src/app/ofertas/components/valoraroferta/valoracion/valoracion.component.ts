@@ -13,6 +13,7 @@ export class ValoracionComponent implements OnInit {
   SessionOferta: any;
   DataOferta: any[] = [];
   keyword: string = '';
+  keywordSec: string = '';
   DataTipoOferta: any[] = []
   DataTipoComisiono: any[] = []
   MuestraIndividual: string = '';
@@ -55,6 +56,7 @@ export class ValoracionComponent implements OnInit {
   ArrayTipoComICon: any = [];
   ArrayTipoComGCon: any = [];
   SessionIdUsuario: any;
+  DataSectores: any[];
 
 
 
@@ -64,6 +66,7 @@ export class ValoracionComponent implements OnInit {
 
   ngOnInit(): void {
     this.keyword = 'name';
+    this.keywordSec = 'name';
     this.DataTipoOferta = [
       {
         id: 1,
@@ -94,6 +97,7 @@ export class ValoracionComponent implements OnInit {
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');
     this.ConsultaDetalleOferta();
+    this.ConsultaSectores();
     this.ConsultaValoracionOferta();
   }
 
@@ -103,9 +107,18 @@ export class ValoracionComponent implements OnInit {
     })
   }
 
+  ConsultaSectores() {
+    this.serviciosvaloracion.ConsultaSectoresOferta('1', this.SessionOferta).subscribe(ResultConsulta => {      
+      if (ResultConsulta.length > 0) {
+        this.keywordSec = 'DSCRPCION_SCTOR';
+        this.DataSectores = ResultConsulta;
+      }
+    })   
+  }
+
   ConsultaValoracionOferta() {
     this.serviciosvaloracion.ConsultaValoracionOferta('1', this.SessionOferta).subscribe(ResultCons => {
-      console.log(ResultCons)
+      //console.log(ResultCons)
       this.ArrayTipoOferCon = [
         {
           id: ResultCons[0].TPO_OFRTA,
@@ -164,7 +177,7 @@ export class ValoracionComponent implements OnInit {
   }
 
   selectTipOferta(item: any) {
-    console.log(item)
+    //console.log(item)
     this.SessionTipoOferta = item.id;
     this.MuestraVigencial = '1';
     if (item.id == 1) {
@@ -187,7 +200,7 @@ export class ValoracionComponent implements OnInit {
   }
 
   selectTipComiI(item: any) {
-    console.log(item)
+    //console.log(item)
     this.SessionTipoComI = item.id;
     if (item.name == 'Valor Fijo') {
       this.MuestraFijo = '1';
@@ -223,7 +236,7 @@ export class ValoracionComponent implements OnInit {
   }
 
   GuardaIndividual(templateMensaje: any) {
-    console.log(this.SessionTipoComI)
+    //console.log(this.SessionTipoComI)
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     var validacomision = '';
     if (this.SessionTipoComI == '1') {
@@ -261,7 +274,7 @@ export class ValoracionComponent implements OnInit {
       FCHA_ENTRGA: "",
       OBSERVACIONES: ""
     }
-    console.log(Body)
+    //console.log(Body)
     this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
       var arreglores = ResultUpdate.split('|')
       this.Respuesta = arreglores[1];
@@ -351,7 +364,7 @@ export class ValoracionComponent implements OnInit {
       estado: 8
     }    
     this.serviciosvaloracion.PublicarOferta('3', BodyUpdate).subscribe(ResultUpdate => {
-      console.log(ResultUpdate)
+      //console.log(ResultUpdate)
       var arreglores = ResultUpdate.split('|')
       this.Respuesta = arreglores[1];
     })

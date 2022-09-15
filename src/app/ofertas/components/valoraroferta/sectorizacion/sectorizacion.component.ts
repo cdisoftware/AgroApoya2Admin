@@ -29,10 +29,13 @@ export class SectorizacionComponent implements OnInit {
   SessionCDRegion: any;
   SessionCiudad: any;
   SessionIdUsuario: any;
-  ModalInsert : NgbModalRef | undefined ;
+  ModalInsert: NgbModalRef | undefined;
+  CantidadSectores: number;
+  SessionCantSecOferta: any;
+  SessionNomOferta: string;
 
 
-  constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies:CookieService) { }
+  constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService) { }
 
   ngOnInit(): void {
     this.DesSect = '';
@@ -41,16 +44,27 @@ export class SectorizacionComponent implements OnInit {
     this.VlrFle = '';
     this.SectSelec = '';
     this.SessionOferta = this.cookies.get('IDO');
-    this.SessionIdUsuario = this.cookies.get('IDU');        
+    this.SessionIdUsuario = this.cookies.get('IDU');
     this.SessionCDMunicipio = '0';
     this.SessionCDRegion = '0';
     this.SessionCiudad = '0';
     this.ConsultaCiudadOferta();
     this.ConsultaSectoresOferta();
+    this.ConsultaDetalleOferta();
   }
+
+
+  ConsultaDetalleOferta() {
+    this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
+      console.log(ResultConsu);
+      this.SessionNomOferta = ResultConsu[0].Nombre_Producto + ' - ' + ResultConsu[0].Descripcion_empaque + ' - ' + ResultConsu[0].Nombre_productor;
+      this.SessionCantSecOferta = ResultConsu[0].Unidades_disponibles;
+    })
+  }
+
   ConsultaCiudadOferta() {
     this.sectoresservices.ConsultaCiudadOferta('1', this.SessionOferta).subscribe(ResultadoCons => {
-      console.log(ResultadoCons)        
+      console.log(ResultadoCons)
       this.SessionCiudad = ResultadoCons[0].Cuidad;
       this.SessionCDMunicipio = ResultadoCons[0].CD_MNCPIO;
       this.SessionCDRegion = ResultadoCons[0].CD_RGION;
@@ -59,9 +73,14 @@ export class SectorizacionComponent implements OnInit {
   }
   ConsultaSectoresOferta() {
     this.sectoresservices.ConsultaSectoresOferta('1', this.SessionOferta).subscribe(ResultConsulta => {
+      console.log(ResultConsulta)
       if (ResultConsulta.length > 0) {
         this.ValidaConsulta = '0';
         this.DataSectorOferta = ResultConsulta;
+        this.CantidadSectores = 0
+        for (let i = 0; i < ResultConsulta.length; i++) {
+          this.CantidadSectores += ResultConsulta[i].CNTDAD;
+        }
       }
       else {
         this.ValidaConsulta = '1';
@@ -71,35 +90,40 @@ export class SectorizacionComponent implements OnInit {
     })
   }
 
-  ConsultaSectores() {    
-    this.sectoresservices.ConsultaSectores('1', '0', '0', this.SessionCDRegion, this.SessionCDMunicipio).subscribe(Result => {    
+  ConsultaSectores() {
+    this.sectoresservices.ConsultaSectores('1', '0', '0', this.SessionCDRegion, this.SessionCDMunicipio).subscribe(Result => {
       this.DataSectores = Result;
       this.keyword = 'DSCRPCION_SCTOR';
     })
   }
 
   AsociaSector(templateRespuesta: any) {
-    this.Respuesta = '';
-    if (this.Cant != '' && this.VlrFle != '' && this.SectSelec != '') {
-      const BodyInsert = {
-        ID: "0",
-        CD_CNSCTVO: this.SessionOferta,
-        ID_SCTOR_OFRTA: this.SectSelec,
-        CNTDAD: this.Cant,
-        VLOR_FLTE_SGRDO: this.VlrFle
-      }      
-      this.sectoresservices.OperacionSectores('3', BodyInsert).subscribe(ResultInsert => {
-        var respuesta = ResultInsert.split('|')
-        this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-        this.Respuesta = respuesta[1]
-        this.ConsultaSectoresOferta();
-      })
+    if (this.CantidadSectores == this.SessionCantSecOferta) {
+      this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+      this.Respuesta = 'Las cantidades totales de la oferta ya fueron asignadas, no es posible asignar mas sectores.';
     }
     else {
-      this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-      this.Respuesta = 'Los campos Sector, Cantidad y Valor flete son obligatorios, favor valida tu información.';
+      this.Respuesta = '';
+      if (this.Cant != '' && this.VlrFle != '' && this.SectSelec != '') {
+        const BodyInsert = {
+          ID: "0",
+          CD_CNSCTVO: this.SessionOferta,
+          ID_SCTOR_OFRTA: this.SectSelec,
+          CNTDAD: this.Cant,
+          VLOR_FLTE_SGRDO: this.VlrFle
+        }
+        this.sectoresservices.OperacionSectores('3', BodyInsert).subscribe(ResultInsert => {
+          var respuesta = ResultInsert.split('|')
+          this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+          this.Respuesta = respuesta[1];          
+          this.ConsultaSectoresOferta();
+        })        
+      }
+      else {
+        this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+        this.Respuesta = 'Los campos Sector, Cantidad y Valor flete son obligatorios, favor valida tu información.';
+      }
     }
-
   }
 
   EliminaSector(sector: any, templateRespuesta: any) {
@@ -118,7 +142,7 @@ export class SectorizacionComponent implements OnInit {
     })
   }
 
-  AbreCreaSector(content: any) {    
+  AbreCreaSector(content: any, templateRespuesta: any) {
     this.ModalInsert = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
   }
 
@@ -140,9 +164,9 @@ export class SectorizacionComponent implements OnInit {
         LONG_SUR: lon_sur,
         CD_RGION: this.SessionCDRegion,
         CD_MNCPIO: this.SessionCDMunicipio
-      }      
+      }
       this.sectoresservices.InsertarSector('3', BodyInsert).subscribe(ResultInsert => {
-        this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })        
+        this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
         this.Respuesta = ResultInsert;
         this.ModalInsert?.close();
         this.ConsultaCiudadOferta();
@@ -154,7 +178,7 @@ export class SectorizacionComponent implements OnInit {
     }
 
   }
-  
+
   LimpiaModal() {
     this.NombreSec = '';
     this.Coor1 = '';
@@ -171,11 +195,17 @@ export class SectorizacionComponent implements OnInit {
     window.location.reload();
   }
 
-  Enviar(){
-    this.rutas.navigateByUrl('/home/transportista');
+  Enviar(templateRespuesta: any) {
+    if (this.CantidadSectores == this.SessionCantSecOferta) {
+      this.rutas.navigateByUrl('/home/transportista');
+    }
+    else {
+      this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+      this.Respuesta = 'Las cantidades totales de la oferta aun no han sido asignadas, favor valida tu información.';
+    }
   }
 
-  Volver(){
+  Volver() {
     this.rutas.navigateByUrl('/home/conciliacion')
   }
 
