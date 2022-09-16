@@ -84,25 +84,33 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'cvaloracionofertamod/' + bandera, bodyupdate)
   }
 
-  ConsultaValoracionOferta(BANDERA:string, CD_CNSCTVO:string){
-    return this.http.get<any[]>(this.url_servidor+'conscvaloracionoferta/'+BANDERA+'/'+CD_CNSCTVO)
+  ConsultaValoracionOferta(BANDERA: string, CD_CNSCTVO: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscvaloracionoferta/' + BANDERA + '/' + CD_CNSCTVO)
   }
 
-  ConsultaCiudades(Bandera: string){
+  ConsultaCiudades(Bandera: string) {
     return this.http.get<any[]>(this.url_servidor + 'consciudadesactivs/' + Bandera)
   }
 
-  InsertaCiudadOferta(Bandera: string, Datos: any){
+  InsertaCiudadOferta(Bandera: string, Datos: any) {
     return this.http.post<any[]>(this.url_servidor + 'ciudadofertamod/' + Bandera, Datos)
   }
 
-  ConsultaUltimasOfertas(Bandera: string, idoferta: string, idproducto: string, idproductor: string, Datos: any){
+  ConsultaUltimasOfertas(Bandera: string, idoferta: string, idproducto: string, idproductor: string, Datos: any) {
     return this.http.post<any[]>(this.url_servidor + 'consaofertas/' + Bandera + '/' + idoferta + '/' + idproducto + '/' + idproductor, Datos)
 
   }
 
-  PublicarOferta(Bandera:string, Body: any){
-    return this.http.post<any>(this.url_servidor+'aestadofertamod/'+Bandera, Body)
+  PublicarOferta(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'aestadofertamod/' + Bandera, Body)
+  }
+
+  InsertarCoordenadas(BANDERA: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'cordenadassectormod/' + BANDERA, Body)
+  }
+
+  ConsultaCoordenada(BANDERA:string,ID_SCTOR_OFRTA:string){
+    return this.http.get<any[]>(this.url_servidor+'consccordenadasector/'+BANDERA+'/'+ID_SCTOR_OFRTA)
   }
 
 }
