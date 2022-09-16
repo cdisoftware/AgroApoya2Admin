@@ -5,10 +5,64 @@
         <div class="row justify-content-center">
             <img src="./../../../../../assets/ImagenesAgroApoya2Admin/barra5.png" style="width: 65%;">
         </div>
-    </div>
-    <div class="row justify-content-center">
-        <label class="col-sm-3"><small><b><i>Producto : {{Producto}}</i></b></small></label>
-        <label class="col-sm-3"><small><b><i>Unidades : {{Unidades}}</i></b></small></label>
-        <label class="col-sm-3"><small><b><i>Empaque : {{Empaque}}</i></b></small></label>
+        <div class="row justify-content-center br">
+            <div class="col-sm-3"><label class="Llave">Producto : </label><label>{{Producto}}</label></div>
+            <div class="col-sm-3"><label class="Llave">Unidades : </label><label>{{Unidades}}</label></div>
+            <div class="col-sm-3"><label class="Llave">Empaque : </label><label>{{Empaque}}</label></div>
+        </div>
+        <div class="row br">
+            <div class="col-sm-4">
+                <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Concepto"
+                    [(ngModel)]="Concepto" name="Concepto">
+            </div>
+            <div class="col-sm-4">
+                <select name="TipoConcepto" id="TipoConcepto" #TipoConcepto class="form-control form-control-sm textBox"
+                (change)='SelTConcepto(TipoConcepto.value)'>
+                    <option value="0">Tipo Concepto</option>
+                    <option value="1">Unitario</option>
+                    <option value="2">Total</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Valor"
+                    [(ngModel)]="VTotal" name="VTotal">
+            </div>
+        </div>
+        <div class="row justify-content-center br">
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-agro-prin col-sm-12" (click)="AsociarConcepto()">Asociar
+                    Concepto</button>
+            </div>
+        </div>
+        <hr>
+        <div class="br row justify-content-center">
+            <table class="col-sm-10 TableAgro">
+                <tr>
+                    <th>Concepto</th>
+                    <th>Tipo Valor</th>
+                    <th>Valor</th>
+                    <th>Eliminar</th>
+                </tr>
+                <tr *ngFor="let Costo of ArrayCostos">
+                    <td>{{Costo.NOM_TPO_COSTEO}}</td>
+                    <td>{{Costo.NOM_TPO_VLOR}}</td>
+                    <td>{{Costo.VLOR}}</td>
+                    <td>
+                        <button class="SinEstilo">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Cerrar.png">
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="row justify-content-center br">
+            <div class="col-sm-3"><label class="Llave">Valor Total : </label><label>{{ValorTotal}}</label></div>
+        </div>
+        <hr>
+        <div class="row justify-content-center br">
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-agro-prin col-sm-12" (click)="Siguiente()">Siguiente</button>
+            </div>
+        </div>
     </div>
 </div>

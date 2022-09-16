@@ -20,6 +20,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { PlantillascorreoComponent } from './usuario/components/plantillascorreo/plantillascorreo.component'
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/costeo.component';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { GoogleMapsModule } from '@angular/google-maps';
     ConciliacionComponent,
     ValoracionComponent, 
     LoginComponent,
-    PlantillascorreoComponent
+    PlantillascorreoComponent,
+    CosteoComponent
   ],
   imports: [
     BrowserModule,

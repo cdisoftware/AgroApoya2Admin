@@ -105,4 +105,8 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor+'aestadofertamod/'+Bandera, Body)
   }
 
+  ConsultaCosteo(Bandera: string, idoferta: string){
+    return this.http.get<any[]>(this.url_servidor + 'conscosteoferta/' + Bandera + '/' + idoferta)
+  }
+
 }
