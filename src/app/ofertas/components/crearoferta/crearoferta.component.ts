@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MetodosglobalesService } from './../../../core/metodosglobales.service'
 import { CrearofertaService } from './../../../core/crearoferta.service'
 import { ValorarofertaService } from './../../../core/valoraroferta.service'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-crearoferta',
@@ -49,10 +50,12 @@ export class CrearofertaComponent implements OnInit {
   IdProductor: string = '';
   EJornada: string = '0';
   ArrayJornada: any = [];
+  Respuesta: string  = '';
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
     private ServiciosOferta: CrearofertaService,
+    private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService
   ) { }
 
@@ -161,7 +164,7 @@ export class CrearofertaComponent implements OnInit {
 
 
 
-  Guardar() {
+  Guardar(ModalRespuesta : any) {
     const datosinsert = {
       CD_PRDCTO: this.IdProducto,
       UND_EMPQUE: '0',
@@ -190,8 +193,10 @@ export class CrearofertaComponent implements OnInit {
     }
     //console.log(datosinsert)
     //console.log(this.IdEmpaque)
-    this.ServiciosOferta.CrearOferta('3', this.IdEmpaque,datosinsert).subscribe(Resultado => {
-      console.log(Resultado)
+    this.ServiciosOferta.CrearOferta('3', this.IdEmpaque, datosinsert).subscribe(Resultado => {
+      this.Respuesta = Resultado.toString();
+      this.modalService.dismissAll();
+      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     })
 
   }
