@@ -18,8 +18,8 @@ export class MetodosglobalesService {
   public url_DesarrolloCDI = 'http://190.147.38.91:1007/Agroapoya2/';
   public url_ProduccionCDI = 'http://190.147.38.91:1007/Agroapoya2/';
   
-  public url_DesarolloImg = 'http://190.147.38.91:8089/';
-  public url_ProduccionImg = 'http://190.147.38.91:8089/';
+  public url_DesarolloImg = 'http://190.147.38.91:8089/ImagenesOfertas/';
+  public url_ProduccionImg = 'http://190.147.38.91:8089/ImagenesOfertas/';
 
   SeleccionAmbiente() {
     if (this.ambientedetrabajo == '1') {

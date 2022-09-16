@@ -180,10 +180,12 @@
         <div class="modal-body">
             <div class="row br">
                 <div class="col-sm-6">
+                    <label class="col-sm-12 Llave">Caracterización</label>
                     <textarea name="ECaracteriza" id="ECaracteriza" class="col-sm-12 form-control form-control-sm textArea"
                         placeholder="Caracterización" rows="3" [(ngModel)]="ECaracteriza"></textarea>
                 </div>
                 <div class="col-sm-6">
+                    <label class="col-sm-12 Llave">Presentación</label>
                     <select name="EEmpaque" id="EEmpaque" #eempaque class="form-control form-control-sm textBox"
                     (change)='SelEEmpaque(eempaque.value)'>
                         <option value="0">Presentación</option>
@@ -195,18 +197,22 @@
             </div>
             <div class="row br">
                 <div class="col-sm-6">
+                    <label class="col-sm-12 Llave">Valor Unidad</label>
                     <input type="text" class="col-sm-12 form-control form-control-sm textBox" placeholder="Valor Unidad" name="EVUnidad" [(ngModel)]="EVUnidad">
                 </div>
                 <div class="col-sm-6">
+                    <label class="col-sm-12 Llave">Unidades Disponibles</label>
                     <input type="text" class="col-sm-12 form-control form-control-sm textBox" placeholder="Unidades Disponibles" name="EUnidadesDis" [(ngModel)]="EUnidadesDis">
                 </div>
             </div>
             <div class="row br">
                 <div class="col-sm-6">
+                    <label class="col-sm-12 Llave">Fecha Recogida</label>
                     <input type="text" class="col-sm-12 form-control form-control-sm textBox" placeholder="Fecha recogida" name="EFechaRecogida" [(ngModel)]="EFechaRecogida"
                         onfocus="(this.type='date')" onblur="(this.type='date')" name="EFechaRecogida">
                 </div>
                 <div class="col-sm-6">
+                    <label class="col-sm-12 Llave">Jornada</label>
                     <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox"
                     (change)='SelEJornada(ejornada.value)'>
                         <option value="0">Jornada</option>
@@ -218,10 +224,12 @@
             </div>
             <div class="row br">
                 <div class="col-sm-6">
+                    <label class="col-sm-12 Llave">Descripción Producto</label>
                     <textarea  class="col-sm-12 form-control form-control-sm textArea"
                         placeholder="Descripción Producto" rows="3" name="EDescripcion" [(ngModel)]="EDescripcion"></textarea>
                 </div>
                 <div class="col-sm-6">
+                    <label class="col-sm-12 Llave">Observación Edición</label>
                     <textarea  class="col-sm-12 form-control form-control-sm textArea"
                         placeholder="Observación Edición" name="EOpservacion" [(ngModel)]="EObservacion" rows="3"></textarea>
                 </div>

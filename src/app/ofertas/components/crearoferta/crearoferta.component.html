@@ -4,8 +4,27 @@
         <br>
         <h1>Crear Oferta</h1>
         <div class="row">
+            <div class="col-sm-12">
+                <label class="col-sm-12 Llave">Productor</label>
+                <ng-autocomplete [data]="ArrayProductor" [searchKeyword]="productor" placeholder="Productor"
+                    (selected)='selectProductor($event)' (inputCleared)="LimpiarCampos('pt')"
+                    [itemTemplate]="templateResPr" [notFoundTemplate]="templateVacioPr">
+                </ng-autocomplete>
+
+                <ng-template #templateResPr let-item id="templateResPr">
+                    <a [innerHTML]="item.nombre_persona"></a>
+                </ng-template>
+
+                <ng-template #templateVacioPr let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-sm-6 br">
-                <select class="form-control form-control-sm textBox" #SelectProducto id="SelectProducto" (change)='SelProducto(SelectProducto.value)'>
+                <label class="col-sm-12 Llave">Producto</label>
+                <select class="form-control form-control-sm textBox" #SelectProducto id="SelectProducto"
+                    (change)='SelProducto(SelectProducto.value)'>
                     <option value="0">Producto(Obligatorio)</option>
                     <option *ngFor="let Producto of ArrayProductos;" [value]="Producto.id_producto"
                         [selected]="Producto.id_producto == IdProducto">
@@ -14,7 +33,9 @@
                 </select>
             </div>
             <div class="col-sm-6 br">
-                <select class="form-control form-control-sm textBox" #SelectEmpaque id="SelectEmpaque" (change)='SelEmpaque(SelectEmpaque.value)'>
+                <label class="col-sm-12 Llave">Presentación Empaque</label>
+                <select class="form-control form-control-sm textBox" #SelectEmpaque id="SelectEmpaque"
+                    (change)='SelEmpaque(SelectEmpaque.value)'>
                     <option value="0">Presentación Empaque(Obligatorio)</option>
                     <option *ngFor="let Empaque of ArrayEmpaque;" [value]="Empaque.id_empaque"
                         [selected]="Empaque.id_empaque == IdEmpaque">
@@ -25,7 +46,9 @@
         </div>
         <div class="row">
             <div class="col-sm-6 br">
-                <select class="form-control form-control-sm textBox" #SelectCondicion id="SelectCondicion" (change)='SelCondicion(SelectCondicion.value)'>
+                <label class="col-sm-12 Llave">Condición</label>
+                <select class="form-control form-control-sm textBox" #SelectCondicion id="SelectCondicion"
+                    (change)='SelCondicion(SelectCondicion.value)'>
                     <option value="0">Condición(Obligatorio)</option>
                     <option *ngFor="let Condicion of ArrayCondicion;" [value]="Condicion.id_condicion"
                         [selected]="Condicion.id_condicion == IdCondicion">
@@ -34,7 +57,9 @@
                 </select>
             </div>
             <div class="col-sm-6 br">
-                <select class="form-control form-control-sm textBox" #SelectTamano id="SelectTamano" (change)='SelTamano(SelectTamano.value)'>
+                <label class="col-sm-12 Llave">Tamaño</label>
+                <select class="form-control form-control-sm textBox" #SelectTamano id="SelectTamano"
+                    (change)='SelTamano(SelectTamano.value)'>
                     <option value="0">Tamaño(Obligatorio)</option>
                     <option *ngFor="let Tamano of ArrayTamano;" [value]="Tamano.id_tamano"
                         [selected]="Tamano.id_tamano == IdCondicion">
@@ -45,45 +70,57 @@
         </div>
         <div class="row">
             <div class="col-sm-12 br">
-                <textarea required="required" name="caracteristicas" id="caracteristicas" class="form-control form-control-sm textArea" cols="30"
-                    rows="3"
-                    placeholder="Caracteristicas que el comprador debe saber de tu producto (Obligatorio)" [(ngModel)]="DesProducto"></textarea>
+                <label class="col-sm-12 Llave">Caracteristicas</label>
+                <textarea required="required" name="caracteristicas" id="caracteristicas"
+                    class="form-control form-control-sm textArea" cols="30" rows="3"
+                    placeholder="Caracteristicas que el comprador debe saber de tu producto (Obligatorio)"
+                    [(ngModel)]="DesProducto"></textarea>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6 br">
-                <input type="number" class="form-control form-control-sm textBox" placeholder="Valor unidad empaque (Obligatorio)"
-                    required="required" [(ngModel)]="ValorOferta" name="ValorOferta">
+                <label class="col-sm-12 Llave">Valor unidad empaque</label>
+                <input type="number" class="form-control form-control-sm textBox"
+                    placeholder="Valor unidad empaque (Obligatorio)" required="required" [(ngModel)]="ValorOferta"
+                    name="ValorOferta">
             </div>
             <div class="col-sm-6 br">
-                <input type="numebr" class="form-control form-control-sm textBox" placeholder="Unidades (Obligatorio)" required="required" [(ngModel)]="Unidades" name="Unidades" (change)="CalculaValorTotal();">
+                <label class="col-sm-12 Llave">Unidades</label>
+                <input type="numebr" class="form-control form-control-sm textBox" placeholder="Unidades (Obligatorio)"
+                    required="required" [(ngModel)]="Unidades" name="Unidades" (change)="CalculaValorTotal();">
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12 br">
-                <label for="ValorTOferta" class="Valor">Valor Total Oferta</label>
+                <label class="col-sm-12 Llave">Valor Total Oferta</label>
                 <input type="number" class="form-control form-control-sm textBox" id="ValorTOferta"
-                    placeholder="Valor Total Oferta (Obligatorio)" disabled [(ngModel)]="ValorTotalOferta" name="ValorTotalOferta">
+                    placeholder="Valor Total Oferta (Obligatorio)" disabled [(ngModel)]="ValorTotalOferta"
+                    name="ValorTotalOferta">
             </div>
         </div>
 
         <div class="row">
-            <label for="VigenciaOferta" class="Valor">Vigencia Oferta Desde</label>
+            <label class="col-sm-12 Llave">Vigencia Oferta Desde</label>
             <div class="col-sm-6 br">
-                <input type="date" class="form-control form-control-sm textBox" id="VigenciaOferta" [(ngModel)]="Vigencia" name="Vigencia">
+                <input type="date" class="form-control form-control-sm textBox" id="VigenciaOferta"
+                    [(ngModel)]="Vigencia" name="Vigencia">
             </div>
             <div class="col-sm-6 br">
-                <select name="Jornada" id="Jornada" class="form-control form-control-sm textBox">
-                    <option value="0">Jornada (Obligatorio)</option>
-                    <option value="1">Mañana</option>
-                    <option value="2">Tarde</option>
-                    <option value="3">Jornada Completa</option>
-                </select>
+                <label class="col-sm-12 Llave">Jornada</label>
+                <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox"
+                    (change)='SelEJornada(ejornada.value)'>
+                        <option value="1">Jornada</option>
+                        <option *ngFor="let jornada of ArrayJornada" [value]="jornada.CD_JRNDA" >
+                            {{jornada.DESCRIPCION}}
+                        </option>
+                    </select>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6 br">
-                <select name="SelectDepa"  #SelectDepa id="SelectDepa" class="form-control form-control-sm textBox" (change)='SelDepa(SelectDepa.value)'>
+                <label class="col-sm-12 Llave">Departamento</label>
+                <select name="SelectDepa" #SelectDepa id="SelectDepa" class="form-control form-control-sm textBox"
+                    (change)='SelDepa(SelectDepa.value)'>
                     <option value="0">Departamento (Obligatorio)</option>
                     <option *ngFor="let Departamento of ArrayDepa;" [value]="Departamento.CD_RGION"
                         [selected]="Departamento.CD_RGION == IdDepartamento">
@@ -92,7 +129,9 @@
                 </select>
             </div>
             <div class="col-sm-6 br">
-                <select name="Ciudad" id="Ciudad" class="form-control form-control-sm textBox" #SelectCiud (change)='SelCiud(SelectCiud.value)'>
+                <label class="col-sm-12 Llave">Ciudad</label>
+                <select name="Ciudad" id="Ciudad" class="form-control form-control-sm textBox" #SelectCiud
+                    (change)='SelCiud(SelectCiud.value)'>
                     <option value="0">Ciudad (Obligatorio)</option>
                     <option *ngFor="let Ciudad of ArrayCiud;" [value]="Ciudad.CD_MNCPIO"
                         [selected]="Ciudad.CD_MNCPIO == IdCiudad">
@@ -103,7 +142,8 @@
         </div>
         <div class="row">
             <div class="col-sm-12 br">
-                <input type="text" class="form-control form-control-sm textBox" placeholder="Ubicación Parcela">
+                <label class="col-sm-12 Llave">Ubicación Parcela</label>
+                <input type="text" class="form-control form-control-sm textBox" placeholder="Ubicación Parcela" [(ngModel)]="UbicacionPar" name="UbicacionPar">
             </div>
         </div>
         <br>
@@ -119,11 +159,12 @@
         <hr>
         <br>
         <div class="row br justify-content-center">
-            <div class="col-sm-2 centraimagen" >
+            <label class="col-sm-12 Llave">Selecciona las imagenes de tu producto</label>
+            <br><br>
+            <div class="col-sm-2 centraimagen">
                 <div class="image-upload">
                     <label for="file-input1">
-                        <img id="Imagen1" title="Selecciona una imagen" 
-                            [src]="Imagen1" style="border-radius: 10px;">
+                        <img id="Imagen1" title="Selecciona una imagen" [src]="Imagen1" style="border-radius: 10px;">
                     </label>
                     <input name="file-input1" id="file-input1" type="file" (change)="CargaImagen($event, '1')" />
                 </div>
@@ -131,17 +172,15 @@
             <div class="col-sm-2 centraimagen">
                 <div class="image-upload">
                     <label for="file-input2">
-                        <img id="Imagen2" title="Selecciona una imagen" 
-                            [src]="Imagen2" style="border-radius: 10px;">
+                        <img id="Imagen2" title="Selecciona una imagen" [src]="Imagen2" style="border-radius: 10px;">
                     </label>
-                    <input name="file-input2" id="file-input2" type="file" (change)="CargaImagen($event,'2')"/>
+                    <input name="file-input2" id="file-input2" type="file" (change)="CargaImagen($event,'2')" />
                 </div>
             </div>
             <div class="col-sm-2 centraimagen">
                 <div class="image-upload">
                     <label for="file-input3">
-                        <img id="Imagen3" title="Selecciona una imagen" 
-                            [src]="Imagen3" style="border-radius: 10px;">
+                        <img id="Imagen3" title="Selecciona una imagen" [src]="Imagen3" style="border-radius: 10px;">
                     </label>
                     <input name="file-input3" id="file-input3" type="file" (change)="CargaImagen($event, '3')" />
                 </div>
@@ -149,8 +188,7 @@
             <div class="col-sm-2 centraimagen">
                 <div class="image-upload">
                     <label for="file-input4">
-                        <img id="Imagen4" title="Selecciona una imagen" 
-                            [src]="Imagen4" style="border-radius: 10px;">
+                        <img id="Imagen4" title="Selecciona una imagen" [src]="Imagen4" style="border-radius: 10px;">
                     </label>
                     <input name="file-input4" id="file-input4" type="file" (change)="CargaImagen($event, '4')" />
                 </div>
@@ -158,8 +196,7 @@
             <div class="col-sm-2 centraimagen">
                 <div class="image-upload">
                     <label for="file-input5">
-                        <img id="Imagen5" title="Selecciona una imagen" 
-                            [src]="Imagen5" style="border-radius: 10px;">
+                        <img id="Imagen5" title="Selecciona una imagen" [src]="Imagen5" style="border-radius: 10px;">
                     </label>
                     <input name="file-input5" id="file-input5" type="file" (change)="CargaImagen($event, '5')" />
                 </div>

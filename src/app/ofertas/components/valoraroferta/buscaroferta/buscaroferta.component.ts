@@ -23,7 +23,7 @@ export class BuscarofertaComponent implements OnInit {
   Productor: string = '';
   IdProducto: string = '0';
   IdProductor: string = '0';
-  IdEstado: string = '1';
+  IdEstado: string = '0';
   FechaOferta: string = '';
   ValidaBusqueda: string = '0';
   //Variables Detalle Oferta
@@ -160,6 +160,7 @@ export class BuscarofertaComponent implements OnInit {
       descripcion: this.mcObservacion,
       estado: 6
     }
+    console.log(datosCerrar)
     this.ServiciosValorar.ModificaEstadoOferta('3', datosCerrar).subscribe(Resultado => {
       console.log(Resultado)
       this.Respuesta = Resultado.toString();
