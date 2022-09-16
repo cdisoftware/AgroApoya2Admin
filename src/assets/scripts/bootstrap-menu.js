@@ -1,9 +1,3 @@
-function toggleSidebar(){
-    alert('siiii')
-}
-
-
-
 $(document).ready(function(){
 (function($) {
 
