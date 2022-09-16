@@ -372,6 +372,6 @@ export class ValoracionComponent implements OnInit {
   }
 
   Volver(){
-    this.rutas.navigateByUrl('/home/transportista');
+    this.rutas.navigateByUrl('/home/costeo');
   }
 }
