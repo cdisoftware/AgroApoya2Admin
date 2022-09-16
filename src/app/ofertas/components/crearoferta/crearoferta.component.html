@@ -100,8 +100,8 @@
         </div>
 
         <div class="row">
-            <label class="col-sm-12 Llave">Vigencia Oferta Desde</label>
             <div class="col-sm-6 br">
+                <label class="col-sm-12 Llave">Vigencia Oferta Desde</label>
                 <input type="date" class="form-control form-control-sm textBox" id="VigenciaOferta"
                     [(ngModel)]="Vigencia" name="Vigencia">
             </div>
@@ -109,11 +109,11 @@
                 <label class="col-sm-12 Llave">Jornada</label>
                 <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox"
                     (change)='SelEJornada(ejornada.value)'>
-                        <option value="1">Jornada</option>
-                        <option *ngFor="let jornada of ArrayJornada" [value]="jornada.CD_JRNDA" >
-                            {{jornada.DESCRIPCION}}
-                        </option>
-                    </select>
+                    <option value="1">Jornada</option>
+                    <option *ngFor="let jornada of ArrayJornada" [value]="jornada.CD_JRNDA">
+                        {{jornada.DESCRIPCION}}
+                    </option>
+                </select>
             </div>
         </div>
         <div class="row">
@@ -143,7 +143,8 @@
         <div class="row">
             <div class="col-sm-12 br">
                 <label class="col-sm-12 Llave">Ubicación Parcela</label>
-                <input type="text" class="form-control form-control-sm textBox" placeholder="Ubicación Parcela" [(ngModel)]="UbicacionPar" name="UbicacionPar">
+                <input type="text" class="form-control form-control-sm textBox" placeholder="Ubicación Parcela"
+                    [(ngModel)]="UbicacionPar" name="UbicacionPar">
             </div>
         </div>
         <br>
