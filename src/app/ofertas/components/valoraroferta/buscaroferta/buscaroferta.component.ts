@@ -50,6 +50,7 @@ export class BuscarofertaComponent implements OnInit {
   EJornada: string = '0';
   ArrayJornada: any = [];
   Respuesta: string = '';
+  NomEstado: string = '';
 
 
   constructor(
@@ -227,6 +228,7 @@ export class BuscarofertaComponent implements OnInit {
       this.Direccion = Resultado[0].coordenadas_parcela;
       this.ValorTotal = Resultado[0].VR_TOTAL_OFRTA;
       this.IdProducto = Resultado[0].Producto;
+      this.NomEstado = Resultado[0].Nombre_estado;
       this.ImagenOferta = this.SeriviciosGenerales.RecuperaRutaImagenes() + Resultado[0].IMAGEN;
       this.SeriviciosGenerales.CrearCookie('IDO', this.IdOferta);
       this.SeriviciosGenerales.CrearCookie('IDP', this.IdProducto);
