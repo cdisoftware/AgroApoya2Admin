@@ -22,6 +22,7 @@ export class CosteoComponent implements OnInit {
   ValorTotal: string = '0';
   IdOferta: string = '';
   IdTipoConcepto: string = '0';
+  ArrayConceptos: any = [];
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -36,12 +37,19 @@ export class CosteoComponent implements OnInit {
     this.IdOferta = this.cookies.get('IDO')
     this.ConsultaOferta();
     this.ConsultaCosteo();
+    this.ConsultaConceptos()
   }
 
   ConsultaCosteo() {
     this.ServiciosValorar.ConsultaCosteo('1', this.IdOferta).subscribe(Resultado => {
       this.ArrayCostos = Resultado;
       console.log(Resultado)
+    })
+  }
+
+  ConsultaConceptos(){
+    this.ServiciosValorar.ConsultaConceptos('1').subscribe(Resultado => {
+      this.ArrayConceptos = Resultado;
     })
   }
 
@@ -64,6 +72,10 @@ export class CosteoComponent implements OnInit {
 
   Siguiente() {
     this.rutas.navigateByUrl('/home/valoracion')
+  }
+
+  Atras() {
+    this.rutas.navigateByUrl('/home/transportista')
   }
 
   SelTConcepto(tipoconcepto : string){
