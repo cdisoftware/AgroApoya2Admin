@@ -11779,7 +11779,7 @@ h5,
     position: relative;
     top: 0;
     left: 0;
-    height: 100vh;
+    height: auto;
     z-index: 999;
 }
 
