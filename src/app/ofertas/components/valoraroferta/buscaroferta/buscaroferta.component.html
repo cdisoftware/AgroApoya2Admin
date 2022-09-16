@@ -9,7 +9,8 @@
         <div class="row">
             <div class="col-sm-4 br">
                 <ng-autocomplete [data]="ArrayProductos" [searchKeyword]="producto" placeholder="Producto"
-                    (selected)='selectProducto($event)' (inputCleared)="LimpiarCampos('pd')" [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio">
+                    (selected)='selectProducto($event)' (inputCleared)="LimpiarCampos('pd')"
+                    [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio">
                 </ng-autocomplete>
 
                 <ng-template #templateRes let-item id="templateRes">
@@ -23,8 +24,8 @@
 
             <div class="col-sm-4 br">
                 <ng-autocomplete [data]="ArrayProductor" [searchKeyword]="productor" placeholder="Productor"
-                    (selected)='selectProductor($event)' (inputCleared)="LimpiarCampos('pt')" [itemTemplate]="templateResPr"
-                    [notFoundTemplate]="templateVacioPr">
+                    (selected)='selectProductor($event)' (inputCleared)="LimpiarCampos('pt')"
+                    [itemTemplate]="templateResPr" [notFoundTemplate]="templateVacioPr">
                 </ng-autocomplete>
 
                 <ng-template #templateResPr let-item id="templateResPr">
@@ -37,8 +38,8 @@
             </div>
             <div class="col-sm-4 br">
                 <ng-autocomplete [data]="ArrayEstado" [searchKeyword]="estado" placeholder="Estado"
-                    (selected)='selectEstado($event)' (inputCleared)="LimpiarCampos('es')" [itemTemplate]="templateResEs"
-                    [notFoundTemplate]="templateVacioPr">
+                    (selected)='selectEstado($event)' (inputCleared)="LimpiarCampos('es')"
+                    [itemTemplate]="templateResEs" [notFoundTemplate]="templateVacioPr">
                 </ng-autocomplete>
 
                 <ng-template #templateResEs let-item id="templateResEs">
@@ -54,7 +55,7 @@
         <div class="row br">
             <div class="col-sm-4 br">
                 <input placeholder="Fecha oferta" type="text" class="form-control form-control-sm textBox"
-                    onfocus="(this.type='date')" onblur="(this.type='date')"  [(ngModel)]="FechaOferta"
+                    onfocus="(this.type='date')" onblur="(this.type='date')" [(ngModel)]="FechaOferta"
                     name="FechaOferta">
             </div>
         </div>
@@ -169,6 +170,14 @@
                                 <label class="Valor">{{ValorTotal}}</label>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="Llave">Estado oferta:</label>
+                            </div>
+                            <div class="col-sm-9">
+                                <label class="Valor">{{NomEstado}}</label>
+                            </div>
+                        </div>
                         <br>
                     </div>
 
@@ -216,24 +225,26 @@
             <div class="row br">
                 <div class="col-sm-12">
                     <label class="col-sm-12 Llave">Caractrización</label>
-                    <textarea name="ECaracteriza" id="ECaracteriza" class="col-sm-12 form-control form-control-sm textArea"
-                        placeholder="Caracterización" rows="3" [(ngModel)]="ECaracteriza"></textarea>
+                    <textarea name="ECaracteriza" id="ECaracteriza"
+                        class="col-sm-12 form-control form-control-sm textArea" placeholder="Caracterización" rows="3"
+                        [(ngModel)]="ECaracteriza"></textarea>
                 </div>
             </div>
             <div class="row br">
                 <div class="col-sm-12">
                     <label class="col-sm-12 Llave">Fecha Recogida</label>
-                    <input type="text" class="col-sm-12 form-control form-control-sm textBox" placeholder="Fecha recogida"
-                        onfocus="(this.type='date')" onblur="(this.type='date')" [(ngModel)]="EFechaRecogida" name="EFechaRecogida">
+                    <input type="text" class="col-sm-12 form-control form-control-sm textBox"
+                        placeholder="Fecha recogida" onfocus="(this.type='date')" onblur="(this.type='date')"
+                        [(ngModel)]="EFechaRecogida" name="EFechaRecogida">
                 </div>
             </div>
             <div class="row br">
                 <div class="col-sm-12">
                     <label class="col-sm-12 Llave">Jornada</label>
                     <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox"
-                    (change)='SelEJornada(ejornada.value)'>
+                        (change)='SelEJornada(ejornada.value)'>
                         <option value="1">Jornada</option>
-                        <option *ngFor="let jornada of ArrayJornada" [value]="jornada.CD_JRNDA" >
+                        <option *ngFor="let jornada of ArrayJornada" [value]="jornada.CD_JRNDA">
                             {{jornada.DESCRIPCION}}
                         </option>
                     </select>
@@ -241,7 +252,8 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptaEditar(ModalRespuesta)">Guardar</button>
+            <button type="button" class="btn btn-agro-prin col-sm-2"
+                (click)="AceptaEditar(ModalRespuesta)">Guardar</button>
         </div>
         <br>
     </ng-template>
@@ -254,12 +266,14 @@
             <div class="row br">
                 <div class="col-sm-12">
                     <textarea [(ngModel)]="mcObservacion" name="mcObservacion" id="mcObservacion"
-                        class="Col-sm-12 form-control form-control-sm textArea" placeholder="Observación" rows="3"></textarea>
+                        class="Col-sm-12 form-control form-control-sm textArea" placeholder="Observación"
+                        rows="3"></textarea>
                 </div>
             </div>
         </div>
         <div class="row justify-content-center">
-            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptaCerrar(ModalRespuesta)">Guardar</button>
+            <button type="button" class="btn btn-agro-prin col-sm-2"
+                (click)="AceptaCerrar(ModalRespuesta)">Guardar</button>
         </div>
         <br>
     </ng-template>
