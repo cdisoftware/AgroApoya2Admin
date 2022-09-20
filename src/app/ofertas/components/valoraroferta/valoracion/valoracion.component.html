@@ -5,119 +5,124 @@
     <div class="row justify-content-center br ">
         <img src="./../../../../../assets/ImagenesAgroApoya2Admin/barra5.png" style="width: 65%;">
     </div>
-    <div class="row justify-content-center br" *ngFor="let oferta of DataOferta">
-        <div class="row">
-            <div class="col-sm-3 mt-2">
-                <img src={{oferta.IMAGEN}} class="col-sm-12">
+    <div class="row justify-content-center br tarjetadetalle" *ngFor="let oferta of DataOferta">
+        <div class="row m-2">
+            <div class="col-sm-3">
+                <img src={{RutaImagen+oferta.IMAGEN}} class="col-sm-12 ImgOferta">
             </div>
             <div class="col-sm-9">
-                <br>
                 <div class="row">
-                    <div class="col-sm-3">
-                        <label class="Llave">Nombre productor:</label>
-                    </div>
-                    <div class="col-sm-9">
-                        <label class="Valor">{{oferta.Nombre_productor}}</label>
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave TextMay">Codigo oferta:&nbsp;</label><label class="ValorIDOfer"><strong>{{SessionOferta}}</strong></label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-3">
-                        <label class="Llave">Producto:</label>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Producto:&nbsp;</label><label class="Valor">{{oferta.Nombre_Producto}}</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-9">
-                        <label class="Valor">{{oferta.Nombre_Producto}}</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <label class="Llave">Tamaño:</label>
-                    </div>
-                    <div class="col-sm-9">
-                        <label class="Valor">{{oferta.Tamano}}</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <label class="Llave">Presentacion empaque:</label>
-                    </div>
-                    <div class="col-sm-9">
-                        <label class="Valor">{{oferta.Descripcion_empaque}}</label>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Presentación empaque:&nbsp;</label><label class="Valor">{{oferta.Descripcion_empaque}}</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-3">
-                        <label class="Llave">Descripción producto:</label>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Tamaño:&nbsp;</label><label class="Valor">{{oferta.Nmbre_tamano}}</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-9">
-                        <label class="Valor">{{oferta.caracteristicas}}</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <label class="Llave">Caracterización:</label>
-                    </div>
-                    <div class="col-sm-9">
-                        <label class="Valor">{{oferta.caracterizacion}}</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <label class="Llave">Valor unidad empaque:</label>
-                    </div>
-                    <div class="col-sm-9">
-                        <label class="Valor">{{oferta.VR_UNDAD_EMPQUE}}</label>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Condición entrega:&nbsp;</label> <label class="Valor">{{oferta.Tamano}}</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-3">
-                        <label class="Llave">Unidades disponibles:</label>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Valor unidad:&nbsp;</label><label class="Valor">{{oferta.VR_UNDAD_EMPQUE}}</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-9">
-                        <label class="Valor">{{oferta.Unidades_disponibles}}</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-3">
-                        <label class="Llave">Fecha recogida:</label>
-                    </div>
-                    <div class="col-sm-2">
-                        <label class="Valor">{{oferta.fecha_recogida}}</label>
-                    </div>
-                    <div class="col-sm-1">
-                        <label class="Llave">Jornada:</label>
-                    </div>
-                    <div class="col-sm-3">
-                        <label class="Valor">{{oferta.Nombre_jornada}}</label>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Unidades disponibles:&nbsp;</label><label class="Valor">{{oferta.Unidades_disponibles}}</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-3">
-                        <label class="Llave">Direccion o coordenadas:</label>
+                    <div class="col-sm-6">
+                        <label class="Llave">Valor total oferta:&nbsp;</label><label class="Valor">{{oferta.VR_TOTAL_OFRTA}}</label>
                     </div>
-                    <div class="col-sm-9">
-                        <label class="Valor">{{oferta.Ubicacion_parsela +' ('+oferta.coordenadas_parcela}})</label>
+                    <div class="col-sm-6">
+                        <label class="Llave">Valor costeo:&nbsp;</label><label class="Valor">{{oferta.vlor_flte_xunidad}}</label>
+                    </div>
+                </div>
+                <hr class="hrSinEstilo">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="Llave">Descripción producto:&nbsp;</label><label class="Valor">{{oferta.caracteristicas}}</label>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-3">
-                        <label class="Llave">Valor total oferta:</label>
-                    </div>
-                    <div class="col-sm-9">
-                        <label class="Valor">{{oferta.VR_TOTAL_OFRTA}}</label>
+                    <div class="col-sm-12">
+                        <label class="Llave">Caracterización:&nbsp;</label><label class="Valor">{{oferta.caracterizacion}}</label>
                     </div>
                 </div>
-                <br>
-            </div>
-            <hr>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <label class="col-sm-12 Llave">Valor pactado productor</label>
-                <h3>{{oferta.vlor_pactado_productor}}</h3>
-            </div>
-            <div class="col-sm-6">
-                <label class="col-sm-12 Llave">Valor costeo</label>
-                <h3>{{oferta.vlor_flte_xunidad}}</h3>
+                <hr class="hrSinEstilo">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Fecha recogida:&nbsp;</label><label class="Valor">{{oferta.fecha_recogida}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Jornada:&nbsp;</label><label class="Valor">{{oferta.Nombre_jornada}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="Llave">Nombre productor:&nbsp;</label><label class="Valor">{{oferta.Nombre_productor}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Ubicación:&nbsp;</label><label class="Valor">{{oferta.Ubicacion_parsela +' ('+oferta.coordenadas_parcela}})</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -3,6 +3,7 @@ import { NgbAccordionConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-boot
 import { CookieService } from 'ngx-cookie-service';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 import { Router } from '@angular/router'
+import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 
 @Component({
   selector: 'app-valoracion',
@@ -57,10 +58,11 @@ export class ValoracionComponent implements OnInit {
   ArrayTipoComGCon: any = [];
   SessionIdUsuario: any;
   DataSectores: any[];
+  RutaImagen: string;
 
 
 
-  constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies : CookieService, public rutas : Router) {
+  constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies : CookieService, public rutas : Router, private SeriviciosGenerales : MetodosglobalesService) {
     ConfigAcord.closeOthers = true;
   }
 
@@ -94,6 +96,7 @@ export class ValoracionComponent implements OnInit {
     this.MuestraVigencial='0';
     this.MuestraGrupal='0';
     this.MuestraIndividual='0';
+    this.RutaImagen=this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');
     this.ConsultaDetalleOferta();
@@ -103,6 +106,7 @@ export class ValoracionComponent implements OnInit {
 
   ConsultaDetalleOferta() {
     this.serviciosvaloracion.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
+      console.log(ResultConsu)
       this.DataOferta = ResultConsu;
     })
   }

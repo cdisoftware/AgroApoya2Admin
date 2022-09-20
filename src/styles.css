@@ -28,6 +28,23 @@ h2 {
     color: #575A5F;
 }
 
+.ValorIDOfer {
+    color: #7ccc64;
+}
+
+.hrSinEstilo {
+    margin: 2px;
+}
+
+.TextMay {
+    text-transform: uppercase;
+}
+
+.ImgOferta {
+    margin-top: 15px;
+    border-radius: 25px;
+}
+
 .CentrarText {
     text-align: center !important;
 }
