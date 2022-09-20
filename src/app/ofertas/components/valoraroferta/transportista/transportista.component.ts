@@ -10,7 +10,9 @@ import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
   templateUrl: './transportista.component.html',
   styleUrls: ['./transportista.component.css']
 })
+
 export class TransportistaComponent implements OnInit {
+
   SessionOferta: string = '';
   SessionCiudad: any;
   SessionCDMunicipio: any;
@@ -30,8 +32,9 @@ export class TransportistaComponent implements OnInit {
   SessionIdUsuario: any;
   DataOferta: any[];
   RutaImagen: string;
+  DataConductor: any[];
 
-  constructor(public sectoresservices: ValorarofertaService, private modalService: NgbModal, private rutas:Router, private cookies:CookieService, private SeriviciosGenerales:MetodosglobalesService) { }
+  constructor(public sectoresservices: ValorarofertaService, private modalService: NgbModal, private rutas: Router, private cookies: CookieService, private SeriviciosGenerales: MetodosglobalesService) { }
 
   ngOnInit(): void {
     this.CodTransSelec = '';
@@ -43,21 +46,20 @@ export class TransportistaComponent implements OnInit {
     this.SessionCDMunicipio = '0';
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');
-    this.RutaImagen=this.SeriviciosGenerales.RecuperaRutaImagenes();
+    this.RutaImagen = this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.ConsultaCiudadOferta();
     this.ConsultaCondOferta();
     this.ConsultaDetalleOferta();
   }
 
   ConsultaDetalleOferta() {
-    this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {      
+    this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
       this.DataOferta = ResultConsu;
     })
   }
 
   ConsultaCondOferta() {
     this.sectoresservices.ConsultaConductoresOferta('1', this.SessionOferta).subscribe(ResultConsult => {
-      console.log(ResultConsult)
       if (ResultConsult.length > 0) {
         this.ValidaConsulta = '0';
         this.DataTransOferta = ResultConsult;
@@ -83,10 +85,12 @@ export class TransportistaComponent implements OnInit {
   ConsultaSectores() {
     this.sectoresservices.ConsultaSectoresOferta('1', this.SessionOferta).subscribe(ResultConsulta => {
       if (ResultConsulta.length > 0) {
+        this.keyword = '';
         this.keyword = 'DSCRPCION_SCTOR';
+        this.DataSectores = [];
         this.DataSectores = ResultConsulta;
       }
-    })   
+    })
   }
 
   ConsultaTransportistas() {
@@ -94,6 +98,7 @@ export class TransportistaComponent implements OnInit {
       NMBRE_CNDCTOR: "0"
     }
     this.sectoresservices.ConsultaConductoresSector('1', this.SessionOferta, '0', '0', this.SessionCDRegion, this.SessionCDMunicipio, Body).subscribe(ResultCons => {
+      this.DataTransportista = [];
       this.DataTransportista = ResultCons;
       this.keywordT = 'nombre_conductor';
     })
@@ -104,18 +109,20 @@ export class TransportistaComponent implements OnInit {
       const BodyInsert = {
         ID: "0",
         CD_CNSCTVO: this.SessionOferta,
-        ID_SCTOR_OFRTA: this.SectorSelec,
-        ID_CNDCTOR: this.TransSelec,
-        USUCODIG_TRANS: this.CodTransSelec,
+        ID_SCTOR_OFRTA: this.SectorSelec.ID_SCTOR_OFRTA,
+        ID_CNDCTOR: this.TransSelec.ID_CNDCTOR,
+        USUCODIG_TRANS: this.CodTransSelec.USUCODIG_TRANS,
         VLOR_FLTE_PCTDO: this.VlrFlete
       }
       console.log(BodyInsert)
       this.sectoresservices.OperacionTransportista('3', BodyInsert).subscribe(ResultInsert => {
+        this.ConsultaCondOferta();
+        this.SectorSelec = '';
+        this.TransSelec = '';
+        this.VlrFlete = '';
         var arrayrespuesta = ResultInsert.split('|')
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
         this.Respuesta = arrayrespuesta[1];
-        this.ConsultaCiudadOferta();
-        this.ConsultaCondOferta();
       })
     }
     else {
@@ -124,8 +131,7 @@ export class TransportistaComponent implements OnInit {
     }
   }
 
-  EliminaTransportista(transportista: any, templateRespuesta: any) {    
-    console.log(transportista)
+  EliminaTransportista(transportista: any, templateRespuesta: any) {
     const BodyDelete = {
       ID: transportista.ID,
       CD_CNSCTVO: this.SessionOferta,
@@ -134,7 +140,6 @@ export class TransportistaComponent implements OnInit {
       USUCODIG_TRANS: transportista.USUCODIG_TRANS,
       VLOR_FLTE_PCTDO: transportista.VLOR_FLTE_PCTDO
     }
-    console.log(BodyDelete)
     this.sectoresservices.OperacionTransportista('4', BodyDelete).subscribe(ResultInsert => {
       var arrayrespuesta = ResultInsert.split('|')
       this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
@@ -144,26 +149,71 @@ export class TransportistaComponent implements OnInit {
     })
   }
 
-  selectSector(item: any) {    
-    this.SectorSelec = item.ID_SCTOR_OFRTA;
+  selectSector(item: any) {
+    this.SectorSelec = item;
   }
 
   selectTrans(item: any) {
-    console.log(item)
-    this.CodTransSelec = item.USUCODIG_TRANS;
-    this.TransSelec = item.ID_CNDCTOR;
+    //console.log(item)
+    this.CodTransSelec = item;
+    this.TransSelec = item;
   }
 
   LimpiaForm() {
     window.location.reload();
   }
 
-  Enviar(){
+  Enviar() {
     this.rutas.navigateByUrl('/home/costeo')
   }
 
-  Volver(){
+  Volver() {
     this.rutas.navigateByUrl('/home/sectorizar')
+  }
+
+  DetalleTransportista(transportista: any, templateDetalle: any) {
+    this.sectoresservices.ConsultaDetalleCond('1', transportista.USUCODIG_TRANS, transportista.ID_CNDCTOR).subscribe(ResultCons => {
+      console.log(ResultCons)
+      this.DataConductor=ResultCons;
+      if (ResultCons.length > 0) {
+        this.modalService.open(templateDetalle, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+      }
+    })
+
+  }
+
+  ApruebaTransportista(transportista: any, templateDetalle: any) {
+    const BodyUpdate = {
+      CD_CNSCTVO: this.SessionOferta,
+      ID_SCTOR_OFRTA: transportista.ID_SCTOR_OFRTA,
+      ID_CNDCTOR: transportista.ID_CNDCTOR,
+      USUCODIG_TRANS: transportista.USUCODIG_TRANS,
+      VLOR_FLTE_PCTDO: transportista.VLOR_FLTE_PCTDO,
+      ESTADO: 1
+    }
+    this.sectoresservices.OperacionConductor('2', BodyUpdate).subscribe(ResultadoUpdate => {
+      const respuesta = ResultadoUpdate.split('|')
+      this.Respuesta = respuesta[1];
+      this.ConsultaCondOferta();
+      this.modalService.open(templateDetalle, { ariaLabelledBy: 'modal-basic-title' })
+    })
+  }
+
+  RechazarTransportista(transportista: any, templateDetalle: any) {
+    const BodyUpdate = {
+      CD_CNSCTVO: this.SessionOferta,
+      ID_SCTOR_OFRTA: transportista.ID_SCTOR_OFRTA,
+      ID_CNDCTOR: transportista.ID_CNDCTOR,
+      USUCODIG_TRANS: transportista.USUCODIG_TRANS,
+      VLOR_FLTE_PCTDO: transportista.VLOR_FLTE_PCTDO,
+      ESTADO: 3
+    }
+    this.sectoresservices.OperacionConductor('2', BodyUpdate).subscribe(ResultadoUpdate => {
+      const respuesta = ResultadoUpdate.split('|')
+      this.Respuesta = respuesta[1];
+      this.ConsultaCondOferta();
+      this.modalService.open(templateDetalle, { ariaLabelledBy: 'modal-basic-title' })
+    })
   }
 
 }
