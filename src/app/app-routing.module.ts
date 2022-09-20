@@ -10,6 +10,7 @@ import { LayoutprincipalComponent } from './shared/layoutprincipal/layoutprincip
 import { ConciliacionComponent} from './ofertas/components/valoraroferta/conciliacion/conciliacion.component'
 import { ValoracionComponent } from './ofertas/components/valoraroferta/valoracion/valoracion.component';
 import { PlantillascorreoComponent } from './usuario/components/plantillascorreo/plantillascorreo.component'
+import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/costeo.component';
 const routes: Routes = [
   {
     path: '',
@@ -46,6 +47,10 @@ const routes: Routes = [
       {
         path: 'valoracion',
         component: ValoracionComponent
+      },
+      {
+        path: 'costeo',
+        component: CosteoComponent
       },
       {
         path: 'plantillaCorreo',

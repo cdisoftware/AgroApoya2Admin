@@ -39,18 +39,22 @@ export class MenuComponent implements OnInit {
   Cargar() {
     this.servicioslogin.ConsultaMenu('1', '4').subscribe(Resultado => {
       this.ListaMenu = Resultado;
-      console.log(Resultado)
     })
   }
 
-  EsconderMenu(elemento: any){
-    document.getElementById('sidebar')?.hidden
-    console.log(elemento);
+  toggleSidebar() {
+    let elemento = document.getElementById('sidebar') as HTMLElement;
+    if (elemento.getAttribute('class')) {
+      this.mostrarSideBar();
+    } else {
+      elemento.setAttribute('class', 'active')
+    }
   }
- 
 
-
-
+  mostrarSideBar() {
+    let elemento = document.getElementById('sidebar') as HTMLElement;
+    elemento.removeAttribute('class')
+  }
 
 
 }

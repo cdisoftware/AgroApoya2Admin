@@ -113,4 +113,12 @@ export class ValorarofertaService {
     return this.http.get<any[]>(this.url_servidor+'consccordenadasector/'+BANDERA+'/'+ID_SCTOR_OFRTA)
   }
 
+  ConsultaCosteo(Bandera: string, idoferta: string){
+    return this.http.get<any[]>(this.url_servidor + 'conscosteoferta/' + Bandera + '/' + idoferta)
+  }
+
+  ConsultaConceptos(Bandera: string){
+    return this.http.get<any[]>(this.url_servidor + 'consctipocosteoferta/' + Bandera )
+  }
+
 }

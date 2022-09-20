@@ -5,7 +5,7 @@
         <nav id="sidebar">
             <!-- Boton -->
             <div class="custom-menu">
-                <button type="button" id="sidebarCollapse" onclick="toggleSidebar()" class="btn btn-primary"></button>
+                <button type="button" id="sidebarCollapse" (click)="toggleSidebar()" class="btn btn-primary"></button>
             </div>
 
 
@@ -25,7 +25,7 @@
                     <a class="not-active">Hola, {{NombreUsu}}</a>
                 </li>
                 <li *ngFor="let respuesta of ListaMenu">
-                    <a href="{{respuesta.pathMenu}}"><span
+                    <a href="{{respuesta.pathMenu}}" (click)="toggleSidebar()"><span
                             class="fa {{respuesta.Icono}} mr-3"></span>{{respuesta.Nombre}}</a>
                 </li>
             </ul>
