@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 
 @Component({
   selector: 'app-transportista',
@@ -27,8 +28,10 @@ export class TransportistaComponent implements OnInit {
   ValidaConsulta: string = '';
   txtValidaCons: string = '';
   SessionIdUsuario: any;
+  DataOferta: any[];
+  RutaImagen: string;
 
-  constructor(public sectoresservices: ValorarofertaService, private modalService: NgbModal, private rutas:Router, private cookies:CookieService) { }
+  constructor(public sectoresservices: ValorarofertaService, private modalService: NgbModal, private rutas:Router, private cookies:CookieService, private SeriviciosGenerales:MetodosglobalesService) { }
 
   ngOnInit(): void {
     this.CodTransSelec = '';
@@ -40,9 +43,18 @@ export class TransportistaComponent implements OnInit {
     this.SessionCDMunicipio = '0';
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');
+    this.RutaImagen=this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.ConsultaCiudadOferta();
     this.ConsultaCondOferta();
+    this.ConsultaDetalleOferta();
   }
+
+  ConsultaDetalleOferta() {
+    this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {      
+      this.DataOferta = ResultConsu;
+    })
+  }
+
   ConsultaCondOferta() {
     this.sectoresservices.ConsultaConductoresOferta('1', this.SessionOferta).subscribe(ResultConsult => {
       console.log(ResultConsult)

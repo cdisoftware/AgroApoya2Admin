@@ -3,6 +3,7 @@ import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router'
 import { CookieService } from 'ngx-cookie-service';
+import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 
 @Component({
   selector: 'app-sectorizacion',
@@ -39,8 +40,10 @@ export class SectorizacionComponent implements OnInit {
   ValidaInsertSec: string = '';
   SessionSecCreado: any;
   ValidaCoord: string;
+  DataOferta: any[];
+  RutaImagen: string;
 
-  constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService) { }
+  constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales:MetodosglobalesService) { }
 
   ngOnInit(): void {
     this.DesSect = '';
@@ -50,6 +53,7 @@ export class SectorizacionComponent implements OnInit {
     this.SectSelec = '';
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');
+    this.RutaImagen=this.ServiciosGenerales.RecuperaRutaImagenes();
     this.SessionCDMunicipio = '0';
     this.SessionCDRegion = '0';
     this.SessionCiudad = '0';
@@ -77,7 +81,7 @@ export class SectorizacionComponent implements OnInit {
 
   ConsultaDetalleOferta() {
     this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
-      //console.log(ResultConsu);
+      this.DataOferta=ResultConsu;
       this.SessionNomOferta = ResultConsu[0].Nombre_Producto + ' - ' + ResultConsu[0].Descripcion_empaque + ' - ' + ResultConsu[0].Nombre_productor;
       this.SessionCantSecOferta = ResultConsu[0].Unidades_disponibles;
     })
