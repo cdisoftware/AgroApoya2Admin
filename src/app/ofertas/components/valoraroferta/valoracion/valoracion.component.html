@@ -73,7 +73,7 @@
                         <label class="Llave">Valor total oferta:&nbsp;</label><label class="Valor">{{oferta.VR_TOTAL_OFRTA}}</label>
                     </div>
                     <div class="col-sm-6">
-                        <label class="Llave">Valor costeo:&nbsp;</label><label class="Valor">{{oferta.vlor_flte_xunidad}}</label>
+                        <label class="Llave">Valor costeo:&nbsp;</label><label class="Valor">{{oferta.vlor_costeo}}</label>
                     </div>
                 </div>
                 <hr class="hrSinEstilo">
@@ -110,16 +110,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-12">
                                 <label class="Llave">Ubicación:&nbsp;</label><label class="Valor">{{oferta.Ubicacion_parsela +' ('+oferta.coordenadas_parcela}})</label>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="row">
-
                         </div>
                     </div>
                 </div>
@@ -371,6 +366,7 @@
             <button class="btn btn-agro-prin col-sm-12" (click)="PublicarOferta(ModalRespuesta)">Publicar</button>
         </div>
     </div>
+    <br>
     <ng-template #ModalRespuesta let-modal>
         <div class="modal-header">
             <h1>Respuesta</h1>
