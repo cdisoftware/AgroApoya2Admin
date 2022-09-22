@@ -128,7 +128,7 @@
     </div>
     <div class="row br">
         <div class="col-sm-4">
-            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keyword" placeholder="Sector" (selected)='selectSector($event)' [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio">
+            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keyword" [(ngModel)]="SectorSelec" placeholder="Sector" (selected)='selectSector($event)' [itemTemplate]="DataSectores.length>0 ? templateSec : templateVacio" [notFoundTemplate]="templateVacio">
             </ng-autocomplete>
             <ng-template #templateSec let-item>
                 <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
@@ -138,7 +138,7 @@
             </ng-template>
         </div>
         <div class="col-sm-4">
-            <ng-autocomplete [data]="DataTransportista" [searchKeyword]="keywordT" placeholder="Transportista" (selected)='selectTrans($event)' [itemTemplate]="templateTran" [notFoundTemplate]="templateVacio">
+            <ng-autocomplete [data]="DataTransportista" [searchKeyword]="keywordT" [(ngModel)]="TransSelec" placeholder="Transportista" (selected)='selectTrans($event)' [itemTemplate]="templateTran" [notFoundTemplate]="templateVacio">
             </ng-autocomplete>
             <ng-template #templateTran let-item>
                 <a [innerHTML]="item.nombre_conductor"></a>
@@ -165,10 +165,10 @@
     </div>
     <hr>
     <div class="br row justify-content-center">
-        <div class="col-sm-10">
+        <div class="col-sm-4">
             <div class="row">
-                <h2 class="TituloDetalle col-sm-10">Transportistas Asociados</h2>
-                <button class="SinEstilo col-sm-2" (click)="ConsultaCondOferta()">
+                <h2 class="TituloDetalle col-sm-9 mt-2">Transportistas Asociados</h2>
+                <button class="SinEstilo col-sm-1" (click)="ConsultaCondOferta()">
                 <img src="./../../../../../assets/ImagenesAgroApoya2Admin/actualizar.png">
                 </button>
             </div>
@@ -179,31 +179,36 @@
             <tr>
                 <th>Sector</th>
                 <th>Cantidades del Sector</th>
-                <th>Transportista</th>
+                <th>Conductor</th>
                 <th>Valor flete</th>
                 <th>Valor Contra-flete</th>
+                <th>Estado</th>
                 <th>Acciones</th>
             </tr>
             <tr *ngFor="let transportista of DataTransOferta">
                 <td>{{transportista.DSCRPCION_SCTOR}}</td>
-                <td>0</td>
+                <td>{{transportista.cantidad}}</td>
                 <td>{{transportista.NMBRE_CNDCTOR}}</td>
                 <td>${{transportista.VLOR_FLTE_PCTDO}}</td>
-                <td><input type="text" class="col-sm-12 form-control"></td>
+                <td><input type="text" class="col-sm-12 form-control" value="${{transportista.VLOR_FLTE_PCTDO}}"></td>
+                <td>{{transportista.NOM_ESTADO}}</td>
                 <td>
-                    <button class="SinEstilo">
+                    <button class="SinEstilo" (click)="DetalleTransportista(transportista, ModalDetalle)">
                         <img src="./../../../../../assets/ImagenesAgroApoya2Admin/info.png">
                     </button>
                     <button class="SinEstilo" (click)="EliminaTransportista(transportista, ModalRespuesta)">
                         <img src="./../../../../../assets/ImagenesAgroApoya2Admin/basurarojo.png">
                     </button>
-                    <button class="SinEstilo">
+                    <button class="SinEstilo" (click)="ApruebaTransportista(transportista, ModalRespuesta)">
                         <img src="./../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png">
+                    </button>
+                    <button class="SinEstilo" (click)="RechazarTransportista(transportista, ModalRespuesta)">
+                        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png">
                     </button>
                 </td>
             </tr>
             <tr *ngIf="ValidaConsulta=='1'">
-                <td colspan="4">{{txtValidaCons}}</td>
+                <td colspan="7">{{txtValidaCons}}</td>
             </tr>
         </table>
     </div>
@@ -225,6 +230,70 @@
             <div class="row br">
                 <div class="col-sm-12">
                     <h2 class="TituloDetalle">{{Respuesta}}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+        </div>
+        <br>
+    </ng-template>
+    <ng-template #ModalDetalle let-modal>
+        <div class="modal-header">
+            <h1>Detalle conductor</h1>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row" *ngFor="let conductor of DataConductor">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="Llave">Transportista</label>
+                        <hr class="hrSinEstilo">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="Llave">Conductor</label>
+                        <hr class="hrSinEstilo">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="Valor">{{conductor.transportista}}</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="Valor">{{conductor.CONDUCTOR}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="Valor">{{conductor.CELULAR_PERSONA}}</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="Valor">{{conductor.TEL_CNDCTOR}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="Valor">{{conductor.DRCCION}}</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="Valor">{{conductor.DIRECCION}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="Valor">{{conductor.CIUDAD_TRANS}}</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="Valor">{{conductor.CIUDAD_COND}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="Valor">{{conductor.CORREO_PERSONA}}</label>
+                    </div>
+                    <!-- <div class="col-sm-6">
+                        <label class="Valor">{{conductor.DIRECCION}}</label>
+                    </div> -->
                 </div>
             </div>
         </div>
