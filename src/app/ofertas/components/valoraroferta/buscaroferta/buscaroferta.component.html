@@ -259,7 +259,7 @@
             <div class="row br">
                 <div class="col-sm-12">
                     <label class="col-sm-12 Llave">Fecha Recogida</label>
-                    <input type="text" class="col-sm-12 form-control form-control-sm textBox"
+                    <input type="date" class="col-sm-12 form-control form-control-sm textBox"
                         placeholder="Fecha recogida" onfocus="(this.type='date')" onblur="(this.type='date')"
                         [(ngModel)]="EFechaRecogida" name="EFechaRecogida">
                 </div>
@@ -270,7 +270,7 @@
                     <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox"
                         (change)='SelEJornada(ejornada.value)'>
                         <option value="1">Jornada</option>
-                        <option *ngFor="let jornada of ArrayJornada" [value]="jornada.CD_JRNDA" [selected]="EJornada">
+                        <option *ngFor="let jornada of ArrayJornada" [value]="jornada.CD_JRNDA" [selected]="jornada.CD_JRNDA == EJornada">
                             {{jornada.DESCRIPCION}}
                         </option>
                     </select>

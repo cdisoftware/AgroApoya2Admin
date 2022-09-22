@@ -223,7 +223,7 @@
                     <select name="EEmpaque" id="EEmpaque" #eempaque class="form-control form-control-sm textBox"
                     (change)='SelEEmpaque(eempaque.value)'>
                         <option value="0">Presentación</option>
-                        <option *ngFor="let empaque of ArrayEmpaque" [value]="empaque.id_empaque" [selected]="IdEEmpaque">
+                        <option *ngFor="let empaque of ArrayEmpaque" [value]="empaque.id_empaque" [selected]="empaque.id_empaque == IdEEmpaque">
                             {{empaque.des_empaque}}
                         </option>
                     </select>
@@ -250,7 +250,7 @@
                     <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox"
                     (change)='SelEJornada(ejornada.value)'>
                         <option value="0">Jornada</option>
-                        <option  *ngFor="let jor of ArrayJornada" [value]="jor.CD_JRNDA" [selected]="IdEJornada" >
+                        <option  *ngFor="let jor of ArrayJornada" [value]="jor.CD_JRNDA" [selected]="jor.CD_JRNDA == IdEJornada" >
                             {{jor.DESCRIPCION}}
                         </option>
                     </select>

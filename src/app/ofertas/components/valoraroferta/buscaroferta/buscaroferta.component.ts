@@ -155,6 +155,8 @@ export class BuscarofertaComponent implements OnInit {
   }
 
   EditaOferta(modalEditar: any) {
+    this.ECaracteriza = this.Caracterizacion;
+    this.EFechaRecogida = this.FechaRecogida;
     this.ServiciosValorar.ConsultaJornada('1').subscribe(Resultado => {
       this.ArrayJornada = Resultado;
     })
@@ -241,6 +243,7 @@ export class BuscarofertaComponent implements OnInit {
       this.Unidades = Resultado[0].Unidades_disponibles;
       this.FechaRecogida = Resultado[0].fecha_recogida;
       this.Jornada = Resultado[0].Nombre_jornada;
+      this.EJornada = Resultado[0].jornada;
       this.Direccion = Resultado[0].coordenadas_parcela;
       this.ValorTotal = Resultado[0].VR_TOTAL_OFRTA;
       this.IdProducto = Resultado[0].Producto;
