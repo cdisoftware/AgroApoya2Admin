@@ -58,6 +58,10 @@
                     onfocus="(this.type='date')" onblur="(this.type='date')" [(ngModel)]="FechaOferta"
                     name="FechaOferta">
             </div>
+            <div class="col-sm-4 br">
+                <input placeholder="Número oferta" type="text" class="form-control form-control-sm textBox"
+                    [(ngModel)]="NoOferta" name="NoOferta">
+            </div>
         </div>
         <div class="row br justify-content-center mt-3">
             <div class="col-sm-3 col-12 br">
@@ -68,144 +72,166 @@
             </div>
         </div>
         <hr>
-        <div class="row justify-content-center" *ngIf="ValidaBusqueda == '1'">
-            <div class="col-sm-11 tarjetadetalle">
-                <div class="row">
-                    <div class="col-sm-3" style="padding-top: 5%;">
-                        <img src="{{ImagenOferta}}" class="col-sm-12">
-                    </div>
-                    <div class="col-sm-9">
-                        <br>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="Llave">Nombre productor:</label>
+        <div class="row justify-content-center br tarjetadetalle" *ngFor="let oferta of ArrayOferta">
+            <div class="row m-2">
+                <div class="col-sm-3">
+                    <img src={{RutaImagen+oferta.IMAGEN}} class="col-sm-12 ImgOferta">
+                </div>
+                <div class="col-sm-9">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="Llave TextMay">Codigo oferta:&nbsp;</label><label
+                                        class="ValorIDOfer"><strong>{{NoOferta}}</strong></label>
+                                </div>
                             </div>
-                            <div class="col-sm-9">
-                                <label class="Valor">{{NombreProductor}}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="Llave">Producto:</label>
-                            </div>
-                            <div class="col-sm-9">
-                                <label class="Valor">{{DesProducto}}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="Llave">Tamaño:</label>
-                            </div>
-                            <div class="col-sm-9">
-                                <label class="Valor">{{Tamano}}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="Llave">Presentacion empaque:</label>
-                            </div>
-                            <div class="col-sm-9">
-                                <label class="Valor">{{Presentacion}}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="Llave">Descripción producto:</label>
-                            </div>
-                            <div class="col-sm-9">
-                                <label class="Valor">{{Descripcion}}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="Llave">Caracterización:</label>
-                            </div>
-                            <div class="col-sm-9">
-                                <label class="Valor">{{Caracterizacion}}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="Llave">Valor unidad empaque:</label>
-                            </div>
-                            <div class="col-sm-9">
-                                <label class="Valor">{{ValorUnidad}}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="Llave">Unidades disponibles:</label>
-                            </div>
-                            <div class="col-sm-9">
-                                <label class="Valor">{{Unidades}}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="Llave">Fecha recogida:</label>
-                            </div>
-                            <div class="col-sm-2">
-                                <label class="Valor">{{FechaRecogida}}</label>
-                            </div>
-                            <div class="col-sm-1">
-                                <label class="Llave">Jornada:</label>
-                            </div>
-                            <div class="col-sm-3">
-                                <label class="Valor">{{Jornada}}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="Llave">Direccion o coordenadas:</label>
-                            </div>
-                            <div class="col-sm-9">
-                                <label class="Valor">{{Direccion}}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="Llave">Valor total oferta:</label>
-                            </div>
-                            <div class="col-sm-9">
-                                <label class="Valor">{{ValorTotal}}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <label class="Llave">Estado oferta:</label>
-                            </div>
-                            <div class="col-sm-9">
-                                <label class="Valor">{{NomEstado}}</label>
-                            </div>
-                        </div>
-                        <br>
-                    </div>
-
-                    <hr>
-                    <div class="row justify-content-center">
-                        <div class="col-sm-1">
-                            <button class="SinEstilo" (click)="EditaOferta(templateEditar)">
-                                <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Editar.png"
-                                    title="Editar oferta">
-                            </button>
-                            <label>Editar</label>
-                        </div>
-                        <div class="col-sm-1">
-                            <button class="SinEstilo" (click)="CerrarOferta(templateCerrar)">
-                                <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Cerrar.png"
-                                    title="Cerrar oferta">
-                            </button>
-                            <label>Cerrar</label>
-                        </div>
-                        <div class="col-sm-1">
-                            <button class="SinEstilo" disabled>
-                                <img src="./../../../../../assets/ImagenesAgroApoya2Admin/EstadoP.png"
-                                    title="Estado oferta">
-                            </button>
-                            <label>Estado</label>
                         </div>
                     </div>
-                    <br><br>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="Llave">Producto:&nbsp;</label><label
+                                        class="Valor">{{oferta.Nombre_Producto}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="Llave">Presentación empaque:&nbsp;</label><label
+                                        class="Valor">{{oferta.Descripcion_empaque}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="Llave">Tamaño:&nbsp;</label><label
+                                        class="Valor">{{oferta.Nmbre_tamano}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="Llave">Condición entrega:&nbsp;</label> <label
+                                        class="Valor">{{oferta.Tamano}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="Llave">Valor unidad:&nbsp;</label><label
+                                        class="Valor">{{oferta.VR_UNDAD_EMPQUE}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="Llave">Unidades disponibles:&nbsp;</label><label
+                                        class="Valor">{{oferta.Unidades_disponibles}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="Llave">Valor total oferta:&nbsp;</label><label
+                                class="Valor">{{oferta.VR_TOTAL_OFRTA}}</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="Llave">Valor costeo:&nbsp;</label><label
+                                class="Valor">{{oferta.vlor_costeo}}</label>
+                        </div>
+                    </div>
+                    <hr class="hrSinEstilo">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="Llave">Descripción producto:&nbsp;</label><label
+                                class="Valor">{{oferta.caracteristicas}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="Llave">Caracterización:&nbsp;</label><label
+                                class="Valor">{{oferta.caracterizacion}}</label>
+                        </div>
+                    </div>
+                    <hr class="hrSinEstilo">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="Llave">Fecha recogida:&nbsp;</label><label
+                                        class="Valor">{{oferta.fecha_recogida}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="Llave">Jornada:&nbsp;</label><label
+                                        class="Valor">{{oferta.Nombre_jornada}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="Llave">Nombre productor:&nbsp;</label><label
+                                class="Valor">{{oferta.Nombre_productor}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="Llave">Ubicación:&nbsp;</label><label
+                                        class="Valor">{{oferta.Ubicacion_parsela +'
+                                        ('+oferta.coordenadas_parcela}})</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="Llave">Estado oferta:&nbsp;</label><label
+                                        class="Valor">{{NomEstado}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row justify-content-center">
+                <div class="col-sm-1">
+                    <button class="SinEstilo" (click)="EditaOferta(templateEditar)">
+                        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Editar.png" title="Editar oferta">
+                    </button>
+                    <label>Editar</label>
+                </div>
+                <div class="col-sm-1">
+                    <button class="SinEstilo" (click)="CerrarOferta(templateCerrar)">
+                        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Cerrar.png" title="Cerrar oferta">
+                    </button>
+                    <label>Cerrar</label>
+                </div>
+                <div class="col-sm-2">
+                    <button class="SinEstilo" disabled>
+                        <img src={{ImagenEstado}} title="Estado oferta">
+                    </button>
+                    <label>{{EstadoOferta}}</label>
                 </div>
             </div>
         </div>
@@ -244,7 +270,7 @@
                     <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox"
                         (change)='SelEJornada(ejornada.value)'>
                         <option value="1">Jornada</option>
-                        <option *ngFor="let jornada of ArrayJornada" [value]="jornada.CD_JRNDA">
+                        <option *ngFor="let jornada of ArrayJornada" [value]="jornada.CD_JRNDA" [selected]="EJornada">
                             {{jornada.DESCRIPCION}}
                         </option>
                     </select>
@@ -288,7 +314,7 @@
                 <li *ngFor="let seleccion of ArrayBusqueda" class="row br">
                     <div class="col-sm-10">
                         <input type="text"
-                            value="{{seleccion.Producto}} - {{seleccion.Empaque}} - {{seleccion.NombreCompletoProductor}} - {{seleccion.VigenciaDesde}}"
+                            value="{{seleccion.cd_cnsctvo}} - {{seleccion.Producto}} - {{seleccion.NombreCompletoProductor}} - {{seleccion.VigenciaDesde}}"
                             class="form-control" disabled>
                     </div>
                     <div class="col-sm-1">
