@@ -129,6 +129,8 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor+'modconductoroferta/'+BANDERA, Body)
   }
 
-
+  ConsultaEstadoOferta(bandera: string, idoferta: string){
+    return this.http.get<any[]>(this.url_servidor + 'consultestadoferta/' + bandera + '/' + idoferta)
+  }
 
 }
