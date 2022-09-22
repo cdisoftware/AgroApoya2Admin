@@ -50,7 +50,7 @@ export class ConciliacionComponent implements OnInit {
   Respuesta: string = '';
   NomEstado: string = '';
   ValorSugerido: string =''
-
+  RutaImagen: string = this.SeriviciosGenerales.RecuperaRutaImagenes();
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
     private ServiciosValorar: ValorarofertaService,

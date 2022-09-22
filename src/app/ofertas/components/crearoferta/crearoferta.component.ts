@@ -191,8 +191,8 @@ export class CrearofertaComponent implements OnInit {
       IMAGEN4: this.NomImagen4,
       IMAGEN5: this.NomImagen5
     }
-    //console.log(datosinsert)
-    //console.log(this.IdEmpaque)
+    console.log(datosinsert)
+    console.log(this.IdEmpaque)
     this.ServiciosOferta.CrearOferta('3', this.IdEmpaque, datosinsert).subscribe(Resultado => {
       this.Respuesta = Resultado.toString();
       this.modalService.dismissAll();
