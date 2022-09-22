@@ -213,8 +213,8 @@ export class BuscarofertaComponent implements OnInit {
     this.ServiciosValorar.EditarOfertaBusqueda('4', '0', DatosEditar).subscribe(Resultado => {
       console.log(Resultado)
       this.Respuesta = Resultado.toString()
+      this.CargaInfoOferta();
     })
-    this.CargaInfoOferta();
     this.modalService.dismissAll();
     this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
 

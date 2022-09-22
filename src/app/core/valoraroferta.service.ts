@@ -109,28 +109,31 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'cordenadassectormod/' + BANDERA, Body)
   }
 
-  ConsultaCoordenada(BANDERA:string,ID_SCTOR_OFRTA:string){
-    return this.http.get<any[]>(this.url_servidor+'consccordenadasector/'+BANDERA+'/'+ID_SCTOR_OFRTA)
+  ConsultaCoordenada(BANDERA: string, ID_SCTOR_OFRTA: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consccordenadasector/' + BANDERA + '/' + ID_SCTOR_OFRTA)
   }
 
-  ConsultaCosteo(Bandera: string, idoferta: string){
+  ConsultaCosteo(Bandera: string, idoferta: string) {
     return this.http.get<any[]>(this.url_servidor + 'conscosteoferta/' + Bandera + '/' + idoferta)
   }
 
-  ConsultaConceptos(Bandera: string){
-    return this.http.get<any[]>(this.url_servidor + 'consctipocosteoferta/' + Bandera )
+  ConsultaConceptos(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consctipocosteoferta/' + Bandera)
   }
 
-  ConsultaDetalleCond(Bandera: string, idtransportista: string, idconductor:string){
-    return this.http.get<any[]>(this.url_servidor + 'conscdatostransportista/'+Bandera+'/'+idtransportista+'/'+idconductor)
+  ConsultaDetalleCond(Bandera: string, idtransportista: string, idconductor: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscdatostransportista/' + Bandera + '/' + idtransportista + '/' + idconductor)
   }
 
-  OperacionConductor(BANDERA:string, Body:any){
-    return this.http.post<any>(this.url_servidor+'modconductoroferta/'+BANDERA, Body)
+  OperacionConductor(BANDERA: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modconductoroferta/' + BANDERA, Body)
   }
 
-  ConsultaEstadoOferta(bandera: string, idoferta: string){
+  ConsultaEstadoOferta(bandera: string, idoferta: string) {
     return this.http.get<any[]>(this.url_servidor + 'consultestadoferta/' + bandera + '/' + idoferta)
   }
 
+  AsociarCosteo(bandera: string, datos: any) {
+    return this.http.post<any>(this.url_servidor + 'costeofertamod/' + bandera, datos)
+  }
 }
