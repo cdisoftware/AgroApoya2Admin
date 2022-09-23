@@ -50,9 +50,7 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="row">
-                            <div class="col-sm-12">
-                                <label class="Llave">Condición entrega:&nbsp;</label> <label
-                                    class="Valor">{{oferta.Tamano}}</label>
+                            <div class="col-sm-12">    
                                 <label class="Llave">Condición entrega:&nbsp;</label> <label class="Valor">{{oferta.Condicion_entrega}}</label>
                             </div>
                         </div>
@@ -125,17 +123,19 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-12">
                                 <label class="Llave">Ubicación:&nbsp;</label><label
                                     class="Valor">{{oferta.Ubicacion_parsela +' ('+oferta.coordenadas_parcela}})</label>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="row">
-
+                    </div>                    
+                </div>
+                <div class="row">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="Llave">Estado:&nbsp;</label><label class="Valor">{{oferta.Nombre_estado}}</label>
                         </div>
                     </div>
                 </div>
@@ -173,12 +173,12 @@
         </div>
     </div>
     <div class="row br justify-content-center">
-        <div class="col-sm-2 col-2">
+        <div class="col-sm-3 col-2">
             <button class="btn btn-agro-prin col-sm-12" (click)="AsociaTransportista(ModalRespuesta)">
                 Asociar Transportista
             </button>
         </div>
-        <div class="col-sm-2 col-2">
+        <div class="col-sm-3 col-2">
             <button class="btn btn-agro-sec col-sm-12" (click)="LimpiaForm()">
                 Limpiar
             </button>
