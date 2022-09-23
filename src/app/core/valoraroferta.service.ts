@@ -146,7 +146,11 @@ export class ValorarofertaService {
   }
 
   CalculaPreOferGrupal(BANDERA:string, CD_CNSCTVO:string,ID_SCTOR_OFRTA:string, tpo_cmsion_grupal:string, vlor_cmsion_grupal:string,vlor_dmcilio_grupal:string, mnmo_prsnas_xgrupo:string){
-    return this.http.get<any>(this.url_servidor+'conscalculapreciofingrupal/'+BANDERA+'/'+CD_CNSCTVO+'/'+ID_SCTOR_OFRTA+'/'+tpo_cmsion_grupal+'/'+vlor_cmsion_grupal+'/'+vlor_dmcilio_grupal+'/'+mnmo_prsnas_xgrupo)
+    return this.http.get<any[]>(this.url_servidor+'conscalculapreciofingrupal/'+BANDERA+'/'+CD_CNSCTVO+'/'+ID_SCTOR_OFRTA+'/'+tpo_cmsion_grupal+'/'+vlor_cmsion_grupal+'/'+vlor_dmcilio_grupal+'/'+mnmo_prsnas_xgrupo)
+  }
+
+  ActualizaEstadoOferta(Bandera:string, BodyUpdate:any){
+    return this.http.post<any>(this.url_servidor+'modccambiaestadoferta/'+Bandera, BodyUpdate)
   }
 
 }

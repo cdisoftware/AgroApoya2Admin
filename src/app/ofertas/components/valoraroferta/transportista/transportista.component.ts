@@ -163,18 +163,30 @@ export class TransportistaComponent implements OnInit {
     window.location.reload();
   }
 
-  Enviar() {
-    this.rutas.navigateByUrl('/home/costeo')
-  }
-
-  Volver() {
-    this.rutas.navigateByUrl('/home/sectorizar')
+  Enviar(templateRespuesta:any) {
+    this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+    const Body = {
+      usucodig: this.SessionIdUsuario,
+      cnctivoOferta: this.SessionOferta,
+      ObsEstado: "",
+      estado: 14,
+      parametro1: "",
+      parametro2: "",
+      parametro3: ""
+    }
+    this.sectoresservices.ActualizaEstadoOferta('3', Body).subscribe(ResultUpda => {
+      var respuesta = ResultUpda.split('|')
+      this.Respuesta = respuesta[1];
+      if (respuesta[0] != '-1') {
+        this.rutas.navigateByUrl('/home/costeo')
+      }
+    })
   }
 
   DetalleTransportista(transportista: any, templateDetalle: any) {
     this.sectoresservices.ConsultaDetalleCond('1', transportista.USUCODIG_TRANS, transportista.ID_CNDCTOR).subscribe(ResultCons => {
       console.log(ResultCons)
-      this.DataConductor=ResultCons;
+      this.DataConductor = ResultCons;
       if (ResultCons.length > 0) {
         this.modalService.open(templateDetalle, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
       }

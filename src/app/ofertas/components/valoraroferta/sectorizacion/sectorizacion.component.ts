@@ -43,7 +43,7 @@ export class SectorizacionComponent implements OnInit {
   DataOferta: any[];
   RutaImagen: string;
 
-  constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales:MetodosglobalesService) { }
+  constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService) { }
 
   ngOnInit(): void {
     this.DesSect = '';
@@ -53,7 +53,7 @@ export class SectorizacionComponent implements OnInit {
     this.SectSelec = '';
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');
-    this.RutaImagen=this.ServiciosGenerales.RecuperaRutaImagenes();
+    this.RutaImagen = this.ServiciosGenerales.RecuperaRutaImagenes();
     this.SessionCDMunicipio = '0';
     this.SessionCDRegion = '0';
     this.SessionCiudad = '0';
@@ -81,7 +81,7 @@ export class SectorizacionComponent implements OnInit {
 
   ConsultaDetalleOferta() {
     this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
-      this.DataOferta=ResultConsu;
+      this.DataOferta = ResultConsu;
       this.SessionNomOferta = ResultConsu[0].Nombre_Producto + ' - ' + ResultConsu[0].Descripcion_empaque + ' - ' + ResultConsu[0].Nombre_productor;
       this.SessionCantSecOferta = ResultConsu[0].Unidades_disponibles;
     })
@@ -98,8 +98,7 @@ export class SectorizacionComponent implements OnInit {
   }
 
   ConsultaSectoresOferta() {
-    this.sectoresservices.ConsultaSectoresOferta('1', this.SessionOferta).subscribe(ResultConsulta => {
-      //console.log(ResultConsulta)
+    this.sectoresservices.ConsultaSectoresOferta('1', this.SessionOferta).subscribe(ResultConsulta => {      
       if (ResultConsulta.length > 0) {
         this.ValidaConsulta = '0';
         this.DataSectorOferta = ResultConsulta;
@@ -109,6 +108,7 @@ export class SectorizacionComponent implements OnInit {
         }
       }
       else {
+        this.CantidadSectores = 0;
         this.ValidaConsulta = '1';
         this.DataSectorOferta = [];
         this.txtValidaCons = 'No se encuentran registros de sectores asociados a la oferta';
@@ -190,7 +190,7 @@ export class SectorizacionComponent implements OnInit {
         this.Respuesta = arrayRes[1];
         this.ConsultaCiudadOferta();
         if (this.SessionSecCreado != undefined) {
-          console.log('entra: ' +this.SessionSecCreado)
+          console.log('entra: ' + this.SessionSecCreado)
           this.ValidaInsertSec = '1';
           this.CreaMapa();
         }
@@ -288,17 +288,28 @@ export class SectorizacionComponent implements OnInit {
   }
 
   Enviar(templateRespuesta: any) {
+    this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
     if (this.CantidadSectores == this.SessionCantSecOferta) {
-      this.rutas.navigateByUrl('/home/transportista');
+      const Body = {
+        usucodig: this.SessionIdUsuario,
+        cnctivoOferta: this.SessionOferta,
+        ObsEstado: "",
+        estado: 13,
+        parametro1: "",
+        parametro2: "",
+        parametro3: ""
+      }
+      this.sectoresservices.ActualizaEstadoOferta('3', Body).subscribe(ResultUpda => {        
+        var respuesta = ResultUpda.split('|')
+        this.Respuesta = respuesta[1];
+        if (respuesta[0] != '-1') {
+          this.rutas.navigateByUrl('/home/transportista');
+        }        
+      })      
     }
-    else {
-      this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+    else {      
       this.Respuesta = 'Las cantidades totales de la oferta aun no han sido asignadas, favor valida tu información.';
     }
-  }
-
-  Volver() {
-    this.rutas.navigateByUrl('/home/conciliacion')
   }
 
 }

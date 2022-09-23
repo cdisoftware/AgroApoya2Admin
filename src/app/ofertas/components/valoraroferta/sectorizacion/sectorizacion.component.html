@@ -199,19 +199,21 @@
         </table>
     </div>
     <div class="row justify-content-center br ">
-        <div class="col-sm-2 ">
+        <!-- <div class="col-sm-2 ">
             <button class="btn btn-agro-prin col-sm-12 " (click)="Volver() ">Atras</button>
-        </div>
+        </div> -->
         <div class="col-sm-2 ">
             <button class="btn btn-agro-prin col-sm-12 " (click)="Enviar(ModalRespuesta) ">Siguiente</button>
         </div>
     </div>
     <br>
+    <br>
+    <br>
+    <br>
 </div>
 <ng-template #ModalInsert let-modal>
     <div class="modal-header ">
-        <h4 class="modal-title " id="modal-basic-title ">Crear sector</h4>
-        <!-- <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button> -->
+        <h4 class="modal-title " id="modal-basic-title ">Crear sector</h4>        
     </div>
     <div class="modal-body ">
         <div class="row br ">
@@ -266,10 +268,7 @@
     <div class="row justify-content-center " *ngIf="ValidaInsertSec=='1' ">
         <div class="col-sm-2 ">
             <button type="button " class="btn btn-agro-prin col-sm-12 " (click)="CerrModalMap(ModalRespuesta) ">Aceptar</button>
-        </div>
-        <!-- <div class="col-sm-2 ">
-            <button type="button " class="btn btn-agro-sec col-sm-12 " (click)="LimpiaModal() ">Limpiar</button>
-        </div> -->
+        </div>      
     </div>
     <br>
 </ng-template>

@@ -69,6 +69,7 @@ export class ValoracionComponent implements OnInit {
   MuestraBtnIndividual: string;
   MuestraBtnGrupal: string;
   MuestraBtnMixta: string;
+  PubliOferObser: any;
 
 
 
@@ -120,6 +121,7 @@ export class ValoracionComponent implements OnInit {
     this.MinUnidPart = '0';
     this.MaxUnidPart = '0';
     this.PorcDescLider = '0';
+    this.PubliOferObser='';
     this.RutaImagen = this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');
@@ -561,23 +563,41 @@ export class ValoracionComponent implements OnInit {
     })
   }
 
-  PublicarOferta(templateMensaje: any) {
-    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
-    const BodyUpdate = {
-      usucodig: this.SessionIdUsuario,
-      cnctivoOferta: this.SessionOferta,
-      descripcion: "Publicacion oferta",
-      estado: 8
-    }
-    this.serviciosvaloracion.PublicarOferta('3', BodyUpdate).subscribe(ResultUpdate => {
-      //console.log(ResultUpdate)
-      var arreglores = ResultUpdate.split('|')
-      this.Respuesta = arreglores[1];
-    })
-    this.rutas.navigateByUrl('/home')
+  AbrePublica(templatePublicar: any) {
+    this.modalService.open(templatePublicar, { ariaLabelledBy: 'modal-basic-title' })    
+    // this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    // const BodyUpdate = {
+    //   usucodig: this.SessionIdUsuario,
+    //   cnctivoOferta: this.SessionOferta,
+    //   descripcion: "Publicacion oferta",
+    //   estado: 8
+    // }
+    // this.serviciosvaloracion.PublicarOferta('3', BodyUpdate).subscribe(ResultUpdate => {
+    //   //console.log(ResultUpdate)
+    //   var arreglores = ResultUpdate.split('|')
+    //   this.Respuesta = arreglores[1];
+    // })
+    // this.rutas.navigateByUrl('/home')
   }
 
-  Volver() {
-    this.rutas.navigateByUrl('/home/costeo');
+  PublicaOferta(templateMensaje:any){
+    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    const Body = {
+      usucodig: this.SessionIdUsuario,
+      cnctivoOferta: this.SessionOferta,
+      ObsEstado: this.PubliOferObser,
+      estado: 10,
+      parametro1: "",
+      parametro2: "",
+      parametro3: ""
+    }
+    this.serviciosvaloracion.ActualizaEstadoOferta('3', Body).subscribe(ResultUpda => {
+      var respuesta = ResultUpda.split('|')
+      this.Respuesta = respuesta[1];
+      if (respuesta[0] != '-1') {
+        this.modalService.dismissAll();
+        this.rutas.navigateByUrl('/home/buscaroferta')
+      }
+    })
   }
 }
