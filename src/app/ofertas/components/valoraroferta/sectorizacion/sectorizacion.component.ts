@@ -190,6 +190,7 @@ export class SectorizacionComponent implements OnInit {
         this.Respuesta = arrayRes[1];
         this.ConsultaCiudadOferta();
         if (this.SessionSecCreado != undefined) {
+          console.log('entra: ' +this.SessionSecCreado)
           this.ValidaInsertSec = '1';
           this.CreaMapa();
         }
