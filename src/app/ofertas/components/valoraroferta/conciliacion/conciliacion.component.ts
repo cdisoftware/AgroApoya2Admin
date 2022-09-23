@@ -98,6 +98,7 @@ export class ConciliacionComponent implements OnInit {
       this.Direccion = Resultado[0].coordenadas_parcela;
       this.ValorTotal = Resultado[0].VR_TOTAL_OFRTA;
       this.IdEJornada = Resultado[0].jornada;
+      this.IdEEmpaque = Resultado[0].Presentacion_emp;
       this.NomEstado = Resultado[0].Nombre_estado;
       this.ImagenOferta = this.SeriviciosGenerales.RecuperaRutaImagenes() + Resultado[0].IMAGEN;
     })
@@ -132,13 +133,11 @@ export class ConciliacionComponent implements OnInit {
   EditaOferta(modalEditar: any) {
     //abre popup editar, carga campos oferta y ejecuta servicio para consulta de las jornadas
     this.ECaracteriza = this.Caracterizacion;
-    this.IdEEmpaque = this.Presentacion;
     this.EVUnidad = this.ValorUnidad;
     this.EUnidadesDis = this.Unidades;
     this.EFechaRecogida = this.FechaRecogida;
     this.EDescripcion = this.Descripcion;
     this.EObservacion = ''
-    this.IdEJornada = this.Jornada;
     this.ServiciosValorar.ConsultaJornada('1').subscribe(Resultado => {
       this.ArrayJornada = Resultado;
       console.log(Resultado)
@@ -158,6 +157,7 @@ export class ConciliacionComponent implements OnInit {
     //asocia jornada seleccionda para edicion de la oferta
     this.IdEJornada = seleccion
   }
+
   SelEEmpaque(seleccion: string) {
     this.IdEEmpaque = seleccion
   }
