@@ -121,7 +121,7 @@ export class ValoracionComponent implements OnInit {
     this.MinUnidPart = '0';
     this.MaxUnidPart = '0';
     this.PorcDescLider = '0';
-    this.PubliOferObser='';
+    this.PubliOferObser = '';
     this.RutaImagen = this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');
@@ -159,20 +159,9 @@ export class ValoracionComponent implements OnInit {
     })
   }
 
-  ConsultaValoracionOferta() {    
+  ConsultaValoracionOferta() {
     this.serviciosvaloracion.ConsultaValoracionOferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultCons => {
       console.log(ResultCons)
-      if (ResultCons[0].TPO_OFRTA == 3) {
-        this.MuestraIndividual = '1';
-        this.MuestraGrupal = '1';
-        this.MuestraCantIndiv = '1';
-      }
-      else {
-        this.MuestraVigencial = '0';
-        this.MuestraIndividual = '0';
-        this.MuestraGrupal = '0';
-        this.MuestraCantIndiv = '0';
-      }      
       this.ArrayTipoOferCon = [
         {
           id: ResultCons[0].TPO_OFRTA,
@@ -227,7 +216,10 @@ export class ValoracionComponent implements OnInit {
         this.PrecioFinLider = ResultCons[0].vlor_arrnque_lider;
         this.PrecioFinPart = ResultCons[0].vlor_fnal_prtcpnte;
       }
-      else{
+      else if (ResultCons[0].TPO_OFRTA == 3) {
+        this.MuestraIndividual = '1';
+        this.MuestraGrupal = '1';
+        this.MuestraCantIndiv = '1';
         if (ResultCons[0].tpo_cmsion_indvdual == '1') {
           this.VlrComFijaI = ResultCons[0].vlor_cmsion_indvdual;
         }
@@ -267,7 +259,7 @@ export class ValoracionComponent implements OnInit {
         this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
         this.Respuesta = 'La cantidad asignada para los grupos supera la cantidad registrada para el sector (' + this.SessionCantSector + '), favor valida tu información.';
         this.CantGrupos = '';
-        //this.UnidXGrupos = '';
+        this.UnidXGrupos = '';
         this.CantComprI = '';
       }
     }
@@ -284,7 +276,7 @@ export class ValoracionComponent implements OnInit {
         })
       }
       else if (this.SessionTipoComI == '2') {
-        console.log('1', this.SessionOferta, this.SessionSectorSel, this.SessionTipoComI, this.VlrComPorI)
+        //console.log('1', this.SessionOferta, this.SessionSectorSel, this.SessionTipoComI, this.VlrComPorI)
         this.serviciosvaloracion.CalculaPFIndividual('1', this.SessionOferta, this.SessionSectorSel, this.SessionTipoComI, this.VlrComPorI).subscribe(ResultCons => {
           this.PreFinI = ResultCons[0].PRECIO_FINAL;
         })
@@ -325,7 +317,7 @@ export class ValoracionComponent implements OnInit {
       })
     }
     else if (this.SessionTipoComG == '2') {
-      console.log('1', this.SessionOferta, this.SessionSectorSel, this.SessionTipoComG, validaVlrComP, validadomi, validaunixgru)
+      //console.log('1', this.SessionOferta, this.SessionSectorSel, this.SessionTipoComG, validaVlrComP, validadomi, validaunixgru)
       this.serviciosvaloracion.CalculaPreOferGrupal('1', this.SessionOferta, this.SessionSectorSel, this.SessionTipoComG, validaVlrComP, validadomi, validaunixgru).subscribe(ResultCons => {
         this.PrecioFinLider = ResultCons[0].PRECIO_ARRANQUE_LIDER;
         this.PrecioFinPart = ResultCons[0].PRECIO_FINAL_PARTICIPANTE;
@@ -349,47 +341,46 @@ export class ValoracionComponent implements OnInit {
   }
 
   selectTipOferta(item: any) {
-    console.log(item)
+    //console.log(item)
     this.SessionTipoOferta = item.id;
     this.MuestraVigencial = '1';
     if (item.id == 1) {
       this.MuestraIndividual = '1';
       this.MuestraGrupal = '0';
       this.MuestraCantIndiv = '1';
-      this.MuestraBtnIndividual='1';
-      this.MuestraBtnGrupal='0';
-      this.MuestraBtnMixta='0';
+      this.MuestraBtnIndividual = '1';
+      this.MuestraBtnGrupal = '0';
+      this.MuestraBtnMixta = '0';
     }
     else if (item.id == 2) {
       this.MuestraIndividual = '0';
       this.MuestraGrupal = '1';
       this.MuestraCantIndiv = '0';
-      this.MuestraBtnIndividual='0';
-      this.MuestraBtnGrupal='1';
-      this.MuestraBtnMixta='0';
+      this.MuestraBtnIndividual = '0';
+      this.MuestraBtnGrupal = '1';
+      this.MuestraBtnMixta = '0';
     }
     else if (item.id == 3) {
       this.MuestraIndividual = '1';
       this.MuestraGrupal = '1';
       this.MuestraCantIndiv = '1';
-      this.MuestraBtnIndividual='0';
-      this.MuestraBtnGrupal='0';
-      this.MuestraBtnMixta='1';
+      this.MuestraBtnIndividual = '0';
+      this.MuestraBtnGrupal = '0';
+      this.MuestraBtnMixta = '1';
     }
     else {
       this.MuestraVigencial = '0';
       this.MuestraIndividual = '0';
       this.MuestraGrupal = '0';
       this.MuestraCantIndiv = '0';
-      this.MuestraBtnIndividual='0';
-      this.MuestraBtnGrupal='0';
-      this.MuestraBtnMixta='0';
+      this.MuestraBtnIndividual = '0';
+      this.MuestraBtnGrupal = '0';
+      this.MuestraBtnMixta = '0';
     }
   }
 
   selectTipComiI(item: any) {
-    this.SessionTipoComI = item.id;
-    //console.log(this.SessionTipoComI)
+    this.SessionTipoComI = item.id;    
     if (item.name == 'Valor Fijo') {
       this.MuestraFijo = '1';
       this.MuestraPorcentaje = '0';
@@ -461,7 +452,7 @@ export class ValoracionComponent implements OnInit {
       CNTDAD_CMPRAS_INDVDLES: "0",
       VLOR_ARRNQUE_LIDER: "0",
       VLOR_FNAL_PRTCPNTE: "0",
-      ID_SCTOR_OFRTA: this.SessionSectorSel      
+      ID_SCTOR_OFRTA: this.SessionSectorSel
     }
     //console.log(Body)
     this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
@@ -471,8 +462,15 @@ export class ValoracionComponent implements OnInit {
   }
 
   GuardaGrupal(templateMensaje: any) {
-    console.log(this.UnidXGrupos)
+    //console.log(this.UnidXGrupos)
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    var validacomision = '';
+    if (this.SessionTipoComG == '1') {
+      validacomision = this.VlrComFijaG
+    }
+    else {
+      validacomision = this.VlrComPorG
+    }
     const Body = {
       CD_CNSCTVO: this.SessionOferta,
       TPO_OFRTA: Number(this.SessionTipoOferta),
@@ -483,7 +481,7 @@ export class ValoracionComponent implements OnInit {
       VLOR_DMNCLIO_INDVDUAL: "0",
       VLOR_FNAL_INDVDUAL: "0",
       TPO_CMSION_GRPAL: this.SessionTipoComG,
-      VLOR_CMSION_GRPAL: this.VlrComFijaG,
+      VLOR_CMSION_GRPAL: validacomision,
       MNMO_UNDDES_LIDER: this.MinUnidLider,
       MXMO_UNDDES_LIDER: this.MaxUnidLider,
       PRCNTJE_DCTO_LIDER: this.PorcDescLider,
@@ -497,22 +495,28 @@ export class ValoracionComponent implements OnInit {
       VLOR_FNAL_PRTCPNTE: this.PrecioFinPart,
       ID_SCTOR_OFRTA: this.SessionSectorSel
     }
-    console.log(Body)
+    //console.log(Body)
     this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
       var arreglores = ResultUpdate.split('|')
       this.Respuesta = arreglores[1];
     })
   }
 
-  GuardarMixta(templateMensaje: any){
-    console.log(this.UnidXGrupos)
+  GuardarMixta(templateMensaje: any) {
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     var validacomision = '';
+    var validacomisionG = '';
     if (this.SessionTipoComI == '1') {
       validacomision = this.VlrComFijaI
     }
     else {
       validacomision = this.VlrComPorI
+    }
+    if (this.SessionTipoComG == '1') {
+      validacomisionG = this.VlrComFijaG
+    }
+    else {
+      validacomisionG = this.VlrComPorG
     }
     const Body = {
       CD_CNSCTVO: this.SessionOferta,
@@ -524,7 +528,7 @@ export class ValoracionComponent implements OnInit {
       VLOR_DMNCLIO_INDVDUAL: this.VlrDomiI,
       VLOR_FNAL_INDVDUAL: this.PreFinI,
       TPO_CMSION_GRPAL: this.SessionTipoComG,
-      VLOR_CMSION_GRPAL: this.VlrComFijaG,
+      VLOR_CMSION_GRPAL: validacomisionG,
       MNMO_UNDDES_LIDER: this.MinUnidLider,
       MXMO_UNDDES_LIDER: this.MaxUnidLider,
       PRCNTJE_DCTO_LIDER: this.PorcDescLider,
@@ -564,23 +568,10 @@ export class ValoracionComponent implements OnInit {
   }
 
   AbrePublica(templatePublicar: any) {
-    this.modalService.open(templatePublicar, { ariaLabelledBy: 'modal-basic-title' })    
-    // this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
-    // const BodyUpdate = {
-    //   usucodig: this.SessionIdUsuario,
-    //   cnctivoOferta: this.SessionOferta,
-    //   descripcion: "Publicacion oferta",
-    //   estado: 8
-    // }
-    // this.serviciosvaloracion.PublicarOferta('3', BodyUpdate).subscribe(ResultUpdate => {
-    //   //console.log(ResultUpdate)
-    //   var arreglores = ResultUpdate.split('|')
-    //   this.Respuesta = arreglores[1];
-    // })
-    // this.rutas.navigateByUrl('/home')
+    this.modalService.open(templatePublicar, { ariaLabelledBy: 'modal-basic-title' })
   }
 
-  PublicaOferta(templateMensaje:any){
+  PublicaOferta(templateMensaje: any) {
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     const Body = {
       usucodig: this.SessionIdUsuario,
