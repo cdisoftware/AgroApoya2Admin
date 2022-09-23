@@ -233,7 +233,7 @@
                         </div>
                         <div class="col-sm-6" *ngIf="MuestraPorcentaje=='1'">
                             <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100" onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" [(ngModel)]="VlrComPorI" (change)="CalcuPreFinInd()">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100" onkeyup="if(parseInt(this.value)>100){ this.value=100; return false; }" [(ngModel)]="VlrComPorI" (change)="CalcuPreFinInd()">
                         </div>
                         <div class="col-sm-6" *ngIf="MuestraFijo=='1'">
                             <label class="col-sm-12 Llave">Valor comisión fija</label>
@@ -294,7 +294,7 @@
                         </div>
                         <div class="col-sm-6" *ngIf="MuestraPorcentaje=='1'">
                             <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100" onkeyup="if(parseInt(this.value)>100){ this.value =100; return false; }" [(ngModel)]="VlrComPorG" (change)="CalculaPreoferGrupalM()">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100" onkeyup="if(parseInt(this.value)>100){ this.value=100; return false; }" [(ngModel)]="VlrComPorG" (change)="CalculaPreoferGrupalM()">
                         </div>
                         <div class="col-sm-6" *ngIf="MuestraFijo=='1'">
                             <label class="col-sm-12 Llave">Valor comisión fija</label>
@@ -304,27 +304,27 @@
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Minimo unidades lider</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidLider" onkeyup="if(parseInt(this.value)<0 || this.value==''){ this.value =0; return false; }">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidLider" onkeyup="if(this.value==''){this.value=0; return false; }">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Maximo unidades lider</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidLider" onkeyup="if(parseInt(this.value)<0 || this.value==''){ this.value =0; return false; }">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidLider" onkeyup="if(this.value==''){this.value=0; return false; }">
                         </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Minimo unidades participante</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidPart" onkeyup="if(parseInt(this.value)<0 || this.value==''){ this.value =0; return false; }">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidPart" onkeyup="if(this.value==''){this.value=0; return false; }">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Maximo unidades participante</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidPart" onkeyup="if(parseInt(this.value)<0 || this.value==''){ this.value =0; return false; }">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidPart" onkeyup="if(this.value==''){this.value=0; return false; }">
                         </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Valor domicilio</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiG" onkeyup="if(parseInt(this.value)<0 || this.value==''){ this.value =0; return false; }" (change)="CalculaPreoferGrupalM()">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiG" onkeyup="if(this.value==''){this.value=0; return false; }" (change)="CalculaPreoferGrupalM()">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Porcentaje descuento lider</label>
@@ -334,11 +334,11 @@
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Cantidad de grupos</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="CantGrupos" onkeyup="if(parseInt(this.value)<1){ this.value =1; return false; }" (change)="CalculaCCI(ModalRespuesta)">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="CantGrupos" onkeyup="if(this.value==''){this.value=1; return false; }" (change)="CalculaCCI(ModalRespuesta)">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Numero minimo de personas por grupo</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidXGrupos" onkeyup="if(parseInt(this.value)<1 || this.value==''){this.value=2; return false; }" (change)="CalculaCCI(ModalRespuesta)">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidXGrupos" onkeyup="if(this.value==''){this.value=2; return false; }" (change)="CalculaCCI(ModalRespuesta)">
                         </div>
                     </div>
                     <div class="row br" *ngIf="MuestraCantIndiv=='1'">
