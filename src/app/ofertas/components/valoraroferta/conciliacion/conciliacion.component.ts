@@ -309,6 +309,7 @@ export class ConciliacionComponent implements OnInit {
     this.ServiciosValorar.ModificaEstadoOferta('3', DatosEditar).subscribe(Resultado => {
       console.log(Resultado)
       this.Respuesta = Resultado.toString()
+      this.CargaObjetosIniciales();
     })
     //this.Respuesta = 'No esta disponible en este momento'
     this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
