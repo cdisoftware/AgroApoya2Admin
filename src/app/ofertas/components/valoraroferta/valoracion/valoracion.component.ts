@@ -454,7 +454,7 @@ export class ValoracionComponent implements OnInit {
       VLOR_FNAL_PRTCPNTE: "0",
       ID_SCTOR_OFRTA: this.SessionSectorSel
     }
-    //console.log(Body)
+    console.log(Body)
     this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
       var arreglores = ResultUpdate.split('|')
       this.Respuesta = arreglores[1];
@@ -495,7 +495,7 @@ export class ValoracionComponent implements OnInit {
       VLOR_FNAL_PRTCPNTE: this.PrecioFinPart,
       ID_SCTOR_OFRTA: this.SessionSectorSel
     }
-    //console.log(Body)
+    console.log(Body)
     this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
       var arreglores = ResultUpdate.split('|')
       this.Respuesta = arreglores[1];
