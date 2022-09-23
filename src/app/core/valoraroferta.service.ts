@@ -84,25 +84,72 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'cvaloracionofertamod/' + bandera, bodyupdate)
   }
 
-  ConsultaValoracionOferta(BANDERA:string, CD_CNSCTVO:string){
-    return this.http.get<any[]>(this.url_servidor+'conscvaloracionoferta/'+BANDERA+'/'+CD_CNSCTVO)
+  ConsultaValoracionOferta(BANDERA: string, CD_CNSCTVO: string, ID_SCTOR_OFRTA:string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscvaloracionoferta/' + BANDERA + '/' + CD_CNSCTVO+'/'+ID_SCTOR_OFRTA)
   }
 
-  ConsultaCiudades(Bandera: string){
+  ConsultaCiudades(Bandera: string) {
     return this.http.get<any[]>(this.url_servidor + 'consciudadesactivs/' + Bandera)
   }
 
-  InsertaCiudadOferta(Bandera: string, Datos: any){
+  InsertaCiudadOferta(Bandera: string, Datos: any) {
     return this.http.post<any[]>(this.url_servidor + 'ciudadofertamod/' + Bandera, Datos)
   }
 
-  ConsultaUltimasOfertas(Bandera: string, idoferta: string, idproducto: string, idproductor: string, Datos: any){
+  ConsultaUltimasOfertas(Bandera: string, idoferta: string, idproducto: string, idproductor: string, Datos: any) {
     return this.http.post<any[]>(this.url_servidor + 'consaofertas/' + Bandera + '/' + idoferta + '/' + idproducto + '/' + idproductor, Datos)
 
   }
 
-  PublicarOferta(Bandera:string, Body: any){
-    return this.http.post<any>(this.url_servidor+'aestadofertamod/'+Bandera, Body)
+  PublicarOferta(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'aestadofertamod/' + Bandera, Body)
   }
 
+  InsertarCoordenadas(BANDERA: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'cordenadassectormod/' + BANDERA, Body)
+  }
+
+  ConsultaCoordenada(BANDERA: string, ID_SCTOR_OFRTA: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consccordenadasector/' + BANDERA + '/' + ID_SCTOR_OFRTA)
+  }
+
+  ConsultaCosteo(Bandera: string, idoferta: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscosteoferta/' + Bandera + '/' + idoferta)
+  }
+
+  ConsultaConceptos(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consctipocosteoferta/' + Bandera)
+  }
+
+  ConsultaDetalleCond(Bandera: string, idtransportista: string, idconductor: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscdatostransportista/' + Bandera + '/' + idtransportista + '/' + idconductor)
+  }
+
+  OperacionConductor(BANDERA: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modconductoroferta/' + BANDERA, Body)
+  }
+
+  ConsultaEstadoOferta(bandera: string, idoferta: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consultestadoferta/' + bandera + '/' + idoferta)
+  }
+
+  ConsultaVigenciaOferta(BANDERA:string,CD_CNSCTVO:string){
+    return this.http.get<any[]>(this.url_servidor+'conscvigenciaoferta/'+BANDERA+'/'+CD_CNSCTVO)
+  }
+
+  ModificarVigenciaOferta(BANDERA:string, Body:any){
+    return this.http.post<any>(this.url_servidor+'modcvigenciaoferta/'+BANDERA, Body)
+  }
+
+  CalculaPFIndividual(BANDERA:string,CD_CNSCTVO:string,ID_SCTOR_OFRTA:string,tpo_cmsion_indvdual:string,vlor_cmsion_indvdual:string){
+    return this.http.get<any[]>(this.url_servidor+'conscalculapreciofinindividual/'+BANDERA+'/'+CD_CNSCTVO+'/'+ID_SCTOR_OFRTA+'/'+tpo_cmsion_indvdual+'/'+vlor_cmsion_indvdual)
+  }
+
+  CalculaPreOferGrupal(BANDERA:string, CD_CNSCTVO:string,ID_SCTOR_OFRTA:string, tpo_cmsion_grupal:string, vlor_cmsion_grupal:string,vlor_dmcilio_grupal:string, mnmo_prsnas_xgrupo:string){
+    return this.http.get<any>(this.url_servidor+'conscalculapreciofingrupal/'+BANDERA+'/'+CD_CNSCTVO+'/'+ID_SCTOR_OFRTA+'/'+tpo_cmsion_grupal+'/'+vlor_cmsion_grupal+'/'+vlor_dmcilio_grupal+'/'+mnmo_prsnas_xgrupo)
+  }
+  
+  AsociarCosteo(bandera: string, datos: any) {
+    return this.http.post<any>(this.url_servidor + 'costeofertamod/' + bandera, datos)
+  }
 }

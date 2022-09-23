@@ -28,6 +28,23 @@ h2 {
     color: #575A5F;
 }
 
+.ValorIDOfer {
+    color: #7ccc64;
+}
+
+.hrSinEstilo {
+    margin: 2px;
+}
+
+.TextMay {
+    text-transform: uppercase;
+}
+
+.ImgOferta {
+    margin-top: 15px;
+    border-radius: 25px;
+}
+
 .CentrarText {
     text-align: center !important;
 }
@@ -121,8 +138,8 @@ th {
 }
 
 .TableAgro td {
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
     text-align: center;
 }
 
@@ -163,4 +180,13 @@ th {
 
 .TextAlert {
     color: red;
+}
+
+.ShowMap {
+    visibility: visible !important;
+    height: 500px;
+}
+
+.HideMap {
+    visibility: hidden !important;
 }

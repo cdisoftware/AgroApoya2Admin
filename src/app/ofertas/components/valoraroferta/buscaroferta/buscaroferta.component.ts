@@ -50,7 +50,11 @@ export class BuscarofertaComponent implements OnInit {
   EJornada: string = '0';
   ArrayJornada: any = [];
   Respuesta: string = '';
-
+  NomEstado: string = '';
+  EstadoOferta: string = '';
+  ImagenEstado: string = '';
+  NoOferta: string = '';
+  RutaImagen: string = this.SeriviciosGenerales.RecuperaRutaImagenes();
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -63,9 +67,9 @@ export class BuscarofertaComponent implements OnInit {
 
   ngOnInit(): void {
     this.IdUsuario = this.cookies.get('IDU');
-    if(this.IdUsuario == ''){
+    if (this.IdUsuario == '') {
       this.rutas.navigateByUrl('');
-    }else{
+    } else {
       this.CargaObjetosIniciales();
     }
   }
@@ -94,6 +98,7 @@ export class BuscarofertaComponent implements OnInit {
   }
 
   Buscar(modalBuscar: any) {
+    var noferta = '0';
     this.modalService.open(modalBuscar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
     const datosbusqueda = {
       UsuCodig: 0,
@@ -109,8 +114,12 @@ export class BuscarofertaComponent implements OnInit {
       CD_RGION: 0,
       CD_MNCPIO: 0
     }
-    //console.log(datosbusqueda);
-    this.ServiciosValorar.BusquedaOferta('1', '0', this.IdProducto, this.IdProductor, datosbusqueda).subscribe(Resultado => {
+    if(this.NoOferta != ''){
+      noferta = this.NoOferta
+    }
+    console.log(datosbusqueda);
+    console.log(noferta, this.IdProducto, this.IdProductor)
+    this.ServiciosValorar.BusquedaOferta('2', noferta, this.IdProducto, this.IdProductor, datosbusqueda).subscribe(Resultado => {
       this.ArrayBusqueda = Resultado;
       if (Resultado.length > 0) {
         this.Respuesta = '';
@@ -120,6 +129,14 @@ export class BuscarofertaComponent implements OnInit {
     })
 
 
+  }
+
+  ConsultaIconoEstado() {
+    this.ServiciosValorar.ConsultaEstadoOferta('1', this.IdOferta).subscribe(Resultado => {
+      console.log(Resultado)
+      this.EstadoOferta = Resultado[0].descripcion;
+      this.ImagenEstado = this.SeriviciosGenerales.RecuperaRutaImagenes() + Resultado[0].imagen_icono;
+    })
   }
 
   Limpiar() {
@@ -139,6 +156,8 @@ export class BuscarofertaComponent implements OnInit {
   }
 
   EditaOferta(modalEditar: any) {
+    this.ECaracteriza = this.Caracterizacion;
+    this.EFechaRecogida = this.FechaRecogida;
     this.ServiciosValorar.ConsultaJornada('1').subscribe(Resultado => {
       this.ArrayJornada = Resultado;
     })
@@ -164,6 +183,7 @@ export class BuscarofertaComponent implements OnInit {
     this.ServiciosValorar.ModificaEstadoOferta('3', datosCerrar).subscribe(Resultado => {
       console.log(Resultado)
       this.Respuesta = Resultado.toString();
+      this.CargaInfoOferta();
     })
     this.modalService.dismissAll();
     this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
@@ -195,11 +215,11 @@ export class BuscarofertaComponent implements OnInit {
     this.ServiciosValorar.EditarOfertaBusqueda('4', '0', DatosEditar).subscribe(Resultado => {
       console.log(Resultado)
       this.Respuesta = Resultado.toString()
+      this.CargaInfoOferta();
     })
-    this.CargaInfoOferta();
     this.modalService.dismissAll();
     this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-    
+
   }
 
   CargaBusqueda(seleccion: any) {
@@ -210,7 +230,8 @@ export class BuscarofertaComponent implements OnInit {
     this.CargaInfoOferta();
   }
 
-  CargaInfoOferta(){
+  CargaInfoOferta() {
+    this.ConsultaIconoEstado();
     this.ServiciosValorar.ConsultaOferta('1', this.IdOferta).subscribe(Resultado => {
       this.ArrayOferta = Resultado;
       console.log(Resultado)
@@ -224,9 +245,11 @@ export class BuscarofertaComponent implements OnInit {
       this.Unidades = Resultado[0].Unidades_disponibles;
       this.FechaRecogida = Resultado[0].fecha_recogida;
       this.Jornada = Resultado[0].Nombre_jornada;
+      this.EJornada = Resultado[0].jornada;
       this.Direccion = Resultado[0].coordenadas_parcela;
       this.ValorTotal = Resultado[0].VR_TOTAL_OFRTA;
       this.IdProducto = Resultado[0].Producto;
+      this.NomEstado = Resultado[0].Nombre_estado;
       this.ImagenOferta = this.SeriviciosGenerales.RecuperaRutaImagenes() + Resultado[0].IMAGEN;
       this.SeriviciosGenerales.CrearCookie('IDO', this.IdOferta);
       this.SeriviciosGenerales.CrearCookie('IDP', this.IdProducto);
@@ -241,14 +264,14 @@ export class BuscarofertaComponent implements OnInit {
     if (campo == 'pd') {
       this.IdProducto = '0';
     }
-    if(campo == 'pt'){
+    if (campo == 'pt') {
       this.IdProductor = '0'
     }
-    if(campo == 'es'){
+    if (campo == 'es') {
       this.IdEstado = '1';
     }
-    if(campo == 'fe'){
-      
+    if (campo == 'fe') {
+
       this.FechaOferta = ''
     }
   }

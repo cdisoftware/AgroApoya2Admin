@@ -5,11 +5,136 @@
     <div class="br row justify-content-center">
         <img src="./../../../../../assets/ImagenesAgroApoya2Admin/barra3.png" style="width: 65%;">
     </div>
-    <div class="row">
-        <label class="col-sm-6"><small><b><i>Nombre oferta : {{SessionNomOferta}}</i></b></small></label>
-        <label class="col-sm-2"><small><b><i>Ciudad : {{SessionCiudad}}</i></b></small></label>
-        <label class="col-sm-2"><small><b><i>Cantidades de la oferta : {{SessionCantSecOferta}}</i></b></small></label>
-        <label class="col-sm-2 TextAlert"><small><b><i>Cantidades ya asignadas : {{CantidadSectores}}</i></b></small></label>
+    <div class="row justify-content-center br tarjetadetalle" *ngFor="let oferta of DataOferta">
+        <div class="row m-2">
+            <div class="col-sm-3">
+                <img src={{RutaImagen+oferta.IMAGEN}} class="col-sm-12 ImgOferta">
+            </div>
+            <div class="col-sm-9">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave TextMay">Codigo oferta:&nbsp;</label><label class="ValorIDOfer"><strong>{{SessionOferta}}</strong></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Producto:&nbsp;</label><label class="Valor">{{oferta.Nombre_Producto}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Presentación empaque:&nbsp;</label><label class="Valor">{{oferta.Descripcion_empaque}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Tamaño:&nbsp;</label><label class="Valor">{{oferta.Nmbre_tamano}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Condición entrega:&nbsp;</label> <label class="Valor">{{oferta.Condicion_entrega}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Valor unidad:&nbsp;</label><label class="Valor">{{oferta.VR_UNDAD_EMPQUE}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Unidades disponibles:&nbsp;</label><label class="Valor">{{oferta.Unidades_disponibles}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="Llave">Valor total oferta:&nbsp;</label><label class="Valor">{{oferta.VR_TOTAL_OFRTA}}</label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="Llave">Valor costeo:&nbsp;</label><label class="Valor">{{oferta.vlor_flte_xunidad}}</label>
+                    </div>
+                </div>
+                <hr class="hrSinEstilo">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="Llave">Descripción producto:&nbsp;</label><label class="Valor">{{oferta.caracteristicas}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="Llave">Caracterización:&nbsp;</label><label class="Valor">{{oferta.caracterizacion}}</label>
+                    </div>
+                </div>
+                <hr class="hrSinEstilo">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Fecha recogida:&nbsp;</label><label class="Valor">{{oferta.fecha_recogida}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Jornada:&nbsp;</label><label class="Valor">{{oferta.Nombre_jornada}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="Llave">Nombre productor:&nbsp;</label><label class="Valor">{{oferta.Nombre_productor}}</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="Llave">Ubicación:&nbsp;</label><label class="Valor">{{oferta.Ubicacion_parsela +' ('+oferta.coordenadas_parcela}})</label>
+                        </div>
+                    </div>
+                </div>
+                <hr class="hrSinEstilo">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Ciudad:&nbsp;</label><label class="Valor">{{SessionCiudad}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Cantidades de la oferta asignadas:&nbsp;</label><label class="Valor TextAlert">{{CantidadSectores}} de {{SessionCantSecOferta}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="br row">
         <div class="col-sm-4">
@@ -29,106 +154,140 @@
             <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Valor flete" [(ngModel)]="VlrFle">
         </div>
     </div>
-    <div class="row br justify-content-center">
-        <div class="col-sm-2 col-2">
-            <button class="btn btn-agro-prin col-sm-12" (click)="AsociaSector(ModalRespuesta)">
-                Asociar
-            </button>
+    <div class="row br justify-content-center ">
+        <div class="col-sm-2 col-2 ">
+            <button class="btn btn-agro-prin col-sm-12 " (click)="AsociaSector(ModalRespuesta) ">
+                    Asociar
+                </button>
         </div>
-        <div class="col-sm-2 col-2">
-            <button class="btn btn-agro-prin col-sm-12" (click)="AbreCreaSector(ModalInsert, ModalRespuesta)">
-                Crear sector
-            </button>
+        <div class="col-sm-2 col-2 ">
+            <button class="btn btn-agro-prin col-sm-12 " (click)="AbreCreaSector(ModalInsert, ModalRespuesta) ">
+                    Crear sector
+                </button>
         </div>
-        <div class="col-sm-2 col-2">
-            <button class="btn btn-agro-sec col-sm-12" (click)="LimpiaForm()">
-                Limpiar
-            </button>
+        <div class="col-sm-2 col-2 ">
+            <button class="btn btn-agro-sec col-sm-12 " (click)="LimpiaForm() ">
+                    Limpiar
+                </button>
         </div>
     </div>
     <hr>
-    <div class="br row justify-content-center">
-        <h2 class="TituloDetalle">Sectores Asociados</h2>
+    <div class="br row justify-content-center ">
+        <h2 class="TituloDetalle ">Sectores Asociados</h2>
     </div>
-    <div class="br row justify-content-center">
-        <table class="col-sm-10 TableAgro">
+    <div class="br row justify-content-center ">
+        <table class="col-sm-10 TableAgro ">
             <tr>
                 <th>Sector</th>
                 <th>Cantidad</th>
                 <th>Valor flete</th>
                 <th>Eliminar</th>
             </tr>
-            <tr *ngFor="let sector of DataSectorOferta">
+            <tr *ngFor="let sector of DataSectorOferta ">
                 <td>{{sector.DSCRPCION_SCTOR}}</td>
                 <td>{{sector.CNTDAD}}</td>
                 <td>${{sector.VLOR_FLTE_SGRDO}}</td>
                 <td>
-                    <button class="SinEstilo" (click)="EliminaSector(sector, ModalRespuesta)">
-                        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Cerrar.png">
-                    </button>
+                    <button class="SinEstilo " (click)="EliminaSector(sector, ModalRespuesta) ">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Cerrar.png ">
+                        </button>
                 </td>
             </tr>
-            <tr *ngIf="ValidaConsulta=='1'">
-                <td colspan="4">{{txtValidaCons}}</td>
+            <tr *ngIf="ValidaConsulta=='1' ">
+                <td colspan="4 ">{{txtValidaCons}}</td>
             </tr>
         </table>
     </div>
-    <div class="row justify-content-center br">
+    <div class="row justify-content-center br ">
         <div class="col-sm-2 ">
-            <button class="btn btn-agro-prin col-sm-12" (click)="Volver()">Atras</button>
+            <button class="btn btn-agro-prin col-sm-12 " (click)="Volver() ">Atras</button>
         </div>
         <div class="col-sm-2 ">
-            <button class="btn btn-agro-prin col-sm-12" (click)="Enviar(ModalRespuesta)">Siguiente</button>
+            <button class="btn btn-agro-prin col-sm-12 " (click)="Enviar(ModalRespuesta) ">Siguiente</button>
         </div>
     </div>
+    <br>
 </div>
 <ng-template #ModalInsert let-modal>
-    <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Crear sector</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    <div class="modal-header ">
+        <h4 class="modal-title " id="modal-basic-title ">Crear sector</h4>
+        <!-- <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button> -->
     </div>
-    <div class="modal-body">
-        <div class="row br">
-            <div class="col-sm-12">
-                <input type="text" class="Col-sm-12 form-control" placeholder="Nombre sector" [(ngModel)]="NombreSec">
+    <div class="modal-body ">
+        <div class="row br ">
+            <div class="col-sm-10 ">
+                <input type="text " class="Col-sm-12 form-control " placeholder="Nombre sector " [(ngModel)]="NombreSec ">
+            </div>
+            <div class="col-sm-2 ">
+                <button class="btn btn-agro-prin col-sm-12 " (click)="CreaSector(ModalRespuesta) ">
+                    Crear
+                </button>
             </div>
         </div>
-        <div class="row mt-2">
-            <label><small><b><i>Recuerda separar longitud y latitud ayudandote con una coma</i></b></small></label>
-            <div class="col-sm-6">
-                <input type="text" class="Col-sm-12 form-control" placeholder="Coordenada norte" [(ngModel)]="Coor1">
+        <div class="row mt-2 " *ngIf="ValidaInsertSec=='1' ">
+            <div class="col-sm-5 ">
+                <input type="text " class="Col-sm-12 form-control " placeholder="Coordenada norte " [(ngModel)]="Coor1 ">
             </div>
-            <div class="col-sm-6">
-                <input type="text" class="Col-sm-12 form-control" placeholder="Coordenada sur" [(ngModel)]="Coor2">
+            <div class="col-sm-1 "></div>
+            <div class="col-sm-5 ">
+                <input type="text " class="Col-sm-12 form-control " placeholder="Coordenada sur " [(ngModel)]="Coor2 ">
+            </div>
+            <div class="col-sm-1 ">
+                <button class="SinEstilo mt-1 " (click)="AgregarCoordenada(ModalRespuesta) ">
+                    <img src="./../../../../../assets/ImagenesAgroApoya2Admin/anadir.png ">
+                </button>
             </div>
         </div>
-        <google-map></google-map>
+        <div class="row mt-2 justify-content-center ">
+            <div class="col-sm-11 ">
+                <div id="map" [ngClass]="ValidaInsertSec=='1' ? 'ShowMap' : 'HideMap' "></div>
+            </div>
+        </div>
+        <div class="br row justify-content-center " *ngIf="ValidaCoord=='1' ">
+            <h2 class="TituloDetalle " style="color: #397c97; ">Coordenadas registradas</h2>
+        </div>
+        <div class="row justify-content-center mt-2 " *ngIf="ValidaCoord=='1' ">
+            <div class="col-sm-5 ">
+                <h2 class="TituloDetalle ">Latitud</h2>
+            </div>
+            <div class="col-sm-5 ">
+                <h2 class="TituloDetalle ">Longitud</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-2 " *ngFor="let coordenada of DataCoor ">
+            <div class="col-sm-5 ">
+                <h2 class="Valor ">{{coordenada.Latitud}}</h2>
+            </div>
+            <div class="col-sm-5 ">
+                <h2 class="Valor ">{{coordenada.Longitud}}</h2>
+            </div>
+        </div>
     </div>
-    <div class="row justify-content-center">
-        <div class="col-sm-2">
-            <button type="button" class="btn btn-agro-prin col-sm-12" (click)="CreaSector(ModalRespuesta)">Guardar</button>
+    <div class="row justify-content-center " *ngIf="ValidaInsertSec=='1' ">
+        <div class="col-sm-2 ">
+            <button type="button " class="btn btn-agro-prin col-sm-12 " (click)="CerrModalMap(ModalRespuesta) ">Aceptar</button>
         </div>
-        <div class="col-sm-2">
-            <button type="button" class="btn btn-agro-sec col-sm-12" (click)="LimpiaModal()">Limpiar</button>
-        </div>
+        <!-- <div class="col-sm-2 ">
+            <button type="button " class="btn btn-agro-sec col-sm-12 " (click)="LimpiaModal() ">Limpiar</button>
+        </div> -->
     </div>
     <br>
 </ng-template>
 
 <ng-template #ModalRespuesta let-modal>
-    <div class="modal-header">
+    <div class="modal-header ">
         <h1>Respuesta</h1>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
     </div>
-    <div class="modal-body">
-        <div class="row br">
-            <div class="col-sm-12">
-                <h2 class="TituloDetalle">{{Respuesta}}</h2>
+    <div class="modal-body ">
+        <div class="row br ">
+            <div class="col-sm-12 ">
+                <h2 class="TituloDetalle ">{{Respuesta}}</h2>
             </div>
         </div>
     </div>
-    <div class="row justify-content-center">
-        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="LimpiaForm()">Aceptar</button>
+    <div class="row justify-content-center ">
+        <button type="button " class="btn btn-agro-prin col-sm-2 " (click)="modal.dismiss() ">Aceptar</button>
     </div>
     <br>
 </ng-template>

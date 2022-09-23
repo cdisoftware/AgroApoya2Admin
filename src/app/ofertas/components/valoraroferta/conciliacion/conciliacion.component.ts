@@ -48,8 +48,9 @@ export class ConciliacionComponent implements OnInit {
   IdProducto: string = '0';
   ArrayEmpaque: any = [];
   Respuesta: string = '';
-
-
+  NomEstado: string = '';
+  ValorSugerido: string =''
+  RutaImagen: string = this.SeriviciosGenerales.RecuperaRutaImagenes();
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
     private ServiciosValorar: ValorarofertaService,
@@ -97,6 +98,8 @@ export class ConciliacionComponent implements OnInit {
       this.Direccion = Resultado[0].coordenadas_parcela;
       this.ValorTotal = Resultado[0].VR_TOTAL_OFRTA;
       this.IdEJornada = Resultado[0].jornada;
+      this.IdEEmpaque = Resultado[0].Presentacion_emp;
+      this.NomEstado = Resultado[0].Nombre_estado;
       this.ImagenOferta = this.SeriviciosGenerales.RecuperaRutaImagenes() + Resultado[0].IMAGEN;
     })
     //Consulta datos de las ultimas ofertas 
@@ -130,13 +133,11 @@ export class ConciliacionComponent implements OnInit {
   EditaOferta(modalEditar: any) {
     //abre popup editar, carga campos oferta y ejecuta servicio para consulta de las jornadas
     this.ECaracteriza = this.Caracterizacion;
-    this.IdEEmpaque = this.Presentacion;
     this.EVUnidad = this.ValorUnidad;
     this.EUnidadesDis = this.Unidades;
     this.EFechaRecogida = this.FechaRecogida;
     this.EDescripcion = this.Descripcion;
     this.EObservacion = ''
-    this.IdEJornada = this.Jornada;
     this.ServiciosValorar.ConsultaJornada('1').subscribe(Resultado => {
       this.ArrayJornada = Resultado;
       console.log(Resultado)
@@ -156,6 +157,7 @@ export class ConciliacionComponent implements OnInit {
     //asocia jornada seleccionda para edicion de la oferta
     this.IdEJornada = seleccion
   }
+
   SelEEmpaque(seleccion: string) {
     this.IdEEmpaque = seleccion
   }
@@ -254,7 +256,33 @@ export class ConciliacionComponent implements OnInit {
 
   EnviarPropuesta(ModalRespuesta: any) {
     //enviar propuesta a campesino por sms pendiente servicio
-    this.Respuesta = 'No esta disponible en este momento'
+    const DatosEditar = {
+      CD_PRDCTO: '0',
+      UND_EMPQUE: "0",
+      CD_CNDCION: "0",
+      CD_TMNO: "0",
+      DSCRPCION_PRDCTO: "0",
+      VR_UNDAD_EMPQUE: this.ValorSugerido,
+      CD_UNDAD: "0",
+      VR_TOTAL_OFRTA: "0",
+      VGNCIA_DESDE: '0',
+      CD_JRNDA: '0',
+      CD_RGION: "0",
+      CD_MNCPIO: "0",
+      UBCCION_PRCLA: "0",
+      COORDENADAS_PRCLA: "0",
+      USUCODIG: "0",
+      ID_PRODUCTOR: '0',
+      CD_CNSCTVO: this.IdOferta,
+      CRCTRZCION: '0',
+      OBS_EDICION: "0"
+    }
+    console.log(DatosEditar);
+    this.ServiciosValorar.EditarOfertaBusqueda('6', '0', DatosEditar).subscribe(Resultado => {
+      console.log(Resultado)
+      this.Respuesta = Resultado.toString()
+    })
+    //this.Respuesta = 'No esta disponible en este momento'
     this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
   }
   Atras() {

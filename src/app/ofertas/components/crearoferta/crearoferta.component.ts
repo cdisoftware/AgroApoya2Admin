@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MetodosglobalesService } from './../../../core/metodosglobales.service'
 import { CrearofertaService } from './../../../core/crearoferta.service'
 import { ValorarofertaService } from './../../../core/valoraroferta.service'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-crearoferta',
@@ -49,10 +50,12 @@ export class CrearofertaComponent implements OnInit {
   IdProductor: string = '';
   EJornada: string = '0';
   ArrayJornada: any = [];
+  Respuesta: string  = '';
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
     private ServiciosOferta: CrearofertaService,
+    private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService
   ) { }
 
@@ -161,7 +164,7 @@ export class CrearofertaComponent implements OnInit {
 
 
 
-  Guardar() {
+  Guardar(ModalRespuesta : any) {
     const datosinsert = {
       CD_PRDCTO: this.IdProducto,
       UND_EMPQUE: '0',
@@ -176,7 +179,7 @@ export class CrearofertaComponent implements OnInit {
       CD_RGION: this.IdDepartamento,
       CD_MNCPIO: this.IdCiudad,
       UBCCION_PRCLA: this.UbicacionPar,
-      COORDENADAS_PRCLA: "12312312 - 43534534",
+      COORDENADAS_PRCLA: "4.564829936971187, -74.5311351731822",
       USUCODIG: this.IdProductor,
       ID_PRODUCTOR: "0",
       CD_CNSCTVO: "0",
@@ -188,10 +191,12 @@ export class CrearofertaComponent implements OnInit {
       IMAGEN4: this.NomImagen4,
       IMAGEN5: this.NomImagen5
     }
-    //console.log(datosinsert)
-    //console.log(this.IdEmpaque)
-    this.ServiciosOferta.CrearOferta('3', this.IdEmpaque,datosinsert).subscribe(Resultado => {
-      console.log(Resultado)
+    console.log(datosinsert)
+    console.log(this.IdEmpaque)
+    this.ServiciosOferta.CrearOferta('3', this.IdEmpaque, datosinsert).subscribe(Resultado => {
+      this.Respuesta = Resultado.toString();
+      this.modalService.dismissAll();
+      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     })
 
   }
