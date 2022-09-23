@@ -57,7 +57,7 @@ export class ValorarofertaService {
   }
 
   ModificaEstadoOferta(bandera: string, datos: any) {
-    return this.http.post<any[]>(this.url_servidor + 'aestadofertamod/' + bandera, datos)
+    return this.http.post<any[]>(this.url_servidor + 'modccambiaestadoferta/' + bandera, datos)
   }
 
   EditaOferta(Bandera: string, datos: any) {

@@ -101,7 +101,7 @@
 
         <div class="row">
             <div class="col-sm-6 br">
-                <label class="col-sm-12 Llave">Vigencia Oferta Desde</label>
+                <label class="col-sm-12 Llave">Fecha Recogida</label>
                 <input type="date" class="form-control form-control-sm textBox" id="VigenciaOferta"
                     [(ngModel)]="Vigencia" name="Vigencia">
             </div>
@@ -244,13 +244,17 @@
                 <div class="col-sm-6">
                     <label class="col-sm-12 Llave">Coordenada Norte</label>
                     <input type="text" class="form-control form-control-sm textBox" placeholder="Coordenada norte"
-                    [(ngModel)]="Coor1" name="Coor1">
+                    [(ngModel)]="Coor1" name="Coor1" disabled="disabled">
                 </div>
                 <div class="col-sm-6">
                     <label class="col-sm-12 Llave">Coordenada Sur</label>
                     <input type="text" class="form-control form-control-sm textBox" placeholder="Coordenada sur"
-                    [(ngModel)]="Coor2" name="Coor2">
+                    [(ngModel)]="Coor2" name="Coor2" disabled="disabled">
                 </div>
+            </div>
+            <br>
+            <div class="row justify-content-center">
+                <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptarCoordenadas(ModalRespuesta)">Aceptar</button>
             </div>
             <hr>
             <div class="row mt-2 justify-content-center ">
@@ -258,9 +262,6 @@
                     <div id="map" [ngClass]="ValidaInsertSec=='1' ? 'ShowMap' : 'HideMap' "></div>
                 </div>
             </div>
-        </div>
-        <div class="row justify-content-center">
-            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptarCoordenadas()">Aceptar</button>
         </div>
         <br>
     </ng-template>

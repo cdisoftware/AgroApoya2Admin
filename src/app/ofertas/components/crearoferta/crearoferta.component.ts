@@ -314,9 +314,15 @@ export class CrearofertaComponent implements OnInit {
     this.CreaMapa();
   }
 
-  AceptarCoordenadas(){
-    this.CoordenadasParcela = this.Coor1 + ' , ' + this.Coor2;
+  AceptarCoordenadas(modalRespuesta: any){
+    if(this.Coor1 != '' && this.Coor2 != ''){
+      this.CoordenadasParcela = this.Coor1 + ' , ' + this.Coor2;
     this.modalService.dismissAll();
+    }else{
+      this.Respuesta = 'Debes seleccionar las coordenadas de tu parcela.';
+      this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    }
+    
   }
 
 }

@@ -51,10 +51,12 @@ export class BuscarofertaComponent implements OnInit {
   ArrayJornada: any = [];
   Respuesta: string = '';
   NomEstado: string = '';
+  IdEstadoOferta: string = '';
   EstadoOferta: string = '';
   ImagenEstado: string = '';
   NoOferta: string = '';
   RutaImagen: string = this.SeriviciosGenerales.RecuperaRutaImagenes();
+  RutaSiguiente: string = '';
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -114,7 +116,7 @@ export class BuscarofertaComponent implements OnInit {
       CD_RGION: 0,
       CD_MNCPIO: 0
     }
-    if(this.NoOferta != ''){
+    if (this.NoOferta != '') {
       noferta = this.NoOferta
     }
     console.log(datosbusqueda);
@@ -176,8 +178,11 @@ export class BuscarofertaComponent implements OnInit {
     const datosCerrar = {
       usucodig: this.IdUsuario,
       cnctivoOferta: this.IdOferta,
-      descripcion: this.mcObservacion,
-      estado: 6
+      ObsEstado: this.mcObservacion,
+      estado: 6,
+      parametro1: "",
+      parametro2: "",
+      parametro3: ""
     }
     console.log(datosCerrar)
     this.ServiciosValorar.ModificaEstadoOferta('3', datosCerrar).subscribe(Resultado => {
@@ -253,11 +258,30 @@ export class BuscarofertaComponent implements OnInit {
       this.ImagenOferta = this.SeriviciosGenerales.RecuperaRutaImagenes() + Resultado[0].IMAGEN;
       this.SeriviciosGenerales.CrearCookie('IDO', this.IdOferta);
       this.SeriviciosGenerales.CrearCookie('IDP', this.IdProducto);
+      this.IdEstado = Resultado[0].Estado;
+      this.ValidaEstados(this.IdEstado);
     })
   }
 
+  ValidaEstados(estado: string) {
+    if (estado == '1' || estado == '2' || estado == '3') {
+      this.ValidaBusqueda = '1'
+      this.RutaSiguiente = '/conciliacion';
+    } else if (estado == '4' || estado == '5') {
+      this.ValidaBusqueda = '1'
+      this.RutaSiguiente = '/sectorizar'
+    } else if (estado == '13') {
+      this.RutaSiguiente = '/transportista'
+    } else if (estado == '14') {
+      this.ValidaBusqueda = '1'
+      this.RutaSiguiente = '/costeo'
+    } else if (estado == '6' || estado == '7' || estado == '10' || estado == '11') {
+      this.ValidaBusqueda = '0'
+    }
+  }
+
   Enviar() {
-    this.rutas.navigateByUrl('home/conciliacion');
+    this.rutas.navigateByUrl('home' + this.RutaSiguiente);
   }
 
   LimpiarCampos(campo: string) {
