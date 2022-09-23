@@ -304,21 +304,21 @@
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Minimo unidades lider</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidLider" onkeyup="if(parseInt(this.value)<=0 || this.value==''){ this.value =1; return false; }">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidLider" onkeyup="if(parseInt(this.value)<0 || this.value==''){ this.value =0; return false; }">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Maximo unidades lider</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidLider" onkeyup="if(parseInt(this.value)<=0 || this.value==''){ this.value =1; return false; }">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidLider" onkeyup="if(parseInt(this.value)<0 || this.value==''){ this.value =0; return false; }">
                         </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Minimo unidades participante</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidPart" onkeyup="if(parseInt(this.value)<=0 || this.value==''){ this.value =1; return false; }">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidPart" onkeyup="if(parseInt(this.value)<0 || this.value==''){ this.value =0; return false; }">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Maximo unidades participante</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidPart" onkeyup="if(parseInt(this.value)<=0 || this.value==''){ this.value =1; return false; }">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidPart" onkeyup="if(parseInt(this.value)<0 || this.value==''){ this.value =0; return false; }">
                         </div>
                     </div>
                     <div class="row br">
@@ -338,7 +338,7 @@
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Numero minimo de personas por grupo</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidXGrupos" onkeyup="if(parseInt(this.value)<2 || this.value==''){this.value=2; return false; }" (change)="CalculaCCI(ModalRespuesta)">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidXGrupos" onkeyup="if(parseInt(this.value)<1 || this.value==''){this.value=2; return false; }" (change)="CalculaCCI(ModalRespuesta)">
                         </div>
                     </div>
                     <div class="row br" *ngIf="MuestraCantIndiv=='1'">
@@ -410,6 +410,7 @@
 <ng-template #ModalPublicar let-modal>
     <div class="modal-header">
         <h1 class="modal-title" id="modal-basic-title">Publicar Oferta</h1>        
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
         <div class="row br">
