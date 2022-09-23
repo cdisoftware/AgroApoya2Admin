@@ -119,7 +119,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label class="Llave">Condición entrega:&nbsp;</label> <label
-                                        class="Valor">{{oferta.Tamano}}</label>
+                                        class="Valor">{{oferta.Condicion_entrega}}</label>
                                 </div>
                             </div>
                         </div>
@@ -217,21 +217,21 @@
             <div class="row justify-content-center">
                 <div class="col-sm-1">
                     <button class="SinEstilo" (click)="EditaOferta(templateEditar)">
-                        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Editar.png" title="Editar oferta">
+                        <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Admin/Editar.png" title="Editar oferta">
                     </button>
                     <label>Editar</label>
                 </div>
                 <div class="col-sm-1">
                     <button class="SinEstilo" (click)="CerrarOferta(templateCerrar)">
-                        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Cerrar.png" title="Cerrar oferta">
+                        <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Admin/Cerrar.png" title="Cerrar oferta">
                     </button>
                     <label>Cerrar</label>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-1">
                     <button class="SinEstilo" disabled>
-                        <img src={{ImagenEstado}} title="Estado oferta">
+                        <img class="BtnimgTamano" src={{ImagenEstado}} title={{EstadoOferta}}>
                     </button>
-                    <label>{{EstadoOferta}}</label>
+                    <label>Estado</label>
                 </div>
             </div>
         </div>
