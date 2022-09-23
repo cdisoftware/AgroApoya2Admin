@@ -117,7 +117,8 @@ export class BuscarofertaComponent implements OnInit {
     if(this.NoOferta != ''){
       noferta = this.NoOferta
     }
-    //console.log(datosbusqueda);
+    console.log(datosbusqueda);
+    console.log(noferta, this.IdProducto, this.IdProductor)
     this.ServiciosValorar.BusquedaOferta('2', noferta, this.IdProducto, this.IdProductor, datosbusqueda).subscribe(Resultado => {
       this.ArrayBusqueda = Resultado;
       if (Resultado.length > 0) {
@@ -182,6 +183,7 @@ export class BuscarofertaComponent implements OnInit {
     this.ServiciosValorar.ModificaEstadoOferta('3', datosCerrar).subscribe(Resultado => {
       console.log(Resultado)
       this.Respuesta = Resultado.toString();
+      this.CargaInfoOferta();
     })
     this.modalService.dismissAll();
     this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
