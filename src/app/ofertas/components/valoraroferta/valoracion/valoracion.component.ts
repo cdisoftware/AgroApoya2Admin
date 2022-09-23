@@ -586,7 +586,7 @@ export class ValoracionComponent implements OnInit {
       var respuesta = ResultUpda.split('|')
       this.Respuesta = respuesta[1];
       if (respuesta[0] != '-1') {
-        this.modalService.dismissAll();
+        //this.modalService.dismissAll();
         this.rutas.navigateByUrl('/home/buscaroferta')
       }
     })
