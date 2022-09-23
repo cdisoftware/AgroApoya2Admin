@@ -179,7 +179,7 @@ export class CrearofertaComponent implements OnInit {
       CD_RGION: this.IdDepartamento,
       CD_MNCPIO: this.IdCiudad,
       UBCCION_PRCLA: this.UbicacionPar,
-      COORDENADAS_PRCLA: "12312312 - 43534534",
+      COORDENADAS_PRCLA: "4.564829936971187, -74.5311351731822",
       USUCODIG: this.IdProductor,
       ID_PRODUCTOR: "0",
       CD_CNSCTVO: "0",
