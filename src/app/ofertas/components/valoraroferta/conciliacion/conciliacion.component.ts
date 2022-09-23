@@ -200,8 +200,8 @@ export class ConciliacionComponent implements OnInit {
       parametro3: ""
     }
     this.ServiciosValorar.ModificaEstadoOferta('3', datosdesclinar).subscribe(Resultado => {
-      console.log(Resultado)
-      this.Respuesta = Resultado.toString();
+      var arrayrespuesta = Resultado.split('|');
+      this.Respuesta = arrayrespuesta[1];
       this.CargaObjetosIniciales();
     })
     this.modalService.dismissAll();
@@ -236,7 +236,8 @@ export class ConciliacionComponent implements OnInit {
     console.log(datosUpdate)
     this.ServiciosValorar.EditarOfertaBusqueda('5', this.IdEEmpaque, datosUpdate).subscribe(Resultado => {
       this.CargaObjetosIniciales();
-      this.Respuesta = Resultado.toString();
+      var arrayrespuesta = Resultado.split('|');
+      this.Respuesta = arrayrespuesta[1];
     })
     this.modalService.dismissAll();
     this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -277,7 +278,8 @@ export class ConciliacionComponent implements OnInit {
     }
     console.log(datosaprueba)
     this.ServiciosValorar.ModificaEstadoOferta('3', datosaprueba).subscribe(Resultado => {
-      this.Respuesta = Resultado.toString();
+      var arrayrespuesta = Resultado.split('|');
+      this.Respuesta = arrayrespuesta[1];
       this.CargaObjetosIniciales();
     })
     this.ServiciosValorar.InsertaCiudadOferta('3', datosciudad).subscribe(Resultado => {
@@ -308,7 +310,8 @@ export class ConciliacionComponent implements OnInit {
     console.log(DatosEditar);
     this.ServiciosValorar.ModificaEstadoOferta('3', DatosEditar).subscribe(Resultado => {
       console.log(Resultado)
-      this.Respuesta = Resultado.toString()
+      var arrayrespuesta = Resultado.split('|');
+      this.Respuesta = arrayrespuesta[1];
       this.CargaObjetosIniciales();
     })
     //this.Respuesta = 'No esta disponible en este momento'

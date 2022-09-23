@@ -186,8 +186,8 @@ export class BuscarofertaComponent implements OnInit {
     }
     console.log(datosCerrar)
     this.ServiciosValorar.ModificaEstadoOferta('3', datosCerrar).subscribe(Resultado => {
-      console.log(Resultado)
-      this.Respuesta = Resultado.toString();
+      var arrayrespuesta = Resultado.split('|');
+      this.Respuesta = arrayrespuesta[1];
       this.CargaInfoOferta();
     })
     this.modalService.dismissAll();
@@ -218,8 +218,8 @@ export class BuscarofertaComponent implements OnInit {
     }
     console.log(DatosEditar);
     this.ServiciosValorar.EditarOfertaBusqueda('4', '0', DatosEditar).subscribe(Resultado => {
-      console.log(Resultado)
-      this.Respuesta = Resultado.toString()
+      var arrayrespuesta = Resultado.split('|');
+      this.Respuesta = arrayrespuesta[1];
       this.CargaInfoOferta();
     })
     this.modalService.dismissAll();

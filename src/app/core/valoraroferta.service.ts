@@ -20,7 +20,7 @@ export class ValorarofertaService {
   }
 
   ConsultaProductor(Bandera: string, tipopersona: string, datos: any) {
-    return this.http.post<any[]>(this.url_servidor + 'conscpersons/' + Bandera + '/' + tipopersona, datos)
+    return this.http.post<any>(this.url_servidor + 'conscpersons/' + Bandera + '/' + tipopersona, datos)
   }
 
   ConsultaOferta(Bandera: string, idOferta: string) {
@@ -49,7 +49,7 @@ export class ValorarofertaService {
   }
 
   ConsultaConductoresSector(bandera: string, Cd_cnsctivo: string, CODIGO_TRANS: string, CD_PAIS: string, CD_RGION: string, CD_MNCPIO: string, BodyConsulta: any) {
-    return this.http.post<any[]>(this.url_servidor + 'consconductor/' + bandera + '/' + Cd_cnsctivo + '/' + CODIGO_TRANS + '/' + CD_PAIS + '/' + CD_RGION + '/' + CD_MNCPIO, BodyConsulta)
+    return this.http.post<any>(this.url_servidor + 'consconductor/' + bandera + '/' + Cd_cnsctivo + '/' + CODIGO_TRANS + '/' + CD_PAIS + '/' + CD_RGION + '/' + CD_MNCPIO, BodyConsulta)
   }
 
   OperacionTransportista(bandera: string, Body: any) {
@@ -57,15 +57,15 @@ export class ValorarofertaService {
   }
 
   ModificaEstadoOferta(bandera: string, datos: any) {
-    return this.http.post<any[]>(this.url_servidor + 'modccambiaestadoferta/' + bandera, datos)
+    return this.http.post<any>(this.url_servidor + 'modccambiaestadoferta/' + bandera, datos)
   }
 
   EditaOferta(Bandera: string, datos: any) {
-    return this.http.post<any[]>(this.url_servidor + 'conscpersons/' + Bandera, datos)
+    return this.http.post<any>(this.url_servidor + 'conscpersons/' + Bandera, datos)
   }
 
   BusquedaOferta(bandera: string, cnctivoOferta: string, IdProducto: string, IdProductor: string, datos: any) {
-    return this.http.post<any[]>(this.url_servidor + 'consaofertas/' + bandera + '/' + cnctivoOferta + '/' + IdProducto + '/' + IdProductor, datos)
+    return this.http.post<any>(this.url_servidor + 'consaofertas/' + bandera + '/' + cnctivoOferta + '/' + IdProducto + '/' + IdProductor, datos)
   }
 
   ConsultaJornada(Bandera: string) {
@@ -73,7 +73,7 @@ export class ValorarofertaService {
   }
 
   EditarOfertaBusqueda(Bandera: string, idempaque: string, datos: any) {
-    return this.http.post<any[]>(this.url_servidor + 'cofertamod/' + Bandera + '/' + idempaque, datos)
+    return this.http.post<any>(this.url_servidor + 'cofertamod/' + Bandera + '/' + idempaque, datos)
   }
 
   ConsultaConductoresOferta(bandera: string, CD_CNSCTVO: string) {
@@ -93,11 +93,11 @@ export class ValorarofertaService {
   }
 
   InsertaCiudadOferta(Bandera: string, Datos: any) {
-    return this.http.post<any[]>(this.url_servidor + 'ciudadofertamod/' + Bandera, Datos)
+    return this.http.post<any>(this.url_servidor + 'ciudadofertamod/' + Bandera, Datos)
   }
 
   ConsultaUltimasOfertas(Bandera: string, idoferta: string, idproducto: string, idproductor: string, Datos: any) {
-    return this.http.post<any[]>(this.url_servidor + 'consaofertas/' + Bandera + '/' + idoferta + '/' + idproducto + '/' + idproductor, Datos)
+    return this.http.post<any>(this.url_servidor + 'consaofertas/' + Bandera + '/' + idoferta + '/' + idproducto + '/' + idproductor, Datos)
 
   }
 

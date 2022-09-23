@@ -200,7 +200,8 @@ export class CrearofertaComponent implements OnInit {
     console.log(datosinsert)
     console.log(this.IdEmpaque)
     this.ServiciosOferta.CrearOferta('3', this.IdEmpaque, datosinsert).subscribe(Resultado => {
-      this.Respuesta = Resultado.toString();
+      var arrayrespuesta= Resultado.split('|');
+      this.Respuesta = arrayrespuesta[1];
       this.modalService.dismissAll();
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     })
