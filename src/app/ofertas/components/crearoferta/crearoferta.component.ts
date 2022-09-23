@@ -51,6 +51,12 @@ export class CrearofertaComponent implements OnInit {
   EJornada: string = '0';
   ArrayJornada: any = [];
   Respuesta: string  = '';
+  //mapas
+  markers: google.maps.Marker[] = [];
+  Coor1: string = '';
+  Coor2: string = '';
+  ValidaInsertSec: string = '1';
+  CoordenadasParcela: string = ''
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -179,7 +185,7 @@ export class CrearofertaComponent implements OnInit {
       CD_RGION: this.IdDepartamento,
       CD_MNCPIO: this.IdCiudad,
       UBCCION_PRCLA: this.UbicacionPar,
-      COORDENADAS_PRCLA: "4.564829936971187, -74.5311351731822",
+      COORDENADAS_PRCLA: this.CoordenadasParcela,
       USUCODIG: this.IdProductor,
       ID_PRODUCTOR: "0",
       CD_CNSCTVO: "0",
@@ -269,6 +275,54 @@ export class CrearofertaComponent implements OnInit {
 
       }
     );
+  }
+
+  CreaMapa() {
+    const map = new google.maps.Map(
+      document.getElementById("map") as HTMLElement,
+      {
+        zoom: 15,
+        center: {
+          lat: 5.745986,
+          lng: -73.003634
+        },
+      }
+    );
+    map.addListener("click", (e: any) => {
+      this.AgregarMarcador(e.latLng, map);
+      this.Coor1 = e.latLng.toString()
+      this.Coor1 = this.Coor1.substring(1, 15)
+      this.Coor2 = e.latLng.toString()
+      this.Coor2 = this.Coor2.substring(this.Coor2.indexOf('-'), this.Coor2.length - 1)
+    });
+  }
+
+  AgregarMarcador(latLng: google.maps.LatLng, map: google.maps.Map) {
+    if (this.markers.length > 0) {
+      this.markers[0].setMap(null)
+    }
+    const marker = new google.maps.Marker({
+      position: latLng,
+      map: map,
+    });
+    this.markers = [];
+    this.markers.push(marker);
+  }
+
+  AbrirMapa(modalMapa: any){
+    this.modalService.open(modalMapa, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+    this.CreaMapa();
+  }
+
+  AceptarCoordenadas(modalRespuesta: any){
+    if(this.Coor1 != '' && this.Coor2 != ''){
+      this.CoordenadasParcela = this.Coor1 + ' , ' + this.Coor2;
+    this.modalService.dismissAll();
+    }else{
+      this.Respuesta = 'Debes seleccionar las coordenadas de tu parcela.';
+      this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    }
+    
   }
 
 }

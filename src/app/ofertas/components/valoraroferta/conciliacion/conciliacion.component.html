@@ -192,13 +192,13 @@
             <div class="col-2 col-sm-3">
                 <button class="btn btn-agro-prin col-sm-12" (click)="Atras()">Atras</button>
             </div>
-            <div class="col-2 col-sm-3" *ngIf="ValidaSiguiente == '0'">
+            <div class="col-2 col-sm-3" *ngIf="ValidaEnviaPropuesta == '1'">
                 <button class="btn btn-agro-prin col-sm-12" (click)="EnviarPropuesta(ModalRespuesta)">Enviar Propuesta</button>
             </div>
-            <div class="col-2 col-sm-3" *ngIf="ValidaSiguiente == '0'">
+            <div class="col-2 col-sm-3" *ngIf="ValidaAprobar == '1'">
                 <button class="btn btn-agro-prin col-sm-12" (click)="AprobarOferta(templateAprobar)" >Aprobar</button>
             </div>
-            <div class="col-2 col-sm-3" *ngIf="ValidaSiguiente == '0'">
+            <div class="col-2 col-sm-3" *ngIf="ValidaDeclinar == '1'">
                 <button class="btn btn-agro-prin col-sm-12" (click)="DeclinarOferta(templateDeclinar)" >Declinar</button>
             </div>
             <div class="col-2 col-sm-3" *ngIf="ValidaSiguiente == '1'">
@@ -300,12 +300,21 @@
         <div class="modal-body">
             <div class="row br">
                 <div class="col-sm-12">
-                    <textarea [(ngModel)]="maObservacion" name="maObservacion" id="maObservacion"
-                        class="Col-sm-12 form-control form-control-sm textArea" placeholder="Observaciónes" rows="3"></textarea>
+                    <label class="col-sm-12 Llave">Precio final aprobación</label>
+                    <input [(ngModel)]="maPrecioFinal" name="maPrecioFinal" id="maPrecioFinal"
+                        class="Col-sm-12 form-control form-control-sm textArea" placeholder="Precio final aprobación">
                 </div>
             </div>
             <div class="row br">
                 <div class="col-sm-12">
+                    <label class="col-sm-12 Llave">Observaciones</label>
+                    <textarea [(ngModel)]="maObservacion" name="maObservacion" id="maObservacion"
+                        class="Col-sm-12 form-control form-control-sm textArea" placeholder="Observaciones" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="row br">
+                <div class="col-sm-12">
+                    <label class="col-sm-12 Llave">Ciudad aplica oferta</label>
                     <select name="ACiudad" id="Aciudad" #aciudad class="form-control form-control-sm textBox"
                     (change)='SelACiudad(aciudad.value)'>
                         <option value="1">Ciudad Aplica</option>
