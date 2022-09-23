@@ -81,6 +81,7 @@ export class SectorizacionComponent implements OnInit {
 
   ConsultaDetalleOferta() {
     this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
+      console.log(ResultConsu)
       this.DataOferta = ResultConsu;
       this.SessionNomOferta = ResultConsu[0].Nombre_Producto + ' - ' + ResultConsu[0].Descripcion_empaque + ' - ' + ResultConsu[0].Nombre_productor;
       this.SessionCantSecOferta = ResultConsu[0].Unidades_disponibles;
