@@ -156,4 +156,8 @@ export class ValorarofertaService {
   AsociarCosteo(bandera: string, datos: any) {
     return this.http.post<any>(this.url_servidor + 'costeofertamod/' + bandera, datos)
   }
+
+  EnviarCorreoIndividual(bandera: string, datos: any){
+    return this.http.post<any>(this.url_servidor + 'enviocorreoindividual/' + bandera, datos)
+  }
 }

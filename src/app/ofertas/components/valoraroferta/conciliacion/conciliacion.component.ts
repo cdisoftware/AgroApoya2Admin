@@ -49,7 +49,7 @@ export class ConciliacionComponent implements OnInit {
   ArrayEmpaque: any = [];
   Respuesta: string = '';
   NomEstado: string = '';
-  ValorSugerido: string =''
+  ValorSugerido: string = ''
   RutaImagen: string = this.SeriviciosGenerales.RecuperaRutaImagenes();
   IdEstadoOferta: string = '';
   RutaSiguiente: string = '';
@@ -57,6 +57,7 @@ export class ConciliacionComponent implements OnInit {
   ValidaAprobar: string = '';
   ValidaDeclinar: string = '';
   maPrecioFinal: string = '';
+  IdProductor: string = '';
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
     private ServiciosValorar: ValorarofertaService,
@@ -91,6 +92,7 @@ export class ConciliacionComponent implements OnInit {
       this.ArrayOferta = Resultado;
       console.log(Resultado)
       this.IdProducto = Resultado[0].Producto;
+      this.IdProductor = Resultado[0].Productor;
       this.NombreProductor = Resultado[0].Nombre_productor;
       this.DesProducto = Resultado[0].Nombre_Producto;
       this.Tamano = Resultado[0].Tamano;
@@ -133,17 +135,17 @@ export class ConciliacionComponent implements OnInit {
     })
   }
 
-  ValidaRutaSiguiente(estado: string){
-    if(estado == '1' || estado == '2' || estado == '3'){
-      if(estado == '3'){
+  ValidaRutaSiguiente(estado: string) {
+    if (estado == '1' || estado == '2' || estado == '3') {
+      if (estado == '3') {
         this.ValidaEnviaPropuesta = '0'
-      }else{
+      } else {
         this.ValidaEnviaPropuesta = '1'
       }
       this.ValidaSiguiente == '0';
       this.ValidaAprobar = '1';
       this.ValidaDeclinar = '1'
-    } else if (estado == '5'){
+    } else if (estado == '5') {
       this.ValidaSiguiente == '1';
       this.ValidaEnviaPropuesta = '0';
       this.ValidaAprobar = '0';
@@ -246,9 +248,9 @@ export class ConciliacionComponent implements OnInit {
 
   AprobarOferta(modalAprobar: any) {
     //Abre popup de aprobar oferta y ejecuta servicio de consulta ciudades
-    if(this.ValorSugerido != ''){
+    if (this.ValorSugerido != '') {
       this.maPrecioFinal = this.ValorSugerido
-    }else{
+    } else {
       this.maPrecioFinal = this.ValorUnidad;
     }
     this.ServiciosValorar.ConsultaCiudades('6').subscribe(Resultado => {
@@ -280,12 +282,23 @@ export class ConciliacionComponent implements OnInit {
     this.ServiciosValorar.ModificaEstadoOferta('3', datosaprueba).subscribe(Resultado => {
       var arrayrespuesta = Resultado.split('|');
       this.Respuesta = arrayrespuesta[1];
-      this.CargaObjetosIniciales();
+      if (arrayrespuesta[0] != '-1') {
+        this.CargaObjetosIniciales();
+        const datoscorreo = {
+          dPlantilla: 4,
+          usucodig: this.IdProductor,
+          Cd_cnctvo: this.IdOferta,
+          id_conductor: 0
+        }
+        this.EnviarCorreo(datoscorreo);
+      }
+
+
     })
     this.ServiciosValorar.InsertaCiudadOferta('3', datosciudad).subscribe(Resultado => {
       console.log(Resultado)
     })
-    
+
     this.modalService.dismissAll();
     this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     this.ValidaSiguiente = '1';
@@ -312,13 +325,29 @@ export class ConciliacionComponent implements OnInit {
       console.log(Resultado)
       var arrayrespuesta = Resultado.split('|');
       this.Respuesta = arrayrespuesta[1];
-      this.CargaObjetosIniciales();
+      if (arrayrespuesta[0] != '-1') {
+        this.CargaObjetosIniciales();
+        const datoscorreo = {
+          dPlantilla: 3,
+          usucodig: this.IdProductor,
+          Cd_cnctvo: this.IdOferta,
+          id_conductor: 0
+        }
+        this.EnviarCorreo(datoscorreo);
+      }
     })
     //this.Respuesta = 'No esta disponible en este momento'
     this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
 
     ///enviar correo pendiente
   }
+
+  EnviarCorreo(datoscorreo: any) {
+    this.ServiciosValorar.EnviarCorreoIndividual('1', datoscorreo).subscribe(Resultado => {
+      console.log(Resultado)
+    })
+  }
+
   Atras() {
     this.rutas.navigateByUrl('/home/buscaroferta');
     this.cookies.delete('IDO');
