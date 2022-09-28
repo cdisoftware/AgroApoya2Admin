@@ -28,11 +28,9 @@
                             </div>
 
                             <div class="m-0 p-0">
-                                <button id="pass" class="SinEstilo" (click)="cambiarType('1')">
-                                    <img src="../../../../assets/ImagenesAgroApoya2Admin/ver.png"
-                                        class="BtnimgTamanoPeque" *ngIf="ver == '1'">
-                                    <img src="../../../../assets/ImagenesAgroApoya2Admin/novisible.png"
-                                        class="BtnimgTamanoPeque" *ngIf="ver == '2'">
+                                <button id="pass" class="SinEstilo" (click)="ocultarPass()">
+                                    <img src="{{imagen}}"
+                                    class="BtnimgTamanoPeque" >
                                 </button>
                             </div>
                         </form>

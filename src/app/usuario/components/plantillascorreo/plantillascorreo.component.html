@@ -1,277 +1,187 @@
-<form class="container bg-white" id="accordion">
-    
-    <div class="displayFlexStar">
-        <h5 class="tituloformulario mt-2">CONFIGURACIÓN PLANTILLAS CORREO</h5>
-    </div>
-    <div class="row mt-4 mb-3">
-        <div class="col-sm-4  mb-3">
-            <select class="form-select" title="Seleccionar el tipo de plantilla">
-                <option value="0">Seleccione tipo plantilla...</option>
-                <option> Específico </option>
-                <option> General </option>
-            </select>
+<form class="Fondo">
+    <br><br>
+    <div class="container bg-white">
+        <br>
+        <h5>CONFIGURACIÓN PLANTILLAS CORREO</h5>
+        <div class="row">
+            <div class="col-sm-4">
+                <select class="form-select" [(ngModel)]="IdListaplantilla" [ngModelOptions]="{standalone: true}" title="Seleccionar el tipo de plantilla">
+                    <option value="0" selected>Seleccione tipo plantilla...</option>
+                    <option value="{{Respu.IdTipoPlantilla}}" *ngFor="let Respu of arregloListaTipoPlantilla">{{Respu.Descripcion}}</option>
+                  
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <input type="text" title="Nombre plantilla máximo 150 caracteres" class="form-control"
+                    placeholder="Nombre plantilla" maxlength="150" >
+            </div>
+            <div class="col-sm-3">
+                <select class="form-select" [(ngModel)]="IdMomentoEnvio" [ngModelOptions]="{standalone: true}" title="Seleccionar el momento de envio">
+                    <option value="0" selected>Seleccione momento envio...</option>
+                    <option value="{{Respu.IdMomentoEnvio}}" *ngFor="let Respu of arregloListaMomentoEnvio">{{Respu.Descripcion}}</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <button class="SinEstilo" title="Buscar plantilla">
+                    <img src="../../../../assets/ImagenesAgroApoya2Admin/buscar.png" class="BtnimgTamano">
+                </button>
+                <button class="SinEstilo" title="Agregar plantilla">
+                    <img src="../../../../assets/ImagenesAgroApoya2Admin/mas.png" class="BtnimgTamano">
+                </button>
+            </div>
         </div>
-        <div class="col-sm-3  mb-3">
-            <input type="text" title="Nombre plantilla máximo 150 caracteres" class="form-control"
-                placeholder="Nombre plantilla" maxlength="150">
-        </div>
-        <div class="col-sm-3  mb-3">
-            <select class="form-select" title="Seleccionar el momento de envio">
-                <option value="0">Seleccione momento envio...</option>
-                <option> XXX </option>
-            </select>
-        </div>
-        <div class="col-sm-2">
-            <button class="SinEstilo" title="Buscar plantilla">
-                <img src="../../../../assets/ImagenesAgroApoya2Admin/buscar.png" class="BtnimgTamano">
-            </button>
-            <button class="SinEstilo" title="Agregar plantilla">
-                <img src="../../../../assets/ImagenesAgroApoya2Admin/mas.png" class="BtnimgTamano">
-            </button>
-        </div>
-    </div>
 
 
-    <div class="row">
-        <div class="row justify-content-center pb-2 pt-2 col-12">
+        <div class="row">
+            <div class="row justify-content-center pb-2 pt-2 col-12">
+                <div class="col-12">
+                    <h5>INFORMACIÓN PLANTILLA DE CORREO
+                    </h5>
+                </div>
+            </div>
+            <div class="col-sm-4  mb-3">
+                <input type="text" title="Nombre plantilla máximo 150 caracteres" class="form-control" maxlength="150"
+                    placeholder="Nombre plantilla">
+            </div>
+            <div class="col-sm-4  mb-3">
+                <select class="form-select" title="Seleccionar tipo de plantilla">
+                    <option value="0">Seleccione tipo plantilla...</option>
+                    <option> Específico </option>
+                    <option> General </option>
+                </select>
+            </div>
+            <div class="col-sm-4  mb-3">
+                <select class="form-select" title="Seleccionar el momento de envio">
+                    <option value="0">Seleccione momento envio...</option>
+                    <option> xxx </option>
+                </select>
+            </div>
+            <div class="col-sm-4  mb-3">
+                <input type="text" class="form-control" title="Asunto máximo 150 caracteres" maxlength="150"
+                    placeholder="Asunto">
+            </div>
+         
+            <div class="col-sm-4  mb-3">
+                <select class="form-select" title="Seleccionar el estado">
+                    <option value="0">Seleccione estado...</option>
+                    <option> Activo </option>
+                    <option> Inactivo </option>
+                </select>
+            </div>
             <div class="col-12">
-                <h5>INFORMACIÓN PLANTILLA DE CORREO
-                </h5>
-            </div>
-        </div>
-        <div class="col-sm-4  mb-3">
-            <input type="text" title="Nombre plantilla máximo 150 caracteres" class="form-control" maxlength="150"
-                placeholder="Nombre plantilla">
-        </div>
-        <div class="col-sm-4  mb-3">
-            <select class="form-select" title="Seleccionar tipo de plantilla">
-                <option value="0">Seleccione tipo plantilla...</option>
-                <option> Específico </option>
-                <option> General </option>
-            </select>
-        </div>
-        <div class="col-sm-4  mb-3">
-            <select class="form-select" title="Seleccionar el momento de envio">
-                <option value="0">Seleccione momento envio...</option>
-                <option> xxx </option>
-            </select>
-        </div>
-        <div class="col-sm-4  mb-3">
-            <input type="text" class="form-control" title="Asunto máximo 150 caracteres" maxlength="150"
-                placeholder="Asunto">
-        </div>
-        <div class="col-sm-4  mb-3">
-            <input type="text" title="Correo remitente máximo 150 caracteres" class="form-control" maxlength="100"
-                placeholder="Correo remitente" disabled>
-        </div>
-        <div class="col-sm-4  mb-3">
-            <select class="form-select" title="Seleccionar el estado">
-                <option value="0">Seleccione estado...</option>
-                <option> Activo </option>
-                <option> Inactivo </option>
-            </select>
-        </div>
-        <div class="col-12">
-            <textarea class="form-control textarea" rows="3" maxlength="500" minlength="3" placeholder="Descripción"
-                title="Descripción"></textarea>
-            <label class="w-100 text-secondary text-right">
-            </label>
-        </div>
-
-        <div class="displayFlexStar col-12 mb-3">
-            <h5 class="br">ENCABEZADO Y PIE DE PAGINA CORREO</h5>
-        </div>
-        <p class="col-12">Aquí podrá cargar dos imágenes la primera corresponde al encabezado del correo y la segunda al
-            pie de página del mismo.</p>
-        <div class="col-sm-6 col-12 mb-3 contenedor">
-            <div> <strong>Encabezado</strong></div>
-            <br>
-            <div class="image-uploadTres hijo ">
-                <label for="file-input3" class="m-auto imgCentroDos">
-                    <img src="../../../../assets/ImagenesAgroApoya2Admin/imgtres.png" class="imgCentro"
-                        alt="Seleccionar una imagen"
-                        title="Las propiedades de la imagen deben ser peso máximo 1 MG y de tipo JPG o PNG y su tamaño debe ser de 1200px x 628px">
+                <textarea class="form-control textarea" rows="3" maxlength="500" minlength="3" placeholder="Descripción"
+                    title="Descripción"></textarea>
+                <label class="w-100 text-secondary text-right">
                 </label>
-                <input name="file-input3" id="file-input3" type="file"
-                    title="Las propiedades de la imagen deben ser peso máximo 1 MG y de tipo JPG o PNG y su tamaño debe ser de 1200px x 628px" />
             </div>
-        </div>
-        <div class="col-sm-6 col-12 mb-3 contenedor">
-            <div><strong>Pie</strong></div>
-            <br>
-            <div class="image-uploadTres hijo ">
-                <label for="file-input2" class="m-auto imgCentroDos">
-                    <img src="../../../../assets/ImagenesAgroApoya2Admin/imgtres.png" class="imgCentro"
-                        alt="Seleccionar una imagen"
-                        title="Las propiedades de la imagen deben ser peso máximo 1 MG y de tipo JPG o PNG y su tamaño debe ser de 1200px x 628px">
-                </label>
-                <input name="file-input2" id="file-input2" type="file"
-                    title="Las propiedades de la imagen deben ser peso máximo 1 MG y de tipo JPG o PNG y su tamaño debe ser de 1200px x 628px" />
-            </div>
-        </div>
 
-        <div class="row col-12 mt-5">
-            <div class="col-sm-12 text-center">
-                <button class="col-sm-4 btn btn-agro-prin" title="Agregar nueva plantilla">Guardar</button>
-                <button class="col-sm-4 btn btn-agro-prin" title="Actualizar plantilla">Actualizar</button>
+            <div class="displayFlexStar col-12 mb-3">
+                <h5 class="br">ENCABEZADO Y PIE DE PAGINA CORREO</h5>
             </div>
-        </div>
-    </div>
-
-    <div class="row mb-3 mt-3">
-        <div class="displayFlexStar col-12 mb-3">
-            <h5 class="tituloformulario mt-2">ADJUNTAR ARCHIVOS</h5>
-        </div>
-        <div class="col-sm-12 p-0 m-0">
-            <div class="col-4 mb-3 contenedor">
+            <p class="col-12">Aquí podrá cargar dos imágenes la primera corresponde al encabezado del correo y la
+                segunda al
+                pie de página del mismo.</p>
+            <div class="col-sm-6 col-12 mb-3 contenedor">
+                <div> <strong>Encabezado</strong></div>
+                <br>
                 <div class="image-uploadTres hijo ">
-                    <label for="file-input1">
-                        <img src="../../../../assets/ImagenesAgroApoya2Admin/ic_adjunto.PNG" class="BoderImg"
-                            alt="Seleccionar una imagen">
+                    <label for="file-input3" class="m-auto imgCentroDos">
+                        <img src="../../../../assets/ImagenesAgroApoya2Admin/imgtres.png" class="imgCentro"
+                            alt="Seleccionar una imagen"
+                            title="Las propiedades de la imagen deben ser peso máximo 1 MG y de tipo JPG o PNG y su tamaño debe ser de 1200px x 628px">
                     </label>
-                    <input name="file-input1" id="file-input1" type="file" />
+                    <input name="file-input3" id="file-input3" type="file"
+                        title="Las propiedades de la imagen deben ser peso máximo 1 MG y de tipo JPG o PNG y su tamaño debe ser de 1200px x 628px" />
+                </div>
+            </div>
+            <div class="col-sm-6 col-12 mb-3 contenedor">
+                <div><strong>Pie</strong></div>
+                <br>
+                <div class="image-uploadTres hijo ">
+                    <label for="file-input2" class="m-auto imgCentroDos">
+                        <img src="../../../../assets/ImagenesAgroApoya2Admin/imgtres.png" class="imgCentro"
+                            alt="Seleccionar una imagen"
+                            title="Las propiedades de la imagen deben ser peso máximo 1 MG y de tipo JPG o PNG y su tamaño debe ser de 1200px x 628px">
+                    </label>
+                    <input name="file-input2" id="file-input2" type="file"
+                        title="Las propiedades de la imagen deben ser peso máximo 1 MG y de tipo JPG o PNG y su tamaño debe ser de 1200px x 628px" />
+                </div>
+            </div>
+
+            <div class="row col-12 mt-5">
+                <div class="col-sm-12 text-center">
+                    <button class="col-sm-4 btn btn-agro-prin" title="Agregar nueva plantilla">Guardar</button>
+                    <button class="col-sm-4 btn btn-agro-prin" title="Actualizar plantilla">Actualizar</button>
                 </div>
             </div>
         </div>
-        <br>
-        <div class="col-sm-4 mb-3 displayFlexbetween">
-            <div class="w-100">
-                <label class="cuadrosControl">xxx</label>
+
+        <div class="row">
+
+            <div class="displayFlexStar col-12 mb-3">
+                <h5 class="tituloformulario mt-2">ADJUNTAR ARCHIVOS</h5>
             </div>
-            <button class="SinEstilo" title="Eliminar Plantilla">
-                <img src="../../../../assets/ImagenesAgroApoya2Admin/basura.png" class="BtnimgTamanoPeque m-auto">
-            </button>
-        </div>
-    </div>
-    <div class="row mb-3">
-        <div class="displayFlexStar col-12 mb-3">
-            <h5 class="tituloformulario mt-2">FORMULARIO</h5>
-        </div>
-        <div class="col-sm-4  mb-3">
-            <select class="form-select" title="Seleccionar el campo de la rueda">
-                <option value="0">Seleccione campos rdn...</option>
-                <option> xxx </option>
-            </select>
-        </div>
-        <div class="col-sm-4  mb-3">
-            <input type="text" [(ngModel)]="prb" name="something" class="form-control" placeholder="Código campo"
-                title="Código campo">
-        </div>
-    </div>
-    <div class="row">
-        <div class="displayFlexStar col-12 mb-3">
-            <h5 class="tituloformulario mt-2">EDITAR PLANTILLA</h5>
-        </div>
-        <div class="col-12 mb-3">
-            <angular-editor id="htmlEditro" [(ngModel)]="htmlContent" [config]="editorConfig"></angular-editor>
-        </div>
-        <label class="w-100 text-secondary text-right">
-            <small></small>
-        </label>
-        <div class="row col-12 mt-4 mb-4">
-            <div class="col-sm-12 text-center">
-                <button class="col-sm-4 btn btn-agro-prin" title="Agregar nuevo formulario plantilla">Guardar</button>
-                <button class="col-sm-4 btn btn-agro-prin" title="Actualizar formulario plantilla">Actualizar</button>
-            </div>
-        </div>
-        <br>
-        <div class="col-12 mb-3">
-            <div class="romperPalabra border border-warning">
-
-            </div>
-        </div>
-    </div>
-</form>
-
-
-<!-- Modal Mensaje-->
-
-<ng-template #templateMensaje>
-    <div class="modal-header">
-        <img id="imgActual" alt="advertencia" src="../../../../assets/ImagenesAgroApoya2Admin/alert.png"
-            class="imgModals">
-        <button type="button" class="bot" aria-label="Close">
-            <img id="imgActual" alt="advertencia" src="../../../../assets/ImagenesAgroApoya2Admin/ic_equis.png"
-                class="btnEquis">
-        </button>
-    </div>
-    <div class="modaBody">
-        <div class="col-12">
-            <p class="pModals"></p>
-        </div>
-    </div>
-    <div class="row text-center">
-        <div class="col-0">
-            <button class="btn btn-Login bot" title="Cerrar ventana">
-                Aceptar
-            </button>
-        </div>
-    </div>
-    <br>
-</ng-template>
-
-<!-- Modal lista RDN-->
-<ng-template #templatePalntilaCorreo>
-
-    <div class="disppleflex m-3 ">
-        <p class="titulopopup">SELECCIONAR PLANTILLA CORREO</p>
-        <button type="button" class="bot" aria-label="Close">
-            <img id="imgActual" src="../../../../assets/ImagenesAgroApoya2Admin/ic_equis.png" class="btnEquis">
-        </button>
-        <br>
-    </div>
-    <div class="w-100 mrd mld">
-        <button class="bot BtnimgTamano">
-            <img src="../../../../assets/ImagenesAgroApoya2Admin/dos-caminos.png" class="BtnimgTamano">
-        </button>
-    </div>
-    <div class="modal-header m-0 p-0 mt-3"></div>
-    <div class="modaBody">
-        <div class="col-sm-12 mt-3">
-            <li class="row col-sm-12 espacioul" style="width: 100%">
-                <div class="col-11">
-                    <input type="text" maxlength="150" class="col-sm-12" disabled>
+            <div class="col-sm-12 p-0 m-0">
+                <div class="col-4 mb-3 contenedor">
+                    <div class="image-uploadTres hijo ">
+                        <label for="file-input1">
+                            <img src="../../../../assets/ImagenesAgroApoya2Admin/ic_adjunto.PNG" class="BoderImg"
+                                alt="Seleccionar una imagen">
+                        </label>
+                        <input name="file-input1" id="file-input1" type="file" />
+                    </div>
                 </div>
-                <div class="col-1">
-                    <button class="bot" title="Editar plantilla">
-                        <img src="../../../../assets/ImagenesAgroApoya2Admin/Editar.png" alt="Ver"
-                            class="BtnimgTamanoPeque">
+            </div>
+
+            <br>
+            <div class="row">
+                <div class="col-sm-4  mb-3">
+                    <label class="cuadrosControl">xxx</label>
+                </div>
+                <div class="col-sm-4  mb-3">
+                    <button class="SinEstilo" title="Eliminar Plantilla">
+                        <img src="../../../../assets/ImagenesAgroApoya2Admin/basura.png"
+                            class="BtnimgTamanoPeque m-auto">
                     </button>
                 </div>
-            </li>
+            </div>
         </div>
-        <br>
-    </div>
-    <br>
-</ng-template>
+        <div class="row mb-3">
+            <div class="displayFlexStar col-12 mb-3">
+                <h5 class="tituloformulario mt-2">FORMULARIO</h5>
+            </div>
+            <div class="col-sm-4  mb-3">
+                <select class="form-select" title="Seleccionar el campo de la rueda">
+                    <option value="0">Seleccione campos rdn...</option>
+                    <option> xxx </option>
+                </select>
+            </div>
+            <div class="col-sm-4  mb-3">
+                <input type="text" [(ngModel)]="prb" name="something" class="form-control" placeholder="Código campo"
+                    title="Código campo">
+            </div>
+        </div>
+        <div class="row">
+            <div class="displayFlexStar col-12 mb-3">
+                <h5 class="tituloformulario mt-2">EDITAR PLANTILLA</h5>
+            </div>
+            <div class="col-12 mb-3">
+                <angular-editor id="htmlEditro" [(ngModel)]="htmlContent" [config]="editorConfig"></angular-editor>
+            </div>
+            <label class="w-100 text-secondary text-right">
+                <small></small>
+            </label>
+            <div class="row col-12 mt-4 mb-4">
+                <div class="col-sm-12 text-center">
+                    <button class="col-sm-4 btn btn-agro-prin"
+                        title="Agregar nuevo formulario plantilla">Guardar</button>
+                    <button class="col-sm-4 btn btn-agro-prin"
+                        title="Actualizar formulario plantilla">Actualizar</button>
+                </div>
+            </div>
+            <br>
 
-
-<!-- Modal seleccionar idioma editar-->
-<ng-template #templateIdiomas>
-
-    <div class="modal-header">
-        <p class="titulopopup">SELECCIONAR IDIOMA</p>
-        <button type="button" class="bot" aria-label="Close">
-            <img id="imgActual" alt="advertencia" src="../../../../assets/ImagenesAgroApoya2Admin/ic_equis.png"
-                class="btnEquis">
-        </button>
-    </div>
-    <div class="modaBody">
-        <p>
-            La actualización en otro idioma solo permite modificar los campos activos, si requiere modificar los campos
-            bloqueados lo debe hacer en español
-        </p>
-        <button class="bot ml-3 mb-3 mt-3">
-            <img id="imgActual" class="BtnimgTamanoMediano" src="../../../../assets/ImagenesRDN/IdiomaEs.png">
-            <label class="mrd mld">Español</label>
-        </button>
-        <br>
-        <div class="m-0 p-0">
-            <button class="bot ml-3 mb-3">
-                <img id="imgActual" class="BtnimgTamanoMediano" src="">
-                <label class="mrd mld"></label>
-            </button>
         </div>
     </div>
-    <br>
-</ng-template>
+    <br><br>
+</form>

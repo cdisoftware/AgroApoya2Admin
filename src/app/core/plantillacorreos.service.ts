@@ -18,4 +18,24 @@ export class PlantillacorreosService {
   ConsultaCorreosMasivos(bandera: string, IdPlantilla: string, IdTipoUsuario: string) {
     return this.http.get<any[]>(this.url_servidor + 'enviocorreomasivo/' + bandera + '/' + IdPlantilla + '/' + IdTipoUsuario)
   }
+  
+  ConsultaTipoPlatilla(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consctipoplantilla/' + Bandera)
+  }
+
+  ConsultaCorreoMomentoEnvio(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscorreomomentoenvio/' + Bandera)
+  }
+
+  ConsultaPlatillaCorreo(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'consaplantillacorreo/' + Bandera, Body)
+  }
+
+  ModPlantillaCorreo(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modcaplantillacorreo/' + Bandera, Body)
+  }
+
+  ConsultaTipoCamposCorreo(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscatipocamposcorreo/' + Bandera)
+  }
 }
