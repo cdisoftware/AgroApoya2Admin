@@ -37,7 +37,7 @@ export class MenuComponent implements OnInit {
   }
 
   Cargar() {
-    this.servicioslogin.ConsultaMenu('1', '4').subscribe(Resultado => {
+    this.servicioslogin.ConsultaMenu('2', '4').subscribe(Resultado => {
       this.ListaMenu = Resultado;
     })
   }
