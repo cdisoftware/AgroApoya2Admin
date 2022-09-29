@@ -1,16 +1,37 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { PlantillacorreosService } from '../../../core/plantillacorreos.service'
 
 @Component({
   selector: 'app-plantillascorreo',
   templateUrl: './plantillascorreo.component.html',
   styleUrls: ['./plantillascorreo.component.css']
 })
+
 export class PlantillascorreoComponent implements OnInit {
   htmlContent = '';
-  constructor() { }
+
+  IdListaplantilla: string = '0';
+  DescripcionListaPlantilla: string = '';
+  arregloListaTipoPlantilla: any;
+
+  arregloListaMomentoEnvio: any;
+  IdMomentoEnvio: string = '0';
+
+  arregloCamposCorreo: any;
+  IdCampo: string = '0';
+
+  VerOcultarCampos: string = '';
+
+  constructor(private serviciosplantillacorreos: PlantillacorreosService) { }
 
   ngOnInit(): void {
+    this.ListaTipoPlantilla();
+    this.ListaMomentoEnvio();
+    this.ListaCamposCodigo();
+    
+    //uno solo muestra los filtros
+    this.VerOcultarCampos = '1';
   }
   prb: string = 'hola';
 
@@ -44,4 +65,24 @@ export class PlantillascorreoComponent implements OnInit {
       },
     ]
   };
+
+  ListaTipoPlantilla() {
+    this.arregloListaTipoPlantilla = [];
+    this.serviciosplantillacorreos.ConsultaTipoPlatilla('1').subscribe(resultado => {
+      this.arregloListaTipoPlantilla = resultado;
+    })
+  }
+  ListaMomentoEnvio() {
+    this.arregloListaMomentoEnvio = [];
+    this.serviciosplantillacorreos.ConsultaCorreoMomentoEnvio('1').subscribe(resultado => {
+      this.arregloListaMomentoEnvio = resultado;
+    })
+  }
+
+  ListaCamposCodigo() {
+    this.arregloCamposCorreo = [];
+    this.serviciosplantillacorreos.ConsultaTipoCamposCorreo('1').subscribe(resultado => {
+      this.arregloCamposCorreo = resultado;
+    })
+  }
 }
