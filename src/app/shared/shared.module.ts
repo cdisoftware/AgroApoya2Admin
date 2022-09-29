@@ -12,6 +12,6 @@ import { AppRoutingModule } from './../app-routing.module'
   imports: [
     CommonModule,
     AppRoutingModule
-  ]
+  ],bootstrap: [SharedModule]
 })
 export class SharedModule { }
