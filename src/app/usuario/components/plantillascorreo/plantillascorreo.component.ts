@@ -18,11 +18,20 @@ export class PlantillascorreoComponent implements OnInit {
   arregloListaMomentoEnvio: any;
   IdMomentoEnvio: string = '0';
 
+  arregloCamposCorreo: any;
+  IdCampo: string = '0';
+
+  VerOcultarCampos: string = '';
+
   constructor(private serviciosplantillacorreos: PlantillacorreosService) { }
 
   ngOnInit(): void {
     this.ListaTipoPlantilla();
     this.ListaMomentoEnvio();
+    this.ListaCamposCodigo();
+    
+    //uno solo muestra los filtros
+    this.VerOcultarCampos = '1';
   }
   prb: string = 'hola';
 
@@ -70,4 +79,10 @@ export class PlantillascorreoComponent implements OnInit {
     })
   }
 
+  ListaCamposCodigo() {
+    this.arregloCamposCorreo = [];
+    this.serviciosplantillacorreos.ConsultaTipoCamposCorreo('1').subscribe(resultado => {
+      this.arregloCamposCorreo = resultado;
+    })
+  }
 }

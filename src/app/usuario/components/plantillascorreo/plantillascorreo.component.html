@@ -5,20 +5,24 @@
         <h5>CONFIGURACIÓN PLANTILLAS CORREO</h5>
         <div class="row">
             <div class="col-sm-4">
-                <select class="form-select" [(ngModel)]="IdListaplantilla" [ngModelOptions]="{standalone: true}" title="Seleccionar el tipo de plantilla">
+                <select class="form-select" [(ngModel)]="IdListaplantilla" [ngModelOptions]="{standalone: true}"
+                    title="Seleccionar el tipo de plantilla">
                     <option value="0" selected>Seleccione tipo plantilla...</option>
-                    <option value="{{Respu.IdTipoPlantilla}}" *ngFor="let Respu of arregloListaTipoPlantilla">{{Respu.Descripcion}}</option>
-                  
+                    <option value="{{Respu.IdTipoPlantilla}}" *ngFor="let Respu of arregloListaTipoPlantilla">
+                        {{Respu.Descripcion}}</option>
+
                 </select>
             </div>
             <div class="col-sm-3">
                 <input type="text" title="Nombre plantilla máximo 150 caracteres" class="form-control"
-                    placeholder="Nombre plantilla" maxlength="150" >
+                    placeholder="Nombre plantilla" maxlength="150">
             </div>
             <div class="col-sm-3">
-                <select class="form-select" [(ngModel)]="IdMomentoEnvio" [ngModelOptions]="{standalone: true}" title="Seleccionar el momento de envio">
+                <select class="form-select" [(ngModel)]="IdMomentoEnvio" [ngModelOptions]="{standalone: true}"
+                    title="Seleccionar el momento de envio">
                     <option value="0" selected>Seleccione momento envio...</option>
-                    <option value="{{Respu.IdMomentoEnvio}}" *ngFor="let Respu of arregloListaMomentoEnvio">{{Respu.Descripcion}}</option>
+                    <option value="{{Respu.IdMomentoEnvio}}" *ngFor="let Respu of arregloListaMomentoEnvio">
+                        {{Respu.Descripcion}}</option>
                 </select>
             </div>
             <div class="col-sm-2">
@@ -32,7 +36,7 @@
         </div>
 
 
-        <div class="row">
+        <div class="row" *ngIf="VerOcultarCampos != '1'">
             <div class="row justify-content-center pb-2 pt-2 col-12">
                 <div class="col-12">
                     <h5>INFORMACIÓN PLANTILLA DE CORREO
@@ -60,7 +64,7 @@
                 <input type="text" class="form-control" title="Asunto máximo 150 caracteres" maxlength="150"
                     placeholder="Asunto">
             </div>
-         
+
             <div class="col-sm-4  mb-3">
                 <select class="form-select" title="Seleccionar el estado">
                     <option value="0">Seleccione estado...</option>
@@ -116,7 +120,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row"  *ngIf="VerOcultarCampos != '1'">
 
             <div class="displayFlexStar col-12 mb-3">
                 <h5 class="tituloformulario mt-2">ADJUNTAR ARCHIVOS</h5>
@@ -146,14 +150,16 @@
                 </div>
             </div>
         </div>
-        <div class="row mb-3">
+        <div class="row mb-3"  *ngIf="VerOcultarCampos != '1'">
             <div class="displayFlexStar col-12 mb-3">
                 <h5 class="tituloformulario mt-2">FORMULARIO</h5>
             </div>
             <div class="col-sm-4  mb-3">
-                <select class="form-select" title="Seleccionar el campo de la rueda">
-                    <option value="0">Seleccione campos rdn...</option>
-                    <option> xxx </option>
+                <select class="form-select" [(ngModel)]="IdCampo" [ngModelOptions]="{standalone: true}"
+                    title="Seleccionar el campo de la rueda">
+                    <option value="0" selected>Seleccione campos correo...</option>
+                    <option value="{{Respu.IdCampo}}" *ngFor="let Respu of arregloCamposCorreo"> {{Respu.Descripcion}}
+                    </option>
                 </select>
             </div>
             <div class="col-sm-4  mb-3">
@@ -161,7 +167,7 @@
                     title="Código campo">
             </div>
         </div>
-        <div class="row">
+        <div class="row"  *ngIf="VerOcultarCampos != '1'">
             <div class="displayFlexStar col-12 mb-3">
                 <h5 class="tituloformulario mt-2">EDITAR PLANTILLA</h5>
             </div>
