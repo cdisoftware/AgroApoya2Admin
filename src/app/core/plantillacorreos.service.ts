@@ -18,4 +18,35 @@ export class PlantillacorreosService {
   ConsultaCorreosMasivos(bandera: string, IdPlantilla: string, IdTipoUsuario: string) {
     return this.http.get<any[]>(this.url_servidor + 'enviocorreomasivo/' + bandera + '/' + IdPlantilla + '/' + IdTipoUsuario)
   }
+
+  ConsultaTipoPlatilla(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consctipoplantilla/' + Bandera)
+  }
+
+  ConsultaCorreoMomentoEnvio(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscorreomomentoenvio/' + Bandera)
+  }
+
+  ConsultaPlatillaCorreo(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'consaplantillacorreo/' + Bandera, Body)
+  }
+
+  ModPlantillaCorreo(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modcaplantillacorreo/' + Bandera, Body)
+  }
+
+  ConsultaTipoCamposCorreo(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscatipocamposcorreo/' + Bandera)
+  }
+
+  public postImgPlantillaCorreo(imagenParaSubir: File) {
+    const formData = new FormData();
+    formData.append('file', imagenParaSubir, imagenParaSubir.name);
+    return this.http.post(this.url_servidor + 'uploadImgPlantillaCorreo', formData);
+  }
+  public postAdjuntoPlantillaCorreo(adjuntoParaSubir: File) {
+    const formData = new FormData();
+    formData.append('file', adjuntoParaSubir, adjuntoParaSubir.name);
+    return this.http.post(this.url_servidor + 'uploadArchivos', formData);
+  }
 }

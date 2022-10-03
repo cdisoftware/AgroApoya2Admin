@@ -3,6 +3,7 @@ import { MetodosglobalesService } from './../../../core/metodosglobales.service'
 import { CrearofertaService } from './../../../core/crearoferta.service'
 import { ValorarofertaService } from './../../../core/valoraroferta.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-crearoferta',
@@ -62,7 +63,8 @@ export class CrearofertaComponent implements OnInit {
     private SeriviciosGenerales: MetodosglobalesService,
     private ServiciosOferta: CrearofertaService,
     private modalService: NgbModal,
-    private ServiciosValorar: ValorarofertaService
+    private ServiciosValorar: ValorarofertaService,
+    private rutas: Router
   ) { }
 
   ngOnInit(): void {
@@ -201,6 +203,9 @@ export class CrearofertaComponent implements OnInit {
     console.log(this.IdEmpaque)
     this.ServiciosOferta.CrearOferta('3', this.IdEmpaque, datosinsert).subscribe(Resultado => {
       var arrayrespuesta= Resultado.split('|');
+      if(arrayrespuesta[0] != '-1'){
+        this.rutas.navigateByUrl('home/buscaroferta');
+      }
       this.Respuesta = arrayrespuesta[1];
       this.modalService.dismissAll();
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })

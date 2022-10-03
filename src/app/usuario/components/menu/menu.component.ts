@@ -4,6 +4,7 @@ import { Sidebar } from 'ng-sidebar';
 import { CookieService } from 'ngx-cookie-service';
 import { LoginService } from './../../../core/login.service';
 
+
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
@@ -37,7 +38,7 @@ export class MenuComponent implements OnInit {
   }
 
   Cargar() {
-    this.servicioslogin.ConsultaMenu('1', '4').subscribe(Resultado => {
+    this.servicioslogin.ConsultaMenu('2', '4').subscribe(Resultado => {
       this.ListaMenu = Resultado;
     })
   }

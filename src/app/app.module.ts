@@ -21,7 +21,7 @@ import { PlantillascorreoComponent } from './usuario/components/plantillascorreo
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/costeo.component';
-
+//import { MenuComponent } from './usuario/components/menu/menu.component';
 
 @NgModule({
   declarations: [

@@ -84,8 +84,8 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'cvaloracionofertamod/' + bandera, bodyupdate)
   }
 
-  ConsultaValoracionOferta(BANDERA: string, CD_CNSCTVO: string, ID_SCTOR_OFRTA:string) {
-    return this.http.get<any[]>(this.url_servidor + 'conscvaloracionoferta/' + BANDERA + '/' + CD_CNSCTVO+'/'+ID_SCTOR_OFRTA)
+  ConsultaValoracionOferta(BANDERA: string, CD_CNSCTVO: string, ID_SCTOR_OFRTA: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscvaloracionoferta/' + BANDERA + '/' + CD_CNSCTVO + '/' + ID_SCTOR_OFRTA)
   }
 
   ConsultaCiudades(Bandera: string) {
@@ -133,31 +133,37 @@ export class ValorarofertaService {
     return this.http.get<any[]>(this.url_servidor + 'consultestadoferta/' + bandera + '/' + idoferta)
   }
 
-  ConsultaVigenciaOferta(BANDERA:string,CD_CNSCTVO:string){
-    return this.http.get<any[]>(this.url_servidor+'conscvigenciaoferta/'+BANDERA+'/'+CD_CNSCTVO)
+  ConsultaVigenciaOferta(BANDERA: string, CD_CNSCTVO: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscvigenciaoferta/' + BANDERA + '/' + CD_CNSCTVO)
   }
 
-  ModificarVigenciaOferta(BANDERA:string, Body:any){
-    return this.http.post<any>(this.url_servidor+'modcvigenciaoferta/'+BANDERA, Body)
+  ModificarVigenciaOferta(BANDERA: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modcvigenciaoferta/' + BANDERA, Body)
   }
 
-  CalculaPFIndividual(BANDERA:string,CD_CNSCTVO:string,ID_SCTOR_OFRTA:string,tpo_cmsion_indvdual:string,vlor_cmsion_indvdual:string){
-    return this.http.get<any[]>(this.url_servidor+'conscalculapreciofinindividual/'+BANDERA+'/'+CD_CNSCTVO+'/'+ID_SCTOR_OFRTA+'/'+tpo_cmsion_indvdual+'/'+vlor_cmsion_indvdual)
+  CalculaPFIndividual(BANDERA: string, CD_CNSCTVO: string, ID_SCTOR_OFRTA: string, tpo_cmsion_indvdual: string, vlor_cmsion_indvdual: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscalculapreciofinindividual/' + BANDERA + '/' + CD_CNSCTVO + '/' + ID_SCTOR_OFRTA + '/' + tpo_cmsion_indvdual + '/' + vlor_cmsion_indvdual)
   }
 
-  CalculaPreOferGrupal(BANDERA:string, CD_CNSCTVO:string,ID_SCTOR_OFRTA:string, tpo_cmsion_grupal:string, vlor_cmsion_grupal:string,vlor_dmcilio_grupal:string, mnmo_prsnas_xgrupo:string){
-    return this.http.get<any[]>(this.url_servidor+'conscalculapreciofingrupal/'+BANDERA+'/'+CD_CNSCTVO+'/'+ID_SCTOR_OFRTA+'/'+tpo_cmsion_grupal+'/'+vlor_cmsion_grupal+'/'+vlor_dmcilio_grupal+'/'+mnmo_prsnas_xgrupo)
+  CalculaPreOferGrupal(BANDERA: string, CD_CNSCTVO: string, ID_SCTOR_OFRTA: string, tpo_cmsion_grupal: string, vlor_cmsion_grupal: string, vlor_dmcilio_grupal: string, mnmo_prsnas_xgrupo: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscalculapreciofingrupal/' + BANDERA + '/' + CD_CNSCTVO + '/' + ID_SCTOR_OFRTA + '/' + tpo_cmsion_grupal + '/' + vlor_cmsion_grupal + '/' + vlor_dmcilio_grupal + '/' + mnmo_prsnas_xgrupo)
   }
 
-  ActualizaEstadoOferta(Bandera:string, BodyUpdate:any){
-    return this.http.post<any>(this.url_servidor+'modccambiaestadoferta/'+Bandera, BodyUpdate)
+  ActualizaEstadoOferta(Bandera: string, BodyUpdate: any) {
+    return this.http.post<any>(this.url_servidor + 'modccambiaestadoferta/' + Bandera, BodyUpdate)
   }
-  
+
   AsociarCosteo(bandera: string, datos: any) {
     return this.http.post<any>(this.url_servidor + 'costeofertamod/' + bandera, datos)
   }
 
-  CorreoMasivo(bandera:string,IdPlantilla:string, IdTipoUsuario:string, cd_cnctvo:string){
-    return this.http.get<any[]>(this.url_servidor+'enviocorreomasivo/'+bandera+'/'+IdPlantilla+'/'+IdTipoUsuario+'/'+cd_cnctvo)
+
+  CorreoMasivo(bandera: string, IdPlantilla: string, IdTipoUsuario: string, cd_cnctvo: string) {
+    return this.http.get<any[]>(this.url_servidor + 'enviocorreomasivo/' + bandera + '/' + IdPlantilla + '/' + IdTipoUsuario + '/' + cd_cnctvo)
+  }
+
+  EnviarCorreoIndividual(bandera: string, datos: any) {
+    return this.http.post<any>(this.url_servidor + 'enviocorreoindividual/' + bandera, datos)
+
   }
 }
