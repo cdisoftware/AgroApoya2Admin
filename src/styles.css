@@ -178,6 +178,11 @@ th {
     display: none;
 }
 
+.image-uploadTres img {
+    width: 200px;
+    cursor: pointer;
+}
+
 .TextAlert {
     color: red;
 }
