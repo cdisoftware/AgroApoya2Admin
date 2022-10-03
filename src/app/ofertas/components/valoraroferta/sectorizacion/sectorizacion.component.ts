@@ -305,6 +305,9 @@ export class SectorizacionComponent implements OnInit {
         this.Respuesta = respuesta[1];
         if (respuesta[0] != '-1') {
           this.rutas.navigateByUrl('/home/transportista');
+          this.sectoresservices.CorreoMasivo('1','6','3',this.SessionOferta).subscribe(ResultCorreo=>{
+            console.log(ResultCorreo)
+          })
         }        
       })      
     }
