@@ -163,7 +163,7 @@ export class TransportistaComponent implements OnInit {
     window.location.reload();
   }
 
-  Enviar(templateRespuesta:any) {
+  Enviar(templateRespuesta: any) {
     this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
     const Body = {
       usucodig: this.SessionIdUsuario,
@@ -179,6 +179,34 @@ export class TransportistaComponent implements OnInit {
       this.Respuesta = respuesta[1];
       if (respuesta[0] != '-1') {
         this.rutas.navigateByUrl('/home/costeo')
+        this.sectoresservices.ConsultaConductoresOferta('1', this.SessionOferta).subscribe(ResultConsult => {
+          if (ResultConsult.length > 0) {
+            for (var i = 0; i <= ResultConsult.length; i++) {              
+              if(ResultConsult[i].ESTADO=='3'){
+                const BodyCorreoInd={
+                  dPlantilla: 8,
+                  usucodig: ResultConsult[i].USUCODIG_TRANS,
+                  Cd_cnctvo: this.SessionOferta,
+                  id_conductor: ResultConsult[i].ID_CNDCTOR
+                }
+                this.sectoresservices.EnviarCorreoIndividual('1',BodyCorreoInd).subscribe(ResultCI=>{
+                  console.log(ResultCI)
+                })
+              }
+              else if(ResultConsult[i].ESTADO=='1'){
+                const BodyCorreoInd={
+                  dPlantilla: 7,
+                  usucodig: ResultConsult[i].USUCODIG_TRANS,
+                  Cd_cnctvo: this.SessionOferta,
+                  id_conductor: ResultConsult[i].ID_CNDCTOR
+                }
+                this.sectoresservices.EnviarCorreoIndividual('1',BodyCorreoInd).subscribe(ResultCI=>{
+                  console.log(ResultCI)
+                })
+              }
+            }
+          }
+        })
       }
     })
   }
