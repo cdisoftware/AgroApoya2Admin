@@ -28,7 +28,8 @@ export class ValoracionComponent implements OnInit {
   PreFinI: any;
   VlrDomiI: any;
   Respuesta: string = '';
-  modalRespuesta: NgbModalRef | undefined
+  modalRespuesta: NgbModalRef | undefined;
+  modalPublicar: NgbModalRef | undefined;
   SessionTipoOferta: any;
   SessionTipoComI: any;
   SessionTipoComG: any;
@@ -568,7 +569,7 @@ export class ValoracionComponent implements OnInit {
   }
 
   AbrePublica(templatePublicar: any) {
-    this.modalService.open(templatePublicar, { ariaLabelledBy: 'modal-basic-title' })
+    this.modalPublicar=this.modalService.open(templatePublicar, { ariaLabelledBy: 'modal-basic-title' })
   }
 
   PublicaOferta(templateMensaje: any) {
@@ -586,8 +587,11 @@ export class ValoracionComponent implements OnInit {
       var respuesta = ResultUpda.split('|')
       this.Respuesta = respuesta[1];
       if (respuesta[0] != '-1') {
-        //this.modalService.dismissAll();
+        this.modalPublicar?.close();
         this.rutas.navigateByUrl('/home/buscaroferta')
+        this.serviciosvaloracion.CorreoMasivo('1','9','2',this.SessionOferta).subscribe(ResultCorreo=>{
+          console.log(ResultCorreo)
+        })
       }
     })
   }
