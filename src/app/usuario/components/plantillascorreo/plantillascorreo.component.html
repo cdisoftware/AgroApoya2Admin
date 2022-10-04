@@ -109,7 +109,8 @@
                             <img src="{{Imagencabeza}}" class="imgCentro" alt="Seleccionar una imagen"
                                 title="Las propiedades de la imagen deben ser peso máximo 1 MG y de tipo JPG o PNG y su tamaño debe ser de 1200px x 628px">
                         </label>
-                        <input name="file-input3" id="file-input3" type="file" (change)="CargaImagenCabeza($event)"
+                        <input name="file-input3" id="file-input3" type="file"
+                            (change)="CargaImagenCabeza($event, ModalRespuesta)"
                             title="Las propiedades de la imagen deben ser peso máximo 1 MG y de tipo JPG o PNG y su tamaño debe ser de 1200px x 628px" />
                     </div>
                 </div>
@@ -124,7 +125,8 @@
                             <img src="{{ImagenPie}}" class="imgCentro" alt="Seleccionar una imagen"
                                 title="Las propiedades de la imagen deben ser peso máximo 1 MG y de tipo JPG o PNG y su tamaño debe ser de 1200px x 628px">
                         </label>
-                        <input name="file-input2" id="file-input2" type="file" (change)="CargaImagenPie($event)"
+                        <input name="file-input2" id="file-input2" type="file"
+                            (change)="CargaImagenPie($event, ModalRespuesta)"
                             title="Las propiedades de la imagen deben ser peso máximo 1 MG y de tipo JPG o PNG y su tamaño debe ser de 1200px x 628px" />
                     </div>
                 </div>
@@ -136,8 +138,8 @@
                     <div class="col-sm-12 text-center">
                         <button class="col-sm-4 btn btn-agro-prin" (click)="BtnGuardarPlantilla(ModalRespuesta)"
                             *ngIf="VerOcultarCampos == '2' " title="Agregar nueva plantilla">Guardar</button>
-                        <button class="col-sm-4 btn btn-agro-prin" *ngIf="VerOcultarCampos == '3' "
-                            title="Actualizar plantilla">Actualizar</button>
+                        <button class="col-sm-4 btn btn-agro-prin" (click)="BtnActualizarrPlantilla(ModalRespuesta)"
+                            *ngIf="VerOcultarCampos == '3'" title="Actualizar plantilla">Actualizar</button>
                     </div>
                 </div>
             </div>
@@ -153,64 +155,68 @@
                 <div class="col-4 mb-3 contenedor">
                     <div class="image-uploadTres hijo ">
                         <label for="file-input1">
-                            <img src="../../../../assets/ImagenesAgroApoya2Admin/ic_adjunto.PNG" class="BoderImg"
-                                alt="Seleccionar una imagen">
+                            <img src="{{ArchivoAdj}}" class="BoderImg" alt="Seleccionar una imagen">
                         </label>
-                        <input name="file-input1" id="file-input1" type="file" />
+                        <input name="file-input1" id="file-input1" type="file" (change)="CargaArchivoAdjunto($event)" />
                     </div>
                 </div>
             </div>
 
             <br>
             <div class="row">
-                <div class="col-sm-4  mb-3">
-                    <label class="cuadrosControl">NOMBRE ARCHIVO</label>
-                </div>
-                <div class="col-sm-4  mb-3">
-                    <button class="SinEstilo" title="Eliminar Plantilla">
-                        <img src="../../../../assets/ImagenesAgroApoya2Admin/basura.png"
-                            class="BtnimgTamanoPeque m-auto">
-                    </button>
+                <div class="displayflex col-sm-4 mt-2" *ngFor="let resp of arregloListaAdjuntos">
+                    <div class="w-100">
+                        <label class="cuadrosControl">{{resp.NombreDocumento}}</label>
+                    </div>
+                    <div class="col-1 mb-3">
+                        <button class="SinEstilo" title="Eliminar Plantilla" (click)="EliminaAdjunto(resp, ModalRespuesta)">
+                            <img src="../../../../assets/ImagenesAgroApoya2Admin/basura.png"
+                                class="BtnimgTamanoPeque m-auto">
+                        </button>
+                    </div>
                 </div>
             </div>
+           
         </div>
+
         <div class="row mb-3" *ngIf="VerOcultarCampos != '1' && VerOcultarCampos !='2'">
             <div class="displayFlexStar col-12 mb-3">
                 <h5 class="tituloformulario mt-2">FORMULARIO</h5>
             </div>
             <div class="col-sm-4  mb-3">
                 <select class="form-select" [(ngModel)]="IdCampo" [ngModelOptions]="{standalone: true}"
-                    title="Seleccionar el campo de la rueda">
+                    (change)="changeCampo()" title="Seleccionar el campo del correo">
                     <option value="0" selected>Seleccione campos correo...</option>
-                    <option value="{{Respu.IdCampo}}" *ngFor="let Respu of arregloCamposCorreo"> {{Respu.Descripcion}}
+                    <option *ngFor="let Respu of arregloCamposCorreo" [value]="Respu.CodCampo"> {{Respu.Descripcion}}
                     </option>
                 </select>
             </div>
             <div class="col-sm-4  mb-3">
-                <input type="text" name="something" class="form-control" placeholder="Código campo"
-                    title="Código campo">
+                <input type="text" name="something" class="form-control" placeholder="Código campo" title="Código campo"
+                    [(ngModel)]="CampoDesc" [ngModelOptions]="{standalone: true}">
             </div>
         </div>
+
         <div class="row" *ngIf="VerOcultarCampos != '1' && VerOcultarCampos !='2'">
             <div class="displayFlexStar col-12 mb-3">
                 <h5 class="tituloformulario mt-2">EDITAR PLANTILLA</h5>
             </div>
             <div class="col-12 mb-3">
-                <angular-editor id="htmlEditro" [(ngModel)]="htmlContent" [ngModelOptions]="{standalone: true}" [config]="editorConfig"></angular-editor>
+                <angular-editor id="htmlEditro" [placeholder]="'Ingrese el texto'" [config]="editorConfig"
+                    [(ngModel)]="HtmlForm" [ngModelOptions]="{standalone: true}"
+                    (keyup)="CaracteresHtmlDos(ModalRespuesta)"></angular-editor>
+
             </div>
             <label class="w-100 text-secondary text-right">
                 <small></small>
             </label>
             <div class="row col-12 mt-4 mb-4">
                 <div class="col-sm-12 text-center">
-                    <button class="col-sm-4 btn btn-agro-prin"
-                        title="Agregar nuevo formulario plantilla" *ngIf="VerOcultarCampos == '2'">Guardar</button>
-                    <button class="col-sm-4 btn btn-agro-prin"
+                    <button class="col-sm-4 btn btn-agro-prin" (click)="BtnActualizarPlantillaHtml(ModalRespuesta)"
                         title="Actualizar formulario plantilla" *ngIf="VerOcultarCampos == '3'">Actualizar</button>
                 </div>
             </div>
             <br>
-
         </div>
     </div>
     <br><br>
@@ -228,7 +234,7 @@
                     <input type="text" value="{{respuesta.NombrePlantilla}}" class="form-control" disabled>
                 </div>
                 <div class="col-sm-1">
-                    <button class="bot col-sm-1 SinEstilo">
+                    <button class="bot col-sm-1 SinEstilo" (click)="SeleccionarPlantillaModal(respuesta)">
                         <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Editar.png" alt="Ver">
                     </button>
                 </div>
@@ -241,7 +247,7 @@
         <br>
     </div>
 </ng-template>
-
+<!-- Template Modal RESPUESTA-->
 <ng-template #ModalRespuesta let-modal>
     <div class="modal-header">
         <h1>Respuesta</h1>
