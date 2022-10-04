@@ -44,9 +44,21 @@ export class PlantillacorreosService {
     formData.append('file', imagenParaSubir, imagenParaSubir.name);
     return this.http.post(this.url_servidor + 'uploadImgPlantillaCorreo', formData);
   }
+
   public postAdjuntoPlantillaCorreo(adjuntoParaSubir: File) {
     const formData = new FormData();
     formData.append('file', adjuntoParaSubir, adjuntoParaSubir.name);
     return this.http.post(this.url_servidor + 'uploadArchivos', formData);
   }
+
+  ModDocumentoCorreo(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modcdocumentocorreo/' + Bandera, Body)
+  }
+
+  ConsultaDocumentoCorreo(Bandera: string, IdPlantilla: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscdocumentocorreo/' + Bandera + '/' + IdPlantilla);
+  }
+
+
+
 }
