@@ -63,7 +63,7 @@ export class PlantillascorreoComponent implements OnInit {
 
   ngOnInit(): void {
     this.usuarioMod = this.cookies.get('IDU');
-    this.RutaImagenes = this.SeriviciosGenerales.RecuperaRutaImagenes();
+    this.RutaImagenes = this.SeriviciosGenerales.RecuperarRutasOtrasImagenes('3');
     this.ListaTipoPlantilla();
     this.ListaMomentoEnvio();
     this.ListaCamposCodigo();
