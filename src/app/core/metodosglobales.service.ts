@@ -43,6 +43,20 @@ export class MetodosglobalesService {
     }    
   }
 
+  RecuperarRutasOtrasImagenes(tipoimagen: string){
+    var ruta = 'http://190.147.38.91:8089/';
+    if(tipoimagen == '1'){
+      return ruta + 'ImagenesEvidencia/'
+    }else if(tipoimagen == '2'){
+      return ruta + 'ImagenesConductores/'
+    }else if(tipoimagen == '3'){
+      return ruta + 'ImagenesPlantillaCorreo/'
+    }else{
+      return 'no se encontro la imagen'
+    }
+
+  }
+
   CrearCookie(Llave: string, Valor: string) {
     this.Cookies.set(Llave, Valor)
   }
