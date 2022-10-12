@@ -5,6 +5,7 @@ import { CrearofertaService } from './../../../../core/crearoferta.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-costeo',
@@ -27,6 +28,8 @@ export class CosteoComponent implements OnInit {
   IdConcepto: string = '';
   RutaImagen: string = this.SeriviciosGenerales.RecuperaRutaImagenes();
   Respuesta: string = '';
+  lblConceptoAgregar: string = '';
+  arregloListaConcepto: any;
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -63,6 +66,7 @@ export class CosteoComponent implements OnInit {
 
   LimpiarFiltro() {
     this.IdConcepto = '0'
+    this.lblConceptoAgregar = '';
   }
 
   ConsultaConceptos() {
@@ -81,7 +85,7 @@ export class CosteoComponent implements OnInit {
     }
     this.ServiciosValorar.AsociarCosteo('3', conceptos).subscribe(Resultado => {
       console.log(Resultado)
-      if (Resultado.toString().includes('-1')){
+      if (Resultado.toString().includes('-1')) {
         this.Respuesta = 'No se puede asociar el valor de costeo seleccionado, por favor valide sus datos';
         this.modalService.dismissAll();
         this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
@@ -126,6 +130,76 @@ export class CosteoComponent implements OnInit {
     })
   }
 
+  CrearEditarosteo(modalMod: any) {
+    this.modalService.open(modalMod, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+    this.banderaAgregar = '1';
+  }
+
+  //INSERTA CONCEPTO
+  AgregaConcepto(modalRespuesta: any) {
+    const body = {
+      Descripcion: this.lblConceptoAgregar,
+      IdTipoCosteo: 0
+    }
+    if (this.lblConceptoAgregar == undefined || this.lblConceptoAgregar == '') {
+      this.Respuesta = 'Debe completar el campo Concepto.';
+      this.modalService.dismissAll();
+      this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    } else {
+      this.ServiciosValorar.ModificaConcepto('3', body).subscribe(respu => {
+        this.Respuesta = respu;
+        this.modalService.dismissAll();
+        this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        this.ConsultaConceptos();
+        this.LimpiarFiltro();
+      })
+    }
+  }
+  
+  banderaAgregar: string = '1';
+  auxIdConcepto: string = '';
+
+  SeleccionarEditarConcepto(arreglo: any){
+    console.log(arreglo)
+    this.lblConceptoAgregar = arreglo.nombre
+    this.banderaAgregar = '2';
+    this.auxIdConcepto = arreglo.codigo;
+  }
+
+  EditaConcepto(modalRespuesta: any) {
+    const body = {
+      Descripcion: this.lblConceptoAgregar,
+      IdTipoCosteo: this.auxIdConcepto
+    }
+    if (this.lblConceptoAgregar == undefined || this.lblConceptoAgregar == '') {
+      this.Respuesta = 'Debe completar el campo Concepto.';
+      this.modalService.dismissAll();
+      this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    } else {
+      this.ServiciosValorar.ModificaConcepto('2', body).subscribe(respu => {
+        this.Respuesta = respu;
+        this.modalService.dismissAll();
+        this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        this.ConsultaConceptos();
+        this.LimpiarFiltro();
+      })
+    }
+  }
+  EliminaConcepto(modalRespuesta: any, arreglo: any) {
+    console.log(arreglo)
+    const body = {
+      Descripcion: this.lblConceptoAgregar,
+      IdTipoCosteo: arreglo.codigo
+    }
+    this.ServiciosValorar.ModificaConcepto('4', body).subscribe(respu => {
+      this.Respuesta = respu;
+      this.modalService.dismissAll();
+      this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+      this.ConsultaConceptos();
+      this.LimpiarFiltro();
+    })
+
+  }
 
   selectConcepto(item: any) {
     this.IdConcepto = item.codigo;

@@ -32,7 +32,7 @@
         <div class="row br">
             <div class="col-sm-4">
                 <label class="col-sm-12 Llave">Precio Sugerido</label>
-                <input type="text" class="form-control form-control-sm textBox" placeholder="Precio Sugerido" [(ngModel)]="ValorSugerido" name="ValorSugerido">
+                <input type="number" class="form-control form-control-sm textBox" placeholder="Precio Sugerido" [(ngModel)]="ValorSugerido" name="ValorSugerido">
             </div>
         </div>
         <hr>
@@ -314,10 +314,10 @@
             </div>
             <div class="row br">
                 <div class="col-sm-12">
-                    <label class="col-sm-12 Llave">Ciudad aplica oferta</label>
+                    <label class="col-sm-12 Llave">Ciudad destino oferta</label>
                     <select name="ACiudad" id="Aciudad" #aciudad class="form-control form-control-sm textBox"
                     (change)='SelACiudad(aciudad.value)'>
-                        <option value="1">Ciudad Aplica</option>
+                        <option value="1">Ciudad destino</option>
                         <option *ngFor="let ciudad of ArrayCiudades" [value]="ciudad.CD_MNCPIO" >
                             {{ciudad.DSCRPCION}}
                         </option>
