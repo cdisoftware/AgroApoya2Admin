@@ -158,7 +158,7 @@
             <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Cantidad" [(ngModel)]="Cant">
         </div>
         <div class="col-sm-4">
-            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Valor flete" [(ngModel)]="VlrFle">
+            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Valor estimado flete" [(ngModel)]="VlrFle">
         </div>
     </div>
     <div class="row br justify-content-center ">
@@ -224,33 +224,35 @@
     </div>
     <div class="modal-body ">
         <div class="row br ">
-            <div class="col-sm-10 ">
+            <div class="col-sm-8">
                 <input type="text " class="Col-sm-12 form-control " placeholder="Nombre sector " [(ngModel)]="NombreSec ">
             </div>
-            <div class="col-sm-2 ">
+            <div class="col-sm-4">
                 <button class="btn btn-agro-prin col-sm-12 " (click)="CreaSector(ModalRespuesta) ">
-                    Crear
+                    Crear sector
                 </button>
             </div>
         </div>
-        <div class="row mt-2 " *ngIf="ValidaInsertSec=='1' ">
-            <div class="col-sm-5 ">
+        <div class="row br" *ngIf="ValidaInsertSec=='1' ">
+            <div class="col-sm-4">
                 <input type="text " class="Col-sm-12 form-control " placeholder="Coordenada norte " [(ngModel)]="Coor1 ">
-            </div>
-            <div class="col-sm-1 "></div>
-            <div class="col-sm-5 ">
+            </div>            
+            <div class="col-sm-4">
                 <input type="text " class="Col-sm-12 form-control " placeholder="Coordenada sur " [(ngModel)]="Coor2 ">
             </div>
-            <div class="col-sm-1 ">
-                <button class="SinEstilo mt-1 " (click)="AgregarCoordenada(ModalRespuesta) ">
+            <div class="col-sm-4">
+                <button class="btn btn-agro-prin col-sm-12" (click)="AgregarCoordenada(ModalRespuesta) ">Agregar coordenada
                     <img src="./../../../../../assets/ImagenesAgroApoya2Admin/anadir.png ">
                 </button>
             </div>
-        </div>
-        <div class="row mt-2 justify-content-center ">
+        </div>        
+        <div class="row mt-2 justify-content-center" *ngIf="ValidaInsertSec=='1' ">
             <div class="col-sm-11 ">
                 <div id="map" [ngClass]="ValidaInsertSec=='1' ? 'ShowMap' : 'HideMap' "></div>
             </div>
+            <!-- <div class="row">
+                <button id="btnprueba" class="btn btn-agro-prin col-sm-2" (click)="Centramapa({ address: SessionCiudad })">Click</button>
+            </div> -->
         </div>
         <div class="br row justify-content-center " *ngIf="ValidaCoord=='1' ">
             <h2 class="TituloDetalle " style="color: #397c97; ">Coordenadas registradas</h2>
@@ -274,7 +276,7 @@
     </div>
     <div class="row justify-content-center " *ngIf="ValidaInsertSec=='1' ">
         <div class="col-sm-2 ">
-            <button type="button " class="btn btn-agro-prin col-sm-12 " (click)="CerrModalMap(ModalRespuesta) ">Aceptar</button>
+            <button type="button " class="btn btn-agro-prin col-sm-12 " (click)="CerrModalMap(ModalRespuesta) ">Guardar</button>
         </div>      
     </div>
     <br>
