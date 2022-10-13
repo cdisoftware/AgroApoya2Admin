@@ -106,12 +106,10 @@ export class SectorizacionComponent implements OnInit {
 
   ConsultaCiudadOferta() {
     this.sectoresservices.ConsultaCiudadOferta('1', this.SessionOferta).subscribe(ResultadoCons => {
-      //console.log(ResultadoCons)
       this.SessionCiudad = ResultadoCons[0].Cuidad;
       this.SessionCDMunicipio = ResultadoCons[0].CD_MNCPIO;
       this.SessionCDRegion = ResultadoCons[0].CD_RGION;
       this.ConsultaSectores();
-      console.log(this.SessionCiudad)
     })
   }
 
@@ -188,8 +186,11 @@ export class SectorizacionComponent implements OnInit {
 
   AbreCreaSector(content: any, templateRespuesta: any) {
     this.NombreSec = '';
-    this.ModalInsert = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
-
+    this.ValidaCoord = '0';
+    this.Coor1 = '';
+    this.Coor2 = '';
+    this.DataCoor = [];
+    this.ModalInsert = this.modalService.open(content, { size: 'lg', keyboard: false, backdrop: 'static' })
   }
 
   CreaSector(templateRespuesta: any) {
@@ -283,6 +284,7 @@ export class SectorizacionComponent implements OnInit {
           this.Respuesta = arrayRes[1];
           this.Coor1 = '';
           this.Coor2 = '';
+          //this.markers[0].setMap(null)
           this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
           this.ConsultaCoordenadas()
         })
@@ -296,6 +298,21 @@ export class SectorizacionComponent implements OnInit {
       this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
       this.Respuesta = "Recuerda que debes registrar unicamente 2 coordenadas por sector, favor valida tu información.";
     }
+  }
+
+  EliminaCoordenada(coordenada: any) {
+    console.log(coordenada)
+    const BodyInsertCoo = {
+      ID: coordenada.consecutivo,
+      ID_SCTOR_OFRTA: Number(this.SessionSecCreado),
+      LTTUD: coordenada.Latitud,
+      LNGTUD: coordenada.Longitud
+    }
+    this.sectoresservices.InsertarCoordenadas('4', BodyInsertCoo).subscribe(Resultado => {
+      this.Coor1 = '';
+      this.Coor2 = '';
+      this.ConsultaCoordenadas()
+    })
   }
 
   ConsultaCoordenadas() {
