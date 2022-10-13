@@ -275,8 +275,10 @@ export class BuscarofertaComponent implements OnInit {
     } else if (estado == '14') {
       this.ValidaBusqueda = '1'
       this.RutaSiguiente = '/costeo'
-    } else if (estado == '6' || estado == '7' || estado == '10' || estado == '11') {
+    } else if (estado == '6' || estado == '7' || estado == '11') {
       this.ValidaBusqueda = '0'
+    } else if (estado == '10') {
+      this.ValidaBusqueda = '2'
     }
   }
 
