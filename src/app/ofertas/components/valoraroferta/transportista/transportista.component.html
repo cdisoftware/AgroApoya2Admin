@@ -201,8 +201,8 @@
                 <th>Cantidades del Sector</th>
                 <th>Peso de cantidades (kg)</th>
                 <th>Conductor</th>
-                <th>Valor flete</th>
-                <th>Valor Contra-flete</th>
+                <th>Valor flete registrado</th>
+                <th>Valor flete de transportista</th>
                 <th>Estado</th>
                 <th>Acciones</th>
             </tr>
@@ -211,8 +211,8 @@
                 <td>{{transportista.cantidad}}</td>
                 <td>{{transportista.PESO_KG}}</td>
                 <td>{{transportista.NMBRE_CNDCTOR}}</td>
-                <td>${{transportista.VLOR_FLTE_PCTDO}}</td>
-                <td><input type="text" class="col-sm-12 form-control" value="${{transportista.VLOR_FLTE_PCTDO}}"></td>
+                <td>{{transportista.VLOR_FLTE_SGRDO}}</td>
+                <td><input #VlrFletePac type="text" class="col-sm-12 form-control" [(ngModel)]="transportista.VLOR_FLTE_PCTDO" (change)="RecuperaValor(VlrFletePac.value)"></td>
                 <td>{{transportista.NOM_ESTADO}}</td>
                 <td>
                     <button class="SinEstilo" (click)="DetalleTransportista(transportista, ModalDetalle)">
@@ -318,8 +318,10 @@
                     <label class="Valor">{{conductor.DIRECCION}}</label>
                 </div> -->
             </div>
-        </div>
+        </div>        
     </div>
+    <hr class="hrSinEstilo">
+    <br>
     <div class="row justify-content-center">
         <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
     </div>

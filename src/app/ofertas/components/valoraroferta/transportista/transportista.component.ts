@@ -33,6 +33,7 @@ export class TransportistaComponent implements OnInit {
   DataOferta: any[];
   RutaImagen: string;
   DataConductor: any[];
+  SessionValorFlete: any;
 
   constructor(public sectoresservices: ValorarofertaService, private modalService: NgbModal, private rutas: Router, private cookies: CookieService, private SeriviciosGenerales: MetodosglobalesService) { }
 
@@ -63,7 +64,7 @@ export class TransportistaComponent implements OnInit {
       console.log(ResultConsult)
       if (ResultConsult.length > 0) {
         this.ValidaConsulta = '0';
-        this.DataTransOferta = ResultConsult;
+        this.DataTransOferta = ResultConsult;        
       }
       else {
         this.ValidaConsulta = '1';
@@ -71,6 +72,10 @@ export class TransportistaComponent implements OnInit {
         this.txtValidaCons = 'No se encuentran registros de transportistas asociados a la oferta'
       }
     })
+  }
+
+  RecuperaValor(valor:any){
+    this.SessionValorFlete=valor
   }
 
   ConsultaCiudadOferta() {
@@ -139,7 +144,7 @@ export class TransportistaComponent implements OnInit {
       ID_SCTOR_OFRTA: transportista.ID_SCTOR_OFRTA,
       ID_CNDCTOR: transportista.ID_CNDCTOR,
       USUCODIG_TRANS: transportista.USUCODIG_TRANS,
-      VLOR_FLTE_PCTDO: transportista.VLOR_FLTE_PCTDO
+      VLOR_FLTE_PCTDO: this.SessionValorFlete
     }
     this.sectoresservices.OperacionTransportista('4', BodyDelete).subscribe(ResultInsert => {
       var arrayrespuesta = ResultInsert.split('|')
@@ -229,7 +234,7 @@ export class TransportistaComponent implements OnInit {
       ID_SCTOR_OFRTA: transportista.ID_SCTOR_OFRTA,
       ID_CNDCTOR: transportista.ID_CNDCTOR,
       USUCODIG_TRANS: transportista.USUCODIG_TRANS,
-      VLOR_FLTE_PCTDO: transportista.VLOR_FLTE_PCTDO,
+      VLOR_FLTE_PCTDO: this.SessionValorFlete,
       ESTADO: 1
     }
     this.sectoresservices.OperacionConductor('2', BodyUpdate).subscribe(ResultadoUpdate => {
@@ -246,7 +251,7 @@ export class TransportistaComponent implements OnInit {
       ID_SCTOR_OFRTA: transportista.ID_SCTOR_OFRTA,
       ID_CNDCTOR: transportista.ID_CNDCTOR,
       USUCODIG_TRANS: transportista.USUCODIG_TRANS,
-      VLOR_FLTE_PCTDO: transportista.VLOR_FLTE_PCTDO,
+      VLOR_FLTE_PCTDO: this.SessionValorFlete,
       ESTADO: 3
     }
     this.sectoresservices.OperacionConductor('2', BodyUpdate).subscribe(ResultadoUpdate => {

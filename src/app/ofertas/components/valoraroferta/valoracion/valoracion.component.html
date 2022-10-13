@@ -181,7 +181,7 @@
     </div>
     <div class="row br" *ngIf="ValidaDefTipoOfer=='1'">
         <div class="col-sm-8">
-            <label class="col-sm-12 Llave mb-1">Sector a valorizar</label>
+            <label class="col-sm-12 Llave mb-1">Sector a valorar</label>
             <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" (selected)='selectSector($event)' (inputCleared)='LimpiaSector()' placeholder="Sector" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio">
             </ng-autocomplete>
             <ng-template #templateSec let-item>
