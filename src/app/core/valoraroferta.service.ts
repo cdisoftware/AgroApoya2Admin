@@ -166,4 +166,8 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'enviocorreoindividual/' + bandera, datos)
 
   }
+  ModificaConcepto(Bandera: string, datos: any) {
+    return this.http.post<any>(this.url_servidor + 'modctipocosteo/' + Bandera, datos)
+  }
+
 }

@@ -154,8 +154,11 @@
         </div>
         <hr>
         <div class="row br">
+
             <div class="col-sm-4">
-                <ng-autocomplete [data]="ArrayConceptos" [searchKeyword]="concepto" placeholder="Concepto" (selected)='selectConcepto($event)' (inputCleared)="LimpiarFiltro()" [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio">
+                <ng-autocomplete [data]="ArrayConceptos" [searchKeyword]="concepto" placeholder="Concepto"
+                    (selected)='selectConcepto($event)' (inputCleared)="LimpiarFiltro()" [itemTemplate]="templateRes"
+                    [notFoundTemplate]="templateVacio">
                 </ng-autocomplete>
                 <ng-template #templateRes let-item>
                     <a [innerHTML]="item.nombre"></a>
@@ -164,9 +167,11 @@
                     <label for="">Sin registros</label>
                 </ng-template>
             </div>
+
+
             <div class="col-sm-4">
                 <select name="TipoConcepto" id="TipoConcepto" #TipoConcepto class="form-control form-control-sm textBox"
-                (change)='SelTConcepto(TipoConcepto.value)'>
+                    (change)='SelTConcepto(TipoConcepto.value)'>
                     <option value="0">Tipo Concepto</option>
                     <option value="1">Unitario</option>
                     <option value="2">Total</option>
@@ -177,11 +182,17 @@
                     [(ngModel)]="VTotal" name="VTotal">
             </div>
         </div>
-        <div class="row justify-content-center br">
-            <div class="col-sm-3">
-                <button type="button" class="btn btn-agro-prin col-sm-12" (click)="AsociarConcepto(ModalRespuesta)">Asociar
+        <div class="row br justify-content-center mt-3">
+            <div class="col-sm-3 col-12 br">
+                <button type="button" class="btn btn-agro-prin col-sm-12"
+                    (click)="AsociarConcepto(ModalRespuesta)">Asociar
                     Concepto</button>
             </div>
+            <div class="col-sm-3 col-12 br">
+                <button type="button" class="btn btn-agro-prin col-sm-12" (click)="CrearEditarosteo(templateEditar)">
+                    <span class="fa fa-plus"></span> Crear/Editar Concepto</button>
+            </div>
+
         </div>
         <hr>
         <div class="br row justify-content-center">
@@ -205,7 +216,8 @@
             </table>
         </div>
         <div class="row justify-content-center br">
-            <div class="col-sm-3"><label class="Llave">Valor total costeo:&nbsp;</label><label>{{ValorTotal}}</label></div>
+            <div class="col-sm-3"><label class="Llave">Valor total costeo:&nbsp;</label><label>{{ValorTotal}}</label>
+            </div>
         </div>
         <hr>
         <div class="row justify-content-center br">
@@ -217,6 +229,7 @@
             </div>
         </div>
     </div>
+    <br>
     <ng-template #ModalRespuesta let-modal>
         <div class="modal-header">
             <h1>Respuesta</h1>
@@ -234,4 +247,67 @@
         </div>
         <br>
     </ng-template>
+
+
+    <ng-template #templateEditar let-modal>
+        <div class="modal-header">
+            <h1 class="modal-title" id="modal-basic-title">CREACIÓN/EDICIÓN CONCEPTO </h1>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        </div>
+        <div class="modal-body">
+
+            <div class="row">
+
+
+                <div class="col-sm-10">
+                    <input type="text" title="Descripción concepto" class="form-control" placeholder="Concepto"
+                        [(ngModel)]="lblConceptoAgregar">
+                </div>
+
+                <div class="col-sm-2">
+                    <button class="SinEstilo" *ngIf="banderaAgregar=='1'" (click)="AgregaConcepto(ModalRespuesta)">
+                        <img src="../../../../../assets/ImagenesAgroApoya2Admin/mas.png" class="BtnimgTamano" />
+                    </button>
+                    <button class="SinEstilo" *ngIf="banderaAgregar=='2'" (click)="EditaConcepto(ModalRespuesta)">
+                        <img src="../../../../../assets/ImagenesAgroApoya2Admin/Editar.png" class="BtnimgTamano" />
+                    </button>
+                </div>
+
+            </div>
+
+
+
+            <div class="row br">
+                <!--Grilla-->
+                <table class="table table-bordered text-center">
+                    <tr>
+                        <th class="cursorPointer">Concepto</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                    <tr *ngFor="let Respu of ArrayConceptos">
+                        <td>{{Respu.nombre}}</td>
+                        <td class="text-center">
+                            <button class="SinEstilo" title="Editar" (click)="SeleccionarEditarConcepto(Respu)">
+                                <img src="../../../../../assets/ImagenesAgroApoya2Admin/Editar.png"
+                                    class="BtnimgTamanoPeque mr-2" />
+                            </button>
+                        </td>
+                        <td class="text-center">
+                            <button class="SinEstilo" title="Eliminar" (click)="EliminaConcepto(ModalRespuesta, Respu)">
+                                <img src="../../../../../assets/ImagenesAgroApoya2Admin/basura.png"
+                                    class="BtnimgTamanoPeque mr-2" />
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+                <!--fin Grilla-->
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.dismiss()">Cerrar</button>
+        </div>
+        <br>
+    </ng-template>
+
 </div>

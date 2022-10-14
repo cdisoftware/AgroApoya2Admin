@@ -221,7 +221,7 @@
                     </button>
                     <label>Editar</label>
                 </div>
-                <div class="col-sm-1" *ngIf="ValidaBusqueda == '1'">
+                <div class="col-sm-1" *ngIf="ValidaBusqueda == '1' || ValidaBusqueda == '2'">
                     <button class="SinEstilo" (click)="CerrarOferta(templateCerrar)">
                         <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Admin/Cerrar.png" title="Cerrar oferta">
                     </button>
@@ -250,7 +250,7 @@
         <div class="modal-body">
             <div class="row br">
                 <div class="col-sm-12">
-                    <label class="col-sm-12 Llave">Caractrización</label>
+                    <label class="col-sm-12 Llave">Caracterización</label>
                     <textarea name="ECaracteriza" id="ECaracteriza"
                         class="col-sm-12 form-control form-control-sm textArea" placeholder="Caracterización" rows="3"
                         [(ngModel)]="ECaracteriza"></textarea>
