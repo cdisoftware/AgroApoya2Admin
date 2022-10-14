@@ -20,7 +20,9 @@ export class ValoracionComponent implements OnInit {
   MuestraIndividual: string = '';
   MuestraGrupal: string = '';
   MuestraFijo: string = '';
+  MuestraFijoI: string ='';
   MuestraPorcentaje: string = '';
+  MuestraPorcentajeI: string ='';
   MuestraVigencial: string = '';
   VlrComFijaI: string = '';
   MinUnidI: any;
@@ -60,7 +62,6 @@ export class ValoracionComponent implements OnInit {
   SessionIdUsuario: any;
   DataSectores: any[];
   RutaImagen: string;
-  ValidaDefTipoOfer: string;
   ValidaTipoOfer: string;
   CodigoOferSector: any;
   VlrFletSect: any;
@@ -71,6 +72,7 @@ export class ValoracionComponent implements OnInit {
   MuestraBtnGrupal: string;
   MuestraBtnMixta: string;
   PubliOferObser: any;
+  ValidaVigencia: string;
 
 
 
@@ -108,7 +110,7 @@ export class ValoracionComponent implements OnInit {
     this.MuestraVigencial = '0';
     this.MuestraGrupal = '0';
     this.MuestraIndividual = '0';
-    this.ValidaDefTipoOfer = '0';
+    this.ValidaVigencia = '0';
     this.ValidaTipoOfer = '0';
     this.CantGrupos = '1';
     //this.UnidXGrupos = '2';
@@ -126,13 +128,11 @@ export class ValoracionComponent implements OnInit {
     this.RutaImagen = this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');
-    this.ConsultaVigenciaOferta();
     this.ConsultaDetalleOferta();
     this.ConsultaSectores();
-
   }
   ConsultaVigenciaOferta() {
-    this.serviciosvaloracion.ConsultaVigenciaOferta('1', this.SessionOferta).subscribe(ResultCons => {
+    this.serviciosvaloracion.ConsultaVigenciaOferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultCons => {
       //console.log(ResultCons)
       this.VigenDesde = ResultCons[0].vgncia_desde;
       this.VigenHasta = ResultCons[0].vgncia_hasta;
@@ -151,7 +151,7 @@ export class ValoracionComponent implements OnInit {
   }
 
   ConsultaSectores() {
-    this.serviciosvaloracion.ConsultaSectoresOferta('1', this.SessionOferta).subscribe(ResultConsulta => {
+    this.serviciosvaloracion.ConsultaSectoresOferta('2', this.SessionOferta).subscribe(ResultConsulta => {
       //console.log(ResultConsulta)
       if (ResultConsulta.length > 0) {
         this.keywordSec = 'DSCRPCION_SCTOR';
@@ -161,6 +161,7 @@ export class ValoracionComponent implements OnInit {
   }
 
   ConsultaValoracionOferta() {
+    console.log('1', this.SessionOferta, this.SessionSectorSel)
     this.serviciosvaloracion.ConsultaValoracionOferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultCons => {
       console.log(ResultCons)
       this.ArrayTipoOferCon = [
@@ -329,16 +330,21 @@ export class ValoracionComponent implements OnInit {
   LimpiaSector() {
     this.CodigoOferSector = '';
     this.VlrFletSect = '';
+    this.SessionSectorSel = ''
+    this.ValidaVigencia = '0'
     this.ValidaTipoOfer = '0'
+    this.MuestraIndividual = '0';
+    this.MuestraGrupal = '0'
   }
 
   selectSector(item: any) {
-    this.ValidaTipoOfer = '1';
+    console.log(item)
+    this.ValidaVigencia = '1';
     this.CodigoOferSector = item.COD_OFERTA_SECTOR;
     this.VlrFletSect = item.VLOR_FLTE_SGRDOForm;
     this.SessionCantSector = item.CNTDAD
     this.SessionSectorSel = item.ID_SCTOR_OFRTA
-    this.ConsultaValoracionOferta();
+    this.ConsultaVigenciaOferta();
   }
 
   selectTipOferta(item: any) {
@@ -381,14 +387,14 @@ export class ValoracionComponent implements OnInit {
   }
 
   selectTipComiI(item: any) {
-    this.SessionTipoComI = item.id;    
+    this.SessionTipoComI = item.id;
     if (item.name == 'Valor Fijo') {
-      this.MuestraFijo = '1';
-      this.MuestraPorcentaje = '0';
+      this.MuestraFijoI = '1';
+      this.MuestraPorcentajeI = '0';
     }
     else {
-      this.MuestraFijo = '0';
-      this.MuestraPorcentaje = '1';
+      this.MuestraFijoI = '0';
+      this.MuestraPorcentajeI = '1';
     }
   }
 
@@ -411,8 +417,8 @@ export class ValoracionComponent implements OnInit {
   }
 
   LimpiaTipoComisionI(item: any) {
-    this.MuestraFijo = '0';
-    this.MuestraPorcentaje = '0';
+    this.MuestraFijoI = '0';
+    this.MuestraPorcentajeI = '0';
     this.PreFinI = '';
   }
 
@@ -422,8 +428,6 @@ export class ValoracionComponent implements OnInit {
   }
 
   GuardaIndividual(templateMensaje: any) {
-    //console.log(this.SessionTipoComI)
-    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     var validacomision = '';
     if (this.SessionTipoComI == '1') {
       validacomision = this.VlrComFijaI
@@ -457,14 +461,14 @@ export class ValoracionComponent implements OnInit {
     }
     console.log(Body)
     this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
+      this.Respuesta = '';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
       var arreglores = ResultUpdate.split('|')
       this.Respuesta = arreglores[1];
     })
   }
 
   GuardaGrupal(templateMensaje: any) {
-    //console.log(this.UnidXGrupos)
-    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     var validacomision = '';
     if (this.SessionTipoComG == '1') {
       validacomision = this.VlrComFijaG
@@ -498,13 +502,14 @@ export class ValoracionComponent implements OnInit {
     }
     console.log(Body)
     this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
+      this.Respuesta = '';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
       var arreglores = ResultUpdate.split('|')
       this.Respuesta = arreglores[1];
     })
   }
 
   GuardarMixta(templateMensaje: any) {
-    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     var validacomision = '';
     var validacomisionG = '';
     if (this.SessionTipoComI == '1') {
@@ -545,13 +550,14 @@ export class ValoracionComponent implements OnInit {
     }
     console.log(Body)
     this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
+      this.Respuesta = '';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
       var arreglores = ResultUpdate.split('|')
       this.Respuesta = arreglores[1];
     })
   }
 
   GuardaVigencia(templateMensaje: any) {
-    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     const Body = {
       CD_CNSCTVO: this.SessionOferta,
       VGNCIA_DESDE: this.VigenDesde,
@@ -559,21 +565,24 @@ export class ValoracionComponent implements OnInit {
       HORA_DESDE: this.HoraIni,
       HORA_HASTA: this.HoraFin,
       FCHA_ENTRGA: this.FechaEntrega,
-      OBSERVACIONES: this.Observaciones
+      OBSERVACIONES: this.Observaciones,
+      ID_SCTOR_OFRTA: this.SessionSectorSel
     }
     this.serviciosvaloracion.ModificarVigenciaOferta('2', Body).subscribe(ResultUpdate => {
+      this.Respuesta = '';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
       var arreglores = ResultUpdate.split('|')
       this.Respuesta = arreglores[1];
-      this.ValidaDefTipoOfer = '1';
+      this.ValidaTipoOfer = '1';
+      this.ConsultaValoracionOferta();
     })
   }
 
   AbrePublica(templatePublicar: any) {
-    this.modalPublicar=this.modalService.open(templatePublicar, { ariaLabelledBy: 'modal-basic-title' })
+    this.modalPublicar = this.modalService.open(templatePublicar, { ariaLabelledBy: 'modal-basic-title' })
   }
 
   PublicaOferta(templateMensaje: any) {
-    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     const Body = {
       usucodig: this.SessionIdUsuario,
       cnctivoOferta: this.SessionOferta,
@@ -584,12 +593,14 @@ export class ValoracionComponent implements OnInit {
       parametro3: ""
     }
     this.serviciosvaloracion.ActualizaEstadoOferta('3', Body).subscribe(ResultUpda => {
+      this.Respuesta = '';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
       var respuesta = ResultUpda.split('|')
       this.Respuesta = respuesta[1];
       if (respuesta[0] != '-1') {
         this.modalPublicar?.close();
         this.rutas.navigateByUrl('/home/buscaroferta')
-        this.serviciosvaloracion.CorreoMasivo('1','9','2',this.SessionOferta).subscribe(ResultCorreo=>{
+        this.serviciosvaloracion.CorreoMasivo('1', '9', '2', this.SessionOferta).subscribe(ResultCorreo => {
           console.log(ResultCorreo)
         })
       }

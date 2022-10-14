@@ -127,11 +127,32 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
     <div class="row br">
+        <div class="col-sm-7">
+            <label class="col-sm-12 Llave mb-1">Sector a valorar</label>
+            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" (selected)='selectSector($event)' (inputCleared)='LimpiaSector()' placeholder="Sector" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio">
+            </ng-autocomplete>
+            <ng-template #templateSec let-item>
+                <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+        <div class="col-sm-2">
+            <label class="col-sm-12 Llave mb-1">Codigo oferta sector</label>
+            <input type="text" name="" id="" class="form-control textBox" disabled [(ngModel)]="CodigoOferSector">
+        </div>
+        <div class="col-sm-3">
+            <label class="col-sm-12 Llave mb-1">Valor flete negociado</label>
+            <input type="text" name="" id="" class="form-control textBox" disabled [(ngModel)]="VlrFletSect">
+        </div>
+    </div>
+    <div class="row br" *ngIf="ValidaVigencia=='1'">
         <h5 class="SubTituloForm">Definición vigencia oferta</h5>
     </div>
-    <div class="row br">
+    <div class="row br" *ngIf="ValidaVigencia=='1'">
         <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
             <ngb-panel title="Definición vigencia oferta" id="config-panel-three">
                 <ng-template ngbPanelContent>
@@ -176,29 +197,8 @@
             </ngb-panel>
         </ngb-accordion>
     </div>
-    <div class="row br" *ngIf="ValidaDefTipoOfer=='1'">
+    <div class="row br" *ngIf="ValidaTipoOfer=='1'">
         <h5 class="SubTituloForm">Definición tipo oferta</h5>
-    </div>
-    <div class="row br" *ngIf="ValidaDefTipoOfer=='1'">
-        <div class="col-sm-8">
-            <label class="col-sm-12 Llave mb-1">Sector a valorar</label>
-            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" (selected)='selectSector($event)' (inputCleared)='LimpiaSector()' placeholder="Sector" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio">
-            </ng-autocomplete>
-            <ng-template #templateSec let-item>
-                <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
-            </ng-template>
-            <ng-template #templateVacio let-SinRegistro>
-                <label for="">Sin registros</label>
-            </ng-template>
-        </div>
-        <div class="col-sm-2">
-            <label class="col-sm-12 Llave mb-1">Codigo oferta sector</label>
-            <input type="text" name="" id="" class="form-control textBox" disabled [(ngModel)]="CodigoOferSector">
-        </div>
-        <div class="col-sm-2">
-            <label class="col-sm-12 Llave mb-1">Valor flete sector</label>
-            <input type="text" name="" id="" class="form-control textBox" disabled [(ngModel)]="VlrFletSect">
-        </div>
     </div>
     <div class="row br" *ngIf="ValidaTipoOfer=='1'">
         <div class="col-sm-12">
@@ -231,11 +231,11 @@
                                 <label for="">Sin registros</label>
                             </ng-template>
                         </div>
-                        <div class="col-sm-6" *ngIf="MuestraPorcentaje=='1'">
+                        <div class="col-sm-6" *ngIf="MuestraPorcentajeI=='1'">
                             <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100" onkeyup="if(parseInt(this.value)>100){ this.value=100; return false; }" [(ngModel)]="VlrComPorI" (change)="CalcuPreFinInd()">
                         </div>
-                        <div class="col-sm-6" *ngIf="MuestraFijo=='1'">
+                        <div class="col-sm-6" *ngIf="MuestraFijoI=='1'">
                             <label class="col-sm-12 Llave">Valor comisión fija</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrComFijaI" (change)="CalcuPreFinInd()">
                         </div>
@@ -304,27 +304,27 @@
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Minimo unidades lider</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidLider" onkeyup="if(this.value==''){this.value=0; return false; }">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidLider" >
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Maximo unidades lider</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidLider" onkeyup="if(this.value==''){this.value=0; return false; }">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidLider" >
                         </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Minimo unidades participante</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidPart" onkeyup="if(this.value==''){this.value=0; return false; }">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidPart">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Maximo unidades participante</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidPart" onkeyup="if(this.value==''){this.value=0; return false; }">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidPart" >
                         </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Valor domicilio</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiG" onkeyup="if(this.value==''){this.value=0; return false; }" (change)="CalculaPreoferGrupalM()">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiG"  (change)="CalculaPreoferGrupalM()">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Porcentaje descuento lider</label>
@@ -334,16 +334,16 @@
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Cantidad de grupos</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="CantGrupos" onkeyup="if(this.value==''){this.value=1; return false; }" (change)="CalculaCCI(ModalRespuesta)">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="CantGrupos"  (change)="CalculaCCI(ModalRespuesta)">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Numero minimo de personas por grupo</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidXGrupos" onkeyup="if(this.value==''){this.value=2; return false; }" (change)="CalculaCCI(ModalRespuesta)">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidXGrupos"  (change)="CalculaCCI(ModalRespuesta)">
                         </div>
                     </div>
                     <div class="row br" *ngIf="MuestraCantIndiv=='1'">
                         <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Cantidad de compras individuales</label>
+                            <label class="col-sm-12 Llave">Cantidad de compras individuales disponibles</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="CantComprI" disabled="true">
                         </div>
                     </div>
