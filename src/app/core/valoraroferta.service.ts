@@ -133,8 +133,8 @@ export class ValorarofertaService {
     return this.http.get<any[]>(this.url_servidor + 'consultestadoferta/' + bandera + '/' + idoferta)
   }
 
-  ConsultaVigenciaOferta(BANDERA: string, CD_CNSCTVO: string) {
-    return this.http.get<any[]>(this.url_servidor + 'conscvigenciaoferta/' + BANDERA + '/' + CD_CNSCTVO)
+  ConsultaVigenciaOferta(BANDERA: string, CD_CNSCTVO: string, ID_SCTOR_OFRTA:String) {
+    return this.http.get<any[]>(this.url_servidor + 'conscvigenciaoferta/' + BANDERA + '/' + CD_CNSCTVO + '/' +ID_SCTOR_OFRTA)
   }
 
   ModificarVigenciaOferta(BANDERA: string, Body: any) {

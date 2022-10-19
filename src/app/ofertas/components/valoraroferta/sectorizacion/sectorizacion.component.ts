@@ -37,11 +37,16 @@ export class SectorizacionComponent implements OnInit {
   SessionCantSecOferta: any;
   SessionNomOferta: string;
   markers: google.maps.Marker[] = [];
+  geocoder = new google.maps.Geocoder();
   ValidaInsertSec: string = '';
   SessionSecCreado: any;
   ValidaCoord: string;
   DataOferta: any[];
   RutaImagen: string;
+  map: google.maps.Map;
+  marker: google.maps.Marker;
+  responseDiv: HTMLDivElement;
+  response: HTMLPreElement;
 
   constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService) { }
 
@@ -67,6 +72,17 @@ export class SectorizacionComponent implements OnInit {
     this.ConsultaDetalleOferta();
   }
 
+  Centramapa(request: google.maps.GeocoderRequest): void {
+    this.geocoder.geocode(request).then((result) => {
+      const { results } = result;
+      this.map.setCenter(results[0].geometry.location);
+      return results;
+    })
+      .catch((e) => {
+        console.log("Geocode was not successful for the following reason: " + e);
+      });
+  }
+
   AgregarMarcador(latLng: google.maps.LatLng, map: google.maps.Map) {
     if (this.markers.length > 0) {
       this.markers[0].setMap(null)
@@ -90,7 +106,6 @@ export class SectorizacionComponent implements OnInit {
 
   ConsultaCiudadOferta() {
     this.sectoresservices.ConsultaCiudadOferta('1', this.SessionOferta).subscribe(ResultadoCons => {
-      //console.log(ResultadoCons)
       this.SessionCiudad = ResultadoCons[0].Cuidad;
       this.SessionCDMunicipio = ResultadoCons[0].CD_MNCPIO;
       this.SessionCDRegion = ResultadoCons[0].CD_RGION;
@@ -99,7 +114,7 @@ export class SectorizacionComponent implements OnInit {
   }
 
   ConsultaSectoresOferta() {
-    this.sectoresservices.ConsultaSectoresOferta('1', this.SessionOferta).subscribe(ResultConsulta => {      
+    this.sectoresservices.ConsultaSectoresOferta('1', this.SessionOferta).subscribe(ResultConsulta => {
       if (ResultConsulta.length > 0) {
         this.ValidaConsulta = '0';
         this.DataSectorOferta = ResultConsulta;
@@ -171,11 +186,16 @@ export class SectorizacionComponent implements OnInit {
 
   AbreCreaSector(content: any, templateRespuesta: any) {
     this.NombreSec = '';
-    this.ModalInsert = this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
-
+    this.ValidaCoord = '0';
+    this.Coor1 = '';
+    this.Coor2 = '';
+    this.DataCoor = [];
+    this.ModalInsert = this.modalService.open(content, { size: 'lg', keyboard: false, backdrop: 'static' })
   }
 
   CreaSector(templateRespuesta: any) {
+    //this.ValidaInsertSec = '1';
+    //this.CreaMapa();    
     if (this.NombreSec != '') {
       const BodyInsert = {
         USUCODIG: this.SessionIdUsuario,
@@ -207,54 +227,92 @@ export class SectorizacionComponent implements OnInit {
   }
 
   CerrModalMap(templateRespuesta: any) {
-    this.SessionSecCreado = '0';
-    this.ValidaInsertSec = '0';
-    this.ValidaCoord = '0';
-    this.DataCoor = [];
-    this.modalService.dismissAll();
+    this.ConsultaCoordenadas();
+    if (this.DataCoor.length == 2) {
+      this.SessionSecCreado = '0';
+      this.ValidaInsertSec = '0';
+      this.ValidaCoord = '0';
+      this.Coor1 = '';
+      this.Coor2 = '';
+      this.DataCoor = [];
+      this.modalService.dismissAll();
+    }
+    else {
+      this.modalService.open(templateRespuesta);
+      this.Respuesta = 'Recuerda que debes registrar 2 coordenadas por sector, favor valida tu información.';
+    }
+
   }
 
   CreaMapa() {
-    const map = new google.maps.Map(
-      document.getElementById("map") as HTMLElement,
-      {
-        zoom: 15,
-        center: {
-          lat: 5.745986,
-          lng: -73.003634
-        },
-      }
-    );
-    map.addListener("click", (e: any) => {
-      this.AgregarMarcador(e.latLng, map);
-      this.Coor1 = e.latLng.toString()
-      this.Coor1 = this.Coor1.substring(1, 15)
-      this.Coor2 = e.latLng.toString()
-      this.Coor2 = this.Coor2.substring(this.Coor2.indexOf('-'), this.Coor2.length - 1)
-    });
+    this.geocoder.geocode({ address: this.SessionCiudad }).then((result) => {
+      const { results } = result;
+      var lati = results[0].geometry.location.lat();
+      var longi = results[0].geometry.location.lng();
+      this.map = new google.maps.Map(
+        document.getElementById("map") as HTMLElement,
+        {
+          zoom: 13,
+          center: {
+            lat: lati,
+            lng: longi
+          },
+        }
+      );
+      this.map.addListener("click", (e: any) => {
+        this.AgregarMarcador(e.latLng, this.map);
+        this.Coor1 = e.latLng.toString()
+        this.Coor1 = this.Coor1.substring(1, 15)
+        this.Coor2 = e.latLng.toString()
+        this.Coor2 = this.Coor2.substring(this.Coor2.indexOf('-'), this.Coor2.length - 1)
+      });
+    })
   }
 
   AgregarCoordenada(templateRespuesta: any) {
-    if (this.Coor1 != '' && this.Coor2 != '') {
-      const BodyInsertCoo = {
-        ID: 0,
-        ID_SCTOR_OFRTA: Number(this.SessionSecCreado),
-        LTTUD: this.Coor1,
-        LNGTUD: this.Coor2
+    this.ConsultaCoordenadas()
+    if (this.DataCoor.length < 2) {
+      if (this.Coor1 != '' && this.Coor2 != '') {
+        const BodyInsertCoo = {
+          ID: 0,
+          ID_SCTOR_OFRTA: Number(this.SessionSecCreado),
+          LTTUD: this.Coor1,
+          LNGTUD: this.Coor2
+        }
+        this.sectoresservices.InsertarCoordenadas('3', BodyInsertCoo).subscribe(Resultado => {
+          const arrayRes = Resultado.split('|')
+          this.Respuesta = arrayRes[1];
+          this.Coor1 = '';
+          this.Coor2 = '';
+          //this.markers[0].setMap(null)
+          this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+          this.ConsultaCoordenadas()
+        })
       }
-      this.sectoresservices.InsertarCoordenadas('3', BodyInsertCoo).subscribe(Resultado => {
-        const arrayRes = Resultado.split('|')
-        this.Respuesta = arrayRes[1];
-        this.Coor1 = '';
-        this.Coor2 = '';
+      else {
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-        this.ConsultaCoordenadas()
-      })
+        this.Respuesta = "Los campos coordenadas son obligatorios, recuerda dar click en el mapa para recuperar las coordenadas.";
+      }
     }
     else {
       this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-      this.Respuesta = "Los campos coordenadas son obligatorios, favor valida tu información.";
+      this.Respuesta = "Recuerda que debes registrar unicamente 2 coordenadas por sector, favor valida tu información.";
     }
+  }
+
+  EliminaCoordenada(coordenada: any) {
+    console.log(coordenada)
+    const BodyInsertCoo = {
+      ID: coordenada.consecutivo,
+      ID_SCTOR_OFRTA: Number(this.SessionSecCreado),
+      LTTUD: coordenada.Latitud,
+      LNGTUD: coordenada.Longitud
+    }
+    this.sectoresservices.InsertarCoordenadas('4', BodyInsertCoo).subscribe(Resultado => {
+      this.Coor1 = '';
+      this.Coor2 = '';
+      this.ConsultaCoordenadas()
+    })
   }
 
   ConsultaCoordenadas() {
@@ -300,18 +358,18 @@ export class SectorizacionComponent implements OnInit {
         parametro2: "",
         parametro3: ""
       }
-      this.sectoresservices.ActualizaEstadoOferta('3', Body).subscribe(ResultUpda => {        
+      this.sectoresservices.ActualizaEstadoOferta('3', Body).subscribe(ResultUpda => {
         var respuesta = ResultUpda.split('|')
         this.Respuesta = respuesta[1];
         if (respuesta[0] != '-1') {
           this.rutas.navigateByUrl('/home/transportista');
-          this.sectoresservices.CorreoMasivo('1','6','3',this.SessionOferta).subscribe(ResultCorreo=>{
+          this.sectoresservices.CorreoMasivo('1', '6', '3', this.SessionOferta).subscribe(ResultCorreo => {
             console.log(ResultCorreo)
           })
-        }        
-      })      
+        }
+      })
     }
-    else {      
+    else {
       this.Respuesta = 'Las cantidades totales de la oferta aun no han sido asignadas, favor valida tu información.';
     }
   }
