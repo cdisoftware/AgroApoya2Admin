@@ -41,7 +41,7 @@ h2 {
 }
 
 .ImgOferta {
-    margin-top: 15px;
+    /* margin-top: 15px; */
     border-radius: 25px;
 }
 
@@ -75,8 +75,7 @@ h2 {
     background-color: #575A5F;
 }
 
-.btn-agro-sec:hover,
-.btn-agro-prin:hover {
+.btn-agro-sec:hover {
     color: #397c97;
     border-color: #397c97;
 }
