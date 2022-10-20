@@ -58,6 +58,10 @@ export class CrearofertaComponent implements OnInit {
   Coor2: string = '';
   ValidaInsertSec: string = '1';
   CoordenadasParcela: string = ''
+  geocoder = new google.maps.Geocoder();
+  map: google.maps.Map;
+  objCiudad: any = '0';
+  NomCiudad: string = 'Bogotá';
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -162,8 +166,10 @@ export class CrearofertaComponent implements OnInit {
     this.CargarCiudad(this.IdDepartamento);
   }
 
-  SelCiud(idciudad: string) {
-    this.IdCiudad = idciudad;
+  SelCiud() {
+    this.IdCiudad = this.objCiudad.CD_MNCPIO;
+    this.NomCiudad = this.objCiudad.DSCRPCION;
+    
   }
 
   CalculaValorTotal() {
@@ -283,25 +289,25 @@ export class CrearofertaComponent implements OnInit {
     );
   }
 
-  CreaMapa() {
-    const map = new google.maps.Map(
-      document.getElementById("map") as HTMLElement,
-      {
-        zoom: 15,
-        center: {
-          lat: 5.745986,
-          lng: -73.003634
-        },
-      }
-    );
-    map.addListener("click", (e: any) => {
-      this.AgregarMarcador(e.latLng, map);
-      this.Coor1 = e.latLng.toString()
-      this.Coor1 = this.Coor1.substring(1, 15)
-      this.Coor2 = e.latLng.toString()
-      this.Coor2 = this.Coor2.substring(this.Coor2.indexOf('-'), this.Coor2.length - 1)
-    });
-  }
+  // CreaMapa() {
+  //   this.map = new google.maps.Map(
+  //     document.getElementById("map") as HTMLElement,
+  //     {
+  //       zoom: 15,
+  //       center: {
+  //         lat: 5.745986,
+  //         lng: -73.003634
+  //       },
+  //     }
+  //   );
+  //   this.map.addListener("click", (e: any) => {
+  //     this.AgregarMarcador(e.latLng, this.map);
+  //     this.Coor1 = e.latLng.toString()
+  //     this.Coor1 = this.Coor1.substring(1, 15)
+  //     this.Coor2 = e.latLng.toString()
+  //     this.Coor2 = this.Coor2.substring(this.Coor2.indexOf('-'), this.Coor2.length - 1)
+  //   });
+  // }
 
   AgregarMarcador(latLng: google.maps.LatLng, map: google.maps.Map) {
     if (this.markers.length > 0) {
@@ -317,7 +323,8 @@ export class CrearofertaComponent implements OnInit {
 
   AbrirMapa(modalMapa: any){
     this.modalService.open(modalMapa, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
-    this.CreaMapa();
+    this.Centramapa({address:this.NomCiudad})
+    //this.CreaMapa();
   }
 
   AceptarCoordenadas(modalRespuesta: any){
@@ -329,6 +336,31 @@ export class CrearofertaComponent implements OnInit {
       this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     }
     
+  }
+
+  Centramapa(request: google.maps.GeocoderRequest): void {
+    this.geocoder.geocode(request).then((result) => {
+      const { results } = result;
+      this.map = new google.maps.Map(
+        document.getElementById("map") as HTMLElement,
+        {
+          zoom: 12,
+          
+        }
+      );
+      this.map.addListener("click", (e: any) => {
+        this.AgregarMarcador(e.latLng, this.map);
+        this.Coor1 = e.latLng.toString()
+        this.Coor1 = this.Coor1.substring(1, 15)
+        this.Coor2 = e.latLng.toString()
+        this.Coor2 = this.Coor2.substring(this.Coor2.indexOf('-'), this.Coor2.length - 1)
+      });
+      this.map.setCenter(results[0].geometry.location);
+      return results;
+    })
+      .catch((e) => {
+        console.log("Geocode was not successful for the following reason: " + e);
+      });
   }
 
 }

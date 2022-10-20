@@ -131,10 +131,10 @@
             <div class="col-sm-6 br">
                 <label class="col-sm-12 Llave">Ciudad</label>
                 <select name="Ciudad" id="Ciudad" class="form-control form-control-sm textBox" #SelectCiud
-                    (change)='SelCiud(SelectCiud.value)'>
+                    (change)='SelCiud()' [(ngModel)]="objCiudad">
                     <option value="0">Ciudad (Obligatorio)</option>
-                    <option *ngFor="let Ciudad of ArrayCiud;" [value]="Ciudad.CD_MNCPIO"
-                        [selected]="Ciudad.CD_MNCPIO == IdCiudad">
+                    <option *ngFor="let Ciudad of ArrayCiud;" [value]="Ciudad.CD_MNCPIO" [ngValue]="Ciudad"
+                        [selected]="Ciudad.CD_MNCPIO == IdCiudad" >
                         {{Ciudad.DSCRPCION}}
                     </option>
                 </select>
@@ -241,21 +241,23 @@
         </div>
         <div class="modal-body">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <label class="col-sm-12 Llave">Coordenada Norte</label>
                     <input type="text" class="form-control form-control-sm textBox" placeholder="Coordenada norte"
                     [(ngModel)]="Coor1" name="Coor1" disabled="disabled">
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <label class="col-sm-12 Llave">Coordenada Sur</label>
                     <input type="text" class="form-control form-control-sm textBox" placeholder="Coordenada sur"
                     [(ngModel)]="Coor2" name="Coor2" disabled="disabled">
                 </div>
+                <div class="col-sm-4">
+                    <label class="col-sm-12 Llave"></label>
+                    <button type="button" class="btn btn-agro-prin w-100" (click)="AceptarCoordenadas(ModalRespuesta)">Agrega Coordenadas</button>
+                </div>
             </div>
             <br>
-            <div class="row justify-content-center">
-                <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptarCoordenadas(ModalRespuesta)">Aceptar</button>
-            </div>
+            
             <hr>
             <div class="row mt-2 justify-content-center ">
                 <div class="col-sm-11 ">
