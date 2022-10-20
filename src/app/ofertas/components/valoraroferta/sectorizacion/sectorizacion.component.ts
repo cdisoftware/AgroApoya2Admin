@@ -47,6 +47,7 @@ export class SectorizacionComponent implements OnInit {
   marker: google.maps.Marker;
   responseDiv: HTMLDivElement;
   response: HTMLPreElement;
+  Sector: string;
 
   constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService) { }
 
@@ -342,8 +343,10 @@ export class SectorizacionComponent implements OnInit {
     this.SectSelec = item.SCTOR_OFRTA;
   }
 
-  LimpiaForm() {
-    window.location.reload();
+  LimpiaForm() {    
+    this.Cant = '';
+    this.VlrFle = '';
+    this.Sector = '';
   }
 
   Enviar(templateRespuesta: any) {
@@ -371,6 +374,16 @@ export class SectorizacionComponent implements OnInit {
     }
     else {
       this.Respuesta = 'Las cantidades totales de la oferta aun no han sido asignadas, favor valida tu información.';
+    }
+  }
+
+  ValidaCerrar(ModalRespuesta:any){
+    if(this.ValidaInsertSec=='1'){
+      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title' });
+      this.Respuesta='Ya iniciaste el registro de un sector, favor finaliza el proceso.';
+    }
+    else{
+      this.ModalInsert?.close();
     }
   }
 

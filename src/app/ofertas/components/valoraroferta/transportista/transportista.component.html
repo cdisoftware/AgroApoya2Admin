@@ -60,7 +60,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <label class="Llave">Valor unidad:&nbsp;</label><label
-                                    class="Valor">{{oferta.VR_UNDAD_EMPQUE}}</label>
+                                    class="Valor">{{oferta.valor_unidad_formato}}</label>
                             </div>
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <label class="Llave">Valor total oferta:&nbsp;</label><label
-                            class="Valor">{{oferta.VR_TOTAL_OFRTA}}</label>
+                            class="Valor">{{oferta.valor_Total_Ofr_formato}}</label>
                     </div>
                     <div class="col-sm-6">
                         <label class="Llave">Valor costeo:&nbsp;</label><label
@@ -145,7 +145,7 @@
         <div class="col-sm-4">
             <ng-autocomplete [data]="DataSectores" [searchKeyword]="keyword" [(ngModel)]="SectorSelec"
                 placeholder="Sector" (selected)='selectSector($event)'
-                [itemTemplate]="DataSectores.length>0 ? templateSec : templateVacio" [notFoundTemplate]="templateVacio">
+                [itemTemplate]="DataSectores.length>0 ? templateSec : templateVacio" [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
             </ng-autocomplete>
             <ng-template #templateSec let-item>
                 <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
@@ -157,7 +157,7 @@
         <div class="col-sm-4">
             <ng-autocomplete [data]="DataTransportista" [searchKeyword]="keywordT" [(ngModel)]="TransSelec"
                 placeholder="Transportista" (selected)='selectTrans($event)' [itemTemplate]="templateTran"
-                [notFoundTemplate]="templateVacio">
+                [notFoundTemplate]="templateVacio" [(ngModel)]="Transpor">
             </ng-autocomplete>
             <ng-template #templateTran let-item>
                 <a [innerHTML]="item.nombre_conductor"></a>

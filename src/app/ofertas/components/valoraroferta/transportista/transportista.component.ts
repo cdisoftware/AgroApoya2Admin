@@ -34,6 +34,8 @@ export class TransportistaComponent implements OnInit {
   RutaImagen: string;
   DataConductor: any[];
   SessionValorFlete: any;
+  Sector: string;
+  Transpor: string;
 
   constructor(public sectoresservices: ValorarofertaService, private modalService: NgbModal, private rutas: Router, private cookies: CookieService, private SeriviciosGenerales: MetodosglobalesService) { }
 
@@ -166,7 +168,9 @@ export class TransportistaComponent implements OnInit {
   }
 
   LimpiaForm() {
-    window.location.reload();
+    this.Transpor = '';
+    this.Sector = '';
+    this.VlrFlete = '';
   }
 
   Enviar(templateRespuesta: any) {
@@ -237,6 +241,7 @@ export class TransportistaComponent implements OnInit {
       VLOR_FLTE_PCTDO: this.SessionValorFlete,
       ESTADO: 1
     }
+    console.log(BodyUpdate)
     this.sectoresservices.OperacionConductor('2', BodyUpdate).subscribe(ResultadoUpdate => {
       const respuesta = ResultadoUpdate.split('|')
       this.Respuesta = respuesta[1];
