@@ -133,8 +133,8 @@ export class ValorarofertaService {
     return this.http.get<any[]>(this.url_servidor + 'consultestadoferta/' + bandera + '/' + idoferta)
   }
 
-  ConsultaVigenciaOferta(BANDERA: string, CD_CNSCTVO: string, ID_SCTOR_OFRTA:String) {
-    return this.http.get<any[]>(this.url_servidor + 'conscvigenciaoferta/' + BANDERA + '/' + CD_CNSCTVO + '/' +ID_SCTOR_OFRTA)
+  ConsultaVigenciaOferta(BANDERA: string, CD_CNSCTVO: string, ID_SCTOR_OFRTA: String) {
+    return this.http.get<any[]>(this.url_servidor + 'conscvigenciaoferta/' + BANDERA + '/' + CD_CNSCTVO + '/' + ID_SCTOR_OFRTA)
   }
 
   ModificarVigenciaOferta(BANDERA: string, Body: any) {
@@ -168,6 +168,10 @@ export class ValorarofertaService {
   }
   ModificaConcepto(Bandera: string, datos: any) {
     return this.http.post<any>(this.url_servidor + 'modctipocosteo/' + Bandera, datos)
+  }
+
+  EnviarSms(bandera: string, idusuario: string, idoferta: string, idsector: string, idcliente: string) {
+    return this.http.get<any[]>(this.url_servidor + 'enviosmsindividual/' + bandera + '/' + idusuario + '/' + idoferta + '/' + idsector + '/' + idcliente)
   }
 
 }
