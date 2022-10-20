@@ -237,12 +237,20 @@ export class ConciliacionComponent implements OnInit {
     }
     console.log(datosUpdate)
     this.ServiciosValorar.EditarOfertaBusqueda('5', this.IdEEmpaque, datosUpdate).subscribe(Resultado => {
-      this.CargaObjetosIniciales();
       var arrayrespuesta = Resultado.split('|');
       this.Respuesta = arrayrespuesta[1];
+      if (arrayrespuesta[0] != '-1') {
+        this.CargaObjetosIniciales();
+        this.modalService.dismissAll();
+        this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      }else{
+        this.Respuesta  =  arrayrespuesta[1];
+        this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      }
+
+
     })
-    this.modalService.dismissAll();
-    this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+
   }
 
 
