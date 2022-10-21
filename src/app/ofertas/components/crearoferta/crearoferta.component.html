@@ -8,7 +8,7 @@
                 <label class="col-sm-12 Llave">Productor</label>
                 <ng-autocomplete [data]="ArrayProductor" [searchKeyword]="productor" placeholder="Productor"
                     (selected)='selectProductor($event)' (inputCleared)="LimpiarCampos('pt')"
-                    [itemTemplate]="templateResPr" [notFoundTemplate]="templateVacioPr">
+                    [itemTemplate]="templateResPr" [notFoundTemplate]="templateVacioPr" aria-required="true">
                 </ng-autocomplete>
 
                 <ng-template #templateResPr let-item id="templateResPr">
@@ -211,7 +211,7 @@
                 <button class="col-sm-12 btn btn-agro-prin" (click)="Limpiar()">Limpiar</button>
             </div>
             <div class="col-sm-3 col-12">
-                <button class="col-sm-12 btn btn-agro-sec">Cancelar</button>
+                <button class="col-sm-12 btn btn-agro-sec" (click)="Cancelar()">Cancelar</button>
             </div>
         </div>
         <br>

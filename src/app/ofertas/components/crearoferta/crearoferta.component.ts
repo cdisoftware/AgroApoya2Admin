@@ -51,7 +51,7 @@ export class CrearofertaComponent implements OnInit {
   IdProductor: string = '';
   EJornada: string = '0';
   ArrayJornada: any = [];
-  Respuesta: string  = '';
+  Respuesta: string = '';
   //mapas
   markers: google.maps.Marker[] = [];
   Coor1: string = '';
@@ -169,7 +169,7 @@ export class CrearofertaComponent implements OnInit {
   SelCiud() {
     this.IdCiudad = this.objCiudad.CD_MNCPIO;
     this.NomCiudad = this.objCiudad.DSCRPCION;
-    
+
   }
 
   CalculaValorTotal() {
@@ -178,7 +178,7 @@ export class CrearofertaComponent implements OnInit {
 
 
 
-  Guardar(ModalRespuesta : any) {
+  Guardar(ModalRespuesta: any) {
     const datosinsert = {
       CD_PRDCTO: this.IdProducto,
       UND_EMPQUE: '0',
@@ -207,15 +207,20 @@ export class CrearofertaComponent implements OnInit {
     }
     console.log(datosinsert)
     console.log(this.IdEmpaque)
-    this.ServiciosOferta.CrearOferta('3', this.IdEmpaque, datosinsert).subscribe(Resultado => {
-      var arrayrespuesta= Resultado.split('|');
-      if(arrayrespuesta[0] != '-1'){
-        this.rutas.navigateByUrl('home/buscaroferta');
-      }
-      this.Respuesta = arrayrespuesta[1];
-      this.modalService.dismissAll();
-      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    })
+    if (this.NomImagen1 == '0' && this.NomImagen2 == '0' && this.NomImagen3 == '0' && this.NomImagen4 == '0' && this.NomImagen5 == '0') {
+      this.Respuesta = 'Debes seleccionar por lo menos una imagen para la oferta.'
+    } else {
+      this.ServiciosOferta.CrearOferta('3', this.IdEmpaque, datosinsert).subscribe(Resultado => {
+        var arrayrespuesta = Resultado.split('|');
+        if (arrayrespuesta[0] != '-1') {
+          this.rutas.navigateByUrl('home/buscaroferta');
+        }
+        this.Respuesta = arrayrespuesta[1];
+        this.modalService.dismissAll();
+        this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      })
+    }
+
 
   }
 
@@ -241,6 +246,9 @@ export class CrearofertaComponent implements OnInit {
     this.Imagen3 = '../../../../assets/ImagenesAgroApoya2Admin/SubirImagen.png';
     this.Imagen4 = '../../../../assets/ImagenesAgroApoya2Admin/SubirImagen.png';
     this.Imagen5 = '../../../../assets/ImagenesAgroApoya2Admin/SubirImagen.png';
+    this.Coor1 = '';
+    this.Coor2 = '';
+    this.CoordenadasParcela = '';
   }
 
   public CargaImagen(event: any, imagen: string) {
@@ -321,21 +329,21 @@ export class CrearofertaComponent implements OnInit {
     this.markers.push(marker);
   }
 
-  AbrirMapa(modalMapa: any){
+  AbrirMapa(modalMapa: any) {
     this.modalService.open(modalMapa, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
-    this.Centramapa({address:this.NomCiudad})
+    this.Centramapa({ address: this.NomCiudad })
     //this.CreaMapa();
   }
 
-  AceptarCoordenadas(modalRespuesta: any){
-    if(this.Coor1 != '' && this.Coor2 != ''){
+  AceptarCoordenadas(modalRespuesta: any) {
+    if (this.Coor1 != '' && this.Coor2 != '') {
       this.CoordenadasParcela = this.Coor1 + ' , ' + this.Coor2;
-    this.modalService.dismissAll();
-    }else{
+      this.modalService.dismissAll();
+    } else {
       this.Respuesta = 'Debes seleccionar las coordenadas de tu parcela.';
       this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     }
-    
+
   }
 
   Centramapa(request: google.maps.GeocoderRequest): void {
@@ -345,7 +353,7 @@ export class CrearofertaComponent implements OnInit {
         document.getElementById("map") as HTMLElement,
         {
           zoom: 12,
-          
+
         }
       );
       this.map.addListener("click", (e: any) => {
@@ -361,6 +369,10 @@ export class CrearofertaComponent implements OnInit {
       .catch((e) => {
         console.log("Geocode was not successful for the following reason: " + e);
       });
+  }
+
+  Cancelar() {
+    this.rutas.navigateByUrl('/home')
   }
 
 }
