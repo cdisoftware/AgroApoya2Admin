@@ -165,17 +165,7 @@
                             <label class="col-sm-12 Llave">Vigencia hasta</label>
                             <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VigenHasta">
                         </div>
-                    </div>
-                    <!-- <div class="row br">
-                        <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Hora inicio oferta</label>
-                            <input type="time" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="HoraIni">
-                        </div>
-                        <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Hora fin oferta</label>
-                            <input type="time" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="HoraFin">
-                        </div>
-                    </div> -->
+                    </div>                   
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Fecha entrega</label>
@@ -260,14 +250,14 @@
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PreFinI" disabled="true">
                         </div>
                     </div>
-                    <div class="row br">
+                    <!-- <div class="row br">
                         <div class="col-sm-12">
                             <label class="col-sm-2 Llave">Descuentos adicionales</label>
                             <button class="bot col-sm-1 SinEstilo">
                                 <img src="../../../../../assets/ImagenesAgroApoya2Admin/lupa.png" alt="Agregar descuento adicional">
                             </button>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row justify-content-center br" *ngIf="MuestraBtnIndividual=='1'">
                         <div class="col-sm-3">
                             <button class="btn btn-agro-prin col-sm-12" (click)="GuardaIndividual(ModalRespuesta)">Guardar individual</button>
@@ -357,14 +347,14 @@
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PrecioFinPart" disabled="true">
                         </div>
                     </div>
-                    <div class="row br">
+                    <!-- <div class="row br">
                         <div class="col-sm-12">
                             <label class="col-sm-2 Llave">Descuentos adicionales</label>
                             <button class="bot col-sm-1 SinEstilo">
                                 <img src="../../../../../assets/ImagenesAgroApoya2Admin/lupa.png" alt="Agregar descuento adicional">
                             </button>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row justify-content-center br" *ngIf="MuestraBtnGrupal=='1'">
                         <div class="col-sm-3">
                             <button class="btn btn-agro-prin col-sm-12" (click)="GuardaGrupal(ModalRespuesta)">Guardar grupal</button>
@@ -395,12 +385,30 @@
         <h1>Respuesta</h1>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
-    <div class="modal-body">
-        <div class="row br">
-            <div class="col-sm-12">
+    <div class="modal-body">        
+            <div class="row br">
                 <h2 class="TituloDetalle">{{Respuesta}}</h2>
             </div>
-        </div>
+            <div class="row br" *ngIf="this.ValidaCam=='1'">
+                <div class="col-sm-9">
+                    <label>Campo</label>
+                </div>
+                <div class="col-sm-3">
+                    <label>Diligenciado</label>
+                </div>
+            </div>
+            <div class="row br" *ngFor="let campos of ArrayCamposValida">
+                <div class="col-sm-9" >
+                    <label for="" class="{{campos.class}}">{{campos.campof}}</label>
+                </div>
+                <div class="col-sm-3">
+                    <div class="row justify-content-center">
+                        <div class="col-sm-6">
+                            <img src="{{campos.imagen}}">    
+                        </div>                        
+                    </div>                    
+                </div>
+            </div>        
     </div>
     <div class="row justify-content-center">
         <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
