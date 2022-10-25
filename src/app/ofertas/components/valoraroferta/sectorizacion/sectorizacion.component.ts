@@ -131,6 +131,7 @@ export class SectorizacionComponent implements OnInit {
         this.txtValidaCons = 'No se encuentran registros de sectores asociados a la oferta';
       }
     })
+
   }
 
   ConsultaSectores() {
@@ -141,32 +142,43 @@ export class SectorizacionComponent implements OnInit {
   }
 
   AsociaSector(templateRespuesta: any) {
-    if (this.CantidadSectores == this.SessionCantSecOferta) {
-      this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-      this.Respuesta = 'Las cantidades totales de la oferta ya fueron asignadas, no es posible asignar mas sectores.';
-    }
-    else {
-      this.Respuesta = '';
-      if (this.Cant != '' && this.VlrFle != '' && this.SectSelec != '') {
-        const BodyInsert = {
-          ID: "0",
-          CD_CNSCTVO: this.SessionOferta,
-          ID_SCTOR_OFRTA: this.SectSelec,
-          CNTDAD: this.Cant,
-          VLOR_FLTE_SGRDO: this.VlrFle
-        }
-        this.sectoresservices.OperacionSectores('3', BodyInsert).subscribe(ResultInsert => {
-          var respuesta = ResultInsert.split('|')
-          this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-          this.Respuesta = respuesta[1];
-          this.ConsultaSectoresOferta();
-        })
+    this.sectoresservices.ConsultaSectoresOferta('1', this.SessionOferta).subscribe(ResultConsulta => {
+      this.CantidadSectores = 0
+      for (let i = 0; i < ResultConsulta.length; i++) {
+        this.CantidadSectores += ResultConsulta[i].CNTDAD;
+      }
+      if (this.CantidadSectores >= this.SessionCantSecOferta) {
+        this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+        this.Respuesta = 'Las cantidades totales de la oferta ya fueron asignadas, no es posible asignar mas sectores.';        
+      }
+      else if (this.Cant > this.SessionCantSecOferta) {
+        this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+        this.Respuesta = 'Las cantidades a asignar superan las disponibles de la oferta, favor valida tu información.';        
       }
       else {
-        this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-        this.Respuesta = 'Los campos Sector, Cantidad y Valor flete son obligatorios, favor valida tu información.';
+        this.Respuesta = '';
+        if (this.Cant != '' && this.VlrFle != '' && this.SectSelec != '') {
+          const BodyInsert = {
+            ID: "0",
+            CD_CNSCTVO: this.SessionOferta,
+            ID_SCTOR_OFRTA: this.SectSelec,
+            CNTDAD: this.Cant,
+            VLOR_FLTE_SGRDO: this.VlrFle
+          }
+          this.sectoresservices.OperacionSectores('3', BodyInsert).subscribe(ResultInsert => {
+            var respuesta = ResultInsert.split('|')
+            this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+            this.Respuesta = respuesta[1];
+            this.ConsultaSectoresOferta();            
+          })
+        }
+        else {
+          this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+          this.Respuesta = 'Los campos Sector, Cantidad y Valor flete son obligatorios, favor valida tu información.';
+        }
       }
-    }
+      this.LimpiaForm();
+    })
   }
 
   EliminaSector(sector: any, templateRespuesta: any) {
@@ -195,8 +207,6 @@ export class SectorizacionComponent implements OnInit {
   }
 
   CreaSector(templateRespuesta: any) {
-    //this.ValidaInsertSec = '1';
-    //this.CreaMapa();    
     if (this.NombreSec != '') {
       const BodyInsert = {
         USUCODIG: this.SessionIdUsuario,
@@ -343,7 +353,7 @@ export class SectorizacionComponent implements OnInit {
     this.SectSelec = item.SCTOR_OFRTA;
   }
 
-  LimpiaForm() {    
+  LimpiaForm() {
     this.Cant = '';
     this.VlrFle = '';
     this.Sector = '';
@@ -377,12 +387,12 @@ export class SectorizacionComponent implements OnInit {
     }
   }
 
-  ValidaCerrar(ModalRespuesta:any){
-    if(this.ValidaInsertSec=='1'){
+  ValidaCerrar(ModalRespuesta: any) {
+    if (this.ValidaInsertSec == '1') {
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title' });
-      this.Respuesta='Ya iniciaste el registro de un sector, favor finaliza el proceso.';
+      this.Respuesta = 'Ya iniciaste el registro de un sector, favor finaliza el proceso.';
     }
-    else{
+    else {
       this.ModalInsert?.close();
     }
   }
