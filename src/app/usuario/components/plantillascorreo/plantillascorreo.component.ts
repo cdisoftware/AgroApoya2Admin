@@ -320,6 +320,30 @@ export class PlantillascorreoComponent implements OnInit {
     }
   }
 
+  BtnEliminarPlantilla(arreglo: any, templateMensaje: any) {
+    const body = {
+      idplantilla: arreglo.IdPlantilla,
+      NombrePlantilla: '',
+      idTipoPlantilla: arreglo.TipoPlantillaForm,
+
+    }
+    this.serviciosplantillacorreos.ModPlantillaCorreo('5', body).subscribe(resultado => {
+      this.Respuesta = resultado;
+      this.Respuesta = "Eliminación de plantilla correcta.";
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.serviciosplantillacorreos.ConsultaPlatillaCorreo('1', body).subscribe(resultado6 => {
+        if (resultado6 != null && resultado6 != undefined) {
+          this.arregloListaPlantillaCorreo = resultado6;
+        } else {
+          this.arregloListaPlantillaCorreo = [];
+        }
+      })
+    })
+  }
+
+
+
+
   BtnActualizarrPlantilla(templateMensaje: any) {
     if (this.NombrePlantillaForm == undefined || this.NombrePlantillaForm == null || this.NombrePlantillaForm == '') {
       this.Respuesta = 'El campo nombre plantilla es obligatorio.';
@@ -426,8 +450,6 @@ export class PlantillascorreoComponent implements OnInit {
       })
     })
   }
-
-
 
   BtnActualizarPlantillaHtml(templateMensaje: any) {
     if (this.HtmlForm == undefined || this.HtmlForm == null || this.HtmlForm == '') {

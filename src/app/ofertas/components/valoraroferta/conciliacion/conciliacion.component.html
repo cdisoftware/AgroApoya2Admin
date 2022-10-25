@@ -31,8 +31,8 @@
         </div>
         <div class="row br">
             <div class="col-sm-4">
-                <label class="col-sm-12 Llave">Precio Sugerido</label>
-                <input type="text" class="form-control form-control-sm textBox" placeholder="Precio Sugerido" [(ngModel)]="ValorSugerido" name="ValorSugerido">
+                <label class="col-sm-12 Llave">Precio Sugerido por Unidad </label>
+                <input type="number" class="form-control form-control-sm textBox" placeholder="Precio Sugerido" [(ngModel)]="ValorSugerido" name="ValorSugerido">
             </div>
         </div>
         <hr>
@@ -46,8 +46,7 @@
                         <div class="col-sm-12">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave TextMay">Codigo oferta:&nbsp;</label><label
-                                        class="ValorIDOfer"><strong>{{IdOferta}}</strong></label>
+                                    <label class="Llave TextMay">Codigo oferta:&nbsp;</label><label class="ValorIDOfer"><strong>{{oferta.COD_OFR_PUBLICO}}</strong></label>
                                 </div>
                             </div>
                         </div>
@@ -93,7 +92,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label class="Llave">Valor unidad:&nbsp;</label><label
-                                        class="Valor">{{oferta.VR_UNDAD_EMPQUE}}</label>
+                                        class="Valor">{{oferta.valor_unidad_formato}}</label>
                                 </div>
                             </div>
                         </div>
@@ -109,7 +108,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <label class="Llave">Valor total oferta:&nbsp;</label><label
-                                class="Valor">{{oferta.VR_TOTAL_OFRTA}}</label>
+                                class="Valor">{{oferta.valor_Total_Ofr_formato}}</label>
                         </div>
                         <div class="col-sm-6">
                             <label class="Llave">Valor costeo:&nbsp;</label><label
@@ -314,10 +313,10 @@
             </div>
             <div class="row br">
                 <div class="col-sm-12">
-                    <label class="col-sm-12 Llave">Ciudad aplica oferta</label>
+                    <label class="col-sm-12 Llave">Ciudad destino oferta</label>
                     <select name="ACiudad" id="Aciudad" #aciudad class="form-control form-control-sm textBox"
                     (change)='SelACiudad(aciudad.value)'>
-                        <option value="1">Ciudad Aplica</option>
+                        <option value="1">Ciudad destino</option>
                         <option *ngFor="let ciudad of ArrayCiudades" [value]="ciudad.CD_MNCPIO" >
                             {{ciudad.DSCRPCION}}
                         </option>

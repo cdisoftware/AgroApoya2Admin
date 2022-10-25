@@ -253,13 +253,12 @@ export class BuscarofertaComponent implements OnInit {
       this.EJornada = Resultado[0].jornada;
       this.Direccion = Resultado[0].coordenadas_parcela;
       this.ValorTotal = Resultado[0].VR_TOTAL_OFRTA;
-      this.IdProducto = Resultado[0].Producto;
+      //this.IdProducto = Resultado[0].Producto;
       this.NomEstado = Resultado[0].Nombre_estado;
       this.ImagenOferta = this.SeriviciosGenerales.RecuperaRutaImagenes() + Resultado[0].IMAGEN;
-      this.SeriviciosGenerales.CrearCookie('IDO', this.IdOferta);
-      this.SeriviciosGenerales.CrearCookie('IDP', this.IdProducto);
-      this.IdEstado = Resultado[0].Estado;
-      this.ValidaEstados(this.IdEstado);
+
+      //this.IdEstado = Resultado[0].Estado;
+      this.ValidaEstados(Resultado[0].Estado);
     })
   }
 
@@ -275,12 +274,16 @@ export class BuscarofertaComponent implements OnInit {
     } else if (estado == '14') {
       this.ValidaBusqueda = '1'
       this.RutaSiguiente = '/costeo'
-    } else if (estado == '6' || estado == '7' || estado == '10' || estado == '11') {
+    } else if (estado == '6' || estado == '7' || estado == '11') {
       this.ValidaBusqueda = '0'
+    } else if (estado == '10') {
+      this.ValidaBusqueda = '2'
     }
   }
 
   Enviar() {
+    this.SeriviciosGenerales.CrearCookie('IDO', this.IdOferta);
+    this.SeriviciosGenerales.CrearCookie('IDP', this.IdProducto);
     this.rutas.navigateByUrl('home' + this.RutaSiguiente);
   }
 
@@ -292,10 +295,9 @@ export class BuscarofertaComponent implements OnInit {
       this.IdProductor = '0'
     }
     if (campo == 'es') {
-      this.IdEstado = '1';
+      this.IdEstado = '0';
     }
     if (campo == 'fe') {
-
       this.FechaOferta = ''
     }
   }

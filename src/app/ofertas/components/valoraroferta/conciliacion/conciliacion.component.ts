@@ -237,12 +237,20 @@ export class ConciliacionComponent implements OnInit {
     }
     console.log(datosUpdate)
     this.ServiciosValorar.EditarOfertaBusqueda('5', this.IdEEmpaque, datosUpdate).subscribe(Resultado => {
-      this.CargaObjetosIniciales();
       var arrayrespuesta = Resultado.split('|');
       this.Respuesta = arrayrespuesta[1];
+      if (arrayrespuesta[0] != '-1') {
+        this.CargaObjetosIniciales();
+        this.modalService.dismissAll();
+        this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      } else {
+        this.Respuesta = arrayrespuesta[1];
+        this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      }
+
+
     })
-    this.modalService.dismissAll();
-    this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+
   }
 
 
@@ -271,7 +279,7 @@ export class ConciliacionComponent implements OnInit {
       parametro2: "",
       parametro3: ""
     }
-    this.modalService.dismissAll();
+    
     const datosciudad = {
       CD_CNSCTVO: this.IdOferta,
       CD_PAIS: "6",
@@ -279,29 +287,35 @@ export class ConciliacionComponent implements OnInit {
       CD_MNCPIO: this.IdACiudad
     }
     console.log(datosaprueba)
-    this.ServiciosValorar.ModificaEstadoOferta('3', datosaprueba).subscribe(Resultado => {
-      var arrayrespuesta = Resultado.split('|');
-      this.Respuesta = arrayrespuesta[1];
-      if (arrayrespuesta[0] != '-1') {
-        this.CargaObjetosIniciales();
-        const datoscorreo = {
-          dPlantilla: 4,
-          usucodig: this.IdProductor,
-          Cd_cnctvo: this.IdOferta,
-          id_conductor: 0
+    if (this.IdACiudad == '0' || this.maObservacion == '' || this.maPrecioFinal == '') {
+      this.Respuesta = 'Debes completar todos los datos para aprobar la oferta.'
+      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    } else {
+      this.ServiciosValorar.ModificaEstadoOferta('3', datosaprueba).subscribe(Resultado => {
+        var arrayrespuesta = Resultado.split('|');
+        this.Respuesta = arrayrespuesta[1];
+        if (arrayrespuesta[0] != '-1') {
+          this.CargaObjetosIniciales();
+          const datoscorreo = {
+            dPlantilla: 4,
+            usucodig: this.IdProductor,
+            Cd_cnctvo: this.IdOferta,
+            id_conductor: 0
+          }
+          this.EnviarCorreo(datoscorreo);
+          this.EnviarSms();
         }
-        this.EnviarCorreo(datoscorreo);
-      }
 
 
-    })
-    this.ServiciosValorar.InsertaCiudadOferta('3', datosciudad).subscribe(Resultado => {
-      console.log(Resultado)
-    })
+      })
+      this.ServiciosValorar.InsertaCiudadOferta('3', datosciudad).subscribe(Resultado => {
+        console.log(Resultado)
+      })
 
-    this.modalService.dismissAll();
-    this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    this.ValidaSiguiente = '1';
+      this.modalService.dismissAll();
+      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.ValidaSiguiente = '1';
+    }
   }
 
   SelACiudad(ciudad: string) {
@@ -344,6 +358,12 @@ export class ConciliacionComponent implements OnInit {
 
   EnviarCorreo(datoscorreo: any) {
     this.ServiciosValorar.EnviarCorreoIndividual('1', datoscorreo).subscribe(Resultado => {
+      console.log(Resultado)
+    })
+  }
+
+  EnviarSms() {
+    this.ServiciosValorar.EnviarSms('1', this.IdUsuario, this.IdOferta, '0', '0').subscribe(Resultado => {
       console.log(Resultado)
     })
   }
