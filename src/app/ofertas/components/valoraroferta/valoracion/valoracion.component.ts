@@ -20,9 +20,9 @@ export class ValoracionComponent implements OnInit {
   MuestraIndividual: string = '';
   MuestraGrupal: string = '';
   MuestraFijo: string = '';
-  MuestraFijoI: string = '';
+  MuestraFijoI: string ='';
   MuestraPorcentaje: string = '';
-  MuestraPorcentajeI: string = '';
+  MuestraPorcentajeI: string ='';
   MuestraVigencial: string = '';
   VlrComFijaI: string = '';
   MinUnidI: any;
@@ -131,9 +131,6 @@ export class ValoracionComponent implements OnInit {
     this.MaxUnidPart = '';
     this.PorcDescLider = '';
     this.PubliOferObser = '';
-    this.VigenDesde = '';
-    this.VigenHasta = '';
-    this.FechaEntrega = '';
     this.RutaImagen = this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');

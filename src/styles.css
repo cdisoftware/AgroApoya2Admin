@@ -120,6 +120,7 @@ body {
     background: none;
     border: none;
     margin: none !important;
+    padding: 1px;
 }
 
 .TableAgro td,
@@ -199,3 +200,7 @@ th {
     visibility: hidden !important;
 }
 
+.Linktxt{
+    cursor: pointer;
+    color: #397c97 !important;
+}
