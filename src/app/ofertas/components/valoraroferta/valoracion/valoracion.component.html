@@ -129,7 +129,7 @@
         </div>
     </div>  
     <div class="row br">
-        <div class="col-sm-7">
+        <div class="col-sm-6">
             <label class="col-sm-12 Llave mb-1">Sector a valorar</label>
             <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" (selected)='selectSector($event)' (inputCleared)='LimpiaSector()' placeholder="Sector" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio">
             </ng-autocomplete>
@@ -140,12 +140,12 @@
                 <label for="">Sin registros</label>
             </ng-template>
         </div>
-        <div class="col-sm-2">
-            <label class="col-sm-12 Llave mb-1">Codigo oferta sector</label>
+        <div class="col-sm-3">
+            <label class="col-sm-12 Llave mb-1">Codigo sector</label>
             <input type="text" name="" id="" class="form-control textBox" disabled [(ngModel)]="CodigoOferSector">
         </div>
         <div class="col-sm-3">
-            <label class="col-sm-12 Llave mb-1">Valor flete negociado</label>
+            <label class="col-sm-12 Llave mb-1">Flete negociado</label>
             <input type="text" name="" id="" class="form-control textBox" disabled [(ngModel)]="VlrFletSect">
         </div>
     </div>

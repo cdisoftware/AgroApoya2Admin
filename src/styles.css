@@ -195,3 +195,8 @@ th {
 .HideMap {
     visibility: hidden !important;
 }
+
+.Linktxt{
+    cursor: pointer;
+    color: #397c97 !important;
+}
