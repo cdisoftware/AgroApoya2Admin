@@ -187,6 +187,10 @@ th {
     color: red;
 }
 
+.TextFine{
+    color: #31758f;
+}
+
 .ShowMap {
     visibility: visible !important;
     height: 500px;
@@ -197,9 +201,3 @@ th {
 <<<<<<< HEAD
 }
 
-.Linktxt{
-    cursor: pointer;
-    color: #397c97 !important;
-=======
->>>>>>> parent of a286711 (Merge pull request #55 from cdisoftware/Dev-Juan)
-}
