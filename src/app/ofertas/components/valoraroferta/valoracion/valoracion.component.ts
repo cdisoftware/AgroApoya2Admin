@@ -20,9 +20,9 @@ export class ValoracionComponent implements OnInit {
   MuestraIndividual: string = '';
   MuestraGrupal: string = '';
   MuestraFijo: string = '';
-  MuestraFijoI: string = '';
+  MuestraFijoI: string ='';
   MuestraPorcentaje: string = '';
-  MuestraPorcentajeI: string = '';
+  MuestraPorcentajeI: string ='';
   MuestraVigencial: string = '';
   VlrComFijaI: string = '';
   MinUnidI: any;
@@ -131,9 +131,6 @@ export class ValoracionComponent implements OnInit {
     this.MaxUnidPart = '';
     this.PorcDescLider = '';
     this.PubliOferObser = '';
-    this.VigenDesde = '';
-    this.VigenHasta = '';
-    this.FechaEntrega = '';
     this.RutaImagen = this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');
@@ -1127,86 +1124,24 @@ export class ValoracionComponent implements OnInit {
   }
 
   GuardaVigencia(templateMensaje: any) {
-    this.Respuesta = '';
-    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
-    if (this.VigenDesde == '' || this.VigenHasta == '' || this.FechaEntrega == '') {
-      this.ValidaCam = '1';
-      this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
-      this.ArrayCamposValida = [
-        {
-          campo: 'VigenDesde',
-          campof: 'Vigencia desde',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'VigenHasta',
-          campof: 'Vigencia hasta',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'FechaEntrega',
-          campof: 'Fecha entrega',
-          class: '',
-          imagen: ''
-        },
-
-      ]
-      for (var i = 0; i < this.ArrayCamposValida.length; i++) {
-        if (this.ArrayCamposValida[i].campo == 'VigenDesde') {
-          if (this.VigenDesde == '') {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'VigenHasta') {
-          if (this.VigenHasta == '') {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'FechaEntrega') {
-          if (this.FechaEntrega == '') {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
-          }
-        }
-      }
+    const Body = {
+      CD_CNSCTVO: this.SessionOferta,
+      VGNCIA_DESDE: this.VigenDesde,
+      VGNCIA_HASTA: this.VigenHasta,
+      HORA_DESDE: this.HoraIni,
+      HORA_HASTA: this.HoraFin,
+      FCHA_ENTRGA: this.FechaEntrega,
+      OBSERVACIONES: this.Observaciones,
+      ID_SCTOR_OFRTA: this.SessionSectorSel
     }
-    else {
-      this.ValidaCam = '0';
-      this.ArrayCamposValida = []
-      const Body = {
-        CD_CNSCTVO: this.SessionOferta,
-        VGNCIA_DESDE: this.VigenDesde,
-        VGNCIA_HASTA: this.VigenHasta,
-        HORA_DESDE: this.HoraIni,
-        HORA_HASTA: this.HoraFin,
-        FCHA_ENTRGA: this.FechaEntrega,
-        OBSERVACIONES: this.Observaciones,
-        ID_SCTOR_OFRTA: this.SessionSectorSel
-      }
-      this.serviciosvaloracion.ModificarVigenciaOferta('2', Body).subscribe(ResultUpdate => {
-        this.Respuesta = '';
-        var arreglores = ResultUpdate.split('|')
-        this.Respuesta = arreglores[1];
-        this.ValidaTipoOfer = '1';
-        this.ConsultaValoracionOferta();
-      })
-    }
+    this.serviciosvaloracion.ModificarVigenciaOferta('2', Body).subscribe(ResultUpdate => {
+      this.Respuesta = '';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+      var arreglores = ResultUpdate.split('|')
+      this.Respuesta = arreglores[1];
+      this.ValidaTipoOfer = '1';
+      this.ConsultaValoracionOferta();
+    })
   }
 
   AbrePublica(templatePublicar: any) {
