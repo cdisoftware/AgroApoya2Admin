@@ -187,6 +187,10 @@ th {
     color: red;
 }
 
+.TextFine{
+    color: #31758f;
+}
+
 .ShowMap {
     visibility: visible !important;
     height: 500px;
