@@ -20,9 +20,9 @@ export class ValoracionComponent implements OnInit {
   MuestraIndividual: string = '';
   MuestraGrupal: string = '';
   MuestraFijo: string = '';
-  MuestraFijoI: string ='';
+  MuestraFijoI: string = '';
   MuestraPorcentaje: string = '';
-  MuestraPorcentajeI: string ='';
+  MuestraPorcentajeI: string = '';
   MuestraVigencial: string = '';
   VlrComFijaI: string = '';
   MinUnidI: any;
@@ -125,6 +125,8 @@ export class ValoracionComponent implements OnInit {
     this.MaxUnidPart = '0';
     this.PorcDescLider = '0';
     this.PubliOferObser = '';
+    this.VigenDesde = '';
+    this.VigenHasta = '';
     this.RutaImagen = this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');
@@ -557,25 +559,33 @@ export class ValoracionComponent implements OnInit {
     })
   }
 
-  GuardaVigencia(templateMensaje: any) {
-    const Body = {
-      CD_CNSCTVO: this.SessionOferta,
-      VGNCIA_DESDE: this.VigenDesde,
-      VGNCIA_HASTA: this.VigenHasta,
-      HORA_DESDE: this.HoraIni,
-      HORA_HASTA: this.HoraFin,
-      FCHA_ENTRGA: this.FechaEntrega,
-      OBSERVACIONES: this.Observaciones,
-      ID_SCTOR_OFRTA: this.SessionSectorSel
+  GuardaVigencia(templateMensaje: any) {    
+    if (this.VigenDesde != '' && this.VigenHasta != '' && this.FechaEntrega!='') {
+      const Body = {
+        CD_CNSCTVO: this.SessionOferta,
+        VGNCIA_DESDE: this.VigenDesde,
+        VGNCIA_HASTA: this.VigenHasta,
+        HORA_DESDE: this.HoraIni,
+        HORA_HASTA: this.HoraFin,
+        FCHA_ENTRGA: this.FechaEntrega,
+        OBSERVACIONES: this.Observaciones,
+        ID_SCTOR_OFRTA: this.SessionSectorSel
+      }
+      this.serviciosvaloracion.ModificarVigenciaOferta('2', Body).subscribe(ResultUpdate => {        
+        this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+        var arreglores = ResultUpdate.split('|')
+        this.Respuesta = arreglores[1];
+        this.ValidaTipoOfer = '1';
+        this.ConsultaValoracionOferta();
+      })
     }
-    this.serviciosvaloracion.ModificarVigenciaOferta('2', Body).subscribe(ResultUpdate => {
-      this.Respuesta = '';
+    else {
+
+
+      
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
-      var arreglores = ResultUpdate.split('|')
-      this.Respuesta = arreglores[1];
-      this.ValidaTipoOfer = '1';
-      this.ConsultaValoracionOferta();
-    })
+      this.Respuesta = 'Los campos vigencia desde, vigencia hasta y fecha entrega son obligatorios, favor valida tu información.'
+    }    
   }
 
   AbrePublica(templatePublicar: any) {

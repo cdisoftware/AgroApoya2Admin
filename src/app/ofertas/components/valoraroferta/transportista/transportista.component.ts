@@ -238,7 +238,7 @@ export class TransportistaComponent implements OnInit {
       ID_SCTOR_OFRTA: transportista.ID_SCTOR_OFRTA,
       ID_CNDCTOR: transportista.ID_CNDCTOR,
       USUCODIG_TRANS: transportista.USUCODIG_TRANS,
-      VLOR_FLTE_PCTDO: this.SessionValorFlete,
+      VLOR_FLTE_PCTDO: transportista.VLOR_FLTE_PCTDO,
       ESTADO: 1
     }
     console.log(BodyUpdate)
@@ -256,7 +256,7 @@ export class TransportistaComponent implements OnInit {
       ID_SCTOR_OFRTA: transportista.ID_SCTOR_OFRTA,
       ID_CNDCTOR: transportista.ID_CNDCTOR,
       USUCODIG_TRANS: transportista.USUCODIG_TRANS,
-      VLOR_FLTE_PCTDO: this.SessionValorFlete,
+      VLOR_FLTE_PCTDO: transportista.VLOR_FLTE_PCTDO,
       ESTADO: 3
     }
     this.sectoresservices.OperacionConductor('2', BodyUpdate).subscribe(ResultadoUpdate => {
