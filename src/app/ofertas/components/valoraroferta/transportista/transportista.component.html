@@ -202,7 +202,7 @@
                 <th>Peso (kg)</th>
                 <th>Conductor</th>
                 <th>Valor flete registrado</th>
-                <th>Valor flete transportista</th>
+                <th>Valor transportista</th>
                 <th>Estado</th>
                 <th>Acciones</th>
             </tr>
@@ -212,7 +212,7 @@
                 <td>{{transportista.PESO_KG}}</td>
                 <td class="Linktxt" title="Información transportista" (click)="DetalleTransportista(transportista, ModalDetalle)">{{transportista.NMBRE_CNDCTOR}}</td>
                 <td>{{transportista.VLOR_FLTE_SGRDO}}</td>
-                <td><input #VlrFletePac type="text" class="col-sm-12 form-control" [(ngModel)]="transportista.VLOR_FLTE_PCTDO"></td>
+                <td><input type="text" class="form-control form-control-sm" [(ngModel)]="transportista.VLOR_FLTE_PCTDO"></td>
                 <td>{{transportista.NOM_ESTADO}}</td>
                 <td> 
                     <button class="SinEstilo" title="Aprueba transportista" (click)="ApruebaTransportista(transportista, ModalRespuesta)">

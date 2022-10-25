@@ -142,7 +142,7 @@
         </div>
         <div class="row">
             <div class="col-sm-12 br">
-                <label class="col-sm-12 Llave">Ubicación Parcela</label>
+                <label class="col-sm-12 Llave">Nombre Parcela</label>
                 <input type="text" class="form-control form-control-sm textBox" placeholder="Ubicación Parcela"
                     [(ngModel)]="UbicacionPar" name="UbicacionPar">
             </div>
@@ -228,6 +228,26 @@
                     <h2 class="TituloDetalle">{{Respuesta}}</h2>
                 </div>
             </div>
+            <div class="row br" *ngIf="this.ValidaCam=='1'">
+                <div class="col-sm-9">
+                    <label>Campo</label>
+                </div>
+                <div class="col-sm-3">
+                    <label>Diligenciado</label>
+                </div>
+            </div>
+            <div class="row pt-2" *ngFor="let campos of ArrayCamposValida">
+                <div class="col-sm-9" >
+                    <label for="" class="{{campos.class}}">{{campos.campof}}</label>
+                </div>
+                <div class="col-sm-3">
+                    <div class="row justify-content-center">
+                        <div class="col-sm-6">
+                            <img src="{{campos.imagen}}">    
+                        </div>                        
+                    </div>                    
+                </div>
+            </div>    
         </div>
         <div class="row justify-content-center">
             <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>

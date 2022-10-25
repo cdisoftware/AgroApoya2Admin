@@ -61,7 +61,10 @@ export class CrearofertaComponent implements OnInit {
   geocoder = new google.maps.Geocoder();
   map: google.maps.Map;
   objCiudad: any = '0';
-  NomCiudad: string = 'Bogotá';
+  NomCiudad: string = 'Antioquia, Barbosa';
+  ValidaCam: string;
+  ArrayCamposValida: { campo: string; campof: string; class: string; imagen: string; }[];
+
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -72,6 +75,10 @@ export class CrearofertaComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.IdProductor = '';
+    this.EJornada='';
+    this.ValorOferta = 0;
+    this.Unidades = 0;
     this.RutaImagenes = this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.CargaProductos();
     this.CargaDepartamento();
@@ -176,52 +183,316 @@ export class CrearofertaComponent implements OnInit {
     this.ValorTotalOferta = this.ValorOferta * this.Unidades;
   }
 
-
-
   Guardar(ModalRespuesta: any) {
-    const datosinsert = {
-      CD_PRDCTO: this.IdProducto,
-      UND_EMPQUE: '0',
-      CD_CNDCION: this.IdCondicion,
-      CD_TMNO: this.IdTamano,
-      DSCRPCION_PRDCTO: this.DesProducto,
-      VR_UNDAD_EMPQUE: this.ValorOferta,
-      CD_UNDAD: this.Unidades,
-      VR_TOTAL_OFRTA: this.ValorTotalOferta,
-      VGNCIA_DESDE: this.Vigencia,
-      CD_JRNDA: this.EJornada,
-      CD_RGION: this.IdDepartamento,
-      CD_MNCPIO: this.IdCiudad,
-      UBCCION_PRCLA: this.UbicacionPar,
-      COORDENADAS_PRCLA: this.CoordenadasParcela,
-      USUCODIG: this.IdProductor,
-      ID_PRODUCTOR: "0",
-      CD_CNSCTVO: "0",
-      CRCTRZCION: "0",
-      OBS_EDICION: "0",
-      IMAGEN1: this.NomImagen1,
-      IMAGEN2: this.NomImagen2,
-      IMAGEN3: this.NomImagen3,
-      IMAGEN4: this.NomImagen4,
-      IMAGEN5: this.NomImagen5
+    console.log(this.DesProducto)
+    this.Respuesta = '';
+    this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    if (this.IdProductor == '' || this.IdProducto == '0' || this.IdEmpaque =='0' || this.IdCondicion=='0'
+    || this.IdTamano=='0' || this.DesProducto =='' || this.ValorOferta == 0 || this.Unidades== 0 
+    || this.ValorTotalOferta ==0 || this.Vigencia=='' || this.EJornada == '' || this.IdDepartamento =='0'
+    || this.IdCiudad == '0' || this.UbicacionPar =='' || this.CoordenadasParcela =='' || (this.NomImagen1 == '0' && this.NomImagen2 == '0' && this.NomImagen3 == '0' && this.NomImagen4 == '0' && this.NomImagen5 == '0'))
+    {
+      this.ValidaCam = '1';
+      this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
+      this.ArrayCamposValida = [
+        {
+          campo: 'IdProductor',
+          campof: 'Productor',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'IdProducto',
+          campof: 'Producto',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'IdEmpaque',
+          campof: 'Presentación empaque',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'IdCondicion',
+          campof: 'Condición',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'IdTamano',
+          campof: 'Tamaño',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'DesProducto',
+          campof: 'Caracteristicas',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'ValorOferta',
+          campof: 'Valor unidad empaque',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'Unidades',
+          campof: 'Unidades',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'ValorTotalOferta',
+          campof: 'Valor total oferta',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'Vigencia',
+          campof: 'Fecha recogida',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'EJornada',
+          campof: 'Jornada',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'IdDepartamento',
+          campof: 'Departamento',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'IdCiudad',
+          campof: 'Ciudad',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'UbicacionPar',
+          campof: 'Nombre parcela',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'CoordenadasParcela',
+          campof: 'Ubicación parcela',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'Imagenes',
+          campof: 'Imagen oferta',
+          class: '',
+          imagen: ''
+        }
+
+      ]
+      for (var i = 0; i < this.ArrayCamposValida.length; i++) {
+        if (this.ArrayCamposValida[i].campo == 'IdProductor') {
+          if (this.IdProductor == '') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'IdProducto') {
+          if (this.IdProducto == '0') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }  
+        else if (this.ArrayCamposValida[i].campo == 'IdEmpaque') {
+          if (this.IdEmpaque == '0') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'IdCondicion') {
+          if (this.IdCondicion == '0') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'IdTamano') {
+          if (this.IdTamano == '0') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'DesProducto') {
+          if (this.DesProducto == '') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'ValorOferta') {
+          if (this.ValorOferta == 0) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'Unidades') {
+          if (this.Unidades == 0) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'ValorTotalOferta') {
+          if (this.ValorTotalOferta == 0) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'Vigencia') {
+          if (this.Vigencia == '') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'EJornada') {
+          if (this.EJornada == '') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'IdDepartamento') {
+          if (this.IdDepartamento == '0') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'IdCiudad') {
+          if (this.IdCiudad == '0') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'UbicacionPar') {
+          if (this.UbicacionPar == '') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'CoordenadasParcela') {
+          if (this.CoordenadasParcela == '') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'Imagenes') {
+          if (this.NomImagen1 == '0' && this.NomImagen2 == '0' && this.NomImagen3 == '0' && this.NomImagen4 == '0' && this.NomImagen5 == '0') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }     
+      }
     }
-    console.log(datosinsert)
-    console.log(this.IdEmpaque)
-    if (this.NomImagen1 == '0' && this.NomImagen2 == '0' && this.NomImagen3 == '0' && this.NomImagen4 == '0' && this.NomImagen5 == '0') {
-      this.Respuesta = 'Debes seleccionar por lo menos una imagen para la oferta.'
-    } else {
+    else {
+      this.ValidaCam = '0';
+      this.ArrayCamposValida = [];
+      const datosinsert = {
+        CD_PRDCTO: this.IdProducto,
+        UND_EMPQUE: '0',
+        CD_CNDCION: this.IdCondicion,
+        CD_TMNO: this.IdTamano,
+        DSCRPCION_PRDCTO: this.DesProducto,
+        VR_UNDAD_EMPQUE: this.ValorOferta,
+        CD_UNDAD: this.Unidades,
+        VR_TOTAL_OFRTA: this.ValorTotalOferta,
+        VGNCIA_DESDE: this.Vigencia,
+        CD_JRNDA: this.EJornada,
+        CD_RGION: this.IdDepartamento,
+        CD_MNCPIO: this.IdCiudad,
+        UBCCION_PRCLA: this.UbicacionPar,
+        COORDENADAS_PRCLA: this.CoordenadasParcela,
+        USUCODIG: this.IdProductor,
+        ID_PRODUCTOR: "0",
+        CD_CNSCTVO: "0",
+        CRCTRZCION: "0",
+        OBS_EDICION: "0",
+        IMAGEN1: this.NomImagen1,
+        IMAGEN2: this.NomImagen2,
+        IMAGEN3: this.NomImagen3,
+        IMAGEN4: this.NomImagen4,
+        IMAGEN5: this.NomImagen5
+      }
       this.ServiciosOferta.CrearOferta('3', this.IdEmpaque, datosinsert).subscribe(Resultado => {
         var arrayrespuesta = Resultado.split('|');
-        if (arrayrespuesta[0] != '-1') {
-          this.rutas.navigateByUrl('home/buscaroferta');
-        }
         this.Respuesta = arrayrespuesta[1];
-        this.modalService.dismissAll();
-        this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+        if (arrayrespuesta[0] != '-1') {          
+          this.rutas.navigateByUrl('home/buscaroferta');
+        }        
       })
     }
-
-
   }
 
   SelEJornada(jornada: string) {
