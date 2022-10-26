@@ -75,6 +75,16 @@ export class ValoracionComponent implements OnInit {
   ValidaVigencia: string;
   ArrayCamposValida: any = []
   ValidaCam: string;
+  ValidaToppings: string;
+  DataTipotopping: { id: number; name: string; }[];
+  DataToppings: any[];
+  ValidaConsulta: string = '1';
+  txtValidaCons: string = 'No se encuentran toppings asociados a la oferta';
+  DesTopp: string;
+  VlrUniTopp: string;
+  UnidMaxTopp: string;
+  SessionTipoTopp: any;
+  ValidaTipoTopp: boolean;
 
 
 
@@ -109,6 +119,17 @@ export class ValoracionComponent implements OnInit {
         name: 'Porcentaje'
       }
     ]
+    this.DataTipotopping = [
+      {
+        id: 1,
+        name: 'Producto adicional'
+      },
+      {
+        id: 2,
+        name: 'Caracteristica sobre el producto'
+      }
+    ]
+    this.SessionTipoTopp = '0';
     this.MuestraVigencial = '0';
     this.MuestraGrupal = '0';
     this.MuestraIndividual = '0';
@@ -134,12 +155,41 @@ export class ValoracionComponent implements OnInit {
     this.VigenDesde = '';
     this.VigenHasta = '';
     this.FechaEntrega = '';
+    this.DataToppings = [];
     this.RutaImagen = this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');
     this.ConsultaDetalleOferta();
     this.ConsultaSectores();
   }
+
+  GuardaTopping(templateMensaje: any) {
+    if(this.DesTopp=='' || this.VlrUniTopp=='' || this.UnidMaxTopp=='' || this.SessionTipoTopp=='0'){
+      this.Respuesta = "Los campos Descripción, Valor unitario, Maxima cantidad unidades y Tipo Topping son obligatorios, favor valida tu información."
+      this.modalService.open(templateMensaje,{ ariaLabelledBy: 'modal-basic-title' })
+    }
+    else{
+
+    }
+  }
+
+  selectTipTopp(item:any){    
+    this.SessionTipoTopp = item.id;
+    if(item.id=='2'){
+      this.ValidaTipoTopp=true;
+      this.UnidMaxTopp='1';
+    }
+    else{
+      this.ValidaTipoTopp=false;
+      this.UnidMaxTopp='';
+    }    
+  }
+
+  LimpiaTipoTopp(){
+    this.UnidMaxTopp=''
+    this.ValidaTipoTopp=false;
+  }
+
   ConsultaVigenciaOferta() {
     this.serviciosvaloracion.ConsultaVigenciaOferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultCons => {
       //console.log(ResultCons)
@@ -569,6 +619,7 @@ export class ValoracionComponent implements OnInit {
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         var arreglores = ResultUpdate.split('|')
         this.Respuesta = arreglores[1];
+        this.ValidaToppings = '1';
       })
     }
   }
