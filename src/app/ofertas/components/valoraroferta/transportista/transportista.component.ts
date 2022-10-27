@@ -194,7 +194,7 @@ export class TransportistaComponent implements OnInit {
             for (var i = 0; i <= ResultConsult.length; i++) {              
               if(ResultConsult[i].ESTADO=='3'){
                 const BodyCorreoInd={
-                  dPlantilla: 8,
+                  IdPlantilla: 8,
                   usucodig: ResultConsult[i].USUCODIG_TRANS,
                   Cd_cnctvo: this.SessionOferta,
                   id_conductor: ResultConsult[i].ID_CNDCTOR
@@ -205,7 +205,7 @@ export class TransportistaComponent implements OnInit {
               }
               else if(ResultConsult[i].ESTADO=='1'){
                 const BodyCorreoInd={
-                  dPlantilla: 7,
+                  IdPlantilla: 7,
                   usucodig: ResultConsult[i].USUCODIG_TRANS,
                   Cd_cnctvo: this.SessionOferta,
                   id_conductor: ResultConsult[i].ID_CNDCTOR
