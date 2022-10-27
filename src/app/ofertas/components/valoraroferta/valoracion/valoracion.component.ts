@@ -263,45 +263,6 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
-  ValidaVigenciaD(templateMensaje:any){
-    var fecha = new Date();
-    var fechaf = this.formatofecha.transform(fecha,"yyyy-MM-dd")!;
-    if(this.VigenDesde<fechaf){
-      this.VigenDesde='';
-      this.modalService.open(templateMensaje);
-      this.Respuesta='La fecha inicio de la vigencia no puede ser menor a la fecha actual, favor valida tu información.';      
-    }
-  }
-
-  ValidaVigenciaH(templateMensaje:any){
-    var fechaD = this.VigenDesde;
-    var fechaH = this.VigenHasta;
-    var fechaDF = this.formatofecha.transform(fechaD,"yyyy-MM-dd")!;
-    var fechaHF = this.formatofecha.transform(fechaH,"yyyy-MM-dd")!;
-    if(fechaDF>fechaHF){
-      this.VigenHasta='';
-      this.modalService.open(templateMensaje);
-      this.Respuesta='La fecha fin de la vigencia no puede ser menor a la fecha inicio de la vigencia, favor valida tu información.';
-    }
-  }
-
-  ValidaVigenciaE(templateMensaje:any){
-    var fechaH = this.VigenHasta;
-    var fechaHF = this.formatofecha.transform(fechaH,"yyyy-MM-dd")!;
-    var fechaR = this.SessionFechaRecogida;
-    var fechaRF = this.formatofecha.transform(fechaR,"yyyy-MM-dd")!;
-    if(this.FechaEntrega<fechaHF){
-      this.FechaEntrega='';
-      this.modalService.open(templateMensaje);
-      this.Respuesta='La fecha entrega de la vigencia no puede ser menor a la fecha fin de la vigencia, favor valida tu información.';
-    }
-    else if(this.FechaEntrega<fechaRF){
-      this.FechaEntrega='';
-      this.modalService.open(templateMensaje);
-      this.Respuesta='La fecha entrega de la vigencia no puede ser menor a la fecha recogida de la oferta, favor valida tu información.';
-    }
-  }
-
   selectTipTopp(item: any) {
     this.SessionTipoTopp = item.id;
     if (item.id == '2') {
