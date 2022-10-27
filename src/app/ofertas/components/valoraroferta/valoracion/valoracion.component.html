@@ -177,17 +177,21 @@
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Vigencia desde</label>
-                            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VigenDesde">
+                            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VigenDesde" (blur)="ValidaVigencias(ModalRespuesta)">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Vigencia hasta</label>
-                            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VigenHasta">
+                            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VigenHasta" (blur)="ValidaVigencias(ModalRespuesta)">
                         </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Fecha entrega</label>
-                            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="FechaEntrega">
+                            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="FechaEntrega" (blur)="ValidaVigencias(ModalRespuesta)">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Fecha recogida</label>
+                            <input type="date" disabled class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="SessionFechaRecogida">
                         </div>
                     </div>
                     <div class="row br">
