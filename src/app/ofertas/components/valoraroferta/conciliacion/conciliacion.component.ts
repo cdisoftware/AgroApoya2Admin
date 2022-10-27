@@ -297,7 +297,7 @@ export class ConciliacionComponent implements OnInit {
         if (arrayrespuesta[0] != '-1') {
           this.CargaObjetosIniciales();
           const datoscorreo = {
-            dPlantilla: 4,
+            IdPlantilla: 4,
             usucodig: this.IdProductor,
             Cd_cnctvo: this.IdOferta,
             id_conductor: 0
@@ -342,7 +342,7 @@ export class ConciliacionComponent implements OnInit {
       if (arrayrespuesta[0] != '-1') {
         this.CargaObjetosIniciales();
         const datoscorreo = {
-          dPlantilla: 3,
+          IdPlantilla: 3,
           usucodig: this.IdProductor,
           Cd_cnctvo: this.IdOferta,
           id_conductor: 0
