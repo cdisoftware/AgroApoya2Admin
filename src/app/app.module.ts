@@ -7,7 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CrearofertaComponent } from './ofertas/components/crearoferta/crearoferta.component';
 import { LoginComponent } from './usuario/components/login/login.component';
-import { CommonModule, HashLocationStrategy, LocationStrategy } from "@angular/common";
+import { CommonModule, HashLocationStrategy, LocationStrategy, DatePipe } from "@angular/common";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BuscarofertaComponent } from './ofertas/components/valoraroferta/buscaroferta/buscaroferta.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
@@ -51,7 +51,8 @@ import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/coste
   ],
   providers: [
      { provide: LocationStrategy, useClass: HashLocationStrategy },
-    CookieService
+    CookieService,
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

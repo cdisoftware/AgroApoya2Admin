@@ -174,4 +174,16 @@ export class ValorarofertaService {
     return this.http.get<any[]>(this.url_servidor + 'enviosmsindividual/' + bandera + '/' + idusuario + '/' + idoferta + '/' + idsector + '/' + idcliente)
   }
 
+  ConsultaTipoTopping(Bandera:string){
+    return this.http.get<any[]>(this.url_servidor+'consctipotoppin/'+Bandera)
+  }
+
+  ConsultaToppingOfer(Bandera:string, Id_Sector:string, cd_cnctivo:string){
+    return this.http.get<any[]>(this.url_servidor+'consclistadotopping/'+Bandera+'/'+Id_Sector+'/'+cd_cnctivo)
+  }
+
+  ModificaTopping(Bandera:string, Bodymod:any){
+    return this.http.post<any>(this.url_servidor+'modctopping/'+Bandera, Bodymod)
+  }
+
 }
