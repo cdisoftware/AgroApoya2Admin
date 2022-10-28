@@ -424,23 +424,23 @@
         </ngb-accordion>
     </div>
     <div class="row br" *ngIf="ValidaToppings=='1'">
-        <h5 class="SubTituloForm">Definición toppings</h5>
+        <h5 class="SubTituloForm">Definición amparados</h5>
     </div>
     <div class="row br" *ngIf="ValidaToppings=='1'">
         <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
-            <ngb-panel title="Toppings" id="config-panel-three">
+            <ngb-panel title="Amparados" id="config-panel-three">
                 <ng-template ngbPanelContent>
                     <div class="row br">
-                        <div class="col-sm-3">
-                            <label class="col-sm-12 Llave">Descripción topping</label>
+                        <div class="col-sm-4">
+                            <label class="col-sm-12 Llave">Descripción amparado</label>
                             <input type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="DesTopp">
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <label class="col-sm-12 Llave">Valor unitario</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrUniTopp">
                         </div>
-                        <div class="col-sm-3">
-                            <label class="col-sm-12 Llave mt-1">Tipo topping</label>
+                        <div class="col-sm-4">
+                            <label class="col-sm-12 Llave mt-1">Tipo amparado</label>
                             <ng-autocomplete [data]="DataTipotopping" [searchKeyword]="keywordTipTopp" (selected)='selectTipTopp($event)'
                                 placeholder="Tipo topping" [itemTemplate]="templateOfer" [notFoundTemplate]="templateVacio" (inputCleared)='LimpiaTipoTopp()' [(ngModel)]="TipoTopp">
                             </ng-autocomplete>
@@ -450,38 +450,44 @@
                             <ng-template #templateVacio let-SinRegistro>
                                 <label for="">Sin registros</label>
                             </ng-template>
-                        </div>
-                        <div class="col-sm-3">
-                            <label class="col-sm-12 Llave">Maxima cantidad unidades</label>
+                        </div>                                             
+                    </div>
+                    <div class="row br">
+                        <div class="col-sm-4">
+                            <label class="col-sm-12 Llave">Unidades para la oferta</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidOferta">
+                        </div>   
+                        <div class="col-sm-4">
+                            <label class="col-sm-12 Llave">Maximo unidades por cada compra</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidMaxTopp" [disabled]="ValidaTipoTopp">
-                        </div>                        
-                    </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="col-sm-12 Llave"></label>
+                            <button class="btn btn-agro-prin col-sm-12 mt-1" (click)="GuardaTopping(ModalRespuesta)">Agregar amparado</button>
+                        </div>
+                    </div>                    
                     <div class="row justify-content-center br">
-                        <div class="col-sm-3">
-                            <button class="btn btn-agro-prin col-sm-12"
-                                (click)="GuardaTopping(ModalRespuesta)">Agregar topping</button>
-                        </div>                        
-                    </div>
-                    <div class="row justify-content-center br">
-                        <table class="col-sm-10 TableAgro">
+                        <table class="col-sm-12 TableAgro">
                             <tr>
                                 <th>Descripción</th>
                                 <th>Valor unitario</th>
-                                <th>Maximo cantidades</th>
                                 <th>Tipo</th>
+                                <th>Unidades para oferta</th>
+                                <th>Maximo unidades por compra</th>
                                 <th>Acciones</th>
                             </tr>
                             <tr *ngFor="let topping of DataToppings">
                                 <td>{{topping.Descripcion}}</td>
-                                <td>{{topping.ValorUnitario}}</td>
-                                <td>{{topping.MaxCantidad}}</td>
-                                <td>{{topping.descTipotopping}}</td>                                
+                                <td>$ {{topping.ValorUnitario}}</td>
+                                <td>{{topping.descTipotopping}}</td>  
+                                <td>{{topping.cantidadReserva}}</td>    
+                                <td>{{topping.MaxCantidad}}</td>                                                                                          
                                 <td> 
-                                    <button class="SinEstilo m-1" title="Activar/Desactivar topping" (click)="ModificaTopping('1', topping)">
+                                    <button class="SinEstilo m-1" title="Activar/Desactivar amparado" (click)="ModificaTopping('1', topping)">
                                         <img *ngIf="topping.Estado=='1'" src="./../../../../../assets/ImagenesAgroApoya2Admin/visible.png" >
                                         <img *ngIf="topping.Estado=='2'" src="./../../../../../assets/ImagenesAgroApoya2Admin/notvisible.png">
                                     </button>
-                                    <button class="SinEstilo m-1" title="Eliminar topping">
+                                    <button class="SinEstilo m-1" title="Eliminar amparado">
                                         <img src="./../../../../../assets/ImagenesAgroApoya2Admin/basurarojo.png" (click)="ModificaTopping('2', topping)">
                                     </button>                                    
                                 </td>
