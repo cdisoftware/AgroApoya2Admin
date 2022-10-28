@@ -80,7 +80,7 @@ export class ValoracionComponent implements OnInit {
   DataTipotopping: { id: number; name: string; }[];
   DataToppings: any[];
   ValidaConsulta: string = '0';
-  txtValidaCons: string = 'No se encuentran toppings asociados a la oferta';
+  txtValidaCons: string = 'No se encuentran amparados asociados a la oferta';
   DesTopp: string;
   VlrUniTopp: string;
   UnidMaxTopp: string;
@@ -89,11 +89,12 @@ export class ValoracionComponent implements OnInit {
   keywordTipTopp: string;
   TipoTopp: string;
   SessionFechaRecogida: any;
+  UnidOferta: string;
 
 
 
   constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
-    ConfigAcord.closeOthers = true; 
+    ConfigAcord.closeOthers = true;
   }
 
   ngOnInit(): void {
@@ -150,6 +151,7 @@ export class ValoracionComponent implements OnInit {
     this.VigenDesde = '';
     this.VigenHasta = '';
     this.FechaEntrega = '';
+    this.UnidOferta = '';
     this.DataToppings = [];
     this.RutaImagen = this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.SessionOferta = this.cookies.get('IDO');
@@ -173,12 +175,99 @@ export class ValoracionComponent implements OnInit {
   }
 
   GuardaTopping(templateMensaje: any) {
-    this.Respuesta=''
-    if (this.DesTopp == '' || this.VlrUniTopp == '' || this.UnidMaxTopp == '' || this.SessionTipoTopp == '0') {
-      this.Respuesta = "Los campos Descripción, Valor unitario, Maxima cantidad unidades y Tipo Topping son obligatorios, favor valida tu información."
-      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    this.Respuesta = ''
+    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
+    if (this.DesTopp == '' || this.VlrUniTopp == '' || this.UnidMaxTopp == '' || this.SessionTipoTopp == '0' || this.UnidOferta == '') {
+      this.ValidaCam = '1';
+      this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
+      this.ArrayCamposValida = [
+        {
+          campo: 'DesTopp',
+          campof: 'Descripción amparado',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'VlrUniTopp',
+          campof: 'Valor unitario',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'SessionTipoTopp',
+          campof: 'Tipo amparado',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'UnidMaxTopp',
+          campof: 'Maxima unidades por compra',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'UnidOferta',
+          campof: 'Unidades para la oferta',
+          class: '',
+          imagen: ''
+        }
+      ]
+      for (var i = 0; i < this.ArrayCamposValida.length; i++) {
+        if (this.ArrayCamposValida[i].campo == 'DesTopp') {
+          if (this.DesTopp == '' || this.DesTopp == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'VlrUniTopp') {
+          if (this.VlrUniTopp == '' || this.VlrUniTopp == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'SessionTipoTopp') {
+          if (this.SessionTipoTopp == '0' || this.SessionTipoTopp == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'UnidMaxTopp') {
+          if (this.UnidMaxTopp == '' || this.UnidMaxTopp == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'UnidOferta') {
+          if (this.UnidOferta == '' || this.UnidOferta == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+          }
+        }
+      }
     }
     else {
+      this.ValidaCam = '0';
+      this.ArrayCamposValida=[];
       const Body = {
         IdTopping: 0,
         Id_Sector: Number(this.SessionSectorSel),
@@ -186,23 +275,24 @@ export class ValoracionComponent implements OnInit {
         Descricpcion: this.DesTopp,
         MaxCantidad: Number(this.UnidMaxTopp),
         IdTipoTopping: Number(this.SessionTipoTopp),
-        ValorUnitario: Number(this.VlrUniTopp)
-      }      
+        ValorUnitario: Number(this.VlrUniTopp),
+        cantidadReserva: Number(this.UnidOferta)
+      }
       this.serviciosvaloracion.ModificaTopping('2', Body).subscribe(ResultOper => {
-        this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
         this.Respuesta = ResultOper;
         this.consultaToppingsOferta();
+        this.DesTopp = '';
+        this.VlrUniTopp = '';
+        this.UnidMaxTopp = '';
+        this.SessionTipoTopp = '0';
+        this.TipoTopp = '';
+        this.UnidOferta = '';
+        this.ValidaTipoTopp = false;
       })
     }
-    this.DesTopp = '';
-    this.VlrUniTopp = ''; 
-    this.UnidMaxTopp = '';
-    this.SessionTipoTopp == '0';
-    this.TipoTopp='';
-    this.ValidaTipoTopp=false;
   }
 
-  ModificaTopping(bandera: string, topping: any) {    
+  ModificaTopping(bandera: string, topping: any) {
     const Body = {
       IdTopping: topping.IdTopping,
       Id_Sector: Number(this.SessionSectorSel),
@@ -210,56 +300,57 @@ export class ValoracionComponent implements OnInit {
       Descricpcion: topping.Descripcion,
       MaxCantidad: topping.MaxCantidad,
       IdTipoTopping: topping.IdTipoTopping,
-      ValorUnitario: topping.ValorUnitario
+      ValorUnitario: topping.ValorUnitario,
+      cantidadReserva: topping.cantidadReserva,
     }
-    if (bandera == '1') {            
-      if (topping.Estado == '1') {        
+    if (bandera == '1') {
+      if (topping.Estado == '1') {
         this.serviciosvaloracion.ModificaTopping('4', Body).subscribe(ResultOper => {
           this.consultaToppingsOferta();
         })
       }
-      else {        
+      else {
         this.serviciosvaloracion.ModificaTopping('5', Body).subscribe(ResultOper => {
           this.consultaToppingsOferta();
         })
-      }      
+      }
     }
     else {
       this.serviciosvaloracion.ModificaTopping('3', Body).subscribe(ResultOper => {
         this.consultaToppingsOferta();
       })
-    }    
+    }
   }
 
-  ValidaVigencias(templateMensaje:any){
+  ValidaVigencias(templateMensaje: any) {
     var fechaD = this.VigenDesde;
     var fechaH = this.VigenHasta;
     var fechaH = this.VigenHasta;
     var fechaR = this.SessionFechaRecogida;
     var fecha = new Date();
-    var fechaf = this.formatofecha.transform(fecha,"yyyy-MM-dd")!;    
-    var fechaDF = this.formatofecha.transform(fechaD,"yyyy-MM-dd")!;      
-    var fechaHF = this.formatofecha.transform(fechaH,"yyyy-MM-dd")!;    
-    var fechaRF = this.formatofecha.transform(fechaR,"yyyy-MM-dd")!;
-    if(this.VigenDesde<fechaf){
-      this.VigenDesde='';
+    var fechaf = this.formatofecha.transform(fecha, "yyyy-MM-dd")!;
+    var fechaDF = this.formatofecha.transform(fechaD, "yyyy-MM-dd")!;
+    var fechaHF = this.formatofecha.transform(fechaH, "yyyy-MM-dd")!;
+    var fechaRF = this.formatofecha.transform(fechaR, "yyyy-MM-dd")!;
+    if (this.VigenDesde < fechaf) {
+      this.VigenDesde = '';
       this.modalService.open(templateMensaje);
-      this.Respuesta='La fecha inicio de la vigencia no puede ser menor a la fecha actual, favor valida tu información.';      
+      this.Respuesta = 'La fecha inicio de la vigencia no puede ser menor a la fecha actual, favor valida tu información.';
     }
-    else if(fechaDF>fechaHF){
-      this.VigenHasta='';
+    else if (fechaDF > fechaHF) {
+      this.VigenHasta = '';
       this.modalService.open(templateMensaje);
-      this.Respuesta='La fecha fin de la vigencia no puede ser menor a la fecha inicio de la vigencia, favor valida tu información.';
+      this.Respuesta = 'La fecha fin de la vigencia no puede ser menor a la fecha inicio de la vigencia, favor valida tu información.';
     }
-    else if(this.FechaEntrega<fechaHF){
-      this.FechaEntrega='';
+    else if (this.FechaEntrega < fechaHF) {
+      this.FechaEntrega = '';
       this.modalService.open(templateMensaje);
-      this.Respuesta='La fecha entrega de la vigencia no puede ser menor a la fecha fin de la vigencia, favor valida tu información.';
+      this.Respuesta = 'La fecha entrega de la vigencia no puede ser menor a la fecha fin de la vigencia, favor valida tu información.';
     }
-    else if(this.FechaEntrega<fechaRF){
-      this.FechaEntrega='';
+    else if (this.FechaEntrega < fechaRF) {
+      this.FechaEntrega = '';
       this.modalService.open(templateMensaje);
-      this.Respuesta='La fecha entrega de la vigencia no puede ser menor a la fecha recogida de la oferta, favor valida tu información.';
+      this.Respuesta = 'La fecha entrega de la vigencia no puede ser menor a la fecha recogida de la oferta, favor valida tu información.';
     }
   }
 
@@ -278,6 +369,7 @@ export class ValoracionComponent implements OnInit {
   LimpiaTipoTopp() {
     this.UnidMaxTopp = ''
     this.ValidaTipoTopp = false;
+    this.SessionTipoTopp = '0';
   }
 
   ConsultaVigenciaOferta() {
