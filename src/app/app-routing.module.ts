@@ -11,6 +11,7 @@ import { ConciliacionComponent} from './ofertas/components/valoraroferta/concili
 import { ValoracionComponent } from './ofertas/components/valoraroferta/valoracion/valoracion.component';
 import { PlantillascorreoComponent } from './usuario/components/plantillascorreo/plantillascorreo.component'
 import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/costeo.component';
+import { ReporteComponent } from './usuario/components/reporte/reporte.component';
 const routes: Routes = [
   {
     path: '',
@@ -56,10 +57,14 @@ const routes: Routes = [
         path: 'plantillaCorreo',
         component: PlantillascorreoComponent
       },
-     
+
     ]
   },
-  
+  {
+    path: 'reporte',
+    component: ReporteComponent
+  },
+
 ];
 
 @NgModule({

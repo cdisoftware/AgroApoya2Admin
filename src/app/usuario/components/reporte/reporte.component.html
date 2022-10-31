@@ -1,0 +1,93 @@
+<div class="container py-5">
+<div class="row">
+  <div class="col-1"></div>
+  <div class="col-3">
+    <label class="textoDir"> Selección tipo de usuario </label>
+    <select class="form-control" [(ngModel)]="tipoUsuario">
+      <option value="0">Seleccione tipo de usuario</option>
+      <option *ngFor="let Usu of ArrayTipoUsuario;" [value]="Usu.IdTipoUsuario" >
+      {{Usu.Descripcion}}
+    </option>
+    </select>
+  </div>
+  <div class="col-3">
+    <label class="textoDir"> Correo Usuario </label>
+    <input [(ngModel)]="mail" class="form-control" type="text" maxlength="50" placeholder="Correo persona">
+  </div>
+  <div class="col-3">
+    <label class="textoDir"> Nombre Persona </label>
+    <input [(ngModel)]="nombre" class="form-control" type="text" maxlength="20" placeholder="Nombre persona">
+  </div>
+  <div class="col-1"></div>
+</div>
+<div class="row mt-2">
+  <div class="col-1"></div>
+  <div class="col-3">
+    <label class="textoDir"> Codigo de usuario </label>
+    <input [(ngModel)]="codigo" class="form-control" type="text" placeholder="Código persona" >
+  </div>
+  <div class="col-3">
+    <label class="textoDir"> Fecha de registro desde </label>
+    <input [(ngModel)]="FechaDesde" class="form-control" type="datetime" maxlength="50">
+  </div>
+  <div class="col-3">
+    <label class="textoDir"> Fecha de registro hasta </label>
+    <input [(ngModel)]="FechaHasta" class="form-control" type="datetime" maxlength="50">
+  </div>
+  <div class="col-1"></div>
+</div>
+<div class="row mt-2">
+  <div class="col-2"></div>
+  <div class="col-3">
+    <button  class="btn btn-top w-100 " (click)="buscar()">
+      Buscar
+    </button>
+  </div>
+  <div class="col-3">
+    <button  class="btn btn-top w-100" (click)="limpiarDatos()">
+      Limpiar
+    </button>
+  </div>
+  <div class="col-3">
+    <button  class="btn btn-top w-100 ">
+      Descargar Excel
+    </button>
+  </div>
+  <div class="col-1"></div>
+</div>
+</div>
+
+<table class="tabla mx-auto" >
+  <tr>
+    <th>Usucodig</th>
+    <th>Tipo Persona</th>
+    <th>Nombre</th>
+    <th>Celular</th>
+    <th>Correo</th>
+    <th>Fecha creación</th>
+    <th style="width:5%">Tipo Documento</th>
+    <th>Número documento</th>
+    <th>Departamento</th>
+    <th>Ciudad</th>
+    <th>Dirección</th>
+    <th>Observacion</th>
+    <th>Acciones</th>
+  </tr>
+  <tr *ngFor="let Usu of ArrayUsuarios;">
+    <th>{{Usu.Usucodig}}</th>
+    <th>{{Usu.DesTipoPersona}}</th>
+    <th>{{Usu.NombrePersona}}</th>
+    <th>{{Usu.NumeroCelular}}</th>
+    <th>{{Usu.CorreoPersona}}</th>
+    <th>{{Usu.FechaCreacion}}</th>
+    <th>{{Usu.DesTipoDocumento}}</th>
+    <th>{{Usu.NumeroDoc}}</th>
+    <th>{{Usu.DesDepto}}</th>
+    <th>{{Usu.DesCiudad}}</th>
+    <th>{{Usu.Direccion}}</th>
+    <th>{{Usu.Observacion}}</th>
+    <th>
+      <button class="btn"> ver más </button>
+    </th>
+  </tr>
+</table>
