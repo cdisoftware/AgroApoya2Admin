@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
           if (this.Encripta == Resultado[0].Token) {
             this.ServiciosGlobales.CrearCookie('IDU', Resultado[0].Usucodig);
             this.ServiciosGlobales.CrearCookie('nombreuser', Resultado[0].NombrePersona + ' ' + Resultado[0].ApellidoPersona);
-            this.rutas.navigateByUrl('/home')
+            this.rutas.navigateByUrl('/home/buscar')
           } else {
             this.Respuesta = 'Credenciales invalidas, valida tus datos.';
             this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
