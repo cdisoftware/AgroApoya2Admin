@@ -21,6 +21,7 @@ import { PlantillascorreoComponent } from './usuario/components/plantillascorreo
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/costeo.component';
+import { ReporteComponent } from './usuario/components/reporte/reporte.component';
 
 
 @NgModule({
@@ -31,10 +32,11 @@ import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/coste
     SectorizacionComponent,
     TransportistaComponent,
     ConciliacionComponent,
-    ValoracionComponent, 
+    ValoracionComponent,
     LoginComponent,
     PlantillascorreoComponent,
-    CosteoComponent
+    CosteoComponent,
+    ReporteComponent,
   ],
   imports: [
     BrowserModule,
