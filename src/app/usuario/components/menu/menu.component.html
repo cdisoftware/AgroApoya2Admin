@@ -9,13 +9,14 @@
             style="background-image: url(./assets/ImagenesAgroApoya2Admin/portada.jpg);">
 
             <div class="user-logo">
-                <div class="img" style="background-image: url(./assets/ImagenesAgroApoya2Admin/agrouser.jpg);">
+                <div class="img" style="background-image: url(./assets/ImagenesAgroApoya2Admin/ic_Agro.png);">
                 </div>
             </div>
         </div>
         <ul class="list-unstyled components">
             <li>
-                <a class="not-active">Hola, {{NombreUsu}}</a>
+                <a class="not-active">Hola,<br>{{NombreUsu}}</a>
+                
             </li>
             <li *ngFor="let respuesta of ListaMenu">
                 <a href="{{respuesta.pathMenu}}" (click)="toggleSidebar()"><span
@@ -24,7 +25,7 @@
         </ul>
         <div class="LogoAgro row justify-content-center ">
             <div class="col-sm-6 col-6">
-                <img class="imgMenuLogoAgro" src="../../../../assets/ImagenesAgroApoya2Admin/iconagroadmin.png">
+                <img class="imgMenuLogoAgro" src="../../../../assets/ImagenesAgroApoya2Admin/ic_Agro.png">
                 <p>&nbsp;&nbsp;Agroapoya2</p>
             </div>
 
