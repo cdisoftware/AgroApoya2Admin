@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { MetodosglobalesService } from './metodosglobales.service';
+import { Workbook } from 'exceljs';
+import * as FileSaver from 'file-saver';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +12,8 @@ export class ReporteService {
   constructor(private http: HttpClient, private metodosglobales: MetodosglobalesService) { }
 
   url_servidor = this.metodosglobales.SeleccionAmbiente();
+
+  private libro : Workbook
 
   ConsultaUsuario(Bandera: string){
     return this.http.get<any>(this.url_servidor + 'consctipousuario/' + Bandera)
@@ -25,6 +29,77 @@ export class ReporteService {
   }
   ConsultaTipoTranspor(Bandera: string, usuCodigo: string){
     return this.http.get<any>(this.url_servidor + 'consctipotransport/' + Bandera + '/' + usuCodigo)
+  }
+
+  //Métodos para descargar el Excel
+
+  async decargarExcel(data: any): Promise<void> {
+    this.libro = new Workbook();
+
+    this.libro.creator='CDI software'
+
+    await this.crearTabla(data);
+
+    this.crearTabla(data)
+    this.libro.xlsx.writeBuffer().then((data)=>{
+      const blob = new Blob([data])
+      FileSaver.saveAs(blob, "TEST.xlsx");
+    })
+  }
+
+  async crearTabla(data: any): Promise<void> {
+    const sheet= this.libro.addWorksheet("Reporte");
+    sheet.getColumn("A").width =8;
+    sheet.getColumn("B").width =17;
+    sheet.getColumn("C").width =22;
+    sheet.getColumn("D").width =12;
+    sheet.getColumn("E").width =34;
+    sheet.getColumn("F").width =20;
+    sheet.getColumn("G").width =20;
+    sheet.getColumn("H").width =12;
+    sheet.getColumn("I").width =12;
+    sheet.getColumn("J").width =12;
+    sheet.getColumn("K").width =34;
+    sheet.getColumn("L").width =34;
+    const header = sheet.getRow(1);
+
+    header.values=[
+      'UsuCodig',
+      'Tipo Persona',
+      'Nombre',
+      'Celular',
+      'Correo',
+      'Fecha Creación',
+      'Tipo Documento',
+      'Número documento',
+      'Departamento',
+      'Ciudad',
+      'Dirección',
+      'Observacion'
+    ]
+
+    const filas = sheet.getRows(2, data.length)!;
+
+    for(let index = 0; index<data.length;index++)
+    {
+        const fila = filas[index];
+        const itemData = data[index]
+
+        fila.values=[
+          itemData.Usucodig,
+          itemData.DesTipoPersona,
+          itemData.NombrePersona + itemData.ApellidoPersona,
+          itemData.NumeroCelular,
+          itemData.CorreoPersona,
+          itemData.FechaCreacion,
+          itemData.DesTipoDocumento,
+          itemData.NumeroDoc,
+          itemData.DesDepto,
+          itemData.DesCiudad,
+          itemData.Direccion,
+          itemData.Observacion,
+        ]
+    }
   }
 
 }
