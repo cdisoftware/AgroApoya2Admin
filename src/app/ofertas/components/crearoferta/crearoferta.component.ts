@@ -61,7 +61,9 @@ export class CrearofertaComponent implements OnInit {
   geocoder = new google.maps.Geocoder();
   map: google.maps.Map;
   objCiudad: any = '0';
-  NomCiudad: string = 'Antioquia, Barbosa';
+  objDepartamento: any = '0';
+  NomCiudad: string = '';
+  NomDepa: string = '';
   ValidaCam: string;
   ArrayCamposValida: { campo: string; campof: string; class: string; imagen: string; }[];
 
@@ -76,7 +78,7 @@ export class CrearofertaComponent implements OnInit {
 
   ngOnInit(): void {
     this.IdProductor = '';
-    this.EJornada='';
+    this.EJornada = '';
     this.ValorOferta = 0;
     this.Unidades = 0;
     this.RutaImagenes = this.SeriviciosGenerales.RecuperaRutaImagenes();
@@ -168,8 +170,9 @@ export class CrearofertaComponent implements OnInit {
     this.IdTamano = idtamano;
   }
 
-  SelDepa(iddepa: string) {
-    this.IdDepartamento = iddepa;
+  SelDepa() {
+    this.IdDepartamento = this.objDepartamento.CD_RGION;
+    this.NomDepa = this.objDepartamento.DSCRPCION;
     this.CargarCiudad(this.IdDepartamento);
   }
 
@@ -187,11 +190,10 @@ export class CrearofertaComponent implements OnInit {
     console.log(this.DesProducto)
     this.Respuesta = '';
     this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    if (this.IdProductor == '' || this.IdProducto == '0' || this.IdEmpaque =='0' || this.IdCondicion=='0'
-    || this.IdTamano=='0' || this.DesProducto =='' || this.ValorOferta == 0 || this.Unidades== 0 
-    || this.ValorTotalOferta ==0 || this.Vigencia=='' || this.EJornada == '' || this.IdDepartamento =='0'
-    || this.IdCiudad == '0' || this.UbicacionPar =='' || this.CoordenadasParcela =='' || (this.NomImagen1 == '0' && this.NomImagen2 == '0' && this.NomImagen3 == '0' && this.NomImagen4 == '0' && this.NomImagen5 == '0'))
-    {
+    if (this.IdProductor == '' || this.IdProducto == '0' || this.IdEmpaque == '0' || this.IdCondicion == '0'
+      || this.IdTamano == '0' || this.DesProducto == '' || this.ValorOferta == 0 || this.Unidades == 0
+      || this.ValorTotalOferta == 0 || this.Vigencia == '' || this.EJornada == '' || this.IdDepartamento == '0'
+      || this.IdCiudad == '0' || this.UbicacionPar == '' || this.CoordenadasParcela == '' || (this.NomImagen1 == '0' && this.NomImagen2 == '0' && this.NomImagen3 == '0' && this.NomImagen4 == '0' && this.NomImagen5 == '0')) {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
@@ -313,7 +315,7 @@ export class CrearofertaComponent implements OnInit {
             this.ArrayCamposValida[i].class = 'TextFine'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
           }
-        }  
+        }
         else if (this.ArrayCamposValida[i].campo == 'IdEmpaque') {
           if (this.IdEmpaque == '0') {
             this.ArrayCamposValida[i].class = 'TextAlert'
@@ -453,7 +455,7 @@ export class CrearofertaComponent implements OnInit {
             this.ArrayCamposValida[i].class = 'TextFine'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
           }
-        }     
+        }
       }
     }
     else {
@@ -488,9 +490,9 @@ export class CrearofertaComponent implements OnInit {
       this.ServiciosOferta.CrearOferta('3', this.IdEmpaque, datosinsert).subscribe(Resultado => {
         var arrayrespuesta = Resultado.split('|');
         this.Respuesta = arrayrespuesta[1];
-        if (arrayrespuesta[0] != '-1') {          
+        if (arrayrespuesta[0] != '-1') {
           this.rutas.navigateByUrl('home/buscaroferta');
-        }        
+        }
       })
     }
   }
@@ -602,7 +604,7 @@ export class CrearofertaComponent implements OnInit {
 
   AbrirMapa(modalMapa: any) {
     this.modalService.open(modalMapa, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
-    this.Centramapa({ address: this.NomCiudad })
+    this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
     //this.CreaMapa();
   }
 
