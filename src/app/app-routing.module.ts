@@ -12,6 +12,7 @@ import { ValoracionComponent } from './ofertas/components/valoraroferta/valoraci
 import { PlantillascorreoComponent } from './usuario/components/plantillascorreo/plantillascorreo.component'
 import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/costeo.component';
 import { ReporteComponent } from './usuario/components/reporte/reporte.component';
+import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/rep-compras.component';
 const routes: Routes = [
   {
     path: '',
@@ -57,7 +58,10 @@ const routes: Routes = [
         path: 'plantillaCorreo',
         component: PlantillascorreoComponent
       },
-
+      {
+        path: 'rep-compra',
+        component: RepComprasComponent
+      }
     ]
   },
   {
