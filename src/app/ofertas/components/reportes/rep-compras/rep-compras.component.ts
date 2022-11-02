@@ -38,12 +38,10 @@ export class RepComprasComponent implements OnInit {
   }
 
   selectSector(sector: any) {
-    this.SectorSelec = sector.SCTOR_OFRTA;
-    console.log(this.SectorSelec)
+    this.SectorSelec = sector.SCTOR_OFRTA;    
   }
 
-  BusquedaGen() {
-    console.log(this.SectorSelec)
+  BusquedaGen() {    
     var validaofer = '0';
     var validasec = '0';
     if (this.OferFiltro == '') {
@@ -57,10 +55,8 @@ export class RepComprasComponent implements OnInit {
     }
     else {
       validasec = this.SectorSelec;
-    }
-    console.log('1', validaofer, validasec)
-    this.serviciosreportes.ConsultaComprasXOfer('1', validaofer, validasec).subscribe(Resultcons => {
-      console.log(Resultcons)
+    }    
+    this.serviciosreportes.ConsultaComprasXOfer('1', validaofer, validasec).subscribe(Resultcons => {      
       if (Resultcons.length > 0) {
         this.ValidaConsulta = '0';
         this.ValidaDescarga = false;
