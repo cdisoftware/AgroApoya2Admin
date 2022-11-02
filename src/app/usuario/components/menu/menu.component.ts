@@ -58,4 +58,26 @@ export class MenuComponent implements OnInit {
   }
 
 
+
+  toggleItem() {
+    let elemento = document.getElementById('pageSubmenu') as HTMLElement;
+    if (elemento.getAttribute('aria-expanded')) {
+      this.mostrarItem();
+    } else {
+      elemento.setAttribute('aria-expanded', 'true')
+    }
+    if (elemento.getAttribute('class')) {
+      this.mostrarItem();
+    } else {
+      elemento.setAttribute('class', 'list-unstyled collapse show')
+    }
+
+  }
+
+  mostrarItem() {
+    let elemento = document.getElementById('pageSubmenu') as HTMLElement;
+    elemento.removeAttribute('aria-expanded')
+    elemento.removeAttribute('class')
+  }
+
 }
