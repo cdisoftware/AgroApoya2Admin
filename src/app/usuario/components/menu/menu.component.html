@@ -9,22 +9,44 @@
             style="background-image: url(./assets/ImagenesAgroApoya2Admin/portada.jpg);">
 
             <div class="user-logo">
-                <div class="img" style="background-image: url(./assets/ImagenesAgroApoya2Admin/agrouser.jpg);">
+                <div class="img" style="background-image: url(./assets/ImagenesAgroApoya2Admin/ic_Agro.png);">
                 </div>
             </div>
         </div>
-        <ul class="list-unstyled components">
+
+
+        <ul class="list-unstyled components mb-5">
             <li>
-                <a class="not-active">Hola, {{NombreUsu}}</a>
+                <a class="not-active">Hola,<br>{{NombreUsu}}</a>
+
             </li>
+            <!--
+            <li (click)="toggleItem()">
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
+                    class="fa fa-caret-right mr-3 dropdown-toggle"> Compras</a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li>
+                        <a href="#">compra 1</a>
+                    </li>
+                    <li>
+                        <a href="#">compra 1</a>
+                    </li>
+                    <li>
+                        <a href="#">compra 1</a>
+                    </li>
+                </ul>
+            </li>
+            -->
+
             <li *ngFor="let respuesta of ListaMenu">
                 <a href="{{respuesta.pathMenu}}" (click)="toggleSidebar()"><span
                         class="fa {{respuesta.Icono}} mr-3"></span> {{respuesta.Nombre}}</a>
             </li>
         </ul>
-        <div class="LogoAgro row justify-content-center ">
+
+        <div class="row justify-content-center ">
             <div class="col-sm-6 col-6">
-                <img class="imgMenuLogoAgro" src="../../../../assets/ImagenesAgroApoya2Admin/iconagroadmin.png">
+                <img class="imgMenuLogoAgro" src="../../../../assets/ImagenesAgroApoya2Admin/ic_Agro.png">
                 <p>&nbsp;&nbsp;Agroapoya2</p>
             </div>
 

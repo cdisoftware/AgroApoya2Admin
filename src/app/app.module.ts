@@ -22,6 +22,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { GoogleMapsModule } from '@angular/google-maps';
 import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/costeo.component';
 import { ReporteComponent } from './usuario/components/reporte/reporte.component';
+import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/rep-compras.component';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { ReporteComponent } from './usuario/components/reporte/reporte.component
     PlantillascorreoComponent,
     CosteoComponent,
     ReporteComponent,
+    RepComprasComponent
   ],
   imports: [
     BrowserModule,
