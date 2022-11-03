@@ -1,0 +1,66 @@
+<br>
+<div class="container bg-white">
+    <br>
+    <h1>Reporte compras</h1>    
+    <div class="row">
+        <div class="col-sm-6">
+            <input class="col-sm-12 form-control textBox" type="number" placeholder="Consecutivo oferta" [(ngModel)]="OferFiltro">
+        </div>
+        <div class="col-sm-6">
+            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec"
+            placeholder="Sector" (selected)='selectSector($event)'
+            [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
+        </ng-autocomplete>
+        <ng-template #templateSec let-item>
+            <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+        </ng-template>
+        <ng-template #templateVacio let-SinRegistro>
+            <label for="">Sin registros</label>
+        </ng-template>
+        </div>
+    </div>
+    <div class="row br justify-content-center">
+        <div class="col-sm-3 col-2">
+            <button class="btn btn-agro-prin col-sm-12" (click)="BusquedaGen()">
+                Buscar
+            </button>
+        </div>
+        <div class="col-sm-3 col-2">
+            <button class="btn btn-agro-prin col-sm-12" [disabled]="ValidaDescarga" (click)="GeneraExcel()">
+                Descargar
+            </button>
+        </div>
+        <div class="col-sm-3 col-2">
+            <button class="btn btn-agro-sec col-sm-12" (click)="LimpiaForm()">
+                Limpiar
+            </button>
+        </div>       
+    </div>   
+</div>
+<br>
+<div class="row m-1">
+    <table class="col-sm-12 TableAgro">
+        <tr>
+            <th>Oferta</th>
+            <th>Estado</th>
+            <th>Pedido</th>
+            <th>Unidades</th>
+            <th>Cliente</th>
+            <th>Tipo compra</th>
+            <th>Valor</th>                
+        </tr>
+        <tr *ngFor="let oferta of DataConsulta">
+            <td>{{oferta.CD_CNSCTVO}}</td>
+            <td>{{oferta.descEstado}}</td>
+            <td>{{oferta.COD_PEDIDO}}</td>
+            <td>{{oferta.unidadesEntregar}}</td>
+            <td>{{oferta.NOMBRES_PERSONA}} {{oferta.APELLIDOS_PERSONA}}</td>
+            <td>{{oferta.descTipoCompra}}</td>
+            <td>{{oferta.VLOR_PGAR | currency}}</td>              
+        </tr>
+        <tr *ngIf="ValidaConsulta=='1'">
+            <td colspan="7">{{txtValidaCons}}</td>
+        </tr>
+    </table>
+</div>
+<br>

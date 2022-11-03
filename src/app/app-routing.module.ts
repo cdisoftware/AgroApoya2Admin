@@ -9,9 +9,10 @@ import { TransportistaComponent } from './ofertas/components/valoraroferta/trans
 import { LayoutprincipalComponent } from './shared/layoutprincipal/layoutprincipal.component';
 import { ConciliacionComponent} from './ofertas/components/valoraroferta/conciliacion/conciliacion.component'
 import { ValoracionComponent } from './ofertas/components/valoraroferta/valoracion/valoracion.component';
-import { PlantillascorreoComponent } from './usuario/components/plantillascorreo/plantillascorreo.component'
+import { PlantillascorreoComponent } from './usuario/components/plantillascorreo/plantillascorreo.component';
 import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/costeo.component';
 import { ReporteComponent } from './usuario/components/reporte/reporte.component';
+import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/rep-compras.component';
 import { ComprasComponent } from './usuario/components/compras/compras.component';
 import { UsuariosComponent } from './usuario/components/usuarios/usuarios.component';
 
@@ -61,6 +62,10 @@ const routes: Routes = [
         component: PlantillascorreoComponent
       },
       {
+        path: 'rep-compra',
+        component: RepComprasComponent
+      },
+      {
         path: 'compras',
         component: ComprasComponent
       },
@@ -68,7 +73,6 @@ const routes: Routes = [
         path: 'usuarios',
         component: UsuariosComponent
       },    
-
     ]
   },
   {

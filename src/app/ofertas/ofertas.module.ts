@@ -4,7 +4,6 @@ import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { ComprasComponent } from './components/compras/compras.component';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
 
-
 @NgModule({
   declarations: [
   

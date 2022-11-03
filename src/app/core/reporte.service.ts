@@ -11,20 +11,23 @@ export class ReporteService {
 
   url_servidor = this.metodosglobales.SeleccionAmbiente();
 
-  ConsultaUsuario(Bandera: string){
+  ConsultaUsuario(Bandera: string) {
     return this.http.get<any>(this.url_servidor + 'consctipousuario/' + Bandera)
   }
-  ReporteUsuarios(Bandera: string, Datos: any ){
+  ReporteUsuarios(Bandera: string, Datos: any) {
     return this.http.post<any>(this.url_servidor + 'conscreporteusuarios/' + Bandera, Datos)
   }
-  ConsultaTipoCliente(Bandera: string, usuCodigo: string){
+  ConsultaTipoCliente(Bandera: string, usuCodigo: string) {
     return this.http.get<any>(this.url_servidor + 'consctipocliente/' + Bandera + '/' + usuCodigo)
   }
-  ConsultaTipoConductor(Bandera: string, usuCodigo: string){
+  ConsultaTipoConductor(Bandera: string, usuCodigo: string) {
     return this.http.get<any>(this.url_servidor + 'consctipoconductor/' + Bandera + '/' + usuCodigo)
   }
-  ConsultaTipoTranspor(Bandera: string, usuCodigo: string){
+  ConsultaTipoTranspor(Bandera: string, usuCodigo: string) {
     return this.http.get<any>(this.url_servidor + 'consctipotransport/' + Bandera + '/' + usuCodigo)
+  }
+  ConsultaComprasXOfer(Bandera: string, cd_cnscutivo: string, IdSector: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscreporteventas/' + Bandera + '/' + cd_cnscutivo + '/' + IdSector)
   }
 
 }
