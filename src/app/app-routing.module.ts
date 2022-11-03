@@ -72,13 +72,14 @@ const routes: Routes = [
       {
         path: 'usuarios',
         component: UsuariosComponent
-      },    
+      },
+      {
+        path: 'rep-usuarios',
+        component: ReporteComponent
+      },
     ]
   },
-  {
-    path: 'reporte',
-    component: ReporteComponent
-  },
+  
 
 ];
 
