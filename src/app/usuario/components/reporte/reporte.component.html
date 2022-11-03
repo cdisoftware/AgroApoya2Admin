@@ -39,17 +39,17 @@
 <div class="row mt-2">
   <div class="col-2"></div>
   <div class="col-3">
-    <button  class="btn btn-top w-100 " (click)="buscar()">
+    <button  class="btn btn-top w-100 btn btn-agro-prin " (click)="buscar()">
       Buscar
     </button>
   </div>
   <div class="col-3">
-    <button  class="btn btn-top w-100" (click)="limpiarDatos()">
+    <button  class="btn btn-top w-100 btn btn-agro-prin" (click)="limpiarDatos()">
       Limpiar
     </button>
   </div>
   <div class="col-3">
-    <button  class="btn btn-top w-100 ">
+    <button  class="btn btn-top w-100 btn btn-agro-prin " (click)="descargar()">
       Descargar Excel
     </button>
   </div>
@@ -60,15 +60,27 @@
 <table class="tabla mx-auto" >
   <tr>
     <th>Usucodig</th>
-    <th>Tipo Persona</th>
-    <th>Nombre</th>
+    <th>
+      <button class="btn btn-sort" (click)="organizarTP()"> Tipo Persona </button>
+    </th>
+    <th>
+      <button class="btn btn-sort" (click)="organizarN()"> Nombre </button>
+    </th>
     <th>Celular</th>
-    <th>Correo</th>
-    <th>Fecha creación</th>
+    <th>
+      <button class="btn btn-sort" (click)="organizarM()"> Correo </button>
+    </th>
+    <th>
+      <button class="btn btn-sort" (click)="organizarF()"> FechaCreacion </button>
+    </th>
     <th style="width:5%">Tipo Documento</th>
     <th>Número documento</th>
-    <th>Departamento</th>
-    <th>Ciudad</th>
+    <th>
+      <button class="btn btn-sort" (click)="organizarD()"> Departamento</button>
+    </th>
+    <th>
+      <button class="btn btn-sort" (click)="organizarC()"> Ciudad </button>
+    </th>
     <th>Dirección</th>
     <th>Observacion</th>
     <th>Acciones</th>
@@ -76,7 +88,7 @@
   <tr *ngFor="let Usu of ArrayUsuarios;">
     <th>{{Usu.Usucodig}}</th>
     <th>{{Usu.DesTipoPersona}}</th>
-    <th>{{Usu.NombrePersona}}</th>
+    <th>{{Usu.NombrePersona}} {{Usu.ApellidoPersona}}</th>
     <th>{{Usu.NumeroCelular}}</th>
     <th>{{Usu.CorreoPersona}}</th>
     <th>{{Usu.FechaCreacion}}</th>
@@ -87,7 +99,173 @@
     <th>{{Usu.Direccion}}</th>
     <th>{{Usu.Observacion}}</th>
     <th>
-      <button class="btn"> ver más </button>
+      <button class="btn" (click)="AbrirModal(Usu, ModalRespuesta)"> ver más </button>
     </th>
   </tr>
 </table>
+
+
+<ng-template #ModalRespuesta let-modal>
+  <div class="modal-header">
+      <h1>Información</h1>
+      <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body text-center">
+    <div class="row justify-content-start">
+      <div class="col-12">
+        {{nombreM}}
+      </div>
+      </div>
+      <div class="row justify-content-start">
+        <div class="col-12">
+          {{tipoUsuarioM}}
+        </div>
+      </div>
+      <div class="row justify-content-start">
+        <div class="col-6">
+          {{codigoM}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          {{nombreM}}
+        </div>
+        <div class="col-6">
+          {{mailM}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          {{tipoDocumento}}
+        </div>
+        <div class="col-6">
+          {{numDoc}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          {{celular}}
+        </div>
+        <div class="col-6">
+          {{direccion}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          {{dpto}}
+        </div>
+        <div class="col-6">
+          {{ciudad}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          {{observaciones}}
+        </div>
+      </div>
+  </div>
+  <div class="modal-body text-center" *ngIf="cliente">
+    <div class="row">
+      <div class="col-6">
+        {{razonS}}
+      </div>
+      <div class="col-6">
+        {{NIT}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        {{descripcion}}
+      </div>
+      <div class="col-6">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        {{tipoC}}
+      </div>
+      <div class="col-6">
+        {{coordenadas}}
+      </div>
+    </div>
+  </div>
+  <div class="modal-body text-center" *ngIf="transportista">
+    <div class="row">
+      <div class="col-6">
+        {{coordenadas}}
+      </div>
+      <div class="col-6">
+      </div>
+    </div>
+    <div *ngIf="conductores">
+      <p class="textoConductor"> MIS CONDUCTORES: </p>
+      <div *ngFor="let con of arrayConductores" class="conductores">
+        <div class="row">
+          <div class="col-6">
+            {{con.IdConductor}}
+          </div>
+          <div class="col-6">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            {{con.NombreConductor}}
+          </div>
+          <div class="col-6">
+            {{con.CorreoPersona}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            {{con.DescTipoDocumento}}
+          </div>
+          <div class="col-6">
+            {{con.NumeroDocumento}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            {{con.Telefono}}
+          </div>
+          <div class="col-6">
+            {{con.Direccion}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            {{con.DescDepa}}
+          </div>
+          <div class="col-6">
+            {{con.DesCiudad}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            {{con.Coordenadas}}
+          </div>
+          <div class="col-6">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            {{con.Placa}}
+          </div>
+          <div class="col-6">
+            {{con.DesCarroceria}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            {{con.DesPesoCarro}}
+          </div>
+          <div class="col-6">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+      <button (keyup.enter)="modal.close()" type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+  </div>
+  <br>
+</ng-template>

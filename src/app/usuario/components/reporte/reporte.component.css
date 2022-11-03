@@ -1,15 +1,27 @@
-.btn-top{
-  border-width: 2px;
-  border-color: black;
-  height: 40px;
-  background-color: white;
-}
+
 
 .tabla{
   width: 90%;
 }
 
 table, th {
-  border: 3px solid black;
+  border: 3px solid #397c97;
   border-collapse: collapse;
+  font-weight: 500;
+
+}
+
+.btn-sort{
+ font-weight: 500;
+}
+
+.conductores{
+  border: 1px solid #397c97;
+  color: #397c97;
+  padding: 5px;
+}
+
+.textoConductor{
+  color: #397c97;
+  font-weight: bold;
 }
