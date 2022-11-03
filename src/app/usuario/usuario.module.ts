@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { UsuariosComponent } from './components/usuarios/usuarios.component';
+import { ComprasComponent } from './components/compras/compras.component';
 
 
 @NgModule({
@@ -7,6 +9,9 @@ import { CommonModule } from '@angular/common';
 
 
 
+  
+    UsuariosComponent,
+             ComprasComponent
   ],
   imports: [
     CommonModule

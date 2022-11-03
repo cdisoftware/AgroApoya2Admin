@@ -119,10 +119,10 @@
         <div class="row">
             <div class="col-sm-6 br">
                 <label class="col-sm-12 Llave">Departamento</label>
-                <select name="SelectDepa" #SelectDepa id="SelectDepa" class="form-control form-control-sm textBox"
-                    (change)='SelDepa(SelectDepa.value)'>
+                <select name="Departamento"id="Departamento" #SelectDepa id="SelectDepa" class="form-control form-control-sm textBox"
+                    (change)='SelDepa()' [(ngModel)]="objDepartamento">
                     <option value="0">Departamento (Obligatorio)</option>
-                    <option *ngFor="let Departamento of ArrayDepa;" [value]="Departamento.CD_RGION"
+                    <option *ngFor="let Departamento of ArrayDepa;" [value]="Departamento.CD_RGION" [ngValue]="Departamento"
                         [selected]="Departamento.CD_RGION == IdDepartamento">
                         {{Departamento.DSCRPCION}}
                     </option>
