@@ -201,8 +201,9 @@ export class TransportistaComponent implements OnInit, OnDestroy {
         this.rutas.navigateByUrl('/home/costeo')
         this.sectoresservices.ConsultaConductoresOferta('1', this.SessionOferta).subscribe(ResultConsult => {
           if (ResultConsult.length > 0) {
-            for (var i = 0; i <= ResultConsult.length; i++) {              
+            for (var i = 0; i <= ResultConsult.length; i++) {               
               if(ResultConsult[i].ESTADO=='3'){
+                //Rechazado
                 const BodyCorreoInd={
                   IdPlantilla: 8,
                   usucodig: ResultConsult[i].USUCODIG_TRANS,
@@ -212,8 +213,12 @@ export class TransportistaComponent implements OnInit, OnDestroy {
                 this.sectoresservices.EnviarCorreoIndividual('1',BodyCorreoInd).subscribe(ResultCI=>{
                   console.log(ResultCI)
                 })
+                this.sectoresservices.EnviarSms('6', ResultConsult[i].ID_CNDCTOR, this.SessionOferta, ResultConsult[i].ID_SCTOR_OFRTA, '0').subscribe(Resultado => {
+                  console.log(Resultado)
+                })                
               }
               else if(ResultConsult[i].ESTADO=='1'){
+                //Aprobado
                 const BodyCorreoInd={
                   IdPlantilla: 7,
                   usucodig: ResultConsult[i].USUCODIG_TRANS,
@@ -223,11 +228,20 @@ export class TransportistaComponent implements OnInit, OnDestroy {
                 this.sectoresservices.EnviarCorreoIndividual('1',BodyCorreoInd).subscribe(ResultCI=>{
                   console.log(ResultCI)
                 })
+                this.sectoresservices.EnviarSms('5', ResultConsult[i].ID_CNDCTOR, this.SessionOferta, ResultConsult[i].ID_SCTOR_OFRTA, '0').subscribe(Resultado => {
+                  console.log(Resultado)
+                }) 
               }
             }
           }
         })
       }
+    })
+  }
+
+  EnviarSms(bandera:string) {
+    this.sectoresservices.EnviarSms(bandera, '0', this.SessionOferta, '0', '0').subscribe(Resultado => {
+      console.log(Resultado)
     })
   }
 

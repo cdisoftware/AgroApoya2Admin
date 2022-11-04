@@ -379,6 +379,7 @@ export class SectorizacionComponent implements OnInit {
           this.sectoresservices.CorreoMasivo('1', '6', '3', this.SessionOferta).subscribe(ResultCorreo => {
             console.log(ResultCorreo)
           })
+          this.EnviarSms('4');
         }
       })
     }
@@ -395,6 +396,12 @@ export class SectorizacionComponent implements OnInit {
     else {
       this.ModalInsert?.close();
     }
+  }
+
+  EnviarSms(bandera:string) {
+    this.sectoresservices.EnviarSms(bandera, '0', this.SessionOferta, '0', '0').subscribe(Resultado => {
+      console.log(Resultado)
+    })
   }
 
 }
