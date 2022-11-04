@@ -306,7 +306,7 @@ export class ConciliacionComponent implements OnInit {
             id_conductor: 0
           }
           this.EnviarCorreo(datoscorreo);
-          this.EnviarSms();
+          this.EnviarSms('1');
         }
 
 
@@ -357,6 +357,7 @@ export class ConciliacionComponent implements OnInit {
           id_conductor: 0
         }
         this.EnviarCorreo(datoscorreo);
+        this.EnviarSms('3');
       }
     })
     //this.Respuesta = 'No esta disponible en este momento'
@@ -371,8 +372,8 @@ export class ConciliacionComponent implements OnInit {
     })
   }
 
-  EnviarSms() {
-    this.ServiciosValorar.EnviarSms('1', this.IdUsuario, this.IdOferta, '0', '0').subscribe(Resultado => {
+  EnviarSms(bandera:string) {
+    this.ServiciosValorar.EnviarSms(bandera, this.IdUsuario, this.IdOferta, '0', '0').subscribe(Resultado => {
       console.log(Resultado)
     })
   }

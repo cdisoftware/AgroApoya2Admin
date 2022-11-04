@@ -66,6 +66,7 @@ export class CrearofertaComponent implements OnInit {
   NomDepa: string = 'Choconta';
   ValidaCam: string;
   ArrayCamposValida: { campo: string; campof: string; class: string; imagen: string; }[];
+  SessionIdOferta: any ='0';
 
 
   constructor(
@@ -488,13 +489,22 @@ export class CrearofertaComponent implements OnInit {
         IMAGEN5: this.NomImagen5
       }
       this.ServiciosOferta.CrearOferta('3', this.IdEmpaque, datosinsert).subscribe(Resultado => {
+        console.log(Resultado)
         var arrayrespuesta = Resultado.split('|');
         this.Respuesta = arrayrespuesta[1];
         if (arrayrespuesta[0] != '-1') {
           this.rutas.navigateByUrl('home/buscaroferta');
+          this.SessionIdOferta=arrayrespuesta[0];
+          this.EnviarSms('2');
         }
       })
     }
+  }
+
+  EnviarSms(bandera:string) {
+    this.ServiciosValorar.EnviarSms(bandera, this.IdProductor, this.SessionIdOferta, '0', '0').subscribe(Resultado => {
+      console.log(Resultado)
+    })
   }
 
   SelEJornada(jornada: string) {
