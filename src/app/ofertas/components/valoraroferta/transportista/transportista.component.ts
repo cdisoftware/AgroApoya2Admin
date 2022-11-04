@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
   styleUrls: ['./transportista.component.css']
 })
 
-export class TransportistaComponent implements OnInit {
+export class TransportistaComponent implements OnInit, OnDestroy {
 
   SessionOferta: string = '';
   SessionCiudad: any;
@@ -35,7 +35,8 @@ export class TransportistaComponent implements OnInit {
   DataConductor: any[];
   SessionValorFlete: any;
   Sector: string;
-  Transpor: string;
+  Transpor: string;  
+  Intervalotiempo: any ;
 
   constructor(public sectoresservices: ValorarofertaService, private modalService: NgbModal, private rutas: Router, private cookies: CookieService, private SeriviciosGenerales: MetodosglobalesService) { }
 
@@ -53,6 +54,15 @@ export class TransportistaComponent implements OnInit {
     this.ConsultaCiudadOferta();
     this.ConsultaCondOferta();
     this.ConsultaDetalleOferta();
+    this.Intervalotiempo = setInterval(()=>{
+      this.ConsultaCondOferta();
+    }, 5000);
+  }
+
+  ngOnDestroy() {    
+    if (this.Intervalotiempo) {
+      clearInterval(this.Intervalotiempo);
+    }
   }
 
   ConsultaDetalleOferta() {
@@ -62,8 +72,8 @@ export class TransportistaComponent implements OnInit {
   }
 
   ConsultaCondOferta() {
+    console.log('Consulta conductores')
     this.sectoresservices.ConsultaConductoresOferta('1', this.SessionOferta).subscribe(ResultConsult => {
-      console.log(ResultConsult)
       if (ResultConsult.length > 0) {
         this.ValidaConsulta = '0';
         this.DataTransOferta = ResultConsult;        

@@ -5,6 +5,7 @@ import { CrearofertaService } from './../../../../core/crearoferta.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import {formatCurrency, getCurrencySymbol} from '@angular/common';
 
 @Component({
   selector: 'app-conciliacion',
@@ -49,7 +50,7 @@ export class ConciliacionComponent implements OnInit {
   ArrayEmpaque: any = [];
   Respuesta: string = '';
   NomEstado: string = '';
-  ValorSugerido: string = ''
+  ValorSugerido: string = '';
   RutaImagen: string = this.SeriviciosGenerales.RecuperaRutaImagenes();
   IdEstadoOferta: string = '';
   RutaSiguiente: string = '';
@@ -58,6 +59,8 @@ export class ConciliacionComponent implements OnInit {
   ValidaDeclinar: string = '';
   maPrecioFinal: string = '';
   IdProductor: string = '';
+  Valor: string;
+  
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
     private ServiciosValorar: ValorarofertaService,
@@ -257,7 +260,7 @@ export class ConciliacionComponent implements OnInit {
   AprobarOferta(modalAprobar: any) {
     //Abre popup de aprobar oferta y ejecuta servicio de consulta ciudades
     if (this.ValorSugerido != '') {
-      this.maPrecioFinal = this.ValorSugerido
+      this.maPrecioFinal = this.ValorSugerido.toString();
     } else {
       this.maPrecioFinal = this.ValorUnidad;
     }
@@ -303,7 +306,7 @@ export class ConciliacionComponent implements OnInit {
             id_conductor: 0
           }
           this.EnviarCorreo(datoscorreo);
-          this.EnviarSms();
+          this.EnviarSms('1');
         }
 
 
@@ -321,6 +324,12 @@ export class ConciliacionComponent implements OnInit {
   SelACiudad(ciudad: string) {
     //Captura ciudad seleccionada
     this.IdACiudad = ciudad;
+  }
+
+  Formatovalor(){
+    let valor = Number(this.ValorSugerido)
+    this.Valor=formatCurrency(valor, 'en-US', '');
+    console.log(this.ValorSugerido)
   }
 
   EnviarPropuesta(ModalRespuesta: any) {
@@ -348,6 +357,7 @@ export class ConciliacionComponent implements OnInit {
           id_conductor: 0
         }
         this.EnviarCorreo(datoscorreo);
+        this.EnviarSms('3');
       }
     })
     //this.Respuesta = 'No esta disponible en este momento'
@@ -362,8 +372,8 @@ export class ConciliacionComponent implements OnInit {
     })
   }
 
-  EnviarSms() {
-    this.ServiciosValorar.EnviarSms('1', this.IdUsuario, this.IdOferta, '0', '0').subscribe(Resultado => {
+  EnviarSms(bandera:string) {
+    this.ServiciosValorar.EnviarSms(bandera, this.IdUsuario, this.IdOferta, '0', '0').subscribe(Resultado => {
       console.log(Resultado)
     })
   }
