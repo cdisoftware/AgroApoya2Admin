@@ -212,6 +212,7 @@ export class TransportistaComponent implements OnInit, OnDestroy {
                 this.sectoresservices.EnviarCorreoIndividual('1',BodyCorreoInd).subscribe(ResultCI=>{
                   console.log(ResultCI)
                 })
+                this.EnviarSms('5');
               }
               else if(ResultConsult[i].ESTADO=='1'){
                 const BodyCorreoInd={
@@ -223,11 +224,18 @@ export class TransportistaComponent implements OnInit, OnDestroy {
                 this.sectoresservices.EnviarCorreoIndividual('1',BodyCorreoInd).subscribe(ResultCI=>{
                   console.log(ResultCI)
                 })
+                this.EnviarSms('6');
               }
             }
           }
         })
       }
+    })
+  }
+
+  EnviarSms(bandera:string) {
+    this.sectoresservices.EnviarSms(bandera, '0', this.SessionOferta, '0', '0').subscribe(Resultado => {
+      console.log(Resultado)
     })
   }
 
