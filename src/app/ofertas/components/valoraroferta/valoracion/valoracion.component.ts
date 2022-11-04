@@ -216,51 +216,51 @@ export class ValoracionComponent implements OnInit {
         if (this.ArrayCamposValida[i].campo == 'DesTopp') {
           if (this.DesTopp == '' || this.DesTopp == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'VlrUniTopp') {
           if (this.VlrUniTopp == '' || this.VlrUniTopp == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'SessionTipoTopp') {
           if (this.SessionTipoTopp == '0' || this.SessionTipoTopp == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'UnidMaxTopp') {
           if (this.UnidMaxTopp == '' || this.UnidMaxTopp == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'UnidOferta') {
           if (this.UnidOferta == '' || this.UnidOferta == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
       }
@@ -734,51 +734,51 @@ export class ValoracionComponent implements OnInit {
         if (this.ArrayCamposValida[i].campo == 'SessionTipoComI') {
           if (this.SessionTipoComI == '' || this.SessionTipoComI == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'validacomision') {
           if (validacomision == '' || validacomision == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'MinUnidI') {
           if (this.MinUnidI == '' || this.MinUnidI == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'MaxUnidI') {
           if (this.MaxUnidI == '' || this.MaxUnidI == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'PreFinI') {
           if (this.PreFinI == '' || this.PreFinI == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
       }
@@ -906,111 +906,111 @@ export class ValoracionComponent implements OnInit {
         if (this.ArrayCamposValida[i].campo == 'SessionTipoComG') {
           if (this.SessionTipoComG == '' || this.SessionTipoComG == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'validacomision') {
           if (validacomision == '' || validacomision == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'MinUnidLider') {
           if (this.MinUnidLider == '' || this.MinUnidLider == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'MaxUnidLider') {
           if (this.MaxUnidLider == '' || this.MaxUnidLider == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'PorcDescLider') {
           if (this.PorcDescLider == '' || this.PorcDescLider == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'CantGrupos') {
           if (this.CantGrupos == '' || this.CantGrupos == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'UnidXGrupos') {
           if (this.UnidXGrupos == '' || this.UnidXGrupos == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'MinUnidPart') {
           if (this.MinUnidPart == '' || this.MinUnidPart == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'MaxUnidPart') {
           if (this.MaxUnidPart == '' || this.MaxUnidPart == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'PrecioFinLider') {
           if (this.PrecioFinLider == '' || this.PrecioFinLider == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'PrecioFinPart') {
           if (this.PrecioFinPart == '' || this.PrecioFinPart == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
       }
@@ -1177,161 +1177,161 @@ export class ValoracionComponent implements OnInit {
         if (this.ArrayCamposValida[i].campo == 'SessionTipoComI') {
           if (this.SessionTipoComI == '' || this.SessionTipoComI == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'validacomision') {
           if (validacomision == '' || validacomision == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'MinUnidI') {
           if (this.MinUnidI == '' || this.MinUnidI == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'MaxUnidI') {
           if (this.MaxUnidI == '' || this.MaxUnidI == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'PreFinI') {
           if (this.PreFinI == '' || this.PreFinI == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'SessionTipoComG') {
           if (this.SessionTipoComG == '' || this.SessionTipoComG == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'validacomisionG') {
           if (validacomisionG == '' || validacomisionG == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'MinUnidLider') {
           if (this.MinUnidLider == '' || this.MinUnidLider == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'MaxUnidLider') {
           if (this.MaxUnidLider == '' || this.MaxUnidLider == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'PorcDescLider') {
           if (this.PorcDescLider == '' || this.PorcDescLider == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'CantGrupos') {
           if (this.CantGrupos == '' || this.CantGrupos == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'UnidXGrupos') {
           if (this.UnidXGrupos == '' || this.UnidXGrupos == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'MinUnidPart') {
           if (this.MinUnidPart == '' || this.MinUnidPart == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'MaxUnidPart') {
           if (this.MaxUnidPart == '' || this.MaxUnidPart == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'PrecioFinLider') {
           if (this.PrecioFinLider == '' || this.PrecioFinLider == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'PrecioFinPart') {
           if (this.PrecioFinPart == '' || this.PrecioFinPart == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
       }
@@ -1404,31 +1404,31 @@ export class ValoracionComponent implements OnInit {
         if (this.ArrayCamposValida[i].campo == 'VigenDesde') {
           if (this.VigenDesde == '') {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'VigenHasta') {
           if (this.VigenHasta == '') {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'FechaEntrega') {
           if (this.FechaEntrega == '') {
             this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
             this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
       }

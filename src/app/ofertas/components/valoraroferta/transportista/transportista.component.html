@@ -3,7 +3,7 @@
     <br>
     <h1>Asignación transportista</h1>
     <div class="br row justify-content-center">
-        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/barra4.png" style="width: 65%;">
+        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/barra4.png" style="width: 65%;">
     </div>
     <div class="row justify-content-center br tarjetadetalle" *ngFor="let oferta of DataOferta">
         <div class="row m-2">
@@ -189,7 +189,7 @@
             <div class="row">
                 <h2 class="TituloDetalle col-sm-9 mt-2">Transportistas Asociados</h2>
                 <button class="SinEstilo col-sm-1" (click)="ConsultaCondOferta()">
-                    <img src="./../../../../../assets/ImagenesAgroApoya2Admin/actualizar.png">
+                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/actualizar.png">
                 </button>
             </div>
         </div>
@@ -216,13 +216,13 @@
                 <td>{{transportista.NOM_ESTADO}}</td>
                 <td> 
                     <button class="SinEstilo" title="Aprueba transportista" (click)="ApruebaTransportista(transportista, ModalRespuesta)">
-                        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png">
+                        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png">
                     </button>
                     <button class="SinEstilo" title="Eliminar transportista" (click)="EliminaTransportista(transportista, ModalRespuesta)">
-                        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/basurarojo.png">
+                        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
                     </button>
                     <button class="SinEstilo" title="Rechazar transportista" (click)="RechazarTransportista(transportista, ModalRespuesta)">
-                        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png">
+                        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png">
                     </button>
                 </td>
             </tr>

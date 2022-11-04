@@ -3,7 +3,7 @@
     <div class="container bg-white">
         <h1>Costeo Oferta</h1>
         <div class="row justify-content-center">
-            <img src="./../../../../../assets/ImagenesAgroApoya2Admin/barra5.png" style="width: 65%;">
+            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/barra5.png" style="width: 65%;">
         </div>
         <!-- <div class="row justify-content-center br">
             <div class="col-sm-3"><label class="Llave">Producto:&nbsp;</label><label>{{Producto}}</label></div>
@@ -208,7 +208,7 @@
                     <td>{{Costo.VLOR}}</td>
                     <td>
                         <button class="SinEstilo" (click)="EliminarCosteo(Costo)">
-                            <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Cerrar.png">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Cerrar.png">
                         </button>
                     </td>
                 </tr>
@@ -261,10 +261,10 @@
                 </div>
                 <div class="col-sm-2">
                     <button class="SinEstilo" *ngIf="banderaAgregar=='1'" (click)="AgregaConcepto(ModalRespuesta)">
-                        <img src="../../../../../assets/ImagenesAgroApoya2Admin/mas.png" class="BtnimgTamano" />
+                        <img src="../../../../../assets/ImagenesAgroApoya2Adm/mas.png" class="BtnimgTamano" />
                     </button>
                     <button class="SinEstilo" *ngIf="banderaAgregar=='2'" (click)="EditaConcepto(ModalRespuesta)">
-                        <img src="../../../../../assets/ImagenesAgroApoya2Admin/Editar.png" class="BtnimgTamano" />
+                        <img src="../../../../../assets/ImagenesAgroApoya2Adm/Editar.png" class="BtnimgTamano" />
                     </button>
                 </div>
 
@@ -281,13 +281,13 @@
                         <td>{{Respu.nombre}}</td>
                         <td class="text-center">
                             <button class="SinEstilo" title="Editar" (click)="SeleccionarEditarConcepto(Respu)">
-                                <img src="../../../../../assets/ImagenesAgroApoya2Admin/Editar.png"
+                                <img src="../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
                                     class="BtnimgTamanoPeque mr-2" />
                             </button>
                         </td>
                         <td class="text-center">
                             <button class="SinEstilo" title="Eliminar" (click)="EliminaConcepto(ModalRespuesta, Respu)">
-                                <img src="../../../../../assets/ImagenesAgroApoya2Admin/basura.png"
+                                <img src="../../../../../assets/ImagenesAgroApoya2Adm/basura.png"
                                     class="BtnimgTamanoPeque mr-2" />
                             </button>
                         </td>
