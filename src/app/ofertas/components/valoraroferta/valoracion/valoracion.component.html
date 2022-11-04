@@ -3,7 +3,7 @@
     <br>
     <h1>Valorar Oferta</h1>
     <div class="row justify-content-center br ">
-        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/barra5.png" style="width: 65%;">
+        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/barra5.png" style="width: 65%;">
     </div>
     <div class="row justify-content-center br tarjetadetalle" *ngFor="let oferta of DataOferta">
         <div class="row m-2">
@@ -288,7 +288,7 @@
                         <div class="col-sm-12">
                             <label class="col-sm-2 Llave">Descuentos adicionales</label>
                             <button class="bot col-sm-1 SinEstilo">
-                                <img src="../../../../../assets/ImagenesAgroApoya2Admin/lupa.png" alt="Agregar descuento adicional">
+                                <img src="../../../../../assets/ImagenesAgroApoya2Adm/lupa.png" alt="Agregar descuento adicional">
                             </button>
                         </div>
                     </div> -->
@@ -403,7 +403,7 @@
                         <div class="col-sm-12">
                             <label class="col-sm-2 Llave">Descuentos adicionales</label>
                             <button class="bot col-sm-1 SinEstilo">
-                                <img src="../../../../../assets/ImagenesAgroApoya2Admin/lupa.png" alt="Agregar descuento adicional">
+                                <img src="../../../../../assets/ImagenesAgroApoya2Adm/lupa.png" alt="Agregar descuento adicional">
                             </button>
                         </div>
                     </div> -->
@@ -484,11 +484,11 @@
                                 <td>{{topping.MaxCantidad}}</td>                                                                                          
                                 <td> 
                                     <button class="SinEstilo m-1" title="Activar/Desactivar amparado" (click)="ModificaTopping('1', topping)">
-                                        <img *ngIf="topping.Estado=='1'" src="./../../../../../assets/ImagenesAgroApoya2Admin/visible.png" >
-                                        <img *ngIf="topping.Estado=='2'" src="./../../../../../assets/ImagenesAgroApoya2Admin/notvisible.png">
+                                        <img *ngIf="topping.Estado=='1'" src="./../../../../../assets/ImagenesAgroApoya2Adm/visible.png" >
+                                        <img *ngIf="topping.Estado=='2'" src="./../../../../../assets/ImagenesAgroApoya2Adm/notvisible.png">
                                     </button>
                                     <button class="SinEstilo m-1" title="Eliminar amparado">
-                                        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/basurarojo.png" (click)="ModificaTopping('2', topping)">
+                                        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" (click)="ModificaTopping('2', topping)">
                                     </button>                                    
                                 </td>
                             </tr>

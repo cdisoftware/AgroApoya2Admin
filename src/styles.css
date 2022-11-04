@@ -85,11 +85,11 @@ h2 {
 }
 
 body {
-    background: url(./assets/ImagenesAgroApoya2Admin/FondoVerdurasDos.png);
+    background: url(./assets/ImagenesAgroApoya2Adm/FondoVerdurasDos.png);
 }
 
 .Fondo {
-    background: url(./assets/ImagenesAgroApoya2Admin/FondoVerdurasDos.png) scroll;
+    background: url(./assets/ImagenesAgroApoya2Adm/FondoVerdurasDos.png) scroll;
     background-position: 50% 50%
 }
 
