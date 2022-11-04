@@ -63,7 +63,7 @@ export class CrearofertaComponent implements OnInit {
   objCiudad: any = '0';
   objDepartamento: any = '0';
   NomCiudad: string = '';
-  NomDepa: string = '';
+  NomDepa: string = 'Choconta';
   ValidaCam: string;
   ArrayCamposValida: { campo: string; campof: string; class: string; imagen: string; }[];
 
@@ -625,8 +625,7 @@ export class CrearofertaComponent implements OnInit {
       this.map = new google.maps.Map(
         document.getElementById("map") as HTMLElement,
         {
-          zoom: 12,
-
+          zoom: 15,
         }
       );
       this.map.addListener("click", (e: any) => {

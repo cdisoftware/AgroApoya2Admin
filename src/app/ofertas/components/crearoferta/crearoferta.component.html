@@ -62,7 +62,7 @@
                     (change)='SelTamano(SelectTamano.value)'>
                     <option value="0">Tamaño(Obligatorio)</option>
                     <option *ngFor="let Tamano of ArrayTamano;" [value]="Tamano.id_tamano"
-                        [selected]="Tamano.id_tamano == IdCondicion">
+                        [selected]="Tamano.id_tamano == Tamano">
                         {{Tamano.des_tamano}}
                     </option>
                 </select>
@@ -93,8 +93,8 @@
         <div class="row">
             <div class="col-sm-12 br">
                 <label class="col-sm-12 Llave">Valor Total Oferta</label>
-                <input type="number" class="form-control form-control-sm textBox" id="ValorTOferta"
-                    placeholder="Valor Total Oferta (Obligatorio)" disabled [(ngModel)]="ValorTotalOferta"
+                <input type="text" class="form-control form-control-sm textBox" id="ValorTOferta"
+                    placeholder="Valor Total Oferta (Obligatorio)" disabled [ngModel]="ValorTotalOferta | currency"
                     name="ValorTotalOferta">
             </div>
         </div>

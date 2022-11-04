@@ -32,7 +32,7 @@
         <div class="row br">
             <div class="col-sm-4">
                 <label class="col-sm-12 Llave">Precio Sugerido por Unidad </label>
-                <input type="number" class="form-control form-control-sm textBox" placeholder="Precio Sugerido" [(ngModel)]="ValorSugerido" name="ValorSugerido">
+                <input type="text" class="form-control form-control-sm textBox" placeholder="Precio Sugerido" [(ngModel)]="ValorSugerido" [value]="Valor" name="ValorSugerido" (change)="Formatovalor()">                
             </div>
         </div>
         <hr>
@@ -204,6 +204,7 @@
                 <button class="btn btn-agro-prin col-sm-12" (click)="Enviar()">Siguiente</button>
             </div>
         </div>
+        <br>
     </div>
     <ng-template #templateEditar let-modal>
         <div class="modal-header">
