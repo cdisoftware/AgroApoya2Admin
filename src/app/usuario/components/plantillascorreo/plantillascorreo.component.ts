@@ -185,13 +185,13 @@ export class PlantillascorreoComponent implements OnInit {
     this.AsuntoForm = '';
     this.EstadoForm = '0';
     this.descripcionForm = '';
-    this.Imagencabeza = '../../../../assets/ImagenesAgroApoya2Admin/imgtres.png';
-    this.ImagenPie = '../../../../assets/ImagenesAgroApoya2Admin/imgtres.png';
+    this.Imagencabeza = '../../../../assets/ImagenesAgroApoya2Adm/imgtres.png';
+    this.ImagenPie = '../../../../assets/ImagenesAgroApoya2Adm/imgtres.png';
     this.CaracteresDescripcion();
 
   }
 
-  Imagencabeza: string = '../../../../assets/ImagenesAgroApoya2Admin/imgtres.png';
+  Imagencabeza: string = '../../../../assets/ImagenesAgroApoya2Adm/imgtres.png';
   public CargaImagenCabeza(event: any, modalmensaje: any) {
 
     if (!(/\.(jpg|png)$/i).test(event.target.files[0].name)) {
@@ -229,7 +229,7 @@ export class PlantillascorreoComponent implements OnInit {
 
 
 
-  ImagenPie: string = '../../../../assets/ImagenesAgroApoya2Admin/imgtres.png';
+  ImagenPie: string = '../../../../assets/ImagenesAgroApoya2Adm/imgtres.png';
   public CargaImagenPie(event: any, modalmensaje: any) {
     if (!(/\.(jpg|png)$/i).test(event.target.files[0].name)) {
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -285,10 +285,10 @@ export class PlantillascorreoComponent implements OnInit {
     } else if (this.descripcionForm == undefined || this.descripcionForm == null || this.descripcionForm == '') {
       this.Respuesta = 'El campo descripción es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.Imagencabeza == '../../../../assets/ImagenesAgroApoya2Admin/imgtres.png') {
+    } else if (this.Imagencabeza == '../../../../assets/ImagenesAgroApoya2Adm/imgtres.png') {
       this.Respuesta = 'El campo imagen encabezado es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.ImagenPie == '../../../../assets/ImagenesAgroApoya2Admin/imgtres.png') {
+    } else if (this.ImagenPie == '../../../../assets/ImagenesAgroApoya2Adm/imgtres.png') {
       this.Respuesta = 'El campo imagen pie de pagina es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else {
@@ -363,10 +363,10 @@ export class PlantillascorreoComponent implements OnInit {
     } else if (this.descripcionForm == undefined || this.descripcionForm == null || this.descripcionForm == '') {
       this.Respuesta = 'El campo descripción es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.Imagencabeza == '../../../../assets/ImagenesAgroApoya2Admin/imgtres.png') {
+    } else if (this.Imagencabeza == '../../../../assets/ImagenesAgroApoya2Adm/imgtres.png') {
       this.Respuesta = 'El campo imagen encabezado es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.ImagenPie == '../../../../assets/ImagenesAgroApoya2Admin/imgtres.png') {
+    } else if (this.ImagenPie == '../../../../assets/ImagenesAgroApoya2Adm/imgtres.png') {
       this.Respuesta = 'El campo imagen pie de pagina es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else {
@@ -396,7 +396,7 @@ export class PlantillascorreoComponent implements OnInit {
     }
   }
 
-  ArchivoAdj: string = '../../../../assets/ImagenesAgroApoya2Admin/ic_adjunto.PNG';
+  ArchivoAdj: string = '../../../../assets/ImagenesAgroApoya2Adm/ic_adjunto.PNG';
   public CargaArchivoAdjunto(event: any) {
 
     this.serviciosplantillacorreos.postAdjuntoPlantillaCorreo(event.target.files[0]).subscribe(

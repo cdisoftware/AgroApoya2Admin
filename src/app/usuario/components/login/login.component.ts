@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.cookies.deleteAll();
-    this.imagen = "../../../../assets/ImagenesAgroApoya2Admin/ver.png";
+    this.imagen = "../../../../assets/ImagenesAgroApoya2Adm/ver.png";
   }
 
   login(templateMensaje: any) {
@@ -64,16 +64,16 @@ export class LoginComponent implements OnInit {
     }
     let elemento: any = document.getElementById('Password');
     elemento.type = "password";
-    this.imagen = "../../../../assets/ImagenesAgroApoya2Admin/ver.png";
+    this.imagen = "../../../../assets/ImagenesAgroApoya2Adm/ver.png";
   }
   ocultarPass() {
     let elemento: any = document.getElementById('Password');
-    if (this.imagen == "../../../../assets/ImagenesAgroApoya2Admin/ver.png") {
+    if (this.imagen == "../../../../assets/ImagenesAgroApoya2Adm/ver.png") {
       elemento.type = "text";
-      this.imagen = "../../../../assets/ImagenesAgroApoya2Admin/novisible.png";
+      this.imagen = "../../../../assets/ImagenesAgroApoya2Adm/novisible.png";
     } else {
       elemento.type = "password";
-      this.imagen = "../../../../assets/ImagenesAgroApoya2Admin/ver.png";
+      this.imagen = "../../../../assets/ImagenesAgroApoya2Adm/ver.png";
     }
   }
 
