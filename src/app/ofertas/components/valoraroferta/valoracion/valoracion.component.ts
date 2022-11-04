@@ -401,7 +401,7 @@ export class ValoracionComponent implements OnInit {
 
   ConsultaSectores() {
     this.serviciosvaloracion.ConsultaSectoresOferta('2', this.SessionOferta).subscribe(ResultConsulta => {
-      //console.log(ResultConsulta)
+      console.log(ResultConsulta)
       if (ResultConsulta.length > 0) {
         this.keywordSec = 'DSCRPCION_SCTOR';
         this.DataSectores = ResultConsulta;
@@ -1487,6 +1487,13 @@ export class ValoracionComponent implements OnInit {
         this.serviciosvaloracion.CorreoMasivo('1', '9', '2', this.SessionOferta).subscribe(ResultCorreo => {
           console.log(ResultCorreo)
         })
+        if(this.DataSectores.length>0){
+          for(var i=0; i<this.DataSectores.length;i++){
+            this.serviciosvaloracion.EnviarSms('7', '0', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA, '0').subscribe(Resultado => {
+              console.log(Resultado)
+            })
+          }
+        }        
       }
     })
   }
