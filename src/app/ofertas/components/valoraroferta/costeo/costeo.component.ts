@@ -30,6 +30,7 @@ export class CosteoComponent implements OnInit {
   Respuesta: string = '';
   lblConceptoAgregar: string = '';
   arregloListaConcepto: any;
+  ConceptoSel: string;
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -67,6 +68,7 @@ export class CosteoComponent implements OnInit {
   LimpiarFiltro() {
     this.IdConcepto = '0'
     this.lblConceptoAgregar = '';
+    this.ConceptoSel='';
   }
 
   ConsultaConceptos() {
@@ -100,6 +102,9 @@ export class CosteoComponent implements OnInit {
           this.ValorTotal = (Number(this.ValorTotal) + Number(this.VTotal)).toString()
         }
         this.ConsultaCosteo();
+        this.ConceptoSel='';
+        this.VTotal='';
+        this.IdConcepto = '0'
       }
 
     })
@@ -135,26 +140,46 @@ export class CosteoComponent implements OnInit {
     this.banderaAgregar = '1';
   }
 
-  //INSERTA CONCEPTO
-  AgregaConcepto(modalRespuesta: any) {
-    const body = {
-      Descripcion: this.lblConceptoAgregar,
-      IdTipoCosteo: 0
-    }
-    if (this.lblConceptoAgregar == undefined || this.lblConceptoAgregar == '') {
-      this.Respuesta = 'Debe completar el campo Concepto.';
-      this.modalService.dismissAll();
-      this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-    } else {
-      this.ServiciosValorar.ModificaConcepto('3', body).subscribe(respu => {
-        this.Respuesta = respu;
+  NovedadConcepto(bandera:string, modalRespuesta:any){
+    if(bandera=='1'){
+      const body = {
+        Descripcion: this.lblConceptoAgregar,
+        IdTipoCosteo: 0
+      }
+      if (this.lblConceptoAgregar == undefined || this.lblConceptoAgregar == '') {
+        this.Respuesta = 'Debe completar el campo Concepto.';
         this.modalService.dismissAll();
         this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-        this.ConsultaConceptos();
-        this.LimpiarFiltro();
-      })
+      } else {
+        this.ServiciosValorar.ModificaConcepto('3', body).subscribe(respu => {
+          this.Respuesta = respu;
+          this.modalService.dismissAll();
+          this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+          this.ConsultaConceptos();
+          this.LimpiarFiltro();
+        })
+      }
     }
-  }
+    else if(bandera=='2'){
+      const body = {
+        Descripcion: this.lblConceptoAgregar,
+        IdTipoCosteo: this.auxIdConcepto
+      }
+      if (this.lblConceptoAgregar == undefined || this.lblConceptoAgregar == '') {
+        this.Respuesta = 'Debe completar el campo Concepto.';
+        this.modalService.dismissAll();
+        this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+      } else {
+        this.ServiciosValorar.ModificaConcepto('2', body).subscribe(respu => {
+          this.Respuesta = respu;
+          this.modalService.dismissAll();
+          this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+          this.ConsultaConceptos();
+          this.LimpiarFiltro();
+        })
+      }
+    }
+  }  
   
   banderaAgregar: string = '1';
   auxIdConcepto: string = '';
@@ -165,26 +190,7 @@ export class CosteoComponent implements OnInit {
     this.banderaAgregar = '2';
     this.auxIdConcepto = arreglo.codigo;
   }
-
-  EditaConcepto(modalRespuesta: any) {
-    const body = {
-      Descripcion: this.lblConceptoAgregar,
-      IdTipoCosteo: this.auxIdConcepto
-    }
-    if (this.lblConceptoAgregar == undefined || this.lblConceptoAgregar == '') {
-      this.Respuesta = 'Debe completar el campo Concepto.';
-      this.modalService.dismissAll();
-      this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-    } else {
-      this.ServiciosValorar.ModificaConcepto('2', body).subscribe(respu => {
-        this.Respuesta = respu;
-        this.modalService.dismissAll();
-        this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-        this.ConsultaConceptos();
-        this.LimpiarFiltro();
-      })
-    }
-  }
+  
   EliminaConcepto(modalRespuesta: any, arreglo: any) {
     console.log(arreglo)
     const body = {
