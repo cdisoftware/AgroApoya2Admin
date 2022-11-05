@@ -260,11 +260,11 @@
                         [(ngModel)]="lblConceptoAgregar">
                 </div>
                 <div class="col-sm-2">
-                    <button class="SinEstilo" *ngIf="banderaAgregar=='1'" (click)="AgregaConcepto(ModalRespuesta)">
-                        <img src="../../../../../assets/ImagenesAgroApoya2Adm/mas.png" class="BtnimgTamano" />
+                    <button type="button" class="btn btn-agro-prin" *ngIf="banderaAgregar=='1'" (click)="AgregaConcepto(ModalRespuesta)">
+                        Agregar
                     </button>
-                    <button class="SinEstilo" *ngIf="banderaAgregar=='2'" (click)="EditaConcepto(ModalRespuesta)">
-                        <img src="../../../../../assets/ImagenesAgroApoya2Adm/Editar.png" class="BtnimgTamano" />
+                    <button type="button" class="btn btn-agro-prin" *ngIf="banderaAgregar=='2'" (click)="EditaConcepto(ModalRespuesta)">
+                       Editar
                     </button>
                 </div>
 
