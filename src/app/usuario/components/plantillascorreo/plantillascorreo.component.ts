@@ -124,6 +124,7 @@ export class PlantillascorreoComponent implements OnInit {
     })
   }
   SeleccionarPlantillaModal(arregloPlantilla: any) {
+    console.log(this.arregloCamposCorreo)
     console.log(arregloPlantilla)
     this.NombrePlantillaForm = arregloPlantilla.NombrePlantilla;
     this.TipoPlantillaForm = arregloPlantilla.IdTipoPlantilla;
@@ -134,7 +135,7 @@ export class PlantillascorreoComponent implements OnInit {
     this.Imagencabeza = arregloPlantilla.ImgEncabezado;
     this.ImagenPie = arregloPlantilla.ImgPie;
     this.IdPlantilla = arregloPlantilla.IdPlantilla;
-    this.modalService.dismissAll();
+
     this.VerOcultarCampos = '3';
     this.HtmlForm = arregloPlantilla.html
 
@@ -146,6 +147,7 @@ export class PlantillascorreoComponent implements OnInit {
         this.arregloListaAdjuntos = [];
       }
     })
+    this.modalService.dismissAll();
   }
 
 
@@ -483,8 +485,8 @@ export class PlantillascorreoComponent implements OnInit {
 
 
 
-  changeCampo() {
-    this.CampoDesc = this.IdCampo;
+  changeCampo(selectCampo: string) {
+    this.CampoDesc = selectCampo;
   }
 
   CaracteresDescripcion() {
