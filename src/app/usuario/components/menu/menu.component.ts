@@ -56,8 +56,4 @@ export class MenuComponent implements OnInit {
     let elemento = document.getElementById('sidebar') as HTMLElement;
     elemento.removeAttribute('class')
   }
-
-
-  
-
 }
