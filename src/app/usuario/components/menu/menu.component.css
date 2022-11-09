@@ -370,3 +370,42 @@ a[data-toggle="collapse"] {
     width: 140px;
     height: 45px;
 }
+
+
+
+
+
+
+
+
+
+/* DROPDOWN MENU */
+.services {
+    position: relative;
+  }
+  .dropdown {
+    background-color: rgb(1, 139, 139);
+    padding: 1em 0;
+    position: absolute; 
+    display: none;
+    border-radius: 8px;
+    top: 25px;
+  }
+  .dropdown li + li {
+    margin-top: 10px;
+  }
+  .dropdown .li {
+    padding: 0.5em 1em;
+    width: 8em;
+    text-align: center;
+  }
+  .dropdown .OpUsu {
+    width: 2em;
+    text-align: center;
+  }
+  .dropdown li:hover {
+    background-color: #4c9e9e;
+  }
+  .services:hover .dropdown {
+    display: block;
+  }
