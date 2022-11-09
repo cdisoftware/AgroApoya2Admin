@@ -157,7 +157,7 @@
             <div class="col-sm-4">
                 <ng-autocomplete [data]="ArrayConceptos" [searchKeyword]="concepto" placeholder="Concepto"
                     (selected)='selectConcepto($event)' (inputCleared)="LimpiarFiltro()" [itemTemplate]="templateRes"
-                    [notFoundTemplate]="templateVacio">
+                    [notFoundTemplate]="templateVacio" [(ngModel)]="ConceptoSel">
                 </ng-autocomplete>
                 <ng-template #templateRes let-item>
                     <a [innerHTML]="item.nombre"></a>
@@ -189,7 +189,7 @@
             </div>
             <div class="col-sm-3 col-12 br">
                 <button type="button" class="btn btn-agro-prin col-sm-12" (click)="CrearEditarosteo(templateEditar)">
-                    <span class="fa fa-plus"></span> Crear/Editar Concepto</button>
+                Crear/Editar Concepto</button>
             </div>
 
         </div>
@@ -250,7 +250,7 @@
 
     <ng-template #templateEditar let-modal>
         <div class="modal-header">
-            <h1 class="modal-title" id="modal-basic-title">CREACIÓN/EDICIÓN CONCEPTO </h1>
+            <h1 class="modal-title" id="modal-basic-title">Creación/Edición concepto</h1>
             <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
         </div>
         <div class="modal-body">
@@ -259,15 +259,15 @@
                     <input type="text" title="Descripción concepto" class="form-control" placeholder="Concepto"
                         [(ngModel)]="lblConceptoAgregar">
                 </div>
-                <div class="col-sm-2">
-                    <button type="button" class="btn btn-agro-prin" *ngIf="banderaAgregar=='1'" (click)="AgregaConcepto(ModalRespuesta)">
-                        Agregar
+                <div class="col-sm-2">                    
+                    <button class="btn btn-agro-prin col-sm-12" *ngIf="banderaAgregar=='1'" (click)="NovedadConcepto('1',ModalRespuesta)">
+                       Aceptar
                     </button>
-                    <button type="button" class="btn btn-agro-prin" *ngIf="banderaAgregar=='2'" (click)="EditaConcepto(ModalRespuesta)">
-                       Editar
+                    <button class="btn btn-agro-prin col-sm-12" *ngIf="banderaAgregar=='2'" (click)="NovedadConcepto('2',ModalRespuesta)">
+                        Actualizar
+
                     </button>
                 </div>
-
             </div>
             <div class="row br">
                 <!--Grilla-->
