@@ -165,8 +165,8 @@
             <h5 class="textblue">Formulario</h5>
         </div>
         <div class="col-sm-4  mb-3">
-            <select class="form-control form-control-sm textBox" [(ngModel)]="IdCampo"
-                [ngModelOptions]="{standalone: true}" (change)="changeCampo()" title="Seleccionar el campo del correo">
+            <select #selectCampo class="form-control form-control-sm textBox" [(ngModel)]="IdCampo"
+                [ngModelOptions]="{standalone: true}" (change)="changeCampo(selectCampo.value)" title="Seleccionar el campo del correo">
                 <option value="0" selected>Seleccione campos correo...</option>
                 <option *ngFor="let Respu of arregloCamposCorreo" [value]="Respu.CodCampo"> {{Respu.Descripcion}}
                 </option>
