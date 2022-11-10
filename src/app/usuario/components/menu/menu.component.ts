@@ -42,7 +42,6 @@ export class MenuComponent implements OnInit {
     this.servicioslogin.ConsultaMenu('1', '4', this.IdUsuario).subscribe(Resultado => {
       this.ListaMenu = Resultado;
       this.servicioslogin.constsubmenu('1', '4', this.IdUsuario).subscribe(Respu => {
-        console.log(Respu)
         this.ListaSubMenu = Respu;
       });
     })
