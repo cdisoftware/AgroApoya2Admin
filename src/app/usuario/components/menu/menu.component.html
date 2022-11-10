@@ -21,21 +21,6 @@
 
             </li>
 
-
-<!--
-            <li class="click services">
-                <a class="fa fa-caret-right mr-3">
-                    Compras</a>
-                <ul class="dropdown">
-                    <li>Item 1r</li>
-                    <li>Item 2r</li>
-                    <li>Item 3r</li>
-                    <li>Item 4r</li>
-                </ul>
-            </li>
--->
-
-
             <li *ngFor="let respuesta of ListaMenu" class="click services">
 
                 <a href="{{respuesta.pathMenu}}" (click)="toggleSidebar()">
@@ -43,7 +28,7 @@
                 </a>
                 <ul class="dropdown">
                     <span *ngFor="let SubMenu of ListaSubMenu">
-                        
+
 
                         <li *ngIf="respuesta.IdMenu == SubMenu.IdMenu">
                             <a href="{{SubMenu.PathMenu}}" (click)="toggleSidebar()">
@@ -52,9 +37,6 @@
                         </li>
                     </span>
                 </ul>
-                <!--<a href="{{respuesta.pathMenu}}" (click)="toggleSidebar()">
-                    <span class="fa {{respuesta.Icono}} mr-3"></span> {{respuesta.Nombre}}
-                </a>-->
             </li>
         </ul>
 
