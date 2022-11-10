@@ -24,7 +24,8 @@ export class MenuComponent implements OnInit {
   NombreUsu: string = this.cookies.get('nombreuser');
   idusua33: string = this.cookies.get('IDU');
 
-  ListaMenu: any;
+  ListaMenu: any[];
+  ListaSubMenu: any[];
 
   ngOnInit(): void {
     this.IdUsuario = this.cookies.get('IDU');
@@ -40,7 +41,10 @@ export class MenuComponent implements OnInit {
   Cargar() {
     this.servicioslogin.ConsultaMenu('1', '4', this.IdUsuario).subscribe(Resultado => {
       this.ListaMenu = Resultado;
-      console.log(Resultado)
+      this.servicioslogin.constsubmenu('1', '4', this.IdUsuario).subscribe(Respu => {
+        console.log(Respu)
+        this.ListaSubMenu = Respu;
+      });
     })
   }
 
