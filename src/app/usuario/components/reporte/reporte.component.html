@@ -2,7 +2,7 @@
 <div class="row">
   <div class="col-1"></div>
   <div class="col-3">
-    <label class="textoDir"> Selección tipo de usuario </label>
+    <label class="textoDir"> Seleccione tipo de usuario </label>
     <select class="form-control" [(ngModel)]="tipoUsuario">
       <option value="0">Seleccione tipo de usuario</option>
       <option *ngFor="let Usu of ArrayTipoUsuario;" [value]="Usu.IdTipoUsuario" >
@@ -11,7 +11,7 @@
     </select>
   </div>
   <div class="col-3">
-    <label class="textoDir"> Correo Usuario </label>
+    <label class="textoDir"> Correo persona </label>
     <input [(ngModel)]="mail" class="form-control" type="text" maxlength="50" placeholder="Correo persona">
   </div>
   <div class="col-3">
@@ -24,15 +24,15 @@
   <div class="col-1"></div>
   <div class="col-3">
     <label class="textoDir"> Codigo de usuario </label>
-    <input [(ngModel)]="codigo" class="form-control" type="text" placeholder="Código persona" >
+    <input [(ngModel)]="codigo" class="form-control" type="number" placeholder="Código persona" >
   </div>
   <div class="col-3">
     <label class="textoDir"> Fecha de registro desde </label>
-    <input [(ngModel)]="FechaDesde" class="form-control" type="datetime" maxlength="50">
+    <input [(ngModel)]="FechaDesde" class="form-control" type="date" maxlength="50">
   </div>
   <div class="col-3">
     <label class="textoDir"> Fecha de registro hasta </label>
-    <input [(ngModel)]="FechaHasta" class="form-control" type="datetime" maxlength="50">
+    <input [(ngModel)]="FechaHasta" class="form-control" type="date">
   </div>
   <div class="col-1"></div>
 </div>
@@ -71,7 +71,7 @@
       <button class="btn btn-sort" (click)="organizarM()"> Correo </button>
     </th>
     <th>
-      <button class="btn btn-sort" (click)="organizarF()"> FechaCreacion </button>
+      <button class="btn btn-sort" (click)="organizarF()"> Fecha de creación </button>
     </th>
     <th style="width:5%">Tipo Documento</th>
     <th>Número documento</th>
@@ -82,7 +82,7 @@
       <button class="btn btn-sort" (click)="organizarC()"> Ciudad </button>
     </th>
     <th>Dirección</th>
-    <th>Observacion</th>
+    <th>observaciones</th>
     <th>Acciones</th>
   </tr>
   <tr *ngFor="let Usu of ArrayUsuarios;">
@@ -110,61 +110,64 @@
       <h1>Información</h1>
       <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
   </div>
-  <div class="modal-body text-center">
-    <div class="row justify-content-start">
-      <div class="col-12">
-        {{nombreM}}
+  <div class="modal-body text-start mb-0">
+    <div class="row justify-content-start ">
+      <div class="col-12 text-center mb-2">
+        <p class="textoConductor m-0 p-0 "> Nombre: </p> <span style="font-weight: bold;"> {{nombreM}} </span>
       </div>
+    </div>
+    <div class="row justify-content-start text-s">
+      <div class="col-6">
+        <p class="textoConductorS m-0 p-0 "> Fecha de creación: </p> <span> {{FechaDesdeM}} </span>
       </div>
-      <div class="row justify-content-start">
+      <div class="col-6">
+        <p class="textoConductorS m-0 p-0 "> Tipo de usuario: </p> <span> {{tipoUsuarioM}} </span>
+      </div>
+        <div class="col-6">
+          <p class="textoConductorS m-0 p-0 "> Código: </p> <span> {{codigoM}} </span>
+        </div>
+      </div>
+      <label></label>
+      <div class="row">
+        <div class="col-6">
+          <p class="textoConductorS m-0 p-0 "> Nombre: </p> <span> {{nombreM}} </span>
+        </div>
+        <div class="col-6">
+          <p class="textoConductorS m-0 p-0 "> Correo electrónico: </p> <span> {{mailM}} </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <p class="textoConductorS m-0 p-0 "> Tipo de documento: </p> <span> {{tipoDocumento}} </span>
+        </div>
+        <div class="col-6">
+          <p class="textoConductorS m-0 p-0 "> Número de documento: </p> <span> {{numDoc}} </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <p class="textoConductorS m-0 p-0 "> Número de celular: </p> <span> {{celular}} </span>
+        </div>
+        <div class="col-6">
+          <p class="textoConductorS m-0 p-0 "> Dirección: </p> <span> {{direccion}} </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <p class="textoConductorS m-0 p-0 "> Derpartamento: </p> <span> {{dpto}} </span>
+        </div>
+        <div class="col-6">
+          <p class="textoConductorS m-0 p-0 "> Ciudad: </p> <span> {{ciudad}} </span>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-12">
-          {{tipoUsuarioM}}
+          <p class="textoConductorS m-0 p-0"> Observaciones: </p> <span> {{observaciones}} </span>
         </div>
       </div>
-      <div class="row justify-content-start">
-        <div class="col-6">
-          {{codigoM}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6">
-          {{nombreM}}
-        </div>
-        <div class="col-6">
-          {{mailM}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6">
-          {{tipoDocumento}}
-        </div>
-        <div class="col-6">
-          {{numDoc}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6">
-          {{celular}}
-        </div>
-        <div class="col-6">
-          {{direccion}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6">
-          {{dpto}}
-        </div>
-        <div class="col-6">
-          {{ciudad}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          {{observaciones}}
-        </div>
-      </div>
+      <hr>
   </div>
-  <div class="modal-body text-center" *ngIf="cliente">
+  <div class="m-0 pt-0 text-start modal-body" *ngIf="cliente">
     <div class="row">
       <div class="col-6">
         {{razonS}}
@@ -175,30 +178,30 @@
     </div>
     <div class="row">
       <div class="col-6">
-        {{descripcion}}
+        <p class="textoConductorS m-0 p-0"> Descripción: </p> <span> {{descripcion}} </span>
       </div>
       <div class="col-6">
       </div>
     </div>
     <div class="row">
       <div class="col-6">
-        {{tipoC}}
+        <p class="textoConductorS m-0 p-0"> Tipo cliente: </p> <span> {{tipoC}} </span>
       </div>
       <div class="col-6">
-        {{coordenadas}}
+        <p class="textoConductorS m-0 p-0"> Coordenadas: </p> <span> {{coordenadas}} </span>
       </div>
     </div>
   </div>
   <div class="modal-body text-center" *ngIf="transportista">
     <div class="row">
       <div class="col-6">
-        {{coordenadas}}
+        <p class="textoConductorS m-0 p-0"> Coordenadas: </p> <span> {{coordenadas}} </span>
       </div>
       <div class="col-6">
       </div>
     </div>
     <div *ngIf="conductores">
-      <p class="textoConductor"> MIS CONDUCTORES: </p>
+      <p class="textoConductor" *ngIf="conductores"> MIS CONDUCTORES: </p>
       <div *ngFor="let con of arrayConductores" class="conductores">
         <div class="row">
           <div class="col-6">
