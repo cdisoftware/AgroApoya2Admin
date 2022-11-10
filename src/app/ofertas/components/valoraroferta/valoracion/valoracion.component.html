@@ -82,7 +82,7 @@
                     </div>
                     <div class="col-sm-6">
                         <label class="Llave">Valor costeo:&nbsp;</label><label
-                            class="Valor">{{oferta.vlor_costeo}}</label>
+                            class="Valor">${{oferta.vlor_costeo}}</label>
                     </div>
                 </div>
                 <hr class="hrSinEstilo">
@@ -390,12 +390,12 @@
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Precio arranque lider</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox"
-                                [(ngModel)]="PrecioFinLider" disabled="true">
+                            <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                value="{{PrecioFinLider | currency}}" disabled="true">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Precio final participante</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PrecioFinPart"
+                            <input type="text" class="col-sm-12 form-control mt-1 textBox" value="{{PrecioFinPart | currency}}"
                                 disabled="true">
                         </div>
                     </div>
@@ -478,7 +478,7 @@
                             </tr>
                             <tr *ngFor="let topping of DataToppings">
                                 <td>{{topping.Descripcion}}</td>
-                                <td>$ {{topping.ValorUnitario}}</td>
+                                <td>{{topping.ValorUnitario | currency}}</td>
                                 <td>{{topping.descTipotopping}}</td>  
                                 <td>{{topping.cantidadReserva}}</td>    
                                 <td>{{topping.MaxCantidad}}</td>                                                                                          
