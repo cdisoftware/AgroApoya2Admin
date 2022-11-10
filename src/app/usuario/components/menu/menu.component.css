@@ -419,3 +419,6 @@ a[data-toggle="collapse"] {
 .click{
     cursor: pointer;
 }
+.margenIcon{
+    margin-right: 10px;
+}
