@@ -13,14 +13,10 @@
                 </div>
             </div>
         </div>
-
-
         <ul class="list-unstyled components mb-5">
             <li>
                 <a class="not-active">Hola,<br>{{NombreUsu}}</a>
-
             </li>
-
             <li *ngFor="let respuesta of ListaMenu" class="click services">
 
                 <a href="{{respuesta.pathMenu}}" (click)="toggleSidebar()">
@@ -28,8 +24,6 @@
                 </a>
                 <ul class="dropdown">
                     <span *ngFor="let SubMenu of ListaSubMenu">
-
-
                         <li *ngIf="respuesta.IdMenu == SubMenu.IdMenu">
                             <a href="{{SubMenu.PathMenu}}" (click)="toggleSidebar()">
                                 <span class="fa {{SubMenu.Icono}} margenIcon"></span>{{SubMenu.Nombre}}
@@ -39,7 +33,6 @@
                 </ul>
             </li>
         </ul>
-
         <div class="row justify-content-center ">
             <div class="col-sm-6 col-6">
                 <img class="imgMenuLogoAgro" src="../../../../assets/ImagenesAgroApoya2Adm/logoAgroNuevo.png">
