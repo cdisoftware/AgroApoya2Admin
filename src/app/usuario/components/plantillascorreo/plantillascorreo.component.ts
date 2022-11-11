@@ -31,6 +31,7 @@ export class PlantillascorreoComponent implements OnInit {
   IdCampo: string = '0';
   CampoDesc: string = '';
 
+
   VerOcultarCampos: string = '';
 
   arregloListaPlantillaCorreo: any;
@@ -67,6 +68,7 @@ export class PlantillascorreoComponent implements OnInit {
     this.ListaTipoPlantilla();
     this.ListaMomentoEnvio();
     this.ListaCamposCodigo();
+    this.ListaCamposCorreoGeneral()
     this.CaracteresDescripcion();
 
     //uno solo muestra los filtros
@@ -108,6 +110,7 @@ export class PlantillascorreoComponent implements OnInit {
     this.arregloListaTipoPlantilla = [];
     this.serviciosplantillacorreos.ConsultaTipoPlatilla('1').subscribe(resultado => {
       this.arregloListaTipoPlantilla = resultado;
+
     })
   }
   ListaMomentoEnvio() {
@@ -123,9 +126,25 @@ export class PlantillascorreoComponent implements OnInit {
       this.arregloCamposCorreo = resultado;
     })
   }
+
+  ListaCamposCorreoGeneral() {
+    this.arregloCamposCorreo = [];
+    this.serviciosplantillacorreos.ConsultaTipoCampoMasivo('1').subscribe(resultado => {
+      this.arregloCamposCorreo = resultado;
+    })
+  }
+
+  SelectListasPlatilla(IdTipoPlantilla: string) {
+    if (IdTipoPlantilla == '1') {
+      this.ListaCamposCodigo();
+    } else if (IdTipoPlantilla == '2') {
+      this.ListaCamposCorreoGeneral();
+    }
+
+  }
+
+
   SeleccionarPlantillaModal(arregloPlantilla: any) {
-    console.log(this.arregloCamposCorreo)
-    console.log(arregloPlantilla)
     this.NombrePlantillaForm = arregloPlantilla.NombrePlantilla;
     this.TipoPlantillaForm = arregloPlantilla.IdTipoPlantilla;
     this.MomentoEnvioForm = arregloPlantilla.idMomentoEnvio;
@@ -482,9 +501,6 @@ export class PlantillascorreoComponent implements OnInit {
       })
     }
   }
-
-
-
   changeCampo(selectCampo: string) {
     this.CampoDesc = selectCampo;
   }
@@ -517,5 +533,11 @@ export class PlantillascorreoComponent implements OnInit {
   onChange2(templateMensaje: TemplateRef<any>) {
     this.CaracteresHtmlDos(templateMensaje);
   }
+
+
+
+
+
+
 
 }
