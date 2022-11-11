@@ -438,10 +438,17 @@
             <ngb-panel title="Adicionales" id="config-panel-three">
                 <ng-template ngbPanelContent>
                     <div class="row br">
+
+
                         <div class="col-sm-4">
                             <label class="col-sm-12 Llave">Descripción</label>
-                            <input type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="DesTopp">
+                            <input type="text" title="Nombre plantilla máximo 150 caracteres" 
+                            class="col-sm-12 form-control mt-1 textBox" maxlength="150"
+                            [(ngModel)]="DesTopp" [ngModelOptions]="{standalone: true}">
                         </div>
+
+
+
                         <div class="col-sm-4">
                             <label class="col-sm-12 Llave">Valor unitario</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrUniTopp">
