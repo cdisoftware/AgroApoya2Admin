@@ -284,7 +284,7 @@
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Precio final (No incluye valor domicilio)</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PreFinI"
+                            <input type="text" class="col-sm-12 form-control mt-1 textBox" value="{{PreFinI | currency}}"
                                 disabled="true">
                         </div>
                     </div>
@@ -510,7 +510,7 @@
                             </tr>
                             <tr *ngFor="let topping of DataToppings">
                                 <td>{{topping.Descripcion}}</td>
-                                <td>$ {{topping.ValorUnitario | currency}}</td>
+                                <td>{{topping.ValorUnitario | currency}}</td>
                                 <td>{{topping.descTipotopping}}</td>
                                 <td>{{topping.cantidadReserva}}</td>
                                 <td>{{topping.MaxCantidad}}</td>
