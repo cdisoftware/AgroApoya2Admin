@@ -86,7 +86,7 @@
                         </div>
                         <div class="col-sm-6">
                             <label class="Llave">Valor costeo:&nbsp;</label><label
-                                class="Valor">{{oferta.vlor_costeo}}</label>
+                                class="Valor">${{oferta.vlor_costeo}}</label>
                         </div>
                     </div>
                     <hr class="hrSinEstilo">
@@ -205,7 +205,7 @@
                 <tr *ngFor="let Costo of ArrayCostos">
                     <td>{{Costo.NOM_TPO_COSTEO}}</td>
                     <td>{{Costo.NOM_TPO_VLOR}}</td>
-                    <td>{{Costo.VLOR}}</td>
+                    <td>{{Costo.VLOR | currency}}</td>
                     <td>
                         <button class="SinEstilo" (click)="EliminarCosteo(Costo)">
                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Cerrar.png">
@@ -215,7 +215,7 @@
             </table>
         </div>
         <div class="row justify-content-center br">
-            <div class="col-sm-3"><label class="Llave">Valor total costeo:&nbsp;</label><label>{{ValorTotal}}</label>
+            <div class="col-sm-3"><label class="Llave">Valor total costeo:&nbsp;</label><label>{{ValorTotal | currency}}</label>
             </div>
         </div>
         <hr>
