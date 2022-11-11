@@ -92,7 +92,7 @@ export class ValoracionComponent implements OnInit {
   UnidOferta: string;
   imagenesAdicionales: string = '';
   consultaimagen: string = '';
-  RutaImagenTopping: string='';
+  RutaImagenTopping: string = '';
 
 
 
@@ -366,15 +366,20 @@ export class ValoracionComponent implements OnInit {
 
   }
 
+  IsEnables: boolean = false;
   selectTipTopp(item: any) {
     this.SessionTipoTopp = item.id;
     if (item.id == '2') {
       this.ValidaTipoTopp = true;
       this.UnidMaxTopp = '1';
+      this.UnidOferta = this.DataSectores[0].CNTDAD;
+      this.IsEnables = true;
     }
     else {
       this.ValidaTipoTopp = false;
       this.UnidMaxTopp = '';
+      this.UnidOferta = '';
+      this.IsEnables = false;
     }
   }
 
@@ -382,6 +387,8 @@ export class ValoracionComponent implements OnInit {
     this.UnidMaxTopp = ''
     this.ValidaTipoTopp = false;
     this.SessionTipoTopp = '0';
+    this.UnidOferta = '';
+      this.IsEnables = false;
   }
 
   ConsultaVigenciaOferta() {
