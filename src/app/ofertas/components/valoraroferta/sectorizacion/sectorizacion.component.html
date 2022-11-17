@@ -193,7 +193,7 @@
             <tr *ngFor="let sector of DataSectorOferta ">
                 <td>{{sector.DSCRPCION_SCTOR}}</td>
                 <td>{{sector.CNTDAD}}</td>
-                <td>${{sector.VLOR_FLTE_SGRDO}}</td>
+                <td>{{sector.VLOR_FLTE_SGRDO | currency}}</td>
                 <td>
                     <button class="SinEstilo " (click)="EliminaSector(sector, ModalRespuesta) ">
                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">

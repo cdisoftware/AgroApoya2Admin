@@ -59,6 +59,8 @@ export class PlantillacorreosService {
     return this.http.get<any[]>(this.url_servidor + 'conscdocumentocorreo/' + Bandera + '/' + IdPlantilla);
   }
 
-
+  ConsultaTipoCampoMasivo(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consctipocamposmasivo/' + Bandera);
+  }
 
 }

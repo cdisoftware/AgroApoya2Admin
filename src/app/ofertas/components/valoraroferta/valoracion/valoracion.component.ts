@@ -90,6 +90,9 @@ export class ValoracionComponent implements OnInit {
   TipoTopp: string;
   SessionFechaRecogida: any;
   UnidOferta: string;
+  imagenesAdicionales: string = '';
+  consultaimagen: string = '';
+  RutaImagenTopping: string = '';
 
 
 
@@ -154,6 +157,7 @@ export class ValoracionComponent implements OnInit {
     this.UnidOferta = '';
     this.DataToppings = [];
     this.RutaImagen = this.SeriviciosGenerales.RecuperaRutaImagenes();
+    this.RutaImagenTopping = this.SeriviciosGenerales.RecuperarRutasOtrasImagenes('4');
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');
     this.ConsultaDetalleOferta();
@@ -267,7 +271,7 @@ export class ValoracionComponent implements OnInit {
     }
     else {
       this.ValidaCam = '0';
-      this.ArrayCamposValida=[];
+      this.ArrayCamposValida = [];
       const Body = {
         IdTopping: 0,
         Id_Sector: Number(this.SessionSectorSel),
@@ -276,7 +280,8 @@ export class ValoracionComponent implements OnInit {
         MaxCantidad: Number(this.UnidMaxTopp),
         IdTipoTopping: Number(this.SessionTipoTopp),
         ValorUnitario: Number(this.VlrUniTopp),
-        cantidadReserva: Number(this.UnidOferta)
+        cantidadReserva: Number(this.UnidOferta),
+        imagen: this.imagenesAdicionales
       }
       this.serviciosvaloracion.ModificaTopping('2', Body).subscribe(ResultOper => {
         this.Respuesta = ResultOper;
@@ -322,7 +327,7 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
-  ValidaVigencias(templateMensaje: any, bandera:string) {
+  ValidaVigencias(templateMensaje: any, bandera: string) {
     var fechaD = this.VigenDesde;
     var fechaH = this.VigenHasta;
     var fechaH = this.VigenHasta;
@@ -332,21 +337,21 @@ export class ValoracionComponent implements OnInit {
     var fechaDF = this.formatofecha.transform(fechaD, "yyyy-MM-dd")!;
     var fechaHF = this.formatofecha.transform(fechaH, "yyyy-MM-dd")!;
     var fechaRF = this.formatofecha.transform(fechaR, "yyyy-MM-dd")!;
-    if(bandera=='1'){
+    if (bandera == '1') {
       if (this.VigenDesde < fechaf) {
         this.VigenDesde = '';
         this.modalService.open(templateMensaje);
         this.Respuesta = 'La fecha inicio de la vigencia no puede ser menor a la fecha actual, favor valida tu información.';
       }
     }
-    else if(bandera=='2'){
+    else if (bandera == '2') {
       if (fechaDF > fechaHF) {
         this.VigenHasta = '';
         this.modalService.open(templateMensaje);
         this.Respuesta = 'La fecha fin de la vigencia no puede ser menor a la fecha inicio de la vigencia, favor valida tu información.';
       }
     }
-    else if(bandera=='3'){
+    else if (bandera == '3') {
       if (this.FechaEntrega < fechaHF) {
         this.FechaEntrega = '';
         this.modalService.open(templateMensaje);
@@ -358,18 +363,23 @@ export class ValoracionComponent implements OnInit {
         this.Respuesta = 'La fecha entrega de la vigencia no puede ser menor a la fecha recogida de la oferta, favor valida tu información.';
       }
     }
-    
+
   }
 
+  IsEnables: boolean = false;
   selectTipTopp(item: any) {
     this.SessionTipoTopp = item.id;
     if (item.id == '2') {
       this.ValidaTipoTopp = true;
       this.UnidMaxTopp = '1';
+      this.UnidOferta = this.DataSectores[0].CNTDAD;
+      this.IsEnables = true;
     }
     else {
       this.ValidaTipoTopp = false;
       this.UnidMaxTopp = '';
+      this.UnidOferta = '';
+      this.IsEnables = false;
     }
   }
 
@@ -377,6 +387,8 @@ export class ValoracionComponent implements OnInit {
     this.UnidMaxTopp = ''
     this.ValidaTipoTopp = false;
     this.SessionTipoTopp = '0';
+    this.UnidOferta = '';
+      this.IsEnables = false;
   }
 
   ConsultaVigenciaOferta() {
@@ -1459,6 +1471,7 @@ export class ValoracionComponent implements OnInit {
     this.serviciosvaloracion.ConsultaTipoTopping('1').subscribe(Resultcons => {
       this.DataTipotopping = Resultcons;
       this.keywordTipTopp = 'Descripcion';
+      console.log(Resultcons)
     })
   }
 
@@ -1487,14 +1500,57 @@ export class ValoracionComponent implements OnInit {
         this.serviciosvaloracion.CorreoMasivo('1', '9', '2', this.SessionOferta).subscribe(ResultCorreo => {
           console.log(ResultCorreo)
         })
-        if(this.DataSectores.length>0){
-          for(var i=0; i<this.DataSectores.length;i++){
+        if (this.DataSectores.length > 0) {
+          for (var i = 0; i < this.DataSectores.length; i++) {
             this.serviciosvaloracion.EnviarSms('7', '0', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA, '0').subscribe(Resultado => {
               console.log(Resultado)
             })
           }
-        }        
+        }
       }
     })
   }
+
+
+  public CargaImagenAdicionales(event: any, modalmensaje: any) {
+
+    if (!(/\.(jpg|png)$/i).test(event.target.files[0].name)) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El archivo no pudo ser cargado, valide la extención, las permitidas son .jpg .png";
+    }
+    else if (event.target.files[0].name.includes(" ")) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El archivo no pudo ser cargado, el nombre no debe contener espacios";
+    }
+    else if (event.target.files[0].size > 1300000) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El peso del archivo no puede exceder 1.3 megabyte";
+    } else {
+      this.serviciosvaloracion.postImgToppings(event.target.files[0]).subscribe(
+        response => {
+          if (response <= 1) {
+            console.log("Error en el servidor");
+          } else {
+            if (response == 'Archivo Subido Correctamente') {
+              this.imagenesAdicionales = event.target.files[0].name;
+            } else {
+              console.log(response)
+            }
+          }
+        },
+        error => {
+          console.log(<any>error);
+          this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+          this.Respuesta = "No hemos podido subir el archivo, intente nuevamente.";
+        }
+      );
+    }
+  }
+
+  visualizaImagenTopping(ModalImagen: any, imagenesAdicional: string) {
+    this.modalService.open(ModalImagen, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    this.consultaimagen = this.RutaImagenTopping + imagenesAdicional;
+  }
+
+
 }
