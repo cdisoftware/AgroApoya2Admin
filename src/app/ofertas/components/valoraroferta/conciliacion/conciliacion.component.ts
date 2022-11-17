@@ -295,7 +295,6 @@ export class ConciliacionComponent implements OnInit {
       this.Respuesta = 'Debes completar todos los datos para aprobar la oferta.'
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else {
-      console.log("Siiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
       this.ServiciosValorar.ModificaEstadoOferta('3', datosaprueba).subscribe(Resultado => {
         var arrayrespuesta = Resultado.split('|');
         this.Respuesta = arrayrespuesta[1];
