@@ -656,5 +656,7 @@ export class CrearofertaComponent implements OnInit {
   Cancelar() {
     this.rutas.navigateByUrl('/home')
   }
-
+  prueba(){
+    console.log(this.ValorOferta)
+  }
 }

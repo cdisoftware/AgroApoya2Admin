@@ -1,0 +1,31 @@
+.btn-warning{
+  position: relative;
+  padding: 11px 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  border-radius: 5px;
+  color: #fff;
+  background-color: #397c97;
+  border: 1px solid #397c97;
+  transition: 0.2s;
+  overflow: hidden; 
+  margin-top: 25px;
+}
+
+.btn-warning input[type = "file"]{
+  cursor: pointer;
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  transform: scale(3);
+  opacity: 0;
+}
+
+.btn-warning:hover{
+  background-color: white;
+  border: 1px solid black;
+  color: black;
+}
+.marginleft{
+  margin-right: 10px;
+}
