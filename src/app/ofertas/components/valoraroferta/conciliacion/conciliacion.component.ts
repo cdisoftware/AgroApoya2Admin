@@ -156,9 +156,15 @@ export class ConciliacionComponent implements OnInit {
     }
   }
 
-  Enviar() {
+  Enviar(modalEditar: any) {
     //envia a la siguiente etapa de la valoracion
-    this.rutas.navigateByUrl('/home/sectorizar')
+    //alert(this.ECaracteriza)
+    if(this.ECaracteriza != ''){
+      this.rutas.navigateByUrl('/home/sectorizar')
+    }else{
+      this.modalService.open(modalEditar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+    }
+    
   }
 
   EditaOferta(modalEditar: any) {

@@ -25,3 +25,9 @@ table, th {
   color: #397c97;
   font-weight: bold;
 }
+
+.textoConductorS{
+  color: #397c97;
+  font-weight: bold;
+  font-size: smaller;
+}

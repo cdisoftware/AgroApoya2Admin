@@ -131,6 +131,8 @@ export class ReporteComponent implements OnInit {
     this.dpto = Usuario.DesDepto;
     this.ciudad = Usuario.DesCiudad
     this.observaciones = Usuario.Observacion
+    this.FechaDesdeM = Usuario.FechaCreacion
+    this.FechaDesdeM = this.FechaDesdeM.slice(0,10);
 
     if(Usuario.IdTipoPersona == 2)
     {
