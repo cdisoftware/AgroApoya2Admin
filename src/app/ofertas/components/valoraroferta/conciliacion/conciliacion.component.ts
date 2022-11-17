@@ -5,7 +5,7 @@ import { CrearofertaService } from './../../../../core/crearoferta.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
-import {formatCurrency, getCurrencySymbol} from '@angular/common';
+import { formatCurrency, getCurrencySymbol } from '@angular/common';
 
 @Component({
   selector: 'app-conciliacion',
@@ -60,7 +60,7 @@ export class ConciliacionComponent implements OnInit {
   maPrecioFinal: string = '';
   IdProductor: string = '';
   Valor: string;
-  
+
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
     private ServiciosValorar: ValorarofertaService,
@@ -149,7 +149,7 @@ export class ConciliacionComponent implements OnInit {
       this.ValidaAprobar = '1';
       this.ValidaDeclinar = '1'
     } else if (estado == '5') {
-      this.ValidaSiguiente == '1';
+      this.ValidaSiguiente = '1';
       this.ValidaEnviaPropuesta = '0';
       this.ValidaAprobar = '0';
       this.ValidaDeclinar = '0'
@@ -159,12 +159,7 @@ export class ConciliacionComponent implements OnInit {
   Enviar(modalEditar: any) {
     //envia a la siguiente etapa de la valoracion
     //alert(this.ECaracteriza)
-    if(this.ECaracteriza != ''){
-      this.rutas.navigateByUrl('/home/sectorizar')
-    }else{
-      this.modalService.open(modalEditar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
-    }
-    
+    this.rutas.navigateByUrl('/home/sectorizar')
   }
 
   EditaOferta(modalEditar: any) {
@@ -288,7 +283,7 @@ export class ConciliacionComponent implements OnInit {
       parametro2: "",
       parametro3: ""
     }
-    
+
     const datosciudad = {
       CD_CNSCTVO: this.IdOferta,
       CD_PAIS: "6",
@@ -332,9 +327,9 @@ export class ConciliacionComponent implements OnInit {
     this.IdACiudad = ciudad;
   }
 
-  Formatovalor(){
+  Formatovalor() {
     let valor = Number(this.ValorSugerido)
-    this.Valor=formatCurrency(valor, 'en-US', '');
+    this.Valor = formatCurrency(valor, 'en-US', '');
     console.log(this.ValorSugerido)
   }
 
@@ -378,7 +373,7 @@ export class ConciliacionComponent implements OnInit {
     })
   }
 
-  EnviarSms(bandera:string) {
+  EnviarSms(bandera: string) {
     this.ServiciosValorar.EnviarSms(bandera, this.IdUsuario, this.IdOferta, '0', '0').subscribe(Resultado => {
       console.log(Resultado)
     })
