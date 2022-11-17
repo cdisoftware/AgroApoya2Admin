@@ -80,7 +80,7 @@ export class ValoracionComponent implements OnInit {
   DataTipotopping: { id: number; name: string; }[];
   DataToppings: any[];
   ValidaConsulta: string = '0';
-  txtValidaCons: string = 'No se encuentran amparados asociados a la oferta';
+  txtValidaCons: string = 'No se encuentran adicionales asociados a la oferta';
   DesTopp: string;
   VlrUniTopp: string;
   UnidMaxTopp: string;
