@@ -80,8 +80,6 @@ export class CrearofertaComponent implements OnInit {
   ngOnInit(): void {
     this.IdProductor = '';
     this.EJornada = '';
-    this.ValorOferta = 0;
-    this.Unidades = 0;
     this.RutaImagenes = this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.CargaProductos();
     this.CargaDepartamento();
