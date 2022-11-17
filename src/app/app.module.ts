@@ -1,4 +1,7 @@
 import { NgModule } from '@angular/core';
+
+import {NgxMaskModule,IConfig} from 'ngx-mask';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from "@angular/common/http";
@@ -23,8 +26,9 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/costeo.component';
 import { ReporteComponent } from './usuario/components/reporte/reporte.component';
 import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/rep-compras.component';
+import { from } from 'rxjs';
 
-
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,6 +45,8 @@ import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/r
     RepComprasComponent
   ],
   imports: [
+    NgxMaskModule.forRoot(),
+    NgxMaskModule.forRoot(options),
     BrowserModule,
     AppRoutingModule,
     SharedModule,
