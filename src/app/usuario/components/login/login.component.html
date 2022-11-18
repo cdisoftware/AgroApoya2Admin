@@ -14,17 +14,14 @@
                         <form (keyup.enter)="login(ModalRespuesta)" class="col-12 containerFlex" appearance="fill">
 
                             <div class="col-11 mb-4">
-                                <input type="text" class="form-control sinborde" name="Usuario" placeholder="Usuario"
-                                    required="required" [(ngModel)]="user" >
+                                <input type="text" class="form-control sinborde" name="Usuario" placeholder="Usuario" required="required" [(ngModel)]="user">
                             </div>
 
                         </form>
                         <form (keyup.enter)="login(ModalRespuesta)" class="col-12 containerFlex" appearance="fill">
 
                             <div class="w-100 mb-4">
-                                <input type="password" required="required" [(ngModel)]="pass"
-                                    class="form-control sinborde" name="Password" id="Password"
-                                    placeholder="Contraseña/Password" >
+                                <input type="password" required="required" [(ngModel)]="pass" class="form-control sinborde" name="Password" id="Password" placeholder="Contraseña/Password">
                             </div>
 
                             <div class="m-0 p-0">
@@ -38,8 +35,7 @@
 
                     <div class="row justify-content-center">
                         <div class="col-3 col-2">
-                            <button id="btnIngresar" class="btn btn-agro-prin"
-                                (click)="login(ModalRespuesta)">Ingresar</button>
+                            <button id="btnIngresar" class="btn btn-agro-prin" (click)="login(ModalRespuesta)">Ingresar</button>
                         </div>
                     </div>
 
@@ -48,13 +44,11 @@
             <!--  Box Login-->
             <div class="col-md-5 col-sm-12 mt-5 pl-4 pr-4 form_text_right">
                 <div class="d-inline-flex mt-5">
-                    <h5 class="FontFamilyFutura mr-3 textColorVerdeOsucuro">Te damos la bienvenida a nuestra plataforma
-                        👋
+                    <h5 class="FontFamilyFutura mr-3 textColorVerdeOsucuro">Te damos la bienvenida a nuestra plataforma 👋
                     </h5>
                 </div>
                 <p class="tituloPortada mt-4 text-info">
-                    <label class="tituloPortadaSignos text-info">¿</label>Sabes qué nos diferencia<label
-                        class="tituloPortadaSignos text-info">?</label>
+                    <label class="tituloPortadaSignos text-info">¿</label>Sabes qué nos diferencia<label class="tituloPortadaSignos text-info">?</label>
                 </p>
                 <ul class="menu mt-4 FontFamilyFutura" style="max-width: 500px">
                     <li>¡Queremos Dar a cada uno lo <strong>MEJOR</strong>!</li>
@@ -88,7 +82,7 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <button (keyup.enter)="modal.close()" type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+        <button (keyup.enter)="modal.close()" type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()">Aceptar</button>
     </div>
     <br>
 </ng-template>
