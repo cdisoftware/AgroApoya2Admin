@@ -267,7 +267,7 @@ export class ValoracionComponent implements OnInit {
     }
     else {
       this.ValidaCam = '0';
-      this.ArrayCamposValida=[];
+      this.ArrayCamposValida = [];
       const Body = {
         IdTopping: 0,
         Id_Sector: Number(this.SessionSectorSel),
@@ -322,7 +322,7 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
-  ValidaVigencias(templateMensaje: any, bandera:string) {
+  ValidaVigencias(templateMensaje: any, bandera: string) {
     var fechaD = this.VigenDesde;
     var fechaH = this.VigenHasta;
     var fechaH = this.VigenHasta;
@@ -332,21 +332,21 @@ export class ValoracionComponent implements OnInit {
     var fechaDF = this.formatofecha.transform(fechaD, "yyyy-MM-dd")!;
     var fechaHF = this.formatofecha.transform(fechaH, "yyyy-MM-dd")!;
     var fechaRF = this.formatofecha.transform(fechaR, "yyyy-MM-dd")!;
-    if(bandera=='1'){
+    if (bandera == '1') {
       if (this.VigenDesde < fechaf) {
         this.VigenDesde = '';
         this.modalService.open(templateMensaje);
         this.Respuesta = 'La fecha inicio de la vigencia no puede ser menor a la fecha actual, favor valida tu información.';
       }
     }
-    else if(bandera=='2'){
+    else if (bandera == '2') {
       if (fechaDF > fechaHF) {
         this.VigenHasta = '';
         this.modalService.open(templateMensaje);
         this.Respuesta = 'La fecha fin de la vigencia no puede ser menor a la fecha inicio de la vigencia, favor valida tu información.';
       }
     }
-    else if(bandera=='3'){
+    else if (bandera == '3') {
       if (this.FechaEntrega < fechaHF) {
         this.FechaEntrega = '';
         this.modalService.open(templateMensaje);
@@ -358,7 +358,7 @@ export class ValoracionComponent implements OnInit {
         this.Respuesta = 'La fecha entrega de la vigencia no puede ser menor a la fecha recogida de la oferta, favor valida tu información.';
       }
     }
-    
+
   }
 
   selectTipTopp(item: any) {
@@ -1484,16 +1484,16 @@ export class ValoracionComponent implements OnInit {
       if (respuesta[0] != '-1') {
         this.modalPublicar?.close();
         this.rutas.navigateByUrl('/home/buscaroferta')
-        this.serviciosvaloracion.CorreoMasivo('1', '9', '2', this.SessionOferta).subscribe(ResultCorreo => {
-          console.log(ResultCorreo)
-        })
-        if(this.DataSectores.length>0){
-          for(var i=0; i<this.DataSectores.length;i++){
+        if (this.DataSectores.length > 0) {
+          for (var i = 0; i < this.DataSectores.length; i++) {
             this.serviciosvaloracion.EnviarSms('7', '0', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA, '0').subscribe(Resultado => {
               console.log(Resultado)
             })
+            this.serviciosvaloracion.CorreoMasivo('1', '9', '2', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
+              console.log(ResultCorreo)
+            })
           }
-        }        
+        }
       }
     })
   }

@@ -149,11 +149,11 @@ export class SectorizacionComponent implements OnInit {
       }
       if (this.CantidadSectores >= this.SessionCantSecOferta) {
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-        this.Respuesta = 'Las cantidades totales de la oferta ya fueron asignadas, no es posible asignar mas sectores.';        
+        this.Respuesta = 'Las cantidades totales de la oferta ya fueron asignadas, no es posible asignar mas sectores.';
       }
       else if (this.Cant > this.SessionCantSecOferta) {
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-        this.Respuesta = 'Las cantidades a asignar superan las disponibles de la oferta, favor valida tu información.';        
+        this.Respuesta = 'Las cantidades a asignar superan las disponibles de la oferta, favor valida tu información.';
       }
       else {
         this.Respuesta = '';
@@ -169,7 +169,7 @@ export class SectorizacionComponent implements OnInit {
             var respuesta = ResultInsert.split('|')
             this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
             this.Respuesta = respuesta[1];
-            this.ConsultaSectoresOferta();            
+            this.ConsultaSectoresOferta();
           })
         }
         else {
@@ -376,9 +376,12 @@ export class SectorizacionComponent implements OnInit {
         this.Respuesta = respuesta[1];
         if (respuesta[0] != '-1') {
           this.rutas.navigateByUrl('/home/transportista');
-          this.sectoresservices.CorreoMasivo('1', '6', '3', this.SessionOferta).subscribe(ResultCorreo => {
-            console.log(ResultCorreo)
-          })
+          this.ConsultaSectoresOferta();
+          for (var i = 0; i < this.DataSectorOferta.length; i++) {
+            this.sectoresservices.CorreoMasivo('1', '6', '3', this.SessionOferta, this.DataSectorOferta[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
+              console.log(ResultCorreo)
+            })
+          }          
           this.EnviarSms('4');
         }
       })
@@ -398,7 +401,7 @@ export class SectorizacionComponent implements OnInit {
     }
   }
 
-  EnviarSms(bandera:string) {
+  EnviarSms(bandera: string) {
     this.sectoresservices.EnviarSms(bandera, '0', this.SessionOferta, '0', '0').subscribe(Resultado => {
       console.log(Resultado)
     })
