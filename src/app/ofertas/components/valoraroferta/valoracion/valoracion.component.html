@@ -177,21 +177,25 @@
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Vigencia desde</label>
-                            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VigenDesde" (blur)="ValidaVigencias(ModalRespuesta, '1')">
+                            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VigenDesde"
+                                (blur)="ValidaVigencias(ModalRespuesta, '1')">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Vigencia hasta</label>
-                            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VigenHasta" (blur)="ValidaVigencias(ModalRespuesta, '2')">
+                            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VigenHasta"
+                                (blur)="ValidaVigencias(ModalRespuesta, '2')">
                         </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Fecha entrega</label>
-                            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="FechaEntrega" (blur)="ValidaVigencias(ModalRespuesta, '3')">
+                            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="FechaEntrega"
+                                (blur)="ValidaVigencias(ModalRespuesta, '3')">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Fecha recogida</label>
-                            <input type="date" disabled class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="SessionFechaRecogida">
+                            <input type="date" disabled class="col-sm-12 form-control mt-1 textBox"
+                                [(ngModel)]="SessionFechaRecogida">
                         </div>
                     </div>
                     <div class="row br">
@@ -265,12 +269,12 @@
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Minimo unidades</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidI"
-                            onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Maximo unidades</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidI"
-                            onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                     </div>
                     <div class="row br">
@@ -280,7 +284,7 @@
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Precio final (No incluye valor domicilio)</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PreFinI"
+                            <input type="text" class="col-sm-12 form-control mt-1 textBox" value="{{PreFinI | currency}}"
                                 disabled="true">
                         </div>
                     </div>
@@ -335,24 +339,24 @@
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Minimo unidades lider</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidLider"
-                            onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Maximo unidades lider</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidLider"
-                            onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Minimo unidades participante</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidPart"
-                            onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Maximo unidades participante</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidPart"
-                            onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                     </div>
                     <div class="row br">
@@ -372,19 +376,22 @@
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Cantidad de grupos</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="CantGrupos"
-                                (change)="CalculaCCI(ModalRespuesta)" onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                                (change)="CalculaCCI(ModalRespuesta)"
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Numero minimo de personas por grupo</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidXGrupos"
-                                (change)="CalculaCCI(ModalRespuesta)" onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                                (change)="CalculaCCI(ModalRespuesta)"
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                     </div>
                     <div class="row br" *ngIf="MuestraCantIndiv=='1'">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Cantidad de compras individuales disponibles</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="CantComprI"
-                                disabled="true" onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                                disabled="true"
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                     </div>
                     <div class="row br">
@@ -431,18 +438,27 @@
             <ngb-panel title="Adicionales" id="config-panel-three">
                 <ng-template ngbPanelContent>
                     <div class="row br">
+
+
                         <div class="col-sm-4">
                             <label class="col-sm-12 Llave">Descripción</label>
-                            <input type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="DesTopp">
+                            <input type="text" title="Descripción máximo 150 caracteres" 
+                            class="col-sm-12 form-control mt-1 textBox" maxlength="150"
+                            [(ngModel)]="DesTopp" [ngModelOptions]="{standalone: true}">
                         </div>
+
+
+
                         <div class="col-sm-4">
                             <label class="col-sm-12 Llave">Valor unitario</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrUniTopp">
                         </div>
                         <div class="col-sm-4">
                             <label class="col-sm-12 Llave mt-1">Tipo</label>
-                            <ng-autocomplete [data]="DataTipotopping" [searchKeyword]="keywordTipTopp" (selected)='selectTipTopp($event)'
-                                placeholder="Tipo topping" [itemTemplate]="templateOfer" [notFoundTemplate]="templateVacio" (inputCleared)='LimpiaTipoTopp()' [(ngModel)]="TipoTopp">
+                            <ng-autocomplete [data]="DataTipotopping" [searchKeyword]="keywordTipTopp"
+                                (selected)='selectTipTopp($event)' placeholder="Tipo topping"
+                                [itemTemplate]="templateOfer" [notFoundTemplate]="templateVacio"
+                                (inputCleared)='LimpiaTipoTopp()' [(ngModel)]="TipoTopp">
                             </ng-autocomplete>
                             <ng-template #templateOfer let-item>
                                 <a [innerHTML]="item.Descripcion"></a>
@@ -450,22 +466,36 @@
                             <ng-template #templateVacio let-SinRegistro>
                                 <label for="">Sin registros</label>
                             </ng-template>
-                        </div>                                             
+                        </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-4">
                             <label class="col-sm-12 Llave">Unidades para la oferta</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidOferta">
-                        </div>   
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidOferta" disabled="{{IsEnables}}">
+                        </div>
                         <div class="col-sm-4">
                             <label class="col-sm-12 Llave">Maximo unidades por cada compra</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidMaxTopp" [disabled]="ValidaTipoTopp">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidMaxTopp"
+                                [disabled]="ValidaTipoTopp">
                         </div>
                         <div class="col-sm-4">
-                            <label class="col-sm-12 Llave"></label>
-                            <button class="btn btn-agro-prin col-sm-12 mt-1" (click)="GuardaTopping(ModalRespuesta)">Agregar</button>
+                            <button type="button" class="btn-warning col-sm-12">
+                                <i class="fa fa-upload marginleft"></i> Subir Imagen
+                                <input name="file-input3" id="file-input3" type="file"
+                                    (change)="CargaImagenAdicionales($event, ModalRespuesta)"
+                                    title="" />
+                            </button>
                         </div>
-                    </div>                    
+                    </div>
+
+                    <div class="row justify-content-center br">
+                        <div class="col-sm-3">
+                            <label class="col-sm-12 Llave"></label>
+                            <button class="btn btn-agro-prin col-sm-12"
+                                (click)="GuardaTopping(ModalRespuesta)">Agregar</button>
+                        </div>
+                    </div>
+
                     <div class="row justify-content-center br">
                         <table class="col-sm-12 TableAgro">
                             <tr>
@@ -475,21 +505,34 @@
                                 <th>Unidades para oferta</th>
                                 <th>Maximo unidades por compra</th>
                                 <th>Acciones</th>
+                                <th>Ver Imagen</th>
+
                             </tr>
                             <tr *ngFor="let topping of DataToppings">
                                 <td>{{topping.Descripcion}}</td>
                                 <td>{{topping.ValorUnitario | currency}}</td>
-                                <td>{{topping.descTipotopping}}</td>  
-                                <td>{{topping.cantidadReserva}}</td>    
-                                <td>{{topping.MaxCantidad}}</td>                                                                                          
-                                <td> 
-                                    <button class="SinEstilo m-1" title="Activar/Desactivar amparado" (click)="ModificaTopping('1', topping)">
-                                        <img *ngIf="topping.Estado=='1'" src="./../../../../../assets/ImagenesAgroApoya2Adm/visible.png" >
-                                        <img *ngIf="topping.Estado=='2'" src="./../../../../../assets/ImagenesAgroApoya2Adm/notvisible.png">
+                                <td>{{topping.descTipotopping}}</td>
+                                <td>{{topping.cantidadReserva}}</td>
+                                <td>{{topping.MaxCantidad}}</td>
+                                <td>
+                                    <button class="SinEstilo m-1" title="Activar/Desactivar amparado"
+                                        (click)="ModificaTopping('1', topping)">
+                                        <img *ngIf="topping.Estado=='1'"
+                                            src="./../../../../../assets/ImagenesAgroApoya2Adm/visible.png">
+                                        <img *ngIf="topping.Estado=='2'"
+                                            src="./../../../../../assets/ImagenesAgroApoya2Adm/notvisible.png">
+
                                     </button>
                                     <button class="SinEstilo m-1" title="Eliminar amparado">
-                                        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" (click)="ModificaTopping('2', topping)">
-                                    </button>                                    
+                                        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png"
+                                            (click)="ModificaTopping('2', topping)">
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="SinEstilo m-1" title="Imagen amparado">
+                                        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png"
+                                            (click)="visualizaImagenTopping(ModalImagen, topping.imagen)">
+                                    </button>
                                 </td>
                             </tr>
                             <tr *ngIf="ValidaConsulta=='1'">
@@ -562,6 +605,23 @@
     <div class="row justify-content-center">
         <button type="button" class="btn btn-agro-prin col-sm-2"
             (click)="PublicaOferta(ModalRespuesta)">Guardar</button>
+    </div>
+    <br>
+</ng-template>
+
+
+<ng-template #ModalImagen let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title">Imagen adicionales</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body" *ngFor="let oferta of DataOferta">
+        <div class="row br">
+            <img src="{{consultaimagen}}" class="col-sm-12">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.dismiss()">Aceptar</button>
     </div>
     <br>
 </ng-template>
