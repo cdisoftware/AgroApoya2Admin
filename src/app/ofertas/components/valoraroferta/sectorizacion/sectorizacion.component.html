@@ -158,7 +158,7 @@
             <input class="col-sm-12 form-control form-control-sm textBox" type="number" placeholder="Cantidad" [(ngModel)]="Cant">
         </div>
         <div class="col-sm-4">
-            <input class="col-sm-12 form-control form-control-sm textBox" type="number" placeholder="Valor estimado flete" [(ngModel)]="VlrFle">
+            <input mask="separator" thousandSeparator="." class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Valor estimado flete" [(ngModel)]="VlrFle">
         </div>
     </div>
     <div class="row br justify-content-center ">
@@ -220,7 +220,7 @@
 </div>
 <ng-template #ModalInsert let-modal>
     <div class="modal-header ">
-        <h4 class="modal-title " id="modal-basic-title ">Crear sector</h4>        
+        <h4 class="modal-title " id="modal-basic-title ">Crear sector</h4>
         <button type="button " class="btn-close " aria-label="Close " (click)="ValidaCerrar(ModalRespuesta) "></button>
     </div>
     <div class="modal-body ">
@@ -237,7 +237,7 @@
         <div class="row br" *ngIf="ValidaInsertSec=='1' ">
             <div class="col-sm-4">
                 <input type="text " class="Col-sm-12 form-control " placeholder="Coordenada norte " [(ngModel)]="Coor1 ">
-            </div>            
+            </div>
             <div class="col-sm-4">
                 <input type="text " class="Col-sm-12 form-control " placeholder="Coordenada sur " [(ngModel)]="Coor2 ">
             </div>
@@ -246,11 +246,11 @@
                     <!-- <img src="./../../../../../assets/ImagenesAgroApoya2Adm/anadir.png "> -->
                 </button>
             </div>
-        </div>        
+        </div>
         <div class="row mt-2 justify-content-center" *ngIf="ValidaInsertSec=='1' ">
             <div class="col-sm-11 ">
                 <div id="map" [ngClass]="ValidaInsertSec=='1' ? 'ShowMap' : 'HideMap' "></div>
-            </div>           
+            </div>
         </div>
         <div class="br row justify-content-center " *ngIf="ValidaCoord=='1'">
             <h2 class="TituloDetalle " style="color: #397c97; ">Coordenadas registradas</h2>
@@ -278,14 +278,14 @@
                     <button class="SinEstilo" (click)="EliminaCoordenada(coordenada)">
                         <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
                     </button>
-                </div>                
+                </div>
             </div>
         </div>
     </div>
     <div class="row justify-content-center " *ngIf="ValidaInsertSec=='1' ">
         <div class="col-sm-2 ">
             <button type="button " class="btn btn-agro-prin col-sm-12 " (click)="CerrModalMap(ModalRespuesta) ">Guardar</button>
-        </div>      
+        </div>
     </div>
     <br>
 </ng-template>
