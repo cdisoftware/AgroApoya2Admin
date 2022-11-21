@@ -1496,10 +1496,7 @@ export class ValoracionComponent implements OnInit {
       this.Respuesta = respuesta[1];
       if (respuesta[0] != '-1') {
         this.modalPublicar?.close();
-        this.rutas.navigateByUrl('/home/buscaroferta')
-        this.serviciosvaloracion.CorreoMasivo('1', '9', '2', this.SessionOferta).subscribe(ResultCorreo => {
-          console.log(ResultCorreo)
-        })
+        this.rutas.navigateByUrl('/home/buscaroferta');        
         if(this.DataSectores.length>0){
           for(var i=0; i<this.DataSectores.length;i++){
             this.serviciosvaloracion.EnviarSms('7', '0', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA, '0').subscribe(Resultado => {
