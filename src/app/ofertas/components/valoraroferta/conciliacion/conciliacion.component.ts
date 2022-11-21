@@ -281,7 +281,7 @@ export class ConciliacionComponent implements OnInit {
       estado: 5,
       parametro1: this.maPrecioFinal,
       parametro2: "",
-      parametro3: ""
+      parametro3: this.Caracterizacion
     }
 
     const datosciudad = {
@@ -291,7 +291,7 @@ export class ConciliacionComponent implements OnInit {
       CD_MNCPIO: this.IdACiudad
     }
     console.log(datosaprueba)
-    if (this.IdACiudad == '0' || this.maObservacion == '' || this.maPrecioFinal == '') {
+    if (this.IdACiudad == '0' || this.maObservacion == '' || this.maPrecioFinal == '' || this.Caracterizacion == '') {
       this.Respuesta = 'Debes completar todos los datos para aprobar la oferta.'
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else {

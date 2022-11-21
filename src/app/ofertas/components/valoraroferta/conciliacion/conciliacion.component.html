@@ -32,7 +32,7 @@
         <div class="row br">
             <div class="col-sm-4">
                 <label class="col-sm-12 Llave">Precio Sugerido por Unidad </label>
-                <input type="text" class="form-control form-control-sm textBox" placeholder="Precio Sugerido" [(ngModel)]="ValorSugerido" [value]="Valor" name="ValorSugerido" (change)="Formatovalor()">                
+                <input type="text" class="form-control form-control-sm textBox" placeholder="Precio Sugerido" [(ngModel)]="ValorSugerido" [value]="Valor" name="ValorSugerido" (change)="Formatovalor()">
             </div>
         </div>
         <hr>
@@ -55,16 +55,14 @@
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Producto:&nbsp;</label><label
-                                        class="Valor">{{oferta.Nombre_Producto}}</label>
+                                    <label class="Llave">Producto:&nbsp;</label><label class="Valor">{{oferta.Nombre_Producto}}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Presentación empaque:&nbsp;</label><label
-                                        class="Valor">{{oferta.Descripcion_empaque}}</label>
+                                    <label class="Llave">Presentación empaque:&nbsp;</label><label class="Valor">{{oferta.Descripcion_empaque}}</label>
                                 </div>
                             </div>
                         </div>
@@ -73,16 +71,14 @@
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Tamaño:&nbsp;</label><label
-                                        class="Valor">{{oferta.Nmbre_tamano}}</label>
+                                    <label class="Llave">Tamaño:&nbsp;</label><label class="Valor">{{oferta.Nmbre_tamano}}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Condición entrega:&nbsp;</label> <label
-                                        class="Valor">{{oferta.Condicion_entrega}}</label>
+                                    <label class="Llave">Condición entrega:&nbsp;</label> <label class="Valor">{{oferta.Condicion_entrega}}</label>
                                 </div>
                             </div>
                         </div>
@@ -91,41 +87,35 @@
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Valor unidad:&nbsp;</label><label
-                                        class="Valor">{{oferta.valor_unidad_formato}}</label>
+                                    <label class="Llave">Valor unidad:&nbsp;</label><label class="Valor">{{oferta.valor_unidad_formato}}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Unidades disponibles:&nbsp;</label><label
-                                        class="Valor">{{oferta.Unidades_disponibles}}</label>
+                                    <label class="Llave">Unidades disponibles:&nbsp;</label><label class="Valor">{{oferta.Unidades_disponibles}}</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <label class="Llave">Valor total oferta:&nbsp;</label><label
-                                class="Valor">{{oferta.valor_Total_Ofr_formato}}</label>
+                            <label class="Llave">Valor total oferta:&nbsp;</label><label class="Valor">{{oferta.valor_Total_Ofr_formato}}</label>
                         </div>
                         <div class="col-sm-6">
-                            <label class="Llave">Valor costeo:&nbsp;</label><label
-                                class="Valor">{{oferta.vlor_costeo}}</label>
+                            <label class="Llave">Valor costeo:&nbsp;</label><label class="Valor">{{oferta.vlor_costeo}}</label>
                         </div>
                     </div>
                     <hr class="hrSinEstilo">
                     <div class="row">
                         <div class="col-sm-12">
-                            <label class="Llave">Descripción producto:&nbsp;</label><label
-                                class="Valor">{{oferta.caracteristicas}}</label>
+                            <label class="Llave">Descripción producto:&nbsp;</label><label class="Valor">{{oferta.caracteristicas}}</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <label class="Llave">Caracterización:&nbsp;</label><label
-                                class="Valor">{{oferta.caracterizacion}}</label>
+                            <label class="Llave">Caracterización:&nbsp;</label><label class="Valor">{{oferta.caracterizacion}}</label>
                         </div>
                     </div>
                     <hr class="hrSinEstilo">
@@ -133,32 +123,28 @@
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Fecha recogida:&nbsp;</label><label
-                                        class="Valor">{{oferta.fecha_recogida}}</label>
+                                    <label class="Llave">Fecha recogida:&nbsp;</label><label class="Valor">{{oferta.fecha_recogida}}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Jornada:&nbsp;</label><label
-                                        class="Valor">{{oferta.Nombre_jornada}}</label>
+                                    <label class="Llave">Jornada:&nbsp;</label><label class="Valor">{{oferta.Nombre_jornada}}</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <label class="Llave">Nombre productor:&nbsp;</label><label
-                                class="Valor">{{oferta.Nombre_productor}}</label>
+                            <label class="Llave">Nombre productor:&nbsp;</label><label class="Valor">{{oferta.Nombre_productor}}</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Ubicación:&nbsp;</label><label
-                                        class="Valor">{{oferta.Ubicacion_parsela +'
+                                    <label class="Llave">Ubicación:&nbsp;</label><label class="Valor">{{oferta.Ubicacion_parsela +'
                                         ('+oferta.coordenadas_parcela}})</label>
                                 </div>
                             </div>
@@ -168,8 +154,7 @@
                         <div class="col-sm-12">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Estado oferta:&nbsp;</label><label
-                                        class="Valor">{{NomEstado}}</label>
+                                    <label class="Llave">Estado oferta:&nbsp;</label><label class="Valor">{{NomEstado}}</label>
                                 </div>
                             </div>
                         </div>
@@ -195,10 +180,10 @@
                 <button class="btn btn-agro-prin col-sm-12" (click)="EnviarPropuesta(ModalRespuesta)">Enviar Propuesta</button>
             </div>
             <div class="col-2 col-sm-3" *ngIf="ValidaAprobar == '1'">
-                <button class="btn btn-agro-prin col-sm-12" (click)="AprobarOferta(templateAprobar)" >Aprobar</button>
+                <button class="btn btn-agro-prin col-sm-12" (click)="AprobarOferta(templateAprobar)">Aprobar</button>
             </div>
             <div class="col-2 col-sm-3" *ngIf="ValidaDeclinar == '1'">
-                <button class="btn btn-agro-prin col-sm-12" (click)="DeclinarOferta(templateDeclinar)" >Declinar</button>
+                <button class="btn btn-agro-prin col-sm-12" (click)="DeclinarOferta(templateDeclinar)">Declinar</button>
             </div>
             <div class="col-2 col-sm-3" *ngIf="ValidaSiguiente == '1'">
                 <button class="btn btn-agro-prin col-sm-12" (click)="Enviar(templateEditar)">Siguiente</button>
@@ -215,13 +200,11 @@
             <div class="row br">
                 <div class="col-sm-6">
                     <label class="col-sm-12 Llave">Caracterización</label>
-                    <textarea name="ECaracteriza" id="ECaracteriza" class="col-sm-12 form-control form-control-sm textArea"
-                        placeholder="Caracterización" rows="3" [(ngModel)]="ECaracteriza"></textarea>
+                    <textarea name="ECaracteriza" id="ECaracteriza" class="col-sm-12 form-control form-control-sm textArea" placeholder="Caracterización" rows="3" [(ngModel)]="ECaracteriza"></textarea>
                 </div>
                 <div class="col-sm-6">
                     <label class="col-sm-12 Llave">Presentación</label>
-                    <select name="EEmpaque" id="EEmpaque" #eempaque class="form-control form-control-sm textBox"
-                    (change)='SelEEmpaque(eempaque.value)'>
+                    <select name="EEmpaque" id="EEmpaque" #eempaque class="form-control form-control-sm textBox" (change)='SelEEmpaque(eempaque.value)'>
                         <option value="0">Presentación</option>
                         <option *ngFor="let empaque of ArrayEmpaque" [value]="empaque.id_empaque" [selected]="empaque.id_empaque == IdEEmpaque">
                             {{empaque.des_empaque}}
@@ -242,13 +225,11 @@
             <div class="row br">
                 <div class="col-sm-6">
                     <label class="col-sm-12 Llave">Fecha Recogida</label>
-                    <input type="text" class="col-sm-12 form-control form-control-sm textBox" placeholder="Fecha recogida" name="EFechaRecogida" [(ngModel)]="EFechaRecogida"
-                        onfocus="(this.type='date')" onblur="(this.type='date')" name="EFechaRecogida">
+                    <input type="text" class="col-sm-12 form-control form-control-sm textBox" placeholder="Fecha recogida" name="EFechaRecogida" [(ngModel)]="EFechaRecogida" onfocus="(this.type='date')" onblur="(this.type='date')" name="EFechaRecogida">
                 </div>
                 <div class="col-sm-6">
                     <label class="col-sm-12 Llave">Jornada</label>
-                    <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox"
-                    (change)='SelEJornada(ejornada.value)'>
+                    <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox" (change)='SelEJornada(ejornada.value)'>
                         <option value="0">Jornada</option>
                         <option  *ngFor="let jor of ArrayJornada" [value]="jor.CD_JRNDA" [selected]="jor.CD_JRNDA == IdEJornada" >
                             {{jor.DESCRIPCION}}
@@ -259,13 +240,11 @@
             <div class="row br">
                 <div class="col-sm-6">
                     <label class="col-sm-12 Llave">Descripción Producto</label>
-                    <textarea  class="col-sm-12 form-control form-control-sm textArea"
-                        placeholder="Descripción Producto" rows="3" name="EDescripcion" [(ngModel)]="EDescripcion"></textarea>
+                    <textarea class="col-sm-12 form-control form-control-sm textArea" placeholder="Descripción Producto" rows="3" name="EDescripcion" [(ngModel)]="EDescripcion"></textarea>
                 </div>
                 <div class="col-sm-6">
                     <label class="col-sm-12 Llave">Observación Edición</label>
-                    <textarea  class="col-sm-12 form-control form-control-sm textArea"
-                        placeholder="Observación Edición" name="EOpservacion" [(ngModel)]="EObservacion" rows="3"></textarea>
+                    <textarea class="col-sm-12 form-control form-control-sm textArea" placeholder="Observación Edición" name="EOpservacion" [(ngModel)]="EObservacion" rows="3"></textarea>
                 </div>
             </div>
         </div>
@@ -282,8 +261,7 @@
         <div class="modal-body">
             <div class="row br">
                 <div class="col-sm-12">
-                    <textarea [(ngModel)]="mcObservacion" name="mcObservacion" id="mcObservacion"
-                        class="Col-sm-12 form-control form-control-sm textArea" placeholder="Observación" rows="3"></textarea>
+                    <textarea [(ngModel)]="mcObservacion" name="mcObservacion" id="mcObservacion" class="Col-sm-12 form-control form-control-sm textArea" placeholder="Observación" rows="3"></textarea>
                 </div>
             </div>
         </div>
@@ -301,22 +279,28 @@
             <div class="row br">
                 <div class="col-sm-12">
                     <label class="col-sm-12 Llave">Precio final aprobación</label>
-                    <input [(ngModel)]="maPrecioFinal" name="maPrecioFinal" id="maPrecioFinal"
-                        class="Col-sm-12 form-control form-control-sm textArea" placeholder="Precio final aprobación">
+                    <input [(ngModel)]="maPrecioFinal" name="maPrecioFinal" id="maPrecioFinal" class="Col-sm-12 form-control form-control-sm textArea" placeholder="Precio final aprobación">
                 </div>
             </div>
+
+            <div class="row br">
+                <div class="col-sm-12">
+                    <label class="col-sm-12 Llave">Caracterización</label>
+                    <textarea [(ngModel)]="Caracterizacion" name="maObservacion" id="maObservacion" class="Col-sm-12 form-control form-control-sm textArea" placeholder="Caracterización" rows="3"></textarea>
+                </div>
+            </div>
+
+
             <div class="row br">
                 <div class="col-sm-12">
                     <label class="col-sm-12 Llave">Observaciones</label>
-                    <textarea [(ngModel)]="maObservacion" name="maObservacion" id="maObservacion"
-                        class="Col-sm-12 form-control form-control-sm textArea" placeholder="Observaciones" rows="3"></textarea>
+                    <textarea [(ngModel)]="maObservacion" name="maObservacion" id="maObservacion" class="Col-sm-12 form-control form-control-sm textArea" placeholder="Observaciones" rows="3"></textarea>
                 </div>
             </div>
             <div class="row br">
                 <div class="col-sm-12">
                     <label class="col-sm-12 Llave">Ciudad destino oferta</label>
-                    <select name="ACiudad" id="Aciudad" #aciudad class="form-control form-control-sm textBox"
-                    (change)='SelACiudad(aciudad.value)'>
+                    <select name="ACiudad" id="Aciudad" #aciudad class="form-control form-control-sm textBox" (change)='SelACiudad(aciudad.value)'>
                         <option value="1">Ciudad destino</option>
                         <option *ngFor="let ciudad of ArrayCiudades" [value]="ciudad.CD_MNCPIO" >
                             {{ciudad.DSCRPCION}}
