@@ -1499,7 +1499,7 @@ export class ValoracionComponent implements OnInit {
         this.rutas.navigateByUrl('/home/buscaroferta');        
         if(this.DataSectores.length>0){
           for(var i=0; i<this.DataSectores.length;i++){
-            this.serviciosvaloracion.EnviarSms('7', '0', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA, '0').subscribe(Resultado => {
+            this.serviciosvaloracion.EnviarSms('7', '0', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA, '0','0','0').subscribe(Resultado => {
               console.log(Resultado)
             })
             this.serviciosvaloracion.CorreoMasivo('1', '9', '2', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
