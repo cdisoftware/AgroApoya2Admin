@@ -170,8 +170,8 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'modctipocosteo/' + Bandera, datos)
   }
 
-  EnviarSms(bandera: string, idusuario: string, idoferta: string, idsector: string, idcliente: string) {
-    return this.http.get<any[]>(this.url_servidor + 'enviosmsindividual/' + bandera + '/' + idusuario + '/' + idoferta + '/' + idsector + '/' + idcliente)
+  EnviarSms(bandera: string, idusuario: string, idoferta: string, idsector: string, idcliente: string, telefono:string, codigo:string) {
+    return this.http.get<any[]>(this.url_servidor + 'enviosmsindividual/' + bandera + '/' + idusuario + '/' + idoferta + '/' + idsector + '/' + idcliente+'/'+ telefono+'/'+codigo)
   }
 
   ConsultaTipoTopping(Bandera: string) {

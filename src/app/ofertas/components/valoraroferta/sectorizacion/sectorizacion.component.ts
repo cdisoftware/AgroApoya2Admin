@@ -402,7 +402,7 @@ export class SectorizacionComponent implements OnInit {
   }
 
   EnviarSms(bandera: string) {
-    this.sectoresservices.EnviarSms(bandera, '0', this.SessionOferta, '0', '0').subscribe(Resultado => {
+    this.sectoresservices.EnviarSms(bandera, '0', this.SessionOferta, '0', '0','0','0').subscribe(Resultado => {
       console.log(Resultado)
     })
   }
