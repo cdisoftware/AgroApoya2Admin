@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { ComprasComponent } from './components/compras/compras.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { ComprasComponent } from './components/compras/compras.component';
 
   
     UsuariosComponent,
-             ComprasComponent
+             ComprasComponent,
+             DashboardComponent
   ],
   imports: [
     CommonModule
