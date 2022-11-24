@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from './../../../core/login.service';
 import { MetodosglobalesService } from './../../../core/metodosglobales.service';
@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
   Encripta: string = '';
 
   imagen: string;
-
+  TituloModal: string;
 
   constructor(public rutas: Router,
     private servicioslogin: LoginService,
@@ -77,5 +77,12 @@ export class LoginComponent implements OnInit {
     }
   }
 
-
+  OlvidoPassword(ModalOlvidePassword: TemplateRef<any>) {
+    this.modalService.open(ModalOlvidePassword, { centered: true, backdrop: 'static', keyboard: false });
+    this.TituloModal = "AgroApoya2";
+  }
+  
+  public cerrarPOpUpOlvidePassword() {
+    this.modalService.dismissAll('Cross click');
+  }
 }
