@@ -283,7 +283,6 @@ export class ConciliacionComponent implements OnInit {
       parametro2: "",
       parametro3: this.Caracterizacion
     }
-
     const datosciudad = {
       CD_CNSCTVO: this.IdOferta,
       CD_PAIS: "6",
