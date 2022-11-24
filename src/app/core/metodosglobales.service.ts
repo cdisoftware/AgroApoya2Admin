@@ -6,7 +6,8 @@ import { CookieService } from 'ngx-cookie-service'
   providedIn: 'root'
 })
 export class MetodosglobalesService {
-
+  key: any = "password12345678";
+  IV = "password12345678=";
   constructor(
     private http: HttpClient,
     private Cookies: CookieService
@@ -63,4 +64,5 @@ export class MetodosglobalesService {
   CrearCookie(Llave: string, Valor: string) {
     this.Cookies.set(Llave, Valor)
   }
+
 }

@@ -24,6 +24,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/costeo.component';
 import { ReporteComponent } from './usuario/components/reporte/reporte.component';
 import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/rep-compras.component';
+import { OlvidepasswordComponent } from './usuario/components/olvidepassword/olvidepassword.component';
 import { from } from 'rxjs';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
@@ -40,7 +41,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     PlantillascorreoComponent,
     CosteoComponent,
     ReporteComponent,
-    RepComprasComponent
+    RepComprasComponent,
+    OlvidepasswordComponent
   ],
   imports: [
     NgxMaskModule.forRoot(options),
