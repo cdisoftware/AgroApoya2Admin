@@ -15,7 +15,6 @@ export class LoginService {
     return this.http.post<any>(this.url_servidor + 'consusuarioadmin/' + Bandera, Datos)
   }
   ConsultaMenu(Bandera: string, IdTipoUsuario: string, usucodig: string){
-    console.log(this.url_servidor + 'consmenu/' + Bandera + '/' + IdTipoUsuario + '/' + usucodig)
     return this.http.get<any>(this.url_servidor + 'consmenu/' + Bandera + '/' + IdTipoUsuario + '/' + usucodig);
   }
   constsubmenu(Bandera: string, IdTipoUsuario: string, usucodig: string){
