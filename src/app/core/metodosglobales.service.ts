@@ -14,7 +14,7 @@ export class MetodosglobalesService {
   ) { }
 
   //ambiente de trabajo 1 desarrollo 2 produccion
-  ambientedetrabajo: string = '1';
+  ambientedetrabajo: string = ''1;
 
   public url_DesarrolloCDI = 'http://190.147.38.91:1007/Agroapoya2/';
   public url_ProduccionCDI = 'https://srv.apptotrip.com:1016/Agroapoya2/';
@@ -45,6 +45,7 @@ export class MetodosglobalesService {
   }
 
   RecuperarRutasOtrasImagenes(tipoimagen: string) {
+    //var ruta = 'https://api.apptotrip.com/ImagenesAgroapoya2/';
     var ruta = 'http://190.147.38.91:8089/';
     if (tipoimagen == '1') {
       return ruta + 'ImagenesEvidencia/'
