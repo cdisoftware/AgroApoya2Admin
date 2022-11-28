@@ -6,7 +6,8 @@ import { CookieService } from 'ngx-cookie-service'
   providedIn: 'root'
 })
 export class MetodosglobalesService {
-
+  key: any = "password12345678";
+  IV = "password12345678=";
   constructor(
     private http: HttpClient,
     private Cookies: CookieService
@@ -44,6 +45,7 @@ export class MetodosglobalesService {
   }
 
   RecuperarRutasOtrasImagenes(tipoimagen: string) {
+    //var ruta = 'https://api.apptotrip.com/ImagenesAgroapoya2/';
     var ruta = 'http://190.147.38.91:8089/';
     if (tipoimagen == '1') {
       return ruta + 'ImagenesEvidencia/'
@@ -63,4 +65,5 @@ export class MetodosglobalesService {
   CrearCookie(Llave: string, Valor: string) {
     this.Cookies.set(Llave, Valor)
   }
+
 }

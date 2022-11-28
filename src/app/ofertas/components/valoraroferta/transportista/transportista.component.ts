@@ -35,8 +35,8 @@ export class TransportistaComponent implements OnInit, OnDestroy {
   DataConductor: any[];
   SessionValorFlete: any;
   Sector: string;
-  Transpor: string;  
-  Intervalotiempo: any ;
+  Transpor: string;
+  Intervalotiempo: any;
 
   constructor(public sectoresservices: ValorarofertaService, private modalService: NgbModal, private rutas: Router, private cookies: CookieService, private SeriviciosGenerales: MetodosglobalesService) { }
 
@@ -54,12 +54,12 @@ export class TransportistaComponent implements OnInit, OnDestroy {
     this.ConsultaCiudadOferta();
     this.ConsultaCondOferta();
     this.ConsultaDetalleOferta();
-    this.Intervalotiempo = setInterval(()=>{
+    this.Intervalotiempo = setInterval(() => {
       this.ConsultaCondOferta();
     }, 5000);
   }
 
-  ngOnDestroy() {    
+  ngOnDestroy() {
     if (this.Intervalotiempo) {
       clearInterval(this.Intervalotiempo);
     }
@@ -76,7 +76,7 @@ export class TransportistaComponent implements OnInit, OnDestroy {
     this.sectoresservices.ConsultaConductoresOferta('1', this.SessionOferta).subscribe(ResultConsult => {
       if (ResultConsult.length > 0) {
         this.ValidaConsulta = '0';
-        this.DataTransOferta = ResultConsult;        
+        this.DataTransOferta = ResultConsult;
       }
       else {
         this.ValidaConsulta = '1';
@@ -86,8 +86,8 @@ export class TransportistaComponent implements OnInit, OnDestroy {
     })
   }
 
-  RecuperaValor(valor:any){
-    this.SessionValorFlete=valor
+  RecuperaValor(valor: any) {
+    this.SessionValorFlete = valor
   }
 
   ConsultaCiudadOferta() {
@@ -201,36 +201,36 @@ export class TransportistaComponent implements OnInit, OnDestroy {
         this.rutas.navigateByUrl('/home/costeo')
         this.sectoresservices.ConsultaConductoresOferta('1', this.SessionOferta).subscribe(ResultConsult => {
           if (ResultConsult.length > 0) {
-            for (var i = 0; i <= ResultConsult.length; i++) {               
-              if(ResultConsult[i].ESTADO=='3'){
+            for (var i = 0; i <= ResultConsult.length; i++) {
+              if (ResultConsult[i].ESTADO == '3') {
                 //Rechazado
-                const BodyCorreoInd={
+                const BodyCorreoInd = {
                   IdPlantilla: 8,
                   usucodig: ResultConsult[i].USUCODIG_TRANS,
                   Cd_cnctvo: this.SessionOferta,
                   id_conductor: ResultConsult[i].ID_CNDCTOR
                 }
-                this.sectoresservices.EnviarCorreoIndividual('1',BodyCorreoInd).subscribe(ResultCI=>{
+                this.sectoresservices.EnviarCorreoIndividual('1', BodyCorreoInd).subscribe(ResultCI => {
                   console.log(ResultCI)
                 })
-                this.sectoresservices.EnviarSms('6', ResultConsult[i].ID_CNDCTOR, this.SessionOferta, ResultConsult[i].ID_SCTOR_OFRTA, '0').subscribe(Resultado => {
+                this.sectoresservices.EnviarSms('6', ResultConsult[i].ID_CNDCTOR, this.SessionOferta, ResultConsult[i].ID_SCTOR_OFRTA, '0', '0', '0').subscribe(Resultado => {
                   console.log(Resultado)
-                })                
+                })
               }
-              else if(ResultConsult[i].ESTADO=='1'){
+              else if (ResultConsult[i].ESTADO == '1') {
                 //Aprobado
-                const BodyCorreoInd={
+                const BodyCorreoInd = {
                   IdPlantilla: 7,
                   usucodig: ResultConsult[i].USUCODIG_TRANS,
                   Cd_cnctvo: this.SessionOferta,
                   id_conductor: ResultConsult[i].ID_CNDCTOR
                 }
-                this.sectoresservices.EnviarCorreoIndividual('1',BodyCorreoInd).subscribe(ResultCI=>{
+                this.sectoresservices.EnviarCorreoIndividual('1', BodyCorreoInd).subscribe(ResultCI => {
                   console.log(ResultCI)
                 })
-                this.sectoresservices.EnviarSms('5', ResultConsult[i].ID_CNDCTOR, this.SessionOferta, ResultConsult[i].ID_SCTOR_OFRTA, '0').subscribe(Resultado => {
+                this.sectoresservices.EnviarSms('5', ResultConsult[i].ID_CNDCTOR, this.SessionOferta, ResultConsult[i].ID_SCTOR_OFRTA, '0', '0', '0').subscribe(Resultado => {
                   console.log(Resultado)
-                }) 
+                })
               }
             }
           }
@@ -239,8 +239,8 @@ export class TransportistaComponent implements OnInit, OnDestroy {
     })
   }
 
-  EnviarSms(bandera:string) {
-    this.sectoresservices.EnviarSms(bandera, '0', this.SessionOferta, '0', '0').subscribe(Resultado => {
+  EnviarSms(bandera: string) {
+    this.sectoresservices.EnviarSms(bandera, '0', this.SessionOferta, '0', '0', '0', '0').subscribe(Resultado => {
       console.log(Resultado)
     })
   }

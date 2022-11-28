@@ -25,7 +25,7 @@
 
 .conborde {
     max-width: 450px;
-       background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.8);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     padding: 10px;
     border-radius: 10px;
@@ -66,7 +66,27 @@
 .fondo_agroapoya {
     height: 100%;
 }
-.containerFlex{
+
+.containerFlex {
     display: flex;
     justify-content: space-between;
+}
+
+.TextCenter {
+    text-align: center;
+}
+
+.textoDos {
+    font-size: 14px;
+    color: #397c97;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.textoDos:hover {
+    font-size: 14px;
+    color: #397c97;
+    cursor: pointer;
+    text-decoration: none;
+    
 }

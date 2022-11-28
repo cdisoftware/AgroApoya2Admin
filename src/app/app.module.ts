@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
-
-import {NgxMaskModule,IConfig} from 'ngx-mask';
-
+import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from "@angular/common/http";
@@ -18,7 +16,7 @@ import { SidebarModule } from 'ng-sidebar';
 import { SectorizacionComponent } from './ofertas/components/valoraroferta/sectorizacion/sectorizacion.component';
 import { TransportistaComponent } from './ofertas/components/valoraroferta/transportista/transportista.component';
 import { ConciliacionComponent } from './ofertas/components/valoraroferta/conciliacion/conciliacion.component';
-import { ValoracionComponent} from './ofertas/components/valoraroferta/valoracion/valoracion.component';
+import { ValoracionComponent } from './ofertas/components/valoraroferta/valoracion/valoracion.component';
 import { CookieService } from 'ngx-cookie-service';
 import { PlantillascorreoComponent } from './usuario/components/plantillascorreo/plantillascorreo.component'
 import { AngularEditorModule } from '@kolkov/angular-editor';
@@ -26,6 +24,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/costeo.component';
 import { ReporteComponent } from './usuario/components/reporte/reporte.component';
 import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/rep-compras.component';
+import { OlvidepasswordComponent } from './usuario/components/olvidepassword/olvidepassword.component';
 import { from } from 'rxjs';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
@@ -42,10 +41,10 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     PlantillascorreoComponent,
     CosteoComponent,
     ReporteComponent,
-    RepComprasComponent
+    RepComprasComponent,
+    OlvidepasswordComponent
   ],
   imports: [
-    NgxMaskModule.forRoot(),
     NgxMaskModule.forRoot(options),
     BrowserModule,
     AppRoutingModule,
@@ -60,7 +59,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     GoogleMapsModule
   ],
   providers: [
-     { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     CookieService,
     DatePipe
   ],

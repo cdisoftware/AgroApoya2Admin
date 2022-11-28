@@ -158,8 +158,8 @@ export class ValorarofertaService {
   }
 
 
-  CorreoMasivo(bandera: string, IdPlantilla: string, IdTipoUsuario: string, cd_cnctvo: string) {
-    return this.http.get<any[]>(this.url_servidor + 'enviocorreomasivo/' + bandera + '/' + IdPlantilla + '/' + IdTipoUsuario + '/' + cd_cnctvo)
+  CorreoMasivo(bandera: string, IdPlantilla: string, IdTipoUsuario: string, cd_cnctvo: string, id_sector:string) {
+    return this.http.get<any[]>(this.url_servidor + 'enviocorreomasivo/' + bandera + '/' + IdPlantilla + '/' + IdTipoUsuario + '/' + cd_cnctvo+ '/'+ id_sector)
   }
 
   EnviarCorreoIndividual(bandera: string, datos: any) {
@@ -170,8 +170,8 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'modctipocosteo/' + Bandera, datos)
   }
 
-  EnviarSms(bandera: string, idusuario: string, idoferta: string, idsector: string, idcliente: string) {
-    return this.http.get<any[]>(this.url_servidor + 'enviosmsindividual/' + bandera + '/' + idusuario + '/' + idoferta + '/' + idsector + '/' + idcliente)
+  EnviarSms(bandera: string, idusuario: string, idoferta: string, idsector: string, idcliente: string, telefono:string, codigo:string) {
+    return this.http.get<any[]>(this.url_servidor + 'enviosmsindividual/' + bandera + '/' + idusuario + '/' + idoferta + '/' + idsector + '/' + idcliente+'/'+ telefono+'/'+codigo)
   }
 
   ConsultaTipoTopping(Bandera: string) {

@@ -21,7 +21,7 @@ export class ReporteComponent implements OnInit {
   mail: string = '';
   tipoUsuario: string ='0';
   nombre: string='';
-  codigo: number;
+  codigo: string;
   FechaDesde: String;
   FechaHasta: String;
   ArrayTipoUsuario: any = [];
@@ -38,6 +38,7 @@ export class ReporteComponent implements OnInit {
   tipoUsuarioM: string ='0';
   nombreM: string='';
   codigoM: number;
+  codigoB: number;
   FechaDesdeM: String;
   tipoDocumento: string ='';
   celular: string ='';
@@ -69,10 +70,12 @@ export class ReporteComponent implements OnInit {
   }
 
   buscar(){
-    if(this.codigo == null)
+    if(this.codigo == null && this.codigo==undefined && this.codigo == "")
     {
-      this.codigo = 0;
+      this.codigoB = 0;
     }
+    else
+    this.codigoB = Number(this.codigo)
     if(this.mail == '')
     {
       this.mail = "0";
@@ -91,7 +94,7 @@ export class ReporteComponent implements OnInit {
     }
     const bodyPost = {
       "IdTipoPersona":this.tipoUsuario,
-      "Usucodig":this.codigo,
+      "Usucodig":this.codigoB,
       "FechaDesde":this.FechaDesde,
       "FechaHasta":this.FechaHasta,
       "CorreoPersona":this.mail,
@@ -139,8 +142,8 @@ export class ReporteComponent implements OnInit {
       this.ReporteService.ConsultaTipoCliente('1', this.codigoM.toString()).subscribe(Resultado => {
         this.arrayC = Resultado;
       })
-
-
+      this.conductores =false
+      this.transportista=false;
       this.cliente = true;
       this.razonS = this.arrayC[0].RAZON_SOCIAL;
       this.NIT = this.arrayC[0].NIT;
@@ -287,7 +290,7 @@ export class ReporteComponent implements OnInit {
     this.nombre = '';
     this.mail = '';
     this.FechaHasta= ""
-    this.codigo = 0
+    this.codigo =""
     this.tipoUsuario ='0'
     this.FechaDesde= ""
     this.ArrayUsuarios=[]

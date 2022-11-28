@@ -48,7 +48,7 @@ export class ReporteService {
     this.crearTabla(data)
     this.libro.xlsx.writeBuffer().then((data)=>{
       const blob = new Blob([data])
-      FileSaver.saveAs(blob, "TEST.xlsx");
+      FileSaver.saveAs(blob, "UsuariosAgro.xlsx");
     })
   }
 

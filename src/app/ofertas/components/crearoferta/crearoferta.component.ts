@@ -500,7 +500,7 @@ export class CrearofertaComponent implements OnInit {
   }
 
   EnviarSms(bandera:string) {
-    this.ServiciosValorar.EnviarSms(bandera, this.IdProductor, this.SessionIdOferta, '0', '0').subscribe(Resultado => {
+    this.ServiciosValorar.EnviarSms(bandera, this.IdProductor, this.SessionIdOferta, '0', '0','0','0').subscribe(Resultado => {
       console.log(Resultado)
     })
   }

@@ -388,7 +388,7 @@ export class ValoracionComponent implements OnInit {
     this.ValidaTipoTopp = false;
     this.SessionTipoTopp = '0';
     this.UnidOferta = '';
-      this.IsEnables = false;
+    this.IsEnables = false;
   }
 
   ConsultaVigenciaOferta() {
@@ -1496,14 +1496,14 @@ export class ValoracionComponent implements OnInit {
       this.Respuesta = respuesta[1];
       if (respuesta[0] != '-1') {
         this.modalPublicar?.close();
-        this.rutas.navigateByUrl('/home/buscaroferta')
-        this.serviciosvaloracion.CorreoMasivo('1', '9', '2', this.SessionOferta).subscribe(ResultCorreo => {
-          console.log(ResultCorreo)
-        })
+        this.rutas.navigateByUrl('/home/buscaroferta');
         if (this.DataSectores.length > 0) {
           for (var i = 0; i < this.DataSectores.length; i++) {
-            this.serviciosvaloracion.EnviarSms('7', '0', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA, '0').subscribe(Resultado => {
+            this.serviciosvaloracion.EnviarSms('7', '0', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA, '0', '0', '0').subscribe(Resultado => {
               console.log(Resultado)
+            })
+            this.serviciosvaloracion.CorreoMasivo('1', '9', '2', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
+              console.log(ResultCorreo)
             })
           }
         }
@@ -1533,6 +1533,8 @@ export class ValoracionComponent implements OnInit {
           } else {
             if (response == 'Archivo Subido Correctamente') {
               this.imagenesAdicionales = event.target.files[0].name;
+              this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+              this.Respuesta = "Imagen cargada correctamente.";
             } else {
               console.log(response)
             }
@@ -1545,6 +1547,7 @@ export class ValoracionComponent implements OnInit {
         }
       );
     }
+
   }
 
   visualizaImagenTopping(ModalImagen: any, imagenesAdicional: string) {

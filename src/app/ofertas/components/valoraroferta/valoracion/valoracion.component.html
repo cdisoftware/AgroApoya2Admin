@@ -443,8 +443,6 @@
                                 <th>Unidades para oferta</th>
                                 <th>Maximo unidades por compra</th>
                                 <th>Acciones</th>
-                                <th>Ver Imagen</th>
-
                             </tr>
                             <tr *ngFor="let topping of DataToppings">
                                 <td>{{topping.Descripcion}}</td>
@@ -464,13 +462,11 @@
                                         <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png"
                                             (click)="ModificaTopping('2', topping)">
                                     </button>
-                                </td>
-                                <td>
                                     <button class="SinEstilo m-1" title="Imagen amparado">
                                         <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png"
                                             (click)="visualizaImagenTopping(ModalImagen, topping.imagen)">
                                     </button>
-                                </td>
+                                </td>                                
                             </tr>
                             <tr *ngIf="ValidaConsulta=='1'">
                                 <td colspan="6">{{txtValidaCons}}</td>

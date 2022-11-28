@@ -373,7 +373,7 @@ export class ConciliacionComponent implements OnInit {
   }
 
   EnviarSms(bandera: string) {
-    this.ServiciosValorar.EnviarSms(bandera, this.IdUsuario, this.IdOferta, '0', '0').subscribe(Resultado => {
+    this.ServiciosValorar.EnviarSms(bandera, this.IdUsuario, this.IdOferta, '0', '0', '0', '0').subscribe(Resultado => {
       console.log(Resultado)
     })
   }
