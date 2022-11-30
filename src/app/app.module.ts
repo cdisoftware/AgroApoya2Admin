@@ -26,6 +26,7 @@ import { ReporteComponent } from './usuario/components/reporte/reporte.component
 import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/rep-compras.component';
 import { OlvidepasswordComponent } from './usuario/components/olvidepassword/olvidepassword.component';
 import { from } from 'rxjs';
+import { EvaluacionofertaComponent } from './ofertas/components/evaluacionoferta/evaluacionoferta.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
@@ -42,7 +43,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     CosteoComponent,
     ReporteComponent,
     RepComprasComponent,
-    OlvidepasswordComponent
+    OlvidepasswordComponent,
+    EvaluacionofertaComponent
   ],
   imports: [
     NgxMaskModule.forRoot(options),
