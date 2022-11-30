@@ -7,7 +7,7 @@ import { MenuComponent } from './usuario/components/menu/menu.component';
 import { SectorizacionComponent } from './ofertas/components/valoraroferta/sectorizacion/sectorizacion.component';
 import { TransportistaComponent } from './ofertas/components/valoraroferta/transportista/transportista.component';
 import { LayoutprincipalComponent } from './shared/layoutprincipal/layoutprincipal.component';
-import { ConciliacionComponent} from './ofertas/components/valoraroferta/conciliacion/conciliacion.component'
+import { ConciliacionComponent } from './ofertas/components/valoraroferta/conciliacion/conciliacion.component'
 import { ValoracionComponent } from './ofertas/components/valoraroferta/valoracion/valoracion.component';
 import { PlantillascorreoComponent } from './usuario/components/plantillascorreo/plantillascorreo.component';
 import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/costeo.component';
@@ -15,6 +15,7 @@ import { ReporteComponent } from './usuario/components/reporte/reporte.component
 import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/rep-compras.component';
 import { ComprasComponent } from './usuario/components/compras/compras.component';
 import { UsuariosComponent } from './usuario/components/usuarios/usuarios.component';
+import { CarguepublicidadComponent } from './usuario/components/carguepublicidad/carguepublicidad.component'
 
 const routes: Routes = [
   {
@@ -24,7 +25,7 @@ const routes: Routes = [
   {
     path: 'home',
     component: LayoutprincipalComponent,
-    children:[
+    children: [
       {
         path: 'buscar',
         component: BuscarofertaComponent
@@ -38,7 +39,7 @@ const routes: Routes = [
         component: BuscarofertaComponent
       },
       {
-        path:'conciliacion',
+        path: 'conciliacion',
         component: ConciliacionComponent
       },
       {
@@ -77,9 +78,13 @@ const routes: Routes = [
         path: 'rep-usuarios',
         component: ReporteComponent
       },
+      {
+        path: 'carguepublicidad',
+        component: CarguepublicidadComponent
+      },
     ]
   },
-  
+
 
 ];
 

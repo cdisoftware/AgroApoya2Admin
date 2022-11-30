@@ -25,7 +25,7 @@ import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/coste
 import { ReporteComponent } from './usuario/components/reporte/reporte.component';
 import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/rep-compras.component';
 import { OlvidepasswordComponent } from './usuario/components/olvidepassword/olvidepassword.component';
-import { from } from 'rxjs';
+import { CarguepublicidadComponent } from './usuario/components/carguepublicidad/carguepublicidad.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
@@ -42,7 +42,9 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     CosteoComponent,
     ReporteComponent,
     RepComprasComponent,
-    OlvidepasswordComponent
+    OlvidepasswordComponent,
+    CarguepublicidadComponent
+   
   ],
   imports: [
     NgxMaskModule.forRoot(options),
@@ -56,7 +58,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AutocompleteLibModule,
     SidebarModule.forRoot(),
     AngularEditorModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

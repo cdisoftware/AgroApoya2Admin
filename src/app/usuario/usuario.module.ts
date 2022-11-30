@@ -3,19 +3,14 @@ import { CommonModule } from '@angular/common';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { ComprasComponent } from './components/compras/compras.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { OlvidepasswordComponent } from './components/olvidepassword/olvidepassword.component';
-
 
 @NgModule({
   declarations: [
-
-
-
-  
     UsuariosComponent,
-             ComprasComponent,
-             DashboardComponent,
-             
+    ComprasComponent,
+    DashboardComponent
+
+
   ],
   imports: [
     CommonModule
