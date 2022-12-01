@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PublicidadService } from 'src/app/core/publicidad.service';
+import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'app-carguepublicidad',
@@ -26,6 +28,12 @@ export class CarguepublicidadComponent implements OnInit {
   boxLargo: string;
   boxOrden: string;
 
+  auxLargo: string;
+  auxAncho: string;
+  auxOrden: string;
+
+
+
   NombreModulo: string = '';
   VerOcultarCampos: string = '';
 
@@ -37,37 +45,18 @@ export class CarguepublicidadComponent implements OnInit {
   boxPath: string;
   btnImagen: string;
 
+  usucodig: string = '';
+  ConsultaTarjetas: any[];
+
   constructor(private serviciospublicidad: PublicidadService,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal,
+    public cookies: CookieService) { }
 
   ngOnInit(): void {
+    this.usucodig = this.cookies.get('IDU');
     this.ListaModulo();
     this.ListaAccion();
     this.VerOcultarCampos = '1';
-  }
-
-  LimpiarModule(){
-    this.NombreModulo = '';
-  }
-
-  CambiarBtnModulo() {
-    if (this.IdListaModulo == '0') {
-      this.banderaAgregar = '1';
-    } else {
-      this.banderaAgregar = '2';
-    }
-  }
-
-  AgregarModulo(modalMod: any) {
-    this.modalService.open(modalMod, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
-  }
-
-  EditarModulo(modalMod: any) {
-    this.modalService.open(modalMod, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
-  }
-
-  AgregarDetalleImagen(modalMod: any) {
-    this.modalService.open(modalMod, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
   }
 
   ListaModulo() {
@@ -84,14 +73,124 @@ export class CarguepublicidadComponent implements OnInit {
     })
   }
 
+  CambiarBtnModulo() {
+    // Consultar tarjetas segun id de modulo
+    this.ConsultaTarjetas = [];
+    this.serviciospublicidad.ConsultaCPublicidad('1', '0', this.IdListaModulo, this.usucodig).subscribe(resultado => {
+      console.log(resultado)
+      this.ConsultaTarjetas = resultado;
+    })
+  }
+
+  AgregarModulo(modalMod: any) {
+    this.NombreModulo = '';
+    this.boxAncho = '';
+    this.boxLargo = '';
+    this.boxOrden = '';
+    
+    this.auxGuardarNombreMod = '1';
+    this.modalService.open(modalMod, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+  }
+
+  Limpiar() {
+    location.reload();
+  }
+
+  auxGuardarNombreMod: string;
+
+  BtnGuardarModulo(templateMensaje: any) {
+
+    if (this.NombreModulo == '') {
+      this.Respuesta = 'El campo nombre módulo es obligatorio.';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    } else {
+      const body = {
+        IdModulo: 0,
+        NomModulo: this.NombreModulo,
+      }
+      this.serviciospublicidad.ModCModulo('3', body).subscribe(resultado => {
+        var aux = resultado.split('|');
+  
+        this.IdVistaModulo = aux[0].replace(' ', '');
+
+        console.log(this.IdVistaModulo)
+
+        if (this.IdVistaModulo.trim() != '-1') {
+          this.auxGuardarNombreMod = '2';
+          this.Respuesta = "El modulo se a creado exitosamente, para editarlo debes seleccionarlo en los filtros.";
+          this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+          this.VerOcultarCampos = '3';
+          this.ListaModulo();
+        } else {
+          this.VerOcultarCampos = '1';
+          this.auxGuardarNombreMod = '1'
+          this.Respuesta = resultado;
+          this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        }
+      })
+    }
+  }
+
+  BtnGuardarModuloDetalle(templateMensaje: any) {
+    if (this.boxAncho == '' || this.boxAncho == '0') {
+      this.Respuesta = 'El campo ancho es obligatorio.';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    } else if (this.boxLargo == '' || this.boxLargo == '0') {
+      this.Respuesta = 'El campo largo es obligatorio.';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    } else if ( this.boxOrden == '' || this.boxOrden == '0') {
+      this.Respuesta = 'El campo orden es obligatorio.';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    } else {
+      const body = {
+        Id: 0,
+        IdVista: this.IdVistaModulo,
+        Alto: this.boxLargo,
+        Ancho: this.boxAncho,
+        Orden: this.boxOrden,
+        Usucodig: 0,
+        Observacion: 0
+      }
+
+      console.log(this.IdVistaModulo)
+      this.serviciospublicidad.ModCPubli('3', body).subscribe(resultado => {
+        if (resultado == 'Se ha insertado correctamente') {
+          this.Respuesta = "El modulo se a creado exitosamente, para editarlo debes seleccionarlo en los filtros.";
+          this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+          this.ListaPublicidad();
+          this.LimpiarModuloDetalle();
+        } else {
+          this.Respuesta = resultado;
+          this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+        }
+      })
+
+    }
+
+  }
+
+  
+  AgregarDetalleImagen(modalMod: any) {
+    this.modalService.open(modalMod, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+  }
+
+
+
+  ListaPublicidad() {
+    this.serviciospublicidad.ConsultaCPublicidad('1', '0', this.IdVistaModulo, this.usucodig).subscribe(resultado => {
+      this.DataModulos = resultado;
+    })
+  }
+
   SeleccionarEditarModulo(arreglo: any) {
-    console.log(arreglo)
     this.IdListaModulo = arreglo.codigo;
     this.banderaAgregar = '2';
 
   }
 
-  BtnGuardarModulo(templateMensaje: any) {
+
+
+  BtnEditarModulo(templateMensaje: any) {
 
     if (this.NombreModulo == undefined || this.NombreModulo == null || this.NombreModulo == '') {
       this.Respuesta = 'El campo nombre módulo es obligatorio.';
@@ -99,11 +198,11 @@ export class CarguepublicidadComponent implements OnInit {
 
     } else {
       const body = {
-        IdModulo: 0,
+        IdModulo: this.IdModulo,
         NomModulo: this.NombreModulo,
 
       }
-      this.serviciospublicidad.ModCModulo('3', body).subscribe(resultado => {
+      this.serviciospublicidad.ModCModulo('2', body).subscribe(resultado => {
         if (resultado == 'OK') {
           this.Respuesta = "El modulo se a creado exitosamente, para editarlo debes seleccionarlo en los filtros.";
           this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -118,42 +217,13 @@ export class CarguepublicidadComponent implements OnInit {
       this.ListaModulo();
     }
   }
+  IdVistaModulo: string = '';
 
-
-  BtnGuardarModuloDetalle(templateMensaje: any) {
-    if (this.boxAncho == undefined || this.boxAncho == null || this.boxAncho == '') {
-      this.Respuesta = 'El campo ancho es obligatorio.';
-      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.boxLargo == undefined || this.boxLargo == null || this.boxLargo == '0') {
-      this.Respuesta = 'El campo largo es obligatorio.';
-      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.boxOrden == undefined || this.boxOrden == null || this.boxOrden == '0') {
-      this.Respuesta = 'El campo orden es obligatorio.';
-      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else {
-      const body = {
-        Id: 0,
-        IdVista: this.IdModulo,
-        Alto: this.boxLargo,
-        Ancho: this.boxAncho,
-        Orden: this.boxOrden,
-        Usucodig: 0,
-        Observacion: 0
-      }
-      this.serviciospublicidad.ModCPubli('3', body).subscribe(resultado => {
-        console.log(resultado)
-        if (resultado == 'OK') {
-          this.Respuesta = "El modulo se a creado exitosamente, para editarlo debes seleccionarlo en los filtros.";
-          this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-          this.VerOcultarCampos = '1';
-        } else {
-          this.Respuesta = resultado;
-          this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-        }
-      })
-    }
+  LimpiarModuloDetalle() {
+    this.boxLargo = '';
+    this.boxAncho = '';
+    this.boxOrden = '';
   }
-
 
   BtnGuardarModAccion(templateMensaje: any) {
     if (this.boxPath == undefined || this.boxPath == null || this.boxPath == '') {
@@ -168,7 +238,7 @@ export class CarguepublicidadComponent implements OnInit {
     } else {
       const body = {
         Id: 0,
-        IdVista: this.IdModulo,
+        IdVista: this.IdVistaModulo,
         IdAccion: this.ListaAccion,
         Patch: this.boxPath,
         Imagen: this.imagenesPublicidad,
@@ -176,19 +246,60 @@ export class CarguepublicidadComponent implements OnInit {
         Observacion: 0
       }
       this.serviciospublicidad.ModCPublicidad('3', body).subscribe(resultado => {
-        console.log(resultado)
-        if (resultado == 'OK') {
-          this.Respuesta = "Guardado exitosamente";
+
+        if (resultado == 'Se ha insertado correctamente') {
+          this.Respuesta = "El detalle se a creado exitosamente";
           this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
         } else {
           this.Respuesta = resultado;
-          console.log(this.Respuesta)
           this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
         }
       })
     }
+    this.modalService.dismissAll();
   }
 
+  EditarModulo(modalMod: any) {
+    this.NombreModulo = modalMod.NombreModulo;
+    this.boxLargo = modalMod.auxLargo;
+    this.boxAncho = modalMod.auxAncho;
+    this.boxOrden = modalMod.auxOrden;
+    this.modalService.open(modalMod, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+  }
+
+
+  BtnEliminarDetalleMod(arreglo: any, templateMensaje: any) {
+    const body = {
+      Id: arreglo.Id,
+      IdVista: arreglo.IdVistaModulo,
+      Alto: this.boxLargo,
+      Ancho: this.boxAncho,
+      Orden: this.boxOrden,
+      Usucodig: 0,
+      Observacion: 0
+    }
+    this.serviciospublicidad.ModCPubli('4', body).subscribe(resultado => {
+      this.Respuesta = resultado;
+      this.Respuesta = "Se ha eliminado correctamente";
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.ListaPublicidad();
+    })
+  }
+
+  BtnEditarMod(arregloPlantilla: any) {
+    this.boxLargo = arregloPlantilla.auxLargo;
+    this.boxAncho = arregloPlantilla.auxAncho;
+    this.boxOrden = arregloPlantilla.auxOrden;
+
+    this.serviciospublicidad.ConsultaCPublicidad('1', '0', this.IdVistaModulo, this.usucodig).subscribe(resultado => {
+      if (resultado != null && resultado != undefined) {
+        this.DataModulos = resultado;
+
+      } else {
+        this.DataModulos = [];
+      }
+    })
+  }
 
   public CargaImgPublicidad(event: any, modalmensaje: any) {
 
@@ -227,5 +338,9 @@ export class CarguepublicidadComponent implements OnInit {
     }
   }
 
+
+  LimpiarModule() {
+    this.NombreModulo = '';
+  }
 
 }

@@ -32,8 +32,9 @@ export class PublicidadService {
     return this.http.post<any>(this.url_servidor + 'modcpublicidad/' + Bandera, Body)
   }
 
-  ConsultaCPublicidad(Bandera: string, IdVista: string, Usucodig: string) {
-    return this.http.get<any[]>(this.url_servidor + 'conscpublicidad /' + Bandera + '/' + IdVista + '/' + Usucodig)
+  ConsultaCPublicidad(Bandera: string, Id: string, IdVista: string, Usucodig: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscpublicidad/' + Bandera + '/' + Id + '/' + IdVista + '/' + Usucodig)
+
   }
 
   public postImgPublicidad(imagenParaSubir: File) {

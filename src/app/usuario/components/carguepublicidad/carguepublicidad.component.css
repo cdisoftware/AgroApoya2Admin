@@ -35,3 +35,10 @@
     color: black;
   }
   
+  .tarjeta{
+    display: flex;
+  }
+
+  .styleTarget{
+    border:#397c97 1 px solid;
+  }
