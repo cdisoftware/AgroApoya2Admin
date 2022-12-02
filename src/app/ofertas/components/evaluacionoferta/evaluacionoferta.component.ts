@@ -25,6 +25,7 @@ export class EvaluacionofertaComponent implements OnInit {
   SessionSectorOferta: any;
   ValidaConsulta: string;
   ValidaTipo: boolean = true;
+  ValidaAdministra: string;
 
   constructor(private evaluacionservices: EvalsatisfaccionService) { }
 
@@ -41,8 +42,21 @@ export class EvaluacionofertaComponent implements OnInit {
     })
   }
 
+  OperaOpcion(opcion: string) {
+    this.Limpiar();
+    switch (opcion) {
+      case '0': 
+      this.ValidaAdministra = '0';
+      break;
+      case '1': 
+      this.ValidaAdministra = '1';
+      break;
+    }
+  }
+
   ConsultaOfertas() {
     this.evaluacionservices.ConsultaOfertas('3', '0', '0', '0').subscribe(Resultado => {
+      console.log(Resultado)
       this.DataOfertas = Resultado;
       this.keyword = 'Producto';
     })
@@ -61,7 +75,7 @@ export class EvaluacionofertaComponent implements OnInit {
 
   selectNomOferta(oferta: any) {
     //console.log(oferta);
-    this.SNOferta = oferta.Producto;
+    this.SNOferta = oferta.Producto+' - '+oferta.DesSector;
     this.SCOferta = oferta.cd_cnsctvo;
     this.Sessionoferta = oferta.cd_cnsctvo;
     this.SessionSectorOferta = oferta.IdSector;
@@ -90,20 +104,35 @@ export class EvaluacionofertaComponent implements OnInit {
   }
 
   AgregaPregunta() {
-    const BodyInsert = {
-      ID_PRGNTA_OFR: "0",
-      CD_CNSCTVO: this.Sessionoferta,
-      ID_SCTOR_OFRTA: this.SessionSectorOferta,
-      CD_TPO_PRGNTA: this.SessionTipoPre,
-      TTLO_PRGNTA: this.TituloForm,
-      OPCIONES_PRGNTA: this.RespuestasForm
+    var BodyInsert: any;
+    if(this.ValidaAdministra=='0'){
+      //Registra pregunta para evaluacion por defecto
+      BodyInsert = {
+        ID_PRGNTA_OFR: "0",
+        CD_CNSCTVO: "00",
+        ID_SCTOR_OFRTA: "00",
+        CD_TPO_PRGNTA: this.SessionTipoPre,
+        TTLO_PRGNTA: this.TituloForm,
+        OPCIONES_PRGNTA: this.RespuestasForm
+      }
     }
+    else if(this.ValidaAdministra=='1'){
+      //Registra pregunta para evaluacion de oferta
+      BodyInsert = {
+        ID_PRGNTA_OFR: "0",
+        CD_CNSCTVO: this.Sessionoferta,
+        ID_SCTOR_OFRTA: this.SessionSectorOferta,
+        CD_TPO_PRGNTA: this.SessionTipoPre,
+        TTLO_PRGNTA: this.TituloForm,
+        OPCIONES_PRGNTA: this.RespuestasForm
+      }
+    }    
     console.log(BodyInsert)
     this.evaluacionservices.ModificacionPregunta('3', BodyInsert).subscribe(ResultInsert => {
       console.log(ResultInsert)
       this.ConsultaPreguntasOferta();
       this.LimpiaTipopre();
-    })
+    })   
   }
 
   EliminaPregunta(pregunta: any) {
