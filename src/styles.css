@@ -67,6 +67,16 @@ h2 {
     cursor: pointer;
 }
 
+
+.image-publi>input {
+    display: flex;
+}
+
+.image-publi img {
+    width: 100px;
+    cursor: pointer;
+}
+
 .btn-agro-prin {
     color: white;
     border-color: #397c97;

@@ -27,17 +27,18 @@
         </div>
     </div>
 
-    <div class="w-100 br tarjeta">
-        <div class="m-2" (click)="AgregarDetalleImagen(templateAgregarDetalleImg)"
-            *ngFor="let tarjeta of ConsultaTarjetas" class="styleTarget" [style.width.px]="tarjeta.ancho"
+    <div class="row br" >
+        <div class="col-sm-12 m-1 " (click)="AgregarDetalleImagen(templateAgregarDetalleImg, tarjeta)"
+            *ngFor="let tarjeta of ConsultaTarjetas" class="tarjetadetalle" [style.width.px]="tarjeta.ancho"
             [style.height.px]="tarjeta.alto">
-            <div class="image-upload">
+            <div class="imgTarteja">
                 <label for="file-input1">
-                    <img id="Imagen1" title="Selecciona una imagen" [src]="ImagenCargar">
+                    <img id="Imagen1" title="Selecciona una imagen" [src]="tarjeta.Imagen" class="">
                 </label>
             </div>
         </div>
     </div>
+
 </div>
 
 <ng-template #templateAgregarModulo let-modal>
@@ -125,7 +126,7 @@
     <div class="modal-body">
         <div class="row br">
             <div class="col-sm-4">
-                <label class="col-sm-12 Llave">Path</label>
+                <label class="col-sm-12 Llave">URL</label>
                 <input class="col-sm-12 form-control form-control-sm textBox" [(ngModel)]="boxPath" type="text"
                     name="Direccion">
             </div>
@@ -143,7 +144,8 @@
                 <button type="button" class="btn-warning col-sm-12">
                     <i class="fa fa-upload marginleft"></i> Subir Imagen
                     <input name="file-input3" id="file-input3" type="file" [(ngModel)]="btnImagen"
-                        (change)="CargaImgPublicidad($event, ModalRespuesta)" />
+                        (change)="CargaImgPublicidad($event, ModalRespuesta)" 
+                        />
                 </button>
             </div>
 

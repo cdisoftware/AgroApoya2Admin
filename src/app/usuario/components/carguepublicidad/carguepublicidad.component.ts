@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PublicidadService } from 'src/app/core/publicidad.service';
 import { CookieService } from 'ngx-cookie-service';
+import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 
 
 @Component({
@@ -10,53 +11,46 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrls: ['./carguepublicidad.component.css']
 })
 export class CarguepublicidadComponent implements OnInit {
-  ImagenCargar: string = '../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+
   Respuesta: string = '';
   imagenesPublicidad: string = '';
-
   IdListaModulo: string = '0';
   arregloListaModulo: any;
-
   IdListaAccion: string = '0';
   arregloListaAccion: any;
-
   banderaAgregar: string = '1';
   auxIdModulo: string = '';
   lblModuloEditar: string = '';
-
   boxAncho: string;
   boxLargo: string;
   boxOrden: string;
-
   auxLargo: string;
   auxAncho: string;
   auxOrden: string;
-
-
-
   NombreModulo: string = '';
   VerOcultarCampos: string = '';
-
   IdModulo: string;
-
   DataModulos: any = [];
-
-
   boxPath: string;
   btnImagen: string;
-
   usucodig: string = '';
   ConsultaTarjetas: any[];
+  RutaImagenTar: string = '';
+  auxGuardarNombreMod: string;
+  IdVistaModulo: string = '';
+  Id: string = '';
 
   constructor(private serviciospublicidad: PublicidadService,
     private modalService: NgbModal,
-    public cookies: CookieService) { }
+    public cookies: CookieService,
+    private SeriviciosGenerales: MetodosglobalesService,) { }
 
   ngOnInit(): void {
     this.usucodig = this.cookies.get('IDU');
     this.ListaModulo();
     this.ListaAccion();
     this.VerOcultarCampos = '1';
+    this.RutaImagenTar = this.SeriviciosGenerales.RecuperarRutasOtrasImagenes('5');
   }
 
   ListaModulo() {
@@ -77,8 +71,14 @@ export class CarguepublicidadComponent implements OnInit {
     // Consultar tarjetas segun id de modulo
     this.ConsultaTarjetas = [];
     this.serviciospublicidad.ConsultaCPublicidad('1', '0', this.IdListaModulo, this.usucodig).subscribe(resultado => {
-      console.log(resultado)
       this.ConsultaTarjetas = resultado;
+      for (var i = 0; i < this.ConsultaTarjetas.length; i++) {
+        if (this.ConsultaTarjetas[i].Imagen == '') {
+          this.ConsultaTarjetas[i].Imagen = '../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+        } else {
+          this.ConsultaTarjetas[i].Imagen = this.ConsultaTarjetas[i].Imagen;
+        }
+      }
     })
   }
 
@@ -87,7 +87,6 @@ export class CarguepublicidadComponent implements OnInit {
     this.boxAncho = '';
     this.boxLargo = '';
     this.boxOrden = '';
-    
     this.auxGuardarNombreMod = '1';
     this.modalService.open(modalMod, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
   }
@@ -96,10 +95,7 @@ export class CarguepublicidadComponent implements OnInit {
     location.reload();
   }
 
-  auxGuardarNombreMod: string;
-
   BtnGuardarModulo(templateMensaje: any) {
-
     if (this.NombreModulo == '') {
       this.Respuesta = 'El campo nombre módulo es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -110,11 +106,7 @@ export class CarguepublicidadComponent implements OnInit {
       }
       this.serviciospublicidad.ModCModulo('3', body).subscribe(resultado => {
         var aux = resultado.split('|');
-  
         this.IdVistaModulo = aux[0].replace(' ', '');
-
-        console.log(this.IdVistaModulo)
-
         if (this.IdVistaModulo.trim() != '-1') {
           this.auxGuardarNombreMod = '2';
           this.Respuesta = "El modulo se a creado exitosamente, para editarlo debes seleccionarlo en los filtros.";
@@ -138,7 +130,7 @@ export class CarguepublicidadComponent implements OnInit {
     } else if (this.boxLargo == '' || this.boxLargo == '0') {
       this.Respuesta = 'El campo largo es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if ( this.boxOrden == '' || this.boxOrden == '0') {
+    } else if (this.boxOrden == '' || this.boxOrden == '0') {
       this.Respuesta = 'El campo orden es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else {
@@ -151,9 +143,9 @@ export class CarguepublicidadComponent implements OnInit {
         Usucodig: 0,
         Observacion: 0
       }
-
-      console.log(this.IdVistaModulo)
       this.serviciospublicidad.ModCPubli('3', body).subscribe(resultado => {
+        var aux = resultado.split('|');
+        this.Id = aux[0].replace(' ', '');
         if (resultado == 'Se ha insertado correctamente') {
           this.Respuesta = "El modulo se a creado exitosamente, para editarlo debes seleccionarlo en los filtros.";
           this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -164,17 +156,13 @@ export class CarguepublicidadComponent implements OnInit {
           this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
         }
       })
-
     }
-
   }
 
-  
-  AgregarDetalleImagen(modalMod: any) {
+  AgregarDetalleImagen(modalMod: any, respu: any) {
+    this.Id = respu.Id;
     this.modalService.open(modalMod, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
   }
-
-
 
   ListaPublicidad() {
     this.serviciospublicidad.ConsultaCPublicidad('1', '0', this.IdVistaModulo, this.usucodig).subscribe(resultado => {
@@ -188,19 +176,14 @@ export class CarguepublicidadComponent implements OnInit {
 
   }
 
-
-
   BtnEditarModulo(templateMensaje: any) {
-
     if (this.NombreModulo == undefined || this.NombreModulo == null || this.NombreModulo == '') {
       this.Respuesta = 'El campo nombre módulo es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-
     } else {
       const body = {
         IdModulo: this.IdModulo,
         NomModulo: this.NombreModulo,
-
       }
       this.serviciospublicidad.ModCModulo('2', body).subscribe(resultado => {
         if (resultado == 'OK') {
@@ -211,13 +194,12 @@ export class CarguepublicidadComponent implements OnInit {
           this.Respuesta = resultado;
           this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
         }
-
       })
       this.VerOcultarCampos = '3';
       this.ListaModulo();
     }
   }
-  IdVistaModulo: string = '';
+
 
   LimpiarModuloDetalle() {
     this.boxLargo = '';
@@ -237,7 +219,7 @@ export class CarguepublicidadComponent implements OnInit {
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else {
       const body = {
-        Id: 0,
+        Id: this.Id,
         IdVista: this.IdVistaModulo,
         IdAccion: this.ListaAccion,
         Patch: this.boxPath,
@@ -245,11 +227,12 @@ export class CarguepublicidadComponent implements OnInit {
         Usucodig: 0,
         Observacion: 0
       }
-      this.serviciospublicidad.ModCPublicidad('3', body).subscribe(resultado => {
-
-        if (resultado == 'Se ha insertado correctamente') {
+      this.serviciospublicidad.ModCPublicidad('2', body).subscribe(resultado => {
+        if (resultado == 'Se ha actualizado correctamente') {
           this.Respuesta = "El detalle se a creado exitosamente";
           this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+          this.CambiarBtnModulo();
+          this.LimpiarModAccion();
         } else {
           this.Respuesta = resultado;
           this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -259,6 +242,12 @@ export class CarguepublicidadComponent implements OnInit {
     this.modalService.dismissAll();
   }
 
+  LimpiarModAccion() {
+    this.boxPath = '';
+    this.IdListaAccion = '';
+    this.btnImagen = '';
+  }
+
   EditarModulo(modalMod: any) {
     this.NombreModulo = modalMod.NombreModulo;
     this.boxLargo = modalMod.auxLargo;
@@ -266,7 +255,6 @@ export class CarguepublicidadComponent implements OnInit {
     this.boxOrden = modalMod.auxOrden;
     this.modalService.open(modalMod, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
   }
-
 
   BtnEliminarDetalleMod(arreglo: any, templateMensaje: any) {
     const body = {
@@ -290,7 +278,6 @@ export class CarguepublicidadComponent implements OnInit {
     this.boxLargo = arregloPlantilla.auxLargo;
     this.boxAncho = arregloPlantilla.auxAncho;
     this.boxOrden = arregloPlantilla.auxOrden;
-
     this.serviciospublicidad.ConsultaCPublicidad('1', '0', this.IdVistaModulo, this.usucodig).subscribe(resultado => {
       if (resultado != null && resultado != undefined) {
         this.DataModulos = resultado;
@@ -321,7 +308,7 @@ export class CarguepublicidadComponent implements OnInit {
             console.log("Error en el servidor");
           } else {
             if (response == 'Archivo Subido Correctamente') {
-              this.imagenesPublicidad = event.target.files[0].name;
+              this.imagenesPublicidad = this.RutaImagenTar + event.target.files[0].name;
               this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
               this.Respuesta = "Imagen cargada correctamente.";
             } else {
@@ -337,10 +324,7 @@ export class CarguepublicidadComponent implements OnInit {
       );
     }
   }
-
-
   LimpiarModule() {
     this.NombreModulo = '';
   }
-
 }
