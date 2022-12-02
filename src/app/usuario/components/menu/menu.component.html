@@ -19,13 +19,36 @@
             </li>
             <li *ngFor="let respuesta of ListaMenu" class="click services">
 
-                <a href="{{respuesta.pathMenu}}" (click)="toggleSidebar()">
+                <a href="{{respuesta.pathMenu}}" *ngIf="respuesta.IdAccion == 2" (click)="toggleSidebar()" target="_blank">
                     <span class="fa {{respuesta.Icono}} margenIcon"></span>{{respuesta.Nombre}}
                 </a>
+                <a href="{{respuesta.pathMenu}}" *ngIf="respuesta.IdAccion == 3" (click)="toggleSidebar()">
+                    <span class="fa {{respuesta.Icono}} margenIcon"></span>{{respuesta.Nombre}}
+                </a>
+                <a *ngIf="respuesta.IdAccion == 4">
+                    <span class="fa {{respuesta.Icono}} margenIcon"></span>{{respuesta.Nombre}}
+                </a>
+                <a href="{{respuesta.pathMenu}}" *ngIf="respuesta.IdAccion == 5" (click)="toggleSidebar()">
+                    <span class="fa {{respuesta.Icono}} margenIcon"></span>{{respuesta.Nombre}}
+                </a>
+
+
                 <ul class="dropdown">
                     <span *ngFor="let SubMenu of ListaSubMenu">
                         <li *ngIf="respuesta.IdMenu == SubMenu.IdMenu">
-                            <a href="{{SubMenu.PathMenu}}" (click)="toggleSidebar()">
+                            <a href="{{SubMenu.PathMenu}}" (click)="toggleSidebar()" *ngIf="SubMenu.idAccion == 2"  target="_blank">
+                                <span class="fa {{SubMenu.Icono}} margenIcon"></span>{{SubMenu.Nombre}}
+                            </a>
+
+                            <a href="{{SubMenu.PathMenu}}" (click)="toggleSidebar()" *ngIf="SubMenu.idAccion == 3">
+                                <span class="fa {{SubMenu.Icono}} margenIcon"></span>{{SubMenu.Nombre}}
+                            </a>
+
+                            <a *ngIf="SubMenu.idAccion == 4">
+                                <span class="fa {{SubMenu.Icono}} margenIcon"></span>{{SubMenu.Nombre}}
+                            </a>
+
+                            <a href="{{SubMenu.PathMenu}}" (click)="toggleSidebar()" *ngIf="SubMenu.idAccion == 5">
                                 <span class="fa {{SubMenu.Icono}} margenIcon"></span>{{SubMenu.Nombre}}
                             </a>
                         </li>

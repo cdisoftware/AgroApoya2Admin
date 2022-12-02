@@ -22,10 +22,16 @@ export class ReporteComponent implements OnInit {
   tipoUsuario: string ='0';
   nombre: string='';
   codigo: string;
-  FechaDesde: String;
-  FechaHasta: String;
+  FechaDesde: string;
+  FechaDesdeB: string;
+  FechaHasta: string;
+  FechaHastaB: string;
   ArrayTipoUsuario: any = [];
   ArrayUsuarios: any =[];
+
+  anho: string
+  mes: string
+  dia: string
 
   ascendenteTP: boolean = true;
   ascendenteN: boolean = true;
@@ -86,17 +92,34 @@ export class ReporteComponent implements OnInit {
     }
     if(this.FechaDesde == null)
     {
-      this.FechaDesde = "0";
+      this.FechaDesdeB = "0";
+    }
+    else
+    {
+     this.anho =  this.FechaDesde.substring(0,4)
+      this.dia = this.FechaDesde.substring(5,7)
+      this.mes = this.FechaDesde.substring(8,10)
+      this.FechaDesdeB = this.anho +"-" +this.mes + "-" + this.dia
+      console.log(this.FechaDesde)
+      console.log(this.FechaDesdeB)
     }
     if(this.FechaHasta == null)
     {
-      this.FechaHasta= "0";
+      this.FechaHastaB='0'
+    }
+    else{
+      this.anho =  this.FechaHasta.substring(0,4)
+      this.dia = this.FechaHasta.substring(5,7)
+      this.mes = this.FechaHasta.substring(8,10)
+      this.FechaHastaB = this.anho +"-" +this.mes + "-" + this.dia
+      console.log(this.FechaHasta)
+      console.log(this.FechaHastaB)
     }
     const bodyPost = {
       "IdTipoPersona":this.tipoUsuario,
       "Usucodig":this.codigoB,
-      "FechaDesde":this.FechaDesde,
-      "FechaHasta":this.FechaHasta,
+      "FechaDesde":this.FechaDesdeB,
+      "FechaHasta":this.FechaHastaB,
       "CorreoPersona":this.mail,
       "NombrePersona":this.nombre
     }
@@ -111,13 +134,13 @@ export class ReporteComponent implements OnInit {
     {
       this.nombre = "";
     }
-    if(this.FechaDesde == "0")
+    if(this.FechaDesdeB == "0")
     {
       this.FechaDesde= "";
     }
-    if(this.FechaHasta == "0")
+    if(this.FechaHastaB == "0")
     {
-      this.FechaHasta= "";
+      this.FechaHasta = "";
     }
   }
 
@@ -289,10 +312,10 @@ export class ReporteComponent implements OnInit {
   limpiarDatos() {
     this.nombre = '';
     this.mail = '';
-    this.FechaHasta= ""
+    this.FechaHasta= ''
     this.codigo =""
     this.tipoUsuario ='0'
-    this.FechaDesde= ""
+    this.FechaDesde= ''
     this.ArrayUsuarios=[]
   }
 

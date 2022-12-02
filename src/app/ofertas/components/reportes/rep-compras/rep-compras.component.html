@@ -1,22 +1,23 @@
 <br>
 <div class="container bg-white">
     <br>
-    <h1>Reporte compras</h1>    
+    <h1>Reporte compras</h1>
     <div class="row">
         <div class="col-sm-6">
-            <input class="col-sm-12 form-control textBox" type="number" placeholder="Consecutivo oferta" [(ngModel)]="OferFiltro">
+            <input class="col-sm-12 form-control textBox" type="number" placeholder="Consecutivo oferta"
+                [(ngModel)]="OferFiltro">
         </div>
         <div class="col-sm-6">
-            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec"
-            placeholder="Sector" (selected)='selectSector($event)'
-            [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
-        </ng-autocomplete>
-        <ng-template #templateSec let-item>
-            <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
-        </ng-template>
-        <ng-template #templateVacio let-SinRegistro>
-            <label for="">Sin registros</label>
-        </ng-template>
+            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" placeholder="Sector"
+                (selected)='selectSector($event)' [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio"
+                [(ngModel)]="Sector">
+            </ng-autocomplete>
+            <ng-template #templateSec let-item>
+                <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
         </div>
     </div>
     <div class="row br justify-content-center">
@@ -34,33 +35,154 @@
             <button class="btn btn-agro-sec col-sm-12" (click)="LimpiaForm()">
                 Limpiar
             </button>
-        </div>       
-    </div>   
+        </div>
+    </div>
 </div>
 <br>
 <div class="row m-1">
     <table class="col-sm-12 TableAgro">
         <tr>
             <th>Oferta</th>
+            <th>Nombre Sector</th>
             <th>Estado</th>
             <th>Pedido</th>
             <th>Unidades</th>
             <th>Cliente</th>
             <th>Tipo compra</th>
-            <th>Valor</th>                
+            <th>Valor</th>
+            <th>Detalle</th>
         </tr>
         <tr *ngFor="let oferta of DataConsulta">
             <td>{{oferta.CD_CNSCTVO}}</td>
+            <td>{{oferta.NOM_SECTOR}}</td>
             <td>{{oferta.descEstado}}</td>
             <td>{{oferta.COD_PEDIDO}}</td>
             <td>{{oferta.unidadesEntregar}}</td>
             <td>{{oferta.NOMBRES_PERSONA}} {{oferta.APELLIDOS_PERSONA}}</td>
             <td>{{oferta.descTipoCompra}}</td>
-            <td>{{oferta.VLOR_PGAR | currency}}</td>              
+            <td>{{oferta.VLOR_PGAR | currency}}</td>
+            <td (click)="DetalleCompra(oferta, ModalDetalle)">
+                <button class="SinEstilo">
+                    <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/info.png" alt="">
+                </button>
+            </td>
         </tr>
         <tr *ngIf="ValidaConsulta=='1'">
-            <td colspan="7">{{txtValidaCons}}</td>
+            <td colspan="9">{{txtValidaCons}}</td>
         </tr>
     </table>
 </div>
 <br>
+<ng-template #ModalDetalle let-modal>
+    <div class="modal-header">
+        <h1>Detalle compra</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <h6 class="textblue"><strong>Compra</strong></h6>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label class="Llave">Nombre sector:&nbsp;</label>
+                <label class="Valor">{{Filacompra.NOM_SECTOR}}</label>
+            </div>
+            <div class="col-sm-6">
+                <label class="Llave">Estado compra:&nbsp;</label>
+                <label class="Valor">{{Filacompra.descEstado}}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label class="Llave">Codigo pedido:&nbsp;</label>
+                <label class="Valor">{{Filacompra.COD_PEDIDO}}</label>
+            </div>
+            <div class="col-sm-6">
+                <label class="Llave">Estado pago:&nbsp;</label>
+                <label class="Valor">{{Filacompra.DESCRIPCION_ESTADO}}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label class="Llave">Producto:&nbsp;</label>
+                <label class="Valor">{{Filacompra.Producto}}</label>
+            </div>
+            <div class="col-sm-6">
+                <label class="Llave">Cantidades:&nbsp;</label>
+                <label class="Valor">{{Filacompra.unidadesEntregar}}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label class="Llave">Valor:&nbsp;</label>
+                <label class="Valor">{{Filacompra.Vlor_PagarForm}}</label>
+            </div>
+            <div class="col-sm-6">
+                <label class="Llave">Tipo de pago:&nbsp;</label>
+                <label class="Valor">{{Filacompra.descTipoPago}}</label>
+            </div>
+        </div>
+        <!-- <div class="row">
+            <div class="col-sm-6">
+                <h6 class="textblue"><strong>Adicionales</strong></h6>
+            </div>
+        </div>
+        <div class="row">
+             
+        </div> -->
+        <div class="row br">
+            <div class="col-sm-6">
+                <h6 class="textblue"><strong>Cliente</strong></h6>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label class="Llave">Nombre cliente:&nbsp;</label>
+                <label class="Valor">{{Filacompra.NOMBRES_PERSONA}}&nbsp;{{Filacompra.APELLIDOS_PERSONA}}</label>
+            </div>
+            <div class="col-sm-6">
+                <label class="Llave">Contacto:&nbsp;</label>
+                <label class="Valor">{{Filacompra.CELULAR_PERSONA}}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label class="Llave">Direccion:&nbsp;</label>
+                <label class="Valor">{{Filacompra.DRCCION}}&nbsp;{{Filacompra.CMPLMNTO_DRRCCION}}</label>
+            </div>
+            <div class="col-sm-6">
+                <label class="Llave">Observaciones:&nbsp;</label>
+                <label class="Valor">{{Filacompra.observacionesCliente}}</label>
+            </div>
+        </div>
+        <div class="row br">
+            <div class="col-sm-6">
+                <h6 class="textblue"><strong>Conductor</strong></h6>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label class="Llave">Nombre conductor:&nbsp;</label>
+                <label class="Valor">{{Filacompra.NMBRE_CNDCTOR}}</label>
+            </div>
+            <div class="col-sm-6">
+                <label class="Llave">Contacto:&nbsp;</label>
+                <label class="Valor">{{Filacompra.TEL_CNDCTOR}}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label class="Llave">Placa:&nbsp;</label>
+                <label class="Valor">{{Filacompra.PLCA}}</label>
+            </div>
+        </div>
+    </div>
+    <hr class="hrSinEstilo">
+    <br>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
