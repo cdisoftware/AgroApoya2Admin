@@ -237,11 +237,11 @@
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Minimo unidades</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidI" onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" (blur)="ValidaCantidadMinimaIndiv(MinUnidI,ModalRespuesta)" [(ngModel)]="MinUnidI" onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Maximo unidades</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidI" onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" (blur)="ValidaCantidadmaxIndiv(MaxUnidI,ModalRespuesta)" [(ngModel)]="MaxUnidI" onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                     </div>
                     <div class="row br">
@@ -298,21 +298,21 @@
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Minimo unidades lider</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidLider" onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidLider" (blur)="ValidaCantidadMinimaLid(MinUnidLider,ModalRespuesta)" onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Maximo unidades lider</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidLider" onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidLider" (blur)="ValidaCantidadmaxLid(MaxUnidLider,ModalRespuesta)" onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Minimo unidades participante</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidPart" onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidPart" (blur)="ValidaCantidadMinimaPart(MinUnidPart,ModalRespuesta)" onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Maximo unidades participante</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidPart" onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidPart" (blur)="ValidaCantidadmaxPart(MaxUnidPart,ModalRespuesta)" onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                     </div>
                     <div class="row br">

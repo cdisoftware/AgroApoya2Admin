@@ -1556,4 +1556,82 @@ export class ValoracionComponent implements OnInit {
   }
 
 
+
+  //WILLIAM
+  ValidaCantidadMinimaIndiv(Cantidad: string, templateMensaje: any) {
+    var cantidadmin: number = parseInt(Cantidad);
+    if (this.DataOferta[0].Unidades_disponibles <= cantidadmin) {
+      this.MinUnidI = '';
+      this.Respuesta = 'Válida que el número de unidades mínimas sea menor que el número total de unidades para la oferta';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    }
+  }
+
+  ValidaCantidadmaxIndiv(Cantidad: string, templateMensaje: any) {
+    var cantidadmax: number = parseInt(this.MinUnidI);
+    var cantidadmin: number = parseInt(Cantidad);
+    if (this.DataOferta[0].Unidades_disponibles < cantidadmax) {
+      this.MaxUnidI = '';
+      this.Respuesta = 'Válida que el número máximo de unidades no supere el número total de unidades para la oferta';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    }
+    if (cantidadmin < cantidadmax) {
+      this.MaxUnidI = '';
+      this.MinUnidI = '';
+      this.Respuesta = 'Válida que el número mínimo de unidades no supere el número máximo de unidades para la oferta';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    }
+  }
+
+
+  ValidaCantidadMinimaLid(Cantidad: string, templateMensaje: any) {
+    var cantidadmin: number = parseInt(Cantidad);
+    if (this.DataOferta[0].Unidades_disponibles <= cantidadmin) {
+      this.MinUnidLider = '';
+      this.Respuesta = 'Válida que el número de unidades mínimas sea menor que el número total de unidades para la oferta';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    }
+  }
+  ValidaCantidadmaxLid(Cantidad: string, templateMensaje: any) {
+    var cantidadmin: number = parseInt(this.MinUnidLider);
+    var cantidadmax: number = parseInt(Cantidad);
+    if (this.DataOferta[0].Unidades_disponibles < cantidadmax) {
+      this.MaxUnidLider = '';
+      this.Respuesta = 'Válida que el número máximo de unidades no supere el número total de unidades para la oferta';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    }
+    if (cantidadmin > cantidadmax) {
+      this.MaxUnidLider = '';
+      this.MinUnidLider = '';
+      this.Respuesta = 'Válida que el número mínimo de unidades no supere el número máximo de unidades para la oferta';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    }
+  }
+
+
+
+
+  ValidaCantidadMinimaPart(Cantidad: string, templateMensaje: any) {
+    var cantidadmin: number = parseInt(Cantidad);
+    if (this.DataOferta[0].Unidades_disponibles <= cantidadmin) {
+      this.MinUnidPart = '';
+      this.Respuesta = 'Válida que el número de unidades mínimas sea menor que el número total de unidades para la oferta';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    }
+  }
+  ValidaCantidadmaxPart(Cantidad: string, templateMensaje: any) {
+    var cantidadmin: number = parseInt(this.MinUnidPart);
+    var cantidadmax: number = parseInt(Cantidad);
+    if (this.DataOferta[0].Unidades_disponibles < cantidadmax) {
+      this.MaxUnidPart = '';
+      this.Respuesta = 'Válida que el número máximo de unidades no supere el número total de unidades para la oferta';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    }
+    if (cantidadmin > cantidadmax) {
+      this.MaxUnidPart = '';
+      this.MinUnidPart = '';
+      this.Respuesta = 'Válida que el número mínimo de unidades no supere el número máximo de unidades para la oferta';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    }
+  }
 }

@@ -15,7 +15,8 @@ import { ReporteComponent } from './usuario/components/reporte/reporte.component
 import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/rep-compras.component';
 import { ComprasComponent } from './usuario/components/compras/compras.component';
 import { UsuariosComponent } from './usuario/components/usuarios/usuarios.component';
-import { CarguepublicidadComponent } from './usuario/components/carguepublicidad/carguepublicidad.component'
+import { CarguepublicidadComponent } from './usuario/components/carguepublicidad/carguepublicidad.component';
+import { EvaluacionofertaComponent } from './ofertas/components/evaluacionoferta/evaluacionoferta.component';
 
 const routes: Routes = [
   {
@@ -82,6 +83,10 @@ const routes: Routes = [
         path: 'carguepublicidad',
         component: CarguepublicidadComponent
       },
+      {
+        path: 'evaluacion-oferta',
+        component: EvaluacionofertaComponent
+      }
     ]
   },
 
