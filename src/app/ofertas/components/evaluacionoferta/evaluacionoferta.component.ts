@@ -7,11 +7,10 @@ import { EvalsatisfaccionService } from 'src/app/core/evalsatisfaccion.service';
   styleUrls: ['./evaluacionoferta.component.css']
 })
 export class EvaluacionofertaComponent implements OnInit {
-  ValidaDetalle: string;
   DataOfertas: any = [];
   NOferta: string;
   keyword: string;
-  COferta: string;
+  CodEva: string;
   TPregunta: string;
   Sessionoferta: any;
   SNOferta: any;
@@ -25,10 +24,30 @@ export class EvaluacionofertaComponent implements OnInit {
   SessionSectorOferta: any;
   ValidaConsulta: string;
   ValidaTipo: boolean = true;
+  ValidaAdministra: string;
+  DataTEvaluacion: any = [];
+  keywordE: string = 'nombre';
+  ValidaNomFil: boolean = true;
+  ValidaDetalle: string;
 
   constructor(private evaluacionservices: EvalsatisfaccionService) { }
 
   ngOnInit(): void {
+    this.DataTEvaluacion = [
+      {
+        "id": "1",
+        "nombre": "Por defecto"
+      },
+      {
+        "id": "2",
+        "nombre": "Post compra"
+      }
+    ]
+    const input = document.getElementById('EvaDefect') as HTMLInputElement;
+    if (input != null) {
+      input.checked = true;
+      this.OperaOpcion('0');
+    }
     this.ConsultaOfertas();
     this.ConsultaTipoPreguntas();
   }
@@ -41,8 +60,22 @@ export class EvaluacionofertaComponent implements OnInit {
     })
   }
 
+  OperaOpcion(opcion: string) {
+    this.Limpiar();
+    switch (opcion) {
+      case '0':
+        this.ValidaAdministra = '0';
+        break;
+      case '1':
+        this.ValidaAdministra = '1';
+        break;
+    }
+    this.ConsultaPreguntasOferta();
+  }
+
   ConsultaOfertas() {
     this.evaluacionservices.ConsultaOfertas('3', '0', '0', '0').subscribe(Resultado => {
+      console.log(Resultado)
       this.DataOfertas = Resultado;
       this.keyword = 'Producto';
     })
@@ -51,52 +84,96 @@ export class EvaluacionofertaComponent implements OnInit {
   Limpiar() {
     this.ValidaDetalle = '0';
     this.NOferta = '';
-    this.COferta = '';
+    this.CodEva = '';
     this.TPregunta = '';
     this.SNOferta = '';
     this.SCOferta = '';
     this.Sessionoferta = '';
+    this.SessionSectorOferta = '';
   }
 
 
   selectNomOferta(oferta: any) {
     //console.log(oferta);
-    this.SNOferta = oferta.Producto;
+    this.SNOferta = oferta.Producto + ' - ' + oferta.DesSector;
     this.SCOferta = oferta.cd_cnsctvo;
     this.Sessionoferta = oferta.cd_cnsctvo;
     this.SessionSectorOferta = oferta.IdSector;
-    this.ConsultaPreguntasOferta();
+    this.ValidaNomFil = false;
     this.ValidaDetalle = '1';
+    this.ConsultaPreguntasOferta();
+
+  }
+
+  selectTipoEvaluacion(oferta: any) {
+
   }
 
   ConsultaPreguntasOferta() {
-    const BodyConsulta = {
-      CD_CNSCTVO: this.Sessionoferta,
-      ID_SCTOR_OFRTA: this.SessionSectorOferta,
-      ID_PRGNTA_OFR: 0
+    if (this.ValidaAdministra == '0') {
+      const BodyConsulta = {
+        CD_CNSCTVO: "0",
+        ID_SCTOR_OFRTA: "0",
+        ID_PRGNTA_OFR: 0
+      }
+      console.log(BodyConsulta)
+      this.evaluacionservices.ConsultaPreguntasOferta('2', BodyConsulta).subscribe(ResultConst => {
+        console.log(ResultConst)
+        if (ResultConst.length > 0) {
+          this.PreguntasOferta = ResultConst;
+          this.ValidaConsulta = '1';
+        }
+        else {
+          this.ValidaConsulta = '0';
+          this.PreguntasOferta = [];
+        }
+      })
     }
-    this.evaluacionservices.ConsultaPreguntasOferta('1', BodyConsulta).subscribe(ResultConst => {
-      //console.log(ResultConst)
-      if (ResultConst.length > 0) {
-        this.PreguntasOferta = ResultConst;
-        this.ValidaConsulta = '1';
+    else {
+      const BodyConsulta = {
+        CD_CNSCTVO: this.Sessionoferta,
+        ID_SCTOR_OFRTA: this.SessionSectorOferta,
+        ID_PRGNTA_OFR: 0
       }
-      else {
-        //console.log('entra')
-        this.ValidaConsulta = '0';
-        this.PreguntasOferta = [];
-      }
-    })
+      this.evaluacionservices.ConsultaPreguntasOferta('1', BodyConsulta).subscribe(ResultConst => {
+        console.log(ResultConst)
+        if (ResultConst.length > 0) {
+          this.PreguntasOferta = ResultConst;
+          this.ValidaConsulta = '1';
+        }
+        else {
+          this.ValidaConsulta = '0';
+          this.PreguntasOferta = [];
+        }
+      })
+    }
   }
 
   AgregaPregunta() {
-    const BodyInsert = {
-      ID_PRGNTA_OFR: "0",
-      CD_CNSCTVO: this.Sessionoferta,
-      ID_SCTOR_OFRTA: this.SessionSectorOferta,
-      CD_TPO_PRGNTA: this.SessionTipoPre,
-      TTLO_PRGNTA: this.TituloForm,
-      OPCIONES_PRGNTA: this.RespuestasForm
+    var BodyInsert: any;
+    if (this.ValidaAdministra == '0') {
+      //Registra pregunta para evaluacion por defecto
+      BodyInsert = {
+        ID_PRGNTA_OFR: "0",
+        CD_CNSCTVO: "00",
+        ID_SCTOR_OFRTA: "00",
+        CD_TPO_PRGNTA: this.SessionTipoPre,
+        TTLO_PRGNTA: this.TituloForm,
+        OPCIONES_PRGNTA: this.RespuestasForm,
+        ORIGEN: 2
+      }
+    }
+    else if (this.ValidaAdministra == '1') {
+      //Registra pregunta para evaluacion de oferta
+      BodyInsert = {
+        ID_PRGNTA_OFR: "0",
+        CD_CNSCTVO: this.Sessionoferta,
+        ID_SCTOR_OFRTA: this.SessionSectorOferta,
+        CD_TPO_PRGNTA: this.SessionTipoPre,
+        TTLO_PRGNTA: this.TituloForm,
+        OPCIONES_PRGNTA: this.RespuestasForm,
+        ORIGEN: 1
+      }
     }
     console.log(BodyInsert)
     this.evaluacionservices.ModificacionPregunta('3', BodyInsert).subscribe(ResultInsert => {
@@ -107,19 +184,39 @@ export class EvaluacionofertaComponent implements OnInit {
   }
 
   EliminaPregunta(pregunta: any) {
-    const BodyDelete = {
-      ID_PRGNTA_OFR: pregunta.ID_PRGNTA_OFR,
-      CD_CNSCTVO: pregunta.CD_CNSCTVO,
-      ID_SCTOR_OFRTA: pregunta.ID_SCTOR_OFRTA,
-      CD_TPO_PRGNTA: pregunta.CD_TPO_PRGNTA,
-      TTLO_PRGNTA: pregunta.TITULO_PREGUNTA_OFR,
-      OPCIONES_PRGNTA: pregunta.opciones_seleccion
+    if (this.ValidaAdministra == '0') {
+      //bandera 4, origen 2, cnsctvo sector 0
+      const BodyDelete = {
+        ID_PRGNTA_OFR: pregunta.ID_PRGNTA_OFR,
+        CD_CNSCTVO: "0",
+        ID_SCTOR_OFRTA: "0",
+        CD_TPO_PRGNTA: pregunta.CD_TPO_PRGNTA,
+        TTLO_PRGNTA: pregunta.TITULO_PREGUNTA_OFR,
+        OPCIONES_PRGNTA: pregunta.opciones_seleccion,
+        ORIGEN: 2
+      }
+      console.log(BodyDelete)
+      this.evaluacionservices.ModificacionPregunta('4', BodyDelete).subscribe(ResultInsert => {
+        console.log(ResultInsert)
+        this.ConsultaPreguntasOferta();
+      })
     }
-    console.log(BodyDelete)
-    this.evaluacionservices.ModificacionPregunta('4', BodyDelete).subscribe(ResultInsert => {
-      console.log(ResultInsert)
-      this.ConsultaPreguntasOferta();
-    })
+    else if (this.ValidaAdministra == '1') {
+      const BodyDelete = {
+        ID_PRGNTA_OFR: pregunta.ID_PRGNTA_OFR,
+        CD_CNSCTVO: pregunta.CD_CNSCTVO,
+        ID_SCTOR_OFRTA: pregunta.ID_SCTOR_OFRTA,
+        CD_TPO_PRGNTA: pregunta.CD_TPO_PRGNTA,
+        TTLO_PRGNTA: pregunta.TITULO_PREGUNTA_OFR,
+        OPCIONES_PRGNTA: pregunta.opciones_seleccion,
+        ORIGEN: 1
+      }
+      console.log(BodyDelete)
+      this.evaluacionservices.ModificacionPregunta('4', BodyDelete).subscribe(ResultInsert => {
+        console.log(ResultInsert)
+        this.ConsultaPreguntasOferta();
+      })
+    }
   }
 
   selectTipoPregunta(pregunta: any) {
