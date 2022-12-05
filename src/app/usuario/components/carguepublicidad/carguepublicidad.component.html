@@ -16,9 +16,12 @@
     </div>
     <div class="row br justify-content-center">
         <div class="col-sm-3">
-            <button class="col-sm-12 btn btn-agro-prin" title="Agregar Modulo"
+            <button class="col-sm-12 btn btn-agro-prin" *ngIf="VerOcultarCampos != '2'" title="Agregar Modulo"
                 (click)="AgregarModulo(templateAgregarModulo)">
                 Crear modulo</button>
+            <button class="col-sm-12 btn btn-agro-prin"  title="Editar Modulo"
+                (click)="EditarModulo(templateEditarModulo)">
+                Editar modulo</button>
         </div>
 
         <div class="col-sm-3">
@@ -27,13 +30,13 @@
         </div>
     </div>
 
-    <div class="row br" >
+    <div class="row br">
         <div class="col-sm-12 m-1 " (click)="AgregarDetalleImagen(templateAgregarDetalleImg, tarjeta)"
-            *ngFor="let tarjeta of ConsultaTarjetas" class="tarjetadetalle" [style.width.px]="tarjeta.ancho"
+            *ngFor="let tarjeta of ConsultaTarjetas" class="tarjetadetallePubli" [style.width.px]="tarjeta.ancho"
             [style.height.px]="tarjeta.alto">
-            <div class="imgTarteja">
-                <label for="file-input1">
-                    <img id="Imagen1" title="Selecciona una imagen" [src]="tarjeta.Imagen" class="">
+            <div class="m-0 p-0">
+                <label for="file-input1" class="w-100">
+                    <img id="Imagen1" title="Selecciona una imagen" [src]="tarjeta.Imagen" class="w-100">
                 </label>
             </div>
         </div>
@@ -124,7 +127,27 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
-        <div class="row br">
+        <div class="row">
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Ancho</label>
+                <input class="col-sm-12 form-control form-control-sm textBox" disabled [(ngModel)]="boxAncho"
+                    type="number" name="Ancho">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Largo</label>
+                <input class="col-sm-12 form-control form-control-sm textBox" disabled [(ngModel)]="boxLargo"
+                    type="number" name="Largo">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Orden</label>
+                <input class="col-sm-12 form-control form-control-sm textBox" disabled [(ngModel)]="boxOrden"
+                    type="number" name="Orden">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body">
+        <div class="row">
             <div class="col-sm-4">
                 <label class="col-sm-12 Llave">URL</label>
                 <input class="col-sm-12 form-control form-control-sm textBox" [(ngModel)]="boxPath" type="text"
@@ -144,8 +167,7 @@
                 <button type="button" class="btn-warning col-sm-12">
                     <i class="fa fa-upload marginleft"></i> Subir Imagen
                     <input name="file-input3" id="file-input3" type="file" [(ngModel)]="btnImagen"
-                        (change)="CargaImgPublicidad($event, ModalRespuesta)" 
-                        />
+                        (change)="CargaImgPublicidad($event, ModalRespuesta)" />
                 </button>
             </div>
 
