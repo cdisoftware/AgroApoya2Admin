@@ -2,107 +2,181 @@
 <div class="container bg-white">
     <br>
     <h1>Evaluación de satisfacción</h1>
-    <div class="row br">
-        <div class="col-sm-12">
-            <ng-autocomplete [data]="DataOfertas" [searchKeyword]="keyword" placeholder="Nombre oferta" (selected)='selectNomOferta($event)' (inputCleared)="Limpiar()" [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio" [(ngModel)]="NOferta">
-            </ng-autocomplete>
-            <ng-template #templateRes let-item>
-                <a [innerHTML]="item.Producto +' '+ item.cd_cnsctvo"></a>
-            </ng-template>
-            <ng-template #templateVacio let-SinRegistro>
-                <label for="">Sin registros</label>
-            </ng-template>
-        </div>
-        <!-- <div class="col-sm-6">
-            <ng-autocomplete [data]="DataOfertas" [searchKeyword]="keywordC" placeholder="Codigo oferta" (selected)='selectNomOferta($event)' [itemTemplate]="templateResC" [notFoundTemplate]="templateVacio" [(ngModel)]="COferta">
-            </ng-autocomplete>
-            <ng-template #templateResC let-itemC>
-                <a [innerHTML]="itemC.cd_cnsctvo"></a>
-            </ng-template>
-            <ng-template #templateVacio let-SinRegistro>
-                <label for="">Sin registros</label>
-            </ng-template>
-        </div> -->
-    </div>
     <div class="row br justify-content-center">
-        <!-- <div class="col-sm-3 col-6">
-            <button class="btn btn-agro-prin col-sm-12 " (click)="BuscaEvaluacion()">
-                Crear o editar evaluación
-            </button>
-        </div> -->
-        <div class="col-sm-3 col-6">
-            <button class="btn btn-agro-sec col-sm-12 " (click)="Limpiar()">
-                Limpiar
-            </button>
+        <div class="col-sm-4">
+            <input class="col-sm-1" type="radio" name="Evaluacion" id="EvaDefect" (change)="OperaOpcion('0')">
+            <label for="EvaDefect">Administrar evaluación por defecto</label>
+        </div>
+        <div class="col-sm-4">
+            <input class="col-sm-1" type="radio" name="Evaluacion" id="EvaOferta" (change)="OperaOpcion('1')">
+            <label for="EvaOferta">Administrar evaluación de oferta</label>            
         </div>
     </div>
-    <br>    
-    <div *ngIf="ValidaDetalle=='1'">
-        <hr>
-        <div class="row br justify-content-center">
-            <h2 class="TituloDetalle">Detalle evaluación</h2>
-        </div>
+    <div class="row br" *ngIf="ValidaAdministra=='1'">
         <div class="row br">
             <div class="col-sm-12">
-                <label class="col-sm-12"><strong>Nombre oferta:&nbsp;</strong>{{SNOferta}}</label>
-            </div>
-            <div class="col-sm-12">
-                <label class="col-sm-12"><strong>Consecutivo oferta:&nbsp;</strong>{{SCOferta}}</label>
-            </div>
-        </div>
-        <div class="row br">
-            <div class="col-sm-3">
-                <ng-autocomplete [data]="DataTipoPreguntas" [searchKeyword]="keywordPre" placeholder="Tipo pregunta" (inputCleared)="LimpiaTipopre()" (selected)='selectTipoPregunta($event)' [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio" [(ngModel)]="TPregunta">
+                <ng-autocomplete [data]="DataOfertas" [searchKeyword]="keyword" placeholder="Nombre oferta" (selected)='selectNomOferta($event)' (inputCleared)="Limpiar()" [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio" [(ngModel)]="NOferta">
                 </ng-autocomplete>
                 <ng-template #templateRes let-item>
-                    <a [innerHTML]="item.NombrePregunta"></a>
+                    <a [innerHTML]="item.Producto +' '+ item.cd_cnsctvo +' '+item.DesSector"></a>
                 </ng-template>
                 <ng-template #templateVacio let-SinRegistro>
                     <label for="">Sin registros</label>
                 </ng-template>
             </div>
-            <div class="col-sm-5">
-                <input type="text" placeholder="Titulo pregunta" [(ngModel)]="TituloForm" class="form-control col-sm-12 textBox">
-            </div>
-            <div class="col-sm-4">
-                <input type="text" placeholder="Respuestas pregunta (Separar por comas)" [(ngModel)]="RespuestasForm" [disabled]="ValidaTipo" class="form-control col-sm-12 textBox">
-            </div>           
+            <!-- <div class="col-sm-6">
+                <ng-autocomplete [data]="DataOfertas" [searchKeyword]="keywordC" placeholder="Codigo oferta" (selected)='selectNomOferta($event)' [itemTemplate]="templateResC" [notFoundTemplate]="templateVacio" [(ngModel)]="COferta">
+                </ng-autocomplete>
+                <ng-template #templateResC let-itemC>
+                    <a [innerHTML]="itemC.cd_cnsctvo"></a>
+                </ng-template>
+                <ng-template #templateVacio let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
+            </div> -->
         </div>
         <div class="row br justify-content-center">
-            <div class="col-sm-3">
-                <button class="btn btn-agro-prin col-sm-12" (click)="AgregaPregunta()">
-                    Agregar pregunta
+            <!-- <div class="col-sm-3 col-6">
+                <button class="btn btn-agro-prin col-sm-12 " (click)="BuscaEvaluacion()">
+                    Crear o editar evaluación
+                </button>
+            </div> -->
+            <div class="col-sm-3 col-6">
+                <button class="btn btn-agro-sec col-sm-12 " (click)="Limpiar()">
+                    Limpiar
                 </button>
             </div>
         </div>
-        <hr>
-        <div class="row br justify-content-center">
-            <h2 class="TituloDetalle">Preguntas registradas</h2>
+        <br>    
+        <div *ngIf="ValidaDetalle=='1'">
+            <hr>
+            <div class="row br justify-content-center">
+                <h2 class="TituloDetalle">Detalle evaluación oferta</h2>
+            </div>
+            <div class="row br">
+                <div class="col-sm-12">
+                    <label class="col-sm-12"><strong>Nombre oferta:&nbsp;</strong>{{SNOferta}}</label>
+                </div>
+                <div class="col-sm-12">
+                    <label class="col-sm-12"><strong>Consecutivo oferta:&nbsp;</strong>{{SCOferta}}</label>
+                </div>
+            </div>
+            <div class="row br">
+                <div class="col-sm-3">
+                    <ng-autocomplete [data]="DataTipoPreguntas" [searchKeyword]="keywordPre" placeholder="Tipo pregunta" (inputCleared)="LimpiaTipopre()" (selected)='selectTipoPregunta($event)' [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio" [(ngModel)]="TPregunta">
+                    </ng-autocomplete>
+                    <ng-template #templateRes let-item>
+                        <a [innerHTML]="item.NombrePregunta"></a>
+                    </ng-template>
+                    <ng-template #templateVacio let-SinRegistro>
+                        <label for="">Sin registros</label>
+                    </ng-template>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" placeholder="Titulo pregunta" [(ngModel)]="TituloForm" class="form-control col-sm-12 textBox">
+                </div>
+                <div class="col-sm-4">
+                    <input type="text" placeholder="Respuestas pregunta (Separar por comas)" [(ngModel)]="RespuestasForm" [disabled]="ValidaTipo" class="form-control col-sm-12 textBox">
+                </div>           
+            </div>
+            <div class="row br justify-content-center">
+                <div class="col-sm-3">
+                    <button class="btn btn-agro-prin col-sm-12" (click)="AgregaPregunta()">
+                        Agregar pregunta
+                    </button>
+                </div>
+            </div>
+            <hr>
+            <div class="row br justify-content-center">
+                <h2 class="TituloDetalle">Preguntas registradas</h2>
+            </div>
+            <div class="br row justify-content-center">
+                <table class="col-sm-12 TableAgro">
+                    <tr>
+                        <th>Tipo pregunta</th>
+                        <th>Titulo pregunta</th>
+                        <th>Posibles respuestas</th>
+                        <th>Acciones</th>                   
+                    </tr>
+                    <tr *ngFor="let pregunta of PreguntasOferta">
+                        <td>{{pregunta.NOM_TPO_PRGNTA}}</td>
+                        <td>{{pregunta.TITULO_PREGUNTA_OFR}}</td>
+                        <td>{{pregunta.opciones_seleccion=='' ? 'No aplica' :  pregunta.opciones_seleccion}}</td>                    
+                        <td>
+                            <button class="SinEstilo" title="Eliminar pregunta" (click)="EliminaPregunta(pregunta)">
+                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
+                            </button>                       
+                        </td>
+                    </tr>
+                    <tr *ngIf="ValidaConsulta=='0'">
+                        <td colspan="4">No se encuentran preguntas registradas para esta oferta</td>
+                    </tr>
+                </table>
+            </div>
+            <br>
         </div>
-        <div class="br row justify-content-center">
-            <table class="col-sm-12 TableAgro">
-                <tr>
-                    <th>Tipo pregunta</th>
-                    <th>Titulo pregunta</th>
-                    <th>Posibles respuestas</th>
-                    <th>Acciones</th>                   
-                </tr>
-                <tr *ngFor="let pregunta of PreguntasOferta">
-                    <td>{{pregunta.NOM_TPO_PRGNTA}}</td>
-                    <td>{{pregunta.TITULO_PREGUNTA_OFR}}</td>
-                    <td>{{pregunta.opciones_seleccion=='' ? 'No aplica' :  pregunta.opciones_seleccion}}</td>                    
-                    <td>
-                        <button class="SinEstilo" title="Eliminar pregunta" (click)="EliminaPregunta(pregunta)">
-                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
-                        </button>                       
-                    </td>
-                </tr>
-                <tr *ngIf="ValidaConsulta=='0'">
-                    <td colspan="4">No se encuentran preguntas registradas para esta oferta</td>
-                </tr>
-            </table>
-        </div>
-        <br>
     </div>
+    <div class="row br" *ngIf="ValidaAdministra=='0'">
+        <div>
+            <hr>
+            <div class="row br justify-content-center">
+                <h2 class="TituloDetalle">Detalle evaluación</h2>
+            </div>           
+            <div class="row br">
+                <div class="col-sm-3">
+                    <ng-autocomplete [data]="DataTipoPreguntas" [searchKeyword]="keywordPre" placeholder="Tipo pregunta" (inputCleared)="LimpiaTipopre()" (selected)='selectTipoPregunta($event)' [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio" [(ngModel)]="TPregunta">
+                    </ng-autocomplete>
+                    <ng-template #templateRes let-item>
+                        <a [innerHTML]="item.NombrePregunta"></a>
+                    </ng-template>
+                    <ng-template #templateVacio let-SinRegistro>
+                        <label for="">Sin registros</label>
+                    </ng-template>
+                </div>
+                <div class="col-sm-5">
+                    <input type="text" placeholder="Titulo pregunta" [(ngModel)]="TituloForm" class="form-control col-sm-12 textBox">
+                </div>
+                <div class="col-sm-4">
+                    <input type="text" placeholder="Respuestas pregunta (Separar por comas)" [(ngModel)]="RespuestasForm" [disabled]="ValidaTipo" class="form-control col-sm-12 textBox">
+                </div>           
+            </div>
+            <div class="row br justify-content-center">
+                <div class="col-sm-3">
+                    <button class="btn btn-agro-prin col-sm-12" (click)="AgregaPregunta()">
+                        Agregar pregunta
+                    </button>
+                </div>
+            </div>
+            <hr>
+            <div class="row br justify-content-center">
+                <h2 class="TituloDetalle">Preguntas registradas</h2>
+            </div>
+            <div class="br row justify-content-center">
+                <table class="col-sm-12 TableAgro">
+                    <tr>
+                        <th>Tipo pregunta</th>
+                        <th>Titulo pregunta</th>
+                        <th>Posibles respuestas</th>
+                        <th>Acciones</th>                   
+                    </tr>
+                    <tr *ngFor="let pregunta of PreguntasOferta">
+                        <td>{{pregunta.NOM_TPO_PRGNTA}}</td>
+                        <td>{{pregunta.TITULO_PREGUNTA_OFR}}</td>
+                        <td>{{pregunta.opciones_seleccion=='' ? 'No aplica' :  pregunta.opciones_seleccion}}</td>                    
+                        <td>
+                            <button class="SinEstilo" title="Eliminar pregunta" (click)="EliminaPregunta(pregunta)">
+                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
+                            </button>                       
+                        </td>
+                    </tr>
+                    <tr *ngIf="ValidaConsulta=='0'">
+                        <td colspan="4">No se encuentran preguntas registradas</td>
+                    </tr>
+                </table>
+            </div>
+            <br>
+        </div>
+    </div>
+    <br>
     
 </div>
