@@ -88,7 +88,13 @@ export class CarguepublicidadComponent implements OnInit {
     this.boxLargo = '';
     this.boxOrden = '';
     this.auxGuardarNombreMod = '1';
+
+    this.serviciospublicidad.ConsultaCPublicidad('1', this.Id, this.IdVistaModulo, this.usucodig).subscribe(resultado => {
+      this.DataModulos = resultado;
+    })
+
     this.modalService.open(modalMod, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+
   }
 
   Limpiar() {
@@ -161,6 +167,11 @@ export class CarguepublicidadComponent implements OnInit {
 
   AgregarDetalleImagen(modalMod: any, respu: any) {
     this.Id = respu.Id;
+    this.boxLargo = respu.alto;
+    this.boxAncho = respu.ancho;
+    this.boxOrden = respu.Orden;
+    this.boxPath = respu.Patch;
+    this.ListaAccion = respu.IdAccion;
     this.modalService.open(modalMod, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
   }
 
@@ -249,6 +260,7 @@ export class CarguepublicidadComponent implements OnInit {
   }
 
   EditarModulo(modalMod: any) {
+
     this.NombreModulo = modalMod.NombreModulo;
     this.boxLargo = modalMod.auxLargo;
     this.boxAncho = modalMod.auxAncho;
@@ -301,6 +313,11 @@ export class CarguepublicidadComponent implements OnInit {
     else if (event.target.files[0].size > 1300000) {
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
       this.Respuesta = "El peso del archivo no puede exceder 1.3 megabyte";
+    }
+    else if (event.target.files[0].width == 512 && event.target.files[0].height == 512) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El archivo no pudo ser cargado, valide las dimensiones en pixeles";
+
     } else {
       this.serviciospublicidad.postImgPublicidad(event.target.files[0]).subscribe(
         response => {
