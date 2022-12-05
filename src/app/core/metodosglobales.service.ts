@@ -53,9 +53,10 @@ export class MetodosglobalesService {
       return ruta + 'ImagenesConductores/'
     } else if (tipoimagen == '3') {
       return ruta + 'ImagenesPlantillaCorreo/'
-
     } else if (tipoimagen == '4') {
       return ruta + 'ImagenesToppings/'
+    } else if (tipoimagen == '5') {
+      return ruta + 'ImagenesPublicidad/'
     } else {
       return 'no se encontro la imagen'
     }
