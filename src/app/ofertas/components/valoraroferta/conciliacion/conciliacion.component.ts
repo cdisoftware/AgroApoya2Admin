@@ -114,27 +114,27 @@ export class ConciliacionComponent implements OnInit {
       this.IdEstadoOferta = Resultado[0].Estado;
       this.ImagenOferta = this.SeriviciosGenerales.RecuperaRutaImagenes() + Resultado[0].IMAGEN;
       this.ValidaRutaSiguiente(this.IdEstadoOferta)
-    })
-    //Consulta datos de las ultimas ofertas 
-    const DatosOfertas =
-    {
-      UsuCodig: 1,
-      Producto: 0,
-      NombreCompletoProductor: 0,
-      DescripcionProducto: 0,
-      Cd_cndcion: 0,
-      Cd_tmno: 0,
-      ID_EMPAQUE: 0,
-      VigenciaDesde: 0,
-      VigenciaHasta: 0,
-      IdEstado_Oferta: 0,
-      CD_RGION: 0,
-      CD_MNCPIO: 0
-    }
-    this.ServiciosValorar.ConsultaUltimasOfertas('1', '0', this.IdProducto, '0', DatosOfertas).subscribe(Resultado => {
-      this.ArrayUOfertas = Resultado;
+      const DatosOfertas =
+      {
+        UsuCodig: 1,
+        Producto: 0,
+        NombreCompletoProductor: 0,
+        DescripcionProducto: 0,
+        Cd_cndcion: 0,
+        Cd_tmno: 0,
+        ID_EMPAQUE: 0,
+        VigenciaDesde: 0,
+        VigenciaHasta: 0,
+        IdEstado_Oferta: 0,
+        CD_RGION: 0,
+        CD_MNCPIO: 0
+      }
+      console.log('1', '0', this.IdProducto, '0')
+      this.ServiciosValorar.ConsultaUltimasOfertas('1', '0', this.IdProducto, '0', DatosOfertas).subscribe(Resultado => {
+        this.ArrayUOfertas = Resultado;
 
-      console.log(this.ArrayUOfertas)
+        console.log(this.ArrayUOfertas)
+      })
     })
   }
 
@@ -172,7 +172,7 @@ export class ConciliacionComponent implements OnInit {
     this.EObservacion = ''
     this.ServiciosValorar.ConsultaJornada('1').subscribe(Resultado => {
       this.ArrayJornada = Resultado;
-      console.log(Resultado)
+      //console.log(Resultado)
     })
     this.ServiciosCreaOferta.ConsultaEmpaque(this.IdProducto).subscribe(Resultado => {
       this.ArrayEmpaque = Resultado;
@@ -239,7 +239,7 @@ export class ConciliacionComponent implements OnInit {
       CRCTRZCION: this.ECaracteriza,
       OBS_EDICION: this.EObservacion
     }
-    console.log(datosUpdate)
+    //console.log(datosUpdate)
     this.ServiciosValorar.EditarOfertaBusqueda('5', this.IdEEmpaque, datosUpdate).subscribe(Resultado => {
       var arrayrespuesta = Resultado.split('|');
       this.Respuesta = arrayrespuesta[1];
@@ -289,7 +289,7 @@ export class ConciliacionComponent implements OnInit {
       CD_DPTO: "261",
       CD_MNCPIO: this.IdACiudad
     }
-    console.log(datosaprueba)
+    //console.log(datosaprueba)
     if (this.IdACiudad == '0' || this.maObservacion == '' || this.maPrecioFinal == '' || this.Caracterizacion == '') {
       this.Respuesta = 'Debes completar todos los datos para aprobar la oferta.'
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -312,7 +312,7 @@ export class ConciliacionComponent implements OnInit {
 
       })
       this.ServiciosValorar.InsertaCiudadOferta('3', datosciudad).subscribe(Resultado => {
-        console.log(Resultado)
+        //console.log(Resultado)
       })
 
       this.modalService.dismissAll();
@@ -329,7 +329,7 @@ export class ConciliacionComponent implements OnInit {
   Formatovalor() {
     let valor = Number(this.ValorSugerido)
     this.Valor = formatCurrency(valor, 'en-US', '');
-    console.log(this.ValorSugerido)
+    //console.log(this.ValorSugerido)
   }
 
   EnviarPropuesta(ModalRespuesta: any) {
@@ -343,9 +343,9 @@ export class ConciliacionComponent implements OnInit {
       parametro2: "",
       parametro3: ""
     }
-    console.log(DatosEditar);
+    //console.log(DatosEditar);
     this.ServiciosValorar.ModificaEstadoOferta('3', DatosEditar).subscribe(Resultado => {
-      console.log(Resultado)
+      //console.log(Resultado)
       var arrayrespuesta = Resultado.split('|');
       this.Respuesta = arrayrespuesta[1];
       if (arrayrespuesta[0] != '-1') {
@@ -368,13 +368,13 @@ export class ConciliacionComponent implements OnInit {
 
   EnviarCorreo(datoscorreo: any) {
     this.ServiciosValorar.EnviarCorreoIndividual('1', datoscorreo).subscribe(Resultado => {
-      console.log(Resultado)
+      //console.log(Resultado)
     })
   }
 
   EnviarSms(bandera: string) {
     this.ServiciosValorar.EnviarSms(bandera, this.IdUsuario, this.IdOferta, '0', '0', '0', '0').subscribe(Resultado => {
-      console.log(Resultado)
+      //console.log(Resultado)
     })
   }
 

@@ -74,7 +74,7 @@ export class EvaluacionofertaComponent implements OnInit {
   }
 
   ConsultaOfertas() {
-    this.evaluacionservices.ConsultaOfertas('3', '0', '0', '0').subscribe(Resultado => {
+    this.evaluacionservices.ConsultaOfertas('4', '0', '0', '0').subscribe(Resultado => {
       console.log(Resultado)
       this.DataOfertas = Resultado;
       this.keyword = 'Producto';
