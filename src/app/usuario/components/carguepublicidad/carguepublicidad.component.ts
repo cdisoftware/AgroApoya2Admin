@@ -36,7 +36,7 @@ export class CarguepublicidadComponent implements OnInit {
   usucodig: string = '';
   ConsultaTarjetas: any[];
   RutaImagenTar: string = '';
-  auxGuardarNombreMod: string;
+  auxGuardarNombreMod: string = '1';
   IdVistaModulo: string = '';
   Id: string = '';
 
@@ -68,15 +68,18 @@ export class CarguepublicidadComponent implements OnInit {
   }
 
   CambiarBtnModulo(idmodulo: string) {
+    this.VerOcultarCampos = '1';
     //alert(idmodulo)
     if(idmodulo != '0'){
       this.banderaAgregar = '2';
+      this.ConsultaModulo(idmodulo);
     }else{
       this.banderaAgregar = '1';
+      this.ConsultaTarjetas = [];
     }
     this.IdModulo = idmodulo;
     // Consultar tarjetas segun id de modulo
-    this.ConsultaModulo(idmodulo);
+    
   }
 
   ConsultaModulo(idmodulo: string){
@@ -142,6 +145,7 @@ export class CarguepublicidadComponent implements OnInit {
   }
 
   BtnGuardarModuloDetalle(templateMensaje: any) {
+    this.banderaAgregar = '2'
     if (this.boxAncho == '' || this.boxAncho == '0') {
       this.Respuesta = 'El campo ancho es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -186,7 +190,8 @@ export class CarguepublicidadComponent implements OnInit {
     this.boxAncho = respu.ancho;
     this.boxOrden = respu.Orden;
     this.boxPath = respu.Patch;
-    this.ListaAccion = respu.IdAccion;
+    //this.ListaAccion = respu.IdAccion;
+    this.IdListaAccion = respu.IdAccion;
     this.modalService.open(modalMod, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
   }
 
@@ -264,6 +269,7 @@ export class CarguepublicidadComponent implements OnInit {
           this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
         }
       })
+      this.modalService.dismissAll();
     }
   }
 
