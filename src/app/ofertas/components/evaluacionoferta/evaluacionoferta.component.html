@@ -91,12 +91,14 @@
                         <th>Tipo pregunta</th>
                         <th>Titulo pregunta</th>
                         <th>Posibles respuestas</th>
+                        <th>Origen</th>
                         <th>Acciones</th>                   
                     </tr>
                     <tr *ngFor="let pregunta of PreguntasOferta">
                         <td>{{pregunta.NOM_TPO_PRGNTA}}</td>
                         <td>{{pregunta.TITULO_PREGUNTA_OFR}}</td>
                         <td>{{pregunta.opciones_seleccion=='' || pregunta.opciones_seleccion==null ? 'No aplica' :  pregunta.opciones_seleccion}}</td>                    
+                        <td>{{pregunta.origen}}</td>
                         <td>
                             <button class="SinEstilo" title="Eliminar pregunta" (click)="EliminaPregunta(pregunta)">
                                 <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
