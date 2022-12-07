@@ -185,6 +185,9 @@ export class ValorarofertaService {
   ModificaTopping(Bandera: string, Bodymod: any) {
     return this.http.post<any>(this.url_servidor + 'modctopping/' + Bandera, Bodymod)
   }
+  ConsultaCompraPagos(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscagroestcompago/' + Bandera)
+  }
 
   public postImgToppings(imagenParaSubir: File) {
     const formData = new FormData();

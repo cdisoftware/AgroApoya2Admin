@@ -19,6 +19,37 @@
                 <label for="">Sin registros</label>
             </ng-template>
         </div>
+
+
+
+
+
+        <div class="col-sm-6 mt-3">
+            <ng-autocomplete [data]="DataEstadoPago" [searchKeyword]="keywordEsPago" placeholder="Estado pago"
+                (selected)='selectEstadoPago($event)' [itemTemplate]="templateEstadoPag" [notFoundTemplate]="templateVacio"
+                [(ngModel)]="EstadoPago">
+            </ng-autocomplete>
+            <ng-template #templateEstadoPag let-item>
+                <a [innerHTML]="item.descripcion"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+
+
+        <div class="col-sm-6 mt-3">
+            <ng-autocomplete [data]="DataEstadoCompra" [searchKeyword]="keywordEsCompra" placeholder="Estado de compra"
+                (selected)='selectEstadoCompra($event)' [itemTemplate]="templateEstadoCompra" [notFoundTemplate]="templateVacio"
+                [(ngModel)]="EstadoCompra">
+            </ng-autocomplete>
+            <ng-template #templateEstadoCompra let-item>
+                <a [innerHTML]="item.descripcion"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
     </div>
     <div class="row br justify-content-center">
         <div class="col-sm-3 col-2">
@@ -44,8 +75,8 @@
         <tr>
             <th>Oferta</th>
             <th>Nombre Sector</th>
-            <th>Estado</th>
-            <th>Pedido</th>
+            <th>Estado pago</th>
+            <th>Estado compra</th>
             <th>Unidades</th>
             <th>Cliente</th>
             <th>Tipo compra</th>
@@ -55,8 +86,8 @@
         <tr *ngFor="let oferta of DataConsulta">
             <td>{{oferta.CD_CNSCTVO}}</td>
             <td>{{oferta.NOM_SECTOR}}</td>
-            <td>{{oferta.descEstado}}</td>
-            <td>{{oferta.COD_PEDIDO}}</td>
+            <td>{{oferta.estado_pago}}</td>
+            <td>{{oferta.estado_compras}}</td>
             <td>{{oferta.unidadesEntregar}}</td>
             <td>{{oferta.NOMBRES_PERSONA}} {{oferta.APELLIDOS_PERSONA}}</td>
             <td>{{oferta.descTipoCompra}}</td>
