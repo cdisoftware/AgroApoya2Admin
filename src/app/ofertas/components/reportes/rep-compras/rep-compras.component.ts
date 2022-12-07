@@ -61,7 +61,7 @@ export class RepComprasComponent implements OnInit {
 
 //William
 ConsultaEstadoPago() {
-  this.serviciosoferta.ConsultaCompraPagos('1').subscribe(ResultCons => {
+  this.serviciosoferta.ConsultaCompraPagos('2').subscribe(ResultCons => {
     console.log(ResultCons)
     this.DataEstadoPago = ResultCons
     this.keywordEsPago = 'descripcion';
@@ -76,7 +76,7 @@ selectEstadoPago(sector: any) {
 
 
 ConsultaEstadoCompra() {
-  this.serviciosoferta.ConsultaCompraPagos('2').subscribe(ResultCons => {
+  this.serviciosoferta.ConsultaCompraPagos('1').subscribe(ResultCons => {
     this.DataEstadoCompra = ResultCons
     this.keywordEsCompra = 'descripcion';
   })
@@ -135,6 +135,8 @@ selectEstadoCompra(sector: any) {
   }
 
   LimpiaForm() {
+    this.EstadoPago = '';
+    this.EstadoCompra = '';
     this.Sector = '';
     this.SectorSelec = '';
     this.OferFiltro = '';
