@@ -21,7 +21,6 @@
                 (click)="EditarModulo(templateEditarModulo)" *ngIf="banderaAgregar == '2'">
                 Editar modulo</button>
         </div>
-
         <div class="col-sm-3">
             <button class="col-sm-12 btn btn-agro-sec" title="Editar Modulo" (click)="Limpiar()">
                 Limpiar</button>
@@ -41,7 +40,7 @@
 <ng-template #templateAgregarModulo let-modal>
     <div class="modal-header">
         <h1 class="modal-title" id="modal-basic-title">Agregar Módulo</h1>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        <button type="button" class="btn-close" aria-label="Close" (click)="CrearModuloCompleto(ModalRespuesta)"></button>
     </div>
     <div class="modal-body">
         <div class="row br">
@@ -52,7 +51,7 @@
             </div>
         </div>
 
-        <div class="row" *ngIf="VerOcultarCampos != '1'">
+        <div class="row br" *ngIf="VerOcultarCampos != '1'">
             <div class="col-sm-4">
                 <label class="col-sm-12 Llave">Ancho</label>
                 <input class="col-sm-12 form-control form-control-sm textBox" [(ngModel)]="boxAncho" type="number"
@@ -89,7 +88,6 @@
                     <td>{{mod.ancho}}</td>
                     <td>{{mod.alto}}</td>
                     <td>{{mod.Orden}}</td>
-
                     <td>
                         <button class="SinEstilo" (click)="BtnEliminarDetalleMod(mod, ModalRespuesta)">
                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basura.png"
@@ -107,7 +105,7 @@
                     Guardar</button>
             </div>
             <div class="col-sm-3" *ngIf="auxGuardarNombreMod == '2'">
-                <button class="col-sm-12 btn btn-agro-prin" (click)="modal.dismiss()" title="Agregar Nombre Modulo">
+                <button class="col-sm-12 btn btn-agro-prin" (click)="CrearModuloCompleto(ModalRespuesta)" title="Agregar Nombre Modulo">
                     Aceptar</button>
             </div>
         </div>
