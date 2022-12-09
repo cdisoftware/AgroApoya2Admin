@@ -69,22 +69,19 @@ export class CarguepublicidadComponent implements OnInit {
 
   CambiarBtnModulo(idmodulo: string) {
     this.VerOcultarCampos = '1';
-    //alert(idmodulo)
-    if(idmodulo != '0'){
+
+    if (idmodulo != '0') {
       this.banderaAgregar = '2';
       this.ConsultaModulo(idmodulo);
-    }else{
+    } else {
       this.banderaAgregar = '1';
       this.ConsultaTarjetas = [];
     }
     this.IdModulo = idmodulo;
-    // Consultar tarjetas segun id de modulo
-    
   }
 
-  ConsultaModulo(idmodulo: string){
+  ConsultaModulo(idmodulo: string) {
     this.serviciospublicidad.ConsultaCPublicidad('1', '0', idmodulo, this.usucodig).subscribe(resultado => {
-      console.log(resultado)
       this.ConsultaTarjetas = resultado;
       for (var i = 0; i < this.ConsultaTarjetas.length; i++) {
         if (this.ConsultaTarjetas[i].Imagen == '') {
@@ -102,17 +99,17 @@ export class CarguepublicidadComponent implements OnInit {
     this.boxLargo = '';
     this.boxOrden = '';
     this.auxGuardarNombreMod = '1';
-
     this.serviciospublicidad.ConsultaCPublicidad('1', this.Id, this.IdVistaModulo, this.usucodig).subscribe(resultado => {
       this.DataModulos = resultado;
     })
-
     this.modalService.open(modalMod, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
-
   }
 
   Limpiar() {
     location.reload();
+    //this.IdListaModulo = '0';
+    //this.ConsultaTarjetas = [];
+    //this.banderaAgregar = '1';
   }
 
   BtnGuardarModulo(templateMensaje: any) {
@@ -165,12 +162,11 @@ export class CarguepublicidadComponent implements OnInit {
         Usucodig: 0,
         Observacion: 0
       }
-      console.log(body)
       this.serviciospublicidad.ModCPubli('3', body).subscribe(resultado => {
         var aux = resultado.split('|');
         this.Id = aux[0].replace(' ', '');
         if (resultado == 'Se ha insertado correctamente') {
-          this.Respuesta = "El modulo se a creado exitosamente, para editarlo debes seleccionarlo en los filtros.";
+          this.Respuesta = "Creado correctamente.";
           this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
           this.ConsultaModulo(this.IdModulo);
           this.ListaPublicidad();
@@ -183,8 +179,20 @@ export class CarguepublicidadComponent implements OnInit {
     }
   }
 
+  CrearModuloCompleto(templateMensaje: any) {
+    if (this.auxGuardarNombreMod == '1') {
+      this.modalService.dismissAll();
+    } else {
+      if (this.Id == '' || this.Id == '0' || this.Id == null) {
+        this.Respuesta = 'Es obligatorio agregar al menos una tarjeta.';
+        this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      } else {
+        this.modalService.dismissAll();
+      }
+    }
+  }
+
   AgregarDetalleImagen(modalMod: any, respu: any) {
-    console.log(respu)
     this.Id = respu.Id;
     this.boxLargo = respu.alto;
     this.boxAncho = respu.ancho;
@@ -225,7 +233,6 @@ export class CarguepublicidadComponent implements OnInit {
     }
   }
 
-
   LimpiarModuloDetalle() {
     this.boxLargo = '';
     this.boxAncho = '';
@@ -234,15 +241,12 @@ export class CarguepublicidadComponent implements OnInit {
 
   BtnGuardarModAccion(templateMensaje: any) {
     if (this.boxPath == undefined || this.boxPath == null || this.boxPath == '') {
-
       this.Respuesta = 'El campo path es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else if (this.IdListaAccion == undefined || this.IdListaAccion == null || this.IdListaAccion == '0') {
-
       this.Respuesta = 'El campo acción es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.btnImagen == undefined || this.btnImagen == null || this.btnImagen == '0') {
-
+    } else if (this.btnImagen == undefined || this.btnImagen == null || this.btnImagen == '0' || this.btnImagen == '') {
       this.Respuesta = 'Subir una imagen es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else {
@@ -255,12 +259,10 @@ export class CarguepublicidadComponent implements OnInit {
         Usucodig: 0,
         Observacion: 0
       }
-      console.log(body);
       this.serviciospublicidad.ModCPublicidad('2', body).subscribe(resultado => {
         if (resultado == 'Se ha actualizado correctamente') {
           this.Respuesta = "El detalle se a creado exitosamente";
           this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-          //this.CambiarBtnModulo();
           this.ListaPublicidad()
           this.LimpiarModAccion();
           this.ConsultaModulo(this.IdModulo);
@@ -271,6 +273,7 @@ export class CarguepublicidadComponent implements OnInit {
       })
       this.modalService.dismissAll();
     }
+    this.imagenesPublicidad = '';
   }
 
   LimpiarModAccion() {
@@ -280,11 +283,8 @@ export class CarguepublicidadComponent implements OnInit {
   }
 
   EditarModulo(modalMod: any) {
-    //console.log(this.ConsultaTarjetas)
     this.NombreModulo = this.ConsultaTarjetas[0].DesVista;
-    // this.boxLargo = this.ConsultaTarjetas[0].auxLargo;
-    // this.boxAncho = this.ConsultaTarjetas[0].auxAncho;
-    // this.boxOrden = this.ConsultaTarjetas[0].auxOrden;
+    this.LimpiarModuloDetalle();
     this.modalService.open(modalMod, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
   }
 
@@ -314,7 +314,6 @@ export class CarguepublicidadComponent implements OnInit {
     this.serviciospublicidad.ConsultaCPublicidad('1', '0', this.IdVistaModulo, this.usucodig).subscribe(resultado => {
       if (resultado != null && resultado != undefined) {
         this.DataModulos = resultado;
-
       } else {
         this.DataModulos = [];
       }
@@ -322,8 +321,7 @@ export class CarguepublicidadComponent implements OnInit {
   }
 
   public CargaImgPublicidad(event: any, modalmensaje: any) {
-
-    if (!(/\.(jpg|png)$/i).test(event.target.files[0].name)) {
+    if (!(/\.(jpg|png|jpeg)$/i).test(event.target.files[0].name)) {
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
       this.Respuesta = "El archivo no pudo ser cargado, valide la extención, las permitidas son .jpg .png";
     }
@@ -366,7 +364,7 @@ export class CarguepublicidadComponent implements OnInit {
     this.NombreModulo = '';
   }
 
-  SelectAccion(idaccion: string){
+  SelectAccion(idaccion: string) {
     this.IdListaAccion = idaccion;
   }
 }
