@@ -57,19 +57,23 @@ export class RepComprasComponent implements OnInit {
   selectSector(sector: any) {
     this.SectorSelec = sector.SCTOR_OFRTA;
   }
+  LimpiaSector(Sector: String){
+    this.SectorSelec = "" +Sector;
+  }
 
 
 //William
 ConsultaEstadoPago() {
   this.serviciosoferta.ConsultaCompraPagos('2').subscribe(ResultCons => {
-    console.log(ResultCons)
     this.DataEstadoPago = ResultCons
     this.keywordEsPago = 'descripcion';
   })
 }
-
 selectEstadoPago(sector: any) {
   this.SelectorEstPago = sector.codigo;
+}
+LimpiaEstadoPago(EsPago: String){
+  this.SelectorEstPago = "" +EsPago;
 }
 
 
@@ -83,11 +87,11 @@ ConsultaEstadoCompra() {
 }
 
 selectEstadoCompra(sector: any) {
-  console.log(this.SelectorEstComra)
   this.SelectorEstComra = sector.codigo;
-  console.log(this.SelectorEstComra)
 }
-
+LimpiaEstadoCompra(EsCompra: String){
+  this.SelectorEstComra = "" +EsCompra;
+}
 ////////////////////////
 
 
@@ -135,6 +139,8 @@ selectEstadoCompra(sector: any) {
   }
 
   LimpiaForm() {
+    this.SelectorEstPago = '';
+    this.SelectorEstComra = '';
     this.EstadoPago = '';
     this.EstadoCompra = '';
     this.Sector = '';
