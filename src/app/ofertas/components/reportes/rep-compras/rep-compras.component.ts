@@ -27,10 +27,24 @@ export class RepComprasComponent implements OnInit {
   ValidaDescarga: boolean = true;
   ArregloAdicionales: any = [];
 
+  //William
+  DataEstadoPago: any = [];
+  keywordEsPago: string = '';
+  SelectorEstPago: string = '';
+  EstadoPago: string = '';
+
+
+  DataEstadoCompra: any = [];
+  keywordEsCompra: string = '';
+  SelectorEstComra: string = '';
+  EstadoCompra: string = '';
+
   ngOnInit(): void {
     this.ValidaConsulta = '1';
     this.txtValidaCons = 'No se encuentran registros segun los filtros utilizados, favor valida tu información';
     this.ConsultaSectores();
+    this.ConsultaEstadoPago();
+    this.ConsultaEstadoCompra();
   }
 
   ConsultaSectores() {
@@ -44,9 +58,45 @@ export class RepComprasComponent implements OnInit {
     this.SectorSelec = sector.SCTOR_OFRTA;
   }
 
+
+//William
+ConsultaEstadoPago() {
+  this.serviciosoferta.ConsultaCompraPagos('2').subscribe(ResultCons => {
+    console.log(ResultCons)
+    this.DataEstadoPago = ResultCons
+    this.keywordEsPago = 'descripcion';
+  })
+}
+
+selectEstadoPago(sector: any) {
+  this.SelectorEstPago = sector.codigo;
+}
+
+
+
+
+ConsultaEstadoCompra() {
+  this.serviciosoferta.ConsultaCompraPagos('1').subscribe(ResultCons => {
+    this.DataEstadoCompra = ResultCons
+    this.keywordEsCompra = 'descripcion';
+  })
+}
+
+selectEstadoCompra(sector: any) {
+  console.log(this.SelectorEstComra)
+  this.SelectorEstComra = sector.codigo;
+  console.log(this.SelectorEstComra)
+}
+
+////////////////////////
+
+
+
   BusquedaGen() {
     var validaofer = '0';
     var validasec = '0';
+    var validaCompra = '0';
+    var validaPago = '0';
     if (this.OferFiltro == '') {
       validaofer = '0';
     }
@@ -59,7 +109,18 @@ export class RepComprasComponent implements OnInit {
     else {
       validasec = this.SectorSelec;
     }
-    this.serviciosreportes.ConsultaComprasXOfer('1', validaofer, validasec).subscribe(Resultcons => {      
+    if(this.SelectorEstComra == ''){
+      validaCompra = '0';
+    }else{
+      validaCompra = this.SelectorEstComra;
+    }
+    if(this.SelectorEstPago == ''){
+      validaPago = '0';
+    }else{
+      validaPago = this.SelectorEstPago;
+    }
+    this.serviciosreportes.ConsultaComprasXOfer('1', validaofer, validasec, validaCompra, validaPago).subscribe(Resultcons => {   
+      console.log(Resultcons)   
       if (Resultcons.length > 0) {
         this.ValidaConsulta = '0';
         this.ValidaDescarga = false;
@@ -74,6 +135,8 @@ export class RepComprasComponent implements OnInit {
   }
 
   LimpiaForm() {
+    this.EstadoPago = '';
+    this.EstadoCompra = '';
     this.Sector = '';
     this.SectorSelec = '';
     this.OferFiltro = '';
@@ -126,8 +189,8 @@ export class RepComprasComponent implements OnInit {
         let temp = []
         temp.push(fila['CD_CNSCTVO'])
         temp.push(fila['NOM_SECTOR'])
-        temp.push(fila['descEstado'])
-        temp.push(fila['DESCRIPCION_ESTADO'])
+        temp.push(fila['estado_compras'])
+        temp.push(fila['estado_pago'])
         temp.push(fila['COD_PEDIDO'])
         temp.push(fila['Producto'])
         temp.push(fila['unidadesEntregar'])
