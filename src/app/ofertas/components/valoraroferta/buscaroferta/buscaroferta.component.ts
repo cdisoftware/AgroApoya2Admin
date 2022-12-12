@@ -259,7 +259,7 @@ export class BuscarofertaComponent implements OnInit {
 
       //this.IdEstado = Resultado[0].Estado;
       this.ValidaEstados(Resultado[0].Estado);
-    })
+    });
   }
 
   ValidaEstados(estado: string) {
@@ -301,4 +301,16 @@ export class BuscarofertaComponent implements OnInit {
       this.FechaOferta = ''
     }
   }
+
+  //William
+  ArrayResumenOferta: any = [];
+  AbrirPopuPResumen(ModalResumen: any, respu: any) {
+    this.ServiciosValorar.ConsultaMenuResumenOferta('1', respu.Tramite).subscribe(Resultado => {
+      this.ArrayResumenOferta = Resultado;
+      console.log(Resultado)
+    });
+    this.modalService.dismissAll();
+    this.modalService.open(ModalResumen, { ariaLabelledBy: 'modal-basic-title', size: 'xl', centered: true, backdrop: 'static', keyboard: false });
+  }
+
 }

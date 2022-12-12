@@ -26,8 +26,9 @@ export class ValorarofertaService {
   ConsultaOferta(Bandera: string, idOferta: string) {
     return this.http.get<any[]>(this.url_servidor + 'conscoferta/' + Bandera + '/' + idOferta)
   }
-
-
+  ConsultaMenuResumenOferta(Bandera: string, CD_CNSCTVO: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscagrormenofertamenu/' + Bandera + '/' + CD_CNSCTVO)
+  }
   ConsultaSectores(Bandera: string, NomSector: string, CdPais: string, Cd_Region: string, Cd_Mncpio: string) {
     return this.http.get<any[]>(this.url_servidor + 'consectores/' + Bandera + '/' + NomSector + '/' + CdPais + '/' + Cd_Region + '/' + Cd_Mncpio)
   }

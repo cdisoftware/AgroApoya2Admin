@@ -8,7 +8,7 @@
                 [(ngModel)]="OferFiltro">
         </div>
         <div class="col-sm-6">
-            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" placeholder="Sector"
+            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" placeholder="Sector" (inputCleared)="LimpiaSector('')"
                 (selected)='selectSector($event)' [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio"
                 [(ngModel)]="Sector">
             </ng-autocomplete>
@@ -25,7 +25,7 @@
 
 
         <div class="col-sm-6 mt-3">
-            <ng-autocomplete [data]="DataEstadoPago" [searchKeyword]="keywordEsPago" placeholder="Estado pago"
+            <ng-autocomplete [data]="DataEstadoPago" [searchKeyword]="keywordEsPago" placeholder="Estado pago" (inputCleared)="LimpiaEstadoPago('')"
                 (selected)='selectEstadoPago($event)' [itemTemplate]="templateEstadoPag" [notFoundTemplate]="templateVacio"
                 [(ngModel)]="EstadoPago">
             </ng-autocomplete>
@@ -39,7 +39,7 @@
 
 
         <div class="col-sm-6 mt-3">
-            <ng-autocomplete [data]="DataEstadoCompra" [searchKeyword]="keywordEsCompra" placeholder="Estado de compra"
+            <ng-autocomplete [data]="DataEstadoCompra" [searchKeyword]="keywordEsCompra" placeholder="Estado de compra" (inputCleared)="LimpiaEstadoCompra('')"
                 (selected)='selectEstadoCompra($event)' [itemTemplate]="templateEstadoCompra" [notFoundTemplate]="templateVacio"
                 [(ngModel)]="EstadoCompra">
             </ng-autocomplete>
