@@ -48,6 +48,7 @@ export class SectorizacionComponent implements OnInit {
   responseDiv: HTMLDivElement;
   response: HTMLPreElement;
   Sector: string;
+  ValidaMapSector: string = '0';
 
   constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService) { }
 
@@ -80,7 +81,7 @@ export class SectorizacionComponent implements OnInit {
       return results;
     })
       .catch((e) => {
-        console.log("Geocode was not successful for the following reason: " + e);
+        //console.log("Geocode was not successful for the following reason: " + e);
       });
   }
 
@@ -98,7 +99,7 @@ export class SectorizacionComponent implements OnInit {
 
   ConsultaDetalleOferta() {
     this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
-      console.log(ResultConsu)
+      //console.log(ResultConsu)
       this.DataOferta = ResultConsu;
       this.SessionNomOferta = ResultConsu[0].Nombre_Producto + ' - ' + ResultConsu[0].Descripcion_empaque + ' - ' + ResultConsu[0].Nombre_productor;
       this.SessionCantSecOferta = ResultConsu[0].Unidades_disponibles;
@@ -136,6 +137,7 @@ export class SectorizacionComponent implements OnInit {
 
   ConsultaSectores() {
     this.sectoresservices.ConsultaSectores('1', '0', '0', this.SessionCDRegion, this.SessionCDMunicipio).subscribe(Result => {
+      //console.log(Result)
       this.DataSectores = Result;
       this.keyword = 'DSCRPCION_SCTOR';
     })
@@ -222,7 +224,7 @@ export class SectorizacionComponent implements OnInit {
         this.Respuesta = arrayRes[1];
         this.ConsultaCiudadOferta();
         if (this.SessionSecCreado != undefined) {
-          console.log('entra: ' + this.SessionSecCreado)
+          //console.log('entra: ' + this.SessionSecCreado)
           this.ValidaInsertSec = '1';
           this.CreaMapa();
         }
@@ -312,7 +314,7 @@ export class SectorizacionComponent implements OnInit {
   }
 
   EliminaCoordenada(coordenada: any) {
-    console.log(coordenada)
+    //console.log(coordenada)
     const BodyInsertCoo = {
       ID: coordenada.consecutivo,
       ID_SCTOR_OFRTA: Number(this.SessionSecCreado),
@@ -327,7 +329,7 @@ export class SectorizacionComponent implements OnInit {
   }
 
   ConsultaCoordenadas() {
-    console.log('1', this.SessionSecCreado)
+    //console.log('1', this.SessionSecCreado)
     this.sectoresservices.ConsultaCoordenada('1', this.SessionSecCreado).subscribe(Result => {
       if (Result.length > 0) {
         this.ValidaCoord = '1';
@@ -347,10 +349,47 @@ export class SectorizacionComponent implements OnInit {
     this.Coor2 = '';
   }
 
-  selectSector(item: any) {
+  selectSector(item: any, modalmapa: any) {
     this.Cant = '';
     this.VlrFle = '';
     this.SectSelec = item.SCTOR_OFRTA;
+    this.ValidaMapSector = '1';
+    this.modalService.open(modalmapa, { size: 'lg' });
+    var arraycoordenadas = item.coordenadas.split('|')
+    this.ConsultaMapaSector(arraycoordenadas);
+  }
+
+  ConsultaMapaSector(coordenadas: any) {
+    this.geocoder.geocode({ address: coordenadas[coordenadas.length - 1] }).then((result) => {
+      const { results } = result;
+      var lati = results[0].geometry.location.lat();
+      var longi = results[0].geometry.location.lng();
+      this.map = new google.maps.Map(
+        document.getElementById("map") as HTMLElement,
+        {
+          zoom: 11,
+          center: {
+            lat: lati,
+            lng: longi
+          },
+        }
+      );
+      for (var i = 0; i < coordenadas.length; i++) {
+        console.log(coordenadas[i])
+        this.geocoder.geocode({ address: coordenadas[i] }).then((resultcoord) => {
+          const { results } = resultcoord;
+          this.AgregarMarcadorSector(results[0].geometry.location, this.map);
+        })
+      }
+    })
+  }
+
+  AgregarMarcadorSector(latLng: google.maps.LatLng, map: google.maps.Map) {
+    const marker = new google.maps.Marker({
+      position: latLng,
+      map: map,
+    });
+    this.markers.push(marker);
   }
 
   LimpiaForm() {
@@ -379,9 +418,9 @@ export class SectorizacionComponent implements OnInit {
           this.ConsultaSectoresOferta();
           for (var i = 0; i < this.DataSectorOferta.length; i++) {
             this.sectoresservices.CorreoMasivo('1', '6', '3', this.SessionOferta, this.DataSectorOferta[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
-              console.log(ResultCorreo)
+              //console.log(ResultCorreo)
             })
-          }          
+          }
           this.EnviarSms('4');
         }
       })
@@ -402,8 +441,8 @@ export class SectorizacionComponent implements OnInit {
   }
 
   EnviarSms(bandera: string) {
-    this.sectoresservices.EnviarSms(bandera, '0', this.SessionOferta, '0', '0','0','0').subscribe(Resultado => {
-      console.log(Resultado)
+    this.sectoresservices.EnviarSms(bandera, '0', this.SessionOferta, '0', '0', '0', '0').subscribe(Resultado => {
+      //console.log(Resultado)
     })
   }
 
