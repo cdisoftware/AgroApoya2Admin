@@ -26,4 +26,8 @@ export class EvalsatisfaccionService {
   ModificacionPregunta(bandera:string, Bodymodifica:any){
     return this.http.post<any>(this.url_servidor+'modagropreguntofert/'+bandera, Bodymodifica)
   }
+  
+  ModificaOrden(bandera:string, Bodypost:any){
+    return this.http.post<any>(this.url_servidor+'modagropregunta/'+bandera, Bodypost)
+  }
 }

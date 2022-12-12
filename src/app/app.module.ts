@@ -10,6 +10,8 @@ import { CrearofertaComponent } from './ofertas/components/crearoferta/crearofer
 import { LoginComponent } from './usuario/components/login/login.component';
 import { CommonModule, HashLocationStrategy, LocationStrategy, DatePipe } from "@angular/common";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgDragDropModule } from 'ng-drag-drop';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import { BuscarofertaComponent } from './ofertas/components/valoraroferta/buscaroferta/buscaroferta.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { SidebarModule } from 'ng-sidebar';
@@ -26,7 +28,6 @@ import { ReporteComponent } from './usuario/components/reporte/reporte.component
 import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/rep-compras.component';
 import { OlvidepasswordComponent } from './usuario/components/olvidepassword/olvidepassword.component';
 import { CarguepublicidadComponent } from './usuario/components/carguepublicidad/carguepublicidad.component';
-import { from } from 'rxjs';
 import { EvaluacionofertaComponent } from './ofertas/components/evaluacionoferta/evaluacionoferta.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
@@ -51,6 +52,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
   imports: [
     NgxMaskModule.forRoot(options),
     BrowserModule,
+    NgDragDropModule.forRoot(),
+    DragDropModule,
     AppRoutingModule,
     SharedModule,
     FormsModule,

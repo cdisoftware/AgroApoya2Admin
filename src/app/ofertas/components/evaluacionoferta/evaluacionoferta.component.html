@@ -94,8 +94,9 @@
                 <h2 class="TituloDetalle">Preguntas registradas</h2>
             </div>
             <div class="br row justify-content-center">
-                <table class="col-sm-12 TableAgro">
+                <table class="col-sm-12 TableAgro" cdkDropList (cdkDropListDropped)="drop($event)">
                     <tr>
+                        <th>Orden</th>
                         <th>Tipo pregunta</th>
                         <th>Segmento</th>
                         <th>Titulo pregunta</th>
@@ -103,7 +104,8 @@
                         <th>Origen</th>
                         <th>Acciones</th>
                     </tr>
-                    <tr *ngFor="let pregunta of PreguntasOferta">
+                    <tr *ngFor="let pregunta of PreguntasOferta; let i = index" cdkDrag>
+                        <td>{{i+1}}</td>
                         <td>{{pregunta.NOM_TPO_PRGNTA}}</td>
                         <td>{{pregunta.tipo_segmento}}</td>
                         <td>{{pregunta.TITULO_PREGUNTA_OFR}}</td>
@@ -163,7 +165,6 @@
                     <input type="text" placeholder="Respuestas (Separar por comas)" [(ngModel)]="RespuestasForm"
                         [disabled]="ValidaTipo" class="form-control col-sm-12 textBox">
                 </div>
-
             </div>
             <div class="row br justify-content-center">
                 <div class="col-sm-3">
@@ -177,15 +178,17 @@
                 <h2 class="TituloDetalle">Preguntas registradas</h2>
             </div>
             <div class="br row justify-content-center">
-                <table class="col-sm-12 TableAgro">
+                <table class="col-sm-12 TableAgro" cdkDropList (cdkDropListDropped)="drop($event)">
                     <tr>
+                        <th>Orden</th>
                         <th>Tipo pregunta</th>
                         <th>Segmento</th>
                         <th>Titulo pregunta</th>
                         <th>Posibles respuestas</th>
                         <th>Acciones</th>
                     </tr>
-                    <tr *ngFor="let pregunta of PreguntasOferta">
+                    <tr *ngFor="let pregunta of PreguntasOferta; let i = index" cdkDrag>
+                        <td>{{i+1}}</td>
                         <td>{{pregunta.NOM_TPO_PRGNTA}}</td>
                         <td>{{pregunta.tipo_segmento}}</td>
                         <td>{{pregunta.TITULO_PREGUNTA_OFR}}</td>
