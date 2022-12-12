@@ -516,308 +516,318 @@
                     </div>
                 </div>
             </div>
-
-            <!--Sectorización-->
-            <div class="row br">
-                <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
-                    <ngb-panel title="Sectorización" id="config-panel-three">
-                        <ng-template ngbPanelContent>
-                            <div class="br row justify-content-center ">
-                                <table class="col-sm-10 TableAgro ">
-                                    <tr>
-                                        <th>Sector</th>
-                                        <th>Cantidad</th>
-                                        <th>Valor flete</th>
-                                        <th>Eliminar</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Prueba</td>
-                                        <td>Prueba</td>
-                                        <td>Prueba</td>
-                                        <td>
-                                            <button class="SinEstilo">
-                                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4 ">Ok</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </ng-template>
-                    </ngb-panel>
-                </ngb-accordion>
-            </div>
-            <!--Asignación transportista-->
-            <div class="row mt-1">
-                <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
-                    <ngb-panel title="Asignación transportista" id="config-panel-three">
-                        <ng-template ngbPanelContent>
-                            <div class="br row justify-content-center">
-                                <table class="col-sm-12 TableAgro">
-                                    <tr>
-                                        <th>Sector</th>
-                                        <th>Cantidades</th>
-                                        <th>Peso (kg)</th>
-                                        <th>Conductor</th>
-                                        <th>Valor flete registrado</th>
-                                        <th>Valor transportista</th>
-                                        <th>Estado</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Suba</td>
-                                        <td>200</td>
-                                        <td>50 KG</td>
-                                        <td class="Linktxt" title="Información transportista">Favio Enrique Bernal Gil
-                                        </td>
-                                        <td>50.000.00</td>
-                                        <td>80.000.00</td>
-                                        <td>Aceptado</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="7">Ok</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </ng-template>
-                    </ngb-panel>
-                </ngb-accordion>
-            </div>
-            <!--Costeo Oferta-->
-            <div class="row mt-1">
-                <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
-                    <ngb-panel title="Costeo Oferta" id="config-panel-three">
-                        <ng-template ngbPanelContent>
-                            <div class="br row justify-content-center">
-                                <table class="col-sm-10 TableAgro">
-                                    <tr>
-                                        <th>Concepto</th>
-                                        <th>Tipo Valor</th>
-                                        <th>Valor</th>
-                                        <th>Eliminar</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Lavada</td>
-                                        <td>Unitario</td>
-                                        <td>100.000.00</td>
-                                        <td>
-                                            <button class="SinEstilo">
-                                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Cerrar.png">
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="row justify-content-center br">
-                                <div class="col-sm-3"><label class="Llave">Valor total costeo:&nbsp;</label><label>$
-                                        200.000.00</label>
+            <div class="row" *ngFor="let respu of ArrayResumenOferta">
+                <!--Sectorización-->
+                <div class="row br" *ngIf="respu.codigo == '1' && respu.registro > 0">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+                        <ngb-panel title="Sectorización" id="config-panel-three">
+                            <ng-template ngbPanelContent>
+                                <div class="br row justify-content-center ">
+                                    <table class="col-sm-10 TableAgro ">
+                                        <tr>
+                                            <th>Sector</th>
+                                            <th>Cantidad</th>
+                                            <th>Valor flete</th>
+                                            <th>Eliminar</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Prueba</td>
+                                            <td>Prueba</td>
+                                            <td>Prueba</td>
+                                            <td>
+                                                <button class="SinEstilo">
+                                                    <img
+                                                        src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4 ">Ok</td>
+                                        </tr>
+                                    </table>
                                 </div>
-                            </div>
-                            <hr>
-                        </ng-template>
-                    </ngb-panel>
-                </ngb-accordion>
-            </div>
-            <!--Valoracion-->
-            <div class="row mt-1">
-                <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
-                    <ngb-panel title="Definición vigencia oferta" id="config-panel-three">
-                        <ng-template ngbPanelContent>
-                            <div class="row br">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Vigencia desde</label>
-                                    <input type="date" class="col-sm-12 form-control mt-1 textBox" disabled>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>
+                <!--Asignación transportista-->
+                <div class="row mt-1" *ngIf="respu.codigo == '2' && respu.registro > 0">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+                        <ngb-panel title="Asignación transportista" id="config-panel-three">
+                            <ng-template ngbPanelContent>
+                                <div class="br row justify-content-center">
+                                    <table class="col-sm-12 TableAgro">
+                                        <tr>
+                                            <th>Sector</th>
+                                            <th>Cantidades</th>
+                                            <th>Peso (kg)</th>
+                                            <th>Conductor</th>
+                                            <th>Valor flete registrado</th>
+                                            <th>Valor transportista</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Suba</td>
+                                            <td>200</td>
+                                            <td>50 KG</td>
+                                            <td class="Linktxt" title="Información transportista">Favio Enrique Bernal
+                                                Gil
+                                            </td>
+                                            <td>50.000.00</td>
+                                            <td>80.000.00</td>
+                                            <td>Aceptado</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="7">Ok</td>
+                                        </tr>
+                                    </table>
                                 </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Vigencia hasta</label>
-                                    <input type="date" class="col-sm-12 form-control mt-1 textBox" disabled>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>
+                <!--Costeo Oferta-->
+                <div class="row mt-1" *ngIf="respu.codigo == '3' && respu.registro > 0">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+                        <ngb-panel title="Costeo Oferta" id="config-panel-three">
+                            <ng-template ngbPanelContent>
+                                <div class="br row justify-content-center">
+                                    <table class="col-sm-10 TableAgro">
+                                        <tr>
+                                            <th>Concepto</th>
+                                            <th>Tipo Valor</th>
+                                            <th>Valor</th>
+                                            <th>Eliminar</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Lavada</td>
+                                            <td>Unitario</td>
+                                            <td>100.000.00</td>
+                                            <td>
+                                                <button class="SinEstilo">
+                                                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Cerrar.png">
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
-                            </div>
-                            <div class="row br">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Fecha entrega</label>
-                                    <input type="date" class="col-sm-12 form-control mt-1 textBox" disabled>
+                                <div class="row justify-content-center br">
+                                    <div class="col-sm-3"><label class="Llave">Valor total costeo:&nbsp;</label><label>$
+                                            200.000.00</label>
+                                    </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Fecha recogida</label>
-                                    <input type="date" disabled class="col-sm-12 form-control mt-1 textBox" disabled>
+                                <hr>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>
+                <!--Valoracion-->
+                <div class="row mt-1" *ngIf="respu.codigo == '4' && respu.registro > 0">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+                        <ngb-panel title="Definición vigencia oferta" id="config-panel-three">
+                            <ng-template ngbPanelContent>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Vigencia desde</label>
+                                        <input type="date" class="col-sm-12 form-control mt-1 textBox" disabled>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Vigencia hasta</label>
+                                        <input type="date" class="col-sm-12 form-control mt-1 textBox" disabled>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row br">
-                                <div class="col-sm-12">
-                                    <label class="col-sm-12 Llave">Observaciones</label>
-                                    <textarea class="col-sm-12 form-control mt-1 textArea" cols="30" rows="3"
-                                        disabled></textarea>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Fecha entrega</label>
+                                        <input type="date" class="col-sm-12 form-control mt-1 textBox" disabled>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Fecha recogida</label>
+                                        <input type="date" disabled class="col-sm-12 form-control mt-1 textBox"
+                                            disabled>
+                                    </div>
                                 </div>
-                            </div>
-                        </ng-template>
-                    </ngb-panel>
-                </ngb-accordion>
-            </div>
-
-
-            <!--Definicion Ofertas-->
-            <div class="row mt-5">
-                <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
-                    <!--Compra individual-->
-                    <ngb-panel title="Compra individual" id="config-panel-three">
-                        <ng-template ngbPanelContent>
-                            <div class="row br">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave mb-1">Tipo comisión</label>
-                                    <input mask="separator" thousandSeparator="." type="text"
-                                        class="col-sm-12 form-control mt-1 textBox">
+                                <div class="row br">
+                                    <div class="col-sm-12">
+                                        <label class="col-sm-12 Llave">Observaciones</label>
+                                        <textarea class="col-sm-12 form-control mt-1 textArea" cols="30" rows="3"
+                                            disabled></textarea>
+                                    </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
-                                    <input mask="separator" thousandSeparator="." type="text"
-                                        class="col-sm-12 form-control mt-1 textBox" min="1" max="100">
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Valor comisión fija</label>
-                                    <input mask="separator" thousandSeparator="." type="text"
-                                        class="col-sm-12 form-control mt-1 textBox">
-                                </div>
-                            </div>
-                            <div class="row br">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Minimo unidades</label>
-                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Maximo unidades</label>
-                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
-                                </div>
-                            </div>
-                            <div class="row br">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Valor domicilio</label>
-                                    <input mask="separator" thousandSeparator="." type="text"
-                                        class="col-sm-12 form-control mt-1 textBox">
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Precio final (No incluye valor domicilio)</label>
-                                    <input type="text" class="col-sm-12 form-control mt-1 textBox"
-                                        value="{{100000 | currency}}" disabled="true">
-                                </div>
-                            </div>
-                        </ng-template>
-                    </ngb-panel>
-                    <!--Compra grupal-->
-                    <ngb-panel title="Compra grupal" id="config-panel-foor">
-                        <ng-template ngbPanelContent>
-                            <div class="row br">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave mb-1">Tipo comisión</label>
-                                    <input type="text" class="col-sm-12 form-control mt-1 textBox" disabled="true">
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
-                                    <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100">
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Valor comisión fija</label>
-                                    <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox">
-                                </div>
-                            </div>
-                            <div class="row br">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Minimo unidades lider</label>
-                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Maximo unidades lider</label>
-                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
-                                </div>
-                            </div>
-                            <div class="row br">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Minimo unidades participante</label>
-                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Maximo unidades participante</label>
-                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
-                                </div>
-                            </div>
-                            <div class="row br">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Valor domicilio</label>
-                                    <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox">
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Porcentaje descuento lider</label>
-                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
-                                </div>
-                            </div>
-                            <div class="row br">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Cantidad de grupos</label>
-                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Numero minimo de personas por grupo</label>
-                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
-                                </div>
-                            </div>
-                            <div class="row br">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Cantidad de compras individuales disponibles</label>
-                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
-                                </div>
-                            </div>
-                            <div class="row br">
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Precio arranque lider</label>
-                                    <input type="text" class="col-sm-12 form-control mt-1 textBox" value="{{100000 | currency}}" disabled="true">
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="col-sm-12 Llave">Precio final participante</label>
-                                    <input type="text" class="col-sm-12 form-control mt-1 textBox" value="{{200000 | currency}}" disabled="true">
-                                </div>
-                            </div>
-                        </ng-template>
-                    </ngb-panel>
-                </ngb-accordion>
-            </div>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>
 
 
-            <!--Adicionales-->
-            <div class="row mt-1">
-                <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
-                    <ngb-panel title="Adicionales" id="config-panel-three">
-                        <ng-template ngbPanelContent>
-                            <div class="row justify-content-center br">
-                                <table class="col-sm-12 TableAgro">
-                                    <tr>
-                                        <th>Descripción</th>
-                                        <th>Valor unitario</th>
-                                        <th>Tipo</th>
-                                        <th>Unidades para oferta</th>
-                                        <th>Maximo unidades por compra</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Prueba para validar la informacion</td>
-                                        <td>$10,000.00</td>
-                                        <td>Característica sobre el producto</td>
-                                        <td>200</td>
-                                        <td>1</td>                          
-                                        <td>
-                                            <button class="SinEstilo m-1" title="Imagen amparado">
-                                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png">
-                                            </button>
-                                        </td>                          
-                                    </tr>
-                                    <tr>
-                                        <td colspan="6">Okay</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </ng-template>
-                    </ngb-panel>
-                </ngb-accordion>
+                <!--Definicion Ofertas-->
+                <div class="row mt-5"  *ngIf="respu.codigo == '5' && respu.registro > 0">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+                        <!--Compra individual-->
+                        <ngb-panel title="Compra individual" id="config-panel-three">
+                            <ng-template ngbPanelContent>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave mb-1">Tipo comisión</label>
+                                        <input mask="separator" thousandSeparator="." type="text"
+                                            class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
+                                        <input mask="separator" thousandSeparator="." type="text"
+                                            class="col-sm-12 form-control mt-1 textBox" min="1" max="100">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Valor comisión fija</label>
+                                        <input mask="separator" thousandSeparator="." type="text"
+                                            class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                </div>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Minimo unidades</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Maximo unidades</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                </div>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Valor domicilio</label>
+                                        <input mask="separator" thousandSeparator="." type="text"
+                                            class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Precio final (No incluye valor domicilio)</label>
+                                        <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                            value="{{100000 | currency}}" disabled="true">
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+                        <!--Compra grupal-->
+                        <ngb-panel title="Compra grupal" id="config-panel-foor">
+                            <ng-template ngbPanelContent>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave mb-1">Tipo comisión</label>
+                                        <input type="text" class="col-sm-12 form-control mt-1 textBox" disabled="true">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1"
+                                            max="100">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Valor comisión fija</label>
+                                        <input mask="separator" thousandSeparator="." type="text"
+                                            class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                </div>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Minimo unidades lider</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Maximo unidades lider</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                </div>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Minimo unidades participante</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Maximo unidades participante</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                </div>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Valor domicilio</label>
+                                        <input mask="separator" thousandSeparator="." type="text"
+                                            class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Porcentaje descuento lider</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                </div>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Cantidad de grupos</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Numero minimo de personas por grupo</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                </div>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Cantidad de compras individuales
+                                            disponibles</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                </div>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Precio arranque lider</label>
+                                        <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                            value="{{100000 | currency}}" disabled="true">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Precio final participante</label>
+                                        <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                            value="{{200000 | currency}}" disabled="true">
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>
+
+
+                <!--Adicionales-->
+                <div class="row mt-1" *ngIf="respu.codigo == '5' && respu.registro > 0">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+                        <ngb-panel title="Adicionales" id="config-panel-three">
+                            <ng-template ngbPanelContent>
+                                <div class="row justify-content-center br">
+                                    <table class="col-sm-12 TableAgro">
+                                        <tr>
+                                            <th>Descripción</th>
+                                            <th>Valor unitario</th>
+                                            <th>Tipo</th>
+                                            <th>Unidades para oferta</th>
+                                            <th>Maximo unidades por compra</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                        <tr>
+                                            <td>Prueba para validar la informacion</td>
+                                            <td>$10,000.00</td>
+                                            <td>Característica sobre el producto</td>
+                                            <td>200</td>
+                                            <td>1</td>
+                                            <td>
+                                                <button class="SinEstilo m-1" title="Imagen amparado">
+                                                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png">
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="6">Okay</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>
             </div>
         </div>
 
