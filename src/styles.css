@@ -153,12 +153,14 @@ th {
     text-align: center;
     background-color: #397c97;
     color: white;
+    font-size: small;
 }
 
 .TableAgro td {
     padding-top: 6px;
     padding-bottom: 6px;
     text-align: center;
+    font-size: small;
 }
 
 .textBox {
@@ -166,6 +168,7 @@ th {
     border-radius: 1px;
     height: 40px;
     box-shadow: 0px 1px #adadad;
+    font-size: small;
 }
 
 .textArea {
