@@ -25,17 +25,7 @@
                 <ng-template #templateVacio let-SinRegistro>
                     <label for="">Sin registros</label>
                 </ng-template>
-            </div>
-            <!-- <div class="col-sm-4">
-                <ng-autocomplete [disabled]="ValidaNomFil" [data]="DataTEvaluacion" [initialValue]="DataTEvaluacion[0]" [searchKeyword]="keywordE" placeholder="Tipo de evaluación" (selected)='selectTipoEvaluacion($event)' [itemTemplate]="templateResC" [notFoundTemplate]="templateVacio" [(ngModel)]="CodEva">
-                </ng-autocomplete>
-                <ng-template #templateResC let-itemC>
-                    <a [innerHTML]="itemC.nombre"></a>
-                </ng-template>
-                <ng-template #templateVacio let-SinRegistro>
-                    <label for="">Sin registros</label>
-                </ng-template>
-            </div> -->
+            </div>           
         </div>
         <div class="row br justify-content-center">
             <div class="col-sm-3 col-6">
@@ -71,13 +61,25 @@
                         <label for="">Sin registros</label>
                     </ng-template>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-3">
+                    <ng-autocomplete [data]="DataSegmento" [searchKeyword]="keywordSeg" placeholder="Segmento"
+                        (inputCleared)="LimpiaTipopre()" (selected)='selectTipoSegmento($event)'
+                        [itemTemplate]="templateSeg" [notFoundTemplate]="templateVacio" [(ngModel)]="TSegmento">
+                    </ng-autocomplete>
+                    <ng-template #templateSeg let-item>
+                        <a [innerHTML]="item.segmento"></a>
+                    </ng-template>
+                    <ng-template #templateVacio let-SinRegistro>
+                        <label for="">Sin registros</label>
+                    </ng-template>
+                </div>
+                <div class="col-sm-3">
                     <input type="text" placeholder="Titulo pregunta" [(ngModel)]="TituloForm"
                         class="form-control col-sm-12 textBox">
                 </div>
-                <div class="col-sm-4">
-                    <input type="text" placeholder="Respuestas pregunta (Separar por comas)"
-                        [(ngModel)]="RespuestasForm" [disabled]="ValidaTipo" class="form-control col-sm-12 textBox">
+                <div class="col-sm-3">
+                    <input type="text" placeholder="Respuestas (Separar por comas)" [(ngModel)]="RespuestasForm"
+                        [disabled]="ValidaTipo" class="form-control col-sm-12 textBox">
                 </div>
             </div>
             <div class="row br justify-content-center">
@@ -96,6 +98,7 @@
                     <tr>
                         <th>Orden</th>
                         <th>Tipo pregunta</th>
+                        <th>Segmento</th>
                         <th>Titulo pregunta</th>
                         <th>Posibles respuestas</th>
                         <th>Origen</th>
@@ -104,22 +107,23 @@
                     <tr *ngFor="let pregunta of PreguntasOferta; let i = index" cdkDrag>
                         <td>{{i+1}}</td>
                         <td>{{pregunta.NOM_TPO_PRGNTA}}</td>
+                        <td>{{pregunta.tipo_segmento}}</td>
                         <td>{{pregunta.TITULO_PREGUNTA_OFR}}</td>
                         <td>{{pregunta.opciones_seleccion=='' || pregunta.opciones_seleccion==null ? 'No aplica' :
                             pregunta.opciones_seleccion}}</td>
                         <td>{{pregunta.origen}}</td>
                         <td>
-                            <button class="SinEstilo" title="Eliminar pregunta" (click)="EliminaPregunta(pregunta)">
+                            <button class="SinEstilo" title="Eliminar pregunta" (click)="EliminaPregunta(pregunta, ModalRespuesta)">
                                 <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
                             </button>
                         </td>
                     </tr>
                     <tr *ngIf="ValidaConsulta=='0'">
-                        <td colspan="4">No se encuentran preguntas registradas para esta oferta</td>
+                        <td colspan="6">No se encuentran preguntas registradas para esta oferta</td>
                     </tr>
                 </table>
             </div>
-            <br>
+            <br>          
         </div>
     </div>
     <div class="row br" *ngIf="ValidaAdministra=='0'">
@@ -141,13 +145,25 @@
                         <label for="">Sin registros</label>
                     </ng-template>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-3">
+                    <ng-autocomplete [data]="DataSegmento" [searchKeyword]="keywordSeg" placeholder="Segmento"
+                        (inputCleared)="LimpiaTipopre()" (selected)='selectTipoSegmento($event)'
+                        [itemTemplate]="templateSeg" [notFoundTemplate]="templateVacio" [(ngModel)]="TSegmento">
+                    </ng-autocomplete>
+                    <ng-template #templateSeg let-item>
+                        <a [innerHTML]="item.segmento"></a>
+                    </ng-template>
+                    <ng-template #templateVacio let-SinRegistro>
+                        <label for="">Sin registros</label>
+                    </ng-template>
+                </div>
+                <div class="col-sm-3">
                     <input type="text" placeholder="Titulo pregunta" [(ngModel)]="TituloForm"
                         class="form-control col-sm-12 textBox">
                 </div>
-                <div class="col-sm-4">
-                    <input type="text" placeholder="Respuestas pregunta (Separar por comas)"
-                        [(ngModel)]="RespuestasForm" [disabled]="ValidaTipo" class="form-control col-sm-12 textBox">
+                <div class="col-sm-3">
+                    <input type="text" placeholder="Respuestas (Separar por comas)" [(ngModel)]="RespuestasForm"
+                        [disabled]="ValidaTipo" class="form-control col-sm-12 textBox">
                 </div>
             </div>
             <div class="row br justify-content-center">
@@ -166,6 +182,7 @@
                     <tr>
                         <th>Orden</th>
                         <th>Tipo pregunta</th>
+                        <th>Segmento</th>
                         <th>Titulo pregunta</th>
                         <th>Posibles respuestas</th>
                         <th>Acciones</th>
@@ -173,17 +190,18 @@
                     <tr *ngFor="let pregunta of PreguntasOferta; let i = index" cdkDrag>
                         <td>{{i+1}}</td>
                         <td>{{pregunta.NOM_TPO_PRGNTA}}</td>
+                        <td>{{pregunta.tipo_segmento}}</td>
                         <td>{{pregunta.TITULO_PREGUNTA_OFR}}</td>
                         <td>{{pregunta.opciones_seleccion=='' || pregunta.opciones_seleccion==null ? 'No aplica' :
                             pregunta.opciones_seleccion}}</td>
                         <td>
-                            <button class="SinEstilo" title="Eliminar pregunta" (click)="EliminaPregunta(pregunta)">
+                            <button class="SinEstilo" title="Eliminar pregunta" (click)="EliminaPregunta(pregunta, ModalRespuesta)">
                                 <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
                             </button>
                         </td>
                     </tr>
                     <tr *ngIf="ValidaConsulta=='0'">
-                        <td colspan="4">No se encuentran preguntas registradas</td>
+                        <td colspan="5">No se encuentran preguntas registradas</td>
                     </tr>
                 </table>
             </div>
@@ -191,5 +209,21 @@
         </div>
     </div>
     <br>
-
 </div>
+<ng-template #ModalRespuesta let-modal>
+    <div class="modal-header">
+        <h1>Respuesta</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">{{Respuesta}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>

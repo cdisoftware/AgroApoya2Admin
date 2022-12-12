@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { EvalsatisfaccionService } from 'src/app/core/evalsatisfaccion.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
@@ -28,10 +29,15 @@ export class EvaluacionofertaComponent implements OnInit {
   ValidaAdministra: string;
   DataTEvaluacion: any = [];
   keywordE: string = 'nombre';
+  keywordSeg: string = 'segmento';
   ValidaNomFil: boolean = true;
   ValidaDetalle: string;
+  TSegmento: string;
+  DataSegmento: { id: string; segmento: string; }[];
+  Respuesta: any;
+  SessionSegmento: any;
 
-  constructor(private evaluacionservices: EvalsatisfaccionService) { }
+  constructor(private evaluacionservices: EvalsatisfaccionService, private modalservices: NgbModal) { }
 
   ngOnInit(): void {
     this.DataTEvaluacion = [
@@ -42,6 +48,20 @@ export class EvaluacionofertaComponent implements OnInit {
       {
         "id": "2",
         "nombre": "Post compra"
+      }
+    ]
+    this.DataSegmento = [
+      {
+        "id": "1",
+        "segmento": "Transportador"
+      },
+      {
+        "id": "2",
+        "segmento": "Plataforma"
+      },
+      {
+        "id": "3",
+        "segmento": "Productor"
       }
     ]
     const input = document.getElementById('EvaDefect') as HTMLInputElement;
@@ -76,7 +96,7 @@ export class EvaluacionofertaComponent implements OnInit {
 
   ConsultaOfertas() {
     this.evaluacionservices.ConsultaOfertas('4', '0', '0', '0').subscribe(Resultado => {
-      console.log(Resultado)
+      //console.log(Resultado)
       this.DataOfertas = Resultado;
       this.keyword = 'Producto';
     })
@@ -106,10 +126,6 @@ export class EvaluacionofertaComponent implements OnInit {
 
   }
 
-  selectTipoEvaluacion(oferta: any) {
-
-  }
-
   ConsultaPreguntasOferta() {
     if (this.ValidaAdministra == '0') {
       const BodyConsulta = {
@@ -117,9 +133,9 @@ export class EvaluacionofertaComponent implements OnInit {
         ID_SCTOR_OFRTA: "0",
         ID_PRGNTA_OFR: 0
       }
-      console.log(BodyConsulta)
+      //console.log(BodyConsulta)
       this.evaluacionservices.ConsultaPreguntasOferta('2', BodyConsulta).subscribe(ResultConst => {
-        console.log(ResultConst)
+        //console.log(ResultConst)
         if (ResultConst.length > 0) {
           this.PreguntasOferta = ResultConst;
           this.ValidaConsulta = '1';
@@ -137,7 +153,7 @@ export class EvaluacionofertaComponent implements OnInit {
         ID_PRGNTA_OFR: 0
       }
       this.evaluacionservices.ConsultaPreguntasOferta('1', BodyConsulta).subscribe(ResultConst => {
-        console.log(ResultConst)
+        //console.log(ResultConst)
         if (ResultConst.length > 0) {
           this.PreguntasOferta = ResultConst;
           this.ValidaConsulta = '1';
@@ -161,7 +177,8 @@ export class EvaluacionofertaComponent implements OnInit {
         CD_TPO_PRGNTA: this.SessionTipoPre,
         TTLO_PRGNTA: this.TituloForm,
         OPCIONES_PRGNTA: this.RespuestasForm,
-        ORIGEN: 2
+        ORIGEN: 2,
+        CD_TPO_SEGMENTO: this.SessionSegmento
       }
     }
     else if (this.ValidaAdministra == '1') {
@@ -173,51 +190,53 @@ export class EvaluacionofertaComponent implements OnInit {
         CD_TPO_PRGNTA: this.SessionTipoPre,
         TTLO_PRGNTA: this.TituloForm,
         OPCIONES_PRGNTA: this.RespuestasForm,
-        ORIGEN: 1
+        ORIGEN: 1,
+        CD_TPO_SEGMENTO: this.SessionSegmento
       }
     }
-    console.log(BodyInsert)
+    //console.log(BodyInsert)
     this.evaluacionservices.ModificacionPregunta('3', BodyInsert).subscribe(ResultInsert => {
-      console.log(ResultInsert)
+      //console.log(ResultInsert)
       this.ConsultaPreguntasOferta();
       this.LimpiaTipopre();
     })
   }
 
-  EliminaPregunta(pregunta: any) {
+  EliminaPregunta(pregunta: any, modalmensaje: any) {
+    var BodyDelete: any;
     if (this.ValidaAdministra == '0') {
-      //bandera 4, origen 2, cnsctvo sector 0
-      const BodyDelete = {
+      BodyDelete = {
         ID_PRGNTA_OFR: pregunta.ID_PRGNTA_OFR,
         CD_CNSCTVO: "0",
         ID_SCTOR_OFRTA: "0",
-        CD_TPO_PRGNTA: pregunta.CD_TPO_PRGNTA,
-        TTLO_PRGNTA: pregunta.TITULO_PREGUNTA_OFR,
-        OPCIONES_PRGNTA: pregunta.opciones_seleccion,
-        ORIGEN: 2
+        CD_TPO_PRGNTA: "0",
+        TTLO_PRGNTA: "0",
+        OPCIONES_PRGNTA: "0",
+        ORIGEN: 2,
+        CD_TPO_SEGMENTO: "0"
       }
-      console.log(BodyDelete)
-      this.evaluacionservices.ModificacionPregunta('4', BodyDelete).subscribe(ResultInsert => {
-        console.log(ResultInsert)
-        this.ConsultaPreguntasOferta();
-      })
+      //console.log(BodyDelete)      
     }
     else if (this.ValidaAdministra == '1') {
-      const BodyDelete = {
+      BodyDelete = {
         ID_PRGNTA_OFR: pregunta.ID_PRGNTA_OFR,
-        CD_CNSCTVO: pregunta.CD_CNSCTVO,
-        ID_SCTOR_OFRTA: pregunta.ID_SCTOR_OFRTA,
-        CD_TPO_PRGNTA: pregunta.CD_TPO_PRGNTA,
-        TTLO_PRGNTA: pregunta.TITULO_PREGUNTA_OFR,
-        OPCIONES_PRGNTA: pregunta.opciones_seleccion,
-        ORIGEN: 1
+        CD_CNSCTVO: "0",
+        ID_SCTOR_OFRTA: "0",
+        CD_TPO_PRGNTA: "0",
+        TTLO_PRGNTA: "0",
+        OPCIONES_PRGNTA: "0",
+        ORIGEN: 1,
+        CD_TPO_SEGMENTO: "0"
       }
-      console.log(BodyDelete)
-      this.evaluacionservices.ModificacionPregunta('4', BodyDelete).subscribe(ResultInsert => {
-        console.log(ResultInsert)
-        this.ConsultaPreguntasOferta();
-      })
+      //console.log(BodyDelete)
     }
+    this.evaluacionservices.ModificacionPregunta('4', BodyDelete).subscribe(ResultInsert => {
+      //console.log(ResultInsert)
+      var arrayres = ResultInsert.split('|')
+      this.Respuesta = arrayres[1];
+      this.modalservices.open(modalmensaje)
+      this.ConsultaPreguntasOferta();
+    })
   }
 
   selectTipoPregunta(pregunta: any) {
@@ -236,6 +255,12 @@ export class EvaluacionofertaComponent implements OnInit {
     this.TituloForm = '';
     this.RespuestasForm = '';
     this.TPregunta = '';
+    this.TSegmento = '';
+  }
+
+  selectTipoSegmento(segmento:any){
+    //console.log(segmento)
+    this.SessionSegmento=segmento.id;
   }
 
   //William
