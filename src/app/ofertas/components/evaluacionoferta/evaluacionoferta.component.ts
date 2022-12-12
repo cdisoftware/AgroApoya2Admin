@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { EvalsatisfaccionService } from 'src/app/core/evalsatisfaccion.service';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-evaluacionoferta',
@@ -237,4 +238,24 @@ export class EvaluacionofertaComponent implements OnInit {
     this.TPregunta = '';
   }
 
+  //William
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.PreguntasOferta, event.previousIndex, event.currentIndex);
+    var orden: string = '';
+    for (var i = 0; i < this.PreguntasOferta.length; i++) {
+      if(i + 1 == this.PreguntasOferta.length){
+        orden = orden + this.PreguntasOferta[i].ID_PRGNTA_OFR + '-' + (i + 1);
+      }else{
+        orden = orden + this.PreguntasOferta[i].ID_PRGNTA_OFR + '-' + (i + 1) + '|';
+      }
+    }
+    //ModificaOrden
+    console.log(orden)
+    const BodyOrden = {
+      Texto: orden
+    };
+    this.evaluacionservices.ModificaOrden('1', BodyOrden).subscribe(ResultInsert => {
+      console.log(ResultInsert)
+    })
+  }
 }
