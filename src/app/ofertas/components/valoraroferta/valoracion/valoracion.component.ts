@@ -181,7 +181,7 @@ export class ValoracionComponent implements OnInit {
   GuardaTopping(templateMensaje: any) {
     this.Respuesta = ''
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
-    if (this.DesTopp == '' || this.VlrUniTopp == '' || this.UnidMaxTopp == '' || this.SessionTipoTopp == '0' || this.UnidOferta == '') {
+    if (this.DesTopp == '' || this.VlrUniTopp == '' || this.UnidMaxTopp == '' || this.SessionTipoTopp == '0' || this.UnidOferta == '' || this.imagenesAdicionales == '') {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
@@ -212,6 +212,12 @@ export class ValoracionComponent implements OnInit {
         {
           campo: 'UnidOferta',
           campof: 'Unidades para la oferta',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'imagenesAdicionales',
+          campof: 'Imagen',
           class: '',
           imagen: ''
         }
@@ -267,6 +273,16 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
+        else if (this.ArrayCamposValida[i].campo == 'imagenesAdicionales') {
+          if (this.imagenesAdicionales == '' || this.imagenesAdicionales == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
+        }
       }
     }
     else {
@@ -295,6 +311,7 @@ export class ValoracionComponent implements OnInit {
         this.ValidaTipoTopp = false;
       })
     }
+    this.imagenesAdicionales = '';
   }
 
   ModificaTopping(bandera: string, topping: any) {
@@ -1547,7 +1564,6 @@ export class ValoracionComponent implements OnInit {
         }
       );
     }
-
   }
 
   visualizaImagenTopping(ModalImagen: any, imagenesAdicional: string) {

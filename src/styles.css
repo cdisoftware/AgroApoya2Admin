@@ -4,7 +4,7 @@ h1 {
     font-size: x-large;
 }
 
-.textblue{
+.textblue {
     color: #397c97;
 }
 
@@ -137,6 +137,10 @@ body {
     padding: 1px;
 }
 
+table{
+    table-layout: fixed;
+  }
+
 .TableAgro td,
 th {
     border: 1px solid #ddd;
@@ -210,7 +214,7 @@ th {
     visibility: hidden !important;
 }
 
-.Linktxt{
+.Linktxt {
     cursor: pointer;
     color: #397c97 !important;
 }
