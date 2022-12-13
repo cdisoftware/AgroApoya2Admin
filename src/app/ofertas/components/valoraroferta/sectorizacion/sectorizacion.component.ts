@@ -49,6 +49,7 @@ export class SectorizacionComponent implements OnInit {
   response: HTMLPreElement;
   Sector: string;
   ValidaMapSector: string = '0';
+  SessionNombreSector: any;
 
   constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService) { }
 
@@ -222,12 +223,13 @@ export class SectorizacionComponent implements OnInit {
       }
       this.sectoresservices.InsertarSector('3', BodyInsert).subscribe(ResultInsert => {
         const arrayRes = ResultInsert.split('|')
+        console.log(arrayRes)
         this.SessionSecCreado = arrayRes[0];
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
         this.Respuesta = arrayRes[1];
         this.ConsultaCiudadOferta();
         if (this.SessionSecCreado != undefined) {
-          //console.log('entra: ' + this.SessionSecCreado)
+          console.log('Entra')          
           this.ValidaInsertSec = '1';
           this.CreaMapa();
         }
@@ -243,6 +245,7 @@ export class SectorizacionComponent implements OnInit {
   }
 
   CerrModalMap(templateRespuesta: any) {
+    this.ConsultaCiudadOferta();
     this.ConsultaCoordenadas();
     if (this.DataCoor.length == 2) {
       this.SessionSecCreado = '0';
@@ -357,6 +360,7 @@ export class SectorizacionComponent implements OnInit {
     this.VlrFle = '';
     this.SectSelec = item.SCTOR_OFRTA;
     this.ValidaMapSector = '1';
+    this.SessionNombreSector=item.DSCRPCION_SCTOR
     this.modalService.open(modalmapa, { size: 'lg' });
     var arraycoordenadas = item.coordenadas.split('|')
     this.ConsultaMapaSector(arraycoordenadas);
@@ -378,7 +382,7 @@ export class SectorizacionComponent implements OnInit {
         }
       );
       for (var i = 0; i < coordenadas.length; i++) {
-        console.log(coordenadas[i])
+        //console.log(coordenadas[i])
         this.geocoder.geocode({ address: coordenadas[i] }).then((resultcoord) => {
           const { results } = resultcoord;
           this.AgregarMarcadorSector(results[0].geometry.location, this.map);
