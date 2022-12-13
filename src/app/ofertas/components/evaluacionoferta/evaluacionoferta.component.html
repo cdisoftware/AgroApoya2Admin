@@ -93,6 +93,9 @@
             <div class="row br justify-content-center">
                 <h2 class="TituloDetalle">Preguntas registradas</h2>
             </div>
+            <div class="row br justify-content-center">
+                <h6 class="TituloDetalle">Puedes arrastrar las preguntas para así afectar el orden de la calificación</h6>
+            </div>
             <div class="br row justify-content-center">
                 <table class="col-sm-12 TableAgro" cdkDropList (cdkDropListDropped)="drop($event)">
                     <tr>
@@ -104,7 +107,7 @@
                         <th>Origen</th>
                         <th>Acciones</th>
                     </tr>
-                    <tr *ngFor="let pregunta of PreguntasOferta; let i = index" cdkDrag>
+                    <tr class="click" *ngFor="let pregunta of PreguntasOferta; let i = index" cdkDrag>
                         <td>{{i+1}}</td>
                         <td>{{pregunta.NOM_TPO_PRGNTA}}</td>
                         <td>{{pregunta.tipo_segmento}}</td>
@@ -177,6 +180,9 @@
             <div class="row br justify-content-center">
                 <h2 class="TituloDetalle">Preguntas registradas</h2>
             </div>
+            <div class="row br justify-content-center">
+                <h6 class="TituloDetalle">Puedes arrastrar las preguntas para así afectar el orden de la calificación</h6>
+            </div>
             <div class="br row justify-content-center">
                 <table class="col-sm-12 TableAgro" cdkDropList (cdkDropListDropped)="drop($event)">
                     <tr>
@@ -187,7 +193,7 @@
                         <th>Posibles respuestas</th>
                         <th>Acciones</th>
                     </tr>
-                    <tr *ngFor="let pregunta of PreguntasOferta; let i = index" cdkDrag>
+                    <tr class="click" *ngFor="let pregunta of PreguntasOferta; let i = index" cdkDrag>
                         <td>{{i+1}}</td>
                         <td>{{pregunta.NOM_TPO_PRGNTA}}</td>
                         <td>{{pregunta.tipo_segmento}}</td>
