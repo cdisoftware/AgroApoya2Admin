@@ -98,6 +98,7 @@ export class SectorizacionComponent implements OnInit {
   }
 
   ConsultaDetalleOferta() {
+    console.log('1', this.SessionOferta)
     this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
       //console.log(ResultConsu)
       this.DataOferta = ResultConsu;
@@ -107,7 +108,9 @@ export class SectorizacionComponent implements OnInit {
   }
 
   ConsultaCiudadOferta() {
+    console.log('1', this.SessionOferta)
     this.sectoresservices.ConsultaCiudadOferta('1', this.SessionOferta).subscribe(ResultadoCons => {
+      console.log(ResultadoCons)
       this.SessionCiudad = ResultadoCons[0].Cuidad;
       this.SessionCDMunicipio = ResultadoCons[0].CD_MNCPIO;
       this.SessionCDRegion = ResultadoCons[0].CD_RGION;
