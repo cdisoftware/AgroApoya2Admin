@@ -63,8 +63,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AutocompleteLibModule,
     SidebarModule.forRoot(),
     AngularEditorModule,
-    GoogleMapsModule,
-    
+    GoogleMapsModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

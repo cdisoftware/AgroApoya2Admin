@@ -301,7 +301,7 @@
                 <div class="col-sm-12">
                     <label class="col-sm-12 Llave">Ciudad destino oferta</label>
                     <select name="ACiudad" id="Aciudad" #aciudad class="form-control form-control-sm textBox" (change)='SelACiudad(aciudad.value)'>
-                        <option value="1">Ciudad destino</option>
+                        <option value="0">Ciudad destino</option>
                         <option *ngFor="let ciudad of ArrayCiudades" [value]="ciudad.CD_MNCPIO" >
                             {{ciudad.DSCRPCION}}
                         </option>

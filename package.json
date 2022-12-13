@@ -11,6 +11,7 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^14.2.0",
+    "@angular/cdk": "^13.3.9",
     "@angular/common": "^14.2.0",
     "@angular/compiler": "^14.2.0",
     "@angular/core": "^14.2.0",
@@ -30,6 +31,7 @@
     "exceljs": "^4.3.0",
     "file-saver": "^2.0.5",
     "ng": "^0.0.0",
+    "ng-drag-drop": "^5.0.0",
     "ng-sidebar": "^9.4.3",
     "ngx-cookie-service": "^14.0.1",
     "ngx-mask": "^14.2.4",

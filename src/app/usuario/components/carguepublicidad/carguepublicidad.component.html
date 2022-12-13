@@ -40,7 +40,8 @@
 <ng-template #templateAgregarModulo let-modal>
     <div class="modal-header">
         <h1 class="modal-title" id="modal-basic-title">Agregar Módulo</h1>
-        <button type="button" class="btn-close" aria-label="Close" (click)="CrearModuloCompleto(ModalRespuesta)"></button>
+        <button type="button" class="btn-close" aria-label="Close"
+            (click)="CrearModuloCompleto(ModalRespuesta)"></button>
     </div>
     <div class="modal-body">
         <div class="row br">
@@ -105,7 +106,8 @@
                     Guardar</button>
             </div>
             <div class="col-sm-3" *ngIf="auxGuardarNombreMod == '2'">
-                <button class="col-sm-12 btn btn-agro-prin" (click)="CrearModuloCompleto(ModalRespuesta)" title="Agregar Nombre Modulo">
+                <button class="col-sm-12 btn btn-agro-prin" (click)="CrearModuloCompleto(ModalRespuesta)"
+                    title="Agregar Nombre Modulo">
                     Aceptar</button>
             </div>
         </div>
