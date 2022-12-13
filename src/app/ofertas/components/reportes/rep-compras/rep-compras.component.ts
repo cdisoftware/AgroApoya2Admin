@@ -57,78 +57,78 @@ export class RepComprasComponent implements OnInit {
   selectSector(sector: any) {
     this.SectorSelec = sector.SCTOR_OFRTA;
   }
-  LimpiaSector(Sector: String){
-    this.SectorSelec = "" +Sector;
+  LimpiaSector(Sector: String) {
+    this.SectorSelec = "" + Sector;
   }
 
 
-//William
-ConsultaEstadoPago() {
-  this.serviciosoferta.ConsultaCompraPagos('2').subscribe(ResultCons => {
-    this.DataEstadoPago = ResultCons
-    this.keywordEsPago = 'descripcion';
-  })
-}
-selectEstadoPago(sector: any) {
-  this.SelectorEstPago = sector.codigo;
-}
-LimpiaEstadoPago(EsPago: String){
-  this.SelectorEstPago = "" +EsPago;
-}
+  //William
+  ConsultaEstadoPago() {
+    this.serviciosoferta.ConsultaCompraPagos('2').subscribe(ResultCons => {
+      this.DataEstadoPago = ResultCons
+      this.keywordEsPago = 'descripcion';
+    })
+  }
+  selectEstadoPago(sector: any) {
+    this.SelectorEstPago = sector.codigo.toString();
+  }
+  LimpiaEstadoPago(EsPago: String) {
+    this.SelectorEstPago = "" + EsPago;
+  }
 
 
 
 
-ConsultaEstadoCompra() {
-  this.serviciosoferta.ConsultaCompraPagos('1').subscribe(ResultCons => {
-    this.DataEstadoCompra = ResultCons
-    this.keywordEsCompra = 'descripcion';
-  })
-}
+  ConsultaEstadoCompra() {
+    this.serviciosoferta.ConsultaCompraPagos('1').subscribe(ResultCons => {
+      this.DataEstadoCompra = ResultCons
+      this.keywordEsCompra = 'descripcion';
+    })
+  }
 
-selectEstadoCompra(sector: any) {
-  this.SelectorEstComra = sector.codigo;
-}
-LimpiaEstadoCompra(EsCompra: String){
-  this.SelectorEstComra = "" +EsCompra;
-}
-////////////////////////
+  selectEstadoCompra(sector: any) {
+    this.SelectorEstComra = sector.codigo;
+  }
+  LimpiaEstadoCompra(EsCompra: String) {
+    this.SelectorEstComra = "" + EsCompra;
+  }
+  ////////////////////////
 
 
 
   BusquedaGen() {
+
     var validaofer = '0';
     var validasec = '0';
     var validaCompra = '0';
     var validaPago = '0';
-    if (this.OferFiltro == '') {
+    if (this.OferFiltro == '' || this.OferFiltro == null || this.OferFiltro == undefined) {
       validaofer = '0';
-    }
-    else {
+    } else {
       validaofer = this.OferFiltro;
     }
     if (this.SectorSelec == '') {
       validasec = '0';
-    }
-    else {
+    } else {
       validasec = this.SectorSelec;
     }
-    if(this.SelectorEstComra == ''){
+    if (this.SelectorEstComra == '') {
       validaCompra = '0';
-    }else{
+    } else {
       validaCompra = this.SelectorEstComra;
     }
-    if(this.SelectorEstPago == ''){
-      validaPago = '0';
-    }else{
+    if (this.SelectorEstPago == '') {
+      validaPago = '-1';
+    } else if (this.SelectorEstPago != '') {
+      validaPago = this.SelectorEstPago;
+    } else {
       validaPago = this.SelectorEstPago;
     }
-    this.serviciosreportes.ConsultaComprasXOfer('1', validaofer, validasec, validaCompra, validaPago).subscribe(Resultcons => {   
-      console.log(Resultcons)   
+    this.serviciosreportes.ConsultaComprasXOfer('1', validaofer, validasec, validaCompra, validaPago).subscribe(Resultcons => {
       if (Resultcons.length > 0) {
         this.ValidaConsulta = '0';
         this.ValidaDescarga = false;
-        this.DataConsulta = Resultcons;        
+        this.DataConsulta = Resultcons;
       }
       else {
         this.ValidaConsulta = '1';
@@ -152,7 +152,6 @@ LimpiaEstadoCompra(EsCompra: String){
   }
 
   DetalleCompra(compra: any, modaldetalle: any) {
-    console.log(compra)
     this.modalservices.open(modaldetalle, { size: "lg" })
     this.Filacompra = compra;
     // var arrayadici = this.Filacompra.topping.split('|')
