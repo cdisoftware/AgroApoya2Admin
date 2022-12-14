@@ -354,8 +354,7 @@ export class ValoracionComponent implements OnInit {
   }
 
   ValidaVigencias(templateMensaje: any, bandera: string) {
-    var fechaD = this.VigenDesde;
-    var fechaH = this.VigenHasta;
+    var fechaD = this.VigenDesde;    
     var fechaH = this.VigenHasta;
     var fechaR = this.SessionFechaRecogida;
     var fecha = new Date();
@@ -375,6 +374,11 @@ export class ValoracionComponent implements OnInit {
         this.VigenHasta = '';
         this.modalService.open(templateMensaje);
         this.Respuesta = 'La fecha fin de la vigencia no puede ser menor a la fecha inicio de la vigencia, favor valida tu información.';
+      }
+      else if(fechaHF < fechaf){
+        this.VigenHasta = '';
+        this.modalService.open(templateMensaje);
+        this.Respuesta = 'La fecha fin de la vigencia no puede ser menor a la fecha actual, favor valida tu información.';
       }
     }
     else if (bandera == '3') {
