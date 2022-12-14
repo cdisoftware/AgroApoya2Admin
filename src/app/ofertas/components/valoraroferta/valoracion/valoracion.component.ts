@@ -81,10 +81,10 @@ export class ValoracionComponent implements OnInit {
   DataToppings: any[];
   ValidaConsulta: string = '0';
   txtValidaCons: string = 'No se encuentran adicionales asociados a la oferta';
-  DesTopp: string;
+  DesTopp: string = '';
   VlrUniTopp: string;
   UnidMaxTopp: string;
-  SessionTipoTopp: any;
+  SessionTipoTopp: string = '';
   ValidaTipoTopp: boolean;
   keywordTipTopp: string;
   TipoTopp: string;
@@ -93,7 +93,7 @@ export class ValoracionComponent implements OnInit {
   imagenesAdicionales: string = '';
   consultaimagen: string = '';
   RutaImagenTopping: string = '';
-
+  IsEnables: boolean = false;
 
 
   constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
@@ -187,7 +187,7 @@ export class ValoracionComponent implements OnInit {
       this.ArrayCamposValida = [
         {
           campo: 'DesTopp',
-          campof: 'Descripción amparado',
+          campof: 'Descripción',
           class: '',
           imagen: ''
         },
@@ -199,19 +199,19 @@ export class ValoracionComponent implements OnInit {
         },
         {
           campo: 'SessionTipoTopp',
-          campof: 'Tipo amparado',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'UnidMaxTopp',
-          campof: 'Maxima unidades por compra',
+          campof: 'Tipo',
           class: '',
           imagen: ''
         },
         {
           campo: 'UnidOferta',
           campof: 'Unidades para la oferta',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'UnidMaxTopp',
+          campof: 'Maximo unidades por cada compra',
           class: '',
           imagen: ''
         },
@@ -288,6 +288,12 @@ export class ValoracionComponent implements OnInit {
     else {
       this.ValidaCam = '0';
       this.ArrayCamposValida = [];
+      var validaImagen = '';
+      if (this.imagenesAdicionales == '1') {
+        validaImagen = '';
+      } else {
+        validaImagen = this.imagenesAdicionales;
+      }
       const Body = {
         IdTopping: 0,
         Id_Sector: Number(this.SessionSectorSel),
@@ -297,21 +303,24 @@ export class ValoracionComponent implements OnInit {
         IdTipoTopping: Number(this.SessionTipoTopp),
         ValorUnitario: Number(this.VlrUniTopp),
         cantidadReserva: Number(this.UnidOferta),
-        imagen: this.imagenesAdicionales
+        imagen: validaImagen
       }
+      console.log(Body)
       this.serviciosvaloracion.ModificaTopping('2', Body).subscribe(ResultOper => {
         this.Respuesta = ResultOper;
         this.consultaToppingsOferta();
-        this.DesTopp = '';
-        this.VlrUniTopp = '';
-        this.UnidMaxTopp = '';
-        this.SessionTipoTopp = '0';
-        this.TipoTopp = '';
-        this.UnidOferta = '';
-        this.ValidaTipoTopp = false;
       })
+      this.DesTopp = '';
+      this.VlrUniTopp = '';
+      this.SessionTipoTopp = '0';
+      this.UnidMaxTopp = '';
+      this.TipoTopp = '';
+      this.UnidOferta = '';
+      this.ValidaTipoTopp = false;
+      this.IsEnables = false;
+      this.imagenesAdicionales = '';
     }
-    this.imagenesAdicionales = '';
+
   }
 
   ModificaTopping(bandera: string, topping: any) {
@@ -383,20 +392,23 @@ export class ValoracionComponent implements OnInit {
 
   }
 
-  IsEnables: boolean = false;
+
   selectTipTopp(item: any) {
     this.SessionTipoTopp = item.id;
-    if (item.id == '2') {
+    console.log(item)
+    if (item.id == 2) {
       this.ValidaTipoTopp = true;
       this.UnidMaxTopp = '1';
       this.UnidOferta = this.DataSectores[0].CNTDAD;
       this.IsEnables = true;
+      this.imagenesAdicionales = '1';
     }
     else {
       this.ValidaTipoTopp = false;
       this.UnidMaxTopp = '';
       this.UnidOferta = '';
       this.IsEnables = false;
+      this.imagenesAdicionales = '';
     }
   }
 
@@ -430,7 +442,6 @@ export class ValoracionComponent implements OnInit {
 
   ConsultaSectores() {
     this.serviciosvaloracion.ConsultaSectoresOferta('2', this.SessionOferta).subscribe(ResultConsulta => {
-      console.log(ResultConsulta)
       if (ResultConsulta.length > 0) {
         this.keywordSec = 'DSCRPCION_SCTOR';
         this.DataSectores = ResultConsulta;
@@ -439,9 +450,7 @@ export class ValoracionComponent implements OnInit {
   }
 
   ConsultaValoracionOferta() {
-    console.log('1', this.SessionOferta, this.SessionSectorSel)
     this.serviciosvaloracion.ConsultaValoracionOferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultCons => {
-      console.log(ResultCons)
       this.ArrayTipoOferCon = [
         {
           id: ResultCons[0].TPO_OFRTA,
@@ -1392,7 +1401,6 @@ export class ValoracionComponent implements OnInit {
         VLOR_FNAL_PRTCPNTE: this.PrecioFinPart,
         ID_SCTOR_OFRTA: this.SessionSectorSel
       }
-      console.log(Body)
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         this.Respuesta = '';
         var arreglores = ResultUpdate.split('|')
@@ -1488,7 +1496,6 @@ export class ValoracionComponent implements OnInit {
     this.serviciosvaloracion.ConsultaTipoTopping('1').subscribe(Resultcons => {
       this.DataTipotopping = Resultcons;
       this.keywordTipTopp = 'Descripcion';
-      console.log(Resultcons)
     })
   }
 
