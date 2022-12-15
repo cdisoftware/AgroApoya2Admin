@@ -190,27 +190,27 @@
             </div>
             <hr>
             <div class="row justify-content-center">
-                <div class="col-sm-2" *ngIf="ValidaBusqueda == '1'">
+                <div class="col-sm-1" *ngIf="ValidaBusqueda == '1'">
                     <button class="SinEstilo" (click)="EditaOferta(templateEditar)">
                         <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
                             title="Editar oferta">
                     </button>
                     <label>Editar</label>
                 </div>
-                <div class="col-sm-2" *ngIf="ValidaBusqueda == '1' || ValidaBusqueda == '2'">
+                <div class="col-sm-1" *ngIf="ValidaBusqueda == '1' || ValidaBusqueda == '2'">
                     <button class="SinEstilo" (click)="CerrarOferta(templateCerrar)">
                         <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Adm/Cerrar.png"
                             title="Cerrar oferta">
                     </button>
                     <label>Cerrar</label>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-1">
                     <button class="SinEstilo" disabled>
                         <img class="BtnimgTamano" src={{ImagenEstado}} title={{EstadoOferta}}>
                     </button>
                     <label>Estado</label>
                 </div>
-                <div class="col-sm-2 click" (click)="AbrirPopuPResumen(ModalResumen, oferta)">
+                <div class="col-sm-1 click" (click)="AbrirPopuPResumen(ModalResumen, oferta)">
                     <button class="SinEstilo">
                         <img class="BtnimgTamano" src={{ImagenEstado}} title={{EstadoOferta}}>
                     </button>
@@ -467,6 +467,9 @@
             <div class="row" *ngFor="let respu of ArrayResumenOferta">
                 <!--Sectorización-->
                 <div class="row br" *ngIf="respu.codigo == '1' && respu.registro > 0">
+                    <h5 class="SubTituloForm">Sectorización</h5>
+                </div>
+                <div class="row br" *ngIf="respu.codigo == '1' && respu.registro > 0">
                     <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
                         <ngb-panel title="Sectorización" id="config-panel-three">
                             <ng-template ngbPanelContent>
@@ -482,9 +485,6 @@
                                             <td>Prueba</td>
                                             <td>Prueba</td>
                                         </tr>
-                                        <tr>
-                                            <td colspan="3">Ok</td>
-                                        </tr>
                                     </table>
                                 </div>
                             </ng-template>
@@ -492,6 +492,9 @@
                     </ngb-accordion>
                 </div>
                 <!--Asignación transportista-->
+                <div class="row br" *ngIf="respu.codigo == '2' && respu.registro > 0">
+                    <h5 class="SubTituloForm">Asignación transportista</h5>
+                </div>
                 <div class="row mt-1" *ngIf="respu.codigo == '2' && respu.registro > 0">
                     <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
                         <ngb-panel title="Asignación transportista" id="config-panel-three">
@@ -511,14 +514,11 @@
                                             <td>Suba</td>
                                             <td>200</td>
                                             <td>50 KG</td>
-                                            <td class="Linktxt" title="Información transportista">Favio Enrique Bernal Gil
+                                            <td>Favio Enrique Bernal Gil
                                             </td>
                                             <td>50.000.00</td>
                                             <td>80.000.00</td>
                                             <td>Aceptado</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="7">Ok</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -527,6 +527,9 @@
                     </ngb-accordion>
                 </div>
                 <!--Costeo Oferta-->
+                <div class="row br" *ngIf="respu.codigo == '3' && respu.registro > 0">
+                    <h5 class="SubTituloForm">Costeo</h5>
+                </div>
                 <div class="row mt-1" *ngIf="respu.codigo == '3' && respu.registro > 0">
                     <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
                         <ngb-panel title="Costeo Oferta" id="config-panel-three">
@@ -537,17 +540,11 @@
                                             <th>Concepto</th>
                                             <th>Tipo Valor</th>
                                             <th>Valor</th>
-                                            <th>Eliminar</th>
                                         </tr>
                                         <tr>
                                             <td>Lavada</td>
                                             <td>Unitario</td>
                                             <td>100.000.00</td>
-                                            <td>
-                                                <button class="SinEstilo">
-                                                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Cerrar.png">
-                                                </button>
-                                            </td>
                                         </tr>
                                     </table>
                                 </div>
@@ -561,11 +558,39 @@
                         </ngb-panel>
                     </ngb-accordion>
                 </div>
+
                 <!--Valoracion-->
+                <div class="row br mt-5" *ngIf="respu.codigo == '4' && respu.registro > 0">
+                    <h5 class="SubTituloForm">Valoración</h5>
+                </div>
                 <div class="row mt-1" *ngIf="respu.codigo == '4' && respu.registro > 0">
                     <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
                         <ngb-panel title="Definición vigencia oferta" id="config-panel-three">
                             <ng-template ngbPanelContent>
+
+                                <div class="row mb-2">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave mb-1">Sector a valorar</label>
+                                        <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" (selected)='selectSector($event)' (inputCleared)='LimpiaSector()' placeholder="Sector" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio">
+                                        </ng-autocomplete>
+                                        <ng-template #templateSec let-item>
+                                            <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+                                        </ng-template>
+                                        <ng-template #templateVacio let-SinRegistro>
+                                            <label for="">Sin registros</label>
+                                        </ng-template>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label class="col-sm-12 Llave mb-1">Codigo sector</label>
+                                        <label class="form-control textBox">{{CodigoOferSector}}</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label class="col-sm-12 Llave mb-1">Flete negociado</label>
+                                        <label class="form-control textBox">{{VlrFletSect}}</label>
+                                    </div>
+                                </div>
+
+
                                 <div class="row br">
                                     <div class="col-sm-6">
                                         <label class="col-sm-12 Llave">Vigencia desde</label>
@@ -596,10 +621,8 @@
                         </ngb-panel>
                     </ngb-accordion>
                 </div>
-
-
                 <!--Definicion Ofertas-->
-                <div class="row mt-5" *ngIf="respu.codigo == '5' && respu.registro > 0">
+                <div class="row mt-1" *ngIf="respu.codigo == '4' && respu.registro > 0">
                     <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
                         <!--Compra individual-->
                         <ngb-panel title="Compra individual" id="config-panel-three">
@@ -718,10 +741,8 @@
                         </ngb-panel>
                     </ngb-accordion>
                 </div>
-
-
                 <!--Adicionales-->
-                <div class="row mt-1" *ngIf="respu.codigo == '5' && respu.registro > 0">
+                <div class="row mt-1" *ngIf="respu.codigo == '4' && respu.registro > 0">
                     <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
                         <ngb-panel title="Adicionales" id="config-panel-three">
                             <ng-template ngbPanelContent>
@@ -752,6 +773,153 @@
                                         </tr>
                                     </table>
                                 </div>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>
+                <!--Fin Valoracion-->
+
+
+
+
+
+                <!--Costeo Oferta-->
+                <div class="row br" *ngIf="respu.codigo == '5' && respu.registro > 0">
+                    <h5 class="SubTituloForm">Trazabilidad</h5>
+                </div>
+                <div class="row mt-1" *ngIf="respu.codigo == '5' && respu.registro > 0">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+
+                        <ngb-panel title="Costeo Oferta" id="config-panel-three">
+                            <ng-template ngbPanelContent>
+                                <div class="br row justify-content-center">
+                                    Fechas etc
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+                        <!--Compra individual-->
+
+                        <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+                            <ngb-panel title="Compra individual" id="config-panel-three">
+                                <ng-template ngbPanelContent>
+                                    <div class="row br">
+                                        <div class="col-sm-6">
+                                            <label class="col-sm-12 Llave mb-1">Tipo comisión</label>
+                                            <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
+                                            <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox" min="1" max="100">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="col-sm-12 Llave">Valor comisión fija</label>
+                                            <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox">
+                                        </div>
+                                    </div>
+                                    <div class="row br">
+                                        <div class="col-sm-6">
+                                            <label class="col-sm-12 Llave">Minimo unidades</label>
+                                            <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="col-sm-12 Llave">Maximo unidades</label>
+                                            <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                        </div>
+                                    </div>
+                                    <div class="row br">
+                                        <div class="col-sm-6">
+                                            <label class="col-sm-12 Llave">Valor domicilio</label>
+                                            <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox">
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="col-sm-12 Llave">Precio final (No incluye valor domicilio)</label>
+                                            <input type="text" class="col-sm-12 form-control mt-1 textBox" value="{{100000 | currency}}" disabled="true">
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngb-panel>
+                        </ngb-accordion>
+
+                        <!--Compra grupal-->
+                        <ngb-panel title="Costeo Oferta" id="config-panel-three">
+                            <ng-template ngbPanelContent>
+                                <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+                                    <ngb-panel title="Compra grupal" id="config-panel-foor">
+                                        <ng-template ngbPanelContent>
+                                            <div class="row br">
+                                                <div class="col-sm-6">
+                                                    <label class="col-sm-12 Llave mb-1">Tipo comisión</label>
+                                                    <input type="text" class="col-sm-12 form-control mt-1 textBox" disabled="true">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
+                                                    <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label class="col-sm-12 Llave">Valor comisión fija</label>
+                                                    <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox">
+                                                </div>
+                                            </div>
+                                            <div class="row br">
+                                                <div class="col-sm-6">
+                                                    <label class="col-sm-12 Llave">Minimo unidades lider</label>
+                                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label class="col-sm-12 Llave">Maximo unidades lider</label>
+                                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                                </div>
+                                            </div>
+                                            <div class="row br">
+                                                <div class="col-sm-6">
+                                                    <label class="col-sm-12 Llave">Minimo unidades participante</label>
+                                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label class="col-sm-12 Llave">Maximo unidades participante</label>
+                                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                                </div>
+                                            </div>
+                                            <div class="row br">
+                                                <div class="col-sm-6">
+                                                    <label class="col-sm-12 Llave">Valor domicilio</label>
+                                                    <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label class="col-sm-12 Llave">Porcentaje descuento lider</label>
+                                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                                </div>
+                                            </div>
+                                            <div class="row br">
+                                                <div class="col-sm-6">
+                                                    <label class="col-sm-12 Llave">Cantidad de grupos</label>
+                                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label class="col-sm-12 Llave">Numero minimo de personas por grupo</label>
+                                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                                </div>
+                                            </div>
+                                            <div class="row br">
+                                                <div class="col-sm-6">
+                                                    <label class="col-sm-12 Llave">Cantidad de compras individuales
+                                                        disponibles</label>
+                                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                                </div>
+                                            </div>
+                                            <div class="row br">
+                                                <div class="col-sm-6">
+                                                    <label class="col-sm-12 Llave">Precio arranque lider</label>
+                                                    <input type="text" class="col-sm-12 form-control mt-1 textBox" value="{{100000 | currency}}" disabled="true">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label class="col-sm-12 Llave">Precio final participante</label>
+                                                    <input type="text" class="col-sm-12 form-control mt-1 textBox" value="{{200000 | currency}}" disabled="true">
+                                                </div>
+                                            </div>
+                                        </ng-template>
+                                    </ngb-panel>
+                                </ngb-accordion>
                             </ng-template>
                         </ngb-panel>
                     </ngb-accordion>

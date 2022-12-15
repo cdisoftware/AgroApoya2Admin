@@ -1,3 +1,7 @@
-.click{
+.click {
     cursor: pointer;
+}
+
+.SubTituloForm {
+    text-transform: none;
 }
