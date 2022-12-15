@@ -80,7 +80,7 @@ export class BuscarofertaComponent implements OnInit {
     //lista Productos
     this.ServiciosValorar.ConsultaProductos('1').subscribe(Resultado => {
       this.ArrayProductos = Resultado;
-      console.log(this.ArrayProductos);
+      //console.log(this.ArrayProductos);
     })
 
     //lista Productor
@@ -89,13 +89,13 @@ export class BuscarofertaComponent implements OnInit {
     }
     this.ServiciosValorar.ConsultaProductor('1', '1', datosproductor).subscribe(Resultado => {
       this.ArrayProductor = Resultado;
-      console.log(this.ArrayProductor);
+      //console.log(this.ArrayProductor);
     })
 
     //ListaEstado
     this.ServiciosValorar.ConsultaEstado('1').subscribe(Resultado => {
       this.ArrayEstado = Resultado;
-      console.log(this.ArrayEstado);
+      //console.log(this.ArrayEstado);
     })
   }
 
@@ -119,8 +119,8 @@ export class BuscarofertaComponent implements OnInit {
     if (this.NoOferta != '') {
       noferta = this.NoOferta
     }
-    console.log(datosbusqueda);
-    console.log(noferta, this.IdProducto, this.IdProductor)
+    //console.log(datosbusqueda);
+    //console.log(noferta, this.IdProducto, this.IdProductor)
     this.ServiciosValorar.BusquedaOferta('2', noferta, this.IdProducto, this.IdProductor, datosbusqueda).subscribe(Resultado => {
       this.ArrayBusqueda = Resultado;
       if (Resultado.length > 0) {
@@ -184,7 +184,7 @@ export class BuscarofertaComponent implements OnInit {
       parametro2: "",
       parametro3: ""
     }
-    console.log(datosCerrar)
+    //console.log(datosCerrar)
     this.ServiciosValorar.ModificaEstadoOferta('3', datosCerrar).subscribe(Resultado => {
       var arrayrespuesta = Resultado.split('|');
       this.Respuesta = arrayrespuesta[1];
@@ -216,7 +216,7 @@ export class BuscarofertaComponent implements OnInit {
       CRCTRZCION: this.ECaracteriza,
       OBS_EDICION: "0"
     }
-    console.log(DatosEditar);
+    //console.log(DatosEditar);
     this.ServiciosValorar.EditarOfertaBusqueda('4', '0', DatosEditar).subscribe(Resultado => {
       var arrayrespuesta = Resultado.split('|');
       this.Respuesta = arrayrespuesta[1];
@@ -228,7 +228,7 @@ export class BuscarofertaComponent implements OnInit {
   }
 
   CargaBusqueda(seleccion: any) {
-    console.log(seleccion)
+    //console.log(seleccion)
     this.IdOferta = seleccion.cd_cnsctvo;
     this.modalService.dismissAll();
     this.ValidaBusqueda = '1';
@@ -239,7 +239,7 @@ export class BuscarofertaComponent implements OnInit {
     this.ConsultaIconoEstado();
     this.ServiciosValorar.ConsultaOferta('1', this.IdOferta).subscribe(Resultado => {
       this.ArrayOferta = Resultado;
-      console.log(Resultado)
+      //console.log(Resultado)
       this.NombreProductor = Resultado[0].Nombre_productor;
       this.DesProducto = Resultado[0].Nombre_Producto;
       this.Tamano = Resultado[0].Tamano;
@@ -307,7 +307,7 @@ export class BuscarofertaComponent implements OnInit {
   AbrirPopuPResumen(ModalResumen: any, respu: any) {
     this.ServiciosValorar.ConsultaMenuResumenOferta('1', respu.Tramite).subscribe(Resultado => {
       this.ArrayResumenOferta = Resultado;
-      console.log(Resultado)
+      //console.log(Resultado)
     });
     this.modalService.dismissAll();
     this.modalService.open(ModalResumen, { ariaLabelledBy: 'modal-basic-title', size: 'xl', centered: true, backdrop: 'static', keyboard: false });
