@@ -364,56 +364,52 @@ export class SectorizacionComponent implements OnInit {
     this.ValidaMapSector = '1';
     this.SessionNombreSector = item.DSCRPCION_SCTOR
     this.modalService.open(modalmapa, { size: 'lg' });
-    this.Sessioncoordenada = item.coordenadas;
-    var arraycoordenadas = item.coordenadas.split('|')
-    this.ConsultaMapaSector(arraycoordenadas);
+    this.Sessioncoordenada = item.coordenadas;    
+    this.ConsultaMapaSector();
   }
 
-  ConsultaMapaSector(coordenadas: any) {
-    this.geocoder.geocode({ address: coordenadas[coordenadas.length - 1] }).then((result) => {
-      const { results } = result;
-      var lati = results[0].geometry.location.lat();
-      var longi = results[0].geometry.location.lng();
-      var bounds = new google.maps.LatLngBounds;      
-      // for (var i = 0; i < coordenadas.length; i++) {
-      //   this.geocoder.geocode({ address: coordenadas[i] }).then((resultcoord) => {
-      //     const { results } = resultcoord;
-      //     var latitude = results[0].geometry.location.lat().toString();
-      //     var longitude = results[0].geometry.location.lng().toString();
-      //     this.AgregarMarcadorSector(latitude, longitude, this.map);
+  ConsultaMapaSector() {
+    //var lati = results[0].geometry.location.lat();
+    //var longi = results[0].geometry.location.lng();
+    var bounds = new google.maps.LatLngBounds;
+    // for (var i = 0; i < coordenadas.length; i++) {
+    //   this.geocoder.geocode({ address: coordenadas[i] }).then((resultcoord) => {
+    //     const { results } = resultcoord;
+    //     var latitude = results[0].geometry.location.lat().toString();
+    //     var longitude = results[0].geometry.location.lng().toString();
+    //     this.AgregarMarcadorSector(latitude, longitude, this.map);
 
-      //   })
-      // }
-      //console.log(this.Sessioncoordenada)
-      var coords = this.Sessioncoordenada.split('|').map(function (data: string) {
-        var info = data.split(','), // Separamos por coma
-          coord = { // Creamos el obj de coordenada
-            lat: parseFloat(info[0]),
-            lng: parseFloat(info[1])
-          };
-        // Agregamos la coordenada al bounds
-        bounds.extend(coord);
-        return coord;
-      });
-      console.log(coords)
-      this.map = new google.maps.Map(
-        document.getElementById("map") as HTMLElement,
-        {
-          zoom: 15,
-          center: bounds.getCenter(),
-          mapTypeId: "terrain",
-        }
-      );
-      var area = new google.maps.Polygon({
-        paths: coords,
-        strokeColor: '#FF0000',
-        strokeOpacity: 0.8,
-        strokeWeight: 3,
-        fillColor: '#FF0000',
-        fillOpacity: 0.35
-      });
-      area.setMap(this.map);
-    })
+    //   })
+    // }
+    //console.log(this.Sessioncoordenada)
+    var coords = this.Sessioncoordenada.split('|').map(function (data: string) {
+      var info = data.split(','), // Separamos por coma
+        coord = { // Creamos el obj de coordenada
+          lat: parseFloat(info[0]),
+          lng: parseFloat(info[1])
+        };
+      // Agregamos la coordenada al bounds
+      bounds.extend(coord);
+      return coord;
+    });
+    //console.log(coords)    
+    var area = new google.maps.Polygon({
+      paths: coords,
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 3,
+      fillColor: '#FF0000',
+      fillOpacity: 0.35
+    });
+    this.map = new google.maps.Map(
+      document.getElementById("map") as HTMLElement,
+      {
+        zoom: 15,
+        center: bounds.getCenter(),
+        mapTypeId: "terrain",
+      }
+    );
+    area.setMap(this.map);
   }
 
   AgregarMarcadorSector(lat: any, long: any, map: google.maps.Map) {
