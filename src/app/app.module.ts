@@ -29,7 +29,7 @@ import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/r
 import { OlvidepasswordComponent } from './usuario/components/olvidepassword/olvidepassword.component';
 import { CarguepublicidadComponent } from './usuario/components/carguepublicidad/carguepublicidad.component';
 import { EvaluacionofertaComponent } from './ofertas/components/evaluacionoferta/evaluacionoferta.component';
-import { PruenasmaspComponent } from './src/app/ofertas/pruenasmasp/pruenasmasp.component';
+import { PruebasmapsComponent } from './ofertas/components/pruebasmaps/pruebasmaps.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
@@ -49,7 +49,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     OlvidepasswordComponent,
     CarguepublicidadComponent,
     EvaluacionofertaComponent,
-    PruenasmaspComponent
+    PruebasmapsComponent
   ],
   imports: [
     NgxMaskModule.forRoot(options),
