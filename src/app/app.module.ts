@@ -30,6 +30,7 @@ import { OlvidepasswordComponent } from './usuario/components/olvidepassword/olv
 import { CarguepublicidadComponent } from './usuario/components/carguepublicidad/carguepublicidad.component';
 import { EvaluacionofertaComponent } from './ofertas/components/evaluacionoferta/evaluacionoferta.component';
 import { PruebasmapsComponent } from './ofertas/components/pruebasmaps/pruebasmaps.component';
+import { SeguimientoComponent } from './ofertas/components/seguimiento/seguimiento.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
@@ -49,7 +50,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     OlvidepasswordComponent,
     CarguepublicidadComponent,
     EvaluacionofertaComponent,
-    PruebasmapsComponent
+    PruebasmapsComponent,
+    SeguimientoComponent
   ],
   imports: [
     NgxMaskModule.forRoot(options),

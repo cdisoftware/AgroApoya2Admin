@@ -1,0 +1,50 @@
+<div class="Fondo">
+    <br><br>
+    <div class="container bg-white">
+        <h1>Seguimiento</h1>
+        <div class="row">
+            <div class="col-sm-6">
+                <label class="Llave">Oferta</label>
+                <ng-autocomplete [data]="ArrayOferta" [searchKeyword]="oferta" placeholder="Oferta"
+                    (selected)='selectOferta($event)' (inputCleared)="LimpiarCampos('Of')"
+                    [itemTemplate]="templateResOf" [notFoundTemplate]="templateVacioOf" aria-required="true">
+                </ng-autocomplete>
+
+                <ng-template #templateResOf let-item id="templateResOf">
+                    <a [innerHTML]="item.cd_cnsctvo + ' - ' + item.DescripcionProducto"></a>
+                </ng-template>
+
+                <ng-template #templateVacioOf let-SinRegistro>
+                    <label >Sin registros</label>
+                </ng-template>
+            </div>
+            <div class="col-sm-6">
+                <label class="Llave">Sector</label>
+                <ng-autocomplete [data]="ArraySector" [searchKeyword]="sector" placeholder="Sector" [disabled]="selecsector == '0'"
+                    (selected)='selectSector($event)' (inputCleared)="LimpiarCampos('Sec')"
+                    [itemTemplate]="templateSector" [notFoundTemplate]="templateVacioSec" aria-required="true">
+                </ng-autocomplete>
+
+                <ng-template #templateSector let-item id="templateSector">
+                    <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+                </ng-template>
+
+                <ng-template #templateVacioSec let-SinRegistro>
+                    <label >Sin registros</label>
+                </ng-template>
+            </div>
+        </div>
+        <br>
+        <div class="row justify-content-center">
+            <div class="col-sm-3">
+                <button class="btn btn-agro-prin w-100" (click)="Buscar()">Buscar</button>
+            </div>
+        </div>
+        <hr>
+        <div class="row mt-2 justify-content-center ">
+            <div class="col-sm-11 ">
+                <div id="map" [ngClass]="ValidaInsertSec=='1' ? 'ShowMap' : 'HideMap' "></div>
+            </div>
+        </div>
+    </div>
+</div>

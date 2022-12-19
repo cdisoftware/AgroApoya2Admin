@@ -18,6 +18,7 @@ import { UsuariosComponent } from './usuario/components/usuarios/usuarios.compon
 import { CarguepublicidadComponent } from './usuario/components/carguepublicidad/carguepublicidad.component';
 import { EvaluacionofertaComponent } from './ofertas/components/evaluacionoferta/evaluacionoferta.component';
 import { PruebasmapsComponent } from './ofertas/components/pruebasmaps/pruebasmaps.component';
+import { SeguimientoComponent } from './ofertas/components/seguimiento/seguimiento.component';
 
 const routes: Routes = [
   {
@@ -87,6 +88,10 @@ const routes: Routes = [
       {
         path: 'evaluacion-oferta',
         component: EvaluacionofertaComponent
+      },
+      {
+        path: 'seguimiento', 
+        component: SeguimientoComponent
       }
     ]
   },
