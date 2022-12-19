@@ -115,6 +115,7 @@ export class SectorizacionComponent implements OnInit {
     this.sectoresservices.ConsultaCiudadOferta('1', this.SessionOferta).subscribe(ResultadoCons => {
       //console.log(ResultadoCons)
       this.SessionCiudad = ResultadoCons[0].Cuidad;
+      console.log(ResultadoCons[0].Cuidad)
       this.SessionCDMunicipio = ResultadoCons[0].CD_MNCPIO;
       this.SessionCDRegion = ResultadoCons[0].CD_RGION;
       this.ConsultaSectores();
