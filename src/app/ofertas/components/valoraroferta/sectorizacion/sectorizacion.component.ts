@@ -50,6 +50,8 @@ export class SectorizacionComponent implements OnInit {
   Sector: string;
   ValidaMapSector: string = '0';
   SessionNombreSector: any;
+  Sessioncoordenada: any;
+
 
   constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService) { }
 
@@ -99,7 +101,7 @@ export class SectorizacionComponent implements OnInit {
   }
 
   ConsultaDetalleOferta() {
-    console.log('1', this.SessionOferta)
+    //console.log('1', this.SessionOferta)
     this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
       //console.log(ResultConsu)
       this.DataOferta = ResultConsu;
@@ -109,9 +111,9 @@ export class SectorizacionComponent implements OnInit {
   }
 
   ConsultaCiudadOferta() {
-    console.log('1', this.SessionOferta)
+    //console.log('1', this.SessionOferta)
     this.sectoresservices.ConsultaCiudadOferta('1', this.SessionOferta).subscribe(ResultadoCons => {
-      console.log(ResultadoCons)
+      //console.log(ResultadoCons)
       this.SessionCiudad = ResultadoCons[0].Cuidad;
       this.SessionCDMunicipio = ResultadoCons[0].CD_MNCPIO;
       this.SessionCDRegion = ResultadoCons[0].CD_RGION;
@@ -223,13 +225,13 @@ export class SectorizacionComponent implements OnInit {
       }
       this.sectoresservices.InsertarSector('3', BodyInsert).subscribe(ResultInsert => {
         const arrayRes = ResultInsert.split('|')
-        console.log(arrayRes)
+        //console.log(arrayRes)
         this.SessionSecCreado = arrayRes[0];
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
         this.Respuesta = arrayRes[1];
         this.ConsultaCiudadOferta();
         if (this.SessionSecCreado != undefined) {
-          console.log('Entra')          
+          //console.log('Entra')
           this.ValidaInsertSec = '1';
           this.CreaMapa();
         }
@@ -247,19 +249,19 @@ export class SectorizacionComponent implements OnInit {
   CerrModalMap(templateRespuesta: any) {
     this.ConsultaCiudadOferta();
     this.ConsultaCoordenadas();
-    if (this.DataCoor.length == 2) {
-      this.SessionSecCreado = '0';
-      this.ValidaInsertSec = '0';
-      this.ValidaCoord = '0';
-      this.Coor1 = '';
-      this.Coor2 = '';
-      this.DataCoor = [];
-      this.modalService.dismissAll();
-    }
-    else {
-      this.modalService.open(templateRespuesta);
-      this.Respuesta = 'Recuerda que debes registrar 2 coordenadas por sector, favor valida tu información.';
-    }
+    // if (this.DataCoor.length == 2) {
+    this.SessionSecCreado = '0';
+    this.ValidaInsertSec = '0';
+    this.ValidaCoord = '0';
+    this.Coor1 = '';
+    this.Coor2 = '';
+    this.DataCoor = [];
+    this.modalService.dismissAll();
+    //}
+    // else {
+    //   this.modalService.open(templateRespuesta);
+    //   this.Respuesta = 'Recuerda que debes registrar 2 coordenadas por sector, favor valida tu información.';
+    // }
 
   }
 
@@ -290,33 +292,33 @@ export class SectorizacionComponent implements OnInit {
 
   AgregarCoordenada(templateRespuesta: any) {
     this.ConsultaCoordenadas()
-    if (this.DataCoor.length < 2) {
-      if (this.Coor1 != '' && this.Coor2 != '') {
-        const BodyInsertCoo = {
-          ID: 0,
-          ID_SCTOR_OFRTA: Number(this.SessionSecCreado),
-          LTTUD: this.Coor1,
-          LNGTUD: this.Coor2
-        }
-        this.sectoresservices.InsertarCoordenadas('3', BodyInsertCoo).subscribe(Resultado => {
-          const arrayRes = Resultado.split('|')
-          this.Respuesta = arrayRes[1];
-          this.Coor1 = '';
-          this.Coor2 = '';
-          //this.markers[0].setMap(null)
-          this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-          this.ConsultaCoordenadas()
-        })
+    //if (this.DataCoor.length < 2) {
+    if (this.Coor1 != '' && this.Coor2 != '') {
+      const BodyInsertCoo = {
+        ID: 0,
+        ID_SCTOR_OFRTA: Number(this.SessionSecCreado),
+        LTTUD: this.Coor1,
+        LNGTUD: this.Coor2
       }
-      else {
+      this.sectoresservices.InsertarCoordenadas('3', BodyInsertCoo).subscribe(Resultado => {
+        const arrayRes = Resultado.split('|')
+        this.Respuesta = arrayRes[1];
+        this.Coor1 = '';
+        this.Coor2 = '';
+        //this.markers[0].setMap(null)
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-        this.Respuesta = "Los campos coordenadas son obligatorios, recuerda dar click en el mapa para recuperar las coordenadas.";
-      }
+        this.ConsultaCoordenadas()
+      })
     }
     else {
       this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-      this.Respuesta = "Recuerda que debes registrar unicamente 2 coordenadas por sector, favor valida tu información.";
+      this.Respuesta = "Los campos coordenadas son obligatorios, recuerda dar click en el mapa para recuperar las coordenadas.";
     }
+    //}
+    // else {
+    //   this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+    //   this.Respuesta = "Recuerda que debes registrar unicamente 2 coordenadas por sector, favor valida tu información.";
+    // }
   }
 
   EliminaCoordenada(coordenada: any) {
@@ -360,40 +362,60 @@ export class SectorizacionComponent implements OnInit {
     this.VlrFle = '';
     this.SectSelec = item.SCTOR_OFRTA;
     this.ValidaMapSector = '1';
-    this.SessionNombreSector=item.DSCRPCION_SCTOR
+    this.SessionNombreSector = item.DSCRPCION_SCTOR
     this.modalService.open(modalmapa, { size: 'lg' });
-    var arraycoordenadas = item.coordenadas.split('|')
-    this.ConsultaMapaSector(arraycoordenadas);
+    this.Sessioncoordenada = item.coordenadas;    
+    this.ConsultaMapaSector();
   }
 
-  ConsultaMapaSector(coordenadas: any) {
-    this.geocoder.geocode({ address: coordenadas[coordenadas.length - 1] }).then((result) => {
-      const { results } = result;
-      var lati = results[0].geometry.location.lat();
-      var longi = results[0].geometry.location.lng();
-      this.map = new google.maps.Map(
-        document.getElementById("map") as HTMLElement,
-        {
-          zoom: 11,
-          center: {
-            lat: lati,
-            lng: longi
-          },
-        }
-      );
-      for (var i = 0; i < coordenadas.length; i++) {
-        //console.log(coordenadas[i])
-        this.geocoder.geocode({ address: coordenadas[i] }).then((resultcoord) => {
-          const { results } = resultcoord;
-          this.AgregarMarcadorSector(results[0].geometry.location, this.map);
-        })
+  ConsultaMapaSector() {
+    //var lati = results[0].geometry.location.lat();
+    //var longi = results[0].geometry.location.lng();
+    var bounds = new google.maps.LatLngBounds;
+    // for (var i = 0; i < coordenadas.length; i++) {
+    //   this.geocoder.geocode({ address: coordenadas[i] }).then((resultcoord) => {
+    //     const { results } = resultcoord;
+    //     var latitude = results[0].geometry.location.lat().toString();
+    //     var longitude = results[0].geometry.location.lng().toString();
+    //     this.AgregarMarcadorSector(latitude, longitude, this.map);
+
+    //   })
+    // }
+    //console.log(this.Sessioncoordenada)
+    var coords = this.Sessioncoordenada.split('|').map(function (data: string) {
+      var info = data.split(','), // Separamos por coma
+        coord = { // Creamos el obj de coordenada
+          lat: parseFloat(info[0]),
+          lng: parseFloat(info[1])
+        };
+      // Agregamos la coordenada al bounds
+      bounds.extend(coord);
+      return coord;
+    });
+    //console.log(coords)    
+    var area = new google.maps.Polygon({
+      paths: coords,
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 3,
+      fillColor: '#FF0000',
+      fillOpacity: 0.35
+    });
+    this.map = new google.maps.Map(
+      document.getElementById("map") as HTMLElement,
+      {
+        zoom: 15,
+        center: bounds.getCenter(),
+        mapTypeId: "terrain",
       }
-    })
+    );
+    area.setMap(this.map);
   }
 
-  AgregarMarcadorSector(latLng: google.maps.LatLng, map: google.maps.Map) {
+  AgregarMarcadorSector(lat: any, long: any, map: google.maps.Map) {
+    //console.log(lat + ',' + long)
     const marker = new google.maps.Marker({
-      position: latLng,
+      position: new google.maps.LatLng(lat, long),
       map: map,
     });
     this.markers.push(marker);
