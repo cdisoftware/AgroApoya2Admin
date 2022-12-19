@@ -87,10 +87,6 @@ const routes: Routes = [
       {
         path: 'evaluacion-oferta',
         component: EvaluacionofertaComponent
-      },
-      {
-        path: 'pruebaWilliam',
-        component: PruebasmapsComponent
       }
     ]
   },
