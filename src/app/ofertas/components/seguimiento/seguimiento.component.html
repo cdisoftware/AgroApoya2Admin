@@ -37,7 +37,7 @@
         <br>
         <div class="row justify-content-center">
             <div class="col-sm-3">
-                <button class="btn btn-agro-prin w-100" (click)="Buscar()">Buscar</button>
+                <button class="btn btn-agro-prin w-100" (click)="Buscar(ModalRespuesta)">Buscar</button>
             </div>
         </div>
         <hr>
@@ -48,3 +48,22 @@
         </div>
     </div>
 </div>
+
+
+<ng-template #ModalRespuesta let-modal>
+    <div class="modal-header">
+        <h1>Respuesta</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">{{Respuesta}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>

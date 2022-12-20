@@ -3,6 +3,7 @@ import { MetodosglobalesService } from './../../../core/metodosglobales.service'
 import { ValorarofertaService } from './../../../core/valoraroferta.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { IfStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-seguimiento',
@@ -16,12 +17,13 @@ export class SeguimientoComponent implements OnInit {
   IdOferta: string = '0';
 
   ArraySector: any = [];
-  sector ='DSCRPCION_SCTOR';
+  sector = 'DSCRPCION_SCTOR';
   IdSector: string = '0';
 
   selecsector: string = '0'
 
-  //Mapas
+  Respuesta: string = '';
+
   //mapas
   markers: google.maps.Marker[] = [];
   Coor1: string = '';
@@ -35,6 +37,9 @@ export class SeguimientoComponent implements OnInit {
   NomCiudad: string = '';
   NomDepa: string = 'Bogotá';
 
+  //Buscar
+  ArrayConsultaSeg: any = [];
+
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
     private modalService: NgbModal,
@@ -42,11 +47,10 @@ export class SeguimientoComponent implements OnInit {
     private rutas: Router) { }
 
   ngOnInit(): void {
-    this.ConsultaSectores();
     this.ConsultaOferta();
   }
 
-  ConsultaOferta(){
+  ConsultaOferta() {
     const datosbusqueda = {
       UsuCodig: 0,
       Producto: 0,
@@ -63,41 +67,54 @@ export class SeguimientoComponent implements OnInit {
     }
     this.ServiciosValorar.BusquedaOferta('2', this.IdOferta, '0', '0', datosbusqueda).subscribe(Resultado => {
       this.ArrayOferta = Resultado;
-      //console.log(Resultado)
     })
   }
 
-  ConsultaSectores(){
-    this.ServiciosValorar.ConsultaSectores('1', '0', '0', '0', '0').subscribe(Resultado => {
+  ConsultaSectores(cd_cnctivo: string) {
+    this.ServiciosValorar.ConsultaSectoresOferta('2', cd_cnctivo).subscribe(Resultado => {
+      console.log(Resultado)
       this.ArraySector = Resultado;
-      //console.log(Resultado)
     })
   }
 
   selectOferta(item: any) {
-    this.selecsector == '1'
+    this.selecsector = '1'
+    this.ConsultaSectores(item.cd_cnsctvo);
     this.IdOferta = item.cd_cnsctvo;
   }
 
   selectSector(item: any) {
-    
-    this.IdSector = item.SCTOR_OFRTA;
+    this.IdSector = item.ID_SCTOR_OFRTA;
   }
 
   LimpiarCampos(campo: string) {
     if (campo == 'Of') {
       this.IdOferta = '0';
     }
-    if(campo == 'Sec'){
+    if (campo == 'Sec') {
       this.IdSector = '0';
     }
   }
 
-  Buscar(){
-    this.ServiciosValorar.ConsultaSeguimiento('1', this.IdOferta, this.IdSector).subscribe(Resultado => {
-      console.log(Resultado)
-      this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
-    })
+  Buscar(templateRespuesta: any) {
+    if (this.IdSector == '0' && this.IdOferta == '0' || this.IdSector != '0' && this.IdOferta == '0' || this.IdSector == '0' && this.IdOferta != '0') {
+      this.Respuesta = 'Es necesario que selecciones una oferta y un sector.';
+      this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
+      this.ValidaInsertSec = '0';
+    } else {
+      this.ServiciosValorar.ConsultaSeguimiento('1', this.IdOferta, this.IdSector).subscribe(Resultado => {
+        if (Resultado.length == 0) {
+          this.Respuesta = 'No encontramos registros de compras para este sector.';
+          this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
+          this.ValidaInsertSec = '0';
+        } else {
+          this.ValidaInsertSec = '1';
+          this.ArrayConsultaSeg = Resultado;
+          console.log(Resultado)
+          this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
+        }
+      })
+    }
   }
 
   Centramapa(request: google.maps.GeocoderRequest): void {
@@ -106,16 +123,10 @@ export class SeguimientoComponent implements OnInit {
       this.map = new google.maps.Map(
         document.getElementById("map") as HTMLElement,
         {
-          zoom: 14,
+          zoom: 10,
         }
       );
-      this.map.addListener("click", (e: any) => {
-        this.AgregarMarcador(e.latLng, this.map);
-        this.Coor1 = e.latLng.toString()
-        this.Coor1 = this.Coor1.substring(1, 15)
-        this.Coor2 = e.latLng.toString()
-        this.Coor2 = this.Coor2.substring(this.Coor2.indexOf('-'), this.Coor2.length - 1)
-      });
+      this.AgregarSitios();
       this.map.setCenter(results[0].geometry.location);
       return results;
     })
@@ -124,15 +135,58 @@ export class SeguimientoComponent implements OnInit {
       });
   }
 
-  AgregarMarcador(latLng: google.maps.LatLng, map: google.maps.Map) {
-    if (this.markers.length > 0) {
-      this.markers[0].setMap(null)
+
+  AgregarSitios() {
+    const features = [];
+    const Polylines = [];
+    var lat: number;
+    var long: number;
+
+    for (var i = 0; i < this.ArrayConsultaSeg.length; i++) {
+      var auxcoor = this.ArrayConsultaSeg[i].COORDENADAS_MAPA.split(",");
+      lat = parseFloat(auxcoor[0]);
+      long = parseFloat(auxcoor[1]);
+      features.push({ position: new google.maps.LatLng(lat,long), Estado: this.ArrayConsultaSeg[i].COD_ESTADO_ENTREGA });
+      Polylines.push({lat: lat, lng: long });
     }
-    const marker = new google.maps.Marker({
-      position: latLng,
-      map: map,
+
+    for (let i = 0; i < features.length; i++) {
+      var icon;
+      if (features[i].Estado == '2') {
+        icon = '../../../../assets/ImagenesAgroApoya2Adm/iconcasaEntregada.png';
+      } else {
+        icon = '../../../../assets/ImagenesAgroApoya2Adm/iconcasaNoEntregada.png';
+      }
+      var marker = new google.maps.Marker({
+        animation: google.maps.Animation.DROP,
+        position: features[i].position,
+        map: this.map,
+        icon: icon
+      });
+      this.markers.push(marker);
+    }
+    
+    const flightPath = new google.maps.Polyline({
+      path: Polylines,
+      geodesic: true,
+      strokeColor: "#31C231",
+      strokeOpacity: 1.0,
+      strokeWeight: 4,
     });
-    this.markers = [];
-    this.markers.push(marker);
+
+    flightPath.setMap(this.map);
+
+
+
+    //EventoClic
+    for(var i = 0; i < this.markers.length; i++){
+      var auxcoor = this.ArrayConsultaSeg[i].COORDENADAS_MAPA.split(",");
+      lat = parseFloat(auxcoor[0]);
+      long = parseFloat(auxcoor[1]);
+      this.markers[i].addListener("click", () => {
+        this.map.setZoom(18);      
+      });
+    }
   }
+
 }
