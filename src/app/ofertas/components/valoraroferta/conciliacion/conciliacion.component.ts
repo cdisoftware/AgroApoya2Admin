@@ -302,10 +302,9 @@ export class ConciliacionComponent implements OnInit {
           const datoscorreo = {
             IdPlantilla: 4,
             usucodig: this.IdProductor,
-            Cd_cnctvo: this.IdOferta,
-            id_conductor: 0
+            Cd_cnctvo: this.IdOferta
           }
-          this.EnviarCorreo(datoscorreo);
+          this.EnviarCorreo(datoscorreo, '0', '0');
           this.EnviarSms('1');
         }
 
@@ -353,10 +352,9 @@ export class ConciliacionComponent implements OnInit {
         const datoscorreo = {
           IdPlantilla: 3,
           usucodig: this.IdProductor,
-          Cd_cnctvo: this.IdOferta,
-          id_conductor: 0
+          Cd_cnctvo: this.IdOferta
         }
-        this.EnviarCorreo(datoscorreo);
+        this.EnviarCorreo(datoscorreo, '0', '0');
         this.EnviarSms('3');
       }
     })
@@ -366,8 +364,8 @@ export class ConciliacionComponent implements OnInit {
     ///enviar correo pendiente
   }
 
-  EnviarCorreo(datoscorreo: any) {
-    this.ServiciosValorar.EnviarCorreoIndividual('1', datoscorreo).subscribe(Resultado => {
+  EnviarCorreo(datoscorreo: any, Id_Clnte: string, IdSctor: string) {
+    this.ServiciosValorar.EnviarCorreoIndividual('1', Id_Clnte, IdSctor, datoscorreo).subscribe(Resultado => {
       //console.log(Resultado)
     })
   }

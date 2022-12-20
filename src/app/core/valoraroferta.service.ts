@@ -164,7 +164,7 @@ export class ValorarofertaService {
     return this.http.get<any[]>(this.url_servidor + 'enviocorreomasivo/' + bandera + '/' + IdPlantilla + '/' + IdTipoUsuario + '/' + cd_cnctvo + '/' + id_sector)
   }
 
-  EnviarCorreoIndividual(bandera: string, datos: any) {
+  EnviarCorreoIndividual(bandera: string, Id_Clnte: string, IdSctor: string, datos: any) {
     return this.http.post<any>(this.url_servidor + 'enviocorreoindividual/' + bandera, datos)
 
   }
