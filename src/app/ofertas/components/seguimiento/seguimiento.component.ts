@@ -146,7 +146,8 @@ export class SeguimientoComponent implements OnInit {
       var auxcoor = this.ArrayConsultaSeg[i].COORDENADAS_MAPA.split(",");
       lat = parseFloat(auxcoor[0]);
       long = parseFloat(auxcoor[1]);
-      features.push({ position: new google.maps.LatLng(lat,long), Estado: this.ArrayConsultaSeg[i].COD_ESTADO_ENTREGA });
+      console.log(this.ArrayConsultaSeg[i])
+      features.push({ position: new google.maps.LatLng(lat,long), Estado: this.ArrayConsultaSeg[i].COD_ESTADO_ENTREGA, NomCli: this.ArrayConsultaSeg[i].NOMBRE_CLIENTE + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_CLIENTE, IdCompra: this.ArrayConsultaSeg[i].ID_COMPRA});
       Polylines.push({lat: lat, lng: long });
     }
 
@@ -157,11 +158,18 @@ export class SeguimientoComponent implements OnInit {
       } else {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/iconcasaNoEntregada.png';
       }
+      const respu = {
+        nOMBRE: 'William Sneider',
+        Apellido: 'Bernal Gil'
+      }
+        
       var marker = new google.maps.Marker({
+        title: features[i].NomCli,
         animation: google.maps.Animation.DROP,
         position: features[i].position,
         map: this.map,
-        icon: icon
+        icon: icon,
+        zIndex:features[i].IdCompra//Le envio El zindex El id compra
       });
       this.markers.push(marker);
     }
@@ -178,13 +186,11 @@ export class SeguimientoComponent implements OnInit {
 
 
 
-    //EventoClic
+    //Eventoclick
     for(var i = 0; i < this.markers.length; i++){
-      var auxcoor = this.ArrayConsultaSeg[i].COORDENADAS_MAPA.split(",");
-      lat = parseFloat(auxcoor[0]);
-      long = parseFloat(auxcoor[1]);
       this.markers[i].addListener("click", () => {
-        this.map.setZoom(18);      
+        console.log(marker.getZIndex());
+        //this.map.setZoom(18);
       });
     }
   }
