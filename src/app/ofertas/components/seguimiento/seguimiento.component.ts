@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MetodosglobalesService } from './../../../core/metodosglobales.service'
 import { ValorarofertaService } from './../../../core/valoraroferta.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-import { IfStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-seguimiento',
@@ -11,6 +10,7 @@ import { IfStmt } from '@angular/compiler';
   styleUrls: ['./seguimiento.component.css']
 })
 export class SeguimientoComponent implements OnInit {
+  @ViewChild('ModalMensaje', { static: false }) ModalMensaje: any;
 
   ArrayOferta: any = [];
   oferta = 'DescripcionProducto';
@@ -39,6 +39,10 @@ export class SeguimientoComponent implements OnInit {
 
   //Buscar
   ArrayConsultaSeg: any = [];
+
+  //Mensaje
+  Mensaje: string = '';
+  TituloModal: string = "AgroApoya2";
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -87,13 +91,16 @@ export class SeguimientoComponent implements OnInit {
     this.IdSector = item.ID_SCTOR_OFRTA;
   }
 
-  LimpiarCampos(campo: string) {
-    if (campo == 'Of') {
-      this.IdOferta = '0';
-    }
-    if (campo == 'Sec') {
-      this.IdSector = '0';
-    }
+  LimpiarCampos() {
+    this.ArraySector = [];
+    this.IdOferta = '0';
+    this.ValidaInsertSec = '0';
+    this.IdSector = '0';
+    this.selecsector = '0';
+    this.sector = '';
+  }
+  LimpiarCamposSector() {
+    this.IdSector = '0';
   }
 
   Buscar(templateRespuesta: any) {
@@ -118,16 +125,23 @@ export class SeguimientoComponent implements OnInit {
   }
 
   Centramapa(request: google.maps.GeocoderRequest): void {
+    var lat: number;
+    var long: number;
     this.geocoder.geocode(request).then((result) => {
       const { results } = result;
+      this.AgregarSitios();
+      var auxcoor = this.ArrayConsultaSeg[0].COORDENADAS_MAPA.split(",");
+      lat = parseFloat(auxcoor[0]);
+      long = parseFloat(auxcoor[1]);
       this.map = new google.maps.Map(
         document.getElementById("map") as HTMLElement,
         {
-          zoom: 10,
+          center: { lat: lat, lng: long },
+          zoom: 18,
         }
       );
       this.AgregarSitios();
-      this.map.setCenter(results[0].geometry.location);
+
       return results;
     })
       .catch((e) => {
@@ -139,6 +153,7 @@ export class SeguimientoComponent implements OnInit {
   AgregarSitios() {
     const features = [];
     const Polylines = [];
+    this.markers = [];
     var lat: number;
     var long: number;
 
@@ -146,9 +161,8 @@ export class SeguimientoComponent implements OnInit {
       var auxcoor = this.ArrayConsultaSeg[i].COORDENADAS_MAPA.split(",");
       lat = parseFloat(auxcoor[0]);
       long = parseFloat(auxcoor[1]);
-      console.log(this.ArrayConsultaSeg[i])
-      features.push({ position: new google.maps.LatLng(lat,long), Estado: this.ArrayConsultaSeg[i].COD_ESTADO_ENTREGA, NomCli: this.ArrayConsultaSeg[i].NOMBRE_CLIENTE + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_CLIENTE, IdCompra: this.ArrayConsultaSeg[i].ID_COMPRA});
-      Polylines.push({lat: lat, lng: long });
+      features.push({ position: new google.maps.LatLng(lat, long), Estado: this.ArrayConsultaSeg[i].COD_ESTADO_ENTREGA, NomCli: this.ArrayConsultaSeg[i].NOMBRE_CLIENTE + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_CLIENTE, IdCompra: this.ArrayConsultaSeg[i].ID_COMPRA });
+      Polylines.push({ lat: lat, lng: long });
     }
 
     for (let i = 0; i < features.length; i++) {
@@ -158,28 +172,24 @@ export class SeguimientoComponent implements OnInit {
       } else {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/iconcasaNoEntregada.png';
       }
-      const respu = {
-        nOMBRE: 'William Sneider',
-        Apellido: 'Bernal Gil'
-      }
-        
+
       var marker = new google.maps.Marker({
         title: features[i].NomCli,
         animation: google.maps.Animation.DROP,
         position: features[i].position,
         map: this.map,
         icon: icon,
-        zIndex:features[i].IdCompra//Le envio El zindex El id compra
+        zIndex: features[i].IdCompra//Le envio El zindex El id compra
       });
       this.markers.push(marker);
     }
-    
+
     const flightPath = new google.maps.Polyline({
       path: Polylines,
       geodesic: true,
       strokeColor: "#31C231",
       strokeOpacity: 1.0,
-      strokeWeight: 4,
+      strokeWeight: 3,
     });
 
     flightPath.setMap(this.map);
@@ -187,12 +197,28 @@ export class SeguimientoComponent implements OnInit {
 
 
     //Eventoclick
-    for(var i = 0; i < this.markers.length; i++){
-      this.markers[i].addListener("click", () => {
-        console.log(marker.getZIndex());
+      /*this.markers[0].addListener("click", () => {
+        console.log(this.markers[0].getZIndex());
         //this.map.setZoom(18);
+        this.AbreInfoEntrega(this.ModalMensaje);
+      });*/
+
+      const infoWindow = new google.maps.InfoWindow();
+
+      this.markers[2].addListener("click", () => {
+        this.AbreInfoEntrega(this.ModalMensaje);
+        infoWindow.close();
+        infoWindow.setContent(this.markers[2].getTitle());
+        infoWindow.open(this.markers[2].getMap(), this.markers[2]);
       });
-    }
+    
+  }
+
+
+  AbreInfoEntrega(ModalMensajeCalifica: TemplateRef<any>) {
+    this.modalService.dismissAll();
+    this.modalService.open(ModalMensajeCalifica, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+    this.Mensaje = '';
   }
 
 }

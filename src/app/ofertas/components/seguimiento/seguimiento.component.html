@@ -6,7 +6,7 @@
             <div class="col-sm-6">
                 <label class="Llave">Oferta</label>
                 <ng-autocomplete [data]="ArrayOferta" [searchKeyword]="oferta" placeholder="Oferta"
-                    (selected)='selectOferta($event)' (inputCleared)="LimpiarCampos('Of')"
+                    (selected)='selectOferta($event)' (inputCleared)="LimpiarCampos()"
                     [itemTemplate]="templateResOf" [notFoundTemplate]="templateVacioOf" aria-required="true">
                 </ng-autocomplete>
 
@@ -21,7 +21,7 @@
             <div class="col-sm-6">
                 <label class="Llave">Sector</label>
                 <ng-autocomplete [data]="ArraySector" [searchKeyword]="sector" placeholder="Sector" [disabled]="selecsector == '0'"
-                    (selected)='selectSector($event)' (inputCleared)="LimpiarCampos('Sec')"
+                    (selected)='selectSector($event)' (inputCleared)="LimpiarCamposSector()"
                     [itemTemplate]="templateSector" [notFoundTemplate]="templateVacioSec" aria-required="true">
                 </ng-autocomplete>
 
@@ -66,4 +66,21 @@
         <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
     </div>
     <br>
+</ng-template>
+
+
+<ng-template #ModalMensaje let-modal>
+    <div class="p-2">
+        <div class="modal-header">
+            <img style="width: 40px; margin-right: 10px;" src="../../../../assets/ImagenesAgroApoya2Adm/ic_Agro.png">
+            <h5 class="modal-title TituloForm">{{TituloModal}}</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="mt-4 mb-4 text-center">
+            {{Mensaje}}
+        </div>
+        <div class="row justify-content-center">
+            <button type="button" id="btnGuardarDirecccion" class="btn ColorAgro col-sm-3 col-3" (click)="modal.dismiss('Cross click')">Continuar </button>
+        </div>
+    </div>
 </ng-template>
