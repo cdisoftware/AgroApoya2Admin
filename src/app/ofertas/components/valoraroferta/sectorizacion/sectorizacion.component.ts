@@ -56,6 +56,7 @@ export class SectorizacionComponent implements OnInit {
   constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService) { }
 
   ngOnInit(): void {
+    this.ConsultaCoordenadas();
     this.DesSect = '';
     this.CoordeSect = '';
     this.Cant = '';
@@ -249,19 +250,19 @@ export class SectorizacionComponent implements OnInit {
   CerrModalMap(templateRespuesta: any) {
     this.ConsultaCiudadOferta();
     this.ConsultaCoordenadas();
-    // if (this.DataCoor.length == 2) {
-    this.SessionSecCreado = '0';
-    this.ValidaInsertSec = '0';
-    this.ValidaCoord = '0';
-    this.Coor1 = '';
-    this.Coor2 = '';
-    this.DataCoor = [];
-    this.modalService.dismissAll();
-    //}
-    // else {
-    //   this.modalService.open(templateRespuesta);
-    //   this.Respuesta = 'Recuerda que debes registrar 2 coordenadas por sector, favor valida tu información.';
-    // }
+    if (this.DataCoor.length == 3) {
+      this.SessionSecCreado = '0';
+      this.ValidaInsertSec = '0';
+      this.ValidaCoord = '0';
+      this.Coor1 = '';
+      this.Coor2 = '';
+      this.DataCoor = [];
+      this.modalService.dismissAll();
+    }
+    else {
+      this.modalService.open(templateRespuesta);
+      this.Respuesta = 'Recuerda que debes registrar 3 coordenadas minimo por sector, favor valida tu información.';
+    }
 
   }
 
@@ -291,8 +292,6 @@ export class SectorizacionComponent implements OnInit {
   }
 
   AgregarCoordenada(templateRespuesta: any) {
-    this.ConsultaCoordenadas()
-    //if (this.DataCoor.length < 2) {
     if (this.Coor1 != '' && this.Coor2 != '') {
       const BodyInsertCoo = {
         ID: 0,
@@ -314,11 +313,6 @@ export class SectorizacionComponent implements OnInit {
       this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
       this.Respuesta = "Los campos coordenadas son obligatorios, recuerda dar click en el mapa para recuperar las coordenadas.";
     }
-    //}
-    // else {
-    //   this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-    //   this.Respuesta = "Recuerda que debes registrar unicamente 2 coordenadas por sector, favor valida tu información.";
-    // }
   }
 
   EliminaCoordenada(coordenada: any) {
@@ -337,11 +331,41 @@ export class SectorizacionComponent implements OnInit {
   }
 
   ConsultaCoordenadas() {
-    //console.log('1', this.SessionSecCreado)
     this.sectoresservices.ConsultaCoordenada('1', this.SessionSecCreado).subscribe(Result => {
+      //console.log(Result)
       if (Result.length > 0) {
         this.ValidaCoord = '1';
         this.DataCoor = Result;
+        //console.log(this.map)
+        var coordenadas = '';
+        for (var i = 0; i < this.DataCoor.length; i++) {          
+          coordenadas += this.DataCoor[i].Latitud.trim() + ',' + this.DataCoor[i].Longitud.trim() + '|';
+        }
+        //coordenadas = '4.712111574133,-74.04141821450|4.712795898472,-74.03335012979|4.717310425273,-74.04693572883|';
+        console.log(coordenadas)
+        var nuevaCoord = coordenadas.substring(0, coordenadas.length - 1)
+        console.log(nuevaCoord)
+        var bounds = new google.maps.LatLngBounds;
+        var coords = nuevaCoord.split('|').map(function (data: string) {
+          var info = data.split(','), // Separamos por coma
+            coord = { // Creamos el obj de coordenada
+              lat: parseFloat(info[0]),
+              lng: parseFloat(info[1])
+            };
+          // Agregamos la coordenada al bounds
+          bounds.extend(coord);
+          return coord;
+        });
+        console.log(coords);
+        var area = new google.maps.Polygon({
+          paths: coords,
+          strokeColor: '#397c97',
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+          fillColor: '#B1B0B0',
+          fillOpacity: 0.35
+        });
+        area.setMap(this.map);
       }
       else {
         this.ValidaCoord = '0';
@@ -358,62 +382,55 @@ export class SectorizacionComponent implements OnInit {
   }
 
   selectSector(item: any, modalmapa: any) {
+    this.modalService.open(modalmapa, { size: 'lg' });
+    this.ValidaMapSector = '1';
     this.Cant = '';
     this.VlrFle = '';
     this.SectSelec = item.SCTOR_OFRTA;
-    this.ValidaMapSector = '1';
     this.SessionNombreSector = item.DSCRPCION_SCTOR
-    this.modalService.open(modalmapa, { size: 'lg' });
-    this.Sessioncoordenada = item.coordenadas;    
+    this.Sessioncoordenada = item.coordenadas;
     this.ConsultaMapaSector();
   }
 
   ConsultaMapaSector() {
-    //var lati = results[0].geometry.location.lat();
-    //var longi = results[0].geometry.location.lng();
-    var bounds = new google.maps.LatLngBounds;
-    // for (var i = 0; i < coordenadas.length; i++) {
-    //   this.geocoder.geocode({ address: coordenadas[i] }).then((resultcoord) => {
-    //     const { results } = resultcoord;
-    //     var latitude = results[0].geometry.location.lat().toString();
-    //     var longitude = results[0].geometry.location.lng().toString();
-    //     this.AgregarMarcadorSector(latitude, longitude, this.map);
+    this.geocoder.geocode({ address: this.SessionCiudad }).then((result) => {
+      const { results } = result;
+      var lati = results[0].geometry.location.lat();
+      var longi = results[0].geometry.location.lng();
 
-    //   })
-    // }
-    //console.log(this.Sessioncoordenada)
-    var coords = this.Sessioncoordenada.split('|').map(function (data: string) {
-      var info = data.split(','), // Separamos por coma
-        coord = { // Creamos el obj de coordenada
-          lat: parseFloat(info[0]),
-          lng: parseFloat(info[1])
-        };
-      // Agregamos la coordenada al bounds
-      bounds.extend(coord);
-      return coord;
-    });
-    //console.log(coords)    
-    var area = new google.maps.Polygon({
-      paths: coords,
-      strokeColor: '#FF0000',
-      strokeOpacity: 0.8,
-      strokeWeight: 3,
-      fillColor: '#FF0000',
-      fillOpacity: 0.35
-    });
-    this.map = new google.maps.Map(
-      document.getElementById("map") as HTMLElement,
-      {
-        zoom: 15,
-        center: bounds.getCenter(),
-        mapTypeId: "terrain",
-      }
-    );
-    area.setMap(this.map);
+      var bounds = new google.maps.LatLngBounds;
+      var coords = this.Sessioncoordenada.split('|').map(function (data: string) {
+        var info = data.split(','), // Separamos por coma
+          coord = { // Creamos el obj de coordenada
+            lat: parseFloat(info[0]),
+            lng: parseFloat(info[1])
+          };
+        // Agregamos la coordenada al bounds
+        bounds.extend(coord);
+        return coord;
+      });
+      var area = new google.maps.Polygon({
+        paths: coords,
+        strokeColor: '#397c97',
+        strokeOpacity: 0.8,
+        strokeWeight: 3,
+        fillColor: '#B1B0B0',
+        fillOpacity: 0.35
+      });
+      this.map = new google.maps.Map(
+        document.getElementById("mapCS") as HTMLElement,
+        {
+          zoom: 17,
+          center: bounds.getCenter(),
+          mapTypeId: "terrain",
+        }
+      );
+      area.setMap(this.map);
+    })
+
   }
 
   AgregarMarcadorSector(lat: any, long: any, map: google.maps.Map) {
-    //console.log(lat + ',' + long)
     const marker = new google.maps.Marker({
       position: new google.maps.LatLng(lat, long),
       map: map,

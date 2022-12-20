@@ -259,11 +259,11 @@
         </div>
         <div class="row br" *ngIf="ValidaInsertSec=='1' ">
             <div class="col-sm-4">
-                <input type="text " class="Col-sm-12 form-control " placeholder="Coordenada norte "
+                <input type="text " class="Col-sm-12 form-control " placeholder="Latitud"
                     [(ngModel)]="Coor1 ">
             </div>
             <div class="col-sm-4">
-                <input type="text " class="Col-sm-12 form-control " placeholder="Coordenada sur " [(ngModel)]="Coor2 ">
+                <input type="text " class="Col-sm-12 form-control " placeholder="Longitud" [(ngModel)]="Coor2 ">
             </div>
             <div class="col-sm-4">
                 <button class="btn btn-agro-prin col-sm-12" (click)="AgregarCoordenada(ModalRespuesta) ">Agregar
@@ -342,7 +342,7 @@
     <div class="row justify-content-center m-1" *ngIf="ValidaMapSector=='1' ">
         <label class="col-sm-12 mt-2"><strong>Nombre sector:&nbsp;</strong>{{SessionNombreSector}}</label>      
         <div class="col-sm-12 m-3">
-            <div id="map" [ngClass]="ValidaMapSector=='1' ? 'ShowMap' : 'HideMap' "></div>
+            <div id="mapCS" [ngClass]="ValidaMapSector=='1' ? 'ShowMap' : 'HideMap' "></div>
         </div>
     </div>
 </ng-template>
