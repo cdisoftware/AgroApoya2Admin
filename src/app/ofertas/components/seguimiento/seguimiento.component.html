@@ -6,8 +6,8 @@
             <div class="col-sm-6">
                 <label class="Llave">Oferta</label>
                 <ng-autocomplete [data]="ArrayOferta" [searchKeyword]="oferta" placeholder="Oferta"
-                    (selected)='selectOferta($event)' (inputCleared)="LimpiarCampos()"
-                    [itemTemplate]="templateResOf" [notFoundTemplate]="templateVacioOf" aria-required="true">
+                    (selected)='selectOferta($event)' (inputCleared)="LimpiarCampos()" [itemTemplate]="templateResOf"
+                    [notFoundTemplate]="templateVacioOf" aria-required="true">
                 </ng-autocomplete>
 
                 <ng-template #templateResOf let-item id="templateResOf">
@@ -15,14 +15,15 @@
                 </ng-template>
 
                 <ng-template #templateVacioOf let-SinRegistro>
-                    <label >Sin registros</label>
+                    <label>Sin registros</label>
                 </ng-template>
             </div>
             <div class="col-sm-6">
                 <label class="Llave">Sector</label>
-                <ng-autocomplete [data]="ArraySector" [searchKeyword]="sector" placeholder="Sector" [disabled]="selecsector == '0'"
-                    (selected)='selectSector($event)' (inputCleared)="LimpiarCamposSector()"
-                    [itemTemplate]="templateSector" [notFoundTemplate]="templateVacioSec" aria-required="true">
+                <ng-autocomplete [data]="ArraySector" [searchKeyword]="sector" placeholder="Sector"
+                    [disabled]="selecsector == '0'" (selected)='selectSector($event)'
+                    (inputCleared)="LimpiarCamposSector()" [itemTemplate]="templateSector"
+                    [notFoundTemplate]="templateVacioSec" aria-required="true">
                 </ng-autocomplete>
 
                 <ng-template #templateSector let-item id="templateSector">
@@ -30,7 +31,7 @@
                 </ng-template>
 
                 <ng-template #templateVacioSec let-SinRegistro>
-                    <label >Sin registros</label>
+                    <label>Sin registros</label>
                 </ng-template>
             </div>
         </div>
@@ -80,7 +81,9 @@
             {{Mensaje}}
         </div>
         <div class="row justify-content-center">
-            <button type="button" id="btnGuardarDirecccion" class="btn ColorAgro col-sm-3 col-3" (click)="modal.dismiss('Cross click')">Continuar </button>
+            <button type="button" id="btnGuardarDirecccion" class="btn ColorAgro col-sm-3 col-3"
+                (click)="modal.dismiss('Cross click')">Continuar </button>
         </div>
+        
     </div>
 </ng-template>
