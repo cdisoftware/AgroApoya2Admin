@@ -36,6 +36,7 @@ export class SeguimientoComponent implements OnInit {
   objDepartamento: any = '0';
   NomCiudad: string = '';
   NomDepa: string = 'Bogotá';
+  infoWindow = new google.maps.InfoWindow();
 
   //Buscar
   ArrayConsultaSeg: any = [];
@@ -76,7 +77,6 @@ export class SeguimientoComponent implements OnInit {
 
   ConsultaSectores(cd_cnctivo: string) {
     this.ServiciosValorar.ConsultaSectoresOferta('2', cd_cnctivo).subscribe(Resultado => {
-      console.log(Resultado)
       this.ArraySector = Resultado;
     })
   }
@@ -167,9 +167,9 @@ export class SeguimientoComponent implements OnInit {
 
     for (let i = 0; i < features.length; i++) {
       var icon;
-      if (features[i].Estado == '2') {
+      if (features[i].Estado == '1') {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/iconcasaEntregada.png';
-      } else {
+      } else if (features[i].Estado == '2') {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/iconcasaNoEntregada.png';
       }
 
@@ -179,46 +179,118 @@ export class SeguimientoComponent implements OnInit {
         position: features[i].position,
         map: this.map,
         icon: icon,
-        zIndex: features[i].IdCompra//Le envio El zindex El id compra
+        zIndex: i
       });
       this.markers.push(marker);
+
+
+      //var Mostrar: string = '' + this.markers[i].getTitle() + '\n' + this.ArrayConsultaSeg[i].FECHA_ENTREGA;
+      const infoWindow = new google.maps.InfoWindow();
+      this.markers[i].addListener("click", () => {
+        //  this.AbreInfoEntrega(this.ModalMensaje);
+        //infoWindow.close();
+        //infoWindow.setContent(Mostrar);
+        //infoWindow.open(this.markers[i].getMap(), this.markers[i]);
+        this.InfoWindow(this.markers[i].getZIndex());
+      });
     }
 
     const flightPath = new google.maps.Polyline({
       path: Polylines,
       geodesic: true,
-      strokeColor: "#31C231",
+      strokeColor: "#397c97",
       strokeOpacity: 1.0,
       strokeWeight: 3,
     });
 
     flightPath.setMap(this.map);
-
-
-
-    //Eventoclick
-      /*this.markers[0].addListener("click", () => {
-        console.log(this.markers[0].getZIndex());
-        //this.map.setZoom(18);
-        this.AbreInfoEntrega(this.ModalMensaje);
-      });*/
-
-      const infoWindow = new google.maps.InfoWindow();
-
-      this.markers[2].addListener("click", () => {
-        this.AbreInfoEntrega(this.ModalMensaje);
-        infoWindow.close();
-        infoWindow.setContent(this.markers[2].getTitle());
-        infoWindow.open(this.markers[2].getMap(), this.markers[2]);
-      });
-    
   }
 
 
-  AbreInfoEntrega(ModalMensajeCalifica: TemplateRef<any>) {
+  AbreInfoEntrega() {
     this.modalService.dismissAll();
-    this.modalService.open(ModalMensajeCalifica, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
-    this.Mensaje = '';
+    this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+  }
+
+
+  InfoWindow(i: any) {
+
+    this.infoWindow.close();
+    var NomCliente: string = '' + this.ArrayConsultaSeg[i].NOMBRE_CLIENTE + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_CLIENTE;
+    var FechaEntrega: string = '' + this.ArrayConsultaSeg[i].FECHA_ENTREGA;
+    var CodigoOferta: string = '' + this.ArrayConsultaSeg[i].COD_OFERTA;
+    var Direccion: string = '' + this.ArrayConsultaSeg[i].DIRECCION_CLIENTE;
+    var Producto: string = '' + this.ArrayConsultaSeg[i].PRODUCTO;
+    var Img: string = '' + this.ArrayConsultaSeg[i].IMAGEN_EVIDENCIA;
+
+    var Telefono: string = '' + this.ArrayConsultaSeg[i].CELULAR_CLIENTE;
+    var ComplementoDir: string = '' + this.ArrayConsultaSeg[i].COMPLEMENTO_DIRECCION;
+    var Estado: string = '' + this.ArrayConsultaSeg[i].ESTADO_COMPRA;
+    var Observaciones: string = '' + this.ArrayConsultaSeg[i].OBSERVACION;
+
+
+    const contentString =
+      '<div id="content">' +
+      '<div id="siteNotice">' +
+      "</div>" +
+      '<h1 id="firstHeading" class="firstHeading">' + NomCliente + '</h1>' +
+      '<div id="bodyContent">' +
+      "<p>" +
+      "<b>Fecha Entrega: </b>" + FechaEntrega + "<br>" +
+      "<b>Codigo Oferta: </b>" + CodigoOferta + "<br>" +
+      "<b>Dirección: </b>" + Direccion + "<br>" +
+      "<b>Producto: </b>" + Producto + "<br>" +
+      "</p>" +
+      '<p><a style="cursor: pointer; color: #397c97;" (click)="AbreInfoEntrega(this.ModalMensaje)">' +
+      "Ver mas</a>" +
+      "</p>" +
+      "</div>" +
+      "</div>";
+    const htmlPIn =
+
+      '<div class="row col-12">' +
+      '<div class="col-sm-12">' +
+      '<h1 id="firstHeading" class="firstHeading">' + NomCliente + '</h1>' +
+      '</div>' +
+      '<hr>' +
+      '<div class="col-sm-6">' +
+      '<div id="content">' +
+      '<div id="bodyContent">' +
+      '<p style="font-size: 14px;">' +
+      '<b>Dirección: </b> ' + Direccion + '' +
+      '<br>' +
+      '<b>Complemento dirección: </b>' + ComplementoDir + '' +
+      '<br>' +
+      '<b>Fecha Entrega: </b>' + FechaEntrega + '' +
+      '<br>' +
+      '<b>Codigo Oferta: </b>' + CodigoOferta + '' +
+      '<br>' +
+      '<b>Producto: </b>' + Producto + '' +
+      '<br>' +
+      '<b>Numero de telefono: </b>' + Telefono + '' +
+      '<br>' +
+      '<b>Estado: </b>' + Estado + '' +
+      '<br>' +
+      '<b>Observación: </b>' + Observaciones + '' +
+      '<br>' +
+
+      '</p>' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      '<div class="col-sm-6" style="height: 50%;">' +
+      '<img src="' + Img + '" style="width: 100%; height:200px; object-fit: cover;">' +
+      '</div>' +
+      '</div>';
+
+    for (var x = 0; x < this.markers.length; x++) {
+      if (i == x) {
+
+        this.infoWindow.close();
+        this.infoWindow.setContent(htmlPIn);
+        this.infoWindow.open(this.markers[i].getMap(), this.markers[i]);
+      }
+    }
   }
 
 }
