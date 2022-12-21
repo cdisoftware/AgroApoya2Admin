@@ -472,8 +472,8 @@
                     <h5 class="SubTituloForm">Sectorización</h5>
                 </div>
                 <div class="row br" *ngIf="respu.codigo == '1' && respu.registro > 0">
-                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
-                        <ngb-panel title="Sectorización" id="config-panel-three">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-sector">
+                        <ngb-panel title="Sectorización" id="config-panel-sector">
                             <ng-template ngbPanelContent>
                                 <div class="br row justify-content-center">
                                     <table class="col-sm-10 TableAgro">
@@ -498,8 +498,8 @@
                     <h5 class="SubTituloForm">Asignación transportista</h5>
                 </div>
                 <div class="row mt-1" *ngIf="respu.codigo == '2' && respu.registro > 0">
-                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
-                        <ngb-panel title="Asignación transportista" id="config-panel-three">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-trans">
+                        <ngb-panel title="Asignación transportista" id="config-panel-trans">
                             <ng-template ngbPanelContent>
                                 <div class="br row justify-content-center">
                                     <table class="col-sm-12 TableAgro">
@@ -533,8 +533,8 @@
                     <h5 class="SubTituloForm">Costeo</h5>
                 </div>
                 <div class="row mt-1" *ngIf="respu.codigo == '3' && respu.registro > 0">
-                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
-                        <ngb-panel title="Costeo Oferta" id="config-panel-three">
+                    <ngb-accordion #acc="ngbAccordion">
+                        <ngb-panel title="Costeo Oferta" id="config-panel-oferta">
                             <ng-template ngbPanelContent>
                                 <div class="br row justify-content-center">
                                     <table class="col-sm-10 TableAgro">
@@ -566,8 +566,8 @@
                     <h5 class="SubTituloForm">Valoración</h5>
                 </div>
                 <div class="row mt-1" *ngIf="respu.codigo == '4' && respu.registro > 0">
-                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
-                        <ngb-panel title="Definición vigencia oferta" id="config-panel-three">
+                    <ngb-accordion #acc="ngbAccordion">
+                        <ngb-panel title="Definición vigencia oferta" id="config-panel-valor">
                             <ng-template ngbPanelContent>
                                 <div class="row br">
                                     <h6 class="SubTituloForm">Definición vigencia oferta</h6>
@@ -854,9 +854,9 @@
                     <h5 class="SubTituloForm">Trazabilidad</h5>
                 </div>
                 <div class="row mt-1" *ngIf="respu.codigo == '5' && respu.registro > 0">
-                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+                    <ngb-accordion #acc="ngbAccordion">
 
-                        <ngb-panel title="Costeo Oferta" id="config-panel-three">
+                        <ngb-panel title="Costeo Oferta" id="config-panel">
                             <ng-template ngbPanelContent>
                                 <div class="br row justify-content-center">
                                     Fechas etc
