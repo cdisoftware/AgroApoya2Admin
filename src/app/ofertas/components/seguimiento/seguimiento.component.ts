@@ -191,13 +191,8 @@ export class SeguimientoComponent implements OnInit {
       this.markers.push(marker);
 
 
-      //var Mostrar: string = '' + this.markers[i].getTitle() + '\n' + this.ArrayConsultaSeg[i].FECHA_ENTREGA;
       const infoWindow = new google.maps.InfoWindow();
       this.markers[i].addListener("click", () => {
-        //  this.AbreInfoEntrega(this.ModalMensaje);
-        //infoWindow.close();
-        //infoWindow.setContent(Mostrar);
-        //infoWindow.open(this.markers[i].getMap(), this.markers[i]);
         this.InfoWindow(this.markers[i].getZIndex());
       });
     }
@@ -277,6 +272,7 @@ export class SeguimientoComponent implements OnInit {
       '<div id="Ocultar" class="gm-style-iw-d" style="max-height: 287px; max-width: 630px;">' +
       '<div id="content">' +
       '<h1 id="firstHeading" class="firstHeading">' + NomCliente + '</h1>' +
+      '<h2 id="firstHeading" class="firstHeading">' + Estado + '</h2>' +
       '<div id="bodyContent">' +
       '<p>' +
       '<b>Fecha Entrega: </b>' + FechaEntrega + '' +
