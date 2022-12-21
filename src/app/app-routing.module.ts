@@ -19,6 +19,7 @@ import { CarguepublicidadComponent } from './usuario/components/carguepublicidad
 import { EvaluacionofertaComponent } from './ofertas/components/evaluacionoferta/evaluacionoferta.component';
 import { PruebasmapsComponent } from './ofertas/components/pruebasmaps/pruebasmaps.component';
 import { SeguimientoComponent } from './ofertas/components/seguimiento/seguimiento.component';
+import { CarruselofertasComponent } from './ofertas/components/carruselofertas/carruselofertas.component';
 
 const routes: Routes = [
   {
@@ -92,6 +93,10 @@ const routes: Routes = [
       {
         path: 'seguimiento', 
         component: SeguimientoComponent
+      },
+      {
+        path: 'carrusel', 
+        component: CarruselofertasComponent
       }
     ]
   },
