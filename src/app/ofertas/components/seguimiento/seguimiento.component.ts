@@ -97,12 +97,12 @@ export class SeguimientoComponent implements OnInit {
       this.keywordSector = 'DSCRPCION_SCTOR';
     })
   }
-  LimpiaSector(Valor: string){
+  LimpiaSector(Valor: string) {
     this.Sector = Valor;
     this.SelectorSector = '';
     this.selecsector = '0';
   }
-  SelectSector(item: any){
+  SelectSector(item: any) {
     this.SelectorSector = item.ID_SCTOR_OFRTA.toString();
     this.selecsector = '1'
   }
@@ -174,12 +174,25 @@ export class SeguimientoComponent implements OnInit {
 
     for (let i = 0; i < features.length; i++) {
       var icon;
+      var LabelOption;
       if (features[i].Estado == '1') {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/iconcasaEntregada.png';
+        LabelOption = {
+          text: "" + (i + 1),
+          color: "#D35400",
+          fontSize: "15px",
+          fontWeight: "bold"
+        }
       } else {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/iconcasaNoEntregada.png';
+        LabelOption = {
+          text: "" + (i + 1),
+          color: "#17202A",
+          fontSize: "15px",
+          fontWeight: "bold"
+        }
       }
-
+      
       var marker = new google.maps.Marker({
         title: features[i].NomCli,
         animation: google.maps.Animation.DROP,
@@ -187,7 +200,7 @@ export class SeguimientoComponent implements OnInit {
         map: this.map,
         icon: icon,
         zIndex: i,
-        label: ""+ (i+1)
+        label: LabelOption
       });
       this.markers.push(marker);
 
