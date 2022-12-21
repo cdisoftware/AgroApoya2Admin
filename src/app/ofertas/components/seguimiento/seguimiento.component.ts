@@ -12,14 +12,6 @@ import { Router } from '@angular/router';
 export class SeguimientoComponent implements OnInit {
   @ViewChild('ModalMensaje', { static: false }) ModalMensaje: any;
 
-  ArrayOferta: any = [];
-  oferta = 'DescripcionProducto';
-  IdOferta: string = '0';
-
-  ArraySector: any = [];
-  sector = 'DSCRPCION_SCTOR';
-  IdSector: string = '0';
-
   selecsector: string = '0'
 
   Respuesta: string = '';
@@ -45,11 +37,23 @@ export class SeguimientoComponent implements OnInit {
   Mensaje: string = '';
   TituloModal: string = "AgroApoya2";
 
+
+
+
+  //VariablesFiltro Oferta
+  ArrayOferta: any = [];
+  keywordOferta: string = '';
+  SelectorOferta: string = '0';
+  Oferta: string = '';
+
+  //VariablesFiltro Oferta
+  ArraySector: any = [];
+  keywordSector: string = '';
+  SelectorSector: string = '';
+  Sector: string = '';
   constructor(
-    private SeriviciosGenerales: MetodosglobalesService,
     private modalService: NgbModal,
-    private ServiciosValorar: ValorarofertaService,
-    private rutas: Router) { }
+    private ServiciosValorar: ValorarofertaService) { }
 
   ngOnInit(): void {
     this.ConsultaOferta();
@@ -70,46 +74,49 @@ export class SeguimientoComponent implements OnInit {
       CD_RGION: 0,
       CD_MNCPIO: 0
     }
-    this.ServiciosValorar.BusquedaOferta('2', this.IdOferta, '0', '0', datosbusqueda).subscribe(Resultado => {
+    this.ServiciosValorar.BusquedaOferta('2', this.SelectorOferta, '0', '0', datosbusqueda).subscribe(Resultado => {
       this.ArrayOferta = Resultado;
+      this.keywordOferta = 'Producto';
     })
   }
-
+  LimpiaOferta(Valor: string) {
+    this.Oferta = Valor;
+    this.SelectorOferta = '';
+    this.selecsector = '0'
+    this.LimpiaSector('');
+  }
+  selectOfertaFiltro(item: any) {
+    this.SelectorOferta = item.cd_cnsctvo.toString();
+    this.selecsector = '1'
+    this.ConsultaSectores(item.cd_cnsctvo);
+  }
   ConsultaSectores(cd_cnctivo: string) {
     this.ServiciosValorar.ConsultaSectoresOferta('2', cd_cnctivo).subscribe(Resultado => {
       this.ArraySector = Resultado;
+      this.keywordSector = 'DSCRPCION_SCTOR';
     })
   }
-
-  selectOferta(item: any) {
+  LimpiaSector(Valor: string){
+    this.Sector = Valor;
+    this.SelectorSector = '';
+    this.selecsector = '0'
+  }
+  SelectSector(item: any){
+    this.SelectorSector = item.ID_SCTOR_OFRTA.toString();
     this.selecsector = '1'
-    this.ConsultaSectores(item.cd_cnsctvo);
-    this.IdOferta = item.cd_cnsctvo;
   }
 
-  selectSector(item: any) {
-    this.IdSector = item.ID_SCTOR_OFRTA;
-  }
 
-  LimpiarCampos() {
-    this.ArraySector = [];
-    this.IdOferta = '0';
-    this.ValidaInsertSec = '0';
-    this.IdSector = '0';
-    this.selecsector = '0';
-    this.sector = '';
-  }
-  LimpiarCamposSector() {
-    this.IdSector = '0';
-  }
+
+
 
   Buscar(templateRespuesta: any) {
-    if (this.IdSector == '0' && this.IdOferta == '0' || this.IdSector != '0' && this.IdOferta == '0' || this.IdSector == '0' && this.IdOferta != '0') {
+    if (this.SelectorSector == '0' && this.SelectorOferta == '0' || this.SelectorSector != '0' && this.SelectorOferta == '0' || this.SelectorSector == '0' && this.SelectorOferta != '0') {
       this.Respuesta = 'Es necesario que selecciones una oferta y un sector.';
       this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
       this.ValidaInsertSec = '0';
     } else {
-      this.ServiciosValorar.ConsultaSeguimiento('1', this.IdOferta, this.IdSector).subscribe(Resultado => {
+      this.ServiciosValorar.ConsultaSeguimiento('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
         if (Resultado.length == 0) {
           this.Respuesta = 'No encontramos registros de compras para este sector.';
           this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
@@ -228,27 +235,69 @@ export class SeguimientoComponent implements OnInit {
     var Estado: string = '' + this.ArrayConsultaSeg[i].ESTADO_COMPRA;
     var Observaciones: string = '' + this.ArrayConsultaSeg[i].OBSERVACION;
 
+    const Html =
+      //Estilos
+      '<style>' +
+      '#show{' +
+      'display: none;' +
+      '}' +
 
-    const contentString =
+      'div#VerOcultar {' +
+      ' display:none;' +
+      ' padding:0px;' +
+      ' width:630px;' +
+      ' height:300px;' +
+      ' cursor:pointer;' +
+      '}' +
+
+
+
+
+      'input#show:checked ~ div#VerOcultar {' +
+      ' display:block;' +
+      '}' +
+      'input#show:checked ~ div#Ocultar {' +
+      'display:none;' +
+      '}' +
+      'input#show:checked ~ div#VerMas {' +
+      'display:none;' +
+      '}' +
+      '</style>' +
+
+
+
+
+
+
+
+      '<input type="radio" id="show" name="group">' +
+
+
+      //DivSensillo
+      '<div id="Ocultar" class="gm-style-iw-d" style="max-height: 287px; max-width: 630px;">' +
       '<div id="content">' +
-      '<div id="siteNotice">' +
-      "</div>" +
       '<h1 id="firstHeading" class="firstHeading">' + NomCliente + '</h1>' +
       '<div id="bodyContent">' +
-      "<p>" +
-      "<b>Fecha Entrega: </b>" + FechaEntrega + "<br>" +
-      "<b>Codigo Oferta: </b>" + CodigoOferta + "<br>" +
-      "<b>Dirección: </b>" + Direccion + "<br>" +
-      "<b>Producto: </b>" + Producto + "<br>" +
-      "</p>" +
-      '<p><a style="cursor: pointer; color: #397c97;" (click)="AbreInfoEntrega(this.ModalMensaje)">' +
-      "Ver mas</a>" +
-      "</p>" +
-      "</div>" +
-      "</div>";
-    const htmlPIn =
+      '<p>' +
+      '<b>Fecha Entrega: </b>' + FechaEntrega + '' +
+      '<br>' +
+      '<b>Codigo Oferta: </b>' + CodigoOferta + '' +
+      '<br>' +
+      '<b>Dirección: </b>' + Direccion + '' +
+      '<br>' +
+      '<b>Producto: </b>' + Producto + '' +
+      '</p>' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
 
-      '<div class="row col-12">' +
+      '<label id="VerMas" style="cursor: pointer; color: #397c97;" for="show">' +
+      ' 	<span>Ver mas</span>' +
+      '</label>' +
+
+      '<div id="VerOcultar">' +
+      //Div mas detalles
+      '<div class="row col-12" style="overflow: auto; max-height: 320px; width: 630px;">' +
       '<div class="col-sm-12">' +
       '<h1 id="firstHeading" class="firstHeading">' + NomCliente + '</h1>' +
       '</div>' +
@@ -273,7 +322,6 @@ export class SeguimientoComponent implements OnInit {
       '<br>' +
       '<b>Observación: </b>' + Observaciones + '' +
       '<br>' +
-
       '</p>' +
       '</div>' +
       '</div>' +
@@ -281,13 +329,16 @@ export class SeguimientoComponent implements OnInit {
       '<div class="col-sm-6" style="height: 50%;">' +
       '<img src="' + Img + '" style="width: 100%; height:200px; object-fit: cover;">' +
       '</div>' +
+      '</div>' +
       '</div>';
+
+
 
     for (var x = 0; x < this.markers.length; x++) {
       if (i == x) {
 
         this.infoWindow.close();
-        this.infoWindow.setContent(htmlPIn);
+        this.infoWindow.setContent(Html);
         this.infoWindow.open(this.markers[i].getMap(), this.markers[i]);
       }
     }
