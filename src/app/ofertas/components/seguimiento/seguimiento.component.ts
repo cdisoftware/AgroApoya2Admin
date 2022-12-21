@@ -81,8 +81,9 @@ export class SeguimientoComponent implements OnInit {
   }
   LimpiaOferta(Valor: string) {
     this.Oferta = Valor;
-    this.SelectorOferta = '';
+    this.SelectorOferta = '0';
     this.selecsector = '0'
+    this.ValidaInsertSec = '0';
     this.LimpiaSector('');
   }
   selectOfertaFiltro(item: any) {
@@ -99,7 +100,7 @@ export class SeguimientoComponent implements OnInit {
   LimpiaSector(Valor: string){
     this.Sector = Valor;
     this.SelectorSector = '';
-    this.selecsector = '0'
+    this.selecsector = '0';
   }
   SelectSector(item: any){
     this.SelectorSector = item.ID_SCTOR_OFRTA.toString();
@@ -111,7 +112,7 @@ export class SeguimientoComponent implements OnInit {
 
 
   Buscar(templateRespuesta: any) {
-    if (this.SelectorSector == '0' && this.SelectorOferta == '0' || this.SelectorSector != '0' && this.SelectorOferta == '0' || this.SelectorSector == '0' && this.SelectorOferta != '0') {
+    if (this.SelectorSector == '' && this.SelectorOferta == '0' || this.SelectorSector != '' && this.SelectorOferta == '0' || this.SelectorSector == '' && this.SelectorOferta != '0') {
       this.Respuesta = 'Es necesario que selecciones una oferta y un sector.';
       this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
       this.ValidaInsertSec = '0';
@@ -124,7 +125,6 @@ export class SeguimientoComponent implements OnInit {
         } else {
           this.ValidaInsertSec = '1';
           this.ArrayConsultaSeg = Resultado;
-          console.log(Resultado)
           this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
         }
       })
@@ -176,7 +176,7 @@ export class SeguimientoComponent implements OnInit {
       var icon;
       if (features[i].Estado == '1') {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/iconcasaEntregada.png';
-      } else if (features[i].Estado == '2') {
+      } else {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/iconcasaNoEntregada.png';
       }
 
