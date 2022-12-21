@@ -186,7 +186,8 @@ export class SeguimientoComponent implements OnInit {
         position: features[i].position,
         map: this.map,
         icon: icon,
-        zIndex: i
+        zIndex: i,
+        label: ""+ (i+1)
       });
       this.markers.push(marker);
 
