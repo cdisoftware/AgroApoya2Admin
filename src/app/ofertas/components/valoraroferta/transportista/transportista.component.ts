@@ -210,7 +210,7 @@ export class TransportistaComponent implements OnInit, OnDestroy {
                   Cd_cnctvo: this.SessionOferta,
                   id_conductor: ResultConsult[i].ID_CNDCTOR
                 }
-                this.sectoresservices.EnviarCorreoIndividual('1', BodyCorreoInd).subscribe(ResultCI => {
+                this.sectoresservices.EnviarCorreoIndividual('1', '0', ResultConsult[i].ID_SCTOR_OFRTA,  BodyCorreoInd).subscribe(ResultCI => {
                   console.log(ResultCI)
                 })
                 this.sectoresservices.EnviarSms('6', ResultConsult[i].ID_CNDCTOR, this.SessionOferta, ResultConsult[i].ID_SCTOR_OFRTA, '0', '0', '0').subscribe(Resultado => {
@@ -223,9 +223,9 @@ export class TransportistaComponent implements OnInit, OnDestroy {
                   IdPlantilla: 7,
                   usucodig: ResultConsult[i].USUCODIG_TRANS,
                   Cd_cnctvo: this.SessionOferta,
-                  id_conductor: ResultConsult[i].ID_CNDCTOR
+                  
                 }
-                this.sectoresservices.EnviarCorreoIndividual('1', BodyCorreoInd).subscribe(ResultCI => {
+                this.sectoresservices.EnviarCorreoIndividual('1', '0', ResultConsult[i].ID_SCTOR_OFRTA, BodyCorreoInd).subscribe(ResultCI => {
                   console.log(ResultCI)
                 })
                 this.sectoresservices.EnviarSms('5', ResultConsult[i].ID_CNDCTOR, this.SessionOferta, ResultConsult[i].ID_SCTOR_OFRTA, '0', '0', '0').subscribe(Resultado => {
