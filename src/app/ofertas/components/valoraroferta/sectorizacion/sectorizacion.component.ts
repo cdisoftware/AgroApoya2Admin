@@ -422,7 +422,7 @@ export class SectorizacionComponent implements OnInit {
       this.map = new google.maps.Map(
         document.getElementById("mapCS") as HTMLElement,
         {
-          zoom: 17,
+          zoom: 15,
           center: bounds.getCenter(),
           mapTypeId: "terrain",
         }
