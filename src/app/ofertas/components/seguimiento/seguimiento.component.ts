@@ -168,29 +168,28 @@ export class SeguimientoComponent implements OnInit {
       var auxcoor = this.ArrayConsultaSeg[i].COORDENADAS_MAPA.split(",");
       lat = parseFloat(auxcoor[0]);
       long = parseFloat(auxcoor[1]);
-      features.push({ position: new google.maps.LatLng(lat, long), Estado: this.ArrayConsultaSeg[i].COD_ESTADO_ENTREGA, NomCli: this.ArrayConsultaSeg[i].NOMBRE_CLIENTE + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_CLIENTE, IdCompra: this.ArrayConsultaSeg[i].ID_COMPRA });
+      features.push({ position: new google.maps.LatLng(lat, long), Estado: this.ArrayConsultaSeg[i].COD_ESTADO_COMPRA, NomCli: this.ArrayConsultaSeg[i].NOMBRE_CLIENTE + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_CLIENTE, IdCompra: this.ArrayConsultaSeg[i].ID_COMPRA });
       Polylines.push({ lat: lat, lng: long });
     }
 
     for (let i = 0; i < features.length; i++) {
       var icon;
       var LabelOption;
+      //alert(features[i].Estado)
       if (features[i].Estado == '1') {
-        icon = '../../../../assets/ImagenesAgroApoya2Adm/iconcasaEntregada.png';
-        LabelOption = {
-          text: "" + (i + 1),
-          color: "#D35400",
-          fontSize: "15px",
-          fontWeight: "bold"
-        }
-      } else {
-        icon = '../../../../assets/ImagenesAgroApoya2Adm/iconcasaNoEntregada.png';
-        LabelOption = {
-          text: "" + (i + 1),
-          color: "#17202A",
-          fontSize: "15px",
-          fontWeight: "bold"
-        }
+        icon = '../../../../assets/ImagenesAgroApoya2Adm/Entregado.png';
+        // LabelOption = {
+        //   text: "" + (i + 1),
+        //   color: "#D35400",
+        //   fontSize: "15px",
+        //   fontWeight: "bold"
+        // }
+      } else if(features[i].Estado == '2') {
+        icon = '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png';
+      }else if(features[i].Estado == '4') {
+        icon = '../../../../assets/ImagenesAgroApoya2Adm/Pendiente.png';
+      }else {
+        icon = '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png';
       }
       
       var marker = new google.maps.Marker({
