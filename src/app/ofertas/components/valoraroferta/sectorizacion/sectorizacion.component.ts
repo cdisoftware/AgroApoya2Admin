@@ -51,12 +51,12 @@ export class SectorizacionComponent implements OnInit {
   ValidaMapSector: string = '0';
   SessionNombreSector: any;
   Sessioncoordenada: any;
+  area: google.maps.Polygon;
 
 
   constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService) { }
 
   ngOnInit(): void {
-    this.ConsultaCoordenadas();
     this.DesSect = '';
     this.CoordeSect = '';
     this.Cant = '';
@@ -251,7 +251,7 @@ export class SectorizacionComponent implements OnInit {
   CerrModalMap(templateRespuesta: any) {
     this.ConsultaCiudadOferta();
     this.ConsultaCoordenadas();
-    if (this.DataCoor.length == 3) {
+    if (this.DataCoor.length >= 3) {
       this.SessionSecCreado = '0';
       this.ValidaInsertSec = '0';
       this.ValidaCoord = '0';
@@ -262,7 +262,7 @@ export class SectorizacionComponent implements OnInit {
     }
     else {
       this.modalService.open(templateRespuesta);
-      this.Respuesta = 'Recuerda que debes registrar 3 coordenadas minimo por sector, favor valida tu información.';
+      this.Respuesta = 'Recuerda que debes registrar minimo 3 coordenadas por sector, favor valida tu información.';
     }
 
   }
@@ -304,8 +304,7 @@ export class SectorizacionComponent implements OnInit {
         const arrayRes = Resultado.split('|')
         this.Respuesta = arrayRes[1];
         this.Coor1 = '';
-        this.Coor2 = '';
-        //this.markers[0].setMap(null)
+        this.Coor2 = '';        
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
         this.ConsultaCoordenadas()
       })
@@ -328,25 +327,30 @@ export class SectorizacionComponent implements OnInit {
       this.Coor1 = '';
       this.Coor2 = '';
       this.ConsultaCoordenadas()
+      this.markers[0].setMap(null)
     })
   }
 
   ConsultaCoordenadas() {
     this.sectoresservices.ConsultaCoordenada('1', this.SessionSecCreado).subscribe(Result => {
-      //console.log(Result)
+      console.log(Result)
       if (Result.length > 0) {
+        console.log(this.area)
+        if(this.area!=undefined){
+          console.log('Entra a limpiar area')
+          this.area.setMap(null)
+        }
         this.ValidaCoord = '1';
         this.DataCoor = Result;
-        //console.log(this.map)
         var coordenadas = '';
-        for (var i = 0; i < this.DataCoor.length; i++) {          
+        for (var i = 0; i < this.DataCoor.length; i++) {
           coordenadas += this.DataCoor[i].Latitud.trim() + ',' + this.DataCoor[i].Longitud.trim() + '|';
         }
-        //coordenadas = '4.712111574133,-74.04141821450|4.712795898472,-74.03335012979|4.717310425273,-74.04693572883|';
         console.log(coordenadas)
-        var nuevaCoord = coordenadas.substring(0, coordenadas.length - 1)
-        console.log(nuevaCoord)
+        var nuevaCoord = coordenadas.substring(0, coordenadas.length - 1)        
+        //var nuevaCoord = "4.711719820895,-74.11319514221|4.712746307730,-74.10924693054|4.709923465287,-74.10795947022|4.708554810281,-74.11036272949|4.711719820895,-74.11319514221";
         var bounds = new google.maps.LatLngBounds;
+        console.log(nuevaCoord)
         var coords = nuevaCoord.split('|').map(function (data: string) {
           var info = data.split(','), // Separamos por coma
             coord = { // Creamos el obj de coordenada
@@ -358,15 +362,15 @@ export class SectorizacionComponent implements OnInit {
           return coord;
         });
         console.log(coords);
-        var area = new google.maps.Polygon({
+        this.area = new google.maps.Polygon({
           paths: coords,
           strokeColor: '#397c97',
           strokeOpacity: 0.8,
           strokeWeight: 3,
           fillColor: '#B1B0B0',
-          fillOpacity: 0.35
+          fillOpacity: 0.35,          
         });
-        area.setMap(this.map);
+        this.area.setMap(this.map);
       }
       else {
         this.ValidaCoord = '0';
@@ -396,9 +400,6 @@ export class SectorizacionComponent implements OnInit {
   ConsultaMapaSector() {
     this.geocoder.geocode({ address: this.SessionCiudad }).then((result) => {
       const { results } = result;
-      var lati = results[0].geometry.location.lat();
-      var longi = results[0].geometry.location.lng();
-
       var bounds = new google.maps.LatLngBounds;
       var coords = this.Sessioncoordenada.split('|').map(function (data: string) {
         var info = data.split(','), // Separamos por coma
