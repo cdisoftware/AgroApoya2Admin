@@ -8,7 +8,9 @@
         <br>
         <div class="row">
             <div class="col-sm-4 br">
-                <ng-autocomplete [data]="ArrayProductos" [searchKeyword]="producto" placeholder="Producto" (selected)='selectProducto($event)' (inputCleared)="LimpiarCampos('pd')" [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio">
+                <ng-autocomplete [data]="ArrayProductos" [searchKeyword]="producto" placeholder="Producto"
+                    (selected)='selectProducto($event)' (inputCleared)="LimpiarCampos('pd')"
+                    [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio">
                 </ng-autocomplete>
 
                 <ng-template #templateRes let-item id="templateRes">
@@ -21,7 +23,9 @@
             </div>
 
             <div class="col-sm-4 br">
-                <ng-autocomplete [data]="ArrayProductor" [searchKeyword]="productor" placeholder="Productor" (selected)='selectProductor($event)' (inputCleared)="LimpiarCampos('pt')" [itemTemplate]="templateResPr" [notFoundTemplate]="templateVacioPr">
+                <ng-autocomplete [data]="ArrayProductor" [searchKeyword]="productor" placeholder="Productor"
+                    (selected)='selectProductor($event)' (inputCleared)="LimpiarCampos('pt')"
+                    [itemTemplate]="templateResPr" [notFoundTemplate]="templateVacioPr">
                 </ng-autocomplete>
 
                 <ng-template #templateResPr let-item id="templateResPr">
@@ -33,7 +37,9 @@
                 </ng-template>
             </div>
             <div class="col-sm-4 br">
-                <ng-autocomplete [data]="ArrayEstado" [searchKeyword]="estado" placeholder="Estado" (selected)='selectEstado($event)' (inputCleared)="LimpiarCampos('es')" [itemTemplate]="templateResEs" [notFoundTemplate]="templateVacioPr">
+                <ng-autocomplete [data]="ArrayEstado" [searchKeyword]="estado" placeholder="Estado"
+                    (selected)='selectEstado($event)' (inputCleared)="LimpiarCampos('es')"
+                    [itemTemplate]="templateResEs" [notFoundTemplate]="templateVacioPr">
                 </ng-autocomplete>
 
                 <ng-template #templateResEs let-item id="templateResEs">
@@ -48,10 +54,13 @@
         </div>
         <div class="row br">
             <div class="col-sm-4 br">
-                <input placeholder="Fecha oferta" type="text" class="form-control form-control-sm textBox" onfocus="(this.type='date')" onblur="(this.type='date')" [(ngModel)]="FechaOferta" name="FechaOferta">
+                <input placeholder="Fecha oferta" type="text" class="form-control form-control-sm textBox"
+                    onfocus="(this.type='date')" onblur="(this.type='date')" [(ngModel)]="FechaOferta"
+                    name="FechaOferta">
             </div>
             <div class="col-sm-4 br">
-                <input placeholder="Número oferta" type="text" class="form-control form-control-sm textBox" [(ngModel)]="NoOferta" name="NoOferta">
+                <input placeholder="Número oferta" type="text" class="form-control form-control-sm textBox"
+                    [(ngModel)]="NoOferta" name="NoOferta">
             </div>
         </div>
         <div class="row br justify-content-center mt-3">
@@ -73,7 +82,8 @@
                         <div class="col-sm-12">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave TextMay">Codigo oferta:&nbsp;</label><label class="ValorIDOfer"><strong>{{oferta.COD_OFR_PUBLICO}}</strong></label>
+                                    <label class="Llave TextMay">Codigo oferta:&nbsp;</label><label
+                                        class="ValorIDOfer"><strong>{{oferta.COD_OFR_PUBLICO}}</strong></label>
                                 </div>
                             </div>
                         </div>
@@ -82,14 +92,16 @@
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Producto:&nbsp;</label><label class="Valor">{{oferta.Nombre_Producto}}</label>
+                                    <label class="Llave">Producto:&nbsp;</label><label
+                                        class="Valor">{{oferta.Nombre_Producto}}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Presentación empaque:&nbsp;</label><label class="Valor">{{oferta.Descripcion_empaque}}</label>
+                                    <label class="Llave">Presentación empaque:&nbsp;</label><label
+                                        class="Valor">{{oferta.Descripcion_empaque}}</label>
                                 </div>
                             </div>
                         </div>
@@ -98,14 +110,16 @@
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Tamaño:&nbsp;</label><label class="Valor">{{oferta.Nmbre_tamano}}</label>
+                                    <label class="Llave">Tamaño:&nbsp;</label><label
+                                        class="Valor">{{oferta.Nmbre_tamano}}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Condición entrega:&nbsp;</label> <label class="Valor">{{oferta.Condicion_entrega}}</label>
+                                    <label class="Llave">Condición entrega:&nbsp;</label> <label
+                                        class="Valor">{{oferta.Condicion_entrega}}</label>
                                 </div>
                             </div>
                         </div>
@@ -114,64 +128,74 @@
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Valor unidad:&nbsp;</label><label class="Valor">{{oferta.valor_unidad_formato}}</label>
+                                    <label class="Llave">Valor unidad:&nbsp;</label><label
+                                        class="Valor">{{oferta.valor_unidad_formato}}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Unidades disponibles:&nbsp;</label><label class="Valor">{{oferta.Unidades_disponibles}}</label>
+                                    <label class="Llave">Unidades disponibles:&nbsp;</label><label
+                                        class="Valor">{{oferta.Unidades_disponibles}}</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <label class="Llave">Valor total oferta:&nbsp;</label><label class="Valor">{{oferta.valor_Total_Ofr_formato}}</label>
+                            <label class="Llave">Valor total oferta:&nbsp;</label><label
+                                class="Valor">{{oferta.valor_Total_Ofr_formato}}</label>
                         </div>
                         <div class="col-sm-6">
-                            <label class="Llave">Valor costeo:&nbsp;</label><label class="Valor">${{oferta.vlor_costeo}}</label>
-                        </div>
-                    </div>
-                    <hr class="hrSinEstilo">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <label class="Llave">Descripción producto:&nbsp;</label><label class="Valor">{{oferta.caracteristicas}}</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <label class="Llave">Caracterización:&nbsp;</label><label class="Valor">{{oferta.caracterizacion}}</label>
+                            <label class="Llave">Valor costeo:&nbsp;</label><label
+                                class="Valor">${{oferta.vlor_costeo}}</label>
                         </div>
                     </div>
                     <hr class="hrSinEstilo">
                     <div class="row">
+                        <div class="col-sm-12">
+                            <label class="Llave">Descripción producto:&nbsp;</label><label
+                                class="Valor">{{oferta.caracteristicas}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="Llave">Caracterización:&nbsp;</label><label
+                                class="Valor">{{oferta.caracterizacion}}</label>
+                        </div>
+                    </div>
+                    <hr class="hrSinEstilo">
+                    <div class="row">
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Fecha recogida:&nbsp;</label><label class="Valor">{{oferta.fecha_recogida}}</label>
+                                    <label class="Llave">Fecha recogida:&nbsp;</label><label
+                                        class="Valor">{{oferta.fecha_recogida}}</label>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Jornada:&nbsp;</label><label class="Valor">{{oferta.Nombre_jornada}}</label>
+                                    <label class="Llave">Jornada:&nbsp;</label><label
+                                        class="Valor">{{oferta.Nombre_jornada}}</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <label class="Llave">Nombre productor:&nbsp;</label><label class="Valor">{{oferta.Nombre_productor}}</label>
+                            <label class="Llave">Nombre productor:&nbsp;</label><label
+                                class="Valor">{{oferta.Nombre_productor}}</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Ubicación:&nbsp;</label><label class="Valor">{{oferta.Ubicacion_parsela +'
+                                    <label class="Llave">Ubicación:&nbsp;</label><label
+                                        class="Valor">{{oferta.Ubicacion_parsela +'
                                         ('+oferta.coordenadas_parcela}})</label>
                                 </div>
                             </div>
@@ -181,7 +205,8 @@
                         <div class="col-sm-12">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave">Estado oferta:&nbsp;</label><label class="Valor">{{NomEstado}}</label>
+                                    <label class="Llave">Estado oferta:&nbsp;</label><label
+                                        class="textblue"><strong>{{NomEstado}}</strong></label>
                                 </div>
                             </div>
                         </div>
@@ -193,30 +218,29 @@
                 <div class="col-sm-1" *ngIf="ValidaBusqueda == '1'">
                     <div class="row justify-content-center">
                         <button class="SinEstilo col-sm-11" (click)="EditaOferta(templateEditar)">
-                            <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Adm/editar.png"
+                            <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
                                 title="Editar oferta">
                         </button>
                         <label class="col-sm-11 CentrarText">Editar</label>
-                    </div>                    
+                    </div>
                 </div>
                 <div class="col-sm-1" *ngIf="ValidaBusqueda == '1' || ValidaBusqueda == '2'">
-                    <button class="SinEstilo" (click)="CerrarOferta(templateCerrar)">
-                        <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Adm/Cerrar.png"
-                            title="Cerrar oferta">
-                    </button>
-                    <label>Cerrar</label>
+                    <div class="row justify-content-center">
+                        <button class="SinEstilo col-sm-11" (click)="CerrarOferta(templateCerrar)">
+                            <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Adm/Cerrar.png"
+                                title="Cerrar oferta">
+                        </button>
+                        <label class="col-sm-11 CentrarText">Cerrar</label>
+                    </div>
                 </div>
-                <div class="col-sm-1">
-                    <button class="SinEstilo" disabled>
-                        <img class="BtnimgTamano" src={{ImagenEstado}} title={{EstadoOferta}}>
-                    </button>
-                    <label>Estado</label>
-                </div>
-                <div class="col-sm-1 click" (click)="AbrirPopuPResumen(ModalResumen, oferta)">
-                    <button class="SinEstilo">
-                        <img class="BtnimgTamano" src={{ImagenEstado}} title={{EstadoOferta}}>
-                    </button>
-                    <label>Resumen</label>
+                <div class="col-sm-1" (click)="AbrirPopuPResumen(ModalResumen, oferta)">
+                    <div class="row justify-content-center">
+                        <button class="SinEstilo col-sm-11">
+                            <img class="BtnimgTamano" src='./../../../../../assets/ImagenesAgroApoya2Adm/resumen.png'
+                                title="Resumen de oferta">
+                        </button>
+                        <label class="col-sm-11 CentrarText">Resumen</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -236,19 +260,24 @@
             <div class="row br">
                 <div class="col-sm-12">
                     <label class="col-sm-12 Llave">Caracterización</label>
-                    <textarea name="ECaracteriza" id="ECaracteriza" class="col-sm-12 form-control form-control-sm textArea" placeholder="Caracterización" rows="3" [(ngModel)]="ECaracteriza"></textarea>
+                    <textarea name="ECaracteriza" id="ECaracteriza"
+                        class="col-sm-12 form-control form-control-sm textArea" placeholder="Caracterización" rows="3"
+                        [(ngModel)]="ECaracteriza"></textarea>
                 </div>
             </div>
             <div class="row br">
                 <div class="col-sm-12">
                     <label class="col-sm-12 Llave">Fecha Recogida</label>
-                    <input type="date" class="col-sm-12 form-control form-control-sm textBox" placeholder="Fecha recogida" onfocus="(this.type='date')" onblur="(this.type='date')" [(ngModel)]="EFechaRecogida" name="EFechaRecogida">
+                    <input type="date" class="col-sm-12 form-control form-control-sm textBox"
+                        placeholder="Fecha recogida" onfocus="(this.type='date')" onblur="(this.type='date')"
+                        [(ngModel)]="EFechaRecogida" name="EFechaRecogida">
                 </div>
             </div>
             <div class="row br">
                 <div class="col-sm-12">
                     <label class="col-sm-12 Llave">Jornada</label>
-                    <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox" (change)='SelEJornada(ejornada.value)'>
+                    <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox"
+                        (change)='SelEJornada(ejornada.value)'>
                         <option value="1">Jornada</option>
                         <option *ngFor="let jornada of ArrayJornada" [value]="jornada.CD_JRNDA"
                             [selected]="jornada.CD_JRNDA == EJornada">
@@ -259,7 +288,8 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptaEditar(ModalRespuesta)">Guardar</button>
+            <button type="button" class="btn btn-agro-prin col-sm-2"
+                (click)="AceptaEditar(ModalRespuesta)">Guardar</button>
         </div>
         <br>
     </ng-template>
@@ -271,12 +301,15 @@
         <div class="modal-body">
             <div class="row br">
                 <div class="col-sm-12">
-                    <textarea [(ngModel)]="mcObservacion" name="mcObservacion" id="mcObservacion" class="Col-sm-12 form-control form-control-sm textArea" placeholder="Observación" rows="3"></textarea>
+                    <textarea [(ngModel)]="mcObservacion" name="mcObservacion" id="mcObservacion"
+                        class="Col-sm-12 form-control form-control-sm textArea" placeholder="Observación"
+                        rows="3"></textarea>
                 </div>
             </div>
         </div>
         <div class="row justify-content-center">
-            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="AceptaCerrar(ModalRespuesta)">Guardar</button>
+            <button type="button" class="btn btn-agro-prin col-sm-2"
+                (click)="AceptaCerrar(ModalRespuesta)">Guardar</button>
         </div>
         <br>
     </ng-template>
@@ -290,11 +323,14 @@
             <ul>
                 <li *ngFor="let seleccion of ArrayBusqueda" class="row br">
                     <div class="col-sm-10">
-                        <input type="text" value="{{seleccion.cd_cnsctvo}} - {{seleccion.Producto}} - {{seleccion.NombreCompletoProductor}} - {{seleccion.VigenciaDesde}}" class="form-control" disabled>
+                        <input type="text"
+                            value="{{seleccion.cd_cnsctvo}} - {{seleccion.Producto}} - {{seleccion.NombreCompletoProductor}} - {{seleccion.VigenciaDesde}}"
+                            class="form-control" disabled>
                     </div>
                     <div class="col-sm-1">
                         <button class="bot col-sm-1 SinEstilo" (click)="CargaBusqueda(seleccion)" title="Editar">
-                            <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Adm/editar.png" alt="Ver">
+                            <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
+                                alt="Ver">
                         </button>
                     </div>
                 </li>
@@ -348,7 +384,8 @@
                                     <div class="col-sm-12">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <label class="Llave TextMay">Codigo oferta:&nbsp;</label><label class="ValorIDOfer"><strong>{{oferta.COD_OFR_PUBLICO}}</strong></label>
+                                                <label class="Llave TextMay">Codigo oferta:&nbsp;</label><label
+                                                    class="ValorIDOfer"><strong>{{oferta.COD_OFR_PUBLICO}}</strong></label>
                                             </div>
                                         </div>
                                     </div>
@@ -357,14 +394,16 @@
                                     <div class="col-sm-6">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <label class="Llave">Producto:&nbsp;</label><label class="Valor">{{oferta.Nombre_Producto}}</label>
+                                                <label class="Llave">Producto:&nbsp;</label><label
+                                                    class="Valor">{{oferta.Nombre_Producto}}</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <label class="Llave">Presentación empaque:&nbsp;</label><label class="Valor">{{oferta.Descripcion_empaque}}</label>
+                                                <label class="Llave">Presentación empaque:&nbsp;</label><label
+                                                    class="Valor">{{oferta.Descripcion_empaque}}</label>
                                             </div>
                                         </div>
                                     </div>
@@ -373,14 +412,16 @@
                                     <div class="col-sm-6">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <label class="Llave">Tamaño:&nbsp;</label><label class="Valor">{{oferta.Nmbre_tamano}}</label>
+                                                <label class="Llave">Tamaño:&nbsp;</label><label
+                                                    class="Valor">{{oferta.Nmbre_tamano}}</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <label class="Llave">Condición entrega:&nbsp;</label> <label class="Valor">{{oferta.Condicion_entrega}}</label>
+                                                <label class="Llave">Condición entrega:&nbsp;</label> <label
+                                                    class="Valor">{{oferta.Condicion_entrega}}</label>
                                             </div>
                                         </div>
                                     </div>
@@ -389,64 +430,74 @@
                                     <div class="col-sm-6">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <label class="Llave">Valor unidad:&nbsp;</label><label class="Valor">{{oferta.valor_unidad_formato}}</label>
+                                                <label class="Llave">Valor unidad:&nbsp;</label><label
+                                                    class="Valor">{{oferta.valor_unidad_formato}}</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <label class="Llave">Unidades disponibles:&nbsp;</label><label class="Valor">{{oferta.Unidades_disponibles}}</label>
+                                                <label class="Llave">Unidades disponibles:&nbsp;</label><label
+                                                    class="Valor">{{oferta.Unidades_disponibles}}</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <label class="Llave">Valor total oferta:&nbsp;</label><label class="Valor">{{oferta.valor_Total_Ofr_formato}}</label>
+                                        <label class="Llave">Valor total oferta:&nbsp;</label><label
+                                            class="Valor">{{oferta.valor_Total_Ofr_formato}}</label>
                                     </div>
                                     <div class="col-sm-6">
-                                        <label class="Llave">Valor costeo:&nbsp;</label><label class="Valor">${{oferta.vlor_costeo}}</label>
-                                    </div>
-                                </div>
-                                <hr class="hrSinEstilo">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <label class="Llave">Descripción producto:&nbsp;</label><label class="Valor">{{oferta.caracteristicas}}</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <label class="Llave">Caracterización:&nbsp;</label><label class="Valor">{{oferta.caracterizacion}}</label>
+                                        <label class="Llave">Valor costeo:&nbsp;</label><label
+                                            class="Valor">${{oferta.vlor_costeo}}</label>
                                     </div>
                                 </div>
                                 <hr class="hrSinEstilo">
                                 <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="Llave">Descripción producto:&nbsp;</label><label
+                                            class="Valor">{{oferta.caracteristicas}}</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="Llave">Caracterización:&nbsp;</label><label
+                                            class="Valor">{{oferta.caracterizacion}}</label>
+                                    </div>
+                                </div>
+                                <hr class="hrSinEstilo">
+                                <div class="row">
                                     <div class="col-sm-6">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <label class="Llave">Fecha recogida:&nbsp;</label><label class="Valor">{{oferta.fecha_recogida}}</label>
+                                                <label class="Llave">Fecha recogida:&nbsp;</label><label
+                                                    class="Valor">{{oferta.fecha_recogida}}</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <label class="Llave">Jornada:&nbsp;</label><label class="Valor">{{oferta.Nombre_jornada}}</label>
+                                                <label class="Llave">Jornada:&nbsp;</label><label
+                                                    class="Valor">{{oferta.Nombre_jornada}}</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <label class="Llave">Nombre productor:&nbsp;</label><label class="Valor">{{oferta.Nombre_productor}}</label>
+                                        <label class="Llave">Nombre productor:&nbsp;</label><label
+                                            class="Valor">{{oferta.Nombre_productor}}</label>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <label class="Llave">Ubicación:&nbsp;</label><label class="Valor">{{oferta.Ubicacion_parsela +'
+                                                <label class="Llave">Ubicación:&nbsp;</label><label
+                                                    class="Valor">{{oferta.Ubicacion_parsela +'
                                                     ('+oferta.coordenadas_parcela}})</label>
                                             </div>
                                         </div>
@@ -456,7 +507,8 @@
                                     <div class="col-sm-12">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <label class="Llave">Estado oferta:&nbsp;</label><label class="Valor">{{NomEstado}}</label>
+                                                <label class="Llave">Estado oferta:&nbsp;</label><label
+                                                    class="Valor">{{NomEstado}}</label>
                                             </div>
                                         </div>
                                     </div>
@@ -469,23 +521,30 @@
             <div class="row" *ngFor="let respu of ArrayResumenOferta">
                 <!--Sectorización-->
                 <div class="row br" *ngIf="respu.codigo == '1' && respu.registro > 0">
-                    <h5 class="SubTituloForm">Sectorización</h5>
-                </div>
-                <div class="row br" *ngIf="respu.codigo == '1' && respu.registro > 0">
-                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-sector">
-                        <ngb-panel title="Sectorización" id="config-panel-sector">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+                        <ngb-panel title="Sectorización" id="config-panel-three">
                             <ng-template ngbPanelContent>
-                                <div class="br row justify-content-center">
-                                    <table class="col-sm-10 TableAgro">
+                                <div class="br row justify-content-center ">
+                                    <table class="col-sm-10 TableAgro ">
                                         <tr>
                                             <th>Sector</th>
                                             <th>Cantidad</th>
                                             <th>Valor flete</th>
+                                            <th>Eliminar</th>
                                         </tr>
                                         <tr>
                                             <td>Prueba</td>
                                             <td>Prueba</td>
                                             <td>Prueba</td>
+                                            <td>
+                                                <button class="SinEstilo">
+                                                    <img
+                                                        src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="4 ">Ok</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -494,12 +553,9 @@
                     </ngb-accordion>
                 </div>
                 <!--Asignación transportista-->
-                <div class="row br" *ngIf="respu.codigo == '2' && respu.registro > 0">
-                    <h5 class="SubTituloForm">Asignación transportista</h5>
-                </div>
                 <div class="row mt-1" *ngIf="respu.codigo == '2' && respu.registro > 0">
-                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-trans">
-                        <ngb-panel title="Asignación transportista" id="config-panel-trans">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+                        <ngb-panel title="Asignación transportista" id="config-panel-three">
                             <ng-template ngbPanelContent>
                                 <div class="br row justify-content-center">
                                     <table class="col-sm-12 TableAgro">
@@ -516,11 +572,15 @@
                                             <td>Suba</td>
                                             <td>200</td>
                                             <td>50 KG</td>
-                                            <td>Favio Enrique Bernal Gil
+                                            <td class="Linktxt" title="Información transportista">Favio Enrique Bernal
+                                                Gil
                                             </td>
                                             <td>50.000.00</td>
                                             <td>80.000.00</td>
                                             <td>Aceptado</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="7">Ok</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -529,12 +589,9 @@
                     </ngb-accordion>
                 </div>
                 <!--Costeo Oferta-->
-                <div class="row br" *ngIf="respu.codigo == '3' && respu.registro > 0">
-                    <h5 class="SubTituloForm">Costeo</h5>
-                </div>
                 <div class="row mt-1" *ngIf="respu.codigo == '3' && respu.registro > 0">
-                    <ngb-accordion #acc="ngbAccordion">
-                        <ngb-panel title="Costeo Oferta" id="config-panel-oferta">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+                        <ngb-panel title="Costeo Oferta" id="config-panel-three">
                             <ng-template ngbPanelContent>
                                 <div class="br row justify-content-center">
                                     <table class="col-sm-10 TableAgro">
@@ -542,11 +599,17 @@
                                             <th>Concepto</th>
                                             <th>Tipo Valor</th>
                                             <th>Valor</th>
+                                            <th>Eliminar</th>
                                         </tr>
                                         <tr>
                                             <td>Lavada</td>
                                             <td>Unitario</td>
                                             <td>100.000.00</td>
+                                            <td>
+                                                <button class="SinEstilo">
+                                                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Cerrar.png">
+                                                </button>
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>
@@ -560,259 +623,182 @@
                         </ngb-panel>
                     </ngb-accordion>
                 </div>
-
                 <!--Valoracion-->
-                <div class="row br mt-1" *ngIf="respu.codigo == '4' && respu.registro > 0">
-                    <h5 class="SubTituloForm">Valoración</h5>
-                </div>
                 <div class="row mt-1" *ngIf="respu.codigo == '4' && respu.registro > 0">
-                    <ngb-accordion #acc="ngbAccordion">
-                        <ngb-panel title="Definición vigencia oferta" id="config-panel-valor">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+                        <ngb-panel title="Definición vigencia oferta" id="config-panel-three">
                             <ng-template ngbPanelContent>
                                 <div class="row br">
-                                    <h6 class="SubTituloForm">Definición vigencia oferta</h6>
-                                </div>
-                                <div class="row mb-2">
                                     <div class="col-sm-6">
-                                        <label class="col-sm-12 Llave mb-1">Sector a valorar</label>
-                                        <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" (selected)='selectSector($event)' (inputCleared)='LimpiaSector()' placeholder="Sector" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio">
-                                        </ng-autocomplete>
-                                        <ng-template #templateSec let-item>
-                                            <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
-                                        </ng-template>
-                                        <ng-template #templateVacio let-SinRegistro>
-                                            <label for="">Sin registros</label>
-                                        </ng-template>
+                                        <label class="col-sm-12 Llave">Vigencia desde</label>
+                                        <input type="date" class="col-sm-12 form-control mt-1 textBox" disabled>
                                     </div>
-                                    <div class="col-sm-3">
-                                        <label class="col-sm-12 Llave mb-1">Codigo sector</label>
-                                        <label class="form-control textBox">{{CodigoOferSector}}</label>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <label class="col-sm-12 Llave mb-1">Flete negociado</label>
-                                        <label class="form-control textBox">{{VlrFletSect}}</label>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Vigencia hasta</label>
+                                        <input type="date" class="col-sm-12 form-control mt-1 textBox" disabled>
                                     </div>
                                 </div>
-
-
-
-
-                                <div class="row">
+                                <div class="row br">
                                     <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Vigencia desde:&nbsp;</label><label class="Valor">15/12/2022</label>
-                                            </div>
-                                        </div>
+                                        <label class="col-sm-12 Llave">Fecha entrega</label>
+                                        <input type="date" class="col-sm-12 form-control mt-1 textBox" disabled>
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Vigencia hasta:&nbsp;</label><label class="Valor">18/12/2022</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Fecha entrega:&nbsp;</label><label class="Valor">20/12/2022</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Fecha recogida:&nbsp;</label><label class="Valor">10/12/2022</label>
-                                            </div>
-                                        </div>
+                                        <label class="col-sm-12 Llave">Fecha recogida</label>
+                                        <input type="date" disabled class="col-sm-12 form-control mt-1 textBox"
+                                            disabled>
                                     </div>
                                 </div>
                                 <div class="row br">
                                     <div class="col-sm-12">
                                         <label class="col-sm-12 Llave">Observaciones</label>
-                                        <textarea class="col-sm-12 form-control mt-1 textArea" cols="30" rows="3" disabled></textarea>
+                                        <textarea class="col-sm-12 form-control mt-1 textArea" cols="30" rows="3"
+                                            disabled></textarea>
                                     </div>
                                 </div>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>
 
-                                <!--Compras individuales-->
-                                <hr>
+
+                <!--Definicion Ofertas-->
+                <div class="row mt-5" *ngIf="respu.codigo == '5' && respu.registro > 0">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+                        <!--Compra individual-->
+                        <ngb-panel title="Compra individual" id="config-panel-three">
+                            <ng-template ngbPanelContent>
                                 <div class="row br">
-                                    <h5 class="SubTituloForm">Definicion Oferta</h5>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave mb-1">Tipo comisión</label>
+                                        <input mask="separator" thousandSeparator="." type="text"
+                                            class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
+                                        <input mask="separator" thousandSeparator="." type="text"
+                                            class="col-sm-12 form-control mt-1 textBox" min="1" max="100">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Valor comisión fija</label>
+                                        <input mask="separator" thousandSeparator="." type="text"
+                                            class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
                                 </div>
                                 <div class="row br">
-                                    <h6 class="SubTituloForm">Compra individual</h6>
-                                </div>
-                                <div class="row br CentrarText">
                                     <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Tipo comisión:&nbsp;</label><label class="Valor">Porcentaje</label>
-                                            </div>
-                                        </div>
+                                        <label class="col-sm-12 Llave">Minimo unidades</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Valor comición:&nbsp;</label><label class="Valor">20%</label>
-                                            </div>
-                                        </div>
+                                        <label class="col-sm-12 Llave">Maximo unidades</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
                                     </div>
                                 </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Minimo unidades:&nbsp;</label><label class="Valor">20 unnidades</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Maximo unidades:&nbsp;</label><label class="Valor">50 unnidades</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Valor domicilio:&nbsp;</label><label class="Valor">$50.000.00</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Precio final (No incluye valor domicilio):&nbsp;</label><label class="Valor">{{100000 | currency}}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                                <!--Compra grupal-->
-                                <hr>
                                 <div class="row br">
-                                    <h6 class="SubTituloForm">Compra grupal</h6>
-                                </div>
-                                <div class="row br CentrarText">
                                     <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Tipo comisión:&nbsp;</label><label class="Valor">Porcentaje</label>
-                                            </div>
-                                        </div>
+                                        <label class="col-sm-12 Llave">Valor domicilio</label>
+                                        <input mask="separator" thousandSeparator="." type="text"
+                                            class="col-sm-12 form-control mt-1 textBox">
                                     </div>
                                     <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Valor comisión:&nbsp;</label><label class="Valor">20%</label>
-                                            </div>
-                                        </div>
+                                        <label class="col-sm-12 Llave">Precio final (No incluye valor domicilio)</label>
+                                        <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                            value="{{100000 | currency}}" disabled="true">
                                     </div>
                                 </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Minimo unidades lider:&nbsp;</label><label class="Valor">50 Unidades</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Maximo unidades lider:&nbsp;</label><label class="Valor">50 Unidades</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Minimo unidades participante:&nbsp;</label><label class="Valor">50 Unidades</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Maximo unidades participante:&nbsp;</label><label class="Valor">50 Unidades</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Valor domicilio:&nbsp;</label><label class="Valor">50.0000</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Porcentaje descuento lider:&nbsp;</label><label class="Valor">20</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Cantidad de grupos:&nbsp;</label><label class="Valor">5 grupos</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Numero minimo de personas por grupo:&nbsp;</label><label class="Valor">10</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-12">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Cantidad de compras individuales disponibles:&nbsp;</label><label class="Valor">10 Unidades</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Precio arranque lider:&nbsp;</label><label class="Valor">10.000.00</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Precio final participante:&nbsp;</label><label class="Valor">10.000.00</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!--Adicionales-->
-                                <hr>
+                            </ng-template>
+                        </ngb-panel>
+                        <!--Compra grupal-->
+                        <ngb-panel title="Compra grupal" id="config-panel-foor">
+                            <ng-template ngbPanelContent>
                                 <div class="row br">
-                                    <h6 class="SubTituloForm">Adicionales</h6>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave mb-1">Tipo comisión</label>
+                                        <input type="text" class="col-sm-12 form-control mt-1 textBox" disabled="true">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1"
+                                            max="100">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Valor comisión fija</label>
+                                        <input mask="separator" thousandSeparator="." type="text"
+                                            class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
                                 </div>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Minimo unidades lider</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Maximo unidades lider</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                </div>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Minimo unidades participante</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Maximo unidades participante</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                </div>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Valor domicilio</label>
+                                        <input mask="separator" thousandSeparator="." type="text"
+                                            class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Porcentaje descuento lider</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                </div>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Cantidad de grupos</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Numero minimo de personas por grupo</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                </div>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Cantidad de compras individuales
+                                            disponibles</label>
+                                        <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    </div>
+                                </div>
+                                <div class="row br">
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Precio arranque lider</label>
+                                        <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                            value="{{100000 | currency}}" disabled="true">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="col-sm-12 Llave">Precio final participante</label>
+                                        <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                            value="{{200000 | currency}}" disabled="true">
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>
+
+
+                <!--Adicionales-->
+                <div class="row mt-1" *ngIf="respu.codigo == '5' && respu.registro > 0">
+                    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+                        <ngb-panel title="Adicionales" id="config-panel-three">
+                            <ng-template ngbPanelContent>
                                 <div class="row justify-content-center br">
                                     <table class="col-sm-12 TableAgro">
                                         <tr>
@@ -844,36 +830,8 @@
                         </ngb-panel>
                     </ngb-accordion>
                 </div>
-
-
-
-
-
-                <!--Costeo Oferta-->
-                <div class="row br" *ngIf="respu.codigo == '5' && respu.registro > 0">
-                    <h5 class="SubTituloForm">Trazabilidad</h5>
-                </div>
-                <div class="row mt-1" *ngIf="respu.codigo == '5' && respu.registro > 0">
-                    <ngb-accordion #acc="ngbAccordion">
-
-                        <ngb-panel title="Costeo Oferta" id="config-panel">
-                            <ng-template ngbPanelContent>
-                                <div class="br row justify-content-center">
-                                    Fechas etc
-                                </div>
-                            </ng-template>
-                        </ngb-panel>
-                    </ngb-accordion>
-                </div>
             </div>
         </div>
-
-
-
-
-
-
-
         <div class="row justify-content-center">
             <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
         </div>
