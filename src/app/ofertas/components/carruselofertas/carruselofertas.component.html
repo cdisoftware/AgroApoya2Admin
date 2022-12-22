@@ -1,0 +1,90 @@
+<div class="container bg-white">
+    <br>
+    <h1 class="br">Carrusel Ofertas</h1>
+    <div class="row">
+        <div class="col-sm-12">
+            <label class="col-sm-12 Llave">Contenido Publicitario</label>
+            <textarea required="required" name="caracteristicas" id="caracteristicas"
+                class="form-control form-control-sm textArea" cols="30" rows="3"
+                placeholder="Contenido publicitario..."></textarea>
+        </div>
+
+    </div>
+
+    <div class="row br">
+        <div class="col-sm-4">
+            <label class="col-sm-12 Llave">Contenido botón</label>
+            <input type="text" class="form-control form-control-sm textBox" placeholder="Contenido botón"
+                required="required" name="textBoton">
+        </div>
+        <div class="col-sm-4">
+            <label class="col-sm-12 Llave">Acción botón</label>
+            <select #moduloselect class="form-control form-control-sm textBox" title="Seleccionar acción del botón">
+                <option value="0">Seleccione la acción</option>
+                <option>Accion 1</option>
+                <option>Accion 2</option>
+                <option>Accion 3</option>
+                <option>Accion 4</option>
+            </select>
+        </div>
+        <div class="col-sm-4">
+            <label class="col-sm-12 Llave">Oferta</label>
+            <select #moduloselect class="form-control form-control-sm textBox" title="Seleccionar el tipo de plantilla">
+                <option value="0">Seleccione la oferta</option>
+                <option>Oferta 1</option>
+                <option>Oferta 2</option>
+                <option>Oferta 3</option>
+                <option>Oferta 4</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row br justify-content-center">
+        <div class="col-sm-3">
+            <button class="col-sm-12 btn btn-agro-prin" title="Agregar Modulo">
+                Agregar</button>
+        </div>
+        <div class="col-sm-3">
+            <button class="col-sm-12 btn btn-agro-sec" title="Editar Modulo">
+                Limpiar</button>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="br row justify-content-center">
+        <table class="col-sm-12 TableAgro">
+            <thead>
+                <tr>
+                    <th>Orden</th>
+                    <th>Contenido</th>
+                    <th>Descripción botón</th>
+                    <th>Acción botón</th>
+                    <th>Oferta</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+
+            <tr class="click">
+                <td>1</td>
+                <td>¡Este Viernes! hasta 25% dto. en todo tu mercado pagando con * mastercard *</td>
+                <td>¡Compra ya!</td>
+                <td>Comprar</td>
+                <td>Oferta 3</td>
+                <td>
+                    <button class="SinEstilo" (click)="ocultarImg()">
+                        <img src="{{imagen}}" class="BtnimgTamanoPeque">
+                    </button>
+                    <button class="SinEstilo" title="Eliminar pregunta">
+                        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/endit.png">
+                    </button>
+                    <button class="SinEstilo" title="Eliminar pregunta">
+                        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+</div>
