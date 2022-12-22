@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MetodosglobalesService } from './../../../../core/metodosglobales.service'
 import { ValorarofertaService } from './../../../../core/valoraroferta.service'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -69,8 +69,9 @@ export class BuscarofertaComponent implements OnInit {
     private ServiciosValorar: ValorarofertaService,
     private modalService: NgbModal,
     public rutas: Router,
-    public cookies: CookieService
-  ) { }
+    public cookies: CookieService,
+    ConfigAcord: NgbAccordionConfig
+  ) { ConfigAcord.closeOthers = true; }
 
 
   ngOnInit(): void {

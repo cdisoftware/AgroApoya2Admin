@@ -17,7 +17,6 @@ import { ComprasComponent } from './usuario/components/compras/compras.component
 import { UsuariosComponent } from './usuario/components/usuarios/usuarios.component';
 import { CarguepublicidadComponent } from './usuario/components/carguepublicidad/carguepublicidad.component';
 import { EvaluacionofertaComponent } from './ofertas/components/evaluacionoferta/evaluacionoferta.component';
-import { PruebasmapsComponent } from './ofertas/components/pruebasmaps/pruebasmaps.component';
 import { SeguimientoComponent } from './ofertas/components/seguimiento/seguimiento.component';
 import { CarruselofertasComponent } from './ofertas/components/carruselofertas/carruselofertas.component';
 

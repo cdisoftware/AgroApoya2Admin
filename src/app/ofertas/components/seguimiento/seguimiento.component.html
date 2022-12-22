@@ -5,33 +5,28 @@
         <div class="row">
             <div class="col-sm-6">
                 <label class="Llave">Oferta</label>
-                <ng-autocomplete [data]="ArrayOferta" [searchKeyword]="oferta" placeholder="Oferta"
-                    (selected)='selectOferta($event)' (inputCleared)="LimpiarCampos()" [itemTemplate]="templateResOf"
-                    [notFoundTemplate]="templateVacioOf" aria-required="true">
+                <ng-autocomplete [data]="ArrayOferta" [searchKeyword]="keywordOferta" placeholder="Oferta"
+                    (inputCleared)="LimpiaOferta('')" (selected)='selectOfertaFiltro($event)'
+                    [itemTemplate]="templateOferta" [notFoundTemplate]="templateVacio" [(ngModel)]="Oferta">
                 </ng-autocomplete>
-
-                <ng-template #templateResOf let-item id="templateResOf">
-                    <a [innerHTML]="item.cd_cnsctvo + ' - ' + item.DescripcionProducto"></a>
+                <ng-template #templateOferta let-item>
+                    <a [innerHTML]="item.cd_cnsctvo + ' - ' + item.Producto"></a>
                 </ng-template>
-
-                <ng-template #templateVacioOf let-SinRegistro>
-                    <label>Sin registros</label>
+                <ng-template #templateVacio let-SinRegistro>
+                    <label for="">Sin registros</label>
                 </ng-template>
             </div>
             <div class="col-sm-6">
                 <label class="Llave">Sector</label>
-                <ng-autocomplete [data]="ArraySector" [searchKeyword]="sector" placeholder="Sector"
-                    [disabled]="selecsector == '0'" (selected)='selectSector($event)'
-                    (inputCleared)="LimpiarCamposSector()" [itemTemplate]="templateSector"
-                    [notFoundTemplate]="templateVacioSec" aria-required="true">
+                <ng-autocomplete [data]="ArraySector" [searchKeyword]="keywordSector" placeholder="Sector"
+                    (inputCleared)="LimpiaSector('')" (selected)='SelectSector($event)' [itemTemplate]="templateSect"
+                    [notFoundTemplate]="templateVaciosec" [disabled]="selecsector == '0'" [(ngModel)]="Sector">
                 </ng-autocomplete>
-
-                <ng-template #templateSector let-item id="templateSector">
+                <ng-template #templateSect let-item>
                     <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
                 </ng-template>
-
-                <ng-template #templateVacioSec let-SinRegistro>
-                    <label>Sin registros</label>
+                <ng-template #templateVaciosec let-SinRegistro>
+                    <label for="">Sin registros</label>
                 </ng-template>
             </div>
         </div>
@@ -84,6 +79,6 @@
             <button type="button" id="btnGuardarDirecccion" class="btn ColorAgro col-sm-3 col-3"
                 (click)="modal.dismiss('Cross click')">Continuar </button>
         </div>
-        
+
     </div>
 </ng-template>
