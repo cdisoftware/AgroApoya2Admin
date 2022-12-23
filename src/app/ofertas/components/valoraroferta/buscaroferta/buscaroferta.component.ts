@@ -63,6 +63,19 @@ export class BuscarofertaComponent implements OnInit {
   keywordSec: string = '';
   CodigoOferSector: any;
   VlrFletSect: any;
+  DataSectorOferta: any = [];
+  DataTransOferta: any = [];
+  ArrayCostos: any = [];
+  ValTotCosteo: string = '';
+  SessionSectorSel: string = '';
+
+  //Valoracion Resumen
+  VigenDesde: string = '';
+  VigenHasta: string = '';
+  HoraIni: string = '';
+  HoraFin: string = '';
+  FechaEntrega: string = '';
+  Observaciones: string = '';
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -256,6 +269,7 @@ export class BuscarofertaComponent implements OnInit {
 
       //this.IdEstado = Resultado[0].Estado;
       this.ValidaEstados(Resultado[0].Estado);
+      this.ListasResumen();
     });
   }
 
@@ -320,9 +334,72 @@ export class BuscarofertaComponent implements OnInit {
   selectSector(item: any) {
     this.CodigoOferSector = item.COD_OFERTA_SECTOR;
     this.VlrFletSect = item.VLOR_FLTE_SGRDOForm;
+    this.SessionSectorSel = item.ID_SCTOR_OFRTA
+    this.ConsultaVigenciaOferta();
+    //this.consultaToppingsOferta();
   }
   LimpiaSector() {
     this.CodigoOferSector = '';
     this.VlrFletSect = '';
+    //Limpia valoracion
+    this.VigenDesde = "";
+    this.VigenHasta = "";
+    this.HoraIni = "";
+    this.HoraFin = "";
+    this.FechaEntrega = "";
+    this.Observaciones = "";
   }
+
+  ListasResumen() {
+    this.ConsSectorizacion();
+    this.ConsTrans();
+    this.ConsCosteo();
+  }
+  ConsSectorizacion() {
+    this.ServiciosValorar.ConsultaSectoresOferta('1', this.IdOferta).subscribe(ResultConsulta => {
+      this.DataSectorOferta = ResultConsulta;
+    });
+  }
+  ConsTrans() {
+    this.ServiciosValorar.ConsultaConductoresOferta('1', this.IdOferta).subscribe(ResultConsult => {
+      this.DataTransOferta = ResultConsult;
+    })
+  }
+  ConsCosteo() {
+    this.ServiciosValorar.ConsultaCosteo('1', this.IdOferta).subscribe(Resultado => {
+      this.ArrayCostos = Resultado;
+      if (Resultado.length > 0) {
+        this.ValTotCosteo = '0'
+        for (var a in Resultado) {
+          if (Resultado[a].CD_TPO_VLOR == '1') {
+            this.ValTotCosteo = (Number(this.ValTotCosteo) + Number(Resultado[a].VLOR) * Number(this.Unidades)).toString()
+          } else {
+            this.ValTotCosteo = (Number(this.ValTotCosteo) + Number(Resultado[a].VLOR)).toString()
+          }
+        }
+      }
+    })
+  }
+  ConsultaVigenciaOferta() {
+    this.ServiciosValorar.ConsultaVigenciaOferta('1', this.IdOferta, this.SessionSectorSel).subscribe(ResultCons => {
+      this.VigenDesde = ResultCons[0].vgncia_desde;
+      this.VigenHasta = ResultCons[0].vgncia_hasta;
+      this.HoraIni = ResultCons[0].hora_desde;
+      this.HoraFin = ResultCons[0].hora_hasta;
+      this.FechaEntrega = ResultCons[0].fcha_vgncia;
+      this.Observaciones = ResultCons[0].observaciones;
+    })
+  }
+  /*consultaToppingsOferta() {
+    this.ServiciosValorar.ConsultaToppingOfer('1', this.SessionSectorSel, this.IdOferta).subscribe(Resultcons => {
+      if (Resultcons.length > 0) {
+        this.DataToppings = Resultcons;
+        this.ValidaConsulta = '0';
+      }
+      else {
+        this.DataToppings = [];
+        this.ValidaConsulta = '1';
+      }
+    })
+  }*/
 }
