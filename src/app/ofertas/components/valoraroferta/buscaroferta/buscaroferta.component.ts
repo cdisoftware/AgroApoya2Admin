@@ -111,6 +111,9 @@ export class BuscarofertaComponent implements OnInit {
   SessionFechaRecogida: any;
   VerTopping: string = '0';
 
+  //Tazabilidad
+  Trazabilidad:any =[];
+
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
     private ServiciosValorar: ValorarofertaService,
@@ -394,6 +397,7 @@ export class BuscarofertaComponent implements OnInit {
     this.ConsSectorizacion();
     this.ConsTrans();
     this.ConsCosteo();
+    this.ConsultaTrazabilidad();
   }
   ConsSectorizacion() {
     this.ServiciosValorar.ConsultaSectoresOferta('1', this.IdOferta).subscribe(ResultConsulta => {
@@ -500,7 +504,6 @@ export class BuscarofertaComponent implements OnInit {
   }
   ConsultaDetalleOferta() {
     this.ServiciosValorar.ConsultaOferta('1', this.IdOferta).subscribe(ResultConsu => {
-      //console.log(ResultConsu)
       this.DataOferta = ResultConsu;
       this.SessionFechaRecogida = this.DataOferta[0].fecha_recogida;
     })
@@ -518,16 +521,10 @@ export class BuscarofertaComponent implements OnInit {
     })
   }
 
-  /*consultaToppingsOferta() {
-    this.ServiciosValorar.ConsultaToppingOfer('1', this.SessionSectorSel, this.IdOferta).subscribe(Resultcons => {
-      if (Resultcons.length > 0) {
-        this.DataToppings = Resultcons;
-        this.ValidaConsulta = '0';
-      }
-      else {
-        this.DataToppings = [];
-        this.ValidaConsulta = '1';
-      }
-    })
-  }*/
+  ConsultaTrazabilidad(){
+    this.ServiciosValorar.ConsultaTrazabilidad('1', this.IdOferta).subscribe(Resultcons => {
+      console.log(Resultcons);
+      this.Trazabilidad = Resultcons;
+    });
+  }
 }

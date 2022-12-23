@@ -545,6 +545,7 @@
                         </ngb-panel>
                     </ngb-accordion>
                 </div>
+
                 <!--Asignación transportista-->
                 <div class="row br" *ngIf="respu.codigo == '2' && respu.registro > 0">
                     <h5 class="SubTituloForm">Asignación transportista</h5>
@@ -579,6 +580,7 @@
                         </ngb-panel>
                     </ngb-accordion>
                 </div>
+
                 <!--Costeo Oferta-->
                 <div class="row br" *ngIf="respu.codigo == '3' && respu.registro > 0">
                     <h5 class="SubTituloForm">Costeo</h5>
@@ -936,7 +938,7 @@
 
 
 
-                <!--Costeo Oferta-->
+                <!--Costeo Oferta
                 <div class="row br" *ngIf="respu.codigo == '5' && respu.registro > 0">
                     <h5 class="SubTituloForm">Trazabilidad</h5>
                 </div>
@@ -946,12 +948,50 @@
                         <ngb-panel title="Costeo Oferta" id="config-panel">
                             <ng-template ngbPanelContent>
                                 <div class="br row justify-content-center">
-                                    Fechas etc
+
+                                    <div class="row CentrarText" *ngFor="let respu of Trazabilidad; let i = index">
+                                        <div class="col-sm-6" *ngIf="i == 0">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Fecha acepta oferta:&nbsp;</label><label
+                                                        class="Valor">{{respu.fecha}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6" *ngIf="i == 1">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Fecha Sectorizacion:&nbsp;</label><label
+                                                        class="Valor">{{Trazabilidad.estado}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-6" *ngIf="i == 2">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Fecha Asigna transportista:&nbsp;</label><label
+                                                        class="Valor">{{Trazabilidad.estado}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6" *ngIf="i == 3">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Fecha Valoración:&nbsp;</label><label
+                                                        class="Valor">{{Trazabilidad.estado}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </ng-template>
                         </ngb-panel>
                     </ngb-accordion>
-                </div>
+                </div>-->
             </div>
         </div>
 
