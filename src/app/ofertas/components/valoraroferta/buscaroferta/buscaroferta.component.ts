@@ -76,6 +76,32 @@ export class BuscarofertaComponent implements OnInit {
   HoraFin: string = '';
   FechaEntrega: string = '';
   Observaciones: string = '';
+  ArrayTipoOferCon: any[];
+  //Valortacion Individual
+  ComInvid: string = '';
+  ComGrup: string = '';
+  MuestraIndividual: string = '';
+  MuestraGrupal: string = '';
+  MuestraCantIndiv: string = '';
+  VlrComicionIndividual: string = '';
+  MinUnidI: string = '';
+  MaxUnidI: string = '';
+  VlrDomiI: string = '';
+  PreFinI: string = '';
+
+  //ValoracionGrupal
+  VlrComGrup: string = '';
+  MinUnidLider: string = '';
+  MaxUnidLider: string = '';
+  MinUnidPart: string = '';
+  MaxUnidPart: string = '';
+  VlrDomiG: string = '';
+  PorcDescLider: string = '';
+  CantGrupos: string = '';
+  UnidXGrupos: string = '';
+  CantComprI: string = '';
+  PrecioFinLider: string = '';
+  PrecioFinPart: string = '';
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -336,6 +362,7 @@ export class BuscarofertaComponent implements OnInit {
     this.VlrFletSect = item.VLOR_FLTE_SGRDOForm;
     this.SessionSectorSel = item.ID_SCTOR_OFRTA
     this.ConsultaVigenciaOferta();
+    this.ConsultaValoracionOferta();
     //this.consultaToppingsOferta();
   }
   LimpiaSector() {
@@ -348,6 +375,9 @@ export class BuscarofertaComponent implements OnInit {
     this.HoraFin = "";
     this.FechaEntrega = "";
     this.Observaciones = "";
+
+    this.MuestraIndividual = '0';
+    this.MuestraGrupal = '0';
   }
 
   ListasResumen() {
@@ -390,6 +420,71 @@ export class BuscarofertaComponent implements OnInit {
       this.Observaciones = ResultCons[0].observaciones;
     })
   }
+  
+  ConsultaValoracionOferta() {
+    this.ServiciosValorar.ConsultaValoracionOferta('1', this.IdOferta, this.SessionSectorSel).subscribe(ResultCons => {
+      this.ComInvid = ResultCons[0].Nom_tpo_cmsion_indvdual;
+      this.ComGrup = ResultCons[0].Nom_tpo_cmsion_grpal;
+
+      if (ResultCons[0].TPO_OFRTA == '1') {
+        this.MuestraIndividual = '1';
+        this.MuestraGrupal = '0';
+        this.MuestraCantIndiv = '1';
+
+        this.VlrComicionIndividual = ResultCons[0].vlor_cmsion_indvdual;
+
+        this.MinUnidI = ResultCons[0].mnmo_unddes_indvdual;
+        this.MaxUnidI = ResultCons[0].mxmo_unddes_indvdual;
+        this.VlrDomiI = ResultCons[0].vlor_dmnclio_indvdual;
+        this.PreFinI = ResultCons[0].vlor_fnal_indvdual;
+      }
+      else if (ResultCons[0].TPO_OFRTA == '2') {
+        this.MuestraIndividual = '0';
+        this.MuestraGrupal = '1';
+        this.VlrComGrup = ResultCons[0].vlor_cmsion_grpal;
+
+        this.MinUnidLider = ResultCons[0].mnmo_unddes_lider;
+        this.MaxUnidLider = ResultCons[0].mxmo_unddes_lider;
+        this.MinUnidPart = ResultCons[0].mnmo_unddes_prcpnte
+        this.MaxUnidPart = ResultCons[0].mxmo_unddes_prcpnte;
+        this.VlrDomiG = ResultCons[0].vlor_dmnclio_grpal;
+        this.PorcDescLider = ResultCons[0].prcntje_dcto_lider;
+        this.CantGrupos = ResultCons[0].cntdad_grpos;
+        this.UnidXGrupos = ResultCons[0].mnmo_prsnas_xgrupo;
+        this.CantComprI = ResultCons[0].cntdad_cmpras_indvdles;
+        this.PrecioFinLider = ResultCons[0].vlor_arrnque_lider;
+        this.PrecioFinPart = ResultCons[0].vlor_fnal_prtcpnte;
+      }
+      else if (ResultCons[0].TPO_OFRTA == 3) {
+        this.MuestraIndividual = '1';
+        this.MuestraGrupal = '1';
+        this.MuestraCantIndiv = '1';
+        
+        this.VlrComicionIndividual = ResultCons[0].vlor_cmsion_indvdual;
+
+        this.MinUnidI = ResultCons[0].mnmo_unddes_indvdual;
+        this.MaxUnidI = ResultCons[0].mxmo_unddes_indvdual;
+        this.VlrDomiI = ResultCons[0].vlor_dmnclio_indvdual;
+        this.PreFinI = ResultCons[0].vlor_fnal_indvdual;
+        
+
+        this.VlrComGrup = ResultCons[0].vlor_cmsion_grpal;
+
+        this.MinUnidLider = ResultCons[0].mnmo_unddes_lider;
+        this.MaxUnidLider = ResultCons[0].mxmo_unddes_lider;
+        this.MinUnidPart = ResultCons[0].mnmo_unddes_prcpnte
+        this.MaxUnidPart = ResultCons[0].mxmo_unddes_prcpnte;
+        this.VlrDomiG = ResultCons[0].vlor_dmnclio_grpal;
+        this.PorcDescLider = ResultCons[0].prcntje_dcto_lider;
+        this.CantGrupos = ResultCons[0].cntdad_grpos;
+        this.UnidXGrupos = ResultCons[0].mnmo_prsnas_xgrupo;
+        this.CantComprI = ResultCons[0].cntdad_cmpras_indvdles;
+        this.PrecioFinLider = ResultCons[0].vlor_arrnque_lider;
+        this.PrecioFinPart = ResultCons[0].vlor_fnal_prtcpnte;
+      }
+    })
+  }
+
   /*consultaToppingsOferta() {
     this.ServiciosValorar.ConsultaToppingOfer('1', this.SessionSectorSel, this.IdOferta).subscribe(Resultcons => {
       if (Resultcons.length > 0) {

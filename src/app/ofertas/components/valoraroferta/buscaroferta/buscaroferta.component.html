@@ -690,201 +690,205 @@
                                 <div class="row br">
                                     <div class="col-sm-12">
                                         <label class="col-sm-12 Llave">Observaciones</label>
-                                        <textarea class="col-sm-12 form-control mt-1 textArea" cols="30" rows="3"
-                                            [(ngModel)]="Observaciones" disabled></textarea>
+                                        <p class="Valor">{{Observaciones}}</p>
                                     </div>
                                 </div>
 
                                 <!--Compras individuales-->
-                                <hr>
-                                <div class="row br">
-                                    <h5 class="SubTituloForm">Definicion Oferta</h5>
+                                <div class="row" *ngIf="MuestraIndividual == '1'">
+                                    <div class="row br">
+                                        <h5 class="SubTituloForm">Definicion Oferta</h5>
+                                    </div>
+                                    <div class="row br">
+                                        <h6 class="SubTituloForm">Compra individual</h6>
+                                    </div>
+                                    <div class="row br CentrarText">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Tipo comisión:&nbsp;</label><label
+                                                        class="Valor">{{ComInvid}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Valor comición:&nbsp;</label><label
+                                                        class="Valor">{{VlrComicionIndividual}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row br CentrarText">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Minimo unidades:&nbsp;</label><label
+                                                        class="Valor">{{MinUnidI}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Maximo unidades:&nbsp;</label><label
+                                                        class="Valor">{{MaxUnidI}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row br CentrarText">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Valor domicilio:&nbsp;</label><label
+                                                        class="Valor">{{VlrDomiI | currency}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Precio final (No incluye valor
+                                                        domicilio):&nbsp;</label><label class="Valor">{{PreFinI |
+                                                        currency}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="row br">
-                                    <h6 class="SubTituloForm">Compra individual</h6>
-                                </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Tipo comisión:&nbsp;</label><label
-                                                    class="Valor">Porcentaje</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Valor comición:&nbsp;</label><label
-                                                    class="Valor">20%</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Minimo unidades:&nbsp;</label><label
-                                                    class="Valor">20 unnidades</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Maximo unidades:&nbsp;</label><label
-                                                    class="Valor">50 unnidades</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Valor domicilio:&nbsp;</label><label
-                                                    class="Valor">$50.000.00</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Precio final (No incluye valor
-                                                    domicilio):&nbsp;</label><label class="Valor">{{100000 |
-                                                    currency}}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <hr *ngIf="MuestraIndividual == '1'">
+                                
 
 
 
                                 <!--Compra grupal-->
-                                <hr>
-                                <div class="row br">
-                                    <h6 class="SubTituloForm">Compra grupal</h6>
+                                <div class="row" *ngIf="MuestraGrupal == '1'">
+                                    <div class="row br">
+                                        <h6 class="SubTituloForm">Compra grupal</h6>
+                                    </div>
+                                    <div class="row br CentrarText">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Tipo comisión:&nbsp;</label><label
+                                                        class="Valor">{{ComGrup}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Valor comisión:&nbsp;</label><label
+                                                        class="Valor">{{VlrComGrup | currency}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row br CentrarText">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Minimo unidades lider:&nbsp;</label><label
+                                                        class="Valor">{{MinUnidLider}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Maximo unidades lider:&nbsp;</label><label
+                                                        class="Valor">{{MaxUnidLider}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row br CentrarText">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Minimo unidades participante:&nbsp;</label><label
+                                                        class="Valor">{{MinUnidPart}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Maximo unidades participante:&nbsp;</label><label
+                                                        class="Valor">{{MaxUnidPart}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row br CentrarText">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Valor domicilio:&nbsp;</label><label
+                                                        class="Valor">{{VlrDomiG | currency}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Porcentaje descuento lider:&nbsp;</label><label
+                                                        class="Valor">{{PorcDescLider}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row br CentrarText">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Cantidad de grupos:&nbsp;</label><label
+                                                        class="Valor">{{CantGrupos}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+    
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Numero minimo de personas por
+                                                        grupo:&nbsp;</label><label class="Valor">{{UnidXGrupos}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row br CentrarText">
+                                        <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Cantidad de compras individuales
+                                                        disponibles:&nbsp;</label><label class="Valor">{{CantComprI}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row br CentrarText">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Precio arranque lider:&nbsp;</label><label
+                                                        class="Valor">{{PrecioFinLider | currency}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Precio final participante:&nbsp;</label><label
+                                                        class="Valor">{{PrecioFinPart | currency}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Tipo comisión:&nbsp;</label><label
-                                                    class="Valor">Porcentaje</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Valor comisión:&nbsp;</label><label
-                                                    class="Valor">20%</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Minimo unidades lider:&nbsp;</label><label
-                                                    class="Valor">50 Unidades</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Maximo unidades lider:&nbsp;</label><label
-                                                    class="Valor">50 Unidades</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Minimo unidades participante:&nbsp;</label><label
-                                                    class="Valor">50 Unidades</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Maximo unidades participante:&nbsp;</label><label
-                                                    class="Valor">50 Unidades</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Valor domicilio:&nbsp;</label><label
-                                                    class="Valor">50.0000</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Porcentaje descuento lider:&nbsp;</label><label
-                                                    class="Valor">20</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Cantidad de grupos:&nbsp;</label><label
-                                                    class="Valor">5 grupos</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Numero minimo de personas por
-                                                    grupo:&nbsp;</label><label class="Valor">10</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-12">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Cantidad de compras individuales
-                                                    disponibles:&nbsp;</label><label class="Valor">10 Unidades</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row br CentrarText">
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Precio arranque lider:&nbsp;</label><label
-                                                    class="Valor">10.000.00</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Precio final participante:&nbsp;</label><label
-                                                    class="Valor">10.000.00</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                
 
 
                                 <!--Adicionales-->
