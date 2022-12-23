@@ -112,7 +112,7 @@ export class BuscarofertaComponent implements OnInit {
   VerTopping: string = '0';
 
   //Tazabilidad
-  Trazabilidad:any =[];
+  Trazabilidad: any = [];
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -132,7 +132,9 @@ export class BuscarofertaComponent implements OnInit {
       this.CargaObjetosIniciales();
     }
     this.RutaImagenTopping = this.SeriviciosGenerales.RecuperarRutasOtrasImagenes('4');
-    this.ConsultaDetalleOferta();
+  }
+  ngAfterViewInit() {
+
   }
 
   CargaObjetosIniciales() {
@@ -355,12 +357,12 @@ export class BuscarofertaComponent implements OnInit {
   //William
   ArrayResumenOferta: any = [];
   AbrirPopuPResumen(ModalResumen: any, respu: any) {
-    this.ServiciosValorar.ConsultaMenuResumenOferta('1', respu.Tramite).subscribe(Resultado => {
-      this.ArrayResumenOferta = Resultado;
-    });
     this.modalService.dismissAll();
     this.modalService.open(ModalResumen, { ariaLabelledBy: 'modal-basic-title', size: 'xl', centered: true, backdrop: 'static', keyboard: false });
     this.ConsultaSectores();
+    this.ServiciosValorar.ConsultaMenuResumenOferta('1', respu.Tramite).subscribe(Resultado => {
+      this.ArrayResumenOferta = Resultado;
+    });
   }
   ConsultaSectores() {
     this.ServiciosValorar.ConsultaSectoresOferta('2', this.IdOferta).subscribe(ResultConsulta => {
@@ -379,8 +381,8 @@ export class BuscarofertaComponent implements OnInit {
     this.consultaToppingsOferta();
   }
   LimpiaSector() {
-    this.CodigoOferSector = '';
-    this.VlrFletSect = '';
+    this.CodigoOferSector = "";
+    this.VlrFletSect = "";
     //Limpia valoracion
     this.VigenDesde = "";
     this.VigenHasta = "";
@@ -391,6 +393,7 @@ export class BuscarofertaComponent implements OnInit {
 
     this.MuestraIndividual = '0';
     this.MuestraGrupal = '0';
+    this.VerTopping = '0';
   }
 
   ListasResumen() {
@@ -502,12 +505,6 @@ export class BuscarofertaComponent implements OnInit {
     this.modalService.open(ModalImagen, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     this.consultaimagen = this.RutaImagenTopping + imagenesAdicional;
   }
-  ConsultaDetalleOferta() {
-    this.ServiciosValorar.ConsultaOferta('1', this.IdOferta).subscribe(ResultConsu => {
-      this.DataOferta = ResultConsu;
-      this.SessionFechaRecogida = this.DataOferta[0].fecha_recogida;
-    })
-  }
   consultaToppingsOferta() {
     this.ServiciosValorar.ConsultaToppingOfer('1', this.SessionSectorSel, this.IdOferta).subscribe(Resultcons => {
       if (Resultcons.length > 0) {
@@ -521,10 +518,17 @@ export class BuscarofertaComponent implements OnInit {
     })
   }
 
-  ConsultaTrazabilidad(){
+  ConsultaTrazabilidad() {
     this.ServiciosValorar.ConsultaTrazabilidad('1', this.IdOferta).subscribe(Resultcons => {
-      console.log(Resultcons);
       this.Trazabilidad = Resultcons;
     });
+  }
+
+  CerrarModal() {
+    this.VerTopping = '0';
+    this.MuestraIndividual = '0';
+    this.MuestraGrupal = '0';
+    this.MuestraCantIndiv = '0';
+    this.modalService.dismissAll();
   }
 }
