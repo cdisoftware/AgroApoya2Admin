@@ -102,6 +102,14 @@ export class BuscarofertaComponent implements OnInit {
   CantComprI: string = '';
   PrecioFinLider: string = '';
   PrecioFinPart: string = '';
+  //Topings
+  consultaimagen: string = '';
+  RutaImagenTopping: string = '';
+  DataToppings: any[];
+
+  DataOferta: any = [];
+  SessionFechaRecogida: any;
+  VerTopping: string = '0';
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -120,6 +128,8 @@ export class BuscarofertaComponent implements OnInit {
     } else {
       this.CargaObjetosIniciales();
     }
+    this.RutaImagenTopping = this.SeriviciosGenerales.RecuperarRutasOtrasImagenes('4');
+    this.ConsultaDetalleOferta();
   }
 
   CargaObjetosIniciales() {
@@ -363,7 +373,7 @@ export class BuscarofertaComponent implements OnInit {
     this.SessionSectorSel = item.ID_SCTOR_OFRTA
     this.ConsultaVigenciaOferta();
     this.ConsultaValoracionOferta();
-    //this.consultaToppingsOferta();
+    this.consultaToppingsOferta();
   }
   LimpiaSector() {
     this.CodigoOferSector = '';
@@ -420,7 +430,7 @@ export class BuscarofertaComponent implements OnInit {
       this.Observaciones = ResultCons[0].observaciones;
     })
   }
-  
+
   ConsultaValoracionOferta() {
     this.ServiciosValorar.ConsultaValoracionOferta('1', this.IdOferta, this.SessionSectorSel).subscribe(ResultCons => {
       this.ComInvid = ResultCons[0].Nom_tpo_cmsion_indvdual;
@@ -459,14 +469,14 @@ export class BuscarofertaComponent implements OnInit {
         this.MuestraIndividual = '1';
         this.MuestraGrupal = '1';
         this.MuestraCantIndiv = '1';
-        
+
         this.VlrComicionIndividual = ResultCons[0].vlor_cmsion_indvdual;
 
         this.MinUnidI = ResultCons[0].mnmo_unddes_indvdual;
         this.MaxUnidI = ResultCons[0].mxmo_unddes_indvdual;
         this.VlrDomiI = ResultCons[0].vlor_dmnclio_indvdual;
         this.PreFinI = ResultCons[0].vlor_fnal_indvdual;
-        
+
 
         this.VlrComGrup = ResultCons[0].vlor_cmsion_grpal;
 
@@ -481,6 +491,29 @@ export class BuscarofertaComponent implements OnInit {
         this.CantComprI = ResultCons[0].cntdad_cmpras_indvdles;
         this.PrecioFinLider = ResultCons[0].vlor_arrnque_lider;
         this.PrecioFinPart = ResultCons[0].vlor_fnal_prtcpnte;
+      }
+    })
+  }
+  visualizaImagenTopping(ModalImagen: any, imagenesAdicional: string) {
+    this.modalService.open(ModalImagen, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    this.consultaimagen = this.RutaImagenTopping + imagenesAdicional;
+  }
+  ConsultaDetalleOferta() {
+    this.ServiciosValorar.ConsultaOferta('1', this.IdOferta).subscribe(ResultConsu => {
+      //console.log(ResultConsu)
+      this.DataOferta = ResultConsu;
+      this.SessionFechaRecogida = this.DataOferta[0].fecha_recogida;
+    })
+  }
+  consultaToppingsOferta() {
+    this.ServiciosValorar.ConsultaToppingOfer('1', this.SessionSectorSel, this.IdOferta).subscribe(Resultcons => {
+      if (Resultcons.length > 0) {
+        this.DataToppings = Resultcons;
+        this.VerTopping = '1';
+      }
+      else {
+        this.VerTopping = '0';
+        this.DataToppings = [];
       }
     })
   }

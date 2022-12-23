@@ -759,7 +759,7 @@
                                     </div>
                                 </div>
                                 <hr *ngIf="MuestraIndividual == '1'">
-                                
+
 
 
 
@@ -808,7 +808,8 @@
                                         <div class="col-sm-6">
                                             <div class="row">
                                                 <div class="col-sm-12">
-                                                    <label class="Llave">Minimo unidades participante:&nbsp;</label><label
+                                                    <label class="Llave">Minimo unidades
+                                                        participante:&nbsp;</label><label
                                                         class="Valor">{{MinUnidPart}}</label>
                                                 </div>
                                             </div>
@@ -816,7 +817,8 @@
                                         <div class="col-sm-6">
                                             <div class="row">
                                                 <div class="col-sm-12">
-                                                    <label class="Llave">Maximo unidades participante:&nbsp;</label><label
+                                                    <label class="Llave">Maximo unidades
+                                                        participante:&nbsp;</label><label
                                                         class="Valor">{{MaxUnidPart}}</label>
                                                 </div>
                                             </div>
@@ -849,7 +851,7 @@
                                                 </div>
                                             </div>
                                         </div>
-    
+
                                         <div class="col-sm-6">
                                             <div class="row">
                                                 <div class="col-sm-12">
@@ -864,7 +866,8 @@
                                             <div class="row">
                                                 <div class="col-sm-12">
                                                     <label class="Llave">Cantidad de compras individuales
-                                                        disponibles:&nbsp;</label><label class="Valor">{{CantComprI}}</label>
+                                                        disponibles:&nbsp;</label><label
+                                                        class="Valor">{{CantComprI}}</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -888,41 +891,42 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
 
 
                                 <!--Adicionales-->
-                                <hr>
-                                <div class="row br">
-                                    <h6 class="SubTituloForm">Adicionales</h6>
+                                <div class="row" *ngIf="VerTopping == '1'">
+                                    <hr>
+                                    <div class="row br">
+                                        <h6 class="SubTituloForm">Adicionales</h6>
+                                    </div>
+                                    <div class="row justify-content-center br">
+                                        <table class="col-sm-12 TableAgro">
+                                            <tr>
+                                                <th>Descripción</th>
+                                                <th>Valor unitario</th>
+                                                <th>Tipo</th>
+                                                <th>Unidades para oferta</th>
+                                                <th>Maximo unidades por compra</th>
+                                                <th>Acciones</th>
+                                            </tr>
+                                            <tr *ngFor="let topping of DataToppings">
+                                                <td>{{topping.Descripcion}}</td>
+                                                <td>{{topping.ValorUnitario | currency}}</td>
+                                                <td>{{topping.descTipotopping}}</td>
+                                                <td>{{topping.cantidadReserva}}</td>
+                                                <td>{{topping.MaxCantidad}}</td>
+                                                <td>
+                                                    <button class="SinEstilo" title="Imagen amparado">
+                                                        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png"
+                                                            (click)="visualizaImagenTopping(ModalImagen, topping.imagen)">
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
-                                <div class="row justify-content-center br">
-                                    <table class="col-sm-12 TableAgro">
-                                        <tr>
-                                            <th>Descripción</th>
-                                            <th>Valor unitario</th>
-                                            <th>Tipo</th>
-                                            <th>Unidades para oferta</th>
-                                            <th>Maximo unidades por compra</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                        <tr>
-                                            <td>Prueba para validar la informacion</td>
-                                            <td>$10,000.00</td>
-                                            <td>Característica sobre el producto</td>
-                                            <td>200</td>
-                                            <td>1</td>
-                                            <td>
-                                                <button class="SinEstilo m-1" title="Imagen amparado">
-                                                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png">
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="6">Okay</td>
-                                        </tr>
-                                    </table>
-                                </div>
+
                             </ng-template>
                         </ngb-panel>
                     </ngb-accordion>
@@ -959,6 +963,23 @@
 
         <div class="row justify-content-center">
             <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+        </div>
+        <br>
+    </ng-template>
+
+
+    <ng-template #ModalImagen let-modal>
+        <div class="modal-header">
+            <h1 class="modal-title" id="modal-basic-title">Imagen adicionales</h1>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        </div>
+        <div class="modal-body" *ngFor="let oferta of DataOferta">
+            <div class="row br">
+                <img src="{{consultaimagen}}" class="col-sm-12">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.dismiss()">Aceptar</button>
         </div>
         <br>
     </ng-template>
