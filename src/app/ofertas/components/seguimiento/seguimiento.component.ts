@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MetodosglobalesService } from './../../../core/metodosglobales.service'
 import { ValorarofertaService } from './../../../core/valoraroferta.service'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 
 @Component({
@@ -184,14 +184,14 @@ export class SeguimientoComponent implements OnInit {
         //   fontSize: "15px",
         //   fontWeight: "bold"
         // }
-      } else if(features[i].Estado == '2') {
+      } else if (features[i].Estado == '2') {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png';
-      }else if(features[i].Estado == '4') {
+      } else if (features[i].Estado == '4') {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/Pendiente.png';
-      }else {
+      } else {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png';
       }
-      
+
       var marker = new google.maps.Marker({
         title: features[i].NomCli,
         animation: google.maps.Animation.DROP,
@@ -229,7 +229,6 @@ export class SeguimientoComponent implements OnInit {
 
 
   InfoWindow(i: any) {
-
     this.infoWindow.close();
     var NomCliente: string = '' + this.ArrayConsultaSeg[i].NOMBRE_CLIENTE + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_CLIENTE;
     var FechaEntrega: string = '' + this.ArrayConsultaSeg[i].FECHA_ENTREGA;
@@ -242,6 +241,7 @@ export class SeguimientoComponent implements OnInit {
     var ComplementoDir: string = '' + this.ArrayConsultaSeg[i].COMPLEMENTO_DIRECCION;
     var Estado: string = '' + this.ArrayConsultaSeg[i].ESTADO_COMPRA;
     var Observaciones: string = '' + this.ArrayConsultaSeg[i].OBSERVACION;
+    var Cantidad: string = '' + this.ArrayConsultaSeg[i].UNIDADES_PRODUCTO;
 
     const Html =
       //Estilos
@@ -295,6 +295,8 @@ export class SeguimientoComponent implements OnInit {
       '<b>Dirección: </b>' + Direccion + '' +
       '<br>' +
       '<b>Producto: </b>' + Producto + '' +
+      '<br>' +
+      '<b>Cantidad: </b>' + Cantidad + ' Unidad(es)' +
       '</p>' +
       '</div>' +
       '</div>' +
@@ -309,6 +311,7 @@ export class SeguimientoComponent implements OnInit {
       '<div class="row col-12" style="overflow: auto; max-height: 320px; width: 630px;">' +
       '<div class="col-sm-12">' +
       '<h1 id="firstHeading" class="firstHeading">' + NomCliente + '</h1>' +
+      '<h2 id="firstHeading" class="firstHeading">' + Estado + '</h2>' +
       '</div>' +
       '<hr>' +
       '<div class="col-sm-6">' +
@@ -353,4 +356,34 @@ export class SeguimientoComponent implements OnInit {
     }
   }
 
+
+  lastPanelId: string = '';
+  defaultPanelId: string = "panel2";
+  panelShadow($event: NgbPanelChangeEvent, shadow: any) {
+    console.log($event);
+
+    const { nextState } = $event;
+
+    const activePanelId = $event.panelId;
+    const activePanelElem = document.getElementById(activePanelId);
+
+    if (!shadow.isExpanded(activePanelId)) {
+      //activePanelElem.parentElement.classList.add("open");
+    }
+
+    if(!this.lastPanelId) this.lastPanelId = this.defaultPanelId;
+
+    if (this.lastPanelId) {
+      const lastPanelElem = document.getElementById(this.lastPanelId);
+
+      if (this.lastPanelId === activePanelId && nextState === false)
+        activePanelElem?.parentElement?.classList.remove("open");
+      else if (this.lastPanelId !== activePanelId && nextState === true) {
+        //lastPanelElem.parentElement.classList.remove("open");
+      }
+
+    }
+
+    this.lastPanelId = $event.panelId;
+  }
 }

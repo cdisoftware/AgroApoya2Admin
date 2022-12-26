@@ -27,7 +27,6 @@ export class ValorarofertaService {
     return this.http.get<any[]>(this.url_servidor + 'conscoferta/' + Bandera + '/' + idOferta)
   }
   ConsultaMenuResumenOferta(Bandera: string, CD_CNSCTVO: string) {
-    console.log(this.url_servidor + 'conscagrormenofertamenu/' + Bandera + '/' + CD_CNSCTVO)
     return this.http.get<any[]>(this.url_servidor + 'conscagrormenofertamenu/' + Bandera + '/' + CD_CNSCTVO)
   }
   ConsultaSectores(Bandera: string, NomSector: string, CdPais: string, Cd_Region: string, Cd_Mncpio: string) {
@@ -199,5 +198,10 @@ export class ValorarofertaService {
 
   ConsultaSeguimiento(Bandera: string, IdOferta: string, IdSector: string) {
     return this.http.get<any[]>(this.url_servidor + 'conscentregaseg/' + Bandera + '/' + IdOferta + '/' + IdSector)
+  }
+
+
+  ConsultaTrazabilidad(Bandera: string, cd_cnctivo: string) {
+    return this.http.get<any[]>(this.url_servidor + 'constrazestoferta/' + Bandera + '/' + cd_cnctivo)
   }
 }
