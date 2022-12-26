@@ -328,6 +328,10 @@ export class SeguimientoComponent implements OnInit {
       '<br>' +
       '<b>Producto: </b>' + Producto + '' +
       '<br>' +
+
+      '<b>Cantidad: </b>' + Cantidad + '' +
+      '<br>' +
+
       '<b>Numero de telefono: </b>' + Telefono + '' +
       '<br>' +
       '<b>Estado: </b>' + Estado + '' +
