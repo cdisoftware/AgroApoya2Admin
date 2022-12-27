@@ -342,6 +342,8 @@ export class SeguimientoComponent implements OnInit {
       '<br>' +
       '<b>Fecha Entrega: </b>' + FechaEntrega + '' +
       '<br>' +
+      '<b>Metodo de pago: </b>' + Pago + '' +
+      '<br>' +
       '<b>Codigo Oferta: </b>' + CodigoOferta + '' +
       '<br>' +
       '<b>Producto: </b>' + Producto + '' +
