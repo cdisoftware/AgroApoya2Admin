@@ -162,23 +162,23 @@
     </div>
     <div class="br row">
         <div class="col-sm-4">
-            <ng-autocomplete [data]="DataZonas" [searchKeyword]="keyword" placeholder="Zona"
-                (selected)='selectZona($event)' [itemTemplate]="templateRes" [notFoundTemplate]="templateVacio"
-                [(ngModel)]="Zona">
+            <ng-autocomplete [data]="DataZonas" [searchKeyword]="keywordZonasAsignaSector" placeholder="Zona"
+                (selected)='selectZona($event)' [itemTemplate]="templateResZona" [notFoundTemplate]="templateVacio"
+                [(ngModel)]="ZonaAsignaSector" (inputCleared)="LimpiaZona('')">
             </ng-autocomplete>
-            <ng-template #templateRes let-item>
-                <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+            <ng-template #templateResZona let-item>
+                <a [innerHTML]="item.Descripcion"></a>
             </ng-template>
             <ng-template #templateVacio let-SinRegistro>
                 <label for="">Sin registros</label>
             </ng-template>
         </div>
         <div class="col-sm-4">
-            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keyword" placeholder="Sector"
-                (selected)='selectSector($event, ModalMapa)' [itemTemplate]="templateRes"
+            <ng-autocomplete [disabled]="seleczona == '0'" [data]="DataSectores" [searchKeyword]="keyword" placeholder="Sector"
+                (selected)='selectSector($event, ModalMapa)' [itemTemplate]="templateResSector"
                 [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
             </ng-autocomplete>
-            <ng-template #templateRes let-item>
+            <ng-template #templateResSector let-item>
                 <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
             </ng-template>
             <ng-template #templateVacio let-SinRegistro>
@@ -259,12 +259,12 @@
     <div class="modal-body ">
         <div class="row br">
             <div class="col-sm-8">
-                <ng-autocomplete [data]="DataZonas" [searchKeyword]="keyword" placeholder="Zona"
+                <ng-autocomplete [data]="DataZonas" [searchKeyword]="keywordZonasInsertSecor" placeholder="Zona"
                     (selected)='selectZonaInsert($event)' [itemTemplate]="templateRes"
-                    [notFoundTemplate]="templateVacio" [(ngModel)]="Zona">
+                    [notFoundTemplate]="templateVacio" [(ngModel)]="ZonaInsertSecor" (inputCleared)="LimpiaZonaInsert('')">
                 </ng-autocomplete>
                 <ng-template #templateRes let-item>
-                    <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+                    <a [innerHTML]="item.Descripcion"></a>
                 </ng-template>
                 <ng-template #templateVacio let-SinRegistro>
                     <label for="">Sin registros</label>
