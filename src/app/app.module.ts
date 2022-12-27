@@ -23,6 +23,7 @@ import { GoogleMapsModule } from '@angular/google-maps';
 import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/costeo.component';
 import { ReporteComponent } from './usuario/components/reporte/reporte.component';
 import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/rep-compras.component';
+import { DatosBasicosComponent } from './usuario/components/datosBasicos/datosBasicos.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/r
     PlantillascorreoComponent,
     CosteoComponent,
     ReporteComponent,
-    RepComprasComponent
+    RepComprasComponent,
+    DatosBasicosComponent
   ],
   imports: [
     BrowserModule,

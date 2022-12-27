@@ -15,6 +15,8 @@ import { ReporteComponent } from './usuario/components/reporte/reporte.component
 import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/rep-compras.component';
 import { ComprasComponent } from './usuario/components/compras/compras.component';
 import { UsuariosComponent } from './usuario/components/usuarios/usuarios.component';
+import { DatosBasicosComponent } from './usuario/components/datosBasicos/datosBasicos.component';
+
 
 const routes: Routes = [
   {
@@ -72,12 +74,16 @@ const routes: Routes = [
       {
         path: 'usuarios',
         component: UsuariosComponent
-      },    
+      },
     ]
   },
   {
     path: 'reporte',
     component: ReporteComponent
+  },
+  {
+    path: 'datos',
+    component: DatosBasicosComponent
   },
 
 ];
