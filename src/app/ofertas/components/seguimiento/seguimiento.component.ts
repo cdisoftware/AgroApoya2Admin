@@ -51,12 +51,24 @@ export class SeguimientoComponent implements OnInit {
   keywordSector: string = '';
   SelectorSector: string = '';
   Sector: string = '';
+
+  //Tarjeta Transportista
+  ArrayConductor: any = [];
+
   constructor(
     private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService) { }
 
   ngOnInit(): void {
+    
     this.ConsultaOferta();
+  }
+
+  ConsultaTransportista(idconductor: string , idtransportista: string){
+    this.ServiciosValorar.ConsultaDetalleCond('1', idconductor, idtransportista).subscribe(Resultado => {
+      this.ArrayConductor = Resultado
+      console.log(Resultado)
+    })
   }
 
   ConsultaOferta() {
@@ -85,6 +97,7 @@ export class SeguimientoComponent implements OnInit {
     this.selecsector = '0'
     this.ValidaInsertSec = '0';
     this.LimpiaSector('');
+    this.ArrayConductor = []
   }
   selectOfertaFiltro(item: any) {
     this.SelectorOferta = item.cd_cnsctvo.toString();
@@ -125,6 +138,8 @@ export class SeguimientoComponent implements OnInit {
         } else {
           this.ValidaInsertSec = '1';
           this.ArrayConsultaSeg = Resultado;
+          console.log(Resultado)
+          this.ConsultaTransportista( Resultado[0].ID_TRANSPORTISTA, Resultado[0].ID_CONDUCTOR)
           this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
         }
       })
@@ -184,14 +199,14 @@ export class SeguimientoComponent implements OnInit {
         //   fontSize: "15px",
         //   fontWeight: "bold"
         // }
-      } else if(features[i].Estado == '2') {
+      } else if (features[i].Estado == '2') {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png';
-      }else if(features[i].Estado == '4') {
+      } else if (features[i].Estado == '4') {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/Pendiente.png';
-      }else {
+      } else {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png';
       }
-      
+
       var marker = new google.maps.Marker({
         title: features[i].NomCli,
         animation: google.maps.Animation.DROP,
@@ -229,7 +244,7 @@ export class SeguimientoComponent implements OnInit {
 
 
   InfoWindow(i: any) {
-
+    console.log(this.ArrayConsultaSeg)
     this.infoWindow.close();
     var NomCliente: string = '' + this.ArrayConsultaSeg[i].NOMBRE_CLIENTE + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_CLIENTE;
     var FechaEntrega: string = '' + this.ArrayConsultaSeg[i].FECHA_ENTREGA;
@@ -237,7 +252,7 @@ export class SeguimientoComponent implements OnInit {
     var Direccion: string = '' + this.ArrayConsultaSeg[i].DIRECCION_CLIENTE;
     var Producto: string = '' + this.ArrayConsultaSeg[i].PRODUCTO;
     var Img: string = '' + this.ArrayConsultaSeg[i].IMAGEN_EVIDENCIA;
-
+    var Pago: string = this.ArrayConsultaSeg[i].DES_TIPOPAGO
     var Telefono: string = '' + this.ArrayConsultaSeg[i].CELULAR_CLIENTE;
     var ComplementoDir: string = '' + this.ArrayConsultaSeg[i].COMPLEMENTO_DIRECCION;
     var Estado: string = '' + this.ArrayConsultaSeg[i].ESTADO_COMPRA;
@@ -291,6 +306,8 @@ export class SeguimientoComponent implements OnInit {
       '<b>Fecha Entrega: </b>' + FechaEntrega + '' +
       '<br>' +
       '<b>Codigo Oferta: </b>' + CodigoOferta + '' +
+      '<br>' +
+      '<b>Metodo de pago: </b>' + Pago + '' +
       '<br>' +
       '<b>Dirección: </b>' + Direccion + '' +
       '<br>' +
