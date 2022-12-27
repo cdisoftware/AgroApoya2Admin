@@ -126,7 +126,6 @@ export class SectorizacionComponent implements OnInit {
       "Descripcion": ""
     }
     this.sectoresservices.ConsZona('1', '0', '401', '261', descripcion).subscribe(ResultadoCons => {
-      console.log(ResultadoCons)
       this.DataZonas = ResultadoCons;
       this.keywordZonasInsertSecor = 'Descripcion';
       this.keywordZonasAsignaSector = 'Descripcion';
@@ -248,11 +247,9 @@ export class SectorizacionComponent implements OnInit {
       var RadioParcial = document.getElementById('RadioPar') as HTMLInputElement;
       var TiempoSector = '0';
       if (RadioPermanent.checked == true) {
-        console.log(`Permanent`)
         TiempoSector = '2';
       }
       if (RadioParcial.checked == true) {
-        console.log(`Temporal`)
         TiempoSector = '1';
       }
       const BodyInsert = {
@@ -341,6 +338,7 @@ export class SectorizacionComponent implements OnInit {
         LNGTUD: this.Coor2
       }
       this.sectoresservices.InsertarCoordenadas('3', BodyInsertCoo).subscribe(Resultado => {
+        console.log(BodyInsertCoo)
         const arrayRes = Resultado.split('|')
         this.Respuesta = arrayRes[1];
         this.Coor1 = '';
@@ -429,13 +427,12 @@ export class SectorizacionComponent implements OnInit {
   }
 
   selectSector(item: any, modalmapa: any) {
-    console.log(item)
     this.modalService.open(modalmapa, { size: 'lg' });
     this.ValidaMapSector = '1';
     this.Cant = '';
     this.VlrFle = '';
     this.SectSelec = item.SCTOR_OFRTA;
-    this.SessionNombreSector = item.DSCRPCION_SCTOR
+    this.SessionNombreSector = item.DSCRPCION_SCTOR;
     this.Sessioncoordenada = item.coordenadas;
     this.ConsultaMapaSector();
   }
@@ -491,6 +488,7 @@ export class SectorizacionComponent implements OnInit {
     this.Zona = '';
     this.ZonaAsignaSector = '';
     this.ZonaInsertSecor = '';
+    this.seleczona = '';
   }
 
   Enviar(templateRespuesta: any) {
@@ -542,7 +540,6 @@ export class SectorizacionComponent implements OnInit {
   }
 
   selectZonaInsert(item: any) {
-    console.log(item)
     //En este metodo debe habilitar los campos y botones del campo this.ValidaSelecZona siempre y cuando el valor sea diferente a 0
     //Tambien se debe recuperar la zona seleccionada y guardarla en la variable SessionzonaIns
     this.SessionzonaIns = item.id;
