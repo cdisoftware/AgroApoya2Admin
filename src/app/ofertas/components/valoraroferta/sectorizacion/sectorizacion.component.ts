@@ -48,10 +48,15 @@ export class SectorizacionComponent implements OnInit {
   responseDiv: HTMLDivElement;
   response: HTMLPreElement;
   Sector: string;
+  Zona: string
   ValidaMapSector: string = '0';
   SessionNombreSector: any;
   Sessioncoordenada: any;
   area: google.maps.Polygon;
+  Sessionzona: any;
+  ValidaSelecZona: string;
+  DataZonas: any = []
+  SessionzonaIns: any = '';
 
 
   constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService) { }
@@ -208,16 +213,19 @@ export class SectorizacionComponent implements OnInit {
   }
 
   AbreCreaSector(content: any, templateRespuesta: any) {
+    this.ValidaSelecZona = '1';
     this.NombreSec = '';
     this.ValidaCoord = '0';
     this.Coor1 = '';
     this.Coor2 = '';
     this.DataCoor = [];
-    this.ModalInsert = this.modalService.open(content, { size: 'lg', keyboard: false, backdrop: 'static' })
+    this.ModalInsert = this.modalService.open(content, { size: 'xl', keyboard: false, backdrop: 'static' })
+    var element = document.getElementById('RadioPer') as HTMLInputElement
+    element.checked = true;
   }
 
   CreaSector(templateRespuesta: any) {
-    if (this.NombreSec != '') {
+    if (this.NombreSec != '' && this.SessionzonaIns!='') {
       const BodyInsert = {
         USUCODIG: this.SessionIdUsuario,
         SCTOR_OFR: 0,
@@ -304,7 +312,7 @@ export class SectorizacionComponent implements OnInit {
         const arrayRes = Resultado.split('|')
         this.Respuesta = arrayRes[1];
         this.Coor1 = '';
-        this.Coor2 = '';        
+        this.Coor2 = '';
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
         this.ConsultaCoordenadas()
       })
@@ -336,7 +344,7 @@ export class SectorizacionComponent implements OnInit {
       console.log(Result)
       if (Result.length > 0) {
         console.log(this.area)
-        if(this.area!=undefined){
+        if (this.area != undefined) {
           console.log('Entra a limpiar area')
           this.area.setMap(null)
         }
@@ -347,7 +355,7 @@ export class SectorizacionComponent implements OnInit {
           coordenadas += this.DataCoor[i].Latitud.trim() + ',' + this.DataCoor[i].Longitud.trim() + '|';
         }
         console.log(coordenadas)
-        var nuevaCoord = coordenadas.substring(0, coordenadas.length - 1)        
+        var nuevaCoord = coordenadas.substring(0, coordenadas.length - 1)
         //var nuevaCoord = "4.711719820895,-74.11319514221|4.712746307730,-74.10924693054|4.709923465287,-74.10795947022|4.708554810281,-74.11036272949|4.711719820895,-74.11319514221";
         var bounds = new google.maps.LatLngBounds;
         console.log(nuevaCoord)
@@ -368,7 +376,7 @@ export class SectorizacionComponent implements OnInit {
           strokeOpacity: 0.8,
           strokeWeight: 3,
           fillColor: '#B1B0B0',
-          fillOpacity: 0.35,          
+          fillOpacity: 0.35,
         });
         this.area.setMap(this.map);
       }
@@ -384,6 +392,13 @@ export class SectorizacionComponent implements OnInit {
     this.NombreSec = '';
     this.Coor1 = '';
     this.Coor2 = '';
+  }
+
+  selectZona(item: any) {
+    console.log(item)
+    this.Sessionzona = item.znaselec;
+    //Cada vez que seleccione una zona debo ir a consultar los sectores de esa zona, metodo ConsultaSectores(),
+    //a dicho metodo falta agregarle parametro idzona
   }
 
   selectSector(item: any, modalmapa: any) {
@@ -444,6 +459,7 @@ export class SectorizacionComponent implements OnInit {
     this.Cant = '';
     this.VlrFle = '';
     this.Sector = '';
+    this.Zona = '';
   }
 
   Enviar(templateRespuesta: any) {
@@ -492,6 +508,14 @@ export class SectorizacionComponent implements OnInit {
     this.sectoresservices.EnviarSms(bandera, '0', this.SessionOferta, '0', '0', '0', '0').subscribe(Resultado => {
       //console.log(Resultado)
     })
+  }
+
+  selectZonaInsert(item: any) {
+    //En este metodo debe habilitar los campos y botones del campo this.ValidaSelecZona siempre y cuando el valor sea diferente a 0
+    //Tambien se debe recuperar la zona seleccionada y guardarla en la variable SessionzonaIns
+    console.log(item);
+    this.SessionzonaIns=item.znaSel;
+    this.ValidaSelecZona = '0';
   }
 
 }
