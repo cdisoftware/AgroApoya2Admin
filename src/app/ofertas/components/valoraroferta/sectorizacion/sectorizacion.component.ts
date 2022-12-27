@@ -135,6 +135,7 @@ export class SectorizacionComponent implements OnInit {
     this.ZonaAsignaSector = result;
     this.seleczona = '0';
     this.Sector = '';
+    this.Cant = '';
   }
   ConsultaCiudadOferta() {
     //console.log('1', this.SessionOferta)
@@ -421,15 +422,22 @@ export class SectorizacionComponent implements OnInit {
   selectZona(item: any) {
     //this.Sessionzona = item.id;
     this.ConsultaSectores(item.id);
-    this.seleczona = '1';
+    if(this.Cant != "" && this.Cant != "0"){
+      this.seleczona = '1';
+    }
     //Cada vez que seleccione una zona debo ir a consultar los sectores de esa zona, metodo ConsultaSectores(),
     //a dicho metodo falta agregarle parametro idzona
+  }
+  BlurCantidad(){
+    console.log(this.ZonaAsignaSector)
+    if(this.ZonaAsignaSector != "" && this.ZonaAsignaSector != "0"){
+      this.seleczona = '1';
+    } 
   }
 
   selectSector(item: any, modalmapa: any) {
     this.modalService.open(modalmapa, { size: 'lg' });
     this.ValidaMapSector = '1';
-    this.Cant = '';
     this.VlrFle = '';
     this.SectSelec = item.SCTOR_OFRTA;
     this.SessionNombreSector = item.DSCRPCION_SCTOR;
@@ -484,11 +492,11 @@ export class SectorizacionComponent implements OnInit {
   LimpiaForm() {
     this.Cant = '';
     this.VlrFle = '';
+    this.seleczona = '0';
     this.Sector = '';
     this.Zona = '';
     this.ZonaAsignaSector = '';
     this.ZonaInsertSecor = '';
-    this.seleczona = '';
   }
 
   Enviar(templateRespuesta: any) {

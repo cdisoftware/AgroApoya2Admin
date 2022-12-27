@@ -173,6 +173,12 @@
                 <label for="">Sin registros</label>
             </ng-template>
         </div>
+
+        <div class="col-sm-2">
+            <input class="col-sm-12 form-control form-control-sm textBox" type="number" placeholder="Cantidad" (blur)="BlurCantidad()"
+                [(ngModel)]="Cant">
+        </div>
+
         <div class="col-sm-4">
             <ng-autocomplete [disabled]="seleczona == '0'" [data]="DataSectores" [searchKeyword]="keyword" placeholder="Sector"
                 (selected)='selectSector($event, ModalMapa)' [itemTemplate]="templateResSector"
@@ -184,10 +190,6 @@
             <ng-template #templateVacio let-SinRegistro>
                 <label for="">Sin registros</label>
             </ng-template>
-        </div>
-        <div class="col-sm-2">
-            <input class="col-sm-12 form-control form-control-sm textBox" type="number" placeholder="Cantidad"
-                [(ngModel)]="Cant">
         </div>
         <div class="col-sm-2">
             <input mask="separator" thousandSeparator="." class="col-sm-12 form-control form-control-sm textBox"
