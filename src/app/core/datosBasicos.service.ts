@@ -19,8 +19,12 @@ export class datosBasicosService {
     return this.http.get<any>(this.url_servidor + 'constdatosbasicos/' + Bandera +'/' + idModulo)
   }
 
-  ConsultaUsuario(Bandera: string, idDato: string,  Datos: any){
-    return this.http.post<any>(this.url_servidor + 'consusuarioadmin/' + Bandera+'/' + idDato, Datos)
+  ConsultaItem(Bandera: string, idDato: string,  Datos: any){
+    return this.http.post<any>(this.url_servidor + 'conscdatosbasicositem/' + Bandera+'/' + idDato, Datos)
+  }
+
+  AgregarItem(Bandera: string, Datos: any){
+    return this.http.post<any>(this.url_servidor + 'modcdatosbasicossubitem/' + Bandera, Datos)
   }
 
 }

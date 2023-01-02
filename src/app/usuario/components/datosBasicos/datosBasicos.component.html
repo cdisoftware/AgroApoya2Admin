@@ -1,3 +1,82 @@
-<p>
-  datosBasicos works!
-</p>
+<div class="container-fluid p-5">
+<h1 class="mt-1"> Datos Básicos </h1>
+<div class="row">
+<div class="col-3"></div>
+<div class="col-6 mt-5 text-center">
+  <select class="form-control" [(ngModel)]="tipoModelo" (change)="cargarBotones()">
+    <option value="0">Seleccione módulo</option>
+    <option *ngFor="let Mod of ArrayModelo;" [value]="Mod.IdModulo" >
+    {{Mod.Descripcion}}
+    </option>
+  </select>
+</div>
+</div>
+<div class="row mt-5" *ngIf="breakUno">
+  <div class="col-3 text-center" *ngFor="let boton of ArrayBotones">
+    <button type="button" class="btn btn-agro-prin btn-lg" (click)="cargarGrilla(boton.IdDatoBasico, boton.Nombre)"> {{boton.Nombre}} </button>
+  </div>
+</div>
+<div class="mt-4" *ngIf="breakDos">
+  <h2 class=" ml-5"> {{nombreBoton}} </h2>
+  <div class="row ">
+    <div class="col-1"></div>
+    <div class="col-6">
+     <input  class="form-control " type="text" maxlength="50"  [(ngModel)]="descripcion">
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn btn-agro-sec w-100" (click)="buscarGrilla(descripcion)"> Buscar </button>
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn btn-agro-sec w-100" (click)="abrirModal(ModalAgregar)"> Agregar </button>
+    </div>
+  </div>
+  <table class="mt-2 tabla mx-auto" >
+    <tr class="primera">
+      <th>ID</th>
+      <th>Descripción</th>
+      <th>
+        Estado
+      </th>
+      <th>
+        Editar
+      </th>
+    </tr>
+    <tr *ngFor="let Item of ArrayItems;" style="font-weight:lighter;">
+      <th>{{Item.ID}}</th>
+      <th>{{Item.DSCRIPCION}}</th>
+      <th>
+        <button *ngIf="Item.ESTADO==1" class="btn" (click)="modVisibleItem(Item.ID, Item.ESTADO, Item.DSCRIPCION)">
+        <img  src="../../../../assets/ImagenesAgroApoya2Admin/ver.png" height="30px">
+        </button>
+        <button *ngIf="Item.ESTADO==2" class="btn" (click)="modVisibleItem(Item.ID, Item.ESTADO, Item.DSCRIPCION)">
+        <img  src="../../../../assets/ImagenesAgroApoya2Admin/novisible.png" height="30px">
+        </button>
+      </th>
+      <th>
+        <img src="../../../../assets/ImagenesAgroApoya2Admin/Editar.png">
+      </th>
+    </tr>
+  </table>
+</div>
+</div>
+
+
+<ng-template #ModalAgregar let-modal>
+  <div class="modal-header">
+      <h1>Respuesta</h1>
+      <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+      <div class="row br">
+          <div class="col-sm-12">
+              <h2 class="TituloDetalle"> Estás seguro de adicionar este item a {{nombreBoton}} ? </h2>
+          </div>
+      </div>
+  </div>
+  <div class="row justify-content-center g-5">
+      <button (keyup.enter)="modal.close()" type="button" class="btn btn-agro-prin col-sm-2" (click)="Agregar()" (click)="modal.close()" >Aceptar</button>
+      <div class="col-sm-1"></div>
+      <button (keyup.enter)="modal.close()" type="button" class="btn btn-danger col-sm-2" (click)="modal.close()">Cancelar</button>
+  </div>
+  <br>
+</ng-template>
