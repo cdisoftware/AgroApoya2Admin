@@ -86,7 +86,7 @@ export class DatosBasicosComponent implements OnInit {
       this.DatosService.AgregarItem("3", bodyPost).subscribe(Resultado=>{
         this.textoayuda = Resultado;
       });
-      console.log(this.textoayuda);
+      
       this.cargarGrilla(this.tipoBoton, this.nombreBoton);
       this.descripcion='';
   }
