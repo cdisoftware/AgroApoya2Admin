@@ -47,7 +47,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     CosteoComponent,
     ReporteComponent,
     RepComprasComponent,
-    DatosBasicosComponent
+    DatosBasicosComponent,
     OlvidepasswordComponent,
     CarguepublicidadComponent,
     EvaluacionofertaComponent,
