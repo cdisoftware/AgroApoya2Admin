@@ -120,6 +120,12 @@ body {
     margin: 10px;
 }
 
+.ImgTConductor {
+    border-radius: 25px;
+    height: 100px;
+    width: auto;
+    margin: 10px;
+}
 .DivImgOfer {
     border-radius: 15px;
     margin-bottom: 10px;

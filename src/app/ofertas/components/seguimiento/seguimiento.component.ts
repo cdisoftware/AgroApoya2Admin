@@ -1,7 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { MetodosglobalesService } from './../../../core/metodosglobales.service'
 import { ValorarofertaService } from './../../../core/valoraroferta.service'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 
 @Component({
@@ -51,12 +51,24 @@ export class SeguimientoComponent implements OnInit {
   keywordSector: string = '';
   SelectorSector: string = '';
   Sector: string = '';
+
+  //Tarjeta Transportista
+  ArrayConductor: any = [];
+
   constructor(
     private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService) { }
 
   ngOnInit(): void {
+    
     this.ConsultaOferta();
+  }
+
+  ConsultaTransportista(idconductor: string , idtransportista: string){
+    this.ServiciosValorar.ConsultaDetalleCond('1', idconductor, idtransportista).subscribe(Resultado => {
+      this.ArrayConductor = Resultado
+      console.log(Resultado)
+    })
   }
 
   ConsultaOferta() {
@@ -85,6 +97,7 @@ export class SeguimientoComponent implements OnInit {
     this.selecsector = '0'
     this.ValidaInsertSec = '0';
     this.LimpiaSector('');
+    this.ArrayConductor = []
   }
   selectOfertaFiltro(item: any) {
     this.SelectorOferta = item.cd_cnsctvo.toString();
@@ -125,6 +138,8 @@ export class SeguimientoComponent implements OnInit {
         } else {
           this.ValidaInsertSec = '1';
           this.ArrayConsultaSeg = Resultado;
+          console.log(Resultado)
+          this.ConsultaTransportista( Resultado[0].ID_TRANSPORTISTA, Resultado[0].ID_CONDUCTOR)
           this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
         }
       })
@@ -168,31 +183,30 @@ export class SeguimientoComponent implements OnInit {
       var auxcoor = this.ArrayConsultaSeg[i].COORDENADAS_MAPA.split(",");
       lat = parseFloat(auxcoor[0]);
       long = parseFloat(auxcoor[1]);
-      features.push({ position: new google.maps.LatLng(lat, long), Estado: this.ArrayConsultaSeg[i].COD_ESTADO_ENTREGA, NomCli: this.ArrayConsultaSeg[i].NOMBRE_CLIENTE + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_CLIENTE, IdCompra: this.ArrayConsultaSeg[i].ID_COMPRA });
+      features.push({ position: new google.maps.LatLng(lat, long), Estado: this.ArrayConsultaSeg[i].COD_ESTADO_COMPRA, NomCli: this.ArrayConsultaSeg[i].NOMBRE_CLIENTE + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_CLIENTE, IdCompra: this.ArrayConsultaSeg[i].ID_COMPRA });
       Polylines.push({ lat: lat, lng: long });
     }
 
     for (let i = 0; i < features.length; i++) {
       var icon;
       var LabelOption;
+      //alert(features[i].Estado)
       if (features[i].Estado == '1') {
-        icon = '../../../../assets/ImagenesAgroApoya2Adm/iconcasaEntregada.png';
-        LabelOption = {
-          text: "" + (i + 1),
-          color: "#D35400",
-          fontSize: "15px",
-          fontWeight: "bold"
-        }
+        icon = '../../../../assets/ImagenesAgroApoya2Adm/Entregado.png';
+        // LabelOption = {
+        //   text: "" + (i + 1),
+        //   color: "#D35400",
+        //   fontSize: "15px",
+        //   fontWeight: "bold"
+        // }
+      } else if (features[i].Estado == '2') {
+        icon = '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png';
+      } else if (features[i].Estado == '4') {
+        icon = '../../../../assets/ImagenesAgroApoya2Adm/Pendiente.png';
       } else {
-        icon = '../../../../assets/ImagenesAgroApoya2Adm/iconcasaNoEntregada.png';
-        LabelOption = {
-          text: "" + (i + 1),
-          color: "#17202A",
-          fontSize: "15px",
-          fontWeight: "bold"
-        }
+        icon = '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png';
       }
-      
+
       var marker = new google.maps.Marker({
         title: features[i].NomCli,
         animation: google.maps.Animation.DROP,
@@ -238,11 +252,12 @@ export class SeguimientoComponent implements OnInit {
     var Direccion: string = '' + this.ArrayConsultaSeg[i].DIRECCION_CLIENTE;
     var Producto: string = '' + this.ArrayConsultaSeg[i].PRODUCTO;
     var Img: string = '' + this.ArrayConsultaSeg[i].IMAGEN_EVIDENCIA;
-
+    var Pago: string = this.ArrayConsultaSeg[i].DES_TIPOPAGO
     var Telefono: string = '' + this.ArrayConsultaSeg[i].CELULAR_CLIENTE;
     var ComplementoDir: string = '' + this.ArrayConsultaSeg[i].COMPLEMENTO_DIRECCION;
     var Estado: string = '' + this.ArrayConsultaSeg[i].ESTADO_COMPRA;
     var Observaciones: string = '' + this.ArrayConsultaSeg[i].OBSERVACION;
+    var Cantidad: string = '' + this.ArrayConsultaSeg[i].UNIDADES_PRODUCTO;
 
     const Html =
       //Estilos
@@ -293,9 +308,13 @@ export class SeguimientoComponent implements OnInit {
       '<br>' +
       '<b>Codigo Oferta: </b>' + CodigoOferta + '' +
       '<br>' +
+      '<b>Metodo de pago: </b>' + Pago + '' +
+      '<br>' +
       '<b>Dirección: </b>' + Direccion + '' +
       '<br>' +
       '<b>Producto: </b>' + Producto + '' +
+      '<br>' +
+      '<b>Cantidad: </b>' + Cantidad + ' Unidad(es)' +
       '</p>' +
       '</div>' +
       '</div>' +
@@ -310,6 +329,7 @@ export class SeguimientoComponent implements OnInit {
       '<div class="row col-12" style="overflow: auto; max-height: 320px; width: 630px;">' +
       '<div class="col-sm-12">' +
       '<h1 id="firstHeading" class="firstHeading">' + NomCliente + '</h1>' +
+      '<h2 id="firstHeading" class="firstHeading">' + Estado + '</h2>' +
       '</div>' +
       '<hr>' +
       '<div class="col-sm-6">' +
@@ -322,10 +342,16 @@ export class SeguimientoComponent implements OnInit {
       '<br>' +
       '<b>Fecha Entrega: </b>' + FechaEntrega + '' +
       '<br>' +
+      '<b>Metodo de pago: </b>' + Pago + '' +
+      '<br>' +
       '<b>Codigo Oferta: </b>' + CodigoOferta + '' +
       '<br>' +
       '<b>Producto: </b>' + Producto + '' +
       '<br>' +
+
+      '<b>Cantidad: </b>' + Cantidad + '' +
+      '<br>' +
+
       '<b>Numero de telefono: </b>' + Telefono + '' +
       '<br>' +
       '<b>Estado: </b>' + Estado + '' +
@@ -354,4 +380,34 @@ export class SeguimientoComponent implements OnInit {
     }
   }
 
+
+  lastPanelId: string = '';
+  defaultPanelId: string = "panel2";
+  panelShadow($event: NgbPanelChangeEvent, shadow: any) {
+    console.log($event);
+
+    const { nextState } = $event;
+
+    const activePanelId = $event.panelId;
+    const activePanelElem = document.getElementById(activePanelId);
+
+    if (!shadow.isExpanded(activePanelId)) {
+      //activePanelElem.parentElement.classList.add("open");
+    }
+
+    if(!this.lastPanelId) this.lastPanelId = this.defaultPanelId;
+
+    if (this.lastPanelId) {
+      const lastPanelElem = document.getElementById(this.lastPanelId);
+
+      if (this.lastPanelId === activePanelId && nextState === false)
+        activePanelElem?.parentElement?.classList.remove("open");
+      else if (this.lastPanelId !== activePanelId && nextState === true) {
+        //lastPanelElem.parentElement.classList.remove("open");
+      }
+
+    }
+
+    this.lastPanelId = $event.panelId;
+  }
 }

@@ -48,10 +48,20 @@ export class SectorizacionComponent implements OnInit {
   responseDiv: HTMLDivElement;
   response: HTMLPreElement;
   Sector: string;
+  Zona: string
   ValidaMapSector: string = '0';
   SessionNombreSector: any;
   Sessioncoordenada: any;
   area: google.maps.Polygon;
+  Sessionzona: any;
+  ValidaSelecZona: string;
+  DataZonas: any = [];
+  SessionzonaIns: any = '';
+  keywordZonasInsertSecor: string = '';
+  keywordZonasAsignaSector: string = '';
+  ZonaInsertSecor: string = '';
+  ZonaAsignaSector: string = '';
+  seleczona: string = '0';
 
 
   constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService) { }
@@ -76,6 +86,7 @@ export class SectorizacionComponent implements OnInit {
     this.ConsultaCiudadOferta();
     this.ConsultaSectoresOferta();
     this.ConsultaDetalleOferta();
+    this.ConsultaZonas();
   }
 
   Centramapa(request: google.maps.GeocoderRequest): void {
@@ -110,16 +121,29 @@ export class SectorizacionComponent implements OnInit {
       this.SessionCantSecOferta = ResultConsu[0].Unidades_disponibles;
     })
   }
-
+  ConsultaZonas() {
+    const descripcion = {
+      "Descripcion": ""
+    }
+    this.sectoresservices.ConsZona('1', '0', '401', '261', descripcion).subscribe(ResultadoCons => {
+      this.DataZonas = ResultadoCons;
+      this.keywordZonasInsertSecor = 'Descripcion';
+      this.keywordZonasAsignaSector = 'Descripcion';
+    })
+  }
+  LimpiaZona(result: string) {
+    this.ZonaAsignaSector = result;
+    this.seleczona = '0';
+    this.Sector = '';
+    this.Cant = '';
+  }
   ConsultaCiudadOferta() {
     //console.log('1', this.SessionOferta)
     this.sectoresservices.ConsultaCiudadOferta('1', this.SessionOferta).subscribe(ResultadoCons => {
       //console.log(ResultadoCons)
       this.SessionCiudad = ResultadoCons[0].Cuidad;
-      console.log(ResultadoCons[0].Cuidad)
       this.SessionCDMunicipio = ResultadoCons[0].CD_MNCPIO;
       this.SessionCDRegion = ResultadoCons[0].CD_RGION;
-      this.ConsultaSectores();
     })
   }
 
@@ -143,9 +167,8 @@ export class SectorizacionComponent implements OnInit {
 
   }
 
-  ConsultaSectores() {
-    this.sectoresservices.ConsultaSectores('1', '0', '0', this.SessionCDRegion, this.SessionCDMunicipio).subscribe(Result => {
-      //console.log(Result)
+  ConsultaSectores(IdZona: string) {
+    this.sectoresservices.ConsultaSectoresEtv('1', '0', IdZona, this.SessionOferta).subscribe(Result => {
       this.DataSectores = Result;
       this.keyword = 'DSCRPCION_SCTOR';
     })
@@ -208,22 +231,37 @@ export class SectorizacionComponent implements OnInit {
   }
 
   AbreCreaSector(content: any, templateRespuesta: any) {
+    this.ValidaSelecZona = '1';
     this.NombreSec = '';
     this.ValidaCoord = '0';
     this.Coor1 = '';
     this.Coor2 = '';
     this.DataCoor = [];
-    this.ModalInsert = this.modalService.open(content, { size: 'lg', keyboard: false, backdrop: 'static' })
+    this.ModalInsert = this.modalService.open(content, { size: 'xl', keyboard: false, backdrop: 'static' })
+    var element = document.getElementById('RadioPer') as HTMLInputElement
+    element.checked = true;
   }
 
   CreaSector(templateRespuesta: any) {
-    if (this.NombreSec != '') {
+    if (this.NombreSec != '' && this.SessionzonaIns != '') {
+      var RadioPermanent = document.getElementById('RadioPer') as HTMLInputElement;
+      var RadioParcial = document.getElementById('RadioPar') as HTMLInputElement;
+      var TiempoSector = '0';
+      if (RadioPermanent.checked == true) {
+        TiempoSector = '2';
+      }
+      if (RadioParcial.checked == true) {
+        TiempoSector = '1';
+      }
       const BodyInsert = {
         USUCODIG: this.SessionIdUsuario,
         SCTOR_OFR: 0,
         DSCRPCION_SCTOR: this.NombreSec,
         CD_RGION: this.SessionCDRegion,
-        CD_MNCPIO: this.SessionCDMunicipio
+        CD_MNCPIO: this.SessionCDMunicipio,
+        cd_cnsctvo: this.SessionOferta,
+        TEMPORAL: TiempoSector,
+        ID_ZONA: this.SessionzonaIns
       }
       this.sectoresservices.InsertarSector('3', BodyInsert).subscribe(ResultInsert => {
         const arrayRes = ResultInsert.split('|')
@@ -301,10 +339,11 @@ export class SectorizacionComponent implements OnInit {
         LNGTUD: this.Coor2
       }
       this.sectoresservices.InsertarCoordenadas('3', BodyInsertCoo).subscribe(Resultado => {
+        console.log(BodyInsertCoo)
         const arrayRes = Resultado.split('|')
         this.Respuesta = arrayRes[1];
         this.Coor1 = '';
-        this.Coor2 = '';        
+        this.Coor2 = '';
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
         this.ConsultaCoordenadas()
       })
@@ -333,11 +372,8 @@ export class SectorizacionComponent implements OnInit {
 
   ConsultaCoordenadas() {
     this.sectoresservices.ConsultaCoordenada('1', this.SessionSecCreado).subscribe(Result => {
-      console.log(Result)
       if (Result.length > 0) {
-        console.log(this.area)
-        if(this.area!=undefined){
-          console.log('Entra a limpiar area')
+        if (this.area != undefined) {
           this.area.setMap(null)
         }
         this.ValidaCoord = '1';
@@ -346,11 +382,9 @@ export class SectorizacionComponent implements OnInit {
         for (var i = 0; i < this.DataCoor.length; i++) {
           coordenadas += this.DataCoor[i].Latitud.trim() + ',' + this.DataCoor[i].Longitud.trim() + '|';
         }
-        console.log(coordenadas)
-        var nuevaCoord = coordenadas.substring(0, coordenadas.length - 1)        
+        var nuevaCoord = coordenadas.substring(0, coordenadas.length - 1)
         //var nuevaCoord = "4.711719820895,-74.11319514221|4.712746307730,-74.10924693054|4.709923465287,-74.10795947022|4.708554810281,-74.11036272949|4.711719820895,-74.11319514221";
         var bounds = new google.maps.LatLngBounds;
-        console.log(nuevaCoord)
         var coords = nuevaCoord.split('|').map(function (data: string) {
           var info = data.split(','), // Separamos por coma
             coord = { // Creamos el obj de coordenada
@@ -361,14 +395,13 @@ export class SectorizacionComponent implements OnInit {
           bounds.extend(coord);
           return coord;
         });
-        console.log(coords);
         this.area = new google.maps.Polygon({
           paths: coords,
           strokeColor: '#397c97',
           strokeOpacity: 0.8,
           strokeWeight: 3,
           fillColor: '#B1B0B0',
-          fillOpacity: 0.35,          
+          fillOpacity: 0.35,
         });
         this.area.setMap(this.map);
       }
@@ -386,13 +419,28 @@ export class SectorizacionComponent implements OnInit {
     this.Coor2 = '';
   }
 
+  selectZona(item: any) {
+    //this.Sessionzona = item.id;
+    this.ConsultaSectores(item.id);
+    if(this.Cant != "" && this.Cant != "0"){
+      this.seleczona = '1';
+    }
+    //Cada vez que seleccione una zona debo ir a consultar los sectores de esa zona, metodo ConsultaSectores(),
+    //a dicho metodo falta agregarle parametro idzona
+  }
+  BlurCantidad(){
+    console.log(this.ZonaAsignaSector)
+    if(this.ZonaAsignaSector != "" && this.ZonaAsignaSector != "0"){
+      this.seleczona = '1';
+    } 
+  }
+
   selectSector(item: any, modalmapa: any) {
     this.modalService.open(modalmapa, { size: 'lg' });
     this.ValidaMapSector = '1';
-    this.Cant = '';
     this.VlrFle = '';
     this.SectSelec = item.SCTOR_OFRTA;
-    this.SessionNombreSector = item.DSCRPCION_SCTOR
+    this.SessionNombreSector = item.DSCRPCION_SCTOR;
     this.Sessioncoordenada = item.coordenadas;
     this.ConsultaMapaSector();
   }
@@ -401,6 +449,7 @@ export class SectorizacionComponent implements OnInit {
     this.geocoder.geocode({ address: this.SessionCiudad }).then((result) => {
       const { results } = result;
       var bounds = new google.maps.LatLngBounds;
+      console.log(this.Sessioncoordenada)
       var coords = this.Sessioncoordenada.split('|').map(function (data: string) {
         var info = data.split(','), // Separamos por coma
           coord = { // Creamos el obj de coordenada
@@ -422,7 +471,7 @@ export class SectorizacionComponent implements OnInit {
       this.map = new google.maps.Map(
         document.getElementById("mapCS") as HTMLElement,
         {
-          zoom: 17,
+          zoom: 15,
           center: bounds.getCenter(),
           mapTypeId: "terrain",
         }
@@ -443,7 +492,11 @@ export class SectorizacionComponent implements OnInit {
   LimpiaForm() {
     this.Cant = '';
     this.VlrFle = '';
+    this.seleczona = '0';
     this.Sector = '';
+    this.Zona = '';
+    this.ZonaAsignaSector = '';
+    this.ZonaInsertSecor = '';
   }
 
   Enviar(templateRespuesta: any) {
@@ -494,4 +547,15 @@ export class SectorizacionComponent implements OnInit {
     })
   }
 
+  selectZonaInsert(item: any) {
+    //En este metodo debe habilitar los campos y botones del campo this.ValidaSelecZona siempre y cuando el valor sea diferente a 0
+    //Tambien se debe recuperar la zona seleccionada y guardarla en la variable SessionzonaIns
+    this.SessionzonaIns = item.id;
+    this.ValidaSelecZona = '0';
+  }
+  LimpiaZonaInsert(result: string){
+    this.ZonaInsertSecor = result;
+    this.ValidaSelecZona ='1';
+    this.NombreSec = '';
+  }
 }
