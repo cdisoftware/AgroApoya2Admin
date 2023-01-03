@@ -4,7 +4,7 @@
             <div class="col-md-7 col-sm-12  mt-5 pl-4 pr-4">
                 <div class="conborde col-sm-12 col-md-12">
                     <div class="col-sm-12 text-center img_login">
-                        <img class="imgLogin" src="../../../../assets/ImagenesAgroApoya2Admin/user.png">
+                        <img class="imgLogin" src="../../../../assets/ImagenesAgroApoya2Adm/user.png">
                     </div>
                     <div class="col-sm-12 text-center">
                         <h3 class="TituloDetalle">Iniciar Sesion</h3>
@@ -15,22 +15,21 @@
 
                             <div class="col-11 mb-4">
                                 <input type="text" class="form-control sinborde" name="Usuario" placeholder="Usuario"
-                                    required="required" [(ngModel)]="user" >
+                                    required="required" [(ngModel)]="user">
                             </div>
 
                         </form>
                         <form (keyup.enter)="login(ModalRespuesta)" class="col-12 containerFlex" appearance="fill">
 
-                            <div class="w-100 mb-4">
+                            <div class="col-11">
                                 <input type="password" required="required" [(ngModel)]="pass"
                                     class="form-control sinborde" name="Password" id="Password"
-                                    placeholder="Contraseña/Password" >
+                                    placeholder="Contraseña/Password">
                             </div>
 
                             <div class="m-0 p-0">
                                 <button id="pass" class="SinEstilo" (click)="ocultarPass()">
-                                    <img src="{{imagen}}"
-                                    class="BtnimgTamanoPeque" >
+                                    <img src="{{imagen}}" class="BtnimgTamanoPeque">
                                 </button>
                             </div>
                         </form>
@@ -41,6 +40,12 @@
                             <button id="btnIngresar" class="btn btn-agro-prin"
                                 (click)="login(ModalRespuesta)">Ingresar</button>
                         </div>
+                    </div>
+
+                    <br />
+                    <div class="row ">
+                        <a class="mt-1 mb-1 textoDos TextCenter"
+                            (click)="OlvidoPassword(ModalOlvidePassword)">¿Olvidaste tu contraseña?</a>
                     </div>
 
                 </div>
@@ -78,7 +83,8 @@
 <ng-template #ModalRespuesta let-modal>
     <div class="modal-header">
         <h1>Respuesta</h1>
-        <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
+            (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
         <div class="row br">
@@ -88,7 +94,22 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <button (keyup.enter)="modal.close()" type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+        <button (keyup.enter)="modal.close()" type="button" class="btn btn-agro-prin col-sm-2 col-6"
+            (click)="modal.close()">Aceptar</button>
     </div>
     <br>
+</ng-template>
+
+<ng-template #ModalOlvidePassword let-modal>
+    <div class="p-2">
+        <div class="modal-header">
+            <img style="width: 40px; margin-right: 10px;"
+                src="../../../../assets/ImagenesAgroApoya2Adm/ic_AgroAzul.png">
+            <h1 class="modal-title TituloForm">{{TituloModal}}</h1>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="mt-4 mb-4 text-center">
+            <app-olvidepassword></app-olvidepassword>
+        </div>
+    </div>
 </ng-template>

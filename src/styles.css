@@ -4,7 +4,7 @@ h1 {
     font-size: x-large;
 }
 
-.textblue{
+.textblue {
     color: #397c97;
 }
 
@@ -67,6 +67,16 @@ h2 {
     cursor: pointer;
 }
 
+
+.image-publi>input {
+    display: flex;
+}
+
+.image-publi img {
+    width: 100px;
+    cursor: pointer;
+}
+
 .btn-agro-prin {
     color: white;
     border-color: #397c97;
@@ -85,11 +95,11 @@ h2 {
 }
 
 body {
-    background: url(./assets/ImagenesAgroApoya2Admin/FondoVerdurasDos.png);
+    background: url(./assets/ImagenesAgroApoya2Adm/FondoVerdurasDos.png);
 }
 
 .Fondo {
-    background: url(./assets/ImagenesAgroApoya2Admin/FondoVerdurasDos.png) scroll;
+    background: url(./assets/ImagenesAgroApoya2Adm/FondoVerdurasDos.png) scroll;
     background-position: 50% 50%
 }
 
@@ -110,6 +120,12 @@ body {
     margin: 10px;
 }
 
+.ImgTConductor {
+    border-radius: 25px;
+    height: 100px;
+    width: auto;
+    margin: 10px;
+}
 .DivImgOfer {
     border-radius: 15px;
     margin-bottom: 10px;
@@ -127,6 +143,10 @@ body {
     padding: 1px;
 }
 
+table{
+    table-layout: fixed;
+  }
+
 .TableAgro td,
 th {
     border: 1px solid #ddd;
@@ -139,12 +159,14 @@ th {
     text-align: center;
     background-color: #397c97;
     color: white;
+    font-size: small;
 }
 
 .TableAgro td {
     padding-top: 6px;
     padding-bottom: 6px;
     text-align: center;
+    font-size: small;
 }
 
 .textBox {
@@ -152,6 +174,7 @@ th {
     border-radius: 1px;
     height: 40px;
     box-shadow: 0px 1px #adadad;
+    font-size: small;
 }
 
 .textArea {
@@ -200,7 +223,13 @@ th {
     visibility: hidden !important;
 }
 
-.Linktxt{
+.Linktxt {
     cursor: pointer;
     color: #397c97 !important;
+}
+
+.ColorAgro {
+    background-color: #397c97 !important;
+    border-color: #397c97 !important;
+    color: white !important;
 }

@@ -32,8 +32,8 @@ export class ReporteService {
   ConsultaTipoTranspor(Bandera: string, usuCodigo: string) {
     return this.http.get<any>(this.url_servidor + 'consctipotransport/' + Bandera + '/' + usuCodigo)
   }
-  ConsultaComprasXOfer(Bandera: string, cd_cnscutivo: string, IdSector: string) {
-    return this.http.get<any[]>(this.url_servidor + 'conscreporteventas/' + Bandera + '/' + cd_cnscutivo + '/' + IdSector)
+  ConsultaComprasXOfer(Bandera: string, cd_cnscutivo: string, IdSector: string, IdCompra: string, IdPago:string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscreporteventas/' + Bandera + '/' + cd_cnscutivo + '/' + IdSector + '/' + IdCompra + '/' + IdPago)
   }
 
   //Métodos para descargar el Excel

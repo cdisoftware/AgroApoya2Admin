@@ -31,6 +31,7 @@ export class PlantillascorreoComponent implements OnInit {
   IdCampo: string = '0';
   CampoDesc: string = '';
 
+
   VerOcultarCampos: string = '';
 
   arregloListaPlantillaCorreo: any;
@@ -67,6 +68,7 @@ export class PlantillascorreoComponent implements OnInit {
     this.ListaTipoPlantilla();
     this.ListaMomentoEnvio();
     this.ListaCamposCodigo();
+    this.ListaCamposCorreoGeneral()
     this.CaracteresDescripcion();
 
     //uno solo muestra los filtros
@@ -108,6 +110,7 @@ export class PlantillascorreoComponent implements OnInit {
     this.arregloListaTipoPlantilla = [];
     this.serviciosplantillacorreos.ConsultaTipoPlatilla('1').subscribe(resultado => {
       this.arregloListaTipoPlantilla = resultado;
+
     })
   }
   ListaMomentoEnvio() {
@@ -123,8 +126,25 @@ export class PlantillascorreoComponent implements OnInit {
       this.arregloCamposCorreo = resultado;
     })
   }
+
+  ListaCamposCorreoGeneral() {
+    this.arregloCamposCorreo = [];
+    this.serviciosplantillacorreos.ConsultaTipoCampoMasivo('1').subscribe(resultado => {
+      this.arregloCamposCorreo = resultado;
+    })
+  }
+
+  SelectListasPlatilla(IdTipoPlantilla: string) {
+    if (IdTipoPlantilla == '1') {
+      this.ListaCamposCodigo();
+    } else if (IdTipoPlantilla == '2') {
+      this.ListaCamposCorreoGeneral();
+    }
+
+  }
+
+
   SeleccionarPlantillaModal(arregloPlantilla: any) {
-    console.log(arregloPlantilla)
     this.NombrePlantillaForm = arregloPlantilla.NombrePlantilla;
     this.TipoPlantillaForm = arregloPlantilla.IdTipoPlantilla;
     this.MomentoEnvioForm = arregloPlantilla.idMomentoEnvio;
@@ -134,7 +154,7 @@ export class PlantillascorreoComponent implements OnInit {
     this.Imagencabeza = arregloPlantilla.ImgEncabezado;
     this.ImagenPie = arregloPlantilla.ImgPie;
     this.IdPlantilla = arregloPlantilla.IdPlantilla;
-    this.modalService.dismissAll();
+
     this.VerOcultarCampos = '3';
     this.HtmlForm = arregloPlantilla.html
 
@@ -146,6 +166,7 @@ export class PlantillascorreoComponent implements OnInit {
         this.arregloListaAdjuntos = [];
       }
     })
+    this.modalService.dismissAll();
   }
 
 
@@ -185,13 +206,13 @@ export class PlantillascorreoComponent implements OnInit {
     this.AsuntoForm = '';
     this.EstadoForm = '0';
     this.descripcionForm = '';
-    this.Imagencabeza = '../../../../assets/ImagenesAgroApoya2Admin/imgtres.png';
-    this.ImagenPie = '../../../../assets/ImagenesAgroApoya2Admin/imgtres.png';
+    this.Imagencabeza = '../../../../assets/ImagenesAgroApoya2Adm/imgtres.png';
+    this.ImagenPie = '../../../../assets/ImagenesAgroApoya2Adm/imgtres.png';
     this.CaracteresDescripcion();
 
   }
 
-  Imagencabeza: string = '../../../../assets/ImagenesAgroApoya2Admin/imgtres.png';
+  Imagencabeza: string = '../../../../assets/ImagenesAgroApoya2Adm/imgtres.png';
   public CargaImagenCabeza(event: any, modalmensaje: any) {
 
     if (!(/\.(jpg|png)$/i).test(event.target.files[0].name)) {
@@ -229,7 +250,7 @@ export class PlantillascorreoComponent implements OnInit {
 
 
 
-  ImagenPie: string = '../../../../assets/ImagenesAgroApoya2Admin/imgtres.png';
+  ImagenPie: string = '../../../../assets/ImagenesAgroApoya2Adm/imgtres.png';
   public CargaImagenPie(event: any, modalmensaje: any) {
     if (!(/\.(jpg|png)$/i).test(event.target.files[0].name)) {
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -285,10 +306,10 @@ export class PlantillascorreoComponent implements OnInit {
     } else if (this.descripcionForm == undefined || this.descripcionForm == null || this.descripcionForm == '') {
       this.Respuesta = 'El campo descripción es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.Imagencabeza == '../../../../assets/ImagenesAgroApoya2Admin/imgtres.png') {
+    } else if (this.Imagencabeza == '../../../../assets/ImagenesAgroApoya2Adm/imgtres.png') {
       this.Respuesta = 'El campo imagen encabezado es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.ImagenPie == '../../../../assets/ImagenesAgroApoya2Admin/imgtres.png') {
+    } else if (this.ImagenPie == '../../../../assets/ImagenesAgroApoya2Adm/imgtres.png') {
       this.Respuesta = 'El campo imagen pie de pagina es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else {
@@ -363,10 +384,10 @@ export class PlantillascorreoComponent implements OnInit {
     } else if (this.descripcionForm == undefined || this.descripcionForm == null || this.descripcionForm == '') {
       this.Respuesta = 'El campo descripción es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.Imagencabeza == '../../../../assets/ImagenesAgroApoya2Admin/imgtres.png') {
+    } else if (this.Imagencabeza == '../../../../assets/ImagenesAgroApoya2Adm/imgtres.png') {
       this.Respuesta = 'El campo imagen encabezado es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.ImagenPie == '../../../../assets/ImagenesAgroApoya2Admin/imgtres.png') {
+    } else if (this.ImagenPie == '../../../../assets/ImagenesAgroApoya2Adm/imgtres.png') {
       this.Respuesta = 'El campo imagen pie de pagina es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else {
@@ -396,7 +417,7 @@ export class PlantillascorreoComponent implements OnInit {
     }
   }
 
-  ArchivoAdj: string = '../../../../assets/ImagenesAgroApoya2Admin/ic_adjunto.PNG';
+  ArchivoAdj: string = '../../../../assets/ImagenesAgroApoya2Adm/ic_adjunto.PNG';
   public CargaArchivoAdjunto(event: any) {
 
     this.serviciosplantillacorreos.postAdjuntoPlantillaCorreo(event.target.files[0]).subscribe(
@@ -480,11 +501,8 @@ export class PlantillascorreoComponent implements OnInit {
       })
     }
   }
-
-
-
-  changeCampo() {
-    this.CampoDesc = this.IdCampo;
+  changeCampo(selectCampo: string) {
+    this.CampoDesc = selectCampo;
   }
 
   CaracteresDescripcion() {
@@ -515,5 +533,11 @@ export class PlantillascorreoComponent implements OnInit {
   onChange2(templateMensaje: TemplateRef<any>) {
     this.CaracteresHtmlDos(templateMensaje);
   }
+
+
+
+
+
+
 
 }

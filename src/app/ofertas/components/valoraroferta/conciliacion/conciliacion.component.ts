@@ -5,6 +5,7 @@ import { CrearofertaService } from './../../../../core/crearoferta.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { formatCurrency, getCurrencySymbol } from '@angular/common';
 
 @Component({
   selector: 'app-conciliacion',
@@ -49,7 +50,7 @@ export class ConciliacionComponent implements OnInit {
   ArrayEmpaque: any = [];
   Respuesta: string = '';
   NomEstado: string = '';
-  ValorSugerido: string = ''
+  ValorSugerido: string = '';
   RutaImagen: string = this.SeriviciosGenerales.RecuperaRutaImagenes();
   IdEstadoOferta: string = '';
   RutaSiguiente: string = '';
@@ -58,6 +59,8 @@ export class ConciliacionComponent implements OnInit {
   ValidaDeclinar: string = '';
   maPrecioFinal: string = '';
   IdProductor: string = '';
+  Valor: string;
+
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
     private ServiciosValorar: ValorarofertaService,
@@ -111,27 +114,27 @@ export class ConciliacionComponent implements OnInit {
       this.IdEstadoOferta = Resultado[0].Estado;
       this.ImagenOferta = this.SeriviciosGenerales.RecuperaRutaImagenes() + Resultado[0].IMAGEN;
       this.ValidaRutaSiguiente(this.IdEstadoOferta)
-    })
-    //Consulta datos de las ultimas ofertas 
-    const DatosOfertas =
-    {
-      UsuCodig: 1,
-      Producto: 0,
-      NombreCompletoProductor: 0,
-      DescripcionProducto: 0,
-      Cd_cndcion: 0,
-      Cd_tmno: 0,
-      ID_EMPAQUE: 0,
-      VigenciaDesde: 0,
-      VigenciaHasta: 0,
-      IdEstado_Oferta: 0,
-      CD_RGION: 0,
-      CD_MNCPIO: 0
-    }
-    this.ServiciosValorar.ConsultaUltimasOfertas('1', '0', this.IdProducto, '0', DatosOfertas).subscribe(Resultado => {
-      this.ArrayUOfertas = Resultado;
+      const DatosOfertas =
+      {
+        UsuCodig: 1,
+        Producto: 0,
+        NombreCompletoProductor: 0,
+        DescripcionProducto: 0,
+        Cd_cndcion: 0,
+        Cd_tmno: 0,
+        ID_EMPAQUE: 0,
+        VigenciaDesde: 0,
+        VigenciaHasta: 0,
+        IdEstado_Oferta: 0,
+        CD_RGION: 0,
+        CD_MNCPIO: 0
+      }
+      console.log('1', '0', this.IdProducto, '0')
+      this.ServiciosValorar.ConsultaUltimasOfertas('1', '0', this.IdProducto, '0', DatosOfertas).subscribe(Resultado => {
+        this.ArrayUOfertas = Resultado;
 
-      console.log(this.ArrayUOfertas)
+        console.log(this.ArrayUOfertas)
+      })
     })
   }
 
@@ -146,15 +149,16 @@ export class ConciliacionComponent implements OnInit {
       this.ValidaAprobar = '1';
       this.ValidaDeclinar = '1'
     } else if (estado == '5') {
-      this.ValidaSiguiente == '1';
+      this.ValidaSiguiente = '1';
       this.ValidaEnviaPropuesta = '0';
       this.ValidaAprobar = '0';
       this.ValidaDeclinar = '0'
     }
   }
 
-  Enviar() {
+  Enviar(modalEditar: any) {
     //envia a la siguiente etapa de la valoracion
+    //alert(this.ECaracteriza)
     this.rutas.navigateByUrl('/home/sectorizar')
   }
 
@@ -168,7 +172,7 @@ export class ConciliacionComponent implements OnInit {
     this.EObservacion = ''
     this.ServiciosValorar.ConsultaJornada('1').subscribe(Resultado => {
       this.ArrayJornada = Resultado;
-      console.log(Resultado)
+      //console.log(Resultado)
     })
     this.ServiciosCreaOferta.ConsultaEmpaque(this.IdProducto).subscribe(Resultado => {
       this.ArrayEmpaque = Resultado;
@@ -235,7 +239,7 @@ export class ConciliacionComponent implements OnInit {
       CRCTRZCION: this.ECaracteriza,
       OBS_EDICION: this.EObservacion
     }
-    console.log(datosUpdate)
+    //console.log(datosUpdate)
     this.ServiciosValorar.EditarOfertaBusqueda('5', this.IdEEmpaque, datosUpdate).subscribe(Resultado => {
       var arrayrespuesta = Resultado.split('|');
       this.Respuesta = arrayrespuesta[1];
@@ -257,7 +261,7 @@ export class ConciliacionComponent implements OnInit {
   AprobarOferta(modalAprobar: any) {
     //Abre popup de aprobar oferta y ejecuta servicio de consulta ciudades
     if (this.ValorSugerido != '') {
-      this.maPrecioFinal = this.ValorSugerido
+      this.maPrecioFinal = this.ValorSugerido.toString();
     } else {
       this.maPrecioFinal = this.ValorUnidad;
     }
@@ -277,17 +281,16 @@ export class ConciliacionComponent implements OnInit {
       estado: 5,
       parametro1: this.maPrecioFinal,
       parametro2: "",
-      parametro3: ""
+      parametro3: this.Caracterizacion
     }
-    
     const datosciudad = {
       CD_CNSCTVO: this.IdOferta,
       CD_PAIS: "6",
       CD_DPTO: "261",
       CD_MNCPIO: this.IdACiudad
     }
-    console.log(datosaprueba)
-    if (this.IdACiudad == '0' || this.maObservacion == '' || this.maPrecioFinal == '') {
+    //console.log(datosaprueba)
+    if (this.IdACiudad == '0' || this.maObservacion == '' || this.maPrecioFinal == '' || this.Caracterizacion == '') {
       this.Respuesta = 'Debes completar todos los datos para aprobar la oferta.'
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else {
@@ -299,17 +302,16 @@ export class ConciliacionComponent implements OnInit {
           const datoscorreo = {
             IdPlantilla: 4,
             usucodig: this.IdProductor,
-            Cd_cnctvo: this.IdOferta,
-            id_conductor: 0
+            Cd_cnctvo: this.IdOferta
           }
-          this.EnviarCorreo(datoscorreo);
-          this.EnviarSms();
+          this.EnviarCorreo(datoscorreo, '0', '0');
+          this.EnviarSms('1');
         }
 
 
       })
       this.ServiciosValorar.InsertaCiudadOferta('3', datosciudad).subscribe(Resultado => {
-        console.log(Resultado)
+        //console.log(Resultado)
       })
 
       this.modalService.dismissAll();
@@ -323,6 +325,12 @@ export class ConciliacionComponent implements OnInit {
     this.IdACiudad = ciudad;
   }
 
+  Formatovalor() {
+    let valor = Number(this.ValorSugerido)
+    this.Valor = formatCurrency(valor, 'en-US', '');
+    //console.log(this.ValorSugerido)
+  }
+
   EnviarPropuesta(ModalRespuesta: any) {
     //enviar propuesta a campesino por sms pendiente servicio
     const DatosEditar = {
@@ -334,9 +342,9 @@ export class ConciliacionComponent implements OnInit {
       parametro2: "",
       parametro3: ""
     }
-    console.log(DatosEditar);
+    //console.log(DatosEditar);
     this.ServiciosValorar.ModificaEstadoOferta('3', DatosEditar).subscribe(Resultado => {
-      console.log(Resultado)
+      //console.log(Resultado)
       var arrayrespuesta = Resultado.split('|');
       this.Respuesta = arrayrespuesta[1];
       if (arrayrespuesta[0] != '-1') {
@@ -344,10 +352,10 @@ export class ConciliacionComponent implements OnInit {
         const datoscorreo = {
           IdPlantilla: 3,
           usucodig: this.IdProductor,
-          Cd_cnctvo: this.IdOferta,
-          id_conductor: 0
+          Cd_cnctvo: this.IdOferta
         }
-        this.EnviarCorreo(datoscorreo);
+        this.EnviarCorreo(datoscorreo, '0', '0');
+        this.EnviarSms('3');
       }
     })
     //this.Respuesta = 'No esta disponible en este momento'
@@ -356,15 +364,15 @@ export class ConciliacionComponent implements OnInit {
     ///enviar correo pendiente
   }
 
-  EnviarCorreo(datoscorreo: any) {
-    this.ServiciosValorar.EnviarCorreoIndividual('1', datoscorreo).subscribe(Resultado => {
-      console.log(Resultado)
+  EnviarCorreo(datoscorreo: any, Id_Clnte: string, IdSctor: string) {
+    this.ServiciosValorar.EnviarCorreoIndividual('1', Id_Clnte, IdSctor, datoscorreo).subscribe(Resultado => {
+      //console.log(Resultado)
     })
   }
 
-  EnviarSms() {
-    this.ServiciosValorar.EnviarSms('1', this.IdUsuario, this.IdOferta, '0', '0').subscribe(Resultado => {
-      console.log(Resultado)
+  EnviarSms(bandera: string) {
+    this.ServiciosValorar.EnviarSms(bandera, this.IdUsuario, this.IdOferta, '0', '0', '0', '0').subscribe(Resultado => {
+      //console.log(Resultado)
     })
   }
 

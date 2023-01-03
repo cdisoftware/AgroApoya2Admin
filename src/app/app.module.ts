@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from "@angular/common/http";
@@ -9,13 +10,15 @@ import { CrearofertaComponent } from './ofertas/components/crearoferta/crearofer
 import { LoginComponent } from './usuario/components/login/login.component';
 import { CommonModule, HashLocationStrategy, LocationStrategy, DatePipe } from "@angular/common";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgDragDropModule } from 'ng-drag-drop';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import { BuscarofertaComponent } from './ofertas/components/valoraroferta/buscaroferta/buscaroferta.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { SidebarModule } from 'ng-sidebar';
 import { SectorizacionComponent } from './ofertas/components/valoraroferta/sectorizacion/sectorizacion.component';
 import { TransportistaComponent } from './ofertas/components/valoraroferta/transportista/transportista.component';
 import { ConciliacionComponent } from './ofertas/components/valoraroferta/conciliacion/conciliacion.component';
-import { ValoracionComponent} from './ofertas/components/valoraroferta/valoracion/valoracion.component';
+import { ValoracionComponent } from './ofertas/components/valoraroferta/valoracion/valoracion.component';
 import { CookieService } from 'ngx-cookie-service';
 import { PlantillascorreoComponent } from './usuario/components/plantillascorreo/plantillascorreo.component'
 import { AngularEditorModule } from '@kolkov/angular-editor';
@@ -24,8 +27,12 @@ import { CosteoComponent } from './ofertas/components/valoraroferta/costeo/coste
 import { ReporteComponent } from './usuario/components/reporte/reporte.component';
 import { RepComprasComponent } from './ofertas/components/reportes/rep-compras/rep-compras.component';
 import { DatosBasicosComponent } from './usuario/components/datosBasicos/datosBasicos.component';
+import { OlvidepasswordComponent } from './usuario/components/olvidepassword/olvidepassword.component';
+import { CarguepublicidadComponent } from './usuario/components/carguepublicidad/carguepublicidad.component';
+import { EvaluacionofertaComponent } from './ofertas/components/evaluacionoferta/evaluacionoferta.component';
+import { SeguimientoComponent } from './ofertas/components/seguimiento/seguimiento.component';
 
-
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,9 +48,16 @@ import { DatosBasicosComponent } from './usuario/components/datosBasicos/datosBa
     ReporteComponent,
     RepComprasComponent,
     DatosBasicosComponent
+    OlvidepasswordComponent,
+    CarguepublicidadComponent,
+    EvaluacionofertaComponent,
+    SeguimientoComponent
   ],
   imports: [
+    NgxMaskModule.forRoot(options),
     BrowserModule,
+    NgDragDropModule.forRoot(),
+    DragDropModule,
     AppRoutingModule,
     SharedModule,
     FormsModule,
@@ -56,7 +70,7 @@ import { DatosBasicosComponent } from './usuario/components/datosBasicos/datosBa
     GoogleMapsModule
   ],
   providers: [
-     { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     CookieService,
     DatePipe
   ],

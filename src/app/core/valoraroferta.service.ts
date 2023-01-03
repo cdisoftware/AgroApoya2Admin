@@ -26,8 +26,9 @@ export class ValorarofertaService {
   ConsultaOferta(Bandera: string, idOferta: string) {
     return this.http.get<any[]>(this.url_servidor + 'conscoferta/' + Bandera + '/' + idOferta)
   }
-
-
+  ConsultaMenuResumenOferta(Bandera: string, CD_CNSCTVO: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscagrormenofertamenu/' + Bandera + '/' + CD_CNSCTVO)
+  }
   ConsultaSectores(Bandera: string, NomSector: string, CdPais: string, Cd_Region: string, Cd_Mncpio: string) {
     return this.http.get<any[]>(this.url_servidor + 'consectores/' + Bandera + '/' + NomSector + '/' + CdPais + '/' + Cd_Region + '/' + Cd_Mncpio)
   }
@@ -158,32 +159,56 @@ export class ValorarofertaService {
   }
 
 
-  CorreoMasivo(bandera: string, IdPlantilla: string, IdTipoUsuario: string, cd_cnctvo: string) {
-    return this.http.get<any[]>(this.url_servidor + 'enviocorreomasivo/' + bandera + '/' + IdPlantilla + '/' + IdTipoUsuario + '/' + cd_cnctvo)
+  CorreoMasivo(bandera: string, IdPlantilla: string, IdTipoUsuario: string, cd_cnctvo: string, id_sector: string) {
+    return this.http.get<any[]>(this.url_servidor + 'enviocorreomasivo/' + bandera + '/' + IdPlantilla + '/' + IdTipoUsuario + '/' + cd_cnctvo + '/' + id_sector)
   }
 
-  EnviarCorreoIndividual(bandera: string, datos: any) {
-    return this.http.post<any>(this.url_servidor + 'enviocorreoindividual/' + bandera, datos)
+  EnviarCorreoIndividual(bandera: string, Id_Clnte: string, IdSctor: string, datos: any) {
+    return this.http.post<any>(this.url_servidor + 'enviocorreoindividual/' + bandera + '/' + Id_Clnte + '/' + IdSctor, datos)
 
   }
   ModificaConcepto(Bandera: string, datos: any) {
     return this.http.post<any>(this.url_servidor + 'modctipocosteo/' + Bandera, datos)
   }
 
-  EnviarSms(bandera: string, idusuario: string, idoferta: string, idsector: string, idcliente: string) {
-    return this.http.get<any[]>(this.url_servidor + 'enviosmsindividual/' + bandera + '/' + idusuario + '/' + idoferta + '/' + idsector + '/' + idcliente)
+  EnviarSms(bandera: string, idusuario: string, idoferta: string, idsector: string, idcliente: string, telefono: string, codigo: string) {
+    return this.http.get<any[]>(this.url_servidor + 'enviosmsindividual/' + bandera + '/' + idusuario + '/' + idoferta + '/' + idsector + '/' + idcliente + '/' + telefono + '/' + codigo)
   }
 
-  ConsultaTipoTopping(Bandera:string){
-    return this.http.get<any[]>(this.url_servidor+'consctipotoppin/'+Bandera)
+  ConsultaTipoTopping(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consctipotoppin/' + Bandera)
   }
 
-  ConsultaToppingOfer(Bandera:string, Id_Sector:string, cd_cnctivo:string){
-    return this.http.get<any[]>(this.url_servidor+'consclistadotopping/'+Bandera+'/'+Id_Sector+'/'+cd_cnctivo)
+  ConsultaToppingOfer(Bandera: string, Id_Sector: string, cd_cnctivo: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consclistadotopping/' + Bandera + '/' + Id_Sector + '/' + cd_cnctivo)
   }
 
-  ModificaTopping(Bandera:string, Bodymod:any){
-    return this.http.post<any>(this.url_servidor+'modctopping/'+Bandera, Bodymod)
+  ModificaTopping(Bandera: string, Bodymod: any) {
+    return this.http.post<any>(this.url_servidor + 'modctopping/' + Bandera, Bodymod)
+  }
+  ConsultaCompraPagos(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscagroestcompago/' + Bandera)
   }
 
+  public postImgToppings(imagenParaSubir: File) {
+    const formData = new FormData();
+    formData.append('file', imagenParaSubir, imagenParaSubir.name);
+    return this.http.post(this.url_servidor + 'uploadImgToppings', formData);
+  }
+
+  ConsultaSeguimiento(Bandera: string, IdOferta: string, IdSector: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscentregaseg/' + Bandera + '/' + IdOferta + '/' + IdSector)
+  }
+
+
+  ConsultaTrazabilidad(Bandera: string, cd_cnctivo: string) {
+    return this.http.get<any[]>(this.url_servidor + 'constrazestoferta/' + Bandera + '/' + cd_cnctivo)
+  }
+  //EJEMPLO=1/0/0/2510
+  ConsultaSectoresEtv(Bandera: string, nomSector: string, IdZona: string, cd_cnctivo: string) {
+    return this.http.get<any[]>(this.url_servidor + 'constsectoresEtv/' + Bandera + '/' + nomSector + '/' + IdZona+ '/' + cd_cnctivo)
+  }
+  ConsZona(Bandera: string, id: string, Municipio: string, Departamento:string, Bodymod: any) {
+    return this.http.post<any>(this.url_servidor + 'consczonassector/' + Bandera+ '/' + id+ '/' + Municipio+ '/' + Departamento, Bodymod)
+  }
 }

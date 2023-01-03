@@ -6,7 +6,8 @@ import { CookieService } from 'ngx-cookie-service'
   providedIn: 'root'
 })
 export class MetodosglobalesService {
-
+  key: any = "password12345678";
+  IV = "password12345678=";
   constructor(
     private http: HttpClient,
     private Cookies: CookieService
@@ -16,42 +17,50 @@ export class MetodosglobalesService {
   ambientedetrabajo: string = '1';
 
   public url_DesarrolloCDI = 'http://190.147.38.91:1007/Agroapoya2/';
-  public url_ProduccionCDI = 'http://190.147.38.91:1007/Agroapoya2/';
-  
+  public url_ProduccionCDI = 'https://srv.apptotrip.com:1016/Agroapoya2/';
+
   public url_DesarolloImg = 'http://190.147.38.91:8089/ImagenesOfertas/';
-  public url_ProduccionImg = 'http://190.147.38.91:8089/ImagenesOfertas/';
+  public url_ProduccionImg = 'https://api.apptotrip.com/ImagenesAgroapoya2/ImagenesOfertas/';
 
   SeleccionAmbiente() {
     if (this.ambientedetrabajo == '1') {
-      return this.url_DesarrolloCDI;      
+      return this.url_DesarrolloCDI;
     } else if (this.ambientedetrabajo == '2') {
       return this.url_ProduccionCDI;
     }
-    else{
+    else {
       return "Valida ambiente seleccionado";
-    }    
+    }
   }
 
   RecuperaRutaImagenes() {
     if (this.ambientedetrabajo == '1') {
-      return this.url_DesarolloImg;      
+      return this.url_DesarolloImg;
     } else if (this.ambientedetrabajo == '2') {
       return this.url_ProduccionImg;
     }
-    else{
+    else {
       return "Valida ambiente seleccionado";
-    }    
+    }
   }
 
-  RecuperarRutasOtrasImagenes(tipoimagen: string){
-    var ruta = 'http://190.147.38.91:8089/';
-    if(tipoimagen == '1'){
-      return ruta + 'ImagenesEvidencia/'
-    }else if(tipoimagen == '2'){
-      return ruta + 'ImagenesConductores/'
-    }else if(tipoimagen == '3'){
-      return ruta + 'ImagenesPlantillaCorreo/'
+  RecuperarRutasOtrasImagenes(tipoimagen: string) {
+    if(this.ambientedetrabajo == '1'){
+      var ruta = 'http://190.147.38.91:8089/';
     }else{
+      var ruta = 'https://api.apptotrip.com/ImagenesAgroapoya2/';
+    }
+    if (tipoimagen == '1') {
+      return ruta + 'ImagenesEvidencia/'
+    } else if (tipoimagen == '2') {
+      return ruta + 'ImagenesConductores/'
+    } else if (tipoimagen == '3') {
+      return ruta + 'ImagenesPlantillaCorreo/'
+    } else if (tipoimagen == '4') {
+      return ruta + 'ImagenesToppings/'
+    } else if (tipoimagen == '5') {
+      return ruta + 'ImagenesPublicidad/'
+    } else {
       return 'no se encontro la imagen'
     }
 
@@ -60,4 +69,5 @@ export class MetodosglobalesService {
   CrearCookie(Llave: string, Valor: string) {
     this.Cookies.set(Llave, Valor)
   }
+
 }

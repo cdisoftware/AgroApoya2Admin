@@ -127,12 +127,12 @@ button:focus {
     font-size: 16px;
 }
 
-#sidebar ul li>ul {
-    margin-left: 10px;
-}
-
 #sidebar ul li>ul li {
-    font-size: 14px;
+    font-size: 16px;
+    left: 100px;
+    right: 100px;
+    margin-left: 50px;
+    list-style: none;/*-----------------------------------------------------------------------------------*/
 }
 
 #sidebar ul li a {
@@ -367,6 +367,49 @@ a[data-toggle="collapse"] {
 
 .imgMenuLogoAgro {
     float: left;
-    width: 30px;
-    height: 30px;
+    width: 150px;
+}
+
+/* DROPDOWN MENU */
+.services {
+    position: relative;
+}
+
+.dropdown {
+    background-color: rgb(57, 124, 151);
+    padding: 15px, 30px;
+    position: absolute;
+    display: none;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 16px;
+}
+
+.dropdown li+li {
+    margin-top: 10px;
+}
+
+.dropdown .li {
+    padding: 15px, 30px;
+    width: 100%;
+    height: 55px;
+}
+
+.dropdown .OpUsu {
+    width: 2em;
+    text-align: center;
+}
+
+.dropdown li:hover {
+    background-color: #2f89fc;
+}
+
+.services:hover .dropdown {
+    display: contents;
+}
+
+.click{
+    cursor: pointer;
+}
+.margenIcon{
+    margin-right: 10px;
 }

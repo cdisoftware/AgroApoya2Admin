@@ -1,0 +1,10 @@
+.click {
+    cursor: pointer;
+}
+
+.SubTituloForm {
+    text-transform: none;
+}
+.novisible{
+    display: none;
+}

@@ -3,7 +3,7 @@
     <div class="container bg-white">
         <h1 class="br">Buscar Oferta</h1>
         <div class="row justify-content-center">
-            <img src="./../../../../../assets/ImagenesAgroApoya2Admin/barra1.png" style="width: 65%;">
+            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/barra1.png" style="width: 65%;">
         </div>
         <br>
         <div class="row">
@@ -82,7 +82,8 @@
                         <div class="col-sm-12">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave TextMay">Codigo oferta:&nbsp;</label><label class="ValorIDOfer"><strong>{{oferta.COD_OFR_PUBLICO}}</strong></label>
+                                    <label class="Llave TextMay">Codigo oferta:&nbsp;</label><label
+                                        class="ValorIDOfer"><strong>{{oferta.COD_OFR_PUBLICO}}</strong></label>
                                 </div>
                             </div>
                         </div>
@@ -148,7 +149,7 @@
                         </div>
                         <div class="col-sm-6">
                             <label class="Llave">Valor costeo:&nbsp;</label><label
-                                class="Valor">{{oferta.vlor_costeo}}</label>
+                                class="Valor">${{oferta.vlor_costeo}}</label>
                         </div>
                     </div>
                     <hr class="hrSinEstilo">
@@ -205,7 +206,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label class="Llave">Estado oferta:&nbsp;</label><label
-                                        class="Valor">{{NomEstado}}</label>
+                                        class="textblue"><strong>{{NomEstado}}</strong></label>
                                 </div>
                             </div>
                         </div>
@@ -213,24 +214,33 @@
                 </div>
             </div>
             <hr>
-            <div class="row justify-content-center">
+            <div class="row justify-content-center ">
                 <div class="col-sm-1" *ngIf="ValidaBusqueda == '1'">
-                    <button class="SinEstilo" (click)="EditaOferta(templateEditar)">
-                        <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Admin/Editar.png" title="Editar oferta">
-                    </button>
-                    <label>Editar</label>
+                    <div class="row justify-content-center">
+                        <button class="SinEstilo col-sm-11" (click)="EditaOferta(templateEditar)">
+                            <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
+                                title="Editar oferta">
+                        </button>
+                        <label class="col-sm-11 CentrarText">Editar</label>
+                    </div>
                 </div>
                 <div class="col-sm-1" *ngIf="ValidaBusqueda == '1' || ValidaBusqueda == '2'">
-                    <button class="SinEstilo" (click)="CerrarOferta(templateCerrar)">
-                        <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Admin/Cerrar.png" title="Cerrar oferta">
-                    </button>
-                    <label>Cerrar</label>
+                    <div class="row justify-content-center">
+                        <button class="SinEstilo col-sm-11" (click)="CerrarOferta(templateCerrar)">
+                            <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Adm/Cerrar.png"
+                                title="Cerrar oferta">
+                        </button>
+                        <label class="col-sm-11 CentrarText">Cerrar</label>
+                    </div>
                 </div>
-                <div class="col-sm-1">
-                    <button class="SinEstilo" disabled>
-                        <img class="BtnimgTamano" src={{ImagenEstado}} title={{EstadoOferta}}>
-                    </button>
-                    <label>Estado</label>
+                <div class="col-sm-1" (click)="AbrirPopuPResumen(ModalResumen, oferta)">
+                    <div class="row justify-content-center">
+                        <button class="SinEstilo col-sm-11">
+                            <img class="BtnimgTamano" src='./../../../../../assets/ImagenesAgroApoya2Adm/resumen.png'
+                                title="Resumen de oferta">
+                        </button>
+                        <label class="col-sm-11 CentrarText">Resumen</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -269,7 +279,8 @@
                     <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox"
                         (change)='SelEJornada(ejornada.value)'>
                         <option value="1">Jornada</option>
-                        <option *ngFor="let jornada of ArrayJornada" [value]="jornada.CD_JRNDA" [selected]="jornada.CD_JRNDA == EJornada">
+                        <option *ngFor="let jornada of ArrayJornada" [value]="jornada.CD_JRNDA"
+                            [selected]="jornada.CD_JRNDA == EJornada">
                             {{jornada.DESCRIPCION}}
                         </option>
                     </select>
@@ -317,8 +328,8 @@
                             class="form-control" disabled>
                     </div>
                     <div class="col-sm-1">
-                        <button class="bot col-sm-1 SinEstilo" (click)="CargaBusqueda(seleccion)">
-                            <img src="./../../../../../assets/ImagenesAgroApoya2Admin/Editar.png" alt="Ver">
+                        <button class="bot col-sm-1 SinEstilo" (click)="CargaBusqueda(seleccion)" title="Editar">
+                            <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png" alt="Ver">
                         </button>
                     </div>
                 </li>
@@ -349,6 +360,1036 @@
         </div>
         <div class="row justify-content-center">
             <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+        </div>
+        <br>
+    </ng-template>
+
+    <ng-template #ModalResumen let-modal>
+        <div class="modal-header">
+            <h1>Resumen</h1>
+            <button type="button" class="btn-close" aria-label="Close" (click)="CerrarModal();"></button>
+        </div>
+        <div class="modal-body">
+            <!--Targeta-->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row justify-content-center tarjetadetalle" *ngFor="let oferta of ArrayOferta">
+                        <div class="row m-2">
+                            <div class="col-sm-3">
+                                <img src={{RutaImagen+oferta.IMAGEN}} class="col-sm-12 ImgOferta">
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label class="Llave TextMay">Codigo oferta:&nbsp;</label><label
+                                                    class="ValorIDOfer"><strong>{{oferta.COD_OFR_PUBLICO}}</strong></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label class="Llave">Producto:&nbsp;</label><label
+                                                    class="Valor">{{oferta.Nombre_Producto}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label class="Llave">Presentación empaque:&nbsp;</label><label
+                                                    class="Valor">{{oferta.Descripcion_empaque}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label class="Llave">Tamaño:&nbsp;</label><label
+                                                    class="Valor">{{oferta.Nmbre_tamano}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label class="Llave">Condición entrega:&nbsp;</label> <label
+                                                    class="Valor">{{oferta.Condicion_entrega}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label class="Llave">Valor unidad:&nbsp;</label><label
+                                                    class="Valor">{{oferta.valor_unidad_formato}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label class="Llave">Unidades disponibles:&nbsp;</label><label
+                                                    class="Valor">{{oferta.Unidades_disponibles}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label class="Llave">Valor total oferta:&nbsp;</label><label
+                                            class="Valor">{{oferta.valor_Total_Ofr_formato}}</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="Llave">Valor costeo:&nbsp;</label><label
+                                            class="Valor">${{oferta.vlor_costeo}}</label>
+                                    </div>
+                                </div>
+                                <hr class="hrSinEstilo">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="Llave">Descripción producto:&nbsp;</label><label
+                                            class="Valor">{{oferta.caracteristicas}}</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="Llave">Caracterización:&nbsp;</label><label
+                                            class="Valor">{{oferta.caracterizacion}}</label>
+                                    </div>
+                                </div>
+                                <hr class="hrSinEstilo">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label class="Llave">Fecha recogida:&nbsp;</label><label
+                                                    class="Valor">{{oferta.fecha_recogida}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label class="Llave">Jornada:&nbsp;</label><label
+                                                    class="Valor">{{oferta.Nombre_jornada}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="Llave">Nombre productor:&nbsp;</label><label
+                                            class="Valor">{{oferta.Nombre_productor}}</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label class="Llave">Ubicación:&nbsp;</label><label
+                                                    class="Valor">{{oferta.Ubicacion_parsela +'
+                                                    ('+oferta.coordenadas_parcela}})</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label class="Llave">Estado oferta:&nbsp;</label><label
+                                                    class="Valor">{{NomEstado}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="accordion-shadow mt-2">
+                    <ngb-accordion [destroyOnHide]='false' [closeOthers]="true" #shadow>
+                            <ngb-panel id="{{i}}" *ngFor="let respu of ArrayResumenOferta; let i = index">
+                                <ng-template ngbPanelTitle>
+                                    <span>{{respu.descripcion}}</span>
+                                </ng-template>
+                                <ng-template ngbPanelContent>
+                                    <!--SECTORIZACION-->
+                                    <div class="br row justify-content-center" *ngIf="respu.codigo == '1' && respu.registro > 0">
+                                        <table class="col-sm-10 TableAgro">
+                                            <tr>
+                                                <th>Sector</th>
+                                                <th>Cantidad</th>
+                                                <th>Valor flete</th>
+                                            </tr>
+                                            <tr *ngFor="let sector of DataSectorOferta ">
+                                                <td>{{sector.DSCRPCION_SCTOR}}</td>
+                                                <td>{{sector.CNTDAD}}</td>
+                                                <td>{{sector.VLOR_FLTE_SGRDO | currency}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <!--Asignacion TRansportiosta-->
+                                    <div class="br row justify-content-center" *ngIf="respu.codigo == '2' && respu.registro > 0">
+                                        <table class="col-sm-12 TableAgro">
+                                            <tr>
+                                                <th>Sector</th>
+                                                <th>Cantidades</th>
+                                                <th>Peso (kg)</th>
+                                                <th>Conductor</th>
+                                                <th>Valor flete registrado</th>
+                                                <th>Valor transportista</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                            <tr *ngFor="let transportista of DataTransOferta">
+                                                <td>{{transportista.DSCRPCION_SCTOR}}</td>
+                                                <td>{{transportista.cantidad}}</td>
+                                                <td>{{transportista.PESO_KG}}</td>
+                                                <td>{{transportista.NMBRE_CNDCTOR}}</td>
+                                                <td>{{transportista.VLOR_FLTE_SGRDO}}</td>
+                                                <td>{{transportista.VLOR_FLTE_PCTDO|currency}}</td>
+                                                <td>{{transportista.NOM_ESTADO}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <!--Costeo-->
+                                    <div class="br row justify-content-center" *ngIf="respu.codigo == '3' && respu.registro > 0">
+                                        <table class="col-sm-10 TableAgro">
+                                            <tr>
+                                                <th>Concepto</th>
+                                                <th>Tipo Valor</th>
+                                                <th>Valor</th>
+                                            </tr>
+                                            <tr *ngFor="let Costo of ArrayCostos">
+                                                <td>{{Costo.NOM_TPO_COSTEO}}</td>
+                                                <td>{{Costo.NOM_TPO_VLOR}}</td>
+                                                <td>{{Costo.VLOR | currency}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="row justify-content-center br" *ngIf="respu.codigo == '3' && respu.registro > 0">
+                                        <div class="col-sm-3"><label class="Llave">Valor total
+                                                costeo:&nbsp;</label><label>{{ValTotCosteo|currency}}</label>
+                                        </div>
+                                    </div>
+                                    <!--Valoracion-->
+                                    <div class="row br" *ngIf="respu.codigo == '4' && respu.registro > 0">
+                                        <div class="row mb-2">
+                                            <div class="col-sm-6">
+                                                <label class="col-sm-12 Llave mb-1">Sector a valorar</label>
+                                                <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec"
+                                                    (selected)='selectSector($event)' (inputCleared)='LimpiaSector()'
+                                                    placeholder="Sector" [itemTemplate]="templateSec"
+                                                    [notFoundTemplate]="templateVacio">
+                                                </ng-autocomplete>
+                                                <ng-template #templateSec let-item>
+                                                    <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+                                                </ng-template>
+                                                <ng-template #templateVacio let-SinRegistro>
+                                                    <label for="">Sin registros</label>
+                                                </ng-template>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class="col-sm-12 Llave mb-1">Codigo sector</label>
+                                                <label class="form-control textBox">{{CodigoOferSector}}</label>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label class="col-sm-12 Llave mb-1">Flete negociado</label>
+                                                <label class="form-control textBox">{{VlrFletSect}}</label>
+                                            </div>
+                                        </div>
+            
+            
+            
+            
+                                        <div class="row CentrarText">
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Vigencia desde:&nbsp;</label><label
+                                                            class="Valor">{{VigenDesde}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Vigencia hasta:&nbsp;</label><label
+                                                            class="Valor">{{VigenHasta}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row br CentrarText">
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Fecha entrega:&nbsp;</label><label
+                                                            class="Valor">{{FechaEntrega}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Fecha recogida:&nbsp;</label><label
+                                                            class="Valor">{{FechaRecogida}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row br">
+                                            <div class="col-sm-12">
+                                                <label class="col-sm-12 Llave">Observaciones</label>
+                                                <p class="Valor">{{Observaciones}}</p>
+                                            </div>
+                                        </div>
+            
+                                        <!--Compras individuales-->
+                                        <div class="row" *ngIf="MuestraIndividual == '1'">
+                                            <hr class="mb-3">
+                                            <div class="row br">
+                                                <h5 class="SubTituloForm">Definicion Oferta</h5>
+                                            </div>
+                                            <div class="row br">
+                                                <h6 class="SubTituloForm">Compra individual</h6>
+                                            </div>
+                                            <div class="row br CentrarText">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Tipo comisión:&nbsp;</label><label
+                                                                class="Valor">{{ComInvid}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Valor comición:&nbsp;</label><label
+                                                                class="Valor">{{VlrComicionIndividual}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row br CentrarText">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Minimo unidades:&nbsp;</label><label
+                                                                class="Valor">{{MinUnidI}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Maximo unidades:&nbsp;</label><label
+                                                                class="Valor">{{MaxUnidI}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row br CentrarText">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Valor domicilio:&nbsp;</label><label
+                                                                class="Valor">{{VlrDomiI | currency}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Precio final (No incluye valor
+                                                                domicilio):&nbsp;</label><label class="Valor">{{PreFinI |
+                                                                currency}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr *ngIf="MuestraIndividual == '1'">
+            
+            
+            
+            
+                                        <!--Compra grupal-->
+                                        <div class="row" *ngIf="MuestraGrupal == '1'">
+                                            <div class="row br">
+                                                <h6 class="SubTituloForm">Compra grupal</h6>
+                                            </div>
+                                            <div class="row br CentrarText">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Tipo comisión:&nbsp;</label><label
+                                                                class="Valor">{{ComGrup}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Valor comisión:&nbsp;</label><label
+                                                                class="Valor">{{VlrComGrup | currency}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row br CentrarText">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Minimo unidades lider:&nbsp;</label><label
+                                                                class="Valor">{{MinUnidLider}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Maximo unidades lider:&nbsp;</label><label
+                                                                class="Valor">{{MaxUnidLider}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row br CentrarText">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Minimo unidades
+                                                                participante:&nbsp;</label><label
+                                                                class="Valor">{{MinUnidPart}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Maximo unidades
+                                                                participante:&nbsp;</label><label
+                                                                class="Valor">{{MaxUnidPart}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row br CentrarText">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Valor domicilio:&nbsp;</label><label
+                                                                class="Valor">{{VlrDomiG | currency}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Porcentaje descuento lider:&nbsp;</label><label
+                                                                class="Valor">{{PorcDescLider}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row br CentrarText">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Cantidad de grupos:&nbsp;</label><label
+                                                                class="Valor">{{CantGrupos}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+            
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Numero minimo de personas por
+                                                                grupo:&nbsp;</label><label class="Valor">{{UnidXGrupos}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row br CentrarText">
+                                                <div class="col-sm-12">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Cantidad de compras individuales
+                                                                disponibles:&nbsp;</label><label
+                                                                class="Valor">{{CantComprI}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row br CentrarText">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Precio arranque lider:&nbsp;</label><label
+                                                                class="Valor">{{PrecioFinLider | currency}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <label class="Llave">Precio final participante:&nbsp;</label><label
+                                                                class="Valor">{{PrecioFinPart | currency}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+            
+            
+            
+                                        <!--Adicionales-->
+                                        <div class="row" *ngIf="VerTopping == '1'">
+                                            <hr>
+                                            <div class="row br">
+                                                <h6 class="SubTituloForm">Adicionales</h6>
+                                            </div>
+                                            <div class="row justify-content-center br">
+                                                <table class="col-sm-12 TableAgro">
+                                                    <tr>
+                                                        <th>Descripción</th>
+                                                        <th>Valor unitario</th>
+                                                        <th>Tipo</th>
+                                                        <th>Unidades para oferta</th>
+                                                        <th>Maximo unidades por compra</th>
+                                                        <th>Acciones</th>
+                                                    </tr>
+                                                    <tr *ngFor="let topping of DataToppings">
+                                                        <td>{{topping.Descripcion}}</td>
+                                                        <td>{{topping.ValorUnitario | currency}}</td>
+                                                        <td>{{topping.descTipotopping}}</td>
+                                                        <td>{{topping.cantidadReserva}}</td>
+                                                        <td>{{topping.MaxCantidad}}</td>
+                                                        <td>
+                                                            <button class="SinEstilo" title="Imagen amparado">
+                                                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png"
+                                                                    (click)="visualizaImagenTopping(ModalImagen, topping.imagen)">
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--Trazabilidad-->
+                                    <div class="br row justify-content-center" *ngIf="respu.codigo == '5' && respu.registro > 0">
+
+                                        <div class="row CentrarText" *ngFor="let respu of Trazabilidad; let i = index">
+                                            <div class="col-sm-6" *ngIf="i == 0">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Fecha acepta oferta:&nbsp;</label><label
+                                                            class="Valor">{{respu.fecha}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6" *ngIf="i == 1">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Fecha Sectorizacion:&nbsp;</label><label
+                                                            class="Valor">{{Trazabilidad.estado}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+        
+        
+                                            <div class="col-sm-6" *ngIf="i == 2">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Fecha Asigna transportista:&nbsp;</label><label
+                                                            class="Valor">{{Trazabilidad.estado}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+        
+                                            <div class="col-sm-6" *ngIf="i == 3">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Fecha Valoración:&nbsp;</label><label
+                                                            class="Valor">{{Trazabilidad.estado}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+        
+                                    </div>
+                                </ng-template>
+                            </ngb-panel>
+                            <!--<ngb-panel id="AsignaTrans">
+                                <ng-template ngbPanelTitle>
+                                    <span>Asignación transportista</span>
+                                </ng-template>
+                                <ng-template ngbPanelContent>
+                                    <div class="br row justify-content-center">
+                                        <table class="col-sm-12 TableAgro">
+                                            <tr>
+                                                <th>Sector</th>
+                                                <th>Cantidades</th>
+                                                <th>Peso (kg)</th>
+                                                <th>Conductor</th>
+                                                <th>Valor flete registrado</th>
+                                                <th>Valor transportista</th>
+                                                <th>Estado</th>
+                                            </tr>
+                                            <tr *ngFor="let transportista of DataTransOferta">
+                                                <td>{{transportista.DSCRPCION_SCTOR}}</td>
+                                                <td>{{transportista.cantidad}}</td>
+                                                <td>{{transportista.PESO_KG}}</td>
+                                                <td>{{transportista.NMBRE_CNDCTOR}}</td>
+                                                <td>{{transportista.VLOR_FLTE_SGRDO}}</td>
+                                                <td>{{transportista.VLOR_FLTE_PCTDO|currency}}</td>
+                                                <td>{{transportista.NOM_ESTADO}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </ng-template>
+                            </ngb-panel>
+                            <ngb-panel id="Costeo">
+                                <ng-template ngbPanelTitle>
+                                    <span>Costeo</span>
+                                </ng-template>
+                                <ng-template ngbPanelContent>
+                                    <div class="br row justify-content-center">
+                                        <div class="br row justify-content-center">
+                                            <table class="col-sm-10 TableAgro">
+                                                <tr>
+                                                    <th>Concepto</th>
+                                                    <th>Tipo Valor</th>
+                                                    <th>Valor</th>
+                                                </tr>
+                                                <tr *ngFor="let Costo of ArrayCostos">
+                                                    <td>{{Costo.NOM_TPO_COSTEO}}</td>
+                                                    <td>{{Costo.NOM_TPO_VLOR}}</td>
+                                                    <td>{{Costo.VLOR | currency}}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="row justify-content-center br">
+                                            <div class="col-sm-3"><label class="Llave">Valor total
+                                                    costeo:&nbsp;</label><label>{{ValTotCosteo|currency}}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngb-panel>
+                            <ngb-panel id="Valoracion">
+                                <ng-template ngbPanelTitle>
+                                    <span>Valoración</span>
+                                </ng-template>
+                                <ng-template ngbPanelContent>
+                                    <div class="row br">
+                                        <h6 class="SubTituloForm">Definición vigencia oferta</h6>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-sm-6">
+                                            <label class="col-sm-12 Llave mb-1">Sector a valorar</label>
+                                            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec"
+                                                (selected)='selectSector($event)' (inputCleared)='LimpiaSector()'
+                                                placeholder="Sector" [itemTemplate]="templateSec"
+                                                [notFoundTemplate]="templateVacio">
+                                            </ng-autocomplete>
+                                            <ng-template #templateSec let-item>
+                                                <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+                                            </ng-template>
+                                            <ng-template #templateVacio let-SinRegistro>
+                                                <label for="">Sin registros</label>
+                                            </ng-template>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label class="col-sm-12 Llave mb-1">Codigo sector</label>
+                                            <label class="form-control textBox">{{CodigoOferSector}}</label>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label class="col-sm-12 Llave mb-1">Flete negociado</label>
+                                            <label class="form-control textBox">{{VlrFletSect}}</label>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div class="row CentrarText">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Vigencia desde:&nbsp;</label><label
+                                                        class="Valor">{{VigenDesde}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Vigencia hasta:&nbsp;</label><label
+                                                        class="Valor">{{VigenHasta}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row br CentrarText">
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Fecha entrega:&nbsp;</label><label
+                                                        class="Valor">{{FechaEntrega}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Fecha recogida:&nbsp;</label><label
+                                                        class="Valor">{{FechaRecogida}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row br">
+                                        <div class="col-sm-12">
+                                            <label class="col-sm-12 Llave">Observaciones</label>
+                                            <p class="Valor">{{Observaciones}}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" *ngIf="MuestraIndividual == '1'">
+                                        <div class="row br">
+                                            <h5 class="SubTituloForm">Definicion Oferta</h5>
+                                        </div>
+                                        <div class="row br">
+                                            <h6 class="SubTituloForm">Compra individual</h6>
+                                        </div>
+                                        <div class="row br CentrarText">
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Tipo comisión:&nbsp;</label><label
+                                                            class="Valor">{{ComInvid}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Valor comición:&nbsp;</label><label
+                                                            class="Valor">{{VlrComicionIndividual}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row br CentrarText">
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Minimo unidades:&nbsp;</label><label
+                                                            class="Valor">{{MinUnidI}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Maximo unidades:&nbsp;</label><label
+                                                            class="Valor">{{MaxUnidI}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row br CentrarText">
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Valor domicilio:&nbsp;</label><label
+                                                            class="Valor">{{VlrDomiI | currency}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Precio final (No incluye valor
+                                                            domicilio):&nbsp;</label><label class="Valor">{{PreFinI |
+                                                            currency}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr *ngIf="MuestraIndividual == '1'">
+
+
+
+
+                                    <div class="row" *ngIf="MuestraGrupal == '1'">
+                                        <div class="row br">
+                                            <h6 class="SubTituloForm">Compra grupal</h6>
+                                        </div>
+                                        <div class="row br CentrarText">
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Tipo comisión:&nbsp;</label><label
+                                                            class="Valor">{{ComGrup}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Valor comisión:&nbsp;</label><label
+                                                            class="Valor">{{VlrComGrup | currency}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row br CentrarText">
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Minimo unidades lider:&nbsp;</label><label
+                                                            class="Valor">{{MinUnidLider}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Maximo unidades lider:&nbsp;</label><label
+                                                            class="Valor">{{MaxUnidLider}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row br CentrarText">
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Minimo unidades
+                                                            participante:&nbsp;</label><label
+                                                            class="Valor">{{MinUnidPart}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Maximo unidades
+                                                            participante:&nbsp;</label><label
+                                                            class="Valor">{{MaxUnidPart}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row br CentrarText">
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Valor domicilio:&nbsp;</label><label
+                                                            class="Valor">{{VlrDomiG | currency}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Porcentaje descuento
+                                                            lider:&nbsp;</label><label
+                                                            class="Valor">{{PorcDescLider}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row br CentrarText">
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Cantidad de grupos:&nbsp;</label><label
+                                                            class="Valor">{{CantGrupos}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Numero minimo de personas por
+                                                            grupo:&nbsp;</label><label
+                                                            class="Valor">{{UnidXGrupos}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row br CentrarText">
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Cantidad de compras individuales
+                                                            disponibles:&nbsp;</label><label
+                                                            class="Valor">{{CantComprI}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row br CentrarText">
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Precio arranque lider:&nbsp;</label><label
+                                                            class="Valor">{{PrecioFinLider | currency}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <label class="Llave">Precio final
+                                                            participante:&nbsp;</label><label
+                                                            class="Valor">{{PrecioFinPart | currency}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="row" *ngIf="VerTopping == '1'">
+                                        <hr>
+                                        <div class="row br">
+                                            <h6 class="SubTituloForm">Adicionales</h6>
+                                        </div>
+                                        <div class="row justify-content-center br">
+                                            <table class="col-sm-12 TableAgro">
+                                                <tr>
+                                                    <th>Descripción</th>
+                                                    <th>Valor unitario</th>
+                                                    <th>Tipo</th>
+                                                    <th>Unidades para oferta</th>
+                                                    <th>Maximo unidades por compra</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                                <tr *ngFor="let topping of DataToppings">
+                                                    <td>{{topping.Descripcion}}</td>
+                                                    <td>{{topping.ValorUnitario | currency}}</td>
+                                                    <td>{{topping.descTipotopping}}</td>
+                                                    <td>{{topping.cantidadReserva}}</td>
+                                                    <td>{{topping.MaxCantidad}}</td>
+                                                    <td>
+                                                        <button class="SinEstilo" title="Imagen amparado">
+                                                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png"
+                                                                (click)="visualizaImagenTopping(ModalImagen, topping.imagen)">
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngb-panel>-->
+                    </ngb-accordion>
+                </div>
+
+
+
+
+                <!--Costeo Oferta
+                <div class="row br" *ngIf="respu.codigo == '5' && respu.registro > 0">
+                    <h5 class="SubTituloForm">Trazabilidad</h5>
+                </div>
+                <div class="row mt-1" *ngIf="respu.codigo == '5' && respu.registro > 0">
+                    <ngb-accordion #acc="ngbAccordion">
+
+                        <ngb-panel title="Costeo Oferta" id="config-panel">
+                            <ng-template ngbPanelContent>
+                                <div class="br row justify-content-center">
+
+                                    <div class="row CentrarText" *ngFor="let respu of Trazabilidad; let i = index">
+                                        <div class="col-sm-6" *ngIf="i == 0">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Fecha acepta oferta:&nbsp;</label><label
+                                                        class="Valor">{{respu.fecha}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6" *ngIf="i == 1">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Fecha Sectorizacion:&nbsp;</label><label
+                                                        class="Valor">{{Trazabilidad.estado}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-6" *ngIf="i == 2">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Fecha Asigna transportista:&nbsp;</label><label
+                                                        class="Valor">{{Trazabilidad.estado}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6" *ngIf="i == 3">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Fecha Valoración:&nbsp;</label><label
+                                                        class="Valor">{{Trazabilidad.estado}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </ng-template>
+                        </ngb-panel>
+                    </ngb-accordion>
+                </div>-->
+        </div>
+
+
+
+
+
+
+
+        <div class="row justify-content-center">
+            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="CerrarModal()">Aceptar</button>
+        </div>
+        <br>
+    </ng-template>
+
+
+    <ng-template #ModalImagen let-modal>
+        <div class="modal-header">
+            <h1 class="modal-title" id="modal-basic-title">Imagen adicionales</h1>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        </div>
+        <div class="modal-body" *ngFor="let oferta of DataOferta">
+            <div class="row br">
+                <img src="{{consultaimagen}}" class="col-sm-12">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.dismiss()">Aceptar</button>
         </div>
         <br>
     </ng-template>

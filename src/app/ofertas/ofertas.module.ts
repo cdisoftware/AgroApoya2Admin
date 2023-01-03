@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
-import { ComprasComponent } from './components/compras/compras.component';
-import { UsuariosComponent } from './components/usuarios/usuarios.component';
+import { CarruselOfertasComponent } from './components/carrusel-ofertas/carrusel-ofertas.component';
+import { CarruselofertasComponent } from './components/carruselofertas/carruselofertas.component';
+
+
 
 @NgModule({
   declarations: [
   
-    ComprasComponent,
-       UsuariosComponent
+    CarruselOfertasComponent,
+       CarruselofertasComponent
   ],
   imports: [
     CommonModule,

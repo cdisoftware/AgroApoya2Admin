@@ -3,7 +3,7 @@
     <br>
     <h1>Asignación transportista</h1>
     <div class="br row justify-content-center">
-        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/barra4.png" style="width: 65%;">
+        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/barra4.png" style="width: 65%;">
     </div>
     <div class="row justify-content-center br tarjetadetalle" *ngFor="let oferta of DataOferta">
         <div class="row m-2">
@@ -24,16 +24,14 @@
                     <div class="col-sm-6">
                         <div class="row">
                             <div class="col-sm-12">
-                                <label class="Llave">Producto:&nbsp;</label><label
-                                    class="Valor">{{oferta.Nombre_Producto}}</label>
+                                <label class="Llave">Producto:&nbsp;</label><label class="Valor">{{oferta.Nombre_Producto}}</label>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="row">
                             <div class="col-sm-12">
-                                <label class="Llave">Presentación empaque:&nbsp;</label><label
-                                    class="Valor">{{oferta.Descripcion_empaque}}</label>
+                                <label class="Llave">Presentación empaque:&nbsp;</label><label class="Valor">{{oferta.Descripcion_empaque}}</label>
                             </div>
                         </div>
                     </div>
@@ -42,14 +40,13 @@
                     <div class="col-sm-6">
                         <div class="row">
                             <div class="col-sm-12">
-                                <label class="Llave">Tamaño:&nbsp;</label><label
-                                    class="Valor">{{oferta.Nmbre_tamano}}</label>
+                                <label class="Llave">Tamaño:&nbsp;</label><label class="Valor">{{oferta.Nmbre_tamano}}</label>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="row">
-                            <div class="col-sm-12">    
+                            <div class="col-sm-12">
                                 <label class="Llave">Condición entrega:&nbsp;</label> <label class="Valor">{{oferta.Condicion_entrega}}</label>
                             </div>
                         </div>
@@ -59,41 +56,35 @@
                     <div class="col-sm-6">
                         <div class="row">
                             <div class="col-sm-12">
-                                <label class="Llave">Valor unidad:&nbsp;</label><label
-                                    class="Valor">{{oferta.valor_unidad_formato}}</label>
+                                <label class="Llave">Valor unidad:&nbsp;</label><label class="Valor">{{oferta.valor_unidad_formato}}</label>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="row">
                             <div class="col-sm-12">
-                                <label class="Llave">Unidades disponibles:&nbsp;</label><label
-                                    class="Valor">{{oferta.Unidades_disponibles}}</label>
+                                <label class="Llave">Unidades disponibles:&nbsp;</label><label class="Valor">{{oferta.Unidades_disponibles}}</label>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
-                        <label class="Llave">Valor total oferta:&nbsp;</label><label
-                            class="Valor">{{oferta.valor_Total_Ofr_formato}}</label>
+                        <label class="Llave">Valor total oferta:&nbsp;</label><label class="Valor">{{oferta.valor_Total_Ofr_formato}}</label>
                     </div>
                     <div class="col-sm-6">
-                        <label class="Llave">Valor costeo:&nbsp;</label><label
-                            class="Valor">{{oferta.vlor_flte_xunidad}}</label>
+                        <label class="Llave">Valor costeo:&nbsp;</label><label class="Valor">{{oferta.vlor_flte_xunidad}}</label>
                     </div>
                 </div>
                 <hr class="hrSinEstilo">
                 <div class="row">
                     <div class="col-sm-12">
-                        <label class="Llave">Descripción producto:&nbsp;</label><label
-                            class="Valor">{{oferta.caracteristicas}}</label>
+                        <label class="Llave">Descripción producto:&nbsp;</label><label class="Valor">{{oferta.caracteristicas}}</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <label class="Llave">Caracterización:&nbsp;</label><label
-                            class="Valor">{{oferta.caracterizacion}}</label>
+                        <label class="Llave">Caracterización:&nbsp;</label><label class="Valor">{{oferta.caracterizacion}}</label>
                     </div>
                 </div>
                 <hr class="hrSinEstilo">
@@ -101,35 +92,31 @@
                     <div class="col-sm-6">
                         <div class="row">
                             <div class="col-sm-12">
-                                <label class="Llave">Fecha recogida:&nbsp;</label><label
-                                    class="Valor">{{oferta.fecha_recogida}}</label>
+                                <label class="Llave">Fecha recogida:&nbsp;</label><label class="Valor">{{oferta.fecha_recogida}}</label>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="row">
                             <div class="col-sm-12">
-                                <label class="Llave">Jornada:&nbsp;</label><label
-                                    class="Valor">{{oferta.Nombre_jornada}}</label>
+                                <label class="Llave">Jornada:&nbsp;</label><label class="Valor">{{oferta.Nombre_jornada}}</label>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <label class="Llave">Nombre productor:&nbsp;</label><label
-                            class="Valor">{{oferta.Nombre_productor}}</label>
+                        <label class="Llave">Nombre productor:&nbsp;</label><label class="Valor">{{oferta.Nombre_productor}}</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-12">
-                                <label class="Llave">Ubicación:&nbsp;</label><label
-                                    class="Valor">{{oferta.Ubicacion_parsela +' ('+oferta.coordenadas_parcela}})</label>
+                                <label class="Llave">Ubicación:&nbsp;</label><label class="Valor">{{oferta.Ubicacion_parsela +' ('+oferta.coordenadas_parcela}})</label>
                             </div>
                         </div>
-                    </div>                    
+                    </div>
                 </div>
                 <div class="row">
                     <div class="row">
@@ -143,9 +130,7 @@
     </div>
     <div class="row br">
         <div class="col-sm-4">
-            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keyword" [(ngModel)]="SectorSelec"
-                placeholder="Sector" (selected)='selectSector($event)'
-                [itemTemplate]="DataSectores.length>0 ? templateSec : templateVacio" [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
+            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keyword" [(ngModel)]="SectorSelec" placeholder="Sector" (selected)='selectSector($event)' [itemTemplate]="DataSectores.length>0 ? templateSec : templateVacio" [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
             </ng-autocomplete>
             <ng-template #templateSec let-item>
                 <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
@@ -155,9 +140,7 @@
             </ng-template>
         </div>
         <div class="col-sm-4">
-            <ng-autocomplete [data]="DataTransportista" [searchKeyword]="keywordT" [(ngModel)]="TransSelec"
-                placeholder="Transportista" (selected)='selectTrans($event)' [itemTemplate]="templateTran"
-                [notFoundTemplate]="templateVacio" [(ngModel)]="Transpor">
+            <ng-autocomplete [data]="DataTransportista" [searchKeyword]="keywordT" [(ngModel)]="TransSelec" placeholder="Transportista" (selected)='selectTrans($event)' [itemTemplate]="templateTran" [notFoundTemplate]="templateVacio" [(ngModel)]="Transpor">
             </ng-autocomplete>
             <ng-template #templateTran let-item>
                 <a [innerHTML]="item.nombre_conductor"></a>
@@ -167,8 +150,7 @@
             </ng-template>
         </div>
         <div class="col-sm-4">
-            <input class="col-sm-12 form-control form-control-sm textBox" type="number" placeholder="Valor estimado flete"
-                [(ngModel)]="VlrFlete">
+            <input mask="separator" thousandSeparator="." class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Valor estimado flete" [(ngModel)]="VlrFlete">
         </div>
     </div>
     <div class="row br justify-content-center">
@@ -189,7 +171,7 @@
             <div class="row">
                 <h2 class="TituloDetalle col-sm-9 mt-2">Transportistas Asociados</h2>
                 <button class="SinEstilo col-sm-1" (click)="ConsultaCondOferta()">
-                    <img src="./../../../../../assets/ImagenesAgroApoya2Admin/actualizar.png">
+                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/actualizar.png">
                 </button>
             </div>
         </div>
@@ -214,15 +196,15 @@
                 <td>{{transportista.VLOR_FLTE_SGRDO}}</td>
                 <td><input type="text" class="form-control form-control-sm" [(ngModel)]="transportista.VLOR_FLTE_PCTDO"></td>
                 <td>{{transportista.NOM_ESTADO}}</td>
-                <td> 
+                <td>
                     <button class="SinEstilo" title="Aprueba transportista" (click)="ApruebaTransportista(transportista, ModalRespuesta)">
-                        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/aprobar.png">
+                        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png">
                     </button>
                     <button class="SinEstilo" title="Eliminar transportista" (click)="EliminaTransportista(transportista, ModalRespuesta)">
-                        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/basurarojo.png">
+                        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
                     </button>
                     <button class="SinEstilo" title="Rechazar transportista" (click)="RechazarTransportista(transportista, ModalRespuesta)">
-                        <img src="./../../../../../assets/ImagenesAgroApoya2Admin/rechazado.png">
+                        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png">
                     </button>
                 </td>
             </tr>
@@ -315,7 +297,7 @@
                     <label class="Valor">{{conductor.DIRECCION}}</label>
                 </div> -->
             </div>
-        </div>        
+        </div>
     </div>
     <hr class="hrSinEstilo">
     <br>

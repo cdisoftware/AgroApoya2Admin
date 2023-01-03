@@ -6,9 +6,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <label class="col-sm-12 Llave">Productor</label>
-                <ng-autocomplete [data]="ArrayProductor" [searchKeyword]="productor" placeholder="Productor"
-                    (selected)='selectProductor($event)' (inputCleared)="LimpiarCampos('pt')"
-                    [itemTemplate]="templateResPr" [notFoundTemplate]="templateVacioPr" aria-required="true">
+                <ng-autocomplete [data]="ArrayProductor" [searchKeyword]="productor" placeholder="Productor" (selected)='selectProductor($event)' (inputCleared)="LimpiarCampos('pt')" [itemTemplate]="templateResPr" [notFoundTemplate]="templateVacioPr" aria-required="true">
                 </ng-autocomplete>
 
                 <ng-template #templateResPr let-item id="templateResPr">
@@ -23,8 +21,7 @@
         <div class="row">
             <div class="col-sm-6 br">
                 <label class="col-sm-12 Llave">Producto</label>
-                <select class="form-control form-control-sm textBox" #SelectProducto id="SelectProducto"
-                    (change)='SelProducto(SelectProducto.value)'>
+                <select class="form-control form-control-sm textBox" #SelectProducto id="SelectProducto" (change)='SelProducto(SelectProducto.value)'>
                     <option value="0">Producto(Obligatorio)</option>
                     <option *ngFor="let Producto of ArrayProductos;" [value]="Producto.id_producto"
                         [selected]="Producto.id_producto == IdProducto">
@@ -34,8 +31,7 @@
             </div>
             <div class="col-sm-6 br">
                 <label class="col-sm-12 Llave">Presentación Empaque</label>
-                <select class="form-control form-control-sm textBox" #SelectEmpaque id="SelectEmpaque"
-                    (change)='SelEmpaque(SelectEmpaque.value)'>
+                <select class="form-control form-control-sm textBox" #SelectEmpaque id="SelectEmpaque" (change)='SelEmpaque(SelectEmpaque.value)'>
                     <option value="0">Presentación Empaque(Obligatorio)</option>
                     <option *ngFor="let Empaque of ArrayEmpaque;" [value]="Empaque.id_empaque"
                         [selected]="Empaque.id_empaque == IdEmpaque">
@@ -47,8 +43,7 @@
         <div class="row">
             <div class="col-sm-6 br">
                 <label class="col-sm-12 Llave">Condición</label>
-                <select class="form-control form-control-sm textBox" #SelectCondicion id="SelectCondicion"
-                    (change)='SelCondicion(SelectCondicion.value)'>
+                <select class="form-control form-control-sm textBox" #SelectCondicion id="SelectCondicion" (change)='SelCondicion(SelectCondicion.value)'>
                     <option value="0">Condición(Obligatorio)</option>
                     <option *ngFor="let Condicion of ArrayCondicion;" [value]="Condicion.id_condicion"
                         [selected]="Condicion.id_condicion == IdCondicion">
@@ -58,11 +53,10 @@
             </div>
             <div class="col-sm-6 br">
                 <label class="col-sm-12 Llave">Tamaño</label>
-                <select class="form-control form-control-sm textBox" #SelectTamano id="SelectTamano"
-                    (change)='SelTamano(SelectTamano.value)'>
+                <select class="form-control form-control-sm textBox" #SelectTamano id="SelectTamano" (change)='SelTamano(SelectTamano.value)'>
                     <option value="0">Tamaño(Obligatorio)</option>
                     <option *ngFor="let Tamano of ArrayTamano;" [value]="Tamano.id_tamano"
-                        [selected]="Tamano.id_tamano == IdCondicion">
+                        [selected]="Tamano.id_tamano == Tamano">
                         {{Tamano.des_tamano}}
                     </option>
                 </select>
@@ -71,44 +65,35 @@
         <div class="row">
             <div class="col-sm-12 br">
                 <label class="col-sm-12 Llave">Caracteristicas</label>
-                <textarea required="required" name="caracteristicas" id="caracteristicas"
-                    class="form-control form-control-sm textArea" cols="30" rows="3"
-                    placeholder="Caracteristicas que el comprador debe saber de tu producto (Obligatorio)"
-                    [(ngModel)]="DesProducto"></textarea>
+                <textarea required="required" name="caracteristicas" id="caracteristicas" class="form-control form-control-sm textArea" cols="30" rows="3" placeholder="Caracteristicas que el comprador debe saber de tu producto (Obligatorio)" [(ngModel)]="DesProducto"></textarea>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6 br">
                 <label class="col-sm-12 Llave">Valor unidad empaque</label>
-                <input type="number" class="form-control form-control-sm textBox"
-                    placeholder="Valor unidad empaque (Obligatorio)" required="required" [(ngModel)]="ValorOferta"
-                    name="ValorOferta">
+                <input type="text" mask="separator" thousandSeparator="." class="form-control form-control-sm textBox" placeholder="Valor unidad empaque (Obligatorio)" required="required" [(ngModel)]="ValorOferta" name="ValorOferta">
+
             </div>
             <div class="col-sm-6 br">
                 <label class="col-sm-12 Llave">Unidades</label>
-                <input type="number" class="form-control form-control-sm textBox" placeholder="Unidades (Obligatorio)"
-                    required="required" [(ngModel)]="Unidades" name="Unidades" (change)="CalculaValorTotal();">
+                <input type="number" class="form-control form-control-sm textBox" placeholder="Unidades (Obligatorio)" required="required" [(ngModel)]="Unidades" name="Unidades" (change)="CalculaValorTotal();">
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12 br">
                 <label class="col-sm-12 Llave">Valor Total Oferta</label>
-                <input type="number" class="form-control form-control-sm textBox" id="ValorTOferta"
-                    placeholder="Valor Total Oferta (Obligatorio)" disabled [(ngModel)]="ValorTotalOferta"
-                    name="ValorTotalOferta">
+                <input type="text" class="form-control form-control-sm textBox" id="ValorTOferta" placeholder="Valor Total Oferta (Obligatorio)" disabled [ngModel]="ValorTotalOferta | currency" name="ValorTotalOferta">
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-6 br">
                 <label class="col-sm-12 Llave">Fecha Recogida</label>
-                <input type="date" class="form-control form-control-sm textBox" id="VigenciaOferta"
-                    [(ngModel)]="Vigencia" name="Vigencia">
+                <input type="date" class="form-control form-control-sm textBox" id="VigenciaOferta" [(ngModel)]="Vigencia" name="Vigencia">
             </div>
             <div class="col-sm-6 br">
                 <label class="col-sm-12 Llave">Jornada</label>
-                <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox"
-                    (change)='SelEJornada(ejornada.value)'>
+                <select name="EJornada" id="EJornada" #ejornada class="form-control form-control-sm textBox" (change)='SelEJornada(ejornada.value)'>
                     <option value="1">Jornada</option>
                     <option *ngFor="let jornada of ArrayJornada" [value]="jornada.CD_JRNDA">
                         {{jornada.DESCRIPCION}}
@@ -119,8 +104,7 @@
         <div class="row">
             <div class="col-sm-6 br">
                 <label class="col-sm-12 Llave">Departamento</label>
-                <select name="Departamento"id="Departamento" #SelectDepa id="SelectDepa" class="form-control form-control-sm textBox"
-                    (change)='SelDepa()' [(ngModel)]="objDepartamento">
+                <select name="Departamento" id="Departamento" #SelectDepa id="SelectDepa" class="form-control form-control-sm textBox" (change)='SelDepa()' [(ngModel)]="objDepartamento">
                     <option value="0">Departamento (Obligatorio)</option>
                     <option *ngFor="let Departamento of ArrayDepa;" [value]="Departamento.CD_RGION" [ngValue]="Departamento"
                         [selected]="Departamento.CD_RGION == IdDepartamento">
@@ -130,8 +114,7 @@
             </div>
             <div class="col-sm-6 br">
                 <label class="col-sm-12 Llave">Ciudad</label>
-                <select name="Ciudad" id="Ciudad" class="form-control form-control-sm textBox" #SelectCiud
-                    (change)='SelCiud()' [(ngModel)]="objCiudad">
+                <select name="Ciudad" id="Ciudad" class="form-control form-control-sm textBox" #SelectCiud (change)='SelCiud()' [(ngModel)]="objCiudad">
                     <option value="0">Ciudad (Obligatorio)</option>
                     <option *ngFor="let Ciudad of ArrayCiud;" [value]="Ciudad.CD_MNCPIO" [ngValue]="Ciudad"
                         [selected]="Ciudad.CD_MNCPIO == IdCiudad" >
@@ -143,8 +126,7 @@
         <div class="row">
             <div class="col-sm-12 br">
                 <label class="col-sm-12 Llave">Nombre Parcela</label>
-                <input type="text" class="form-control form-control-sm textBox" placeholder="Ubicación Parcela"
-                    [(ngModel)]="UbicacionPar" name="UbicacionPar">
+                <input type="text" class="form-control form-control-sm textBox" placeholder="Ubicación Parcela" [(ngModel)]="UbicacionPar" name="UbicacionPar">
             </div>
         </div>
         <br>
@@ -237,17 +219,17 @@
                 </div>
             </div>
             <div class="row pt-2" *ngFor="let campos of ArrayCamposValida">
-                <div class="col-sm-9" >
+                <div class="col-sm-9">
                     <label for="" class="{{campos.class}}">{{campos.campof}}</label>
                 </div>
                 <div class="col-sm-3">
                     <div class="row justify-content-center">
                         <div class="col-sm-6">
-                            <img src="{{campos.imagen}}">    
-                        </div>                        
-                    </div>                    
+                            <img src="{{campos.imagen}}">
+                        </div>
+                    </div>
                 </div>
-            </div>    
+            </div>
         </div>
         <div class="row justify-content-center">
             <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
@@ -263,13 +245,11 @@
             <div class="row">
                 <div class="col-sm-4">
                     <label class="col-sm-12 Llave">Coordenada Norte</label>
-                    <input type="text" class="form-control form-control-sm textBox" placeholder="Coordenada norte"
-                    [(ngModel)]="Coor1" name="Coor1" disabled="disabled">
+                    <input type="text" class="form-control form-control-sm textBox" placeholder="Coordenada norte" [(ngModel)]="Coor1" name="Coor1" disabled="disabled">
                 </div>
                 <div class="col-sm-4">
                     <label class="col-sm-12 Llave">Coordenada Sur</label>
-                    <input type="text" class="form-control form-control-sm textBox" placeholder="Coordenada sur"
-                    [(ngModel)]="Coor2" name="Coor2" disabled="disabled">
+                    <input type="text" class="form-control form-control-sm textBox" placeholder="Coordenada sur" [(ngModel)]="Coor2" name="Coor2" disabled="disabled">
                 </div>
                 <div class="col-sm-4">
                     <label class="col-sm-12 Llave"></label>
@@ -277,7 +257,7 @@
                 </div>
             </div>
             <br>
-            
+
             <hr>
             <div class="row mt-2 justify-content-center ">
                 <div class="col-sm-11 ">
