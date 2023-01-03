@@ -164,7 +164,7 @@ export class ValorarofertaService {
   }
 
   EnviarCorreoIndividual(bandera: string, Id_Clnte: string, IdSctor: string, datos: any) {
-    return this.http.post<any>(this.url_servidor + 'enviocorreoindividual/' + bandera, datos)
+    return this.http.post<any>(this.url_servidor + 'enviocorreoindividual/' + bandera + '/' + Id_Clnte + '/' + IdSctor, datos)
 
   }
   ModificaConcepto(Bandera: string, datos: any) {
