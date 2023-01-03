@@ -27,4 +27,23 @@ export class datosBasicosService {
     return this.http.post<any>(this.url_servidor + 'modcdatosbasicossubitem/' + Bandera, Datos)
   }
 
+  ConsultaLabel(Bandera: string, idModulo: string){
+    return this.http.get<any>(this.url_servidor + 'conscmascaradatbasic/' + Bandera +'/' + idModulo)
+  }
+
+  CosultaRelacion(){
+    return this.http.get<any>(this.url_servidor + 'conscrelaciondatosbasicos/1/1')
+  }
+
+  ConsultaRelacionItem(idDatoBasico:string, idDatoRelacion:string, idSubItem:string){
+    console.log(this.url_servidor + 'conscrelaciondbasicossubitem/1/' + idDatoBasico +'/'+ idDatoRelacion+'/'+idSubItem)
+    return this.http.get<any>(this.url_servidor + 'conscrelaciondbasicossubitem/1/1/'+ idDatoRelacion+'/'+idSubItem)
+
+  }
+
+  modificarRelacion(bandera:string, Datos: any){
+    return this.http.post<any>(this.url_servidor + 'conscdatosbasicositem/' + bandera, Datos)
+  }
+
+
 }

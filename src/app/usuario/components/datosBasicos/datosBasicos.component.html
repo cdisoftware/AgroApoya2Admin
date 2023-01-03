@@ -53,7 +53,9 @@
         </button>
       </th>
       <th>
-        <img src="../../../../assets/ImagenesAgroApoya2Admin/Editar.png">
+        <button class="btn" (click)="abrirModalEditar(ModalEditar, Item.ID, Item.DSCRIPCION, Item.DSCRIPCIONDOS, Item.ESTADO)">
+          <img src="../../../../assets/ImagenesAgroApoya2Admin/Editar.png">
+        </button>
       </th>
     </tr>
   </table>
@@ -79,4 +81,72 @@
       <button (keyup.enter)="modal.close()" type="button" class="btn btn-danger col-sm-2" (click)="modal.close()">Cancelar</button>
   </div>
   <br>
+</ng-template>
+
+<ng-template #ModalEditar let-modal>
+  <div class="modal-header">
+      <h1>AgroApoya2</h1>
+      <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body text-start mb-0">
+    <div class="row justify-content-start ">
+      <div class="col-12 text-center mb-2">
+        <span style="font-weight: bold;"> {{nombreItem}} </span>
+      </div>
+    </div>
+    <div class="row align-items-center">
+    <div class="row text-center col-10" *ngFor="let label of ArrayLabels" style="font-weight: bold;">
+      <div class="col-3">
+        {{label.MID}}
+      </div>
+      <div class="col-3" >
+        {{label.MDSCRIPCION}}
+      </div>
+      <div class="col-3" >
+        {{label.MDSCRIPCIONDOS}}
+      </div>
+      <div class="col-3" >
+        {{label.MESTADO}}
+      </div>
+      <div class="col-3" >
+        <input class="form-control " type="text" maxlength="50"  [(ngModel)]="IdItem" disabled>
+      </div>
+      <div class="col-3" >
+        <input class="form-control " type="text" maxlength="50"  [(ngModel)]="nombreItem">
+      </div>
+      <div class="col-3" >
+        <input *ngIf="descripcionDos !='0'" class="form-control " type="text" maxlength="50"  [(ngModel)]="nombreItem">
+        <input *ngIf="descripcionDos =='0'" class="form-control " type="text" maxlength="50"  [(ngModel)]="nombreItem" disabled>
+      </div>
+      <div class="col-3" >
+        <img *ngIf="estadoItem=='1'"  src="../../../../assets/ImagenesAgroApoya2Admin/ver.png" height="30px">
+        <img *ngIf="estadoItem=='2'"  src="../../../../assets/ImagenesAgroApoya2Admin/novisible.png" height="30px">
+      </div>
+    </div>
+    <div class="col-2 ">
+      <button type="button" class="btn btn-agro-sec w-75" (click)="modificarItem()"> Editar </button>
+    </div>
+    </div>
+    <div class="row text-center">
+      <div class="col-6" >
+        <button *ngFor="let relacion of ArrayRelaciones" class="btn btn-agro-prin col-12 mt-2 w-75" (click)="cargarRelaciones(relacion.IdDatoBasico)">
+          {{relacion.Nombre}}
+        </button>
+      </div>
+      <div class="col-6">
+        <div *ngFor="let relacion of ArrayRelacionItem" class="row">
+          <div  class="col-6 mt-2 mr-1">
+            {{relacion.DESCRIPCION}}
+          </div>
+          <button *ngIf="relacion.PERTENECE==0" class="btn btn-success col-6 mt-2" (click)="modRelacion(relacion.ID, '3')">
+            Agregar
+          </button>
+          <button *ngIf="relacion.PERTENECE==1" class="btn btn-danger col-6 mt-2" (click)="modRelacion(relacion.ID, '4')">
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </ng-template>
