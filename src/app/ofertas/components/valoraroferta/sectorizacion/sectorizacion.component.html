@@ -241,7 +241,7 @@
 </div>
 <ng-template #ModalInsert let-modal>
     <div class="modal-header ">
-        <h1>Crear sector</h1>        
+        <h1>Crear sector</h1>
         <button type="button " class="btn-close " aria-label="Close " (click)="ValidaCerrar(ModalRespuesta) "></button>
     </div>
     <div class="modal-body ">
@@ -259,8 +259,7 @@
         </div>
         <div class="row br" *ngIf="ValidaInsertSec=='1' ">
             <div class="col-sm-4">
-                <input type="text " class="Col-sm-12 form-control " placeholder="Latitud"
-                    [(ngModel)]="Coor1 ">
+                <input type="text " class="Col-sm-12 form-control " placeholder="Latitud" [(ngModel)]="Coor1 ">
             </div>
             <div class="col-sm-4">
                 <input type="text " class="Col-sm-12 form-control " placeholder="Longitud" [(ngModel)]="Coor2 ">
@@ -340,9 +339,13 @@
         <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
     </div>
     <div class="row justify-content-center m-1" *ngIf="ValidaMapSector=='1' ">
-        <label class="col-sm-12 mt-2"><strong>Nombre sector:&nbsp;</strong>{{SessionNombreSector}}</label>      
+        <label class="col-sm-12 mt-2"><strong>Nombre sector:&nbsp;</strong>{{SessionNombreSector}}</label>
         <div class="col-sm-12 m-3">
             <div id="mapCS" [ngClass]="ValidaMapSector=='1' ? 'ShowMap' : 'HideMap' "></div>
         </div>
     </div>
+    <div class="row justify-content-center ">
+        <button type="button " class="btn btn-agro-prin col-sm-2 " (click)="modal.dismiss() ">Continuar</button>
+    </div>
+    <br>
 </ng-template>
