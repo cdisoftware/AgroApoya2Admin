@@ -87,6 +87,7 @@ export class SectorizacionComponent implements OnInit {
     this.ConsultaSectoresOferta();
     this.ConsultaDetalleOferta();
     this.ConsultaZonas();
+    this.ConsultaSectorPoligono();
   }
 
   Centramapa(request: google.maps.GeocoderRequest): void {
@@ -146,6 +147,18 @@ export class SectorizacionComponent implements OnInit {
       this.SessionCDRegion = ResultadoCons[0].CD_RGION;
     })
   }
+
+  ConsultaSectorPoligono() {
+    console.log(this.SessionSecCreado);
+    this.sectoresservices.ModificaSectorPoligono('3', this.SessionSecCreado).subscribe(ResultadoCons => {
+      console.log(ResultadoCons);
+      var aux = ResultadoCons.split('|');
+      this.sectoresservices.ConsultaUsuarioSector('3', aux[0]).subscribe(ResultadoCons => {
+        console.log(ResultadoCons);
+      })
+    })
+  }
+
 
   ConsultaSectoresOferta() {
     this.sectoresservices.ConsultaSectoresOferta('1', this.SessionOferta).subscribe(ResultConsulta => {
@@ -289,14 +302,17 @@ export class SectorizacionComponent implements OnInit {
   CerrModalMap(templateRespuesta: any) {
     this.ConsultaCiudadOferta();
     this.ConsultaCoordenadas();
+
     if (this.DataCoor.length >= 3) {
-      this.SessionSecCreado = '0';
+      this.ConsultaSectorPoligono();
+      
       this.ValidaInsertSec = '0';
       this.ValidaCoord = '0';
       this.Coor1 = '';
       this.Coor2 = '';
       this.DataCoor = [];
       this.modalService.dismissAll();
+      this.SessionSecCreado = '0';
     }
     else {
       this.modalService.open(templateRespuesta);
@@ -422,17 +438,17 @@ export class SectorizacionComponent implements OnInit {
   selectZona(item: any) {
     //this.Sessionzona = item.id;
     this.ConsultaSectores(item.id);
-    if(this.Cant != "" && this.Cant != "0"){
+    if (this.Cant != "" && this.Cant != "0") {
       this.seleczona = '1';
     }
     //Cada vez que seleccione una zona debo ir a consultar los sectores de esa zona, metodo ConsultaSectores(),
     //a dicho metodo falta agregarle parametro idzona
   }
-  BlurCantidad(){
+  BlurCantidad() {
     console.log(this.ZonaAsignaSector)
-    if(this.ZonaAsignaSector != "" && this.ZonaAsignaSector != "0"){
+    if (this.ZonaAsignaSector != "" && this.ZonaAsignaSector != "0") {
       this.seleczona = '1';
-    } 
+    }
   }
 
   selectSector(item: any, modalmapa: any) {
@@ -537,6 +553,7 @@ export class SectorizacionComponent implements OnInit {
       this.Respuesta = 'Ya iniciaste el registro de un sector, favor finaliza el proceso.';
     }
     else {
+      this.ConsultaSectorPoligono();
       this.ModalInsert?.close();
     }
   }
@@ -553,9 +570,9 @@ export class SectorizacionComponent implements OnInit {
     this.SessionzonaIns = item.id;
     this.ValidaSelecZona = '0';
   }
-  LimpiaZonaInsert(result: string){
+  LimpiaZonaInsert(result: string) {
     this.ZonaInsertSecor = result;
-    this.ValidaSelecZona ='1';
+    this.ValidaSelecZona = '1';
     this.NombreSec = '';
   }
 }
