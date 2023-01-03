@@ -1,0 +1,152 @@
+<div class="container-fluid p-5">
+<h1 class="mt-1"> Datos Básicos </h1>
+<div class="row">
+<div class="col-3"></div>
+<div class="col-6 mt-5 text-center">
+  <select class="form-control" [(ngModel)]="tipoModelo" (change)="cargarBotones()">
+    <option value="0">Seleccione módulo</option>
+    <option *ngFor="let Mod of ArrayModelo;" [value]="Mod.IdModulo" >
+    {{Mod.Descripcion}}
+    </option>
+  </select>
+</div>
+</div>
+<div class="row mt-5" *ngIf="breakUno">
+  <div class="col-3 text-center" *ngFor="let boton of ArrayBotones">
+    <button type="button" class="btn btn-agro-prin btn-lg" (click)="cargarGrilla(boton.IdDatoBasico, boton.Nombre)"> {{boton.Nombre}} </button>
+  </div>
+</div>
+<div class="mt-4" *ngIf="breakDos">
+  <h2 class=" ml-5"> {{nombreBoton}} </h2>
+  <div class="row ">
+    <div class="col-1"></div>
+    <div class="col-6">
+     <input  class="form-control " type="text" maxlength="50"  [(ngModel)]="descripcion">
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn btn-agro-sec w-100" (click)="buscarGrilla(descripcion)"> Buscar </button>
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn btn-agro-sec w-100" (click)="abrirModal(ModalAgregar)"> Agregar </button>
+    </div>
+  </div>
+  <table class="mt-2 tabla mx-auto" >
+    <tr class="primera">
+      <th>ID</th>
+      <th>Descripción</th>
+      <th>
+        Estado
+      </th>
+      <th>
+        Editar
+      </th>
+    </tr>
+    <tr *ngFor="let Item of ArrayItems;" style="font-weight:lighter;">
+      <th>{{Item.ID}}</th>
+      <th>{{Item.DSCRIPCION}}</th>
+      <th>
+        <button *ngIf="Item.ESTADO==1" class="btn" (click)="modVisibleItem(Item.ID, Item.ESTADO, Item.DSCRIPCION)">
+        <img  src="../../../../assets/ImagenesAgroApoya2Admin/ver.png" height="30px">
+        </button>
+        <button *ngIf="Item.ESTADO==2" class="btn" (click)="modVisibleItem(Item.ID, Item.ESTADO, Item.DSCRIPCION)">
+        <img  src="../../../../assets/ImagenesAgroApoya2Admin/novisible.png" height="30px">
+        </button>
+      </th>
+      <th>
+        <button class="btn" (click)="abrirModalEditar(ModalEditar, Item.ID, Item.DSCRIPCION, Item.DSCRIPCIONDOS, Item.ESTADO)">
+          <img src="../../../../assets/ImagenesAgroApoya2Admin/Editar.png">
+        </button>
+      </th>
+    </tr>
+  </table>
+</div>
+</div>
+
+
+<ng-template #ModalAgregar let-modal>
+  <div class="modal-header">
+      <h1>Respuesta</h1>
+      <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+      <div class="row br">
+          <div class="col-sm-12">
+              <h2 class="TituloDetalle"> Estás seguro de adicionar este item a {{nombreBoton}} ? </h2>
+          </div>
+      </div>
+  </div>
+  <div class="row justify-content-center g-5">
+      <button (keyup.enter)="modal.close()" type="button" class="btn btn-agro-prin col-sm-2" (click)="Agregar()" (click)="modal.close()" >Aceptar</button>
+      <div class="col-sm-1"></div>
+      <button (keyup.enter)="modal.close()" type="button" class="btn btn-danger col-sm-2" (click)="modal.close()">Cancelar</button>
+  </div>
+  <br>
+</ng-template>
+
+<ng-template #ModalEditar let-modal>
+  <div class="modal-header">
+      <h1>AgroApoya2</h1>
+      <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body text-start mb-0">
+    <div class="row justify-content-start ">
+      <div class="col-12 text-center mb-2">
+        <span style="font-weight: bold;"> {{nombreItem}} </span>
+      </div>
+    </div>
+    <div class="row align-items-center">
+    <div class="row text-center col-10" *ngFor="let label of ArrayLabels" style="font-weight: bold;">
+      <div class="col-3">
+        {{label.MID}}
+      </div>
+      <div class="col-3" >
+        {{label.MDSCRIPCION}}
+      </div>
+      <div class="col-3" >
+        {{label.MDSCRIPCIONDOS}}
+      </div>
+      <div class="col-3" >
+        {{label.MESTADO}}
+      </div>
+      <div class="col-3" >
+        <input class="form-control " type="text" maxlength="50"  [(ngModel)]="IdItem" disabled>
+      </div>
+      <div class="col-3" >
+        <input class="form-control " type="text" maxlength="50"  [(ngModel)]="nombreItem">
+      </div>
+      <div class="col-3" >
+        <input *ngIf="descripcionDos !='0'" class="form-control " type="text" maxlength="50"  [(ngModel)]="nombreItem">
+        <input *ngIf="descripcionDos =='0'" class="form-control " type="text" maxlength="50"  [(ngModel)]="nombreItem" disabled>
+      </div>
+      <div class="col-3" >
+        <img *ngIf="estadoItem=='1'"  src="../../../../assets/ImagenesAgroApoya2Admin/ver.png" height="30px">
+        <img *ngIf="estadoItem=='2'"  src="../../../../assets/ImagenesAgroApoya2Admin/novisible.png" height="30px">
+      </div>
+    </div>
+    <div class="col-2 ">
+      <button type="button" class="btn btn-agro-sec w-75" (click)="modificarItem()"> Editar </button>
+    </div>
+    </div>
+    <div class="row text-center">
+      <div class="col-6" >
+        <button *ngFor="let relacion of ArrayRelaciones" class="btn btn-agro-prin col-12 mt-2 w-75" (click)="cargarRelaciones(relacion.IdDatoBasico)">
+          {{relacion.Nombre}}
+        </button>
+      </div>
+      <div class="col-6">
+        <div *ngFor="let relacion of ArrayRelacionItem" class="row">
+          <div  class="col-6 mt-2 mr-1">
+            {{relacion.DESCRIPCION}}
+          </div>
+          <button *ngIf="relacion.PERTENECE==0" class="btn btn-success col-6 mt-2" (click)="modRelacion(relacion.ID, '3')">
+            Agregar
+          </button>
+          <button *ngIf="relacion.PERTENECE==1" class="btn btn-danger col-6 mt-2" (click)="modRelacion(relacion.ID, '4')">
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</ng-template>

@@ -7,7 +7,7 @@
       <option value="0">Seleccione tipo de usuario</option>
       <option *ngFor="let Usu of ArrayTipoUsuario;" [value]="Usu.IdTipoUsuario" >
       {{Usu.Descripcion}}
-    </option>
+      </option>
     </select>
   </div>
   <div class="col-3">
@@ -73,8 +73,12 @@
     <th>
       <button class="btn btn-sort" (click)="organizarF()"> Fecha de creación </button>
     </th>
-    <th style="width:5%">Tipo Documento</th>
-    <th>Número documento</th>
+    <th style="width:5%">
+      Tipo Documento
+    </th>
+    <th>
+      Número documento
+    </th>
     <th>
       <button class="btn btn-sort" (click)="organizarD()"> Departamento</button>
     </th>
