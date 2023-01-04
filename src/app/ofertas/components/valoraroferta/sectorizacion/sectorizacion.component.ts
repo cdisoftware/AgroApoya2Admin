@@ -62,6 +62,7 @@ export class SectorizacionComponent implements OnInit {
   ZonaInsertSecor: string = '';
   ZonaAsignaSector: string = '';
   seleczona: string = '0';
+  NumUsuarios: string = '';
 
 
   constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService) { }
@@ -88,6 +89,7 @@ export class SectorizacionComponent implements OnInit {
     this.ConsultaDetalleOferta();
     this.ConsultaZonas();
     this.ConsultaSectorPoligono();
+    this.ConsultaUsuariosSectr();
   }
 
   Centramapa(request: google.maps.GeocoderRequest): void {
@@ -149,16 +151,31 @@ export class SectorizacionComponent implements OnInit {
   }
 
   ConsultaSectorPoligono() {
-    console.log(this.SessionSecCreado);
+    //console.log(this.SessionSecCreado);
     this.sectoresservices.ModificaSectorPoligono('3', this.SessionSecCreado).subscribe(ResultadoCons => {
-      console.log(ResultadoCons);
+      //console.log(ResultadoCons);
       var aux = ResultadoCons.split('|');
       this.sectoresservices.ConsultaUsuarioSector('3', aux[0]).subscribe(ResultadoCons => {
-        console.log(ResultadoCons);
+        //console.log(ResultadoCons);
       })
     })
   }
 
+
+  ConsultaUsuariosSectr() {
+    
+    if (this.DataCoor.length < 3) {
+      this.NumUsuarios = '0'
+    } else {
+      this.ConsultaSectorPoligono();
+      this.sectoresservices.ConsultaNumUsuariosSector('3', this.SessionSecCreado).subscribe(ResultadoCons => {
+        console.log(ResultadoCons);
+        this.NumUsuarios = ResultadoCons.toString();
+      })
+    }
+
+
+  }
 
   ConsultaSectoresOferta() {
     this.sectoresservices.ConsultaSectoresOferta('1', this.SessionOferta).subscribe(ResultConsulta => {
@@ -305,7 +322,7 @@ export class SectorizacionComponent implements OnInit {
 
     if (this.DataCoor.length >= 3) {
       this.ConsultaSectorPoligono();
-      
+
       this.ValidaInsertSec = '0';
       this.ValidaCoord = '0';
       this.Coor1 = '';
@@ -361,7 +378,8 @@ export class SectorizacionComponent implements OnInit {
         this.Coor1 = '';
         this.Coor2 = '';
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-        this.ConsultaCoordenadas()
+        this.ConsultaCoordenadas();
+        this.ConsultaUsuariosSectr();
       })
     }
     else {
@@ -381,9 +399,11 @@ export class SectorizacionComponent implements OnInit {
     this.sectoresservices.InsertarCoordenadas('4', BodyInsertCoo).subscribe(Resultado => {
       this.Coor1 = '';
       this.Coor2 = '';
-      this.ConsultaCoordenadas()
+      this.ConsultaCoordenadas();
+      this.ConsultaUsuariosSectr();
       this.markers[0].setMap(null)
     })
+
   }
 
   ConsultaCoordenadas() {

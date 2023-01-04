@@ -315,6 +315,14 @@
                 </button>
             </div>
         </div>
+
+        <div class="br row justify-content-center mt-2" *ngIf="ValidaCoord=='1'">
+            <div class="col-sm-6">
+                <h2 class="TituloDetalle" style="color: #397c97;">Número de usuarios en este sector:&nbsp;<label
+                        class="Valor"><strong>{{NumUsuarios}}</strong></label></h2>
+            </div>
+        </div>
+
         <div class="row mt-2 justify-content-center" *ngIf="ValidaInsertSec=='1' ">
             <div class="col-sm-11 ">
                 <div id="map" [ngClass]="ValidaInsertSec=='1' ? 'ShowMap' : 'HideMap' "></div>
@@ -349,17 +357,13 @@
                 </div>
             </div>
         </div>
-        <!--
-        <div class="br row justify-content-center" *ngIf="ValidaCoord=='1'">
-            <h3 class="TituloDetalle" style="color: #397c97;">Usuarios en el sector:&nbsp;</h3><label
-                class="Valor"><strong>2</strong></label>
-        </div>-->
     </div>
     <div class="row justify-content-center " *ngIf="ValidaInsertSec=='1' ">
         <div class="col-sm-2">
             <button type="button " class="btn btn-agro-prin col-sm-12 "
                 (click)="CerrModalMap(ModalRespuesta)">Guardar</button>
         </div>
+
     </div>
     <br>
 </ng-template>
