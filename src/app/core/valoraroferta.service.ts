@@ -200,15 +200,27 @@ export class ValorarofertaService {
     return this.http.get<any[]>(this.url_servidor + 'conscentregaseg/' + Bandera + '/' + IdOferta + '/' + IdSector)
   }
 
-
   ConsultaTrazabilidad(Bandera: string, cd_cnctivo: string) {
     return this.http.get<any[]>(this.url_servidor + 'constrazestoferta/' + Bandera + '/' + cd_cnctivo)
   }
   //EJEMPLO=1/0/0/2510
   ConsultaSectoresEtv(Bandera: string, nomSector: string, IdZona: string, cd_cnctivo: string) {
-    return this.http.get<any[]>(this.url_servidor + 'constsectoresEtv/' + Bandera + '/' + nomSector + '/' + IdZona+ '/' + cd_cnctivo)
+    return this.http.get<any[]>(this.url_servidor + 'constsectoresEtv/' + Bandera + '/' + nomSector + '/' + IdZona + '/' + cd_cnctivo)
   }
-  ConsZona(Bandera: string, id: string, Municipio: string, Departamento:string, Bodymod: any) {
-    return this.http.post<any>(this.url_servidor + 'consczonassector/' + Bandera+ '/' + id+ '/' + Municipio+ '/' + Departamento, Bodymod)
+  ConsZona(Bandera: string, id: string, Municipio: string, Departamento: string, Bodymod: any) {
+    return this.http.post<any>(this.url_servidor + 'consczonassector/' + Bandera + '/' + id + '/' + Municipio + '/' + Departamento, Bodymod)
   }
+
+  ModificaSectorPoligono(BANDERA: string, ID_SCTOR: string) {
+    return this.http.get<any>(this.url_servidor + 'modcsectorpoligono/' + BANDERA + '/' + ID_SCTOR)
+  }
+
+  ConsultaUsuarioSector(Bandera: string, IdSector: string) {
+    return this.http.get<any>(this.url_servidor + 'conscvalidaususector/' + Bandera + '/' + IdSector)
+  }
+
+  ConsultaNumUsuariosSector(Bandera: string, IdSector: string) {
+    return this.http.get<any>(this.url_servidor + 'conscnumususector/' + Bandera + '/' + IdSector)
+  }
+
 }

@@ -175,13 +175,13 @@
         </div>
 
         <div class="col-sm-2">
-            <input class="col-sm-12 form-control form-control-sm textBox" type="number" placeholder="Cantidad" (blur)="BlurCantidad()"
-                [(ngModel)]="Cant">
+            <input class="col-sm-12 form-control form-control-sm textBox" type="number" placeholder="Cantidad"
+                (blur)="BlurCantidad()" [(ngModel)]="Cant">
         </div>
 
         <div class="col-sm-4">
-            <ng-autocomplete [disabled]="seleczona == '0'" [data]="DataSectores" [searchKeyword]="keyword" placeholder="Sector"
-                (selected)='selectSector($event, ModalMapa)' [itemTemplate]="templateResSector"
+            <ng-autocomplete [disabled]="seleczona == '0'" [data]="DataSectores" [searchKeyword]="keyword"
+                placeholder="Sector" (selected)='selectSector($event, ModalMapa)' [itemTemplate]="templateResSector"
                 [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
             </ng-autocomplete>
             <ng-template #templateResSector let-item>
@@ -256,14 +256,14 @@
 <ng-template #ModalInsert let-modal>
     <div class="modal-header ">
         <h1>Crear sector</h1>
-        <button type="button " class="btn-close " aria-label="Close " (click)="ValidaCerrar(ModalRespuesta) "></button>
     </div>
     <div class="modal-body ">
         <div class="row br">
             <div class="col-sm-8">
                 <ng-autocomplete [data]="DataZonas" [searchKeyword]="keywordZonasInsertSecor" placeholder="Zona"
                     (selected)='selectZonaInsert($event)' [itemTemplate]="templateRes"
-                    [notFoundTemplate]="templateVacio" [(ngModel)]="ZonaInsertSecor" (inputCleared)="LimpiaZonaInsert('')">
+                    [notFoundTemplate]="templateVacio" [(ngModel)]="ZonaInsertSecor"
+                    (inputCleared)="LimpiaZonaInsert('')">
                 </ng-autocomplete>
                 <ng-template #templateRes let-item>
                     <a [innerHTML]="item.Descripcion"></a>
@@ -315,6 +315,14 @@
                 </button>
             </div>
         </div>
+
+        <div class="br row justify-content-center mt-2" *ngIf="ValidaCoord=='1'">
+            <div class="col-sm-6">
+                <h2 class="TituloDetalle" style="color: #397c97;">Número de usuarios en este sector:&nbsp;<label
+                        class="Valor"><strong>{{NumUsuarios}}</strong></label></h2>
+            </div>
+        </div>
+
         <div class="row mt-2 justify-content-center" *ngIf="ValidaInsertSec=='1' ">
             <div class="col-sm-11 ">
                 <div id="map" [ngClass]="ValidaInsertSec=='1' ? 'ShowMap' : 'HideMap' "></div>
@@ -351,10 +359,11 @@
         </div>
     </div>
     <div class="row justify-content-center " *ngIf="ValidaInsertSec=='1' ">
-        <div class="col-sm-2 ">
+        <div class="col-sm-2">
             <button type="button " class="btn btn-agro-prin col-sm-12 "
-                (click)="CerrModalMap(ModalRespuesta) ">Guardar</button>
+                (click)="CerrModalMap(ModalRespuesta)">Guardar</button>
         </div>
+
     </div>
     <br>
 </ng-template>
