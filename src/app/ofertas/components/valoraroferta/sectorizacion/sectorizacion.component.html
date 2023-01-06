@@ -196,6 +196,17 @@
                 type="text" placeholder="Valor estimado flete" [(ngModel)]="VlrFle">
         </div>
     </div>
+
+    <div class="row " *ngIf="ValidaCoord=='3'">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4">
+            <label class="Valor justify-content-center">Número de usuarios en este sector:&nbsp;<label
+                    class="Valor"><strong>{{UserSector}}</strong></label></label>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+
     <div class="row br justify-content-center ">
         <div class="col-sm-2 col-2 ">
             <button class="btn btn-agro-prin col-sm-12 " (click)="AsociaSector(ModalRespuesta) ">
@@ -275,15 +286,17 @@
             <div class="col-sm-2 mt-2">
                 <div class="col-sm-6">
                     <div class="row">
-                        <input class="col-sm-2" type="radio" name="tipoSec" id="RadioPer" (focus)="true" [disabled]="ValidaSelecZona == '2'" >
-                        <label class="col-sm-10" for="RadioPer" >Permanente</label>
+                        <input class="col-sm-2" type="radio" name="tipoSec" id="RadioPer" (focus)="true"
+                            [disabled]="ValidaSelecZona == '2'">
+                        <label class="col-sm-10" for="RadioPer">Permanente</label>
                     </div>
                 </div>
             </div>
             <div class="col-sm-2 mt-2">
                 <div class="col-sm-6">
                     <div class="row">
-                        <input class="col-sm-2" type="radio" name="tipoSec" id="RadioPar" [disabled]="ValidaSelecZona == '2'">
+                        <input class="col-sm-2" type="radio" name="tipoSec" id="RadioPar"
+                            [disabled]="ValidaSelecZona == '2'">
                         <label class="col-sm-10" for="RadioPar">Temporal</label>
                     </div>
                 </div>
@@ -296,7 +309,7 @@
             </div>
             <div class="col-sm-4">
                 <button class="btn btn-agro-prin col-sm-12 " (click)="CreaSector(ModalRespuesta)"
-                    [disabled]="ValidaSelecZona=='1' || ValidaSelecZona=='2'" >
+                    [disabled]="ValidaSelecZona=='1' || ValidaSelecZona=='2'">
                     Crear sector
                 </button>
             </div>
@@ -363,7 +376,6 @@
             <button type="button " class="btn btn-agro-prin col-sm-12 "
                 (click)="CerrModalMap(ModalRespuesta)">Guardar</button>
         </div>
-
     </div>
     <br>
 </ng-template>
@@ -391,8 +403,9 @@
         <h1>Detalle sector - {{SessionNombreSector}}</h1>
         <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
     </div>
-    <div class="row justify-content-center m-1" *ngIf="ValidaMapSector=='1' ">
+    <div class="row justify-content-center m-1" *ngIf="ValidaMapSector=='1'">
         <label class="col-sm-12 mt-2"><strong>Nombre sector:&nbsp;</strong>{{SessionNombreSector}}</label>
+        <label class="col-sm-12 mt-2"><strong>Número de usuarios en este sector:&nbsp;</strong>{{UserSector}}</label>
         <div class="col-sm-12 m-3">
             <div id="mapCS" [ngClass]="ValidaMapSector=='1' ? 'ShowMap' : 'HideMap' "></div>
         </div>
