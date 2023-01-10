@@ -32,6 +32,7 @@ import { CarguepublicidadComponent } from './usuario/components/carguepublicidad
 import { EvaluacionofertaComponent } from './ofertas/components/evaluacionoferta/evaluacionoferta.component';
 import { SeguimientoComponent } from './ofertas/components/seguimiento/seguimiento.component';
 
+
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
   declarations: [

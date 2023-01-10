@@ -233,3 +233,7 @@ th {
     border-color: #397c97 !important;
     color: white !important;
 }
+
+.CursorPointer{
+  cursor: pointer;
+}
