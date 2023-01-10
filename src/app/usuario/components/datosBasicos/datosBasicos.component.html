@@ -138,10 +138,10 @@
           <div  class="col-6 mt-2 mr-1">
             {{relacion.DESCRIPCION}}
           </div>
-          <button *ngIf="relacion.PERTENECE==0" class="btn btn-success col-6 mt-2" (click)="modRelacion(relacion.ID, '3')">
+          <button *ngIf="relacion.PERTENECE==0" class="btn btn-success col-6 mt-2" (click)="modRelacion(relacion.ID, '2')">
             Agregar
           </button>
-          <button *ngIf="relacion.PERTENECE==1" class="btn btn-danger col-6 mt-2" (click)="modRelacion(relacion.ID, '4')">
+          <button *ngIf="relacion.PERTENECE==1" class="btn btn-danger col-6 mt-2" (click)="modRelacion(relacion.ID, '2')">
             Eliminar
           </button>
         </div>

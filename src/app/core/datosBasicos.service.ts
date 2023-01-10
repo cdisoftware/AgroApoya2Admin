@@ -42,7 +42,7 @@ export class datosBasicosService {
   }
 
   modificarRelacion(bandera:string, Datos: any){
-    return this.http.post<any>(this.url_servidor + 'conscdatosbasicositem/' + bandera, Datos)
+    return this.http.post<any>(this.url_servidor + 'modcdatosbasicossubitem/' + bandera, Datos)
   }
 
 

@@ -160,6 +160,7 @@ export class DatosBasicosComponent implements OnInit {
     this.DatosService.modificarRelacion(bandera, bodyPost).subscribe(Resultado=>{
       this.textoayuda = Resultado;
     })
+    console.log(this.textoayuda )
   }
 
 
