@@ -15,7 +15,7 @@
                     <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-12">
-                                <label class="Llave TextMay">Codigo oferta:&nbsp;</label><label
+                                <label class="Llave TextMay">Código oferta:&nbsp;</label><label
                                     class="ValorIDOfer"><strong>{{oferta.COD_OFR_PUBLICO}}</strong></label>
                             </div>
                         </div>
@@ -159,7 +159,7 @@
             </ng-template>
         </div>
         <div class="col-sm-3">
-            <label class="col-sm-12 Llave mb-1">Codigo sector</label>
+            <label class="col-sm-12 Llave mb-1">Código sector</label>
             <input type="text" name="" id="" class="form-control textBox" disabled [(ngModel)]="CodigoOferSector">
         </div>
         <div class="col-sm-3">
@@ -269,13 +269,13 @@
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Minimo unidades</label>
+                            <label class="col-sm-12 Llave">Mínimo unidades</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox"
                                 (blur)="ValidaCantidadMinimaIndiv(MinUnidI,ModalRespuesta)" [(ngModel)]="MinUnidI"
                                 onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                         <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Maximo unidades</label>
+                            <label class="col-sm-12 Llave">Máximo unidades</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox"
                                 (blur)="ValidaCantidadmaxIndiv(MaxUnidI,ModalRespuesta)" [(ngModel)]="MaxUnidI"
                                 onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
@@ -343,13 +343,13 @@
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Minimo unidades lider</label>
+                            <label class="col-sm-12 Llave">Mínimo unidades líder</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidLider"
                                 (blur)="ValidaCantidadMinimaLid(MinUnidLider,ModalRespuesta)"
                                 onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                         <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Maximo unidades lider</label>
+                            <label class="col-sm-12 Llave">Máximo unidades líder</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidLider"
                                 (blur)="ValidaCantidadmaxLid(MaxUnidLider,ModalRespuesta)"
                                 onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
@@ -357,13 +357,13 @@
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Minimo unidades participante</label>
+                            <label class="col-sm-12 Llave">Mínimo unidades participante</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidPart"
                                 (blur)="ValidaCantidadMinimaPart(MinUnidPart,ModalRespuesta)"
                                 onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                         <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Maximo unidades participante</label>
+                            <label class="col-sm-12 Llave">Máximo unidades participante</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidPart"
                                 (blur)="ValidaCantidadmaxPart(MaxUnidPart,ModalRespuesta)"
                                 onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
@@ -377,7 +377,7 @@
                                 (change)="CalculaPreoferGrupalM()">
                         </div>
                         <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Porcentaje descuento lider</label>
+                            <label class="col-sm-12 Llave">Porcentaje descuento líder</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox"
                                 onkeyup="if(parseInt(this.value)>100){ this.value=100; return false; }"
                                 [(ngModel)]="PorcDescLider">
@@ -391,7 +391,7 @@
                                 onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                         <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Numero minimo de personas por grupo</label>
+                            <label class="col-sm-12 Llave">Número de personas por grupo</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidXGrupos"
                                 (change)="CalculaCCI(ModalRespuesta)"
                                 onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
@@ -407,7 +407,7 @@
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Precio arranque lider</label>
+                            <label class="col-sm-12 Llave">Precio arranque líder</label>
                             <input type="text" class="col-sm-12 form-control mt-1 textBox"
                                 value="{{PrecioFinLider | currency}}" disabled="true">
                         </div>
@@ -468,7 +468,7 @@
                         <div class="col-sm-4">
                             <label class="col-sm-12 Llave mt-1">Tipo</label>
                             <ng-autocomplete [data]="DataTipotopping" [searchKeyword]="keywordTipTopp"
-                                (selected)='selectTipTopp($event)' placeholder="Tipo topping"
+                                (selected)='selectTipTopp($event)' placeholder="Tipo Adición"
                                 [itemTemplate]="templateOfer" [notFoundTemplate]="templateVacio"
                                 (inputCleared)='LimpiaTipoTopp()' [(ngModel)]="TipoTopp">
                             </ng-autocomplete>
@@ -487,7 +487,7 @@
                                 disabled="{{IsEnables}}">
                         </div>
                         <div class="col-sm-4">
-                            <label class="col-sm-12 Llave">Maximo unidades por cada compra</label>
+                            <label class="col-sm-12 Llave">Máximo unidades por cada compra</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidMaxTopp"
                                 [disabled]="ValidaTipoTopp">
                         </div>
@@ -516,7 +516,7 @@
                                     <th>Valor unitario</th>
                                     <th>Tipo</th>
                                     <th>Unidades para oferta</th>
-                                    <th>Maximo unidades por compra</th>
+                                    <th>Máximo unidades por compra</th>
                                     <th>Acciones</th>
                                 </tr>
                                 <tr *ngFor="let topping of DataToppings">

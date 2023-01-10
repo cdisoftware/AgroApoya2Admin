@@ -15,7 +15,7 @@
                     <div class="col-sm-12">
                         <div class="row">
                             <div class="col-sm-12">
-                                <label class="Llave TextMay">Codigo oferta:&nbsp;</label><label
+                                <label class="Llave TextMay">Código oferta:&nbsp;</label><label
                                     class="ValorIDOfer"><strong>{{oferta.COD_OFR_PUBLICO}}</strong></label>
                             </div>
                         </div>
@@ -175,13 +175,13 @@
         </div>
 
         <div class="col-sm-2">
-            <input class="col-sm-12 form-control form-control-sm textBox" type="number" placeholder="Cantidad" (blur)="BlurCantidad()"
-                [(ngModel)]="Cant">
+            <input class="col-sm-12 form-control form-control-sm textBox" type="number" placeholder="Cantidad"
+                (blur)="BlurCantidad()" [(ngModel)]="Cant">
         </div>
 
         <div class="col-sm-4">
-            <ng-autocomplete [disabled]="seleczona == '0'" [data]="DataSectores" [searchKeyword]="keyword" placeholder="Sector"
-                (selected)='selectSector($event, ModalMapa)' [itemTemplate]="templateResSector"
+            <ng-autocomplete [disabled]="seleczona == '0'" [data]="DataSectores" [searchKeyword]="keyword"
+                placeholder="Sector" (selected)='selectSector($event, ModalMapa)' [itemTemplate]="templateResSector"
                 [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
             </ng-autocomplete>
             <ng-template #templateResSector let-item>
@@ -196,6 +196,17 @@
                 type="text" placeholder="Valor estimado flete" [(ngModel)]="VlrFle">
         </div>
     </div>
+
+    <div class="row " *ngIf="ValidaCoord=='3'">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-4">
+            <label class="Valor justify-content-center">Número de usuarios en este sector:&nbsp;<label
+                    class="Valor"><strong>{{UserSector}}</strong></label></label>
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+
     <div class="row br justify-content-center ">
         <div class="col-sm-2 col-2 ">
             <button class="btn btn-agro-prin col-sm-12 " (click)="AsociaSector(ModalRespuesta) ">
@@ -256,14 +267,14 @@
 <ng-template #ModalInsert let-modal>
     <div class="modal-header ">
         <h1>Crear sector</h1>
-        <button type="button " class="btn-close " aria-label="Close " (click)="ValidaCerrar(ModalRespuesta) "></button>
     </div>
     <div class="modal-body ">
         <div class="row br">
             <div class="col-sm-8">
                 <ng-autocomplete [data]="DataZonas" [searchKeyword]="keywordZonasInsertSecor" placeholder="Zona"
                     (selected)='selectZonaInsert($event)' [itemTemplate]="templateRes"
-                    [notFoundTemplate]="templateVacio" [(ngModel)]="ZonaInsertSecor" (inputCleared)="LimpiaZonaInsert('')">
+                    [notFoundTemplate]="templateVacio" [(ngModel)]="ZonaInsertSecor"
+                    (inputCleared)="LimpiaZonaInsert('')" [disabled]="ValidaSelecZona == '2'">
                 </ng-autocomplete>
                 <ng-template #templateRes let-item>
                     <a [innerHTML]="item.Descripcion"></a>
@@ -275,7 +286,8 @@
             <div class="col-sm-2 mt-2">
                 <div class="col-sm-6">
                     <div class="row">
-                        <input class="col-sm-2" type="radio" name="tipoSec" id="RadioPer">
+                        <input class="col-sm-2" type="radio" name="tipoSec" id="RadioPer" (focus)="true"
+                            [disabled]="ValidaSelecZona == '2'">
                         <label class="col-sm-10" for="RadioPer">Permanente</label>
                     </div>
                 </div>
@@ -283,7 +295,8 @@
             <div class="col-sm-2 mt-2">
                 <div class="col-sm-6">
                     <div class="row">
-                        <input class="col-sm-2" type="radio" name="tipoSec" id="RadioPar">
+                        <input class="col-sm-2" type="radio" name="tipoSec" id="RadioPar"
+                            [disabled]="ValidaSelecZona == '2'">
                         <label class="col-sm-10" for="RadioPar">Temporal</label>
                     </div>
                 </div>
@@ -291,22 +304,22 @@
         </div>
         <div class="row br ">
             <div class="col-sm-8">
-                <input type="text " class="Col-sm-12 form-control " placeholder="Nombre sector "
-                    [(ngModel)]="NombreSec " [disabled]="ValidaSelecZona=='1'">
+                <input type="text " class="form-control form-control-sm textBox" placeholder="Nombre sector"
+                    [(ngModel)]="NombreSec " [disabled]="ValidaSelecZona=='1' || ValidaSelecZona=='2'">
             </div>
             <div class="col-sm-4">
                 <button class="btn btn-agro-prin col-sm-12 " (click)="CreaSector(ModalRespuesta)"
-                    [disabled]="ValidaSelecZona=='1'">
+                    [disabled]="ValidaSelecZona=='1' || ValidaSelecZona=='2'">
                     Crear sector
                 </button>
             </div>
         </div>
         <div class="row br" *ngIf="ValidaInsertSec=='1' ">
             <div class="col-sm-4">
-                <input type="text " class="Col-sm-12 form-control " placeholder="Latitud" [(ngModel)]="Coor1 ">
+                <input type="text " class="Col-sm-12 form-control" placeholder="Latitud" [(ngModel)]="Coor1" disabled>
             </div>
             <div class="col-sm-4">
-                <input type="text " class="Col-sm-12 form-control " placeholder="Longitud" [(ngModel)]="Coor2 ">
+                <input type="text" class="Col-sm-12 form-control" placeholder="Longitud" [(ngModel)]="Coor2" disabled>
             </div>
             <div class="col-sm-4">
                 <button class="btn btn-agro-prin col-sm-12" (click)="AgregarCoordenada(ModalRespuesta) ">Agregar
@@ -315,6 +328,14 @@
                 </button>
             </div>
         </div>
+
+        <div class="br row justify-content-center mt-2" *ngIf="ValidaCoord=='1'">
+            <div class="col-sm-6">
+                <h2 class="TituloDetalle" style="color: #397c97;">Número de usuarios en este sector:&nbsp;<label
+                        class="Valor"><strong>{{NumUsuarios}}</strong></label></h2>
+            </div>
+        </div>
+
         <div class="row mt-2 justify-content-center" *ngIf="ValidaInsertSec=='1' ">
             <div class="col-sm-11 ">
                 <div id="map" [ngClass]="ValidaInsertSec=='1' ? 'ShowMap' : 'HideMap' "></div>
@@ -351,9 +372,9 @@
         </div>
     </div>
     <div class="row justify-content-center " *ngIf="ValidaInsertSec=='1' ">
-        <div class="col-sm-2 ">
+        <div class="col-sm-2">
             <button type="button " class="btn btn-agro-prin col-sm-12 "
-                (click)="CerrModalMap(ModalRespuesta) ">Guardar</button>
+                (click)="CerrModalMap(ModalRespuesta)">Guardar</button>
         </div>
     </div>
     <br>
@@ -382,8 +403,9 @@
         <h1>Detalle sector - {{SessionNombreSector}}</h1>
         <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
     </div>
-    <div class="row justify-content-center m-1" *ngIf="ValidaMapSector=='1' ">
+    <div class="row justify-content-center m-1" *ngIf="ValidaMapSector=='1'">
         <label class="col-sm-12 mt-2"><strong>Nombre sector:&nbsp;</strong>{{SessionNombreSector}}</label>
+        <label class="col-sm-12 mt-2"><strong>Número de usuarios en este sector:&nbsp;</strong>{{UserSector}}</label>
         <div class="col-sm-12 m-3">
             <div id="mapCS" [ngClass]="ValidaMapSector=='1' ? 'ShowMap' : 'HideMap' "></div>
         </div>
