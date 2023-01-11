@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { datosBasicosService } from 'src/app/core/datosBasicos.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { strict } from 'assert';
-import { BoundElementProperty } from '@angular/compiler';
+import { Console } from 'console';
+
 
 @Component({
   selector: 'app-datosBasicos',
@@ -21,163 +21,189 @@ export class DatosBasicosComponent implements OnInit {
   }
 
   breakUno: boolean = false;
-  breakDos:boolean = false;
+  breakDos: boolean = false;
 
-  tipoModelo: string ='0';
-  tipoBoton: string ='';
-  nombreBoton: string ='';
-  ArrayModelo: any =[];
-  ArrayBotones: any =[];
-  ArrayItems: any =[];
-  ArrayLabels: any =[];
-  ArrayRelaciones: any =[];
-  ArrayRelacionItem: any =[];
-  nombreItem: string='';
-  descripcionDos: string ='';
-  estadoItem: string='';
-  IdItem:string='';
-  descripcion: string =''
-  textoayuda: string =''
-  idRelacion:string=''
+  tipoModelo: string = '0';
+  tipoBoton: string = '';
+  nombreBoton: string = '';
+  ArrayModelo: any = [];
+  ArrayBotones: any = [];
+  ArrayItems: any = [];
+  ArrayLabels: any = [];
+  ArrayRelaciones: any = [];
+  ArrayRelacionItem: any = [];
+  nombreItem: string = '';
+  descripcionDos: string = '';
+  estadoItem: string = '';
+  IdItem: string = '';
+  descripcion: string = ''
+  textoayuda: string = ''
+  idRelacion: string = ''
+  isEnabled: boolean = true;
 
+  Respuesta:string=''
 
-
-  llenarModelo(){
+  llenarModelo() {
     this.DatosService.ConsultaDatos("1").subscribe(Resultado => {
       this.ArrayModelo = Resultado;
     })
-
   }
 
-  cargarBotones(){
+  cargarBotones() {
     this.breakUno = true;
-    this.DatosService.ConsultaBasicos("1", this.tipoModelo).subscribe(Resultado =>{
-      this.ArrayBotones=Resultado
+    this.DatosService.ConsultaBasicos("1", this.tipoModelo).subscribe(Resultado => {
+      this.ArrayBotones = Resultado
     })
     this.breakDos = false;
   }
 
-  cargarGrilla( idBoton: string, nomBoton:string){
-    this.breakUno=false;
-    this.breakDos =true;
+  cargarGrilla(idBoton: string, nomBoton: string) {
+    this.breakUno = false;
+    this.breakDos = true;
     this.tipoModelo = '0';
-    this.nombreBoton = nomBoton;
-    this.tipoBoton=idBoton
 
-    const bodyPost ={
+    this.nombreBoton = nomBoton;
+    this.tipoBoton = idBoton
+
+    const bodyPost = {
       "DSCRIPCION": "0"
     }
-    this.DatosService.ConsultaItem('1',idBoton, bodyPost).subscribe(Resultado=>{
+    this.DatosService.ConsultaItem('1', idBoton, bodyPost).subscribe(Resultado => {
       this.ArrayItems = Resultado;
     })
   }
 
-  buscarGrilla(descripcion:string){
-    const bodyPost ={
+
+  buscarGrilla(descripcion: string) {
+    const bodyPost = {
       "DSCRIPCION": descripcion
     }
-    this.DatosService.ConsultaItem('1',this.tipoBoton, bodyPost).subscribe(Resultado=>{
+    this.DatosService.ConsultaItem('1', this.tipoBoton, bodyPost).subscribe(Resultado => {
       this.ArrayItems = Resultado;
     })
   }
 
-  Agregar(){
-    const bodyPost={
+  activarBoton() {
+    if (this.descripcion != '')
+      this.isEnabled = false;
+    else
+      this.isEnabled = true;
+  }
 
-        "IdDatoBasico": this.tipoBoton,
-        "Id": "0",
-        "Estado": "1",
-        "Descripcion":this.descripcion,
-        "Texto":"0"
-      }
-      this.DatosService.AgregarItem("3", bodyPost).subscribe(Resultado=>{
-        this.textoayuda = Resultado;
-      });
-
+  Agregar() {
+    const bodyPost = {
+      "IdDatoBasico": this.tipoBoton,
+      "Id": "0",
+      "Estado": "1",
+      "Descripcion": this.descripcion,
+      "Texto": "0"
+    }
+    this.DatosService.AgregarItem("3", bodyPost).subscribe(Resultado => {
+      this.textoayuda = Resultado;
       this.cargarGrilla(this.tipoBoton, this.nombreBoton);
-      this.descripcion='';
+      this.descripcion = '';
+      this.isEnabled = true;
+    });
   }
 
 
-  modVisibleItem(idItem: string, estadoItem: string, descripcionItem: string){
+  modVisibleItem(idItem: string, estadoItem: string, descripcionItem: string, descripcionDos: string) {
 
     var estadoFinal = "0";
 
-    if(estadoItem == '1'){
+    if (estadoItem == '1') {
       estadoFinal = '2'
     }
-    else{
-      estadoFinal='1';
+    else {
+      estadoFinal = '1';
     }
 
-    const bodyPost={
+    const bodyPost = {
       "IdDatoBasico": this.tipoBoton,
       "Id": idItem,
       "Estado": estadoFinal,
-      "Descripcion":descripcionItem,
-      "Texto":"Descrifiondos"
+      "Descripcion": descripcionItem,
+      "Texto": descripcionDos
     }
-    this.DatosService.AgregarItem("2", bodyPost).subscribe(Resultado=>{
+    this.DatosService.AgregarItem("2", bodyPost).subscribe(Resultado => {
       this.textoayuda = Resultado;
+      this.buscarGrilla(this.descripcion);
     })
-    this.buscarGrilla(this.descripcion);
   }
 
-  cargarLabel(){
-    this.DatosService.ConsultaLabel("1",this.tipoBoton).subscribe(Resultado=>{
+  cargarLabel() {
+    this.DatosService.ConsultaLabel("1", this.tipoBoton).subscribe(Resultado => {
       this.ArrayLabels = Resultado;
     })
   }
 
-  modificarItem(){
-    const bodyPost={
+  modificarItem(templateMensaje: any) {
+    const bodyPost = {
       "IdDatoBasico": this.tipoBoton,
       "Id": this.IdItem,
       "Estado": this.estadoItem,
       "Descripcion": this.nombreItem,
       "Texto": this.descripcionDos
     }
-    this.DatosService.AgregarItem("2", bodyPost).subscribe(Resultado=>{
+    console.log(bodyPost);
+    this.DatosService.AgregarItem("2", bodyPost).subscribe(Resultado => {
       this.textoayuda = Resultado;
+      console.log(this.textoayuda)
+      this.Respuesta='Modificado correctamente'
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 's' })
     })
   }
 
-  cargarRelaciones(idRelacion:string){
-    this.DatosService.ConsultaRelacionItem(this.tipoModelo, idRelacion, this.IdItem).subscribe(Resultado=>{
-      this.ArrayRelacionItem =Resultado;
+  cargarRelaciones(idRelacion: string) {
+    console.log(this.tipoBoton, idRelacion, this.IdItem)
+    this.DatosService.ConsultaRelacionItem(this.tipoBoton, idRelacion, this.IdItem).subscribe(Resultado => {
+      this.ArrayRelacionItem = Resultado;
+      console.log(Resultado)
     })
-    this.idRelacion=idRelacion
+    this.idRelacion = idRelacion
   }
 
-  modRelacion(idRelacion:string, bandera:string){
+  modRelacion(idRelacion: string, bandera: string) {
 
-    const bodyPost={
-        "IdDtoBasico":this.tipoModelo,
-        "IdDtoRelacion":this.idRelacion,
-        "IdSubitem":this.IdItem,
-        "IdSubitemDos":idRelacion
+    const bodyPost = {
+      "IdDtoBasico": this.tipoBoton,
+      "IdDtoRelacion": this.idRelacion,
+      "IdSubitem": this.IdItem,
+      "IdSubitemDos": idRelacion
     }
-    this.DatosService.modificarRelacion(bandera, bodyPost).subscribe(Resultado=>{
+    console.log(bodyPost);
+    this.DatosService.modificarRelacion(bandera, bodyPost).subscribe(Resultado => {
       this.textoayuda = Resultado;
+      this.cargarRelaciones(this.idRelacion)
+      console.log(this.textoayuda)
     })
+
   }
 
 
-  abrirModal(templateMensaje: any){
+  abrirModal(templateMensaje: any) {
+    this.Respuesta='Se ha agregado correctamente'
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 's' })
   }
 
-  abrirModalEditar(templateMensaje: any, id: string, descripcion: string, descripcionDos: string, estado: string)
-  {
-    this.nombreItem=descripcion;
-    this.IdItem=id;
-    this.descripcionDos=descripcionDos;
+  abrirModalEditar(templateMensaje: any, id: string, descripcion: string, descripcionDos: string, estado: string) {
+    this.nombreItem = descripcion;
+    this.IdItem = id;
+    this.descripcionDos = descripcionDos;
     this.estadoItem = estado;
     this.cargarLabel();
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
-    this.DatosService.CosultaRelacion().subscribe(Resultado=>{
+    this.DatosService.CosultaRelacion(this.tipoBoton).subscribe(Resultado => {
       this.ArrayRelaciones = Resultado;
     })
+  }
+
+  cambiarOjo() {
+    if (this.estadoItem == '1') {
+      this.estadoItem = '2'
+    }
+    else
+      this.estadoItem = '1';
   }
 
 

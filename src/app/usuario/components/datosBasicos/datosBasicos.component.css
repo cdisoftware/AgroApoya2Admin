@@ -6,9 +6,20 @@
   text-align: center;
 }
 
-.primera{
+.primeraFila{
   background-color: #397c97;
   color: white;
   border: 2px solid white;
   text-align: center;
+}
+
+.imagenIcono
+{
+  height: 50px;
+  width: 50px
+}
+
+.botonesRelacion{
+  height: 75px;
+  width: 75px;
 }

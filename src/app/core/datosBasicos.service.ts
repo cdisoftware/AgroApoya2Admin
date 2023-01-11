@@ -31,18 +31,18 @@ export class datosBasicosService {
     return this.http.get<any>(this.url_servidor + 'conscmascaradatbasic/' + Bandera +'/' + idModulo)
   }
 
-  CosultaRelacion(){
-    return this.http.get<any>(this.url_servidor + 'conscrelaciondatosbasicos/1/1')
+  CosultaRelacion(idDatoBasico: string){
+    return this.http.get<any>(this.url_servidor + 'conscrelaciondatosbasicos/1/' + idDatoBasico)
   }
 
   ConsultaRelacionItem(idDatoBasico:string, idDatoRelacion:string, idSubItem:string){
     console.log(this.url_servidor + 'conscrelaciondbasicossubitem/1/' + idDatoBasico +'/'+ idDatoRelacion+'/'+idSubItem)
-    return this.http.get<any>(this.url_servidor + 'conscrelaciondbasicossubitem/1/1/'+ idDatoRelacion+'/'+idSubItem)
+    return this.http.get<any>(this.url_servidor + 'conscrelaciondbasicossubitem/1/'+ idDatoBasico +'/' + idDatoRelacion+'/'+idSubItem)
 
   }
 
   modificarRelacion(bandera:string, Datos: any){
-    return this.http.post<any>(this.url_servidor + 'conscdatosbasicositem/' + bandera, Datos)
+    return this.http.post<any>(this.url_servidor + 'modrelaciondbasicossubitems/' + bandera, Datos)
   }
 
 

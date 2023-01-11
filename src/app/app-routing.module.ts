@@ -27,6 +27,10 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
+      path: 'datos',
+      component: DatosBasicosComponent
+  },
+  {
     path: 'home',
     component: LayoutprincipalComponent,
     children: [
@@ -91,21 +95,17 @@ const routes: Routes = [
         component: EvaluacionofertaComponent
       },
       {
-        path: 'seguimiento', 
+        path: 'seguimiento',
         component: SeguimientoComponent
       },
       {
-        path: 'carrusel', 
+        path: 'carrusel',
         component: CarruselofertasComponent
       },
       {
         path: 'reporte',
         component: ReporteComponent
       },
-      {
-        path: 'datos',
-        component: DatosBasicosComponent
-      }
     ]
   },
 ];
