@@ -247,7 +247,7 @@ export class SectorizacionComponent implements OnInit {
           this.Respuesta = 'Los campos Sector, Cantidad y Valor flete son obligatorios, favor valida tu información.';
         }
       }
-      this.LimpiaForm();
+      //this.LimpiaForm();
     })
   }
 
