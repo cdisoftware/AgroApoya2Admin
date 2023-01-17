@@ -20,6 +20,7 @@ import { CarguepublicidadComponent } from './usuario/components/carguepublicidad
 import { EvaluacionofertaComponent } from './ofertas/components/evaluacionoferta/evaluacionoferta.component';
 import { SeguimientoComponent } from './ofertas/components/seguimiento/seguimiento.component';
 import { CarruselofertasComponent } from './ofertas/components/carruselofertas/carruselofertas.component';
+import { ComboofertasComponent } from './ofertas/components/comboofertas/comboofertas.component';
 
 const routes: Routes = [
   {
@@ -106,6 +107,10 @@ const routes: Routes = [
         path: 'reporte',
         component: ReporteComponent
       },
+      {
+        path: 'combo',
+        component: ComboofertasComponent
+      }
     ]
   },
 ];
