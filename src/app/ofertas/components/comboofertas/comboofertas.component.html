@@ -85,8 +85,8 @@
 
     <div class="container bg-white" *ngIf="VerCrearCombo == true">
         <!--Targueta-->
-        <div class="row">
-            <div class="col-sm-7 col-12 mt-2">
+        <div class="row justify-content-center">
+            <div class="col-sm-6 col-12 mt-2 m-auto">
                 <div class="row mt-3 tarjetas" *ngFor="let respu of ArrayTagetas; let i = index">
                     <div class="col-sm-1 col-12 textCenter">
                         <input class="form-check-input mt-2" type="checkbox" id="check{{i}}"
@@ -95,7 +95,7 @@
                     <div class="col-sm-2 col-12">
                         <img src="{{respu.Image}}" class="ImgOferta">
                     </div>
-                    <div class="col-sm-5 col-12">
+                    <div class="col-sm-4 col-12">
                         <div class="col-12">
                             <label class="Llave">Nombre:&nbsp;</label><label class="Valor">{{respu.NombreProd}}</label>
                         </div>
@@ -112,7 +112,7 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-4 col-12">
+                    <div class="col-sm-5 col-12">
                         <div class="col-12">
                             <label class="Llave">Unidades:&nbsp;</label><label class="Valor">{{respu.Unidades}}
                                 Unidades</label>
@@ -121,11 +121,19 @@
                             <label class="Llave">Valor:&nbsp;</label><label
                                 class="Valor">{{respu.Valor|currency}}</label>
                         </div>
+                        <div class="col-12">
+                            <label class="Llave">Sector:&nbsp;</label><label
+                                class="Valor">Sector&nbsp;{{i}}</label>
+                        </div>
+                        <div class="col-12">
+                            <label class="Llave">Transportador:&nbsp;</label><label
+                                class="Valor">ConducorCDI&nbsp;{{i}}</label>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-sm-5 col-12 mt-3 justify-content-center">
+            <div class="col-sm-5 col-12 mt-2 justify-content-center">
                 <div class="row justify-content-center">
                     <div class="col-sm-10 col-10 imgCombo justify-content-center sinmp mt-2">
                         <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_Agro.png" width="100%" height="100%">
@@ -169,7 +177,7 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col-sm-6 col-12">
-                        <label class="Llave">Valor comobo: </label>
+                        <label class="Llave">Valor combo: </label>
                     </div>
                     <div class="col-sm-6 col-12">
                         <input type="text" value="{{10000000|currency}}" class="col-sm-4 col-12 form-control form-control-sm textBox" placeholder="Nombre combo">
