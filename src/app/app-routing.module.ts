@@ -27,10 +27,6 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
-      path: 'datos',
-      component: DatosBasicosComponent
-  },
-  {
     path: 'home',
     component: LayoutprincipalComponent,
     children: [
@@ -106,6 +102,10 @@ const routes: Routes = [
         path: 'reporte',
         component: ReporteComponent
       },
+      {
+          path: 'datos',
+          component: DatosBasicosComponent
+      }
     ]
   },
 ];
