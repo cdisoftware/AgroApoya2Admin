@@ -34,9 +34,20 @@ export class ComboofertasComponent implements OnInit {
   VerBuscarCombo: boolean = false;
   VerCrearCombo: boolean = false;
 
+  //Sector
+  ArraySector: any = [];
+  KeywordSector: string = "Sector";
+
+  //ImagenComboOferta
+  ImagenPreCarga: string = "../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png";
+  ImagenCargada: string = '';
+  file: FileList | undefined;
+  NomImagen: string = '0';
+
   ngOnInit(): void {
     for (var i = 0; i < 10; i++) {
       this.ArrEstados.push({ IdEstado: (i + 1), Estado: "Estado " + (i + 1) });
+      this.ArraySector.push({ IdSector: (i + 1), Sector: "Sector " + (i + 1) });
       this.ArrGrilla.push({ Id: (i + 1), Nombre: "Prueba " + (i + 1), Image: ".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_Agro.png", Fecha: (i + 1) + "/01/2023", Estado: "Estado " + (i + 1) })
       this.ArrayTagetas.push({
         Image: ".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_Agro.png", NombreProd: "Zanahoria " + (i + 1), DescripcionProd: "PRB-MANDARINA VERDE", Estado: "Estado " + (i + 1),
@@ -49,7 +60,7 @@ export class ComboofertasComponent implements OnInit {
     if (bandera == "1") {
       this.VerBuscarCombo = true;
       this.VerCrearCombo = false;
-    }else if(bandera == "2"){
+    } else if (bandera == "2") {
       this.VerCrearCombo = true;
       this.VerBuscarCombo = false;
     }
@@ -84,4 +95,16 @@ export class ComboofertasComponent implements OnInit {
     }
     console.log(this.ArrayNuevoCombo)
   }
+
+
+  public CargaImagen(event: any, imagen: string) {
+    this.ImagenCargada = imagen;
+    this.file = event.target.files[0];
+    console.log(event.target.files[0])
+    if (this.ImagenCargada == '1') {
+      this.ImagenPreCarga = event.target.files[0].name;
+      this.NomImagen = event.target.files[0].name;
+    }
+  }
+
 }
