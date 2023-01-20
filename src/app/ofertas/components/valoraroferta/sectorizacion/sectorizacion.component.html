@@ -176,13 +176,13 @@
 
         <div class="col-sm-2">
             <input class="col-sm-12 form-control form-control-sm textBox" type="number" placeholder="Cantidad"
-                (blur)="BlurCantidad()" [(ngModel)]="Cant">
+                (blur)="BlurCantidad(ModalRespuesta)" [(ngModel)]="Cant">
         </div>
 
         <div class="col-sm-4">
             <ng-autocomplete [disabled]="seleczona == '0'" [data]="DataSectores" [searchKeyword]="keyword"
                 placeholder="Sector" (selected)='selectSector($event, ModalMapa)' [itemTemplate]="templateResSector"
-                [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
+                [notFoundTemplate]="templateVacio" [(ngModel)]="Sector" (inputCleared)="LimpiaSector('')">
             </ng-autocomplete>
             <ng-template #templateResSector let-item>
                 <a [innerHTML]="item.DSCRPCION_SCTOR"></a>

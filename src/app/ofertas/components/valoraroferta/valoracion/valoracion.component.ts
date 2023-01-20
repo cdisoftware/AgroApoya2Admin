@@ -1542,9 +1542,9 @@ export class ValoracionComponent implements OnInit {
 
   public CargaImagenAdicionales(event: any, modalmensaje: any) {
 
-    if (!(/\.(jpg|png)$/i).test(event.target.files[0].name)) {
+    if (!(/\.(jpg|png|jpeg)$/i).test(event.target.files[0].name)) {
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-      this.Respuesta = "El archivo no pudo ser cargado, valide la extención, las permitidas son .jpg .png";
+      this.Respuesta = "El archivo no pudo ser cargado, valide la extención, las permitidas son .jpg .png .jpeg";
     }
     else if (event.target.files[0].name.includes(" ")) {
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
