@@ -226,7 +226,10 @@ export class SectorizacionComponent implements OnInit {
       for (let i = 0; i < ResultConsulta.length; i++) {
         this.CantidadSectores += ResultConsulta[i].CNTDAD;
       }
-      if (this.CantidadSectores >= this.SessionCantSecOferta) {
+      if((this.Cant + this.CantidadSectores) > this.SessionCantSecOferta){
+        this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+        this.Respuesta = 'Las cantidades a asignar superan las disponibles de la oferta, favor valida tu información.';
+      }else if (this.CantidadSectores >= this.SessionCantSecOferta) {
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
         this.Respuesta = 'Las cantidades totales de la oferta ya fueron asignadas, no es posible asignar mas sectores.';
       }
@@ -288,6 +291,7 @@ export class SectorizacionComponent implements OnInit {
     this.DataCoor = [];
     this.ModalInsert = this.modalService.open(content, { size: 'xl', keyboard: false, backdrop: 'static' })
     var element = document.getElementById('RadioPer') as HTMLInputElement
+    element.focus();
     element.checked = true;
   }
 
