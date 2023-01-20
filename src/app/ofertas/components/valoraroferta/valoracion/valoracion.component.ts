@@ -1580,7 +1580,6 @@ export class ValoracionComponent implements OnInit {
   visualizaImagenTopping(ModalImagen: any, imagenesAdicional: string) {
     this.modalService.open(ModalImagen, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     this.consultaimagen = this.RutaImagenTopping + imagenesAdicional;
-    console.log(this.consultaimagen)
   }
 
 
