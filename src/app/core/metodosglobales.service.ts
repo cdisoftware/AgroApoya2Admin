@@ -45,8 +45,9 @@ export class MetodosglobalesService {
   }
 
   RecuperarRutasOtrasImagenes(tipoimagen: string) {
+    console.log()
     if(this.ambientedetrabajo == '1'){
-      var ruta = 'http://192.168.3.187:8089/';
+      var ruta = 'http://190.147.38.91:8089/';
     }else{
       var ruta = 'https://api.apptotrip.com/ImagenesAgroapoya2/';
     }

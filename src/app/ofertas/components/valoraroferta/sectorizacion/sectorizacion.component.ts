@@ -66,6 +66,9 @@ export class SectorizacionComponent implements OnInit {
   UserSector: string = '';
   TiempoSector: string = '1';
 
+  //Cantidades totales
+  CantidadDispinible: number = 0;
+
 
 
   constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService) {
@@ -117,12 +120,12 @@ export class SectorizacionComponent implements OnInit {
     this.markers = [];
     this.markers.push(marker);
   }
-
   ConsultaDetalleOferta() {
     //console.log('1', this.SessionOferta)
     this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
       //console.log(ResultConsu)
       this.DataOferta = ResultConsu;
+      this.CantidadDispinible = ResultConsu[0].Unidades_disponibles;
       this.SessionNomOferta = ResultConsu[0].Nombre_Producto + ' - ' + ResultConsu[0].Descripcion_empaque + ' - ' + ResultConsu[0].Nombre_productor;
       this.SessionCantSecOferta = ResultConsu[0].Unidades_disponibles;
     })
@@ -158,7 +161,7 @@ export class SectorizacionComponent implements OnInit {
   ConsultaSectorPoligono(idsector: string) {
 
     this.sectoresservices.ModificaSectorPoligono('3', idsector).subscribe(ResultadoCons => {
-      console.log(ResultadoCons);
+     // console.log(ResultadoCons);
       //{ID: 0, ID_SCTOR_OFRTA: 408, LTTUD: '4.729601477155', LNGTUD: '-74.0690865847988'}
       var aux = ResultadoCons.split('|');
       this.sectoresservices.ConsultaUsuarioSector('3', aux[0]).subscribe(ResultadoCons => {
@@ -183,6 +186,12 @@ export class SectorizacionComponent implements OnInit {
       this.UserSector = ResultadoCons.toString();
     })
   }
+  LimpiaSector(result: string) {
+    this.Sector = result;
+    this.SectSelec = '0';
+    this.ValidaCoord = "";
+    this.UserSector = "";
+  }
 
   ConsultaSectoresOferta() {
     this.sectoresservices.ConsultaSectoresOferta('1', this.SessionOferta).subscribe(ResultConsulta => {
@@ -206,6 +215,7 @@ export class SectorizacionComponent implements OnInit {
 
   ConsultaSectores(IdZona: string) {
     this.sectoresservices.ConsultaSectoresEtv('1', '0', IdZona, this.SessionOferta).subscribe(Result => {
+      console.log(Result)
       this.DataSectores = Result;
       this.keyword = 'DSCRPCION_SCTOR';
     })
@@ -240,6 +250,7 @@ export class SectorizacionComponent implements OnInit {
             this.Respuesta = respuesta[1];
             this.ConsultaSectoresOferta();
             this.ValidaCoord = '0';
+            this.LimpiaForm();
           })
         }
         else {
@@ -268,6 +279,7 @@ export class SectorizacionComponent implements OnInit {
   }
 
   AbreCreaSector(content: any, templateRespuesta: any) {
+    //IdZona
     this.ValidaSelecZona = '1';
     this.NombreSec = '';
     this.ValidaCoord = '0';
@@ -334,6 +346,8 @@ export class SectorizacionComponent implements OnInit {
       this.DataCoor = [];
       this.modalService.dismissAll();
       this.SessionSecCreado = '0';
+
+      this.LimpiaZona('');
     }
     else {
       this.modalService.open(templateRespuesta);
@@ -466,10 +480,16 @@ export class SectorizacionComponent implements OnInit {
     //Cada vez que seleccione una zona debo ir a consultar los sectores de esa zona, metodo ConsultaSectores(),
     //a dicho metodo falta agregarle parametro idzona
   }
-  BlurCantidad() {
-    console.log(this.ZonaAsignaSector)
-    if (this.ZonaAsignaSector != "" && this.ZonaAsignaSector != "0") {
-      this.seleczona = '1';
+  BlurCantidad(ModalRespuesta: any) {
+    console.log(this.UserSector)
+    if(this.CantidadDispinible >= Number(this.Cant)){
+      if (this.ZonaAsignaSector != "" && this.ZonaAsignaSector != "0") {
+        this.seleczona = '1';
+      }
+    }else{
+      this.Cant = "";
+      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title' });
+      this.Respuesta = 'La cantidad seleccionada supera la cantidad disponible para la oferta.';
     }
   }
 
