@@ -23,6 +23,7 @@ export class CrearofertaComponent implements OnInit {
   ArrayDepa: any = [];
   ArrayCiud: any = [];
   ArrayProductor: any = [];
+  NomProductor: any;
   IdProducto: string = '0';
   IdEmpaque: string = '0';
   IdCondicion: string = '0';
@@ -66,7 +67,7 @@ export class CrearofertaComponent implements OnInit {
   NomDepa: string = 'Choconta';
   ValidaCam: string;
   ArrayCamposValida: { campo: string; campof: string; class: string; imagen: string; }[];
-  SessionIdOferta: any ='0';
+  SessionIdOferta: any = '0';
 
 
   constructor(
@@ -104,9 +105,9 @@ export class CrearofertaComponent implements OnInit {
   }
 
   LimpiarCampos(campo: string) {
-    if (campo == 'pd') {
-      this.IdProducto = '0';
-    }
+    this.IdProducto = '0';
+    this.NomProductor = campo;
+
   }
 
   CargaProductos() {
@@ -492,15 +493,15 @@ export class CrearofertaComponent implements OnInit {
         this.Respuesta = arrayrespuesta[1];
         if (arrayrespuesta[0] != '-1') {
           this.rutas.navigateByUrl('home/buscaroferta');
-          this.SessionIdOferta=arrayrespuesta[0];
+          this.SessionIdOferta = arrayrespuesta[0];
           this.EnviarSms('2');
         }
       })
     }
   }
 
-  EnviarSms(bandera:string) {
-    this.ServiciosValorar.EnviarSms(bandera, this.IdProductor, this.SessionIdOferta, '0', '0','0','0').subscribe(Resultado => {
+  EnviarSms(bandera: string) {
+    this.ServiciosValorar.EnviarSms(bandera, this.IdProductor, this.SessionIdOferta, '0', '0', '0', '0').subscribe(Resultado => {
       console.log(Resultado)
     })
   }
@@ -530,6 +531,8 @@ export class CrearofertaComponent implements OnInit {
     this.Coor1 = '';
     this.Coor2 = '';
     this.CoordenadasParcela = '';
+    this.IdProducto = '0';
+   this.LimpiarCampos('');
   }
 
   public CargaImagen(event: any, imagen: string) {
@@ -652,9 +655,9 @@ export class CrearofertaComponent implements OnInit {
   }
 
   Cancelar() {
-    this.rutas.navigateByUrl('/home')
+    this.rutas.navigateByUrl('/home/buscaroferta')
   }
-  prueba(){
+  prueba() {
     console.log(this.ValorOferta)
   }
 }
