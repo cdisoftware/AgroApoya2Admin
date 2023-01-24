@@ -141,6 +141,7 @@ export class RepComprasComponent implements OnInit {
   LimpiaForm() {
     this.SelectorEstPago = '';
     this.SelectorEstComra = '';
+    console.log(this.EstadoPago)
     this.EstadoPago = '';
     this.EstadoCompra = '';
     this.Sector = '';

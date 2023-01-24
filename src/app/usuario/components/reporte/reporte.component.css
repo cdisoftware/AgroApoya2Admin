@@ -1,7 +1,6 @@
 
 
 .tabla{
-  width: 90%;
   border: 2px solid lightblue;
   border-collapse: collapse;
   font-weight: 500;
@@ -24,7 +23,12 @@
   padding: 5px;
 }
 
-
+.overflowth{
+  overflow: auto;
+}
+.textcenter{
+  text-align: center;
+}
 .textoConductor{
   color: #397c97;
   font-weight: bold;

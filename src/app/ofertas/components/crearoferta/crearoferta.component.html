@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <label class="col-sm-12 Llave">Productor</label>
-                <ng-autocomplete [data]="ArrayProductor" [searchKeyword]="productor" placeholder="Productor" (selected)='selectProductor($event)' (inputCleared)="LimpiarCampos('pt')" [itemTemplate]="templateResPr" [notFoundTemplate]="templateVacioPr" aria-required="true">
+                <ng-autocomplete [data]="ArrayProductor" [searchKeyword]="productor" placeholder="Productor" (inputCleared)="LimpiarCampos('')" (selected)='selectProductor($event)' [itemTemplate]="templateResPr" [notFoundTemplate]="templateVacioPr" aria-required="true" [(ngModel)]="NomProductor" [ngModelOptions]="{standalone: true}">
                 </ng-autocomplete>
 
                 <ng-template #templateResPr let-item id="templateResPr">
