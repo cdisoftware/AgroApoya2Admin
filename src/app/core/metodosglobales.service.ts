@@ -27,8 +27,7 @@ export class MetodosglobalesService {
       return this.url_DesarrolloCDI;
     } else if (this.ambientedetrabajo == '2') {
       return this.url_ProduccionCDI;
-    }
-    else {
+    } else {
       return "Valida ambiente seleccionado";
     }
   }
@@ -38,8 +37,7 @@ export class MetodosglobalesService {
       return this.url_DesarolloImg;
     } else if (this.ambientedetrabajo == '2') {
       return this.url_ProduccionImg;
-    }
-    else {
+    } else {
       return "Valida ambiente seleccionado";
     }
   }
@@ -51,6 +49,7 @@ export class MetodosglobalesService {
     }else{
       var ruta = 'https://api.apptotrip.com/ImagenesAgroapoya2/';
     }
+
     if (tipoimagen == '1') {
       return ruta + 'ImagenesEvidencia/'
     } else if (tipoimagen == '2') {
@@ -65,6 +64,20 @@ export class MetodosglobalesService {
       return 'no se encontro la imagen'
     }
 
+  }
+
+  RecuperarRutaVista(idvista: string) {
+    if(this.ambientedetrabajo == '1'){
+      var ruta = 'http://190.147.38.91:8881/#/';
+    }else{
+      var ruta = 'https://api.apptotrip.com/AA2/#/';
+    }
+    
+    if (idvista == '1') {
+      return ruta + 'Landing/'
+    }else{
+      return 'no se encontro la ruta'
+    }
   }
 
   CrearCookie(Llave: string, Valor: string) {
