@@ -82,6 +82,7 @@ export class ValorarofertaService {
   }
 
   ActualizarOfertaValoracion(bandera: string, bodyupdate: any) {
+    console.log(bodyupdate)
     return this.http.post<any>(this.url_servidor + 'cvaloracionofertamod/' + bandera, bodyupdate)
   }
 
