@@ -354,7 +354,9 @@ export class ValoracionComponent implements OnInit {
   }
 
   ValidaVigencias(templateMensaje: any, bandera: string) {
-    var fechaD = this.VigenDesde;    
+    //console.log(this.VigenDesde + " desde")
+    //console.log(this.VigenHasta + " hasta")
+    var fechaD = this.VigenDesde;
     var fechaH = this.VigenHasta;
     var fechaR = this.SessionFechaRecogida;
     var fecha = new Date();
@@ -368,24 +370,37 @@ export class ValoracionComponent implements OnInit {
         this.modalService.open(templateMensaje);
         this.Respuesta = 'La fecha inicio de la vigencia no puede ser menor a la fecha actual, favor valida tu información.';
       }
+      else if (fechaDF > fechaHF) {
+        this.VigenDesde = '';
+        this.modalService.open(templateMensaje);
+        this.Respuesta = 'La fecha inicio de la vigencia no puede ser mayor a la fecha final de la vigencia, favor valida tu información.';
+      }
     }
     else if (bandera == '2') {
+      console.log("bandera 2")
+      console.log(fechaDF + "desde form")
+      console.log(fechaHF + "hasta form")
       if (fechaDF > fechaHF) {
         this.VigenHasta = '';
         this.modalService.open(templateMensaje);
         this.Respuesta = 'La fecha fin de la vigencia no puede ser menor a la fecha inicio de la vigencia, favor valida tu información.';
       }
-      else if(fechaHF < fechaf){
+      else if (fechaHF < fechaf) {
         this.VigenHasta = '';
         this.modalService.open(templateMensaje);
         this.Respuesta = 'La fecha fin de la vigencia no puede ser menor a la fecha actual, favor valida tu información.';
       }
+      else if (fechaHF < fechaRF) {
+        this.VigenHasta = '';
+        this.modalService.open(templateMensaje);
+        this.Respuesta = 'La fecha fin de la vigencia debe ser mayor o igual a la fecha recogida, favor valida tu información.';
+      }
     }
     else if (bandera == '3') {
-      if (this.FechaEntrega < fechaHF) {
+      if (this.FechaEntrega > fechaHF) {
         this.FechaEntrega = '';
         this.modalService.open(templateMensaje);
-        this.Respuesta = 'La fecha entrega de la vigencia no puede ser menor a la fecha fin de la vigencia, favor valida tu información.';
+        this.Respuesta = 'La fecha entrega de la vigencia no puede ser mayor a la fecha fin de la vigencia, favor valida tu información.';
       }
       else if (this.FechaEntrega < fechaRF) {
         this.FechaEntrega = '';
