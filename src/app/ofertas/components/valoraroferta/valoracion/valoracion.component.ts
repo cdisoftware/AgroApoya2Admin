@@ -1625,18 +1625,34 @@ export class ValoracionComponent implements OnInit {
   }
 
   ValidaCantidadmaxIndiv(Cantidad: string, templateMensaje: any) {
-    var cantidadmax: number = parseInt(this.MinUnidI);
-    var cantidadmin: number = parseInt(Cantidad);
-    if (this.DataOferta[0].Unidades_disponibles < cantidadmax) {
+    var cantidadmin: number = parseInt(this.MinUnidI);
+    var cantidadmax: number = parseInt(Cantidad);
+    if (cantidadmax > this.DataOferta[0].Unidades_disponibles) {
       this.MaxUnidI = '';
       this.Respuesta = 'Válida que el número máximo de unidades no supere el número total de unidades para la oferta';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     }
-    if (cantidadmin < cantidadmax) {
+    if (cantidadmin > cantidadmax) {
       this.MaxUnidI = '';
       this.MinUnidI = '';
       this.Respuesta = 'Válida que el número mínimo de unidades no supere el número máximo de unidades para la oferta';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    }
+  }
+  ValidacionesGrupal(Cantidad: string, templateMensaje: any) {
+    var cantidadmaxLider: number = parseInt(this.MaxUnidLider);
+    var cantidadmaxParticipante: number = parseInt(this.MaxUnidPart);
+    var cantidadminLider: number = parseInt(this.MinUnidLider);
+    var UnidadesTotaleGrupos: number = parseInt(Cantidad);
+    if (UnidadesTotaleGrupos > (cantidadmaxLider + cantidadmaxParticipante)) {
+      this.Respuesta = 'Válida las unidades totales por grupo no sea mayor a la suma de las unidades maximas por participante y lider';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+      this.UnidXGrupos = '';
+    }
+    if (UnidadesTotaleGrupos < (cantidadminLider + cantidadmaxParticipante)) {
+      this.Respuesta = 'Válida las unidades totales por grupo no sea menor a la suma de las unidades minimas para el lider y las unidades maximas para el participante';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+      this.UnidXGrupos = '';
     }
   }
 
