@@ -5,6 +5,8 @@ import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 import { Router } from '@angular/router'
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 import { DatePipe } from '@angular/common';
+//import { BitlyClient } from 'bitly';
+//const bitly = new BitlyClient('07d0baa590598f6b9a8d9963c05d2b1a37f2e824', {});
 
 @Component({
   selector: 'app-valoracion',
@@ -94,6 +96,8 @@ export class ValoracionComponent implements OnInit {
   consultaimagen: string = '';
   RutaImagenTopping: string = '';
   IsEnables: boolean = false;
+  LinkSms: string = '';
+  RutaLanding: string = '';
 
 
   constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
@@ -157,6 +161,7 @@ export class ValoracionComponent implements OnInit {
     this.UnidOferta = '';
     this.DataToppings = [];
     this.RutaImagen = this.SeriviciosGenerales.RecuperaRutaImagenes();
+    this.RutaLanding = this.SeriviciosGenerales.RecuperarRutaVista('1');
     this.RutaImagenTopping = this.SeriviciosGenerales.RecuperarRutasOtrasImagenes('4');
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');
@@ -750,6 +755,8 @@ export class ValoracionComponent implements OnInit {
     else {
       validacomision = this.VlrComPorI
     }
+
+
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     if ((this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
       || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null)) {
@@ -843,6 +850,11 @@ export class ValoracionComponent implements OnInit {
     else {
       this.ValidaCam = '0';
       this.ArrayCamposValida = [];
+
+      // bitly.shorten(this.RutaLanding +this.SessionSectorSel+'/'+this.SessionOferta+'/0/0').then(result => {}catch{result.link}
+
+      this.LinkSms = 'https://bit.ly/3HbpHIJ';
+      console.log(this.LinkSms)
       const Body = {
         CD_CNSCTVO: this.SessionOferta,
         TPO_OFRTA: this.SessionTipoOferta,
@@ -865,13 +877,15 @@ export class ValoracionComponent implements OnInit {
         CNTDAD_CMPRAS_INDVDLES: "0",
         VLOR_ARRNQUE_LIDER: "0",
         VLOR_FNAL_PRTCPNTE: "0",
-        ID_SCTOR_OFRTA: this.SessionSectorSel
+        ID_SCTOR_OFRTA: this.SessionSectorSel,
+        LINKLANDIGN: this.LinkSms
       }
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         var arreglores = ResultUpdate.split('|')
         this.Respuesta = arreglores[1];
         this.ValidaToppings = '1';
       })
+
     }
   }
 
@@ -884,6 +898,7 @@ export class ValoracionComponent implements OnInit {
     else {
       validacomision = this.VlrComPorG
     }
+
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     if ((this.SessionTipoComG == null || this.SessionTipoComG == '') || (validacomision == '' || validacomision == null) || (this.MinUnidLider == '' || this.MinUnidLider == null) ||
       (this.MaxUnidLider == '' || this.MaxUnidLider == null) || (this.PorcDescLider == '' || this.PorcDescLider == null) || (this.CantGrupos == '' || this.CantGrupos == null) ||
@@ -1075,6 +1090,11 @@ export class ValoracionComponent implements OnInit {
     else {
       this.ValidaCam = '0';
       this.ArrayCamposValida = [];
+
+
+      //bitly.shorten(this.RutaLanding +this.SessionSectorSel+'/'+this.SessionOferta+'/0/0').then(result => {}catch{}
+      this.LinkSms = 'https://bit.ly/3HbpHIJ';
+      console.log(this.LinkSms)
       const Body = {
         CD_CNSCTVO: this.SessionOferta,
         TPO_OFRTA: Number(this.SessionTipoOferta),
@@ -1097,7 +1117,8 @@ export class ValoracionComponent implements OnInit {
         CNTDAD_CMPRAS_INDVDLES: this.CantComprI,
         VLOR_ARRNQUE_LIDER: this.PrecioFinLider,
         VLOR_FNAL_PRTCPNTE: this.PrecioFinPart,
-        ID_SCTOR_OFRTA: this.SessionSectorSel
+        ID_SCTOR_OFRTA: this.SessionSectorSel,
+        LINKLANDIGN: this.LinkSms
       }
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         this.Respuesta = '';
@@ -1105,6 +1126,8 @@ export class ValoracionComponent implements OnInit {
         this.Respuesta = arreglores[1];
         this.ValidaToppings = '1';
       })
+
+
     }
   }
 
@@ -1124,6 +1147,7 @@ export class ValoracionComponent implements OnInit {
     else {
       validacomisionG = this.VlrComPorG
     }
+
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     if ((this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
       || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null) || (this.SessionTipoComG == null || this.SessionTipoComG == '') || (validacomisionG == '' || validacomisionG == null) || (this.MinUnidLider == '' || this.MinUnidLider == null) ||
@@ -1396,6 +1420,10 @@ export class ValoracionComponent implements OnInit {
     else {
       this.ValidaCam = '0';
       this.ArrayCamposValida = [];
+
+      // bitly.shorten(this.RutaLanding +this.SessionSectorSel+'/'+this.SessionOferta+'/0/0').then(result => {  }catch{ }
+      this.LinkSms = 'https://bit.ly/3HbpHIJ';
+      console.log(this.LinkSms)
       const Body = {
         CD_CNSCTVO: this.SessionOferta,
         TPO_OFRTA: this.SessionTipoOferta,
@@ -1418,7 +1446,8 @@ export class ValoracionComponent implements OnInit {
         CNTDAD_CMPRAS_INDVDLES: this.CantComprI,
         VLOR_ARRNQUE_LIDER: this.PrecioFinLider,
         VLOR_FNAL_PRTCPNTE: this.PrecioFinPart,
-        ID_SCTOR_OFRTA: this.SessionSectorSel
+        ID_SCTOR_OFRTA: this.SessionSectorSel,
+        LINKLANDIGN: this.LinkSms
       }
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         this.Respuesta = '';
@@ -1426,6 +1455,7 @@ export class ValoracionComponent implements OnInit {
         this.Respuesta = arreglores[1];
         this.ValidaToppings = '1';
       })
+
     }
   }
 
