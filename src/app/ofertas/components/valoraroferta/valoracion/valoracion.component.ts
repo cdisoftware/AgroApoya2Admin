@@ -98,6 +98,8 @@ export class ValoracionComponent implements OnInit {
   IsEnables: boolean = false;
   LinkSms: string = '';
   RutaLanding: string = '';
+  DataTipoDescuento: { id: number; name: string; }[];
+  SessionTipoDescuento: string = '';
 
 
   constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
@@ -111,10 +113,6 @@ export class ValoracionComponent implements OnInit {
       {
         id: 1,
         name: 'Individual'
-      },
-      {
-        id: 2,
-        name: 'Grupal'
       },
       {
         id: 3,
@@ -131,6 +129,16 @@ export class ValoracionComponent implements OnInit {
         name: 'Porcentaje'
       }
     ]
+    this.DataTipoDescuento = [
+      {
+        id: 1,
+        name: 'Registro'
+      },
+      {
+        id: 2,
+        name: 'Unidades'
+      }
+    ]
     this.DataTipotopping = []
     this.SessionTipoTopp = '0';
     this.MuestraVigencial = '0';
@@ -142,8 +150,8 @@ export class ValoracionComponent implements OnInit {
     //this.UnidXGrupos = '2';
     this.SessionCantSector = '';
     this.SessionTipoComI = '';
-    this.MaxUnidI = '';
-    this.MinUnidI = '';
+    this.MaxUnidI = '1';
+    this.MinUnidI = '1';
     this.VlrComFijaI = '';
     this.PreFinI = '';
     this.VlrComFijaG = '';
@@ -723,6 +731,10 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
+  selectTipDescuento(item: any) {
+    this.SessionTipoDescuento = item.id;
+  }
+
   LimpiaTipoOferta(item: any) {
     this.MuestraGrupal = '0';
     this.MuestraIndividual = '0';
@@ -744,6 +756,12 @@ export class ValoracionComponent implements OnInit {
     this.MuestraPorcentaje = '0';
     this.VlrComPorG = '';
     this.VlrComFijaG = '';
+  }
+
+  LimpiaTipoDescuento(item: any) {
+    this.SessionTipoDescuento = '';
+    this.PorcDescLider = '';
+    this.UnidXGrupos = '';
   }
 
   GuardaIndividual(templateMensaje: any) {
@@ -1150,10 +1168,8 @@ export class ValoracionComponent implements OnInit {
 
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     if ((this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
-      || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null) || (this.SessionTipoComG == null || this.SessionTipoComG == '') || (validacomisionG == '' || validacomisionG == null) || (this.MinUnidLider == '' || this.MinUnidLider == null) ||
-      (this.MaxUnidLider == '' || this.MaxUnidLider == null) || (this.PorcDescLider == '' || this.PorcDescLider == null) || (this.CantGrupos == '' || this.CantGrupos == null) ||
-      (this.UnidXGrupos == '' || this.UnidXGrupos == null) || (this.MinUnidPart == '' || this.MinUnidPart == null) || (this.MaxUnidPart == '' || this.MaxUnidPart == null) ||
-      (this.PrecioFinLider == '' || this.PrecioFinLider == null) || (this.PrecioFinPart == '' || this.PrecioFinPart == null)) {
+      || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null) || (this.SessionTipoComG == null || this.SessionTipoComG == '') || (validacomisionG == '' || validacomisionG == null) ||
+      (this.PrecioFinLider == '' || this.PrecioFinLider == null) || (this.PrecioFinPart == '' || this.PrecioFinPart == null) || (this.UnidXGrupos == '' || this.UnidXGrupos == null) || (this.PorcDescLider == '' || this.PorcDescLider == null) || (this.SessionTipoDescuento == '' || this.SessionTipoDescuento == null)) {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
@@ -1200,47 +1216,41 @@ export class ValoracionComponent implements OnInit {
           imagen: ''
         },
         {
-          campo: 'MinUnidLider',
-          campof: 'Minimo unidades lider',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'MaxUnidLider',
-          campof: 'Maximo unidades lider',
+          campo: 'SessionTipoDescuento',
+          campof: 'Tipo de descuento',
           class: '',
           imagen: ''
         },
         {
           campo: 'PorcDescLider',
-          campof: 'Porcentaje descuento lider',
+          campof: 'Porcentaje de descuento por unidad / registro',
           class: '',
           imagen: ''
         },
-        {
-          campo: 'CantGrupos',
-          campof: 'Cantidad de grupos',
-          class: '',
-          imagen: ''
-        },
+        // {
+        //   campo: 'CantGrupos',
+        //   campof: 'Cantidad de grupos',
+        //   class: '',
+        //   imagen: ''
+        // },
         {
           campo: 'UnidXGrupos',
-          campof: 'Unidades por grupo',
+          campof: 'Numero maximo de unidades / registros para descuento',
           class: '',
           imagen: ''
         },
-        {
-          campo: 'MinUnidPart',
-          campof: 'Minimo unidades participante',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'MaxUnidPart',
-          campof: 'Maximo unidades participante',
-          class: '',
-          imagen: ''
-        },
+        // {
+        //   campo: 'MinUnidPart',
+        //   campof: 'Minimo unidades participante',
+        //   class: '',
+        //   imagen: ''
+        // },
+        // {
+        //   campo: 'MaxUnidPart',
+        //   campof: 'Maximo unidades participante',
+        //   class: '',
+        //   imagen: ''
+        // },
         {
           campo: 'PrecioFinLider',
           campof: 'Precio arranque lider',
@@ -1317,6 +1327,16 @@ export class ValoracionComponent implements OnInit {
         }
         else if (this.ArrayCamposValida[i].campo == 'validacomisionG') {
           if (validacomisionG == '' || validacomisionG == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'SessionTipoDescuento') {
+          if (this.SessionTipoDescuento == '' || this.SessionTipoDescuento == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
@@ -1435,20 +1455,22 @@ export class ValoracionComponent implements OnInit {
         VLOR_FNAL_INDVDUAL: this.PreFinI,
         TPO_CMSION_GRPAL: Number(this.SessionTipoComG),
         VLOR_CMSION_GRPAL: validacomisionG,
-        MNMO_UNDDES_LIDER: this.MinUnidLider,
-        MXMO_UNDDES_LIDER: this.MaxUnidLider,
+        MNMO_UNDDES_LIDER: 1,
+        MXMO_UNDDES_LIDER: 1,
         PRCNTJE_DCTO_LIDER: this.PorcDescLider,
-        VLOR_DMNCLIO_GRPAL: this.VlrDomiG,
-        CNTDAD_GRPOS: this.CantGrupos,
+        VLOR_DMNCLIO_GRPAL: 0,
+        CNTDAD_GRPOS: 0,
         MNMO_PRSNAS_XGRUPO: this.UnidXGrupos,
-        MNMO_UNDDES_PRCPNTE: this.MinUnidPart,
-        MXMO_UNDDES_PRCPNTE: this.MaxUnidPart,
-        CNTDAD_CMPRAS_INDVDLES: this.CantComprI,
+        MNMO_UNDDES_PRCPNTE: 1,
+        MXMO_UNDDES_PRCPNTE: 1,
+        CNTDAD_CMPRAS_INDVDLES: 0,
         VLOR_ARRNQUE_LIDER: this.PrecioFinLider,
         VLOR_FNAL_PRTCPNTE: this.PrecioFinPart,
         ID_SCTOR_OFRTA: this.SessionSectorSel,
-        LINKLANDIGN: this.LinkSms
+        LINKLANDIGN: this.LinkSms,
+        TPO_DESCUENTO: Number(this.SessionTipoDescuento)
       }
+      console.log(Body)
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         this.Respuesta = '';
         var arreglores = ResultUpdate.split('|')

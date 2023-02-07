@@ -223,7 +223,7 @@
             <label class="col-sm-12 Llave mb-1">Tipo oferta</label>
             <ng-autocomplete [data]="DataTipoOferta" [searchKeyword]="keyword" (selected)='selectTipOferta($event)'
                 [initialValue]="ArrayTipoOferCon[0]" (inputCleared)='LimpiaTipoOferta($event)'
-                placeholder="Individual, Grupal o Mixta" [itemTemplate]="templateOfer"
+                placeholder="Individual o Mixta" [itemTemplate]="templateOfer"
                 [notFoundTemplate]="templateVacio">
             </ng-autocomplete>
             <ng-template #templateOfer let-item>
@@ -272,13 +272,13 @@
                             <label class="col-sm-12 Llave">Mínimo unidades</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox"
                                 (blur)="ValidaCantidadMinimaIndiv(MinUnidI,ModalRespuesta)" [(ngModel)]="MinUnidI"
-                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}" disabled>
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Máximo unidades</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox"
                                 (blur)="ValidaCantidadmaxIndiv(MaxUnidI,ModalRespuesta)" [(ngModel)]="MaxUnidI"
-                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}" disabled>
                         </div>
                     </div>
                     <div class="row br">
@@ -293,14 +293,6 @@
                                 value="{{PreFinI | currency}}" disabled="true">
                         </div>
                     </div>
-                    <!-- <div class="row br">
-                        <div class="col-sm-12">
-                            <label class="col-sm-2 Llave">Descuentos adicionales</label>
-                            <button class="bot col-sm-1 SinEstilo">
-                                <img src="../../../../../assets/ImagenesAgroApoya2Adm/lupa.png" alt="Agregar descuento adicional">
-                            </button>
-                        </div>
-                    </div> -->
                     <div class="row justify-content-center br" *ngIf="MuestraBtnIndividual=='1'">
                         <div class="col-sm-3">
                             <button class="btn btn-agro-prin col-sm-12"
@@ -341,7 +333,7 @@
                                 (change)="CalculaPreoferGrupalM()">
                         </div>
                     </div>
-                    <div class="row br">
+                    <!-- <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Mínimo unidades líder</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidLider"
@@ -354,8 +346,8 @@
                                 (blur)="ValidaCantidadmaxLid(MaxUnidLider,ModalRespuesta)"
                                 onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
-                    </div>
-                    <div class="row br">
+                    </div> -->
+                    <!-- <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Mínimo unidades participante</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidPart"
@@ -368,9 +360,9 @@
                                 (blur)="ValidaCantidadmaxPart(MaxUnidPart,ModalRespuesta)"
                                 onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row br">
-                        <div class="col-sm-6">
+                        <!-- <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Valor domicilio</label>
                             <input mask="separator" thousandSeparator="." type="text"
                                 class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiG"
@@ -381,9 +373,38 @@
                             <input type="number" class="col-sm-12 form-control mt-1 textBox"
                                 onkeyup="if(parseInt(this.value)>100){ this.value=100; return false; }"
                                 [(ngModel)]="PorcDescLider">
+                        </div> -->
+                        <div class="col-sm-12">
+                            <label class="col-sm-12 Llave">Tipo de descuento</label>
+                            <ng-autocomplete [data]="DataTipoDescuento" [searchKeyword]="keyword"
+                                placeholder="Registro / Unidades" [itemTemplate]="templateSec"
+                                [notFoundTemplate]="templateVacio"  (selected)='selectTipDescuento($event)' (inputCleared)='LimpiaTipoDescuento($event)'>
+                            </ng-autocomplete>
+                            <ng-template #templateSec let-item>
+                                <a [innerHTML]="item.name"></a>
+                            </ng-template>
+                            <ng-template #templateVacio let-SinRegistro>
+                                <label for="">Sin registros</label>
+                            </ng-template>
+
                         </div>
+
                     </div>
                     <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Porcentaje de descuento por unidad / registro</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox"
+                                    onkeyup="if(parseInt(this.value)>100){ this.value=100; return false; }"
+                                    [(ngModel)]="PorcDescLider">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Numero maximo de unidades / registros para descuento</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidXGrupos"
+                                (change)="CalculaCCI(ModalRespuesta)"
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                        </div>
+                    </div>
+                    <!-- <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Cantidad de grupos</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="CantGrupos"
@@ -396,15 +417,15 @@
                                 (change)="CalculaCCI(ModalRespuesta)"
                                 onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
-                    </div>
-                    <div class="row br" *ngIf="MuestraCantIndiv=='1'">
+                    </div> -->
+                    <!-- <div class="row br" *ngIf="MuestraCantIndiv=='1'">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Cantidad de compras individuales disponibles</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="CantComprI"
                                 disabled="true"
                                 onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
-                    </div>
+                    </div> -->
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Precio arranque líder</label>
@@ -417,14 +438,6 @@
                                 value="{{PrecioFinPart | currency}}" disabled="true">
                         </div>
                     </div>
-                    <!-- <div class="row br">
-                        <div class="col-sm-12">
-                            <label class="col-sm-2 Llave">Descuentos adicionales</label>
-                            <button class="bot col-sm-1 SinEstilo">
-                                <img src="../../../../../assets/ImagenesAgroApoya2Adm/lupa.png" alt="Agregar descuento adicional">
-                            </button>
-                        </div>
-                    </div> -->
                     <div class="row justify-content-center br" *ngIf="MuestraBtnGrupal=='1'">
                         <div class="col-sm-3">
                             <button class="btn btn-agro-prin col-sm-12" (click)="GuardaGrupal(ModalRespuesta)">Guardar
@@ -538,7 +551,8 @@
                                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png"
                                                 (click)="ModificaTopping('2', topping)">
                                         </button>
-                                        <button *ngIf="topping.IdTipoTopping == '1'" class="SinEstilo" title="Imagen amparado">
+                                        <button *ngIf="topping.IdTipoTopping == '1'" class="SinEstilo"
+                                            title="Imagen amparado">
                                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png"
                                                 (click)="visualizaImagenTopping(ModalImagen, topping.imagen)">
                                         </button>
