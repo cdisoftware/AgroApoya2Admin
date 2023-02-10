@@ -415,7 +415,8 @@
                             <label class="col-sm-12 Llave">Unidades totales por grupo</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidXGrupos"
                                 (change)="CalculaCCI(ModalRespuesta)"
-                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}"
+                                (blur)="ValidacionesGrupal(UnidXGrupos,ModalRespuesta)">
                         </div>
                     </div> -->
                     <!-- <div class="row br" *ngIf="MuestraCantIndiv=='1'">
