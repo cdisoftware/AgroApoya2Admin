@@ -8,9 +8,9 @@
                 [(ngModel)]="OferFiltro">
         </div>
         <div class="col-sm-6">
-            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" placeholder="Sector" (inputCleared)="LimpiaSector('')"
-                (selected)='selectSector($event)' [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio"
-                [(ngModel)]="Sector">
+            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" placeholder="Sector"
+                (inputCleared)="LimpiaSector('')" (selected)='selectSector($event)' [itemTemplate]="templateSec"
+                [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
             </ng-autocomplete>
             <ng-template #templateSec let-item>
                 <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
@@ -25,9 +25,9 @@
 
 
         <div class="col-sm-6 mt-3">
-            <ng-autocomplete [data]="DataEstadoPago" [searchKeyword]="keywordEsPago" placeholder="Estado pago" (inputCleared)="LimpiaEstadoPago('')"
-                (selected)='selectEstadoPago($event)' [itemTemplate]="templateEstadoPag" [notFoundTemplate]="templateVacio"
-                [(ngModel)]="EstadoPago">
+            <ng-autocomplete [data]="DataEstadoPago" [searchKeyword]="keywordEsPago" placeholder="Estado pago"
+                (inputCleared)="LimpiaEstadoPago('')" (selected)='selectEstadoPago($event)'
+                [itemTemplate]="templateEstadoPag" [notFoundTemplate]="templateVacio" [(ngModel)]="EstadoPago">
             </ng-autocomplete>
             <ng-template #templateEstadoPag let-item>
                 <a [innerHTML]="item.descripcion"></a>
@@ -39,9 +39,9 @@
 
 
         <div class="col-sm-6 mt-3">
-            <ng-autocomplete [data]="DataEstadoCompra" [searchKeyword]="keywordEsCompra" placeholder="Estado de compra" (inputCleared)="LimpiaEstadoCompra('')"
-                (selected)='selectEstadoCompra($event)' [itemTemplate]="templateEstadoCompra" [notFoundTemplate]="templateVacio"
-                [(ngModel)]="EstadoCompra">
+            <ng-autocomplete [data]="DataEstadoCompra" [searchKeyword]="keywordEsCompra" placeholder="Estado de compra"
+                (inputCleared)="LimpiaEstadoCompra('')" (selected)='selectEstadoCompra($event)'
+                [itemTemplate]="templateEstadoCompra" [notFoundTemplate]="templateVacio" [(ngModel)]="EstadoCompra">
             </ng-autocomplete>
             <ng-template #templateEstadoCompra let-item>
                 <a [innerHTML]="item.descripcion"></a>
@@ -49,6 +49,13 @@
             <ng-template #templateVacio let-SinRegistro>
                 <label for="">Sin registros</label>
             </ng-template>
+        </div>
+
+        <div class="col-sm-6 mt-3">
+            <input [(ngModel)]="FechaIniCom" class="form-control" type="date" maxlength="50">
+        </div>
+        <div class="col-sm-6 mt-3">
+            <input [(ngModel)]="FechaFinCom"  class="form-control" type="date" maxlength="50">
         </div>
     </div>
     <div class="row br justify-content-center">
@@ -84,14 +91,14 @@
             <th>Detalle</th>
         </tr>
         <tr *ngFor="let oferta of DataConsulta">
-            <td>{{oferta.CD_CNSCTVO}}</td>
-            <td>{{oferta.NOM_SECTOR}}</td>
-            <td>{{oferta.estado_pago}}</td>
-            <td>{{oferta.estado_compras}}</td>
-            <td>{{oferta.unidadesEntregar}}</td>
+            <td>{{oferta.OFERTA}}</td>
+            <td>{{oferta.SECTOR}}</td>
+            <td>{{oferta.ESTADO_PAGO}}</td>
+            <td>{{oferta.ESTADO_CARRO}}</td>
+            <td>{{oferta.Unidades}}</td>
             <td>{{oferta.NOMBRES_PERSONA}} {{oferta.APELLIDOS_PERSONA}}</td>
-            <td>{{oferta.descTipoCompra}}</td>
-            <td>{{oferta.VLOR_PGAR | currency}}</td>
+            <td>{{oferta.TIPO_USUARIO_COMPRA}}</td>
+            <td>{{oferta.VALOR_PAGO}}</td>
             <td (click)="DetalleCompra(oferta, ModalDetalle)">
                 <button class="SinEstilo">
                     <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/info.png" alt="">
@@ -118,41 +125,41 @@
         <div class="row">
             <div class="col-sm-6">
                 <label class="Llave">Nombre sector:&nbsp;</label>
-                <label class="Valor">{{Filacompra.NOM_SECTOR}}</label>
+                <label class="Valor">{{Filacompra.SECTOR}}</label>
             </div>
             <div class="col-sm-6">
                 <label class="Llave">Estado compra:&nbsp;</label>
-                <label class="Valor">{{Filacompra.descEstado}}</label>
+                <label class="Valor">{{Filacompra.ESTADO_CARRO}}</label>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
                 <label class="Llave">Codigo pedido:&nbsp;</label>
-                <label class="Valor">{{Filacompra.COD_PEDIDO}}</label>
+                <label class="Valor">{{Filacompra.ID_CARRO}}</label>
             </div>
             <div class="col-sm-6">
                 <label class="Llave">Estado pago:&nbsp;</label>
-                <label class="Valor">{{Filacompra.DESCRIPCION_ESTADO}}</label>
+                <label class="Valor">{{Filacompra.ESTADO_PAGO}}</label>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
                 <label class="Llave">Producto:&nbsp;</label>
-                <label class="Valor">{{Filacompra.Producto}}</label>
+                <label class="Valor">{{Filacompra.PRODUCTO}}</label>
             </div>
             <div class="col-sm-6">
                 <label class="Llave">Cantidades:&nbsp;</label>
-                <label class="Valor">{{Filacompra.unidadesEntregar}}</label>
+                <label class="Valor">{{Filacompra.Unidades}}</label>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-6">
                 <label class="Llave">Valor:&nbsp;</label>
-                <label class="Valor">{{Filacompra.Vlor_PagarForm}}</label>
+                <label class="Valor">{{Filacompra.VALOR_PAGO}}</label>
             </div>
             <div class="col-sm-6">
                 <label class="Llave">Tipo de pago:&nbsp;</label>
-                <label class="Valor">{{Filacompra.descTipoPago}}</label>
+                <label class="Valor">{{Filacompra.MEDIO_PAGO}}</label>
             </div>
         </div>
         <!-- <div class="row">
@@ -181,32 +188,31 @@
         <div class="row">
             <div class="col-sm-6">
                 <label class="Llave">Direccion:&nbsp;</label>
-                <label class="Valor">{{Filacompra.DRCCION}}&nbsp;{{Filacompra.CMPLMNTO_DRRCCION}}</label>
+                <label class="Valor">{{Filacompra.DIRECCION_ENTREGA}}</label>
             </div>
             <div class="col-sm-6">
                 <label class="Llave">Observaciones:&nbsp;</label>
-                <label class="Valor">{{Filacompra.observacionesCliente}}</label>
+                <label class="Valor">{{Filacompra.observaciones_cliente}}</label>
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <label class="Llave">Correo:&nbsp;</label>
+                <label class="Valor">{{Filacompra.CORREO_PERSONA}}</label>
+            </div>
+        </div>
+
+
+
         <div class="row br">
             <div class="col-sm-6">
-                <h6 class="textblue"><strong>Conductor</strong></h6>
+                <h6 class="textblue"><strong>Producto</strong></h6>
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-6">
-                <label class="Llave">Nombre conductor:&nbsp;</label>
-                <label class="Valor">{{Filacompra.NMBRE_CNDCTOR}}</label>
-            </div>
-            <div class="col-sm-6">
-                <label class="Llave">Contacto:&nbsp;</label>
-                <label class="Valor">{{Filacompra.TEL_CNDCTOR}}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <label class="Llave">Placa:&nbsp;</label>
-                <label class="Valor">{{Filacompra.PLCA}}</label>
+            <div class="col-12">
+                <label class="Llave">Adicionales:&nbsp;</label>
+                <label class="Valor">{{Filacompra.ADICIONALES}}</label>
             </div>
         </div>
     </div>
