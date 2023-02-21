@@ -44,6 +44,9 @@ export class RepComprasComponent implements OnInit {
   FechaIniCom: any = "";
   FechaFinCom: any = "";
 
+  //Grilla
+  Siguiente: boolean = false;
+
   ngOnInit(): void {
     this.ValidaConsulta = '1';
     this.txtValidaCons = 'No se encuentran registros segun los filtros utilizados, favor valida tu información';
@@ -133,14 +136,14 @@ export class RepComprasComponent implements OnInit {
     } else {
       validaPago = this.SelectorEstPago;
     }
-    if(this.FechaIniCom == "" || this.FechaIniCom == "0"){
+    if (this.FechaIniCom == "" || this.FechaIniCom == "0") {
       AuxFechaComp = "0";
-    }else{
+    } else {
       AuxFechaComp = this.FechaIniCom;
     }
-    if(this.FechaFinCom == "" || this.FechaFinCom == "0"){
+    if (this.FechaFinCom == "" || this.FechaFinCom == "0") {
       AuxFechaEntre = "0";
-    }else{
+    } else {
       AuxFechaEntre = this.FechaFinCom;
     }
 
@@ -198,11 +201,31 @@ export class RepComprasComponent implements OnInit {
     if (this.DataConsulta.length > 0) {
       let workbook = new Workbook();
       let worksheet = workbook.addWorksheet("Reporte compras");
-      let header = ["Oferta", "Nombre sector", "Estado pago", "Estado compra", "Unidades", 
-      "Nombre cliente", "Apellido cliente", "Dirección cliente", "Contacto cliente", "Observaciones", 
-      "Tipo compra", "Adicionales", "Valor", "Tipo de pago"];
+
+        let header = ["Oferta",
+        "Nombre Sector",
+        "Fecha compra",
+        "Estado Compra",
+        "Tipo Compra",
+        "Codigo Compartir",
+        "Codigo lider",
+        "Nombre",
+        "Apellido",
+        "Producto",
+        "Unidades",
+        "Adicionales",
+        "Valor",
+        "Medio de pago",
+        "Estado pago",
+        "Fecha entrega",
+        "Direccion entrega",
+        "Telefono",
+        "Email",
+        "Fecha compra",
+        "Id Compra",
+        "Observaciones cliente"];
       worksheet.addRow(header);
-      ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1'].map(key => {
+      ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1', 'U1', 'V1'].map(key => {
         worksheet.getCell(key).fill = {
           type: 'pattern',
           pattern: 'darkTrellis',
@@ -216,25 +239,34 @@ export class RepComprasComponent implements OnInit {
       worksheet.columns = [
         { width: 10, key: 'A' }, { width: 25, key: 'B' }, { width: 25, key: 'C' }, { width: 25, key: 'D' }, { width: 10, key: 'E' }, { width: 30, key: 'F' },
         { width: 10, key: 'G' }, { width: 30, key: 'H' }, { width: 30, key: 'I' }, { width: 40, key: 'J' }, { width: 20, key: 'K' }, { width: 30, key: 'L' },
-        { width: 15, key: 'M' }, { width: 30, key: 'N' }
+        { width: 15, key: 'M' }, { width: 30, key: 'N' }, { width: 30, key: 'O' }, { width: 30, key: 'P' }, { width: 30, key: 'Q' }, { width: 30, key: 'R' },
+        { width: 30, key: 'S' }, { width: 30, key: 'T' }, { width: 30, key: 'U' }, { width: 30, key: 'V' }
       ];
-      worksheet.autoFilter = 'A1:S1';
+      worksheet.autoFilter = 'A1:V1';
       for (let fila of this.DataConsulta) {
         let temp = []
         temp.push(fila['OFERTA'])
         temp.push(fila['SECTOR'])
-        temp.push(fila['ESTADO_PAGO'])
+        temp.push(fila['FECHA_COMPRA'])
         temp.push(fila['ESTADO_CARRO'])
-        temp.push(fila['Unidades'])
+        temp.push(fila['TIPO_USUARIO_COMPRA'])
+        temp.push(fila['CODIGO_COMPARTIR'])
+        temp.push(fila['CODIGO_LIDER'])
         temp.push(fila['NOMBRES_PERSONA'])
         temp.push(fila['APELLIDOS_PERSONA'])
-        temp.push(fila['DIRECCION_ENTREGA'])
-        temp.push(fila['CELULAR_PERSONA'])
-        temp.push(fila['observaciones_cliente'])
-        temp.push(fila['TIPO_USUARIO_COMPRA'])
+        temp.push(fila['PRODUCTO'])
+        temp.push(fila['Unidades'])
         temp.push(fila['ADICIONALES'])
         temp.push(fila['VALOR_PAGO'])
         temp.push(fila['MEDIO_PAGO'])
+        temp.push(fila['ESTADO_PAGO'])
+        temp.push(fila['FECHA_ENTREGA'])
+        temp.push(fila['DIRECCION_ENTREGA'])
+        temp.push(fila['CELULAR_PERSONA'])
+        temp.push(fila['CORREO_PERSONA'])
+        temp.push(fila['FechaCompra'])
+        temp.push(fila['ID_CARRO'])
+        temp.push(fila['observaciones_cliente'])
         worksheet.addRow(temp)
       }
       let fname = "Reporte compras";
@@ -245,4 +277,12 @@ export class RepComprasComponent implements OnInit {
     }
   }
 
+
+  VerGrilla() {
+    if (this.Siguiente == true) {
+      this.Siguiente = false;
+    } else if (this.Siguiente == false) {
+      this.Siguiente = true;
+    }
+  }
 }
