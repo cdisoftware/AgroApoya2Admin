@@ -20,8 +20,9 @@ export class ReporteService {
 
     return this.http.get<any>(this.url_servidor + 'consctipousuario/' + Bandera)
   }
-  ReporteUsuarios(Bandera: string, Datos: any) {
-    return this.http.post<any>(this.url_servidor + 'conscreporteusuarios/' + Bandera, Datos)
+  ReporteUsuarios(Bandera: string, FechaDesde: string, FechaHasta: string, Datos: any) {
+    console.log(this.url_servidor + 'conscreporteusuarios/' + Bandera)
+    return this.http.post<any>(this.url_servidor + 'conscreporteusuarios/' + Bandera + '/' + FechaDesde + '/' + FechaHasta, Datos)
   }
   ConsultaTipoCliente(Bandera: string, usuCodigo: string) {
     return this.http.get<any>(this.url_servidor + 'consctipocliente/' + Bandera + '/' + usuCodigo)
@@ -32,8 +33,8 @@ export class ReporteService {
   ConsultaTipoTranspor(Bandera: string, usuCodigo: string) {
     return this.http.get<any>(this.url_servidor + 'consctipotransport/' + Bandera + '/' + usuCodigo)
   }
-  ConsultaComprasXOfer(Bandera: string, cd_cnscutivo: string, IdSector: string, IdCompra: string, IdPago:string) {
-    return this.http.get<any[]>(this.url_servidor + 'conscreporteventas/' + Bandera + '/' + cd_cnscutivo + '/' + IdSector + '/' + IdCompra + '/' + IdPago)
+  ConsultaComprasXOfer(Bandera: string, cd_cnscutivo: string, IdSector: string, IdCompra: string, IdPago:string, body: any) {
+    return this.http.post<any>(this.url_servidor + 'conscreporteventas/' + Bandera + '/' + cd_cnscutivo + '/' + IdSector + '/' + IdCompra + '/' + IdPago, body)
   }
 
   //Métodos para descargar el Excel
