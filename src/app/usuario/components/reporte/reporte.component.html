@@ -58,54 +58,38 @@
 </div>
 
 <div class="row">
-  <table class="tabla mx-auto col-12">
-    <tr class="primera">
+  <table class="col-sm-12 TableAgro">
+    <tr>
       <th>Usucodig</th>
-      <th>
-        <button class="btn btn-sort" (click)="organizarTP()"> Tipo Persona </button>
-      </th>
-      <th>
-        <button class="btn btn-sort" (click)="organizarN()"> Nombre </button>
-      </th>
+      <th (click)="organizarTP()">Tipo Persona</th>
+      <th (click)="organizarN()">Nombre</th>
       <th>Celular</th>
-      <th>
-        <button class="btn btn-sort" (click)="organizarM()"> Correo </button>
-      </th>
-      <th>
-        <button class="btn btn-sort" (click)="organizarF()"> Fecha de creación </button>
-      </th>
-      <th style="width:5%">
-        Tipo Documento
-      </th>
-      <th>
-        Número documento
-      </th>
-      <th>
-        <button class="btn btn-sort" (click)="organizarD()"> Departamento</button>
-      </th>
-      <th>
-        <button class="btn btn-sort" (click)="organizarC()"> Ciudad </button>
-      </th>
+      <th (click)="organizarM()">Correo</th>
+      <th (click)="organizarF()">Fecha de creación</th>
+      <th>Tipo Documento</th>
+      <th>Número documento</th>
+      <th (click)="organizarD()">Departamento</th>
+      <th (click)="organizarC()">Ciudad</th>
       <th>Dirección</th>
       <th>observaciones</th>
-      <th>Acciones</th>
+      <th scope="col">Detalle</th>
     </tr>
     <tr *ngFor="let Usu of ArrayUsuarios;">
-      <th class="textcenter">{{Usu.Usucodig}}</th>
-      <th>{{Usu.DesTipoPersona}}</th>
-      <th>{{Usu.NombrePersona}} {{Usu.ApellidoPersona}}</th>
-      <th>{{Usu.NumeroCelular}}</th>
-      <th class="overflowth">{{Usu.CorreoPersona}}</th>
-      <th>{{Usu.FechaCreacion}}</th>
-      <th>{{Usu.DesTipoDocumento}}</th>
-      <th>{{Usu.NumeroDoc}}</th>
-      <th>{{Usu.DesDepto}}</th>
-      <th>{{Usu.DesCiudad}}</th>
-      <th>{{Usu.Direccion}}</th>
-      <th>{{Usu.Observacion}}</th>
-      <th>
-        <button class="btn" (click)="AbrirModal(Usu, ModalRespuesta)"> ver más </button>
-      </th>
+      <td class="textcenter">{{Usu.Usucodig}}</td>
+      <td>{{Usu.DesTipoPersona}}</td>
+      <td>{{Usu.NombrePersona}} {{Usu.ApellidoPersona}}</td>
+      <td>{{Usu.NumeroCelular}}</td>
+      <td class="overflowth">{{Usu.CorreoPersona}}</td>
+      <td>{{Usu.FechaCreacion}}</td>
+      <td>{{Usu.DesTipoDocumento}}</td>
+      <td>{{Usu.NumeroDoc}}</td>
+      <td>{{Usu.DesDepto}}</td>
+      <td>{{Usu.DesCiudad}}</td>
+      <td>{{Usu.Direccion}}</td>
+      <td>{{Usu.Observacion}}</td>
+      <td (click)="AbrirModal(Usu, ModalRespuesta)">
+        <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/info.png" alt="">
+      </td>
     </tr>
   </table>
 </div>
