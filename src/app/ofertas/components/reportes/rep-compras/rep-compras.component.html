@@ -79,9 +79,11 @@
 <br>
 <div class="row">
     <div class="d-flex flex-row-reverse">
-        <img src="../../../../../assets/ImagenesAgroApoya2Adm/Siguiente.png" class="ImgSiguiente" (click)="VerGrilla()" *ngIf="Siguiente == false"/>
-        <img src="../../../../../assets/ImagenesAgroApoya2Adm/Anterior.png" class="ImgSiguiente" (click)="VerGrilla()" *ngIf="Siguiente == true"/>
-      </div>
+        <img src="../../../../../assets/ImagenesAgroApoya2Adm/Siguiente.png" class="ImgSiguiente" (click)="VerGrilla()"
+            *ngIf="Siguiente == false" />
+        <img src="../../../../../assets/ImagenesAgroApoya2Adm/Anterior.png" class="ImgSiguiente" (click)="VerGrilla()"
+            *ngIf="Siguiente == true" />
+    </div>
 </div>
 <div class="row m-1">
     <table class="col-sm-12 TableAgro">
@@ -133,7 +135,11 @@
             <td *ngIf="Siguiente == true">{{oferta.FECHA_ENTREGA}}</td>
             <td *ngIf="Siguiente == true">{{oferta.DIRECCION_ENTREGA}}</td>
             <td *ngIf="Siguiente == true">{{oferta.CELULAR_PERSONA}}</td>
-            <td *ngIf="Siguiente == true">{{oferta.CORREO_PERSONA}}</td>
+            <td *ngIf="Siguiente == true">
+                <div class="overflow">
+                    {{oferta.CORREO_PERSONA}}
+                </div>
+            </td>
             <td *ngIf="Siguiente == true">{{oferta.FechaCompra}}</td>
             <td *ngIf="Siguiente == true">{{oferta.ID_CARRO}}</td>
             <td (click)="DetalleCompra(oferta, ModalDetalle)">
@@ -143,8 +149,8 @@
             </td>
         </tr>
         <tr *ngIf="ValidaConsulta=='1'">
-            <td colspan="13"  *ngIf="Siguiente == false">{{txtValidaCons}}</td>
-            <td colspan="10"  *ngIf="Siguiente == true">{{txtValidaCons}}</td>
+            <td colspan="13" *ngIf="Siguiente == false">{{txtValidaCons}}</td>
+            <td colspan="10" *ngIf="Siguiente == true">{{txtValidaCons}}</td>
         </tr>
     </table>
 </div>
