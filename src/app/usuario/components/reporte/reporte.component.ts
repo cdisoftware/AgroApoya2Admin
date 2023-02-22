@@ -65,6 +65,7 @@ export class ReporteComponent implements OnInit {
   tipoC: string = '';
   coordenadas: string = '';
 
+  Siguiente: boolean = true;
 
   ngOnInit() {
 
