@@ -179,6 +179,8 @@ export class RepComprasComponent implements OnInit {
     this.ValidaConsulta = '1';
     this.ValidaDescarga = true;
     this.DataConsulta = [];
+    this.FechaIniCom = '0';
+    this.FechaFinCom = '0';
   }
 
   DetalleCompra(compra: any, modaldetalle: any) {

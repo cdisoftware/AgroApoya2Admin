@@ -7,3 +7,6 @@
 th{
     padding: 0;
 }
+.overflow{
+    overflow: auto;
+}
