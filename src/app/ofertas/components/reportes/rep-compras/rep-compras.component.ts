@@ -227,7 +227,7 @@ export class RepComprasComponent implements OnInit {
         "Id Compra",
         "Observaciones cliente"];
       worksheet.addRow(header);
-      ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1', 'U1', 'V1'].map(key => {
+      ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1'].map(key => {
         worksheet.getCell(key).fill = {
           type: 'pattern',
           pattern: 'darkTrellis',
@@ -242,9 +242,9 @@ export class RepComprasComponent implements OnInit {
         { width: 10, key: 'A' }, { width: 25, key: 'B' }, { width: 25, key: 'C' }, { width: 25, key: 'D' }, { width: 10, key: 'E' }, { width: 30, key: 'F' },
         { width: 10, key: 'G' }, { width: 30, key: 'H' }, { width: 30, key: 'I' }, { width: 40, key: 'J' }, { width: 20, key: 'K' }, { width: 30, key: 'L' },
         { width: 15, key: 'M' }, { width: 30, key: 'N' }, { width: 30, key: 'O' }, { width: 30, key: 'P' }, { width: 30, key: 'Q' }, { width: 30, key: 'R' },
-        { width: 30, key: 'S' }, { width: 30, key: 'T' }, { width: 30, key: 'U' }, { width: 30, key: 'V' }
+        { width: 30, key: 'S' }, { width: 30, key: 'T' }
       ];
-      worksheet.autoFilter = 'A1:V1';
+      worksheet.autoFilter = 'A1:T1';
       for (let fila of this.DataConsulta) {
         let temp = []
         temp.push(fila['OFERTA'])
@@ -266,8 +266,6 @@ export class RepComprasComponent implements OnInit {
         temp.push(fila['DIRECCION_ENTREGA'])
         temp.push(fila['CELULAR_PERSONA'])
         temp.push(fila['CORREO_PERSONA'])
-        temp.push(fila['FechaCompra'])
-        temp.push(fila['ID_CARRO'])
         temp.push(fila['observaciones_cliente'])
         worksheet.addRow(temp)
       }
