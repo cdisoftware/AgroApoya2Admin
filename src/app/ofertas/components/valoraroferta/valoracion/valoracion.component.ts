@@ -1154,6 +1154,13 @@ export class ValoracionComponent implements OnInit {
     this.Respuesta = '';
     var validacomision = '';
     var validacomisionG = '';
+
+    console.log('entra-------------')
+    console.log(this.PrecioFinLider);
+    console.log(this.PrecioFinPart);
+    console.log(this.PreFinI);
+    console.log('-------------')
+
     if (this.SessionTipoComI == '1') {
       validacomision = this.VlrComFijaI
     }
@@ -1441,6 +1448,9 @@ export class ValoracionComponent implements OnInit {
     else {
       this.ValidaCam = '0';
       this.ArrayCamposValida = [];
+
+      console.log(this.PrecioFinLider);
+      console.log(this.PrecioFinPart);
 
       // bitly.shorten(this.RutaLanding +this.SessionSectorSel+'/'+this.SessionOferta+'/0/0').then(result => {  }catch{ }
       this.LinkSms = 'https://bit.ly/3HbpHIJ';
