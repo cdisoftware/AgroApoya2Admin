@@ -411,10 +411,10 @@ export class ValoracionComponent implements OnInit {
       }
     }
     else if (bandera == '3') {
-      if (this.FechaEntrega > fechaHF) {
+      if (this.FechaEntrega < fechaHF) {
         this.FechaEntrega = '';
         this.modalService.open(templateMensaje);
-        this.Respuesta = 'La fecha entrega de la vigencia no puede ser mayor a la fecha fin de la vigencia, favor valida tu información.';
+        this.Respuesta = 'La fecha entrega de la vigencia no puede ser menor a la fecha fin de la vigencia, favor valida tu información.';
       }
       else if (this.FechaEntrega < fechaRF) {
         this.FechaEntrega = '';
