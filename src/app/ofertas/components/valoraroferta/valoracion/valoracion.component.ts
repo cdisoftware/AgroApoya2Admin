@@ -767,7 +767,10 @@ export class ValoracionComponent implements OnInit {
       validacomision = this.VlrComPorI
     }
 
-
+    if(this.VlrDomiI == '' || this.VlrDomiI == undefined || this.VlrDomiI == null ){
+      this.VlrDomiI = '0'
+    }
+    
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     if ((this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
       || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null)) {
@@ -924,13 +927,20 @@ export class ValoracionComponent implements OnInit {
       validacomisionG = this.VlrComPorG
     }
 
+    if(this.VlrDomiI == '' || this.VlrDomiI == undefined || this.VlrDomiI == null ){
+      this.VlrDomiI = '0'
+    }
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+    
+    
+    console.log('entra valor domicilio mixta')
+    console.log(this.VlrDomiI)
+
     if ((this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
       || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null) || (this.SessionTipoComG == null || this.SessionTipoComG == '') || (validacomisionG == '' || validacomisionG == null) ||
       (this.PrecioFinLider == '' || this.PrecioFinLider == null) || (this.PrecioFinPart == '' || this.PrecioFinPart == null) 
       || (this.UnidXGrupos == '' || this.UnidXGrupos == null) || (this.PorcDescLider == '' || this.PorcDescLider == null) 
-      || (this.SessionTipoDescuento == '' || this.SessionTipoDescuento == null) 
-      || (this.SessionTipoDescuento == '' || this.SessionTipoDescuento == null)) {
+      || (this.SessionTipoDescuento == '' || this.SessionTipoDescuento == null) ) {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
@@ -988,30 +998,12 @@ export class ValoracionComponent implements OnInit {
           class: '',
           imagen: ''
         },
-        // {
-        //   campo: 'CantGrupos',
-        //   campof: 'Cantidad de grupos',
-        //   class: '',
-        //   imagen: ''
-        // },
         {
           campo: 'UnidXGrupos',
           campof: 'Numero maximo de unidades / registros para descuento',
           class: '',
           imagen: ''
         },
-        // {
-        //   campo: 'MinUnidPart',
-        //   campof: 'Minimo unidades participante',
-        //   class: '',
-        //   imagen: ''
-        // },
-        // {
-        //   campo: 'MaxUnidPart',
-        //   campof: 'Maximo unidades participante',
-        //   class: '',
-        //   imagen: ''
-        // },
         {
           campo: 'PrecioFinLider',
           campof: 'Precio arranque lider',

@@ -170,6 +170,47 @@
     <div class="row br" *ngIf="ValidaVigencia=='1'">
         <h5 class="SubTituloForm">Definición vigencia oferta</h5>
     </div>
+
+    <div class="row br">
+        <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+            <ngb-panel title="Definición correos / sms / Publicidad" id="config-panel-three">
+                <ng-template ngbPanelContent>
+
+                    <h1>WhatsApp</h1>
+                    <div class="row br">
+                        <div class="col-sm-12">
+                            <label class="col-sm-12 Llave">Mensaje compartir líder WhatsApp</label>
+                            <input class="col-sm-12 form-control mt-1 textBox">
+                        </div>
+                    </div>
+
+                    <h1 class="br">Correo electrónico</h1>
+                    <div class="row br">
+                        <div class="col-sm-9">
+                            <label class="col-sm-12 Llave">Mensaje correo</label>
+                            <textarea class="col-sm-12 form-control mt-1 textArea" cols="30" rows="5"> </textarea>
+                        </div>
+                         <div class="col-sm-3">
+                            <button type="button" class="btn-warning col-sm-12" style="height: 45px;" >
+                                <i class="fa fa-upload marginleft"></i> Subir Imagen
+                                <input name="file-input3" id="file-input3" type="file"
+                                    (change)="CargaImagenAdicionales($event, ModalRespuestaImg)" title="" />
+                            </button>   
+                            <br>    
+                            <button type="button" class="btn btn-secondary col-sm-12 mt-3" style="height: 45px;" >Previsualizar Correo
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center br">
+                        <div class="col-sm-2 ">
+                            <button class="btn btn-agro-prin col-sm-12">Guardar</button>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+    </div>
+
     <div class="row br" *ngIf="ValidaVigencia=='1'">
         <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
             <ngb-panel title="Definición vigencia oferta" id="config-panel-three">
@@ -223,8 +264,7 @@
             <label class="col-sm-12 Llave mb-1">Tipo oferta</label>
             <ng-autocomplete [data]="DataTipoOferta" [searchKeyword]="keyword" (selected)='selectTipOferta($event)'
                 [initialValue]="ArrayTipoOferCon[0]" (inputCleared)='LimpiaTipoOferta($event)'
-                placeholder="Individual o Mixta" [itemTemplate]="templateOfer"
-                [notFoundTemplate]="templateVacio">
+                placeholder="Individual o Mixta" [itemTemplate]="templateOfer" [notFoundTemplate]="templateVacio">
             </ng-autocomplete>
             <ng-template #templateOfer let-item>
                 <a [innerHTML]="item.name"></a>
@@ -332,52 +372,13 @@
                                 (change)="CalculaPreoferGrupalM()">
                         </div>
                     </div>
-                    <!-- <div class="row br">
-                        <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Mínimo unidades líder</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidLider"
-                                (blur)="ValidaCantidadMinimaLid(MinUnidLider,ModalRespuesta)"
-                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
-                        </div>
-                        <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Máximo unidades líder</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidLider"
-                                (blur)="ValidaCantidadmaxLid(MaxUnidLider,ModalRespuesta)"
-                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
-                        </div>
-                    </div> -->
-                    <!-- <div class="row br">
-                        <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Mínimo unidades participante</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidPart"
-                                (blur)="ValidaCantidadMinimaPart(MinUnidPart,ModalRespuesta)"
-                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
-                        </div>
-                        <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Máximo unidades participante</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidPart"
-                                (blur)="ValidaCantidadmaxPart(MaxUnidPart,ModalRespuesta)"
-                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
-                        </div>
-                    </div> -->
                     <div class="row br">
-                        <!-- <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Valor domicilio</label>
-                            <input mask="separator" thousandSeparator="." type="text"
-                                class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiG"
-                                (change)="CalculaPreoferGrupalM()">
-                        </div>
-                        <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Porcentaje descuento líder</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox"
-                                onkeyup="if(parseInt(this.value)>100){ this.value=100; return false; }"
-                                [(ngModel)]="PorcDescLider">
-                        </div> -->
                         <div class="col-sm-12">
                             <label class="col-sm-12 Llave">Tipo de descuento</label>
                             <ng-autocomplete [data]="DataTipoDescuento" [searchKeyword]="keyword"
                                 placeholder="Registro / Unidades" [itemTemplate]="templateSec"
-                                [notFoundTemplate]="templateVacio"  (selected)='selectTipDescuento($event)' (inputCleared)='LimpiaTipoDescuento($event)'>
+                                [notFoundTemplate]="templateVacio" (selected)='selectTipDescuento($event)'
+                                (inputCleared)='LimpiaTipoDescuento($event)'>
                             </ng-autocomplete>
                             <ng-template #templateSec let-item>
                                 <a [innerHTML]="item.name"></a>
@@ -385,16 +386,14 @@
                             <ng-template #templateVacio let-SinRegistro>
                                 <label for="">Sin registros</label>
                             </ng-template>
-
                         </div>
-
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Porcentaje de descuento por unidad / registro</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox"
-                                    onkeyup="if(parseInt(this.value)>100){ this.value=100; return false; }"
-                                    [(ngModel)]="PorcDescLider">
+                                onkeyup="if(parseInt(this.value)>100){ this.value=100; return false; }"
+                                [(ngModel)]="PorcDescLider">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Numero maximo de unidades / registros para descuento</label>
@@ -403,33 +402,10 @@
                                 onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                     </div>
-                    <!-- <div class="row br">
-                        <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Cantidad de grupos</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="CantGrupos"
-                                (change)="CalculaCCI(ModalRespuesta)"
-                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
-                        </div>
-                        <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Unidades totales por grupo</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidXGrupos"
-                                (change)="CalculaCCI(ModalRespuesta)"
-                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}"
-                                (blur)="ValidacionesGrupal(UnidXGrupos,ModalRespuesta)">
-                        </div>
-                    </div> -->
-                    <!-- <div class="row br" *ngIf="MuestraCantIndiv=='1'">
-                        <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Cantidad de compras individuales disponibles</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="CantComprI"
-                                disabled="true"
-                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
-                        </div>
-                    </div> -->
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Precio arranque líder</label>
-                            <input type="text" class="col-sm-12 form-control mt-1 textBox"[(ngModel)]="PrecioFinLider">
+                            <input type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PrecioFinLider">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Precio final participante</label>
@@ -455,15 +431,12 @@
                 <ng-template ngbPanelContent>
                     <div class="row br">
 
-
                         <div class="col-sm-4">
                             <label class="col-sm-12 Llave">Descripción</label>
                             <input type="text" title="Descripción máximo 150 caracteres"
                                 class="col-sm-12 form-control mt-1 textBox" maxlength="150" [(ngModel)]="DesTopp"
                                 [ngModelOptions]="{standalone: true}">
                         </div>
-
-
 
                         <div class="col-sm-4">
                             <label class="col-sm-12 Llave">Valor unitario</label>
@@ -496,7 +469,7 @@
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidMaxTopp"
                                 [disabled]="ValidaTipoTopp">
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-4" *ngIf="IsEnables == false ">
                             <button type="button" class="btn-warning col-sm-12">
                                 <i class="fa fa-upload marginleft"></i> Subir Imagen
                                 <input name="file-input3" id="file-input3" type="file"
