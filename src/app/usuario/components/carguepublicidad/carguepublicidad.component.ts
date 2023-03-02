@@ -31,7 +31,7 @@ export class CarguepublicidadComponent implements OnInit {
   VerOcultarCampos: string = '';
   IdModulo: string = '0';
   DataModulos: any = [];
-  boxPath: string;
+  boxPath: string = '';
   btnImagen: string;
   usucodig: string = '';
   ConsultaTarjetas: any[];
@@ -240,10 +240,7 @@ export class CarguepublicidadComponent implements OnInit {
   }
 
   BtnGuardarModAccion(templateMensaje: any) {
-    if (this.boxPath == undefined || this.boxPath == null || this.boxPath == '') {
-      this.Respuesta = 'El campo path es obligatorio.';
-      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.IdListaAccion == undefined || this.IdListaAccion == null || this.IdListaAccion == '0') {
+    if (this.IdListaAccion == undefined || this.IdListaAccion == null || this.IdListaAccion == '0') {
       this.Respuesta = 'El campo acción es obligatorio.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else if (this.btnImagen == undefined || this.btnImagen == null || this.btnImagen == '0' || this.btnImagen == '') {
