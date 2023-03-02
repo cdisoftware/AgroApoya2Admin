@@ -367,19 +367,21 @@ export class ValoracionComponent implements OnInit {
   }
 
   ValidaVigencias(templateMensaje: any, bandera: string) {
-    //console.log(this.VigenDesde + " desde")
-    //console.log(this.VigenHasta + " hasta")
 
+    var fechaA = new Date();
     var fechaD = this.VigenDesde;
     var fechaH = this.VigenHasta;
     var fechaR = this.SessionFechaRecogida;
-    var fecha = new Date();
-    var fechaf = this.formatofecha.transform(fecha, "yyyy-MM-dd")!;
+    var fechaE = this.FechaEntrega;
+
+    var fechaAF = this.formatofecha.transform(fechaA, "yyyy-MM-dd")!;
     var fechaDF = this.formatofecha.transform(fechaD, "yyyy-MM-dd")!;
     var fechaHF = this.formatofecha.transform(fechaH, "yyyy-MM-dd")!;
     var fechaRF = this.formatofecha.transform(fechaR, "yyyy-MM-dd")!;
+    var fechaEF = this.formatofecha.transform(fechaE, "yyyy-MM-dd")!;
+
     if (bandera == '1') {
-      if (this.VigenDesde < fechaf) {
+      if (fechaDF < fechaAF) {
         this.VigenDesde = '';
         this.modalService.open(templateMensaje);
         this.Respuesta = 'La fecha inicio de la vigencia no puede ser menor a la fecha actual, favor valida tu información.';
@@ -390,36 +392,25 @@ export class ValoracionComponent implements OnInit {
         this.Respuesta = 'La fecha inicio de la vigencia no puede ser mayor a la fecha final de la vigencia, favor valida tu información.';
       }
     }
-    else if (bandera == '2') {
-      console.log("bandera 2")
-      console.log(fechaDF + "desde form")
-      console.log(fechaHF + "hasta form")
+
+    if (bandera == '2') {
       if (fechaDF > fechaHF) {
         this.VigenHasta = '';
         this.modalService.open(templateMensaje);
         this.Respuesta = 'La fecha fin de la vigencia no puede ser menor a la fecha inicio de la vigencia, favor valida tu información.';
       }
-      else if (fechaHF < fechaf) {
+      else if (fechaHF < fechaAF) {
         this.VigenHasta = '';
         this.modalService.open(templateMensaje);
         this.Respuesta = 'La fecha fin de la vigencia no puede ser menor a la fecha actual, favor valida tu información.';
       }
-      else if (fechaHF < fechaRF) {
-        this.VigenHasta = '';
-        this.modalService.open(templateMensaje);
-        this.Respuesta = 'La fecha fin de la vigencia debe ser mayor o igual a la fecha recogida, favor valida tu información.';
-      }
     }
-    else if (bandera == '3') {
-      if (this.FechaEntrega < fechaHF) {
+
+    if (bandera == '3') {
+      if (fechaEF < fechaHF) {
         this.FechaEntrega = '';
         this.modalService.open(templateMensaje);
-        this.Respuesta = 'La fecha entrega de la vigencia no puede ser menor a la fecha fin de la vigencia, favor valida tu información.';
-      }
-      else if (this.FechaEntrega < fechaRF) {
-        this.FechaEntrega = '';
-        this.modalService.open(templateMensaje);
-        this.Respuesta = 'La fecha entrega de la vigencia no puede ser menor a la fecha recogida de la oferta, favor valida tu información.';
+        this.Respuesta = 'La fecha entrega no puede ser menor a la fecha fin de la vigencia, favor valida tu información.';
       }
     }
 
@@ -517,6 +508,7 @@ export class ValoracionComponent implements OnInit {
         this.VlrDomiI = ResultCons[0].vlor_dmnclio_indvdual;
         this.PreFinI = ResultCons[0].vlor_fnal_indvdual;
       }
+
       else if (ResultCons[0].TPO_OFRTA == '2') {
         this.MuestraIndividual = '0';
         this.MuestraGrupal = '1';
@@ -908,248 +900,6 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
-  GuardaGrupal(templateMensaje: any) {
-    this.Respuesta = '';
-    var validacomision = '';
-    if (this.SessionTipoComG == '1') {
-      validacomision = this.VlrComFijaG
-    }
-    else {
-      validacomision = this.VlrComPorG
-    }
-
-    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
-    if ((this.SessionTipoComG == null || this.SessionTipoComG == '') || (validacomision == '' || validacomision == null) || (this.MinUnidLider == '' || this.MinUnidLider == null) ||
-      (this.MaxUnidLider == '' || this.MaxUnidLider == null) || (this.PorcDescLider == '' || this.PorcDescLider == null) || (this.CantGrupos == '' || this.CantGrupos == null) ||
-      (this.UnidXGrupos == '' || this.UnidXGrupos == null) || (this.MinUnidPart == '' || this.MinUnidPart == null) || (this.MaxUnidPart == '' || this.MaxUnidPart == null) ||
-      (this.PrecioFinLider == '' || this.PrecioFinLider == null) || (this.PrecioFinPart == '' || this.PrecioFinPart == null)) {
-      this.ValidaCam = '1';
-      this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
-      this.ArrayCamposValida = [
-        {
-          campo: 'SessionTipoComG',
-          campof: 'Tipo comisión',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'validacomision',
-          campof: 'Valor comisión',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'MinUnidLider',
-          campof: 'Minimo unidades lider',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'MaxUnidLider',
-          campof: 'Maximo unidades lider',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'PorcDescLider',
-          campof: 'Porcentaje descuento lider',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'CantGrupos',
-          campof: 'Cantidad de grupos',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'UnidXGrupos',
-          campof: 'Unidades por grupo',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'MinUnidPart',
-          campof: 'Minimo unidades participante',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'MaxUnidPart',
-          campof: 'Maximo unidades participante',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'PrecioFinLider',
-          campof: 'Precio arranque lider',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'PrecioFinPart',
-          campof: 'Precio final participante',
-          class: '',
-          imagen: ''
-        }
-      ]
-      for (var i = 0; i < this.ArrayCamposValida.length; i++) {
-        if (this.ArrayCamposValida[i].campo == 'SessionTipoComG') {
-          if (this.SessionTipoComG == '' || this.SessionTipoComG == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'validacomision') {
-          if (validacomision == '' || validacomision == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'MinUnidLider') {
-          if (this.MinUnidLider == '' || this.MinUnidLider == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'MaxUnidLider') {
-          if (this.MaxUnidLider == '' || this.MaxUnidLider == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'PorcDescLider') {
-          if (this.PorcDescLider == '' || this.PorcDescLider == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'CantGrupos') {
-          if (this.CantGrupos == '' || this.CantGrupos == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'UnidXGrupos') {
-          if (this.UnidXGrupos == '' || this.UnidXGrupos == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'MinUnidPart') {
-          if (this.MinUnidPart == '' || this.MinUnidPart == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'MaxUnidPart') {
-          if (this.MaxUnidPart == '' || this.MaxUnidPart == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'PrecioFinLider') {
-          if (this.PrecioFinLider == '' || this.PrecioFinLider == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'PrecioFinPart') {
-          if (this.PrecioFinPart == '' || this.PrecioFinPart == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-      }
-    }
-    else {
-      this.ValidaCam = '0';
-      this.ArrayCamposValida = [];
-
-
-      //bitly.shorten(this.RutaLanding +this.SessionSectorSel+'/'+this.SessionOferta+'/0/0').then(result => {}catch{}
-      this.LinkSms = 'https://bit.ly/3HbpHIJ';
-      console.log(this.LinkSms)
-      const Body = {
-        CD_CNSCTVO: this.SessionOferta,
-        TPO_OFRTA: Number(this.SessionTipoOferta),
-        TPO_CMSION_INDVDUAL: 0,
-        VLOR_CMSION_INDVDUAL: "0",
-        MNMO_UNDDES_INDVDUAL: "0",
-        MXMO_UNDDES_INDVDUAL: "0",
-        VLOR_DMNCLIO_INDVDUAL: "0",
-        VLOR_FNAL_INDVDUAL: "0",
-        TPO_CMSION_GRPAL: this.SessionTipoComG,
-        VLOR_CMSION_GRPAL: validacomision,
-        MNMO_UNDDES_LIDER: this.MinUnidLider,
-        MXMO_UNDDES_LIDER: this.MaxUnidLider,
-        PRCNTJE_DCTO_LIDER: this.PorcDescLider,
-        VLOR_DMNCLIO_GRPAL: this.VlrDomiG,
-        CNTDAD_GRPOS: this.CantGrupos,
-        MNMO_PRSNAS_XGRUPO: this.UnidXGrupos,
-        MNMO_UNDDES_PRCPNTE: this.MinUnidPart,
-        MXMO_UNDDES_PRCPNTE: this.MaxUnidPart,
-        CNTDAD_CMPRAS_INDVDLES: this.CantComprI,
-        VLOR_ARRNQUE_LIDER: this.PrecioFinLider,
-        VLOR_FNAL_PRTCPNTE: this.PrecioFinPart,
-        ID_SCTOR_OFRTA: this.SessionSectorSel,
-        LINKLANDIGN: this.LinkSms
-      }
-      this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
-        this.Respuesta = '';
-        var arreglores = ResultUpdate.split('|')
-        this.Respuesta = arreglores[1];
-        this.ValidaToppings = '1';
-      })
-
-
-    }
-  }
-
   GuardarMixta(templateMensaje: any) {
     this.Respuesta = '';
     var validacomision = '';
@@ -1177,7 +927,10 @@ export class ValoracionComponent implements OnInit {
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     if ((this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
       || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null) || (this.SessionTipoComG == null || this.SessionTipoComG == '') || (validacomisionG == '' || validacomisionG == null) ||
-      (this.PrecioFinLider == '' || this.PrecioFinLider == null) || (this.PrecioFinPart == '' || this.PrecioFinPart == null) || (this.UnidXGrupos == '' || this.UnidXGrupos == null) || (this.PorcDescLider == '' || this.PorcDescLider == null) || (this.SessionTipoDescuento == '' || this.SessionTipoDescuento == null)) {
+      (this.PrecioFinLider == '' || this.PrecioFinLider == null) || (this.PrecioFinPart == '' || this.PrecioFinPart == null) 
+      || (this.UnidXGrupos == '' || this.UnidXGrupos == null) || (this.PorcDescLider == '' || this.PorcDescLider == null) 
+      || (this.SessionTipoDescuento == '' || this.SessionTipoDescuento == null) 
+      || (this.SessionTipoDescuento == '' || this.SessionTipoDescuento == null)) {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
