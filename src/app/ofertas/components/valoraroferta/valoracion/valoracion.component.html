@@ -171,46 +171,6 @@
         <h5 class="SubTituloForm">Definición vigencia oferta</h5>
     </div>
 
-    <div class="row br">
-        <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
-            <ngb-panel title="Definición correos / sms / Publicidad" id="config-panel-three">
-                <ng-template ngbPanelContent>
-
-                    <h1>WhatsApp</h1>
-                    <div class="row br">
-                        <div class="col-sm-12">
-                            <label class="col-sm-12 Llave">Mensaje compartir líder WhatsApp</label>
-                            <input class="col-sm-12 form-control mt-1 textBox">
-                        </div>
-                    </div>
-
-                    <h1 class="br">Correo electrónico</h1>
-                    <div class="row br">
-                        <div class="col-sm-9">
-                            <label class="col-sm-12 Llave">Mensaje correo</label>
-                            <textarea class="col-sm-12 form-control mt-1 textArea" cols="30" rows="5"> </textarea>
-                        </div>
-                         <div class="col-sm-3">
-                            <button type="button" class="btn-warning col-sm-12" style="height: 45px;" >
-                                <i class="fa fa-upload marginleft"></i> Subir Imagen
-                                <input name="file-input3" id="file-input3" type="file"
-                                    (change)="CargaImagenAdicionales($event, ModalRespuestaImg)" title="" />
-                            </button>   
-                            <br>    
-                            <button type="button" class="btn btn-secondary col-sm-12 mt-3" style="height: 45px;" >Previsualizar Correo
-                            </button>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center br">
-                        <div class="col-sm-2 ">
-                            <button class="btn btn-agro-prin col-sm-12">Guardar</button>
-                        </div>
-                    </div>
-                </ng-template>
-            </ngb-panel>
-        </ngb-accordion>
-    </div>
-
     <div class="row br" *ngIf="ValidaVigencia=='1'">
         <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
             <ngb-panel title="Definición vigencia oferta" id="config-panel-three">
@@ -533,6 +493,47 @@
             </ngb-panel>
         </ngb-accordion>
     </div>
+    
+    <div class="row br" *ngIf="ValidaToppings == '1'">
+        <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+            <ngb-panel title="Definición correos / sms / Publicidad" id="config-panel-three">
+                <ng-template ngbPanelContent>
+
+                    <h1>WhatsApp</h1>
+                    <div class="row br">
+                        <div class="col-sm-12">
+                            <label class="col-sm-12 Llave">Mensaje compartir líder WhatsApp</label>
+                            <input class="col-sm-12 form-control mt-1 textBox">
+                        </div>
+                    </div>
+
+                    <h1 class="br">Correo electrónico</h1>
+                    <div class="row br">
+                        <div class="col-sm-9">
+                            <label class="col-sm-12 Llave">Mensaje correo</label>
+                            <textarea class="col-sm-12 form-control mt-1 textArea" cols="30" rows="5"> </textarea>
+                        </div>
+                         <div class="col-sm-3">
+                            <button type="button" class="btn-warning col-sm-12" style="height: 45px;" >
+                                <i class="fa fa-upload marginleft"></i> Subir Imagen
+                                <input name="file-input3" id="file-input3" type="file"
+                                    (change)="CargaImagenCorreo($event, ModalRespuestaImg)" title="" />
+                            </button>   
+                            <br>    
+                            <button type="button" class="btn btn-secondary col-sm-12 mt-3" style="height: 45px;" >Previsualizar Correo
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center br">
+                        <div class="col-sm-2 ">
+                            <button class="btn btn-agro-prin col-sm-12">Guardar</button>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+    </div>
+
     <div class="row justify-content-center br">
         <div class="col-sm-3">
             <button class="btn btn-agro-prin col-sm-12" (click)="AbrePublica(ModalPublicar)">Publicar oferta</button>

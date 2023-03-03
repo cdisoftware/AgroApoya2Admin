@@ -93,6 +93,7 @@ export class ValoracionComponent implements OnInit {
   SessionFechaRecogida: any;
   UnidOferta: string;
   imagenesAdicionales: string = '';
+  imagenesCorreo: string = '';
   consultaimagen: string = '';
   RutaImagenTopping: string = '';
   IsEnables: boolean = false;
@@ -898,6 +899,7 @@ export class ValoracionComponent implements OnInit {
         var arreglores = ResultUpdate.split('|')
         this.Respuesta = arreglores[1];
         this.ValidaToppings = '1';
+        //todo consulta del correo y whatsapp
       })
 
     }
@@ -1232,6 +1234,7 @@ export class ValoracionComponent implements OnInit {
         var arreglores = ResultUpdate.split('|')
         this.Respuesta = arreglores[1];
         this.ValidaToppings = '1';
+         //todo consulta del correo y whatsapp
       })
 
     }
@@ -1500,4 +1503,45 @@ export class ValoracionComponent implements OnInit {
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     }
   }
+
+  public CargaImagenCorreo(event: any, modalmensaje: any) {
+
+    if (!(/\.(jpg|png|jpeg)$/i).test(event.target.files[0].name)) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El archivo no pudo ser cargado, valide la extención, las permitidas son .jpg .png .jpeg";
+    }
+    else if (event.target.files[0].name.includes(" ")) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El archivo no pudo ser cargado, el nombre no debe contener espacios";
+    }
+    else if (event.target.files[0].size > 1300000) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El peso del archivo no puede exceder 1.3 megabyte";
+    } else {
+      this.serviciosvaloracion.postImgToppings(event.target.files[0]).subscribe(
+        response => {
+          if (response <= 1) {
+            console.log("Error en el servidor");
+          } else {
+            if (response == 'Archivo Subido Correctamente') {
+              this.imagenesCorreo = this.RutaImagenTopping + event.target.files[0].name;
+              console.log( this.imagenesCorreo )
+              this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+              this.Respuesta = "Imagen cargada correctamente.";
+            } else {
+              console.log(response)
+            }
+          }
+        },
+        error => {
+          console.log(<any>error);
+          this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+          this.Respuesta = "No hemos podido subir el archivo, intente nuevamente.";
+        }
+      );
+    }
+  }
+
+  
+  
 }
