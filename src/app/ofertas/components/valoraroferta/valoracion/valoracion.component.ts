@@ -101,6 +101,10 @@ export class ValoracionComponent implements OnInit {
   RutaLanding: string = '';
   DataTipoDescuento: { id: number; name: string; }[];
   SessionTipoDescuento: string = '';
+  ArrayTextoModifica: any = [];
+  Previsucorreo: string = '';
+  EnvioCorreo: boolean = false;
+  EnvioSms: boolean = false;
 
 
   constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
@@ -768,10 +772,10 @@ export class ValoracionComponent implements OnInit {
       validacomision = this.VlrComPorI
     }
 
-    if(this.VlrDomiI == '' || this.VlrDomiI == undefined || this.VlrDomiI == null ){
+    if (this.VlrDomiI == '' || this.VlrDomiI == undefined || this.VlrDomiI == null) {
       this.VlrDomiI = '0'
     }
-    
+
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     if ((this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
       || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null)) {
@@ -899,7 +903,11 @@ export class ValoracionComponent implements OnInit {
         var arreglores = ResultUpdate.split('|')
         this.Respuesta = arreglores[1];
         this.ValidaToppings = '1';
-        //todo consulta del correo y whatsapp
+        this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
+          console.log(ResultUpdate)
+          this.ArrayTextoModifica = ResultUpdate;
+          this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
+        })
       })
 
     }
@@ -929,20 +937,20 @@ export class ValoracionComponent implements OnInit {
       validacomisionG = this.VlrComPorG
     }
 
-    if(this.VlrDomiI == '' || this.VlrDomiI == undefined || this.VlrDomiI == null ){
+    if (this.VlrDomiI == '' || this.VlrDomiI == undefined || this.VlrDomiI == null) {
       this.VlrDomiI = '0'
     }
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
-    
-    
+
+
     console.log('entra valor domicilio mixta')
     console.log(this.VlrDomiI)
 
     if ((this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
       || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null) || (this.SessionTipoComG == null || this.SessionTipoComG == '') || (validacomisionG == '' || validacomisionG == null) ||
-      (this.PrecioFinLider == '' || this.PrecioFinLider == null) || (this.PrecioFinPart == '' || this.PrecioFinPart == null) 
-      || (this.UnidXGrupos == '' || this.UnidXGrupos == null) || (this.PorcDescLider == '' || this.PorcDescLider == null) 
-      || (this.SessionTipoDescuento == '' || this.SessionTipoDescuento == null) ) {
+      (this.PrecioFinLider == '' || this.PrecioFinLider == null) || (this.PrecioFinPart == '' || this.PrecioFinPart == null)
+      || (this.UnidXGrupos == '' || this.UnidXGrupos == null) || (this.PorcDescLider == '' || this.PorcDescLider == null)
+      || (this.SessionTipoDescuento == '' || this.SessionTipoDescuento == null)) {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
@@ -1234,7 +1242,11 @@ export class ValoracionComponent implements OnInit {
         var arreglores = ResultUpdate.split('|')
         this.Respuesta = arreglores[1];
         this.ValidaToppings = '1';
-         //todo consulta del correo y whatsapp
+        this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
+          console.log(ResultUpdate)
+          this.ArrayTextoModifica = ResultUpdate;
+          this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
+        })
       })
 
     }
@@ -1351,16 +1363,8 @@ export class ValoracionComponent implements OnInit {
       if (respuesta[0] != '-1') {
         this.modalPublicar?.close();
         this.rutas.navigateByUrl('/home/buscaroferta');
-        if (this.DataSectores.length > 0) {
-          for (var i = 0; i < this.DataSectores.length; i++) {
-            this.serviciosvaloracion.EnviarSms('7', '0', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA, '0', '0', '0').subscribe(Resultado => {
-              console.log(Resultado)
-            })
-            this.serviciosvaloracion.CorreoMasivo('1', '9', '2', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
-              console.log(ResultCorreo)
-            })
-          }
-        }
+        this.EnvioCorreoMaisivo();
+        this.EnvioSmsMasivo();
       }
     })
   }
@@ -1525,7 +1529,20 @@ export class ValoracionComponent implements OnInit {
           } else {
             if (response == 'Archivo Subido Correctamente') {
               this.imagenesCorreo = this.RutaImagenTopping + event.target.files[0].name;
-              console.log( this.imagenesCorreo )
+              console.log(this.imagenesCorreo)
+
+              const Bodymod = {
+                idSector: this.SessionSectorSel,
+                cd_cnctivo: this.SessionOferta,
+                TextoCorreo: "0",
+                TextoWhat: "0",
+                ImgCorreo: this.imagenesCorreo
+              }
+
+              this.serviciosvaloracion.TextosOferta('2', Bodymod).subscribe(ResultCorreo => {
+                console.log(ResultCorreo)
+              })
+
               this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
               this.Respuesta = "Imagen cargada correctamente.";
             } else {
@@ -1542,6 +1559,61 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
-  
-  
+
+  GuardarTexto(modalmensaje: any) {
+
+    const Bodymod = {
+      idSector: this.SessionSectorSel,
+      cd_cnctivo: this.SessionOferta,
+      TextoCorreo: this.ArrayTextoModifica[0].TextoCorreo,
+      TextoWhat: this.ArrayTextoModifica[0].TextoWhat,
+      ImgCorreo: this.imagenesCorreo
+    }
+
+    this.serviciosvaloracion.TextosOferta('1', Bodymod).subscribe(ResultCorreo => {
+
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = ResultCorreo;
+
+    })
+
+  }
+
+  PrevisualizarCorreo(Previsualizarcion: any) {
+
+    this.Previsucorreo = this.ArrayTextoModifica[0].Plantilla.replace("[imgCorreoMasivo]", this.imagenesCorreo.trim());
+
+    console.log(this.Previsucorreo)
+
+    this.Previsucorreo = this.Previsucorreo.replace("[ContenidoMasivo]", this.ArrayTextoModifica[0].TextoCorreo);
+    this.modalService.open(Previsualizarcion, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+
+  }
+
+  EnvioCorreoMaisivo() {
+    if (this.EnvioCorreo == true) {
+      console.log('Entra correo')
+      if (this.DataSectores.length > 0) {
+        for (var i = 0; i < this.DataSectores.length; i++) {
+          this.serviciosvaloracion.CorreoMasivo('1', '9', '2', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
+            console.log(ResultCorreo)
+          })
+        }
+      }
+    }
+  }
+
+  EnvioSmsMasivo() {
+    if (this.EnvioSms == true) {
+      console.log('Entra sms texto')
+      if (this.DataSectores.length > 0) {
+        for (var i = 0; i < this.DataSectores.length; i++) {
+          this.serviciosvaloracion.EnviarSms('7', '0', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA, '0', '0', '0').subscribe(Resultado => {
+            console.log(Resultado)
+          })
+        }
+      }
+    }
+  }
+
 }

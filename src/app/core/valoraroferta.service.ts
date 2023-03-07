@@ -224,4 +224,12 @@ export class ValorarofertaService {
     return this.http.get<any>(this.url_servidor + 'conscnumususector/' + Bandera + '/' + IdSector)
   }
 
+  constextosoferta(Bandera: string, idSector: string, cd_cnctivo: string) {
+    return this.http.get<any>(this.url_servidor + 'constextosoferta/' + Bandera + '/' + cd_cnctivo + '/' + idSector)
+  }
+ 
+  TextosOferta(Bandera: string, Bodymod: any) {
+    return this.http.post<any>(this.url_servidor + 'TextosOferta/' + Bandera, Bodymod)
+  }
 }
+                                                                    
