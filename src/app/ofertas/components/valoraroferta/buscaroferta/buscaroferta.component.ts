@@ -113,6 +113,7 @@ export class BuscarofertaComponent implements OnInit {
 
   //Tazabilidad
   Trazabilidad: any = [];
+  ValidaEnvio: any = '';
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -121,7 +122,10 @@ export class BuscarofertaComponent implements OnInit {
     public rutas: Router,
     public cookies: CookieService,
     ConfigAcord: NgbAccordionConfig
-  ) { ConfigAcord.closeOthers = true; }
+  ) {
+    ConfigAcord.closeOthers = true;
+
+  }
 
 
   ngOnInit(): void {
@@ -281,10 +285,12 @@ export class BuscarofertaComponent implements OnInit {
   }
 
   CargaBusqueda(seleccion: any) {
+    //console.log(seleccion)
     this.IdOferta = seleccion.cd_cnsctvo;
     this.modalService.dismissAll();
     this.ValidaBusqueda = '1';
     this.CargaInfoOferta();
+    this.ConsultaSectores();
   }
 
   CargaInfoOferta() {
@@ -361,14 +367,43 @@ export class BuscarofertaComponent implements OnInit {
     this.modalService.open(ModalResumen, { ariaLabelledBy: 'modal-basic-title', size: 'xl', centered: true, backdrop: 'static', keyboard: false });
     this.ConsultaSectores();
     this.ServiciosValorar.ConsultaMenuResumenOferta('1', respu.Tramite).subscribe(Resultado => {
+      console.log(Resultado)
       this.ArrayResumenOferta = Resultado;
     });
   }
+
+  PopupEnvio(ModalEnvio: any, oferta: any) {
+    console.log(oferta)
+    this.modalService.dismissAll();
+    this.Respuesta = 'Estas seguro de enviar los correos y mensajes de texto de la oferta: ' + oferta.Nombre_Producto + ' ' + oferta.COD_OFR_PUBLICO
+    this.modalService.open(ModalEnvio, { ariaLabelledBy: 'modal-basic-title', size: 'lg', centered: true, backdrop: 'static', keyboard: false });
+  }
+
+  AceptaEnviar() {
+    this.EnviaNotificaciones(this.DataSectores);
+    this.modalService.dismissAll();
+  }
+
+  EnviaNotificaciones(ArraySectores: any) {
+    if (ArraySectores.length > 0) {
+      for (var i = 0; i < ArraySectores.length; i++) {
+        alert(ArraySectores[i].ID_SCTOR_OFRTA + '/' + this.IdOferta)
+        this.ServiciosValorar.EnviarSms('7', '0', this.IdOferta, ArraySectores[i].ID_SCTOR_OFRTA, '0', '0', '0').subscribe(Resultado => {
+          console.log(Resultado)
+        })
+        this.ServiciosValorar.CorreoMasivo('1', '9', '2', this.IdOferta, ArraySectores[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
+          console.log(ResultCorreo)
+        })
+      }
+    }
+  }
+
   ConsultaSectores() {
     this.ServiciosValorar.ConsultaSectoresOferta('2', this.IdOferta).subscribe(ResultConsulta => {
       if (ResultConsulta.length > 0) {
         this.keywordSec = 'DSCRPCION_SCTOR';
         this.DataSectores = ResultConsulta;
+        this.ValidaEnvio == ResultConsulta[0].EnvioSms;
       }
     })
   }
@@ -440,6 +475,8 @@ export class BuscarofertaComponent implements OnInit {
 
   ConsultaValoracionOferta() {
     this.ServiciosValorar.ConsultaValoracionOferta('1', this.IdOferta, this.SessionSectorSel).subscribe(ResultCons => {
+      console.log('////////////')
+      console.log(ResultCons)
       this.ComInvid = ResultCons[0].Nom_tpo_cmsion_indvdual;
       this.ComGrup = ResultCons[0].Nom_tpo_cmsion_grpal;
 
