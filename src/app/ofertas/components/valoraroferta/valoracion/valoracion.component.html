@@ -272,13 +272,13 @@
                             <label class="col-sm-12 Llave">Mínimo unidades</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox"
                                 (blur)="ValidaCantidadMinimaIndiv(MinUnidI,ModalRespuesta)" [(ngModel)]="MinUnidI"
-                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}" disabled>
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Máximo unidades</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox"
                                 (blur)="ValidaCantidadmaxIndiv(MaxUnidI,ModalRespuesta)" [(ngModel)]="MaxUnidI"
-                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}" disabled>
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                     </div>
                     <div class="row br">
