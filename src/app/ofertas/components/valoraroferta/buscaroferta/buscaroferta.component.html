@@ -663,7 +663,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row br">
+                                <div class="row br" *ngIf="MuestraGrupal == '1' || MuestraIndividual == '1'">
                                     <div class="col-sm-12">
                                         <label class="col-sm-12 Llave">Observaciones</label>
                                         <p class="Valor">{{Observaciones}}</p>
@@ -733,6 +733,10 @@
                                                 </div>
                                             </div>
                                         </div>
+
+
+
+
                                     </div>
                                 </div>
                                 <hr *ngIf="MuestraIndividual == '1'">
@@ -867,9 +871,57 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row br CentrarText">
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Tipo de descuento:&nbsp;</label><label
+                                                        *ngIf="TipoDescuento == '1'" class="Valor">Registro</label>
+                                                    <label *ngIf="TipoDescuento != '1'" class="Valor">Unidades</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-6">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Descuento por unidad /
+                                                        registro:&nbsp;</label><label
+                                                        class="Valor">{{PorcentajeDescuento}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <label class="Llave">Número máximo de unidades / registros para
+                                                        descuento:&nbsp;</label><label
+                                                        class="Valor">{{MaximoUnidadesDescuento}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
+                                <!--Verificar correis y mensajes-->
+                                <div class="row CentrarText" *ngIf="MuestraGrupal == '1' || MuestraIndividual == '1'">
+                                    <div class="cil-sm-12 col-md-6 br">
+                                        <h5 class="SubTituloForm">Verificación envió de correos</h5>
+                                        <label class="Llave" *ngIf="EnvioEmal == true">Correos enviados</label>
+                                        <label class="Llave" *ngIf="EnvioEmal == false">Los correos aún no se han
+                                            enviado</label>
 
+                                    </div>
+                                    <div class="cil-sm-12 col-md-6 br">
+                                        <h5 class="SubTituloForm">Verificación envió de sms</h5>
+                                        <label class="Llave" *ngIf="EnvioSms == true">Sms enviados</label>
+                                        <label class="Llave" *ngIf="EnvioSms == false">Los sms aún no se han
+                                            enviado</label>
+
+                                    </div>
+                                </div>
 
                                 <!--Adicionales-->
                                 <div class="row" *ngIf="VerTopping == '1'">
@@ -1422,9 +1474,11 @@
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-sm-3"><button type="button" class="btn btn-agro-prin w-100 " (click)="AceptaEnviar()">Aceptar</button></div>
-            <div class="col-sm-3"><button type="button" class="btn btn-agro-sec w-100" (click)="modal.close()">Cancelar</button></div>
-            
+            <div class="col-sm-3"><button type="button" class="btn btn-agro-prin w-100 "
+                    (click)="AceptaEnviar()">Aceptar</button></div>
+            <div class="col-sm-3"><button type="button" class="btn btn-agro-sec w-100"
+                    (click)="modal.close()">Cancelar</button></div>
+
         </div>
         <br>
     </ng-template>
