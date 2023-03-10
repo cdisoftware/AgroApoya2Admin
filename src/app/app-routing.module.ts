@@ -1,9 +1,8 @@
-import { Component, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CrearofertaComponent } from './ofertas/components/crearoferta/crearoferta.component';
 import { LoginComponent } from './usuario/components/login/login.component';
 import { BuscarofertaComponent } from './ofertas/components/valoraroferta/buscaroferta/buscaroferta.component';
-import { MenuComponent } from './usuario/components/menu/menu.component';
 import { SectorizacionComponent } from './ofertas/components/valoraroferta/sectorizacion/sectorizacion.component';
 import { TransportistaComponent } from './ofertas/components/valoraroferta/transportista/transportista.component';
 import { LayoutprincipalComponent } from './shared/layoutprincipal/layoutprincipal.component';
@@ -21,6 +20,7 @@ import { EvaluacionofertaComponent } from './ofertas/components/evaluacionoferta
 import { SeguimientoComponent } from './ofertas/components/seguimiento/seguimiento.component';
 import { CarruselofertasComponent } from './ofertas/components/carruselofertas/carruselofertas.component';
 import { ComboofertasComponent } from './ofertas/components/comboofertas/comboofertas.component';
+import { EnviocorreosComponent } from './usuario/components/enviocorreos/enviocorreos.component';
 
 const routes: Routes = [
   {
@@ -110,6 +110,10 @@ const routes: Routes = [
       {
         path: 'datos',
         component: DatosBasicosComponent
+      },
+      {
+        path: 'enviocorreos',
+        component: EnviocorreosComponent
       }
     ]
   },
@@ -120,3 +124,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+
