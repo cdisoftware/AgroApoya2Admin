@@ -241,7 +241,8 @@ export class PlantillascorreoComponent implements OnInit {
         descripcion: this.descripcionForm,
         html: '',
         imgEncabezado: this.Imagencabeza,
-        imgPiePagina: this.ImagenPie
+        imgPiePagina: this.ImagenPie,
+        Query : this.queryForm
       }
       this.serviciosplantillacorreos.ModPlantillaCorreo('3', body).subscribe(resultado => {
         if (resultado == 'OK') {
@@ -257,17 +258,8 @@ export class PlantillascorreoComponent implements OnInit {
   }
 
   EstasSeguro(arreglo: any, templateEstasSeguro: any) {
-    const body = {
-      idplantilla: arreglo.IdPlantilla,
-      NombrePlantilla: '',
-      idTipoPlantilla: arreglo.TipoPlantillaForm,
-    }
-    this.arregloElimina = arreglo;
-    this.serviciosplantillacorreos.ModPlantillaCorreo('5', body).subscribe(resultado => {
-      this.RespuestaModal = resultado;
-      this.RespuestaModal = "Estas a punto de eliminar la plantilla  " + arreglo.NombrePlantilla + " estas seguro?";
-      this.modalService.open(templateEstasSeguro, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    })
+    this.RespuestaModal = "Estas a punto de eliminar la plantilla  " + arreglo.NombrePlantilla + " estas seguro?";
+    this.modalService.open(templateEstasSeguro, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
   }
 
   BtnEliminarPlantilla(templateMensaje: any) {
@@ -322,7 +314,8 @@ export class PlantillascorreoComponent implements OnInit {
         descripcion: this.descripcionForm,
         html: '',
         imgEncabezado: this.Imagencabeza,
-        imgPiePagina: this.ImagenPie
+        imgPiePagina: this.ImagenPie,
+        Query : this.queryForm
       }
       this.serviciosplantillacorreos.ModPlantillaCorreo('2', body).subscribe(resultado => {
         if (resultado == 'OK') {
@@ -477,7 +470,8 @@ export class PlantillascorreoComponent implements OnInit {
         descripcion: this.descripcionForm,
         html: elemttres.innerHTML,
         imgEncabezado: this.Imagencabeza,
-        imgPiePagina: this.ImagenPie
+        imgPiePagina: this.ImagenPie,
+        Query : this.queryForm
       }
       console.log(bodyhtml)
       this.serviciosplantillacorreos.ModPlantillaCorreo('4', bodyhtml).subscribe(resultado => {

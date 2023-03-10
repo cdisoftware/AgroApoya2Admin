@@ -1,0 +1,96 @@
+<br>
+<div class="container bg-white">
+    <br>
+    <h1 class="br">Configuracion envio de correos manuales</h1>
+    <br>
+    <div class="row mt-4 mb-3">
+        <div class="col-sm-4 mb-3" style="display: flex;">
+            <select class="form-control form-control-sm textBox" style="margin-right: 10px;" [(ngModel)]="idPlantilla"
+                [ngModelOptions]="{standalone: true}" (change)="ChangePlantillaCorreo()">
+                <option value="" selected>Seleccione momento envio...</option>
+                <option value="{{Respu.IdPlantilla}}" *ngFor="let Respu of ArregloPlantilla">
+                    {{Respu.NombrePlantilla}}</option>
+            </select>
+            <img src="../../../../assets/ImagenesAgroApoya2Adm/ver.png" width="30px" height="30px" 
+            class="m-auto" style="cursor:pointer" (click)="PrevisualizarPlantillaModal(ModalPrevisualizacion)">
+        </div>
+        <div class="col-sm-4 mb-3">
+            <input type="number" 
+                class="form-control form-control-sm textBox" placeholder="id oferta"
+                [(ngModel)]="idOferta" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="col-sm-4 mb-3">
+            <input type="number" 
+                class="form-control form-control-sm textBox" placeholder="id sector"
+                [(ngModel)]="idSector" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="col-sm-4 mb-3" style="display: flex;">
+            <input type="number"  style="margin-right: 10px;"
+            class="form-control form-control-sm textBox" placeholder="Nombre/correo"
+            [(ngModel)]="correoPersona" [ngModelOptions]="{standalone: true}">
+            <img src="../../../../assets/ImagenesAgroApoya2Adm/buscar.png" width="30px" height="30px" class="m-auto" style="cursor:pointer">
+        </div>
+
+        <div class="row justify-content-center mt-3" >
+            <div class="col-sm-12 text-center">
+                <button class="col-sm-3 btn btn-agro-prin" title="Agregar nueva plantilla"
+                (click)="  GenerarQuey(ModalRespuesta)"
+                >Crear query envio</button>
+            </div>
+        </div>
+
+        <div class="col-12 mb-3 mt-3" *ngIf="verOcultarCampos != 1">
+            <textarea class="form-control form-control-sm textArea" rows="3" maxlength="500" minlength="3"
+                placeholder="Query de envio de correos" [(ngModel)]="Query"
+                [ngModelOptions]="{standalone: true}" ></textarea>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Template Modal Estas seguro-->
+<ng-template #ModalPrevisualizacion let-modal>
+    <div class="modal-header">
+        <h1>AgroApoya2</h1>
+        <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
+            (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+
+        <div [innerHTML]="this.ArregloPlantillaUnica.html">
+
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="row col-sm-12 text-center justify-content-center">
+            <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
+            (click)="modal.close()">Aceptar</button>
+            <div class="col-1"> </div>
+        </div>
+    </div>
+    <br>
+</ng-template>
+
+<!-- Template Modal RESPUESTA-->
+<ng-template #ModalRespuesta let-modal>
+    <div class="modal-header">
+        <h1>AgroApoya2</h1>
+        <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
+            (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">{{RespuestaModal}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-sm-12 text-center">
+            <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
+                (click)="modal.close()">Aceptar</button>
+        </div>
+    </div>
+    <br>
+</ng-template>
