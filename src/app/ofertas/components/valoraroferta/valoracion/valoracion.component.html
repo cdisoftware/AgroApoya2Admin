@@ -505,6 +505,13 @@
 
                     <div class="row br">
                         <div class="col-sm-12">
+                            <label class="col-sm-12 Llave">Link para acortar compartir participante</label>
+                            <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UrlParticipante" disabled>
+                        </div>
+                    </div>
+
+                    <div class="row br">
+                        <div class="col-sm-12">
                             <label class="col-sm-12 Llave">Link para Redes Sociales (Publicidad)</label>
                             <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UrlPubli" disabled>
                         </div>
@@ -550,10 +557,10 @@
     <div class="row justify-content-center br" *ngIf="ValidaToppings == '1'">
 
         <div class="col-12">
-            <input type="checkbox" [checked]="EnvioCorreo" style="margin-left: 10px; margin-right: 10px;">
+            <input type="checkbox" [(ngModel)]="EnvioCorreo" style="margin-left: 10px; margin-right: 10px;">
             <strong>Enviar correos masivos cliente</strong>
             <br>
-            <input type="checkbox" [checked]="EnvioSms" style="margin-left: 10px; margin-right: 10px;">
+            <input type="checkbox" [(ngModel)]="EnvioSms"  [checked]="EnvioSms" style="margin-left: 10px; margin-right: 10px;">
             <strong>Enviar mensaje texto masivos cliente</strong>
             <br><br><br>
         </div>

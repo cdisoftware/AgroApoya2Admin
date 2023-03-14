@@ -106,6 +106,7 @@ export class ValoracionComponent implements OnInit {
   EnvioCorreo: boolean = false;
   EnvioSms: boolean = false;
   UrlPubli : string = '';
+  UrlParticipante : string = '';
 
 
   constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
@@ -665,7 +666,10 @@ export class ValoracionComponent implements OnInit {
     this.SessionSectorSel = item.ID_SCTOR_OFRTA
     this.ConsultaVigenciaOferta();
     this.consultaToppingsOferta();
-    this.UrlPubli =  'https://apoya2.co/#/home/compras?ido='+ this.SessionOferta+'&idu=0&tu=2&ids='+this.SessionSectorSel+'&idc=1&itc=1&or=1';
+
+
+    this.UrlPubli =  this.SeriviciosGenerales.RecuperarRutaAmbiente() +'home/compras?ido='+ this.SessionOferta+'&idu=0&tu=2&ids='+this.SessionSectorSel+'&idc=1&itc=1&or=1';
+    this.UrlParticipante =  this.SeriviciosGenerales.RecuperarRutaAmbiente() +'home/compras?ido='+ this.SessionOferta+'&idu=0&tu=2&ids='+this.SessionSectorSel+'&idc=1&itc=1';
   }
 
   selectTipOferta(item: any) {
@@ -1604,6 +1608,8 @@ export class ValoracionComponent implements OnInit {
   }
 
   EnvioCorreoMaisivo() {
+    console.log('Entra envio correo')
+    console.log(this.EnvioCorreo)
     if (this.EnvioCorreo == true) {
       console.log('Entra correo')
       if (this.DataSectores.length > 0) {
@@ -1617,6 +1623,7 @@ export class ValoracionComponent implements OnInit {
   }
 
   EnvioSmsMasivo() {
+    console.log(this.EnvioSms)
     if (this.EnvioSms == true) {
       console.log('Entra sms texto')
       if (this.DataSectores.length > 0) {
