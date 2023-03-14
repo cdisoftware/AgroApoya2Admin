@@ -105,6 +105,7 @@ export class ValoracionComponent implements OnInit {
   Previsucorreo: string = '';
   EnvioCorreo: boolean = false;
   EnvioSms: boolean = false;
+  UrlPubli : string = '';
 
 
   constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
@@ -664,6 +665,7 @@ export class ValoracionComponent implements OnInit {
     this.SessionSectorSel = item.ID_SCTOR_OFRTA
     this.ConsultaVigenciaOferta();
     this.consultaToppingsOferta();
+    this.UrlPubli =  'https://apoya2.co/#/home/compras?ido='+ this.SessionOferta+'&idu=0&tu=2&ids='+this.SessionSectorSel+'&idc=1&itc=1&or=1';
   }
 
   selectTipOferta(item: any) {
@@ -687,6 +689,10 @@ export class ValoracionComponent implements OnInit {
       this.MuestraBtnMixta = '0';
     }
     else if (item.id == 3) {
+      this.MinUnidI = '1';
+      this.MaxUnidI = '1';
+      this.VlrDomiI = '0';
+
       this.MuestraIndividual = '1';
       this.MuestraGrupal = '1';
       this.MuestraCantIndiv = '1';
@@ -1346,27 +1352,34 @@ export class ValoracionComponent implements OnInit {
   }
 
   PublicaOferta(templateMensaje: any) {
-    const Body = {
-      usucodig: this.SessionIdUsuario,
-      cnctivoOferta: this.SessionOferta,
-      ObsEstado: this.PubliOferObser,
-      estado: 10,
-      parametro1: "",
-      parametro2: "",
-      parametro3: ""
-    }
-    this.serviciosvaloracion.ActualizaEstadoOferta('3', Body).subscribe(ResultUpda => {
-      this.Respuesta = '';
+
+    if(this.imagenesCorreo == null || this.imagenesCorreo == ''){
+      this.Respuesta = 'Es obligatoria la imagen del correo, porfavor subela.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
-      var respuesta = ResultUpda.split('|')
-      this.Respuesta = respuesta[1];
-      if (respuesta[0] != '-1') {
-        this.modalPublicar?.close();
-        this.rutas.navigateByUrl('/home/buscaroferta');
-        this.EnvioCorreoMaisivo();
-        this.EnvioSmsMasivo();
+    }else{
+      const Body = {
+        usucodig: this.SessionIdUsuario,
+        cnctivoOferta: this.SessionOferta,
+        ObsEstado: this.PubliOferObser,
+        estado: 10,
+        parametro1: "",
+        parametro2: "",
+        parametro3: ""
       }
-    })
+      this.serviciosvaloracion.ActualizaEstadoOferta('3', Body).subscribe(ResultUpda => {
+        this.Respuesta = '';
+        this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+        var respuesta = ResultUpda.split('|')
+        this.Respuesta = respuesta[1];
+        if (respuesta[0] != '-1') {
+          this.modalPublicar?.close();
+          this.rutas.navigateByUrl('/home/buscaroferta');
+          this.EnvioCorreoMaisivo();
+          this.EnvioSmsMasivo();
+        }
+      })
+    }
+
   }
 
 
