@@ -106,6 +106,7 @@ export class ValoracionComponent implements OnInit {
   EnvioCorreo: boolean = false;
   EnvioSms: boolean = false;
   UrlPubli : string = '';
+  UrlParticipante : string = '';
 
 
   constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
@@ -666,6 +667,7 @@ export class ValoracionComponent implements OnInit {
     this.ConsultaVigenciaOferta();
     this.consultaToppingsOferta();
     this.UrlPubli =  'https://apoya2.co/#/home/compras?ido='+ this.SessionOferta+'&idu=0&tu=2&ids='+this.SessionSectorSel+'&idc=1&itc=1&or=1';
+    this.UrlParticipante =  'https://apoya2.co/#/home/compras?ido='+ this.SessionOferta+'&idu=0&tu=2&ids='+this.SessionSectorSel+'&idc=1&itc=1';
   }
 
   selectTipOferta(item: any) {
