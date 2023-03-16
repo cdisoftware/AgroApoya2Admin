@@ -15,6 +15,7 @@ export class EnviocorreosComponent implements OnInit {
   idOferta: string = '';
   idSector: string = '';
   idPlantilla: string = '';
+  IdTipoPersona: string = '';
   correoPersona: string= '';
   Query: string = '';
 
@@ -41,7 +42,6 @@ export class EnviocorreosComponent implements OnInit {
       IdPlantilla: 0
     }
     this.serviciosplantillacorreos.ConsultaPlatillaCorreo('1', body).subscribe(resultado => {
-      console.log(resultado)
       this.ArregloPlantilla = resultado;
     })
   }
@@ -52,11 +52,16 @@ export class EnviocorreosComponent implements OnInit {
         this.ArregloPlantillaUnica = this.ArregloPlantilla[i];
       }
     }
-    console.log(this.ArregloPlantillaUnica )
   }
 
-  PrevisualizarPlantillaModal(modalPrevi: any,){
-    this.modalService.open(modalPrevi, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+  PrevisualizarPlantillaModal(modalPrevi: any,ModalRespuesta: any){
+    if(this.idPlantilla  != '' ){
+      this.modalService.open(modalPrevi, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+    }else{
+      this.verOcultarCampos = 1;
+      this.RespuestaModal = 'Es obligatoria la seleccion de la plantilla '
+      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    }
   }
 
   GenerarQuey(ModalRespuesta: any){
@@ -66,6 +71,33 @@ export class EnviocorreosComponent implements OnInit {
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     }else{
       this.verOcultarCampos = 2;
+
+      var auxcd_cnctivo: string;
+      var auxSector: string;
+
+      if(this.idSector == undefined){
+        auxSector = '0'
+      }else{
+        auxSector = this.idSector
+      }
+
+      if(this.idOferta == undefined){
+        auxcd_cnctivo = '0'
+      }else{
+        auxcd_cnctivo = this.idOferta
+      }
+
+      const body = {
+        Idplantilla: this.idPlantilla,
+        IdSector: auxSector,
+        cd_cnctivo: auxcd_cnctivo
+      }
+
+      this.serviciosplantillacorreos.ConsGenQuery('1', body).subscribe(resultado => {
+        this.Query = resultado;
+        console.log(resultado)
+      })
+
     }
   }
 }
