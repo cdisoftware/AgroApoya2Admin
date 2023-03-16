@@ -149,6 +149,8 @@ export class PlantillascorreoComponent implements OnInit {
   }
 
   SeleccionarPlantillaModal(arregloPlantilla: any) {
+
+    console.log(arregloPlantilla)
     this.VerOcultarCampos = '3'; 
     this.IdPlantilla = arregloPlantilla.IdPlantilla;
 
@@ -161,7 +163,8 @@ export class PlantillascorreoComponent implements OnInit {
     this.Imagencabeza = arregloPlantilla.ImgEncabezado;
     this.ImagenPie = arregloPlantilla.ImgPie;
     this.HtmlForm = arregloPlantilla.html
-
+    this.queryForm = arregloPlantilla.Query;
+    
     this.serviciosplantillacorreos.ConsultaDocumentoCorreo('1', this.IdPlantilla).subscribe(resultado => {
       if (resultado != null && resultado != undefined) {
         this.arregloListaAdjuntos = resultado;

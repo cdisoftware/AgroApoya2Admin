@@ -90,6 +90,7 @@
             </label>
         </div>
         <div class="col-12">
+            <label><strong><small>select USUCODIG, CORREO_PERSONA from AGRO_PERSONAS d WHERE 1=1</small></strong></label>
             <textarea class="form-control form-control-sm textArea" rows="3" maxlength="2000" 
                 placeholder="Query auxiliar de filtrado para el envio" title="Descripción" [(ngModel)]="queryForm"
                 [ngModelOptions]="{standalone: true}" (keyup)="CaracteresQuery()"></textarea>

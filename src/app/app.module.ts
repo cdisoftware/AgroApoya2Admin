@@ -33,6 +33,7 @@ import { EvaluacionofertaComponent } from './ofertas/components/evaluacionoferta
 import { SeguimientoComponent } from './ofertas/components/seguimiento/seguimiento.component';
 import { ComboofertasComponent } from './ofertas/components/comboofertas/comboofertas.component';
 import { EnviocorreosComponent } from './usuario/components/enviocorreos/enviocorreos.component';
+import { ConsultacorreosComponent } from './usuario/components/consultacorreos/consultacorreos.component';
 
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
@@ -56,7 +57,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     EvaluacionofertaComponent,
     SeguimientoComponent,
     ComboofertasComponent,
-    EnviocorreosComponent
+    EnviocorreosComponent,
+    ConsultacorreosComponent
   ],
   imports: [
     NgxMaskModule.forRoot(options),
