@@ -12,7 +12,7 @@
                     {{Respu.NombrePlantilla}}</option>
             </select>
             <img src="../../../../assets/ImagenesAgroApoya2Adm/ver.png" width="30px" height="30px" 
-            class="m-auto" style="cursor:pointer" (click)="PrevisualizarPlantillaModal(ModalPrevisualizacion)">
+            class="m-auto" style="cursor:pointer" (click)="PrevisualizarPlantillaModal(ModalPrevisualizacion,ModalRespuesta)">
         </div>
         <div class="col-sm-4 mb-3">
             <input type="number" 
@@ -23,6 +23,15 @@
             <input type="number" 
                 class="form-control form-control-sm textBox" placeholder="id sector"
                 [(ngModel)]="idSector" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="col-sm-4 mb-3" style="display: flex;">
+            <select class="form-control form-control-sm textBox" style="margin-right: 10px;" 
+            [(ngModel)]="IdTipoPersona" [ngModelOptions]="{standalone: true}" >
+                <option value="" selected>Seleccione momento envio...</option>
+                <option value="1" selected>Campesino / Productor</option>
+                <option value="3" selected>Transportista</option>
+                <option value="2" selected>Cliente institucional</option>
+            </select>
         </div>
         <div class="col-sm-4 mb-3" style="display: flex;">
             <input type="number"  style="margin-right: 10px;"
@@ -40,7 +49,8 @@
         </div>
 
         <div class="col-12 mb-3 mt-3" *ngIf="verOcultarCampos != 1">
-            <textarea class="form-control form-control-sm textArea" rows="3" maxlength="500" minlength="3"
+            <label style="margin-left: 10px; margin-right: 10px;"><small><strong>Select * from agro_personas where 1 = 1</strong></small></label>
+            <textarea class="form-control form-control-sm textArea mt-2" rows="3" maxlength="500" minlength="3"
                 placeholder="Query de envio de correos" [(ngModel)]="Query"
                 [ngModelOptions]="{standalone: true}" ></textarea>
         </div>

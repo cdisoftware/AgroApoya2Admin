@@ -59,5 +59,9 @@ export class PlantillacorreosService {
     return this.http.get<any[]>(this.url_servidor + 'conscdocumentocorreo/' + Bandera + '/' + IdPlantilla);
   }
 
+  ConsGenQuery(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'ConsGenQuery/' + Bandera ,Body);
+  }
+   
 
 }
