@@ -73,4 +73,12 @@ export class PlantillacorreosService {
     return this.http.get<any>(this.url_servidor + 'CcorreoManual/' + Bandera + '/' + IdEnvio+ '/' + IdSector+ '/' + Cd_cnctivo+ '/' + IdPlantilla+ '/' + IdEstado+ '/' + fecha);
   }
 
+  constipoblicorreosmanual(Bandera: string, IdPlantilla: string) {
+    return this.http.get<any>(this.url_servidor + 'constipoblicorreosmanual/' + Bandera + '/' + IdPlantilla);
+  }
+
+  modtipoblicorreomanual(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'CcormodtipoblicorreomanualreoManual/' + Bandera, Body);
+  }
+  
 }

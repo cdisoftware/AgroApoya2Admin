@@ -20,7 +20,6 @@ export class EnviocorreosComponent implements OnInit {
   idPlantilla: string = '';
   IdTipoPersona: string = '';
   FechaEnvio: string = '';
-  correoPersona: string = '';
   Query: string = '';
 
   ArregloZona: any = [];
@@ -47,7 +46,7 @@ export class EnviocorreosComponent implements OnInit {
   CargarPlantillas() {
     const body = {
       NombrePlantilla: '',
-      idMomentoEnvio: '1',
+      idMomentoEnvio: '2',
       IdTipoPlantilla: '0',
       IdPlantilla: 0
     }
