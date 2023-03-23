@@ -18,7 +18,7 @@ export class EnviocorreosComponent implements OnInit {
   idSector: string = '0';
   idHorario: string = '0';
   idPlantilla: string = '';
-  IdTipoPersona: string = '';
+  IdTipoPersona: string = '0';
   FechaEnvio: string = '';
   Query: string = '';
 
@@ -30,6 +30,11 @@ export class EnviocorreosComponent implements OnInit {
 
   RespuestaModal: string = '';
   verOcultarCampos: number = 1;
+
+  ObligaIdOferta: string = '1'
+  ObligaIdLocalidad: string = '1'
+  ObligaIdSector: string = '1'
+  ObligaIdTipoUsu: string = '1'
 
   constructor(private modalService: NgbModal,
     private datePipe: DatePipe,
@@ -61,6 +66,8 @@ export class EnviocorreosComponent implements OnInit {
         this.ArregloPlantillaUnica = this.ArregloPlantilla[i];
       }
     }
+
+    this.ListCamposObligatorios();
   }
 
   PrevisualizarPlantillaModal(modalPrevi: any, ModalRespuesta: any) {
@@ -78,7 +85,6 @@ export class EnviocorreosComponent implements OnInit {
       "Descripcion": ""
     }
     this.sectoresservices.ConsZona('1', '0', '401', '261', descripcion).subscribe(ResultadoCons => {
-      console.log(ResultadoCons)
       this.ArregloZona = ResultadoCons;
     })
   }
@@ -86,18 +92,16 @@ export class EnviocorreosComponent implements OnInit {
   ChangeLocalidad() {
     this.idSector = '0';
     this.sectoresservices.ConsultaSectoresEtv('1', '0', this.idZona, '0').subscribe(Result => {
-      console.log(Result)
       this.ArregloSector = Result;
     })
   }
 
-  
+
   ConsultaHorarioPorgramado() {
     const descripcion = {
       "Descripcion": ""
     }
     this.sectoresservices.ConsZona('1', '0', '401', '261', descripcion).subscribe(ResultadoCons => {
-      console.log(ResultadoCons)
       this.ArregloHorarioTarea = ResultadoCons;
     })
   }
@@ -108,7 +112,28 @@ export class EnviocorreosComponent implements OnInit {
       this.verOcultarCampos = 1;
       this.RespuestaModal = 'Es obligatoria la seleccion de la plantilla '
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else {
+    } 
+    else if (this.ObligaIdOferta == '2' && (this.idOferta == '' || this.idOferta == null)) {
+      this.verOcultarCampos = 1;
+      this.RespuestaModal = 'Es obligatorio el id de la oferta'
+      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    }
+    else if (this.ObligaIdLocalidad == '2' && this.idZona == '0') {
+      this.verOcultarCampos = 1;
+      this.RespuestaModal = 'Es obligatoria la localidad'
+      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    }
+    else if (this.ObligaIdSector == '2' && this.idSector == '0') {
+      this.verOcultarCampos = 1;
+      this.RespuestaModal = 'Es obligatorio el sector'
+      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    }
+    else if (this.ObligaIdTipoUsu == '2' && this.IdTipoPersona == '0') {
+      this.verOcultarCampos = 1;
+      this.RespuestaModal = 'Es obligatorio el tipo usuario'
+      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    }
+    else {
       this.verOcultarCampos = 2;
 
       var auxcd_cnctivo: string;
@@ -134,7 +159,6 @@ export class EnviocorreosComponent implements OnInit {
 
       this.serviciosplantillacorreos.ConsGenQuery('1', body).subscribe(resultado => {
         this.Query = resultado;
-        console.log(resultado)
       })
 
     }
@@ -150,10 +174,10 @@ export class EnviocorreosComponent implements OnInit {
     var auxsector: string = '0';
     var auxOferta: string = '0';
 
-    if(this.idSector != ''){
+    if (this.idSector != '') {
       auxsector = this.idSector
     }
-    if(this.idOferta != ''){
+    if (this.idOferta != '') {
       auxOferta = this.idOferta
     }
 
@@ -166,13 +190,12 @@ export class EnviocorreosComponent implements OnInit {
       IdEstado: 2,
       IdProgramado: 2,
       FechaEnvio: this.datePipe.transform(new Date(), 'dd-MM-yyyy'),
-      HorarioEnvio : '0'
+      HorarioEnvio: '0'
     }
     this.serviciosplantillacorreos.correoManualMod('3', body).subscribe(resultado => {
-      console.log(resultado)
       var AuxResu = resultado.split('|')
       if (AuxResu[0].trim() == '1') {
-        this.sectoresservices.CorreoMasivo('1', this.idPlantilla, '2', auxOferta , auxsector).subscribe(ResultCorreo => {
+        this.sectoresservices.CorreoMasivo('1', this.idPlantilla, '2', auxOferta, auxsector).subscribe(ResultCorreo => {
           this.RespuestaModal = ResultCorreo.toString()
           this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
         })
@@ -189,20 +212,20 @@ export class EnviocorreosComponent implements OnInit {
     this.modalService.open(ModalProgramado, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
   }
 
-  GuardarProgramado(ModalRespuesta: any){
+  GuardarProgramado(ModalRespuesta: any) {
     this.modalService.dismissAll();
 
-    if(this.idHorario == '0' || this.FechaEnvio == ''){
+    if (this.idHorario == '0' || this.FechaEnvio == '') {
       this.RespuestaModal = 'El campo horario y fecha de envio son obligatorios'
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    }else{
+    } else {
       var auxsector: string = '0';
       var auxOferta: string = '0';
-  
-      if(this.idSector != ''){
+
+      if (this.idSector != '') {
         auxsector = this.idSector
       }
-      if(this.idOferta != ''){
+      if (this.idOferta != '') {
         auxOferta = this.idOferta
       }
 
@@ -215,9 +238,9 @@ export class EnviocorreosComponent implements OnInit {
         IdEstado: 1,
         IdProgramado: 1,
         FechaEnvio: this.datePipe.transform(this.FechaEnvio, 'dd-MM-yyyy'),
-        HorarioEnvio : this.idHorario
+        HorarioEnvio: this.idHorario
       }
-  
+
       this.serviciosplantillacorreos.correoManualMod('3', body).subscribe(resultado => {
         var AuxResu = resultado.split('|')
         this.RespuestaModal = AuxResu[1]
@@ -226,5 +249,31 @@ export class EnviocorreosComponent implements OnInit {
     }
 
   }
-}
 
+  ListCamposObligatorios() {
+    this.serviciosplantillacorreos.constipoblicorreosmanual('2', this.idPlantilla).subscribe(resultado => {
+
+      this.ObligaIdOferta = '1';
+      this.ObligaIdLocalidad = '1';
+      this.ObligaIdSector = '1';
+      this.ObligaIdTipoUsu = '1';
+
+      for (var i = 0; i < resultado.length; i++) {
+
+        if (resultado[i].Id == '1' && resultado[i].IdPlantilla == '1') {
+          this.ObligaIdOferta = '2';
+        }
+        if (resultado[i].Id == '2' && resultado[i].IdPlantilla == '1') {
+          this.ObligaIdLocalidad = '2';
+        }
+        if (resultado[i].Id == '3' && resultado[i].IdPlantilla == '1') {
+          this.ObligaIdSector = '2';
+        }
+        if (resultado[i].Id == '4' && resultado[i].IdPlantilla == '1') {
+          this.ObligaIdTipoUsu = '2';
+        }
+      }
+
+    })
+  }
+}

@@ -78,7 +78,7 @@ export class PlantillacorreosService {
   }
 
   modtipoblicorreomanual(Bandera: string, Body: any) {
-    return this.http.post<any>(this.url_servidor + 'CcormodtipoblicorreomanualreoManual/' + Bandera, Body);
+    return this.http.post<any>(this.url_servidor + 'modtipoblicorreomanual/' + Bandera, Body);
   }
   
 }
