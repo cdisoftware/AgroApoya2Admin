@@ -232,5 +232,9 @@ export class ValorarofertaService {
   TextosOferta(Bandera: string, Bodymod: any) {
     return this.http.post<any>(this.url_servidor + 'TextosOferta/' + Bandera, Bodymod)
   }
+
+  InsertaLinks(Bandera: string, Bodymod: any){
+    return this.http.post<any>(this.url_servidor + 'modclinks/' + Bandera, Bodymod)
+  }
 }
                                                                     
