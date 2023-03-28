@@ -162,11 +162,11 @@
             </div>
             <div class="col-sm-5 mb-3">
                 <label><small>Horario de envio</small></label>
-                <select class="form-control form-control-sm textBox" style="margin-right: 10px;" [(ngModel)]="idSector"
+                <select class="form-control form-control-sm textBox" style="margin-right: 10px;" [(ngModel)]="idHorario"
                     [ngModelOptions]="{standalone: true}">
                     <option value="0" selected>Seleccione Horario...</option>
-                    <option value="{{Respu.SCTOR_OFRTA}}" *ngFor="let Respu of ArregloHorarioTarea">
-                        {{Respu.DSCRPCION_SCTOR}}</option>
+                    <option value="{{Respu.IdProgramado}}" *ngFor="let Respu of ArregloHorarioTarea">
+                        {{Respu.Descripcion}}</option>
                 </select>
             </div>
             <div class="col-1"></div>

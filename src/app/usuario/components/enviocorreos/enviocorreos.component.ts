@@ -98,12 +98,12 @@ export class EnviocorreosComponent implements OnInit {
 
 
   ConsultaHorarioPorgramado() {
-    const descripcion = {
-      "Descripcion": ""
-    }
-    this.sectoresservices.ConsZona('1', '0', '401', '261', descripcion).subscribe(ResultadoCons => {
-      this.ArregloHorarioTarea = ResultadoCons;
+
+    this.sectoresservices.consthorariotarea('1').subscribe(Resultado => {
+      this.ArregloHorarioTarea = Resultado;
+      console.log(Resultado)
     })
+
   }
 
 

@@ -232,5 +232,8 @@ export class ValorarofertaService {
   TextosOferta(Bandera: string, Bodymod: any) {
     return this.http.post<any>(this.url_servidor + 'TextosOferta/' + Bandera, Bodymod)
   }
+
+  consthorariotarea(Bandera: string) {
+    return this.http.get<any>(this.url_servidor + 'consthorariotarea/' + Bandera)
+  }
 }
-                                                                    
