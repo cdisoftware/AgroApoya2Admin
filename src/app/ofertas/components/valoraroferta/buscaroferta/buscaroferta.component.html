@@ -242,14 +242,24 @@
                         <label class="col-sm-11 CentrarText">Resumen</label>
                     </div>
                 </div>
-                <div class="col-sm-1" (click)="PopupEnvio(ModalConfirmaEnvio, oferta)" >
+                <div class="col-sm-1" (click)="PopupEnvio(ModalConfirmaEnvio, oferta, '1')" >
                     <div class="row justify-content-center">
                         <button class="SinEstilo col-sm-11">
                             <img class="BtnimgTamano"
                                 src='./../../../../../assets/ImagenesAgroApoya2Adm/EnvioNotificaciones.png'
-                                title="Enviar notificaciones de oferta">
+                                title="Enviar Correos de oferta">
                         </button>
-                        <label class="col-sm-11 CentrarText">Enviar</label>
+                        <label class="col-sm-11 CentrarText">E-mail</label>
+                    </div>
+                </div>
+                <div class="col-sm-1" (click)="PopupEnvio(ModalConfirmaEnvio, oferta, '2')" >
+                    <div class="row justify-content-center">
+                        <button class="SinEstilo col-sm-11">
+                            <img class="BtnimgTamano"
+                                src='./../../../../../assets/ImagenesAgroApoya2Adm/sms.png'
+                                title="Enviar SMS de oferta">
+                        </button>
+                        <label class="col-sm-11 CentrarText">Sms</label>
                     </div>
                 </div>
             </div>

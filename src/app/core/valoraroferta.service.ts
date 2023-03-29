@@ -236,5 +236,9 @@ export class ValorarofertaService {
   InsertaLinks(Bandera: string, Bodymod: any){
     return this.http.post<any>(this.url_servidor + 'modclinks/' + Bandera, Bodymod)
   }
+
+  ConsultaLinks(Bandera: string, IdOferta: string, IdSector: string){
+    return this.http.get<any>(this.url_servidor + 'consclinksector/' + Bandera + '/' + IdOferta + '/' +IdSector)
+  }
 }
                                                                     
