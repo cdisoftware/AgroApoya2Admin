@@ -62,6 +62,23 @@ export class PlantillacorreosService {
   ConsGenQuery(Bandera: string, Body: any) {
     return this.http.post<any>(this.url_servidor + 'ConsGenQuery/' + Bandera ,Body);
   }
+
+  correoManualMod(Bandera: string, Body: any) {
+    console.log(Body)
+    return this.http.post<any>(this.url_servidor + 'correoManualMod/' + Bandera ,Body);
+  }
    
 
+  CorreosEnviadosConsulta(Bandera: string, IdEnvio: string,IdSector: string, Cd_cnctivo: string,IdPlantilla: string, IdEstado: string,fecha: string) {
+    return this.http.get<any>(this.url_servidor + 'CcorreoManual/' + Bandera + '/' + IdEnvio+ '/' + IdSector+ '/' + Cd_cnctivo+ '/' + IdPlantilla+ '/' + IdEstado+ '/' + fecha);
+  }
+
+  constipoblicorreosmanual(Bandera: string, IdPlantilla: string) {
+    return this.http.get<any>(this.url_servidor + 'constipoblicorreosmanual/' + Bandera + '/' + IdPlantilla);
+  }
+
+  modtipoblicorreomanual(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modtipoblicorreomanual/' + Bandera, Body);
+  }
+  
 }

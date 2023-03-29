@@ -233,6 +233,7 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'TextosOferta/' + Bandera, Bodymod)
   }
 
+
   InsertaLinks(Bandera: string, Bodymod: any){
     return this.http.post<any>(this.url_servidor + 'modclinks/' + Bandera, Bodymod)
   }
@@ -240,5 +241,9 @@ export class ValorarofertaService {
   ConsultaLinks(Bandera: string, IdOferta: string, IdSector: string){
     return this.http.get<any>(this.url_servidor + 'consclinksector/' + Bandera + '/' + IdOferta + '/' +IdSector)
   }
+  
+  consthorariotarea(Bandera: string) {
+    return this.http.get<any>(this.url_servidor + 'consthorariotarea/' + Bandera)
+
+  }
 }
-                                                                    

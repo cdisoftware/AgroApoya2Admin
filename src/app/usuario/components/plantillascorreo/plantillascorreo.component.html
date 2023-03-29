@@ -62,7 +62,7 @@
         </div>
 
         <div class="col-sm-4 mb-3">
-            <select class="form-control form-control-sm textBox" [(ngModel)]="MomentoEnvioForm"
+            <select class="form-control form-control-sm textBox" [(ngModel)]="MomentoEnvioForm" (change)="changeMomentoEnvioForm()"
                 [ngModelOptions]="{standalone: true}" title="Seleccionar el momento de envio">
                 <option value="0" selected>Seleccione momento envio...</option>
                 <option value="{{Respu.idMomentoEnvio}}" *ngFor="let Respu of arregloListaMomentoEnvio">
@@ -89,15 +89,36 @@
                 <small>{{caracteresDescForm}}</small>
             </label>
         </div>
-        <div class="col-12">
-            <textarea class="form-control form-control-sm textArea" rows="3" maxlength="2000" 
-                placeholder="Query auxiliar de filtrado para el envio" title="Descripción" [(ngModel)]="queryForm"
-                [ngModelOptions]="{standalone: true}" (keyup)="CaracteresQuery()"></textarea>
-            <label class="w-100 text-secondary text-right">
-                <small>{{caracteresQueryForm}}</small>
-            </label>
+
+        <div style="padding: 25px !important;" *ngIf="verOcultarManual == '2'">
+            <div style="border: 1px solid #EDEDED; padding: 25px !important; border-radius: 10px; background-color: #FAFAFA;">
+                <div class="row">
+                    <div class="col-12"><h2>Parametrización envio correos manuales</h2> </div>
+                    <div class="col-sm-12 mb-3 mt-2">
+                        <small>Campos obligatorios para el envio de correo manual, generador de Query </small>
+                        <br>
+                        <div class="row">
+                            <div class="col-4" *ngFor="let arrelo of arregloCamposObligatorios">
+                                <input type="checkbox" [checked]="arrelo.IdPlantilla == '1'" id="{{arrelo.Id}}">
+                                <label style="margin-left: 5px;">{{arrelo.Descripcion}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-2"  >
+                        <label><strong><small>select USUCODIG, CORREO_PERSONA from AGRO_PERSONAS d WHERE 1=1</small></strong></label>
+                        <textarea class="form-control form-control-sm textArea" rows="5" maxlength="2000" 
+                            placeholder="Query auxiliar de filtrado para el envio" title="Descripción" [(ngModel)]="queryForm"
+                            [ngModelOptions]="{standalone: true}" (keyup)="CaracteresQuery()"></textarea>
+                        <label class="w-100 text-secondary text-right">
+                            <small>{{caracteresQueryForm}}</small>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        
+
+
         <br>
         <div class="row br">
             <div class="displayFlexStar col-12 mb-3">

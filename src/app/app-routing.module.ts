@@ -21,6 +21,7 @@ import { SeguimientoComponent } from './ofertas/components/seguimiento/seguimien
 import { CarruselofertasComponent } from './ofertas/components/carruselofertas/carruselofertas.component';
 import { ComboofertasComponent } from './ofertas/components/comboofertas/comboofertas.component';
 import { EnviocorreosComponent } from './usuario/components/enviocorreos/enviocorreos.component';
+import { ConsultacorreosComponent } from './usuario/components/consultacorreos/consultacorreos.component';
 
 const routes: Routes = [
   {
@@ -114,6 +115,10 @@ const routes: Routes = [
       {
         path: 'enviocorreos',
         component: EnviocorreosComponent
+      },
+      {
+        path: 'consultacorreos',
+        component: ConsultacorreosComponent
       }
     ]
   },

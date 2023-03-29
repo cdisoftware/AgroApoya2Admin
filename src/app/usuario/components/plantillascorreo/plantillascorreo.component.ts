@@ -26,6 +26,7 @@ export class PlantillascorreoComponent implements OnInit {
   arregloListaPlantillaCorreo: any;
   arregloListaAdjuntos: any;
   arregloElimina: any;
+  arregloCamposObligatorios: any;
 
   IdCampo: string = '';
   CampoDesc: string = '';
@@ -52,11 +53,12 @@ export class PlantillascorreoComponent implements OnInit {
   IdUsuario: string = '';
   IdPlantilla: string = '';
 
+  verOcultarManual: string = '1';
 
   // 1 solo muestra los campos de los filtros,
   // 2 Muestra los campos para la creacion de una plantilla
   // 3 Muestra todo el contenido actualizar plantilla
-  VerOcultarCampos: string = ''; 
+  VerOcultarCampos: string = '';
 
   constructor(
     public cookies: CookieService,
@@ -121,6 +123,14 @@ export class PlantillascorreoComponent implements OnInit {
     })
   }
 
+  ListCamposObligatorios() {
+    this.arregloCamposObligatorios = [];
+    this.serviciosplantillacorreos.constipoblicorreosmanual('2', this.IdPlantilla).subscribe(resultado => {
+      this.arregloCamposObligatorios = resultado;
+      console.log(resultado)
+    })
+  }
+
   BuscarPlantilla(modalBuscar: any, modalmensaje: any) {
     var AuxNombre: string;
     if (this.NombrePlantillaBuscar == undefined || this.NombrePlantillaBuscar == null) {
@@ -135,7 +145,7 @@ export class PlantillascorreoComponent implements OnInit {
       IdTipoPlantilla: this.IdListaplantillaBuscar,
       IdPlantilla: 0
     }
-    
+
     this.serviciosplantillacorreos.ConsultaPlatillaCorreo('1', body).subscribe(resultado => {
       console.log(resultado)
       if (resultado.length == 0) {
@@ -149,7 +159,9 @@ export class PlantillascorreoComponent implements OnInit {
   }
 
   SeleccionarPlantillaModal(arregloPlantilla: any) {
-    this.VerOcultarCampos = '3'; 
+
+    console.log(arregloPlantilla)
+    this.VerOcultarCampos = '3';
     this.IdPlantilla = arregloPlantilla.IdPlantilla;
 
     this.NombrePlantillaForm = arregloPlantilla.NombrePlantilla;
@@ -161,6 +173,7 @@ export class PlantillascorreoComponent implements OnInit {
     this.Imagencabeza = arregloPlantilla.ImgEncabezado;
     this.ImagenPie = arregloPlantilla.ImgPie;
     this.HtmlForm = arregloPlantilla.html
+    this.queryForm = arregloPlantilla.Query;
 
     this.serviciosplantillacorreos.ConsultaDocumentoCorreo('1', this.IdPlantilla).subscribe(resultado => {
       if (resultado != null && resultado != undefined) {
@@ -174,6 +187,7 @@ export class PlantillascorreoComponent implements OnInit {
     this.CaracteresDescripcion();
     this.CaracteresHtmlDos(null);
     this.CaracteresQuery();
+    this.ListCamposObligatorios();
 
     this.modalService.dismissAll();
   }
@@ -189,9 +203,12 @@ export class PlantillascorreoComponent implements OnInit {
         this.arregloCamposCorreo = resultado;
       })
     }
+
+    this.changeMomentoEnvioForm();
   }
 
   CrearPlantilla() {
+    this.IdPlantilla = '0';
     this.VerOcultarCampos = '2';
     this.NombrePlantillaForm = '';
     this.TipoPlantillaForm = '0';
@@ -242,7 +259,7 @@ export class PlantillascorreoComponent implements OnInit {
         html: '',
         imgEncabezado: this.Imagencabeza,
         imgPiePagina: this.ImagenPie,
-        Query : this.queryForm
+        Query: this.queryForm
       }
       this.serviciosplantillacorreos.ModPlantillaCorreo('3', body).subscribe(resultado => {
         if (resultado == 'OK') {
@@ -258,20 +275,23 @@ export class PlantillascorreoComponent implements OnInit {
   }
 
   EstasSeguro(arreglo: any, templateEstasSeguro: any) {
+    this.arregloElimina = arreglo;
+
     this.RespuestaModal = "Estas a punto de eliminar la plantilla  " + arreglo.NombrePlantilla + " estas seguro?";
     this.modalService.open(templateEstasSeguro, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
   }
 
   BtnEliminarPlantilla(templateMensaje: any) {
     this.modalService.dismissAll();
+    console.log(this.arregloElimina)
     const body = {
       idplantilla: this.arregloElimina.IdPlantilla,
       NombrePlantilla: '',
       idTipoPlantilla: this.arregloElimina.TipoPlantillaForm,
     }
     this.serviciosplantillacorreos.ModPlantillaCorreo('5', body).subscribe(resultado => {
+      console.log(resultado)
       this.RespuestaModal = resultado;
-      this.RespuestaModal = "Eliminación de plantilla correcta.";
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     })
 
@@ -315,13 +335,14 @@ export class PlantillascorreoComponent implements OnInit {
         html: '',
         imgEncabezado: this.Imagencabeza,
         imgPiePagina: this.ImagenPie,
-        Query : this.queryForm
+        Query: this.queryForm
       }
       this.serviciosplantillacorreos.ModPlantillaCorreo('2', body).subscribe(resultado => {
-        if (resultado == 'OK') {
+        if (resultado == 'Se realizo la actualización correctamente.') {
           this.RespuestaModal = "Se realizo la actualización correctamente.";
           this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
           this.VerOcultarCampos = '1';
+          this.GuardarObligatorierdad();
         } else {
           this.RespuestaModal = resultado;
           this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -471,7 +492,7 @@ export class PlantillascorreoComponent implements OnInit {
         html: elemttres.innerHTML,
         imgEncabezado: this.Imagencabeza,
         imgPiePagina: this.ImagenPie,
-        Query : this.queryForm
+        Query: this.queryForm
       }
       console.log(bodyhtml)
       this.serviciosplantillacorreos.ModPlantillaCorreo('4', bodyhtml).subscribe(resultado => {
@@ -518,4 +539,44 @@ export class PlantillascorreoComponent implements OnInit {
 
   }
 
+  changeMomentoEnvioForm() {
+    if (this.TipoPlantillaForm == '2' && this.MomentoEnvioForm == '2') {
+      this.verOcultarManual = '2';
+    } else {
+      this.verOcultarManual = '1';
+    }
+
+    console.log('momento encio')
+    console.log(this.MomentoEnvioForm)
+    console.log('tipo plnatilla')
+    console.log(this.TipoPlantillaForm)
+  }
+
+  GuardarObligatorierdad() {
+
+    for (var i = 0; i < this.arregloCamposObligatorios.length; i++) {
+
+      var auxValue: string;
+      var elementCheked = <HTMLInputElement>document.getElementById(this.arregloCamposObligatorios[i].Id);
+     
+      if (elementCheked != null) {
+        if (elementCheked.checked == true) {
+          auxValue = '3';
+        } else {
+          auxValue = '4';
+        }
+
+        const body = {
+          Id: this.arregloCamposObligatorios[i].Id,
+          IdPlantilla: this.IdPlantilla
+        }
+
+        console.log(body)
+          this.serviciosplantillacorreos.modtipoblicorreomanual(auxValue, body).subscribe(resultado => {
+            console.log(resultado);
+          })
+
+      }
+    }
+  }
 }

@@ -7,52 +7,65 @@
         <div class="col-sm-4 mb-3" style="display: flex;">
             <select class="form-control form-control-sm textBox" style="margin-right: 10px;" [(ngModel)]="idPlantilla"
                 [ngModelOptions]="{standalone: true}" (change)="ChangePlantillaCorreo()">
-                <option value="" selected>Seleccione momento envio...</option>
+                <option value="" selected>Seleccione plantilla...</option>
                 <option value="{{Respu.IdPlantilla}}" *ngFor="let Respu of ArregloPlantilla">
                     {{Respu.NombrePlantilla}}</option>
             </select>
-            <img src="../../../../assets/ImagenesAgroApoya2Adm/ver.png" width="30px" height="30px" 
-            class="m-auto" style="cursor:pointer" (click)="PrevisualizarPlantillaModal(ModalPrevisualizacion,ModalRespuesta)">
+            <img src="../../../../assets/ImagenesAgroApoya2Adm/ver.png" width="30px" height="30px" class="m-auto"
+                style="cursor:pointer" (click)="PrevisualizarPlantillaModal(ModalPrevisualizacion,ModalRespuesta)">
         </div>
         <div class="col-sm-4 mb-3">
-            <input type="number" 
-                class="form-control form-control-sm textBox" placeholder="id oferta"
+            <input type="number" class="form-control form-control-sm textBox" placeholder="Número oferta"
                 [(ngModel)]="idOferta" [ngModelOptions]="{standalone: true}">
         </div>
         <div class="col-sm-4 mb-3">
-            <input type="number" 
-                class="form-control form-control-sm textBox" placeholder="id sector"
-                [(ngModel)]="idSector" [ngModelOptions]="{standalone: true}">
+            <select class="form-control form-control-sm textBox" style="margin-right: 10px;" [(ngModel)]="idZona"
+                [ngModelOptions]="{standalone: true}" (change)="ChangeLocalidad()">
+                <option value="0" selected>Seleccione Localidad...</option>
+                <option value="{{Respu.id}}" *ngFor="let Respu of ArregloZona">
+                    {{Respu.Descripcion}}</option>
+            </select>
         </div>
+        <div class="col-sm-4 mb-3">
+            <select class="form-control form-control-sm textBox" style="margin-right: 10px;" [(ngModel)]="idSector"
+                [ngModelOptions]="{standalone: true}">
+                <option value="0" selected>Seleccione Sector...</option>
+                <option value="{{Respu.SCTOR_OFRTA}}" *ngFor="let Respu of ArregloSector">
+                    {{Respu.DSCRPCION_SCTOR}}</option>
+            </select>
+        </div>
+
         <div class="col-sm-4 mb-3" style="display: flex;">
-            <select class="form-control form-control-sm textBox" style="margin-right: 10px;" 
-            [(ngModel)]="IdTipoPersona" [ngModelOptions]="{standalone: true}" >
-                <option value="" selected>Seleccione momento envio...</option>
+            <select class="form-control form-control-sm textBox" style="margin-right: 10px;" [(ngModel)]="IdTipoPersona"
+                [ngModelOptions]="{standalone: true}">
+                <option value="0" selected>Seleccione tipo de usuario...</option>
                 <option value="1" selected>Campesino / Productor</option>
                 <option value="3" selected>Transportista</option>
                 <option value="2" selected>Cliente institucional</option>
             </select>
         </div>
-        <div class="col-sm-4 mb-3" style="display: flex;">
-            <input type="number"  style="margin-right: 10px;"
-            class="form-control form-control-sm textBox" placeholder="Nombre/correo"
-            [(ngModel)]="correoPersona" [ngModelOptions]="{standalone: true}">
-            <img src="../../../../assets/ImagenesAgroApoya2Adm/buscar.png" width="30px" height="30px" class="m-auto" style="cursor:pointer">
-        </div>
 
-        <div class="row justify-content-center mt-3" >
+        <div class="row justify-content-center mt-3">
             <div class="col-sm-12 text-center">
                 <button class="col-sm-3 btn btn-agro-prin" title="Agregar nueva plantilla"
-                (click)="  GenerarQuey(ModalRespuesta)"
-                >Crear query envio</button>
+                    (click)="  GenerarQuey(ModalRespuesta)">Crear query envio</button>
             </div>
         </div>
 
         <div class="col-12 mb-3 mt-3" *ngIf="verOcultarCampos != 1">
-            <label style="margin-left: 10px; margin-right: 10px;"><small><strong>Select * from agro_personas where 1 = 1</strong></small></label>
+            <label style="margin-left: 10px; margin-right: 10px;"><small><strong>Select * from agro_personas d where 1 =
+                        1</strong></small></label>
             <textarea class="form-control form-control-sm textArea mt-2" rows="3" maxlength="500" minlength="3"
                 placeholder="Query de envio de correos" [(ngModel)]="Query"
-                [ngModelOptions]="{standalone: true}" ></textarea>
+                [ngModelOptions]="{standalone: true}" disabled="true" ></textarea>
+
+            <div class="row justify-content-center mt-3">
+                <div class="col-sm-12 text-center">
+                    <button class="col-sm-3 btn btn-agro-prin" title="Agregar nueva plantilla"
+                        (click)="ContinuarCorreo(ModalEnvioCorreos)">Continuar</button>
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -75,7 +88,7 @@
     <div class="row justify-content-center">
         <div class="row col-sm-12 text-center justify-content-center">
             <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
-            (click)="modal.close()">Aceptar</button>
+                (click)="modal.close()">Aceptar</button>
             <div class="col-1"> </div>
         </div>
     </div>
@@ -101,6 +114,74 @@
             <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
                 (click)="modal.close()">Aceptar</button>
         </div>
+    </div>
+    <br>
+</ng-template>
+
+<!-- Template Modal guardar correo-->
+<ng-template #ModalEnvioCorreos let-modal>
+    <div class="modal-header">
+        <h1>AgroApoya2</h1>
+        <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
+            (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row ">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">Vas a generar el correo con la siguiente informacion</h2>
+                <br>
+                <label><strong>Plantilla: </strong> {{ArregloPlantillaUnica.NombrePlantilla}}</label>
+                <br>
+                <label><strong>Query: </strong> {{Query}}</label>
+                <br><br>
+                <h2 class="TituloDetalle">¿Cuando deseas enviar el correo?</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button (keyup.enter)="modal.close()" type="button" class="col-sm-4 btn btn-agro-prin"
+            (click)="EnvioCorreoManual(ModalRespuesta)">Enviar Ahora</button>
+        <div class="col-1 text-center"></div>
+        <button (keyup.enter)="modal.close()" type="button" class="col-sm-4 btn btn-agro-prin"
+        (click)="ProgramarCorreo(ModalProgramado)">Programar envio</button>
+    </div>
+    <br>
+</ng-template>
+
+<!-- Template Modal Programar envio-->
+<ng-template #ModalProgramado let-modal>
+    <div class="modal-header">
+        <h1>AgroApoya2</h1>
+        <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
+            (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row ">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">Selecciona el horario de envio</h2>
+            </div>
+            <div class="col-sm-5 mb-3">
+                <label><small>Horario de envio</small></label>
+                <select class="form-control form-control-sm textBox" style="margin-right: 10px;" [(ngModel)]="idHorario"
+                    [ngModelOptions]="{standalone: true}">
+                    <option value="0" selected>Seleccione Horario...</option>
+                    <option value="{{Respu.IdProgramado}}" *ngFor="let Respu of ArregloHorarioTarea">
+                        {{Respu.Descripcion}}</option>
+                </select>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-sm-5 mb-3">
+                <label><small>Fecha de envio</small></label>
+                <input type="date" style="margin-right: 10px;" class="form-control form-control-sm textBox" 
+                [(ngModel)]="FechaEnvio" >
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button (keyup.enter)="modal.close()" type="button" class="col-sm-4 btn btn-agro-prin"
+        (click)="GuardarProgramado(ModalRespuesta)"
+        >Guardar</button>
+        <div class="col-1 text-center"></div>
     </div>
     <br>
 </ng-template>
