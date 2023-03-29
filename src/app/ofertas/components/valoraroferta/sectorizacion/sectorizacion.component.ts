@@ -161,7 +161,7 @@ export class SectorizacionComponent implements OnInit {
   ConsultaSectorPoligono(idsector: string) {
 
     this.sectoresservices.ModificaSectorPoligono('3', idsector).subscribe(ResultadoCons => {
-     // console.log(ResultadoCons);
+      // console.log(ResultadoCons);
       //{ID: 0, ID_SCTOR_OFRTA: 408, LTTUD: '4.729601477155', LNGTUD: '-74.0690865847988'}
       var aux = ResultadoCons.split('|');
       this.sectoresservices.ConsultaUsuarioSector('3', aux[0]).subscribe(ResultadoCons => {
@@ -226,10 +226,10 @@ export class SectorizacionComponent implements OnInit {
       for (let i = 0; i < ResultConsulta.length; i++) {
         this.CantidadSectores += ResultConsulta[i].CNTDAD;
       }
-      if((this.Cant + this.CantidadSectores) > this.SessionCantSecOferta){
+      if ((this.Cant + this.CantidadSectores) > this.SessionCantSecOferta) {
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
         this.Respuesta = 'Las cantidades a asignar superan las disponibles de la oferta, favor valida tu información.';
-      }else if (this.CantidadSectores >= this.SessionCantSecOferta) {
+      } else if (this.CantidadSectores >= this.SessionCantSecOferta) {
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
         this.Respuesta = 'Las cantidades totales de la oferta ya fueron asignadas, no es posible asignar mas sectores.';
       }
@@ -486,11 +486,11 @@ export class SectorizacionComponent implements OnInit {
   }
   BlurCantidad(ModalRespuesta: any) {
     console.log(this.UserSector)
-    if(this.CantidadDispinible >= Number(this.Cant)){
+    if (this.CantidadDispinible >= Number(this.Cant)) {
       if (this.ZonaAsignaSector != "" && this.ZonaAsignaSector != "0") {
         this.seleczona = '1';
       }
-    }else{
+    } else {
       this.Cant = "";
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title' });
       this.Respuesta = 'La cantidad seleccionada supera la cantidad disponible para la oferta.';
@@ -588,12 +588,27 @@ export class SectorizacionComponent implements OnInit {
             })
           }
           this.EnviarSms('4');
+          this.InsertaLinks();
         }
       })
+
+      
+
     }
     else {
       this.Respuesta = 'Las cantidades totales de la oferta aun no han sido asignadas, favor valida tu información.';
     }
+  }
+
+  InsertaLinks(){
+    const DatosLink = {
+      CD_CNSCTVO: this.SessionOferta,
+      PRFJO_URL: this.ServiciosGenerales.RecuperarRutaAmbiente()
+    }
+    console.log(DatosLink)
+    this.sectoresservices.InsertaLinks('3', DatosLink).subscribe(Resultado => {
+      console.log(Resultado)
+    })
   }
 
   ValidaCerrar(ModalRespuesta: any) {

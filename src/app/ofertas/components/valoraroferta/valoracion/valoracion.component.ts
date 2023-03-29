@@ -105,8 +105,11 @@ export class ValoracionComponent implements OnInit {
   Previsucorreo: string = '';
   EnvioCorreo: boolean = false;
   EnvioSms: boolean = false;
-  UrlPubli : string = '';
-  UrlParticipante : string = '';
+  UrlPubli: string = '';
+  UrlParticipante: string = '';
+  IdOferta: string;
+  UrlParticipanteC: any;
+  UrlPubliC: any;
 
 
   constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
@@ -453,13 +456,16 @@ export class ValoracionComponent implements OnInit {
 
   ConsultaVigenciaOferta() {
     this.serviciosvaloracion.ConsultaVigenciaOferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultCons => {
-      //console.log(ResultCons)
-      this.VigenDesde = ResultCons[0].vgncia_desde;
-      this.VigenHasta = ResultCons[0].vgncia_hasta;
-      this.HoraIni = ResultCons[0].hora_desde;
-      this.HoraFin = ResultCons[0].hora_hasta;
-      this.FechaEntrega = ResultCons[0].fcha_vgncia;
-      this.Observaciones = ResultCons[0].observaciones;
+      console.log(ResultCons)
+      if (ResultCons.length > 0) {
+        this.VigenDesde = ResultCons[0].vgncia_desde;
+        this.VigenHasta = ResultCons[0].vgncia_hasta;
+        this.HoraIni = ResultCons[0].hora_desde;
+        this.HoraFin = ResultCons[0].hora_hasta;
+        this.FechaEntrega = ResultCons[0].fcha_vgncia;
+        this.Observaciones = ResultCons[0].observaciones;
+      }
+
     })
   }
 
@@ -659,17 +665,37 @@ export class ValoracionComponent implements OnInit {
   }
 
   selectSector(item: any) {
+    console.log(item)
     this.ValidaVigencia = '1';
     this.CodigoOferSector = item.COD_OFERTA_SECTOR;
     this.VlrFletSect = item.VLOR_FLTE_SGRDOForm;
     this.SessionCantSector = item.CNTDAD
     this.SessionSectorSel = item.ID_SCTOR_OFRTA
+    this.IdOferta = item.CD_CNSCTVO;
     this.ConsultaVigenciaOferta();
     this.consultaToppingsOferta();
+    this.ConsultaLinks();
 
 
-    this.UrlPubli =  this.SeriviciosGenerales.RecuperarRutaAmbiente() +'home/compras?ido='+ this.SessionOferta+'&idu=0&tu=2&ids='+this.SessionSectorSel+'&idc=1&itc=1&or=1';
-    this.UrlParticipante =  this.SeriviciosGenerales.RecuperarRutaAmbiente() +'home/compras?ido='+ this.SessionOferta+'&idu=0&tu=2&ids='+this.SessionSectorSel+'&idc=1&itc=1';
+    //this.UrlPubli = this.SeriviciosGenerales.RecuperarRutaAmbiente() + 'home/compras?ido=' + this.SessionOferta + '&idu=0&tu=2&ids=' + this.SessionSectorSel + '&idc=1&itc=1&or=1';
+    //this.UrlParticipante = this.SeriviciosGenerales.RecuperarRutaAmbiente() + 'home/compras?ido=' + this.SessionOferta + '&idu=0&tu=2&ids=' + this.SessionSectorSel + '&idc=1&itc=1';
+  }
+
+  ConsultaLinks() {
+    
+    this.serviciosvaloracion.ConsultaLinks('1', this.IdOferta, this.SessionSectorSel).subscribe(Resultado => {
+      console.log('------------------*')
+      console.log(Resultado)
+      for(var i = 0; Resultado.length >= i; i++){
+        if(Resultado[i].Tipo_Link == '1'){
+          this.UrlParticipante = Resultado[i].link_largo;
+          this.UrlParticipanteC = Resultado[i].link_corto;
+        }else if(Resultado[i].Tipo_Link == '2'){
+          this.UrlPubli = Resultado[i].link_largo;
+          this.UrlPubliC = Resultado[i].link_corto;
+        }
+      }
+    })
   }
 
   selectTipOferta(item: any) {
@@ -1357,10 +1383,10 @@ export class ValoracionComponent implements OnInit {
 
   PublicaOferta(templateMensaje: any) {
 
-    if(this.imagenesCorreo == null || this.imagenesCorreo == ''){
+    if (this.imagenesCorreo == null || this.imagenesCorreo == '') {
       this.Respuesta = 'Es obligatoria la imagen del correo, porfavor subela.';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
-    }else{
+    } else {
       const Body = {
         usucodig: this.SessionIdUsuario,
         cnctivoOferta: this.SessionOferta,

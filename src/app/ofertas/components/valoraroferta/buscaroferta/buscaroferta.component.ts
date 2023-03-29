@@ -114,6 +114,7 @@ export class BuscarofertaComponent implements OnInit {
   //Tazabilidad
   Trazabilidad: any = [];
   ValidaEnvio: any = '';
+  AccionEnvio: string;
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -372,29 +373,39 @@ export class BuscarofertaComponent implements OnInit {
     });
   }
 
-  PopupEnvio(ModalEnvio: any, oferta: any) {
-    console.log(oferta)
+  PopupEnvio(ModalEnvio: any, oferta: any, accion: string) {
+    this.AccionEnvio = accion;
     this.modalService.dismissAll();
-    this.Respuesta = 'Estas seguro de enviar los correos y mensajes de texto de la oferta: ' + oferta.Nombre_Producto + ' ' + oferta.COD_OFR_PUBLICO
+    if (this.AccionEnvio  == '1'){
+      this.Respuesta = 'Estas seguro de enviar los correos de la oferta: ' + oferta.Nombre_Producto + ' ' + oferta.COD_OFR_PUBLICO
+    }else{
+      this.Respuesta = 'Estas seguro de enviar los mensajes de texto de la oferta: ' + oferta.Nombre_Producto + ' ' + oferta.COD_OFR_PUBLICO
+    }
+      
     this.modalService.open(ModalEnvio, { ariaLabelledBy: 'modal-basic-title', size: 'lg', centered: true, backdrop: 'static', keyboard: false });
   }
 
   AceptaEnviar() {
-    this.EnviaNotificaciones(this.DataSectores);
+    this.EnviaNotificaciones(this.DataSectores, this.AccionEnvio );
     this.modalService.dismissAll();
   }
 
-  EnviaNotificaciones(ArraySectores: any) {
+  EnviaNotificaciones(ArraySectores: any, accion: string) {
     if (ArraySectores.length > 0) {
-      for (var i = 0; i < ArraySectores.length; i++) {
-        alert(ArraySectores[i].ID_SCTOR_OFRTA + '/' + this.IdOferta)
-        this.ServiciosValorar.EnviarSms('7', '0', this.IdOferta, ArraySectores[i].ID_SCTOR_OFRTA, '0', '0', '0').subscribe(Resultado => {
-          console.log(Resultado)
-        })
-        this.ServiciosValorar.CorreoMasivo('1', '9', '2', this.IdOferta, ArraySectores[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
-          console.log(ResultCorreo)
-        })
+      if(accion == '1'){
+        for (var i = 0; i < ArraySectores.length; i++) {
+          this.ServiciosValorar.CorreoMasivo('1', '9', '2', this.IdOferta, ArraySectores[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
+            console.log(ResultCorreo)
+          })
+        }
+      }else{
+        for (var i = 0; i < ArraySectores.length; i++) {
+          this.ServiciosValorar.EnviarSms('7', '0', this.IdOferta, ArraySectores[i].ID_SCTOR_OFRTA, '0', '0', '0').subscribe(Resultado => {
+            console.log(Resultado)
+          })
+        }
       }
+      
     }
   }
 

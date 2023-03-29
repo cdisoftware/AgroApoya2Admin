@@ -80,7 +80,7 @@ export class MetodosglobalesService {
     }
   }
 
-  RecuperarRutaAmbiente() {
+    RecuperarRutaAmbiente() {
     if(this.ambientedetrabajo == '1'){
       var ruta = 'http://190.147.38.91:8881/#/';
     }else{
