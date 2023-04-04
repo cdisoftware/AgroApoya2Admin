@@ -10,3 +10,16 @@ th{
 .overflow{
     overflow: auto;
 }
+.textrigt{
+    text-align: right !important;
+}
+.imgpdf{
+    width: 32px;
+    height: 32px;
+}
+.hrfirma{
+    margin-top: 20px;
+}
+.dvfirma{
+    padding: 0;
+}

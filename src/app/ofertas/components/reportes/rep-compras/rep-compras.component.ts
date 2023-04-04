@@ -4,6 +4,9 @@ import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 import * as fs from 'file-saver';
 import { Workbook } from 'exceljs'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CookieService } from 'ngx-cookie-service';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 
 @Component({
@@ -14,7 +17,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class RepComprasComponent implements OnInit {
   Filacompra: any = [];
 
-  constructor(private serviciosoferta: ValorarofertaService, private serviciosreportes: ReporteService, private modalservices: NgbModal) { }
+  constructor(private serviciosoferta: ValorarofertaService, private serviciosreportes: ReporteService, private modalservices: NgbModal, public cookies: CookieService) { }
+
+  IdUsuario: string = '';
 
   OferFiltro: string = '';
   DataSectores: any = [];
@@ -47,7 +52,11 @@ export class RepComprasComponent implements OnInit {
   //Grilla
   Siguiente: boolean = false;
 
+  //Factura
+  DataParticipantes: any = [];
+
   ngOnInit(): void {
+    this.IdUsuario = this.cookies.get('IDU');
     this.ValidaConsulta = '1';
     this.txtValidaCons = 'No se encuentran registros segun los filtros utilizados, favor valida tu información';
     this.ConsultaSectores();
@@ -282,5 +291,46 @@ export class RepComprasComponent implements OnInit {
     } else if (this.Siguiente == false) {
       this.Siguiente = true;
     }
+  }
+
+
+  //Factura
+  Cargadetallesfactura(compra: any, modaldetalle: any) {
+    this.modalservices.open(modaldetalle, { size: "md" })
+    
+    this.serviciosreportes.ConsultaParticipantesGrupo('1', '324', '0'/* this.IdUsuario*/).subscribe(ResultConst => {
+      console.log(ResultConst)
+      if (ResultConst.length > 0) {
+        this.DataParticipantes = ResultConst;
+      }
+      else {
+        this.DataParticipantes = [];
+      }
+    })
+  }
+
+  DescargaPDF() {
+    const doc = new jsPDF('p', 'pt', 'a4');
+    const options = {
+      background: 'white',
+      scale: 3
+    };
+
+
+    var DATAg = document.getElementById('htmlData_');
+    if (DATAg != null) {
+      html2canvas(DATAg, options).then((canvas) => {
+        var imgDos = canvas.toDataURL('image/PNG');
+        var imgPropDso = (doc as any).getImageProperties(imgDos);
+
+        var pdfWidthDso = doc.internal.pageSize.getWidth() - 2 * 15;
+        var pdfHeightDso = (imgPropDso.height * pdfWidthDso) / imgPropDso.width;
+
+        doc.addImage(imgDos, 'PNG', 15, 15, pdfWidthDso, pdfHeightDso, undefined, 'FAST');
+
+        doc.save('Descargar.pdf');
+      })
+    }
+    this.modalservices.dismissAll();
   }
 }

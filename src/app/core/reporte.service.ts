@@ -34,7 +34,12 @@ export class ReporteService {
     return this.http.get<any>(this.url_servidor + 'consctipotransport/' + Bandera + '/' + usuCodigo)
   }
   ConsultaComprasXOfer(Bandera: string, cd_cnscutivo: string, IdSector: string, IdCompra: string, IdPago:string, body: any) {
+    console.log(this.url_servidor + 'conscreporteventas/' + Bandera + '/' + cd_cnscutivo + '/' + IdSector + '/' + IdCompra + '/' + IdPago)
+    console.log(body)
     return this.http.post<any>(this.url_servidor + 'conscreporteventas/' + Bandera + '/' + cd_cnscutivo + '/' + IdSector + '/' + IdCompra + '/' + IdPago, body)
+  }
+  ConsultaParticipantesGrupo(Bandera: string, IdGrupo: string, Usucodig: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscparticipantegrupo/' + Bandera + '/' + IdGrupo + '/' + Usucodig)
   }
 
   //Métodos para descargar el Excel

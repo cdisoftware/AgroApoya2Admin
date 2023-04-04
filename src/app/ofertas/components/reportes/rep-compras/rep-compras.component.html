@@ -139,12 +139,17 @@
             <td *ngIf="Siguiente == true">{{oferta.CELULAR_PERSONA}}</td>
             <td *ngIf="Siguiente == true" class="overflow">
 
-                    {{oferta.CORREO_PERSONA}}
+                {{oferta.CORREO_PERSONA}}
 
             </td>
-            <td (click)="DetalleCompra(oferta, ModalDetalle)">
-                <button class="SinEstilo">
+            <td>
+                <button class="SinEstilo" (click)="DetalleCompra(oferta, ModalDetalle)">
                     <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/info.png" alt="">
+                </button>
+
+                <button class="SinEstilo" *ngIf="oferta.TIPO_USUARIO_COMPRA == 'Lider'"
+                    (click)="Cargadetallesfactura(oferta, ModalFactura)">
+                    <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_factura.png" alt="">
                 </button>
             </td>
         </tr>
@@ -264,6 +269,68 @@
     <br>
     <div class="row justify-content-center">
         <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
+
+<ng-template #ModalFactura let-modal>
+    <div class="modal-header">
+        <h1>Factura de compra</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body" id="htmlData_">
+        <div class="row" *ngFor="let part of DataParticipantes; let i = index">
+            <h6 class="textblue CentrarText" [ngClass]="{'mt-3': i != 0}">
+                <strong>{{part.NombrePersona}}</strong>
+            </h6>
+
+            <label class="Llave">{{part.DesProducto}}</label>
+
+
+            <label class="Llave" *ngIf="part.DescToppings != ''">Adicionales</label>
+            <label class="Valor" *ngIf="part.DescToppings != ''">{{part.DescToppings}}</label>
+
+            <div class="col-sm-6">
+                <label class="Llave">Unidades</label>
+                <label class="Valor">{{part.UndsCmpradas}}</label>
+            </div>
+
+            <div class="col-sm-6 textrigt">
+                <label class="Llave">Telefono:&nbsp;</label>
+                <label class="Valor">{{part.CelularPersona}}</label>
+            </div>
+
+            <div class="col-sm-6">
+                <label class="Llave">Estado Pago:&nbsp;</label>
+                <label class="Valor">{{part.DesEstadoPago}}</label>
+            </div>
+
+            <div class="col-sm-6 textrigt">
+                <label class="Llave">Precio:&nbsp;</label>
+                <label class="Valor">{{part.DesEstadoPago}}</label>
+            </div>
+            <hr class="hrSinEstilo" *ngIf="(i + 1) != DataParticipantes.length">
+
+
+            
+        </div>
+        <div class="row mt-5">
+            <div class="col-2">
+                <label class="Llave">Firma:&nbsp;</label>
+            </div>
+            <div class="col-10 dvfirma">
+                <hr class="hrSinEstilo hrfirma">
+            </div>
+        </div>
+    </div>
+    
+
+    <br>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-4" (click)="DescargaPDF()">Imprimir
+            <img src="../../../../../assets/ImagenesAgroApoya2Adm/ic_pdf.png" class="imgpdf" />
+        </button>
     </div>
     <br>
 </ng-template>
