@@ -1,0 +1,108 @@
+<br>
+<div class="container bg-white">
+    <br>
+    <h1 class="br">Consulta correos manuales</h1>
+    <br>
+    <div class="row mt-4 mb-3">
+        <div class="col-sm-4 mb-3">
+            <select class="form-control form-control-sm textBox" style="margin-right: 10px;" 
+            [ngModelOptions]="{standalone: true}" [(ngModel)]="IdEstadoBus" >
+                <option value="0" selected>Seleccione estado...</option>
+                <option value="1" selected>Programado</option>
+                <option value="2" selected>Enviado</option>
+                <option value="3" selected>Cancelado</option>
+            </select>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-3">
+        <div class="col-sm-12 text-center">
+            <button class="col-sm-3 btn btn-agro-prin" title="Agregar nueva plantilla" (click)="CargarCorreosEnviados()">
+                Buscar</button>
+        </div>
+    </div>
+    <br /> <br />
+    <div class="row">
+        <div class="col-sm-4"><label><strong><small>NOMBRE PLANTILLA</small></strong></label></div>
+        <div class="col-sm-3"><label><strong><small>OFERTA</small></strong></label></div>
+        <div class="col-sm-3"><label><strong><small>ESTADO</small></strong></label></div>
+        <div class="col-sm-2"></div>
+    </div>
+    <br />
+    <div class="row" *ngFor="let Respu of ArregloCorreos">
+        <div class="col-sm-4 "><label>{{Respu.NombrePlantilla}}</label></div>
+        <div class="col-sm-3 "><label>{{Respu.Descripcion}}</label></div>
+        <div class="col-sm-3 "><label>{{Respu.DesEstado}}</label></div>
+        <div class="col-sm-2"><button class="btn btn-agro-prin" (click)="VerDetallesModal(Respu,ModalDettale )">Ver
+                detalle</button></div>
+        <br /><br /><br />
+    </div>
+</div>
+
+<!-- Template Modal RESPUESTA-->
+<ng-template #ModalRespuesta let-modal>
+    <div class="modal-header">
+        <h1>AgroApoya2</h1>
+        <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
+            (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">{{RespuestaModal}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-sm-12 text-center">
+            <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
+                (click)="modal.close()">Aceptar</button>
+        </div>
+    </div>
+    <br>
+</ng-template>
+
+<!-- Template Modal RESPUESTA-->
+<ng-template #ModalDettale let-modal>
+    <div class="modal-header">
+        <h1>AgroApoya2</h1>
+        <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
+            (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">Detalle del envio</h2>
+            </div>
+            <div class="col-sm-12">
+                <label><strong>Plantilla: </strong> {{ArregloUnico.NombrePlantilla}} </label>
+                <br>
+                <label><strong>Query: </strong> {{ArregloUnico.Query}} </label>
+                <br>
+                <label><strong>Id oferta: </strong> {{ArregloUnico.Cd_cnctivo}} </label>
+                <br>
+                <label><strong>Descripcion: </strong> {{ArregloUnico.Descripcion}} </label>
+                <br>
+                <label><strong>Sector: </strong> {{ArregloUnico.IdSector}} </label>
+                <br>
+                <label><strong>Fecha envio: </strong> {{ArregloUnico.FechaEnvio}} </label>
+                <br>
+                <label><strong>Estado: </strong> {{ArregloUnico.DesEstado}} </label>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center" *ngIf="ArregloUnico.IdEstado != 1">
+        <div class="col-sm-12 text-center">
+            <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
+                (click)="modal.close()">Aceptar</button>
+        </div>
+    </div>
+    <div class="row justify-content-center" *ngIf="ArregloUnico.IdEstado == 1">
+        <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
+            (click)="modal.close()">Aceptar</button>
+        <div class="col-1"></div>
+        <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
+            (click)="CancelarEnvioCorreo(ModalRespuesta, ArregloUnico )">Cancelar envio</button>
+    </div>
+    <br>
+</ng-template>

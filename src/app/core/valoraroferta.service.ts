@@ -161,6 +161,7 @@ export class ValorarofertaService {
 
 
   CorreoMasivo(bandera: string, IdPlantilla: string, IdTipoUsuario: string, cd_cnctvo: string, id_sector: string) {
+    console.log(this.url_servidor + 'correosmasivospanda/' + bandera + '/' + IdPlantilla + '/' + IdTipoUsuario + '/' + cd_cnctvo + '/' + id_sector)
     return this.http.get<any[]>(this.url_servidor + 'correosmasivospanda/' + bandera + '/' + IdPlantilla + '/' + IdTipoUsuario + '/' + cd_cnctvo + '/' + id_sector)
   }
 
@@ -231,5 +232,18 @@ export class ValorarofertaService {
   TextosOferta(Bandera: string, Bodymod: any) {
     return this.http.post<any>(this.url_servidor + 'TextosOferta/' + Bandera, Bodymod)
   }
+
+
+  InsertaLinks(Bandera: string, Bodymod: any){
+    return this.http.post<any>(this.url_servidor + 'modclinks/' + Bandera, Bodymod)
+  }
+
+  ConsultaLinks(Bandera: string, IdOferta: string, IdSector: string){
+    return this.http.get<any>(this.url_servidor + 'consclinksector/' + Bandera + '/' + IdOferta + '/' +IdSector)
+  }
+  
+  consthorariotarea(Bandera: string) {
+    return this.http.get<any>(this.url_servidor + 'consthorariotarea/' + Bandera)
+
+  }
 }
-                                                                    

@@ -80,6 +80,15 @@ export class MetodosglobalesService {
     }
   }
 
+    RecuperarRutaAmbiente() {
+    if(this.ambientedetrabajo == '1'){
+      var ruta = 'http://190.147.38.91:8881/#/';
+    }else{
+      var ruta = 'https://apoya2.co/#/';
+    }
+    return ruta;
+  }
+
   CrearCookie(Llave: string, Valor: string) {
     this.Cookies.set(Llave, Valor)
   }

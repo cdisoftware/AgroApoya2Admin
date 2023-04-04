@@ -17,3 +17,8 @@
     display: flex;
     justify-content: space-around;
   }
+
+  .Iconos{
+    width: 25px;
+    margin-left: 20px;
+  }

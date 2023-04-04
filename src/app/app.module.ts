@@ -32,6 +32,9 @@ import { CarguepublicidadComponent } from './usuario/components/carguepublicidad
 import { EvaluacionofertaComponent } from './ofertas/components/evaluacionoferta/evaluacionoferta.component';
 import { SeguimientoComponent } from './ofertas/components/seguimiento/seguimiento.component';
 import { ComboofertasComponent } from './ofertas/components/comboofertas/comboofertas.component';
+import { EnviocorreosComponent } from './usuario/components/enviocorreos/enviocorreos.component';
+import { ConsultacorreosComponent } from './usuario/components/consultacorreos/consultacorreos.component';
+
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
@@ -53,7 +56,9 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     CarguepublicidadComponent,
     EvaluacionofertaComponent,
     SeguimientoComponent,
-    ComboofertasComponent
+    ComboofertasComponent,
+    EnviocorreosComponent,
+    ConsultacorreosComponent
   ],
   imports: [
     NgxMaskModule.forRoot(options),

@@ -272,19 +272,21 @@
                             <label class="col-sm-12 Llave">Mínimo unidades</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox"
                                 (blur)="ValidaCantidadMinimaIndiv(MinUnidI,ModalRespuesta)" [(ngModel)]="MinUnidI"
-                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}" 
+                                [disabled]="MuestraGrupal == '1' ">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Máximo unidades</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox"
-                                (blur)="ValidaCantidadmaxIndiv(MaxUnidI,ModalRespuesta)" [(ngModel)]="MaxUnidI"
-                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                                (blur)="ValidaCantidadmaxIndiv(MaxUnidI,ModalRespuesta)" [(ngModel)]="MaxUnidI" 
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}"
+                                [disabled]="MuestraGrupal == '1' ">
                         </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Valor domicilio</label>
-                            <input mask="separator" thousandSeparator="." type="text"
+                            <input mask="separator" thousandSeparator="." type="text" [disabled]="MuestraGrupal == '1' "
                                 class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiI">
                         </div>
                         <div class="col-sm-6">
@@ -500,10 +502,27 @@
                 <ng-template ngbPanelContent *ngFor="let arreglo of ArrayTextoModifica">
 
                     <h1>WhatsApp</h1>
+
+                    <div class="row br">
+                        <div class="col-sm-12">
+                            <label class="col-sm-12 Llave">Link para acortar compartir participante</label>
+                            <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UrlParticipante" disabled>
+                            <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UrlParticipanteC" disabled>
+                        </div>
+                    </div>
+
+                    <div class="row br">
+                        <div class="col-sm-12">
+                            <label class="col-sm-12 Llave">Link para Redes Sociales (Publicidad)</label>
+                            <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UrlPubli" disabled>
+                            <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UrlPubliC" disabled>
+                        </div>
+                    </div>
+
                     <div class="row br">
                         <div class="col-sm-12">
                             <label class="col-sm-12 Llave">Mensaje compartir líder WhatsApp</label>
-                            <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="arreglo.TextoWhat">
+                            <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="arreglo.TextoWhat" [disabled]="MuestraGrupal != '1' ">
                         </div>
                     </div>
 
@@ -540,10 +559,10 @@
     <div class="row justify-content-center br" *ngIf="ValidaToppings == '1'">
 
         <div class="col-12">
-            <input type="checkbox" [checked]="EnvioCorreo" style="margin-left: 10px; margin-right: 10px;">
+            <input type="checkbox" [(ngModel)]="EnvioCorreo" style="margin-left: 10px; margin-right: 10px;">
             <strong>Enviar correos masivos cliente</strong>
             <br>
-            <input type="checkbox" [checked]="EnvioSms" style="margin-left: 10px; margin-right: 10px;">
+            <input type="checkbox" [(ngModel)]="EnvioSms"  [checked]="EnvioSms" style="margin-left: 10px; margin-right: 10px;">
             <strong>Enviar mensaje texto masivos cliente</strong>
             <br><br><br>
         </div>
