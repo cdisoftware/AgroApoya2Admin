@@ -147,8 +147,7 @@
                     <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/info.png" alt="">
                 </button>
 
-                <button class="SinEstilo" *ngIf="oferta.TIPO_USUARIO_COMPRA == 'Lider'"
-                    (click)="Cargadetallesfactura(oferta, ModalFactura)">
+                <button class="SinEstilo" (click)="Cargadetallesfactura(oferta, ModalFactura)">
                     <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_factura.png" alt="">
                 </button>
             </td>
@@ -279,7 +278,7 @@
         <h1>Factura de compra</h1>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
-    <div class="modal-body" id="htmlData_">
+    <div class="modal-body" *ngIf="idTipoFactura == '1'">
         <div class="row" *ngFor="let part of DataParticipantes; let i = index">
             <h6 class="textblue CentrarText" [ngClass]="{'mt-3': i != 0}">
                 <strong>{{part.NombrePersona}}</strong>
@@ -313,7 +312,7 @@
             <hr class="hrSinEstilo" *ngIf="(i + 1) != DataParticipantes.length">
 
 
-            
+
         </div>
         <div class="row mt-5">
             <div class="col-2">
@@ -324,11 +323,67 @@
             </div>
         </div>
     </div>
-    
+    <div class="modal-body" id="htmlData_" *ngIf="idTipoFactura == '2'">
+        <div class="row">
+            <h6 class="textblue CentrarText mt-1">
+                <strong>Hola {{DataLider.NOMBRES_PERSONA}}</strong>
+            </h6>
+
+            <div class="CentrarText">
+                <p class="Valor">Compraste&nbsp;{{DataLider.Unidades}} Unidad(es) de {{DataLider.PRODUCTO}}</p>
+            </div>
+
+            <div class="col-sm-6 CentrarText">
+                <label class="Llave">Unidad(es):&nbsp;</label>
+                <label class="Valor">{{DataLider.Unidades}}</label>
+            </div>
+
+            <div class="col-sm-6 CentrarText">
+                <label class="Llave">Estado:&nbsp;</label>
+                <label class="Valor">{{DataLider.ESTADO_CARRO}}</label>
+            </div>
+
+            <div class="col-sm-12 CentrarText" *ngIf="DataLider.ADICIONALES != null">
+                <label class="Llave">Adicionales:&nbsp;</label>
+                <label class="Valor" [innerHTML]="DataLider.ADICIONALES"></label>
+            </div>
+
+            <div class="col-sm-6 CentrarText mt-2">
+                <label class="Llave">Tipo de compra:&nbsp;</label>
+                <label class="Valor">{{DataLider.TIPO_USUARIO_COMPRA}}</label>
+            </div>
+
+            <div class="col-sm-6 CentrarText mt-2">
+                <label class="Llave">Dirección:&nbsp;</label>
+                <label class="Valor">{{DataLider.DIRECCION_ENTREGA}}</label>
+            </div>
+
+            <div class="col-sm-6 CentrarText">
+                <label class="Llave">Fecha entrega:&nbsp;</label>
+                <label class="Valor">{{DataLider.FECHA_ENTREGA}}</label>
+            </div>
+
+            <div class="col-sm-6 CentrarText">
+                <label class="Llave">Valor a cancelar:&nbsp;</label>
+                <label class="Valor">{{DataLider.VALOR_PAGO}}</label>
+            </div>
+
+            <div class="row mt-4 CentrarText">
+                <label class="col-2 Llave ">Firma:&nbsp;</label>
+                <hr class="col-8 mt-3 hrSinEstilo">
+            </div>
+        </div>
+    </div>
+
 
     <br>
-    <div class="row justify-content-center">
-        <button type="button" class="btn btn-agro-prin col-4" (click)="DescargaPDF()">Imprimir
+    <div class="row justify-content-center" *ngIf="idTipoFactura == '1'">
+        <button type="button" class="btn btn-agro-prin col-4" (click)="DescargarDatosPdf('1')">Imprimir
+            <img src="../../../../../assets/ImagenesAgroApoya2Adm/ic_pdf.png" class="imgpdf" />
+        </button>
+    </div>
+    <div class="row justify-content-center" *ngIf="idTipoFactura == '2'">
+        <button type="button" class="btn btn-agro-prin col-4" (click)="DescargarDatosPdf('2')">Imprimir
             <img src="../../../../../assets/ImagenesAgroApoya2Adm/ic_pdf.png" class="imgpdf" />
         </button>
     </div>

@@ -32,6 +32,7 @@
     "exceljs": "^4.3.0",
     "file-saver": "^2.0.5",
     "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.28",
     "ng": "^0.0.0",
     "ng-drag-drop": "^5.0.0",
     "ng-sidebar": "^9.4.3",

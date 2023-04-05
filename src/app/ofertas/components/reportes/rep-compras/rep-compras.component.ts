@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import autoTable from 'jspdf-autotable'
 
 
 @Component({
@@ -54,6 +55,8 @@ export class RepComprasComponent implements OnInit {
 
   //Factura
   DataParticipantes: any = [];
+  DataLider: any = [];
+  idTipoFactura: string = "";// 1 lider, 2 participante o individual
 
   ngOnInit(): void {
     this.IdUsuario = this.cookies.get('IDU');
@@ -213,7 +216,7 @@ export class RepComprasComponent implements OnInit {
       let workbook = new Workbook();
       let worksheet = workbook.addWorksheet("Reporte compras");
 
-        let header = ["Oferta",
+      let header = ["Oferta",
         "Nombre Sector",
         "Fecha compra",
         "Estado Compra",
@@ -295,42 +298,245 @@ export class RepComprasComponent implements OnInit {
 
 
   //Factura
-  Cargadetallesfactura(compra: any, modaldetalle: any) {
+  Cargadetallesfactura(data: any, modaldetalle: any) {
+    this.DataLider = [];
+    this.DataLider = data;
+    console.log(this.DataLider)
+    if (this.DataLider.TIPO_USUARIO_COMPRA == "Lider") {
+      this.idTipoFactura = "1";
+      this.serviciosreportes.ConsultaParticipantesGrupo('1', '324', '0'/* this.IdUsuario*/).subscribe(ResultConst => {
+        console.log(ResultConst)
+        if (ResultConst.length > 0) {
+          this.DataParticipantes = ResultConst;
+        }
+        else {
+          this.DataParticipantes = [];
+        }
+      })
+    } else {
+      this.idTipoFactura = "2";
+      console.log(this.DataLider)
+      if(this.DataLider.ADICIONALES != '' && this.DataLider.ADICIONALES != null && this.DataLider.ADICIONALES != undefined){
+        this.DataLider.ADICIONALES = this.DataLider.ADICIONALES.replace("|", "<br>");
+      }
+    }
     this.modalservices.open(modaldetalle, { size: "md" })
-    
-    this.serviciosreportes.ConsultaParticipantesGrupo('1', '324', '0'/* this.IdUsuario*/).subscribe(ResultConst => {
-      console.log(ResultConst)
-      if (ResultConst.length > 0) {
-        this.DataParticipantes = ResultConst;
-      }
-      else {
-        this.DataParticipantes = [];
-      }
-    })
+
+
   }
 
-  DescargaPDF() {
-    const doc = new jsPDF('p', 'pt', 'a4');
-    const options = {
-      background: 'white',
-      scale: 3
-    };
 
 
-    var DATAg = document.getElementById('htmlData_');
-    if (DATAg != null) {
-      html2canvas(DATAg, options).then((canvas) => {
-        var imgDos = canvas.toDataURL('image/PNG');
-        var imgPropDso = (doc as any).getImageProperties(imgDos);
 
-        var pdfWidthDso = doc.internal.pageSize.getWidth() - 2 * 15;
-        var pdfHeightDso = (imgPropDso.height * pdfWidthDso) / imgPropDso.width;
-
-        doc.addImage(imgDos, 'PNG', 15, 15, pdfWidthDso, pdfHeightDso, undefined, 'FAST');
-
-        doc.save('Descargar.pdf');
-      })
-    }
+  DescargarDatosPdf(bandera: string) {
     this.modalservices.dismissAll();
+    const doc = new jsPDF('p', 'px', 'a3');//p = 630px
+    if (bandera == "1") {
+      autoTable(doc, {
+        styles: { fillColor: [216, 216, 216] },
+        columnStyles: {
+          1: { cellWidth: 230 },
+          2: { cellWidth: 230 },
+          3: { cellWidth: 230 }
+        },
+        didParseCell: function (data) {
+          var rows = data.table.body;
+          if (data.row.index === 0) {
+            data.cell.styles.fillColor = [255, 255, 255];
+            data.cell.styles.textColor = [24, 29, 35];
+            data.cell.styles.fontSize = 15;
+            data.cell.styles.cellPadding = 0;
+            data.cell.styles.halign = 'center';
+          }
+        },
+        margin: { top: 20 },
+        body: [
+          ['', 'Hola ' + this.DataLider.NOMBRES_PERSONA, '']
+        ]
+      })
+      autoTable(doc, {
+        styles: { fillColor: [216, 216, 216] },
+        columnStyles: {
+          1: { cellWidth: 210 },
+          2: { cellWidth: 210 },
+          3: { cellWidth: 210 }
+        },
+        didParseCell: function (data) {
+          var rows = data.table.body;
+          if (data.row.index === 0) {
+            data.cell.styles.fillColor = [255, 255, 255];
+            data.cell.styles.textColor = [24, 29, 35];
+            data.cell.styles.fontSize = 15;
+            data.cell.styles.cellPadding = 0;
+            data.cell.styles.halign = 'center';
+          }
+        },
+        margin: { top: 0 },
+        body: [
+          ['', 'Compraste ' + this.DataLider.Unidades + ' Unidad(es) de ' + this.DataLider.PRODUCTO, '']
+        ]
+      })
+      autoTable(doc, {
+        styles: { fillColor: [216, 216, 216] },
+        columnStyles: {
+          1: { cellWidth: 210 },
+          2: { cellWidth: 210 },
+          3: { cellWidth: 210 }
+        },
+        didParseCell: function (data) {
+          var rows = data.table.body;
+          if (data.row.index === 0) {
+            data.cell.styles.fillColor = [255, 255, 255];
+            data.cell.styles.textColor = [24, 29, 35];
+            data.cell.styles.fontSize = 15;
+            data.cell.styles.cellPadding = 0;
+            data.cell.styles.halign = 'center';
+          }
+        },
+        margin: { top: 0 },
+        body: [
+          ['Código:   ' + this.DataLider.CODIGO_COMPARTIR, 'Medio de pago:   ' + this.DataLider.MEDIO_PAGO, 'Estado:   ' + this.DataLider.ESTADO_CARRO]
+        ]
+      })
+      autoTable(doc, {
+        styles: { fillColor: [216, 216, 216] },
+        columnStyles: {
+          1: { cellWidth: 210 },
+          2: { cellWidth: 210 },
+          3: { cellWidth: 210 }
+        },
+        didParseCell: function (data) {
+          var rows = data.table.body;
+          if (data.row.index === 0) {
+            data.cell.styles.fillColor = [255, 255, 255];
+            data.cell.styles.textColor = [24, 29, 35];
+            data.cell.styles.fontSize = 15;
+            data.cell.styles.cellPadding = 0;
+            data.cell.styles.halign = 'center';
+          }
+        },
+        margin: { top: 0 },
+        body: [
+          ['', 'A la dirección ' + this.DataLider.DIRECCION_ENTREGA, '']
+        ]
+      })
+      autoTable(doc, {
+        styles: { fillColor: [216, 216, 216] },
+        columnStyles: {
+          1: { cellWidth: 630 }
+        },
+        didParseCell: function (data) {
+          var rows = data.table.body;
+          if (data.row.index === 0) {
+            data.cell.styles.fillColor = [255, 255, 255];
+            data.cell.styles.textColor = [24, 29, 35];
+          }
+        },
+        margin: { top: 0 },
+        body: [
+          ['Participantes asociados']
+        ]
+      })
+      autoTable(doc, {
+        styles: { fillColor: [216, 216, 216] },
+        columnStyles: {
+          1: { cellWidth: 130 },
+          2: { cellWidth: 90 },
+          3: { cellWidth: 50 },
+          4: { cellWidth: 70 },
+          5: { cellWidth: 90 },
+          6: { cellWidth: 90 },
+          7: { cellWidth: 90 }
+        },
+        didParseCell: function (data) {
+          var rows = data.table.body;
+          if (data.row.index === 0) {
+            data.cell.styles.fillColor = [57, 124, 151];
+            data.cell.styles.textColor = [255, 255, 255];
+            data.cell.styles.halign = 'center';
+          }
+        },
+        margin: { top: 1 },
+        body: [
+          ['Nombre', 'Telefono', 'Producto', 'Unidades', "Adicionales", "Valor a cancelar", "Estado pago"],
+        ]
+      })
+
+      this.DataParticipantes.forEach(function (respuesta: any) {
+
+        var Res = [respuesta.NombrePersona, respuesta.CelularPersona, respuesta.DesProducto, respuesta.UndsCmpradas, respuesta.DescToppings, respuesta.ValorTotalForm, respuesta.DesEstadoPago];
+
+        autoTable(doc, {
+          margin: { top: 0, bottom: 0 },
+          columnStyles: {
+            1: { cellWidth: 130 },
+            2: { cellWidth: 90 },
+            3: { cellWidth: 50 },
+            4: { cellWidth: 70 },
+            5: { cellWidth: 90 },
+            6: { cellWidth: 90 },
+            7: { cellWidth: 90 }
+          },
+          didParseCell: function (data) {
+            var rows = data.table.body;
+            if (data.row.index === 0) {
+              data.cell.styles.halign = 'center';
+            }
+          },
+
+          body:
+            [
+              Res
+            ]
+        })
+      });
+
+      autoTable(doc, {
+        styles: { fillColor: [216, 216, 216] },
+        columnStyles: {
+          1: { cellWidth: 530 },
+          2: { cellWidth: 100 }
+        },
+        didParseCell: function (data) {
+          var rows = data.table.body;
+          if (data.row.index === 0) {
+            data.cell.styles.fillColor = [255, 255, 255];
+            data.cell.styles.textColor = [24, 29, 35];
+          }
+        },
+        margin: { top: 0 },
+        body: [
+          ['Firma ', '_________________________________________________________________']
+        ]
+      })
+
+      doc.save('Factura Oferta ' + this.DataLider.OFERTA + '.pdf')
+    } else if (bandera == "2") {
+      const doc = new jsPDF('p', 'pt', 'a4');
+      const options = {
+        background: 'white',
+        scale: 3
+      };
+
+
+      var DATAg = document.getElementById('htmlData_');
+      if (DATAg != null) {
+        html2canvas(DATAg, options).then((canvas) => {
+          var imgDos = canvas.toDataURL('image/PNG');
+          var imgPropDso = (doc as any).getImageProperties(imgDos);
+
+          var pdfWidthDso = doc.internal.pageSize.getWidth() - 2 * 15;
+          var pdfHeightDso = (imgPropDso.height * pdfWidthDso) / imgPropDso.width;
+
+          doc.addImage(imgDos, 'PNG', 15, 15, pdfWidthDso, pdfHeightDso, undefined, 'FAST');
+
+          doc.save('Descargar.pdf');
+        })
+      }
+    }
+
+
+
+
   }
 }
