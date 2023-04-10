@@ -287,8 +287,8 @@
             <label class="Llave">{{part.DesProducto}}</label>
 
 
-            <label class="Llave" *ngIf="part.DescToppings != ''">Adicionales</label>
-            <label class="Valor" *ngIf="part.DescToppings != ''">{{part.DescToppings}}</label>
+            <label class="Llave" *ngIf="part.DescToppings != '' || part.DescToppings != null">Adicionales</label>
+            <label class="Valor" *ngIf="part.DescToppings != '' || part.DescToppings != null">{{part.DescToppings}}</label>
 
             <div class="col-sm-6">
                 <label class="Llave">Unidades</label>
@@ -314,13 +314,18 @@
 
 
         </div>
-        <div class="row mt-5">
+        <div class="row mt-5" *ngIf="DataParticipantes.length > 0">
             <div class="col-2">
                 <label class="Llave">Firma:&nbsp;</label>
             </div>
             <div class="col-10 dvfirma">
                 <hr class="hrSinEstilo hrfirma">
             </div>
+        </div>
+        <div class="row mt-5" *ngIf="DataParticipantes.length == 0">
+
+                <label class="Llave CentrarText">No obtuviste compañeros para esta compra</label>
+
         </div>
     </div>
     <div class="modal-body" id="htmlData_" *ngIf="idTipoFactura == '2'">
@@ -343,7 +348,7 @@
                 <label class="Valor">{{DataLider.ESTADO_CARRO}}</label>
             </div>
 
-            <div class="col-sm-12 CentrarText" *ngIf="DataLider.ADICIONALES != null">
+            <div class="col-sm-12 CentrarText" *ngIf="DataLider.ADICIONALES != ''">
                 <label class="Llave">Adicionales:&nbsp;</label>
                 <label class="Valor" [innerHTML]="DataLider.ADICIONALES"></label>
             </div>
@@ -377,7 +382,7 @@
 
 
     <br>
-    <div class="row justify-content-center" *ngIf="idTipoFactura == '1'">
+    <div class="row justify-content-center" *ngIf="idTipoFactura == '1' && DataParticipantes.length > 0">
         <button type="button" class="btn btn-agro-prin col-4" (click)="DescargarDatosPdf('1')">Imprimir
             <img src="../../../../../assets/ImagenesAgroApoya2Adm/ic_pdf.png" class="imgpdf" />
         </button>

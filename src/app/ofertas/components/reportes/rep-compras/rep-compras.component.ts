@@ -304,13 +304,14 @@ export class RepComprasComponent implements OnInit {
     console.log(this.DataLider)
     if (this.DataLider.TIPO_USUARIO_COMPRA == "Lider") {
       this.idTipoFactura = "1";
-      this.serviciosreportes.ConsultaParticipantesGrupo('1', '324', '0'/* this.IdUsuario*/).subscribe(ResultConst => {
+      this.serviciosreportes.ConsultaParticipantesGrupo('1', data.idGrupoLider,  this.IdUsuario).subscribe(ResultConst => {
         console.log(ResultConst)
         if (ResultConst.length > 0) {
           this.DataParticipantes = ResultConst;
         }
         else {
           this.DataParticipantes = [];
+          this.idTipoFactura = "2";
         }
       })
     } else {
@@ -335,9 +336,9 @@ export class RepComprasComponent implements OnInit {
       autoTable(doc, {
         styles: { fillColor: [216, 216, 216] },
         columnStyles: {
-          1: { cellWidth: 230 },
-          2: { cellWidth: 230 },
-          3: { cellWidth: 230 }
+          1: { cellWidth: 210 },
+          2: { cellWidth: 210 },
+          3: { cellWidth: 210 }
         },
         didParseCell: function (data) {
           var rows = data.table.body;
@@ -417,7 +418,7 @@ export class RepComprasComponent implements OnInit {
         },
         margin: { top: 0 },
         body: [
-          ['', 'A la dirección ' + this.DataLider.DIRECCION_ENTREGA, '']
+          ['','A la dirección ' + this.DataLider.DIRECCION_ENTREGA,'']
         ]
       })
       autoTable(doc, {
@@ -434,7 +435,7 @@ export class RepComprasComponent implements OnInit {
         },
         margin: { top: 0 },
         body: [
-          ['Participantes asociados']
+          ['Compañeros']
         ]
       })
       autoTable(doc, {
@@ -530,7 +531,7 @@ export class RepComprasComponent implements OnInit {
 
           doc.addImage(imgDos, 'PNG', 15, 15, pdfWidthDso, pdfHeightDso, undefined, 'FAST');
 
-          doc.save('Descargar.pdf');
+          doc.save('Factura Oferta ' + this.DataLider.OFERTA + '.pdf');
         })
       }
     }
