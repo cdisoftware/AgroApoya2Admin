@@ -279,6 +279,9 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body" *ngIf="idTipoFactura == '1'">
+        <div class="row">
+            <p class="Valor LetraPequeña">Recuerda que solo te aparecerán los participantes que ya han pagado o que tú como líder les realizaste o realizaras el pago.</p>
+        </div>
         <div class="row" *ngFor="let part of DataParticipantes; let i = index">
             <h6 class="textblue CentrarText" [ngClass]="{'mt-3': i != 0}">
                 <strong>{{part.NombrePersona}}</strong>
@@ -287,8 +290,8 @@
             <label class="Llave">{{part.DesProducto}}</label>
 
 
-            <label class="Llave" *ngIf="part.DescToppings != '' || part.DescToppings != null">Adicionales</label>
-            <label class="Valor" *ngIf="part.DescToppings != '' || part.DescToppings != null">{{part.DescToppings}}</label>
+            <label class="Llave" *ngIf="part.DescToppings != '' || part.DescToppings != null || part.DescToppings != undefined">Adicionales</label>
+            <label class="Valor" *ngIf="part.DescToppings != '' || part.DescToppings != null || part.DescToppings != undefined">{{part.DescToppings}}</label>
 
             <div class="col-sm-6">
                 <label class="Llave">Unidades</label>
@@ -307,24 +310,11 @@
 
             <div class="col-sm-6 textrigt">
                 <label class="Llave">Precio:&nbsp;</label>
-                <label class="Valor">{{part.DesEstadoPago}}</label>
+                <label class="Valor">{{part.ValorTotalForm}}</label>
             </div>
             <hr class="hrSinEstilo" *ngIf="(i + 1) != DataParticipantes.length">
 
 
-
-        </div>
-        <div class="row mt-5" *ngIf="DataParticipantes.length > 0">
-            <div class="col-2">
-                <label class="Llave">Firma:&nbsp;</label>
-            </div>
-            <div class="col-10 dvfirma">
-                <hr class="hrSinEstilo hrfirma">
-            </div>
-        </div>
-        <div class="row mt-5" *ngIf="DataParticipantes.length == 0">
-
-                <label class="Llave CentrarText">No obtuviste compañeros para esta compra</label>
 
         </div>
     </div>
@@ -372,17 +362,12 @@
                 <label class="Llave">Valor a cancelar:&nbsp;</label>
                 <label class="Valor">{{DataLider.VALOR_PAGO}}</label>
             </div>
-
-            <div class="row mt-4 CentrarText">
-                <label class="col-2 Llave ">Firma:&nbsp;</label>
-                <hr class="col-8 mt-3 hrSinEstilo">
-            </div>
         </div>
     </div>
 
 
     <br>
-    <div class="row justify-content-center" *ngIf="idTipoFactura == '1' && DataParticipantes.length > 0">
+    <div class="row justify-content-center" *ngIf="idTipoFactura == '1'">
         <button type="button" class="btn btn-agro-prin col-4" (click)="DescargarDatosPdf('1')">Imprimir
             <img src="../../../../../assets/ImagenesAgroApoya2Adm/ic_pdf.png" class="imgpdf" />
         </button>
@@ -392,5 +377,6 @@
             <img src="../../../../../assets/ImagenesAgroApoya2Adm/ic_pdf.png" class="imgpdf" />
         </button>
     </div>
+
     <br>
 </ng-template>

@@ -8,6 +8,9 @@ import { CookieService } from 'ngx-cookie-service';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import autoTable from 'jspdf-autotable'
+import axios from 'axios';
+
+
 
 
 @Component({
@@ -118,8 +121,6 @@ export class RepComprasComponent implements OnInit {
 
   BusquedaGen() {
 
-    console.log(this.FechaFinCom)
-
     var validaofer = '0';
     var validasec = '0';
     var validaCompra = '0';
@@ -165,7 +166,6 @@ export class RepComprasComponent implements OnInit {
     }
 
     this.serviciosreportes.ConsultaComprasXOfer('1', validaofer, validasec, validaCompra, validaPago, body).subscribe(Resultcons => {
-      console.log(Resultcons)
       if (Resultcons.length > 0) {
         this.ValidaConsulta = '0';
         this.ValidaDescarga = false;
@@ -182,7 +182,6 @@ export class RepComprasComponent implements OnInit {
   LimpiaForm() {
     this.SelectorEstPago = '';
     this.SelectorEstComra = '';
-    console.log(this.EstadoPago)
     this.EstadoPago = '';
     this.EstadoCompra = '';
     this.Sector = '';
@@ -300,14 +299,22 @@ export class RepComprasComponent implements OnInit {
   //Factura
   Cargadetallesfactura(data: any, modaldetalle: any) {
     this.DataLider = [];
+    this.DataParticipantes = [];
     this.DataLider = data;
-    console.log(this.DataLider)
     if (this.DataLider.TIPO_USUARIO_COMPRA == "Lider") {
       this.idTipoFactura = "1";
-      this.serviciosreportes.ConsultaParticipantesGrupo('1', data.idGrupoLider,  this.IdUsuario).subscribe(ResultConst => {
-        console.log(ResultConst)
+      this.serviciosreportes.ConsultaParticipantesGrupo('1', data.idGrupoLider, this.IdUsuario).subscribe(ResultConst => {
         if (ResultConst.length > 0) {
-          this.DataParticipantes = ResultConst;
+          for (var i = 0; i < ResultConst.length; i++) {
+            if (ResultConst[i].Vinculado == '0' && ResultConst[i].DesEstadoPago == 'Exitoso') {
+              this.DataParticipantes.push(ResultConst[i]);
+            } else if (ResultConst[i].Vinculado != '0') {
+              this.DataParticipantes.push(ResultConst[i]);
+            }
+          }
+          if (this.DataParticipantes.length == 0) {
+            this.idTipoFactura = "2";
+          }
         }
         else {
           this.DataParticipantes = [];
@@ -316,8 +323,7 @@ export class RepComprasComponent implements OnInit {
       })
     } else {
       this.idTipoFactura = "2";
-      console.log(this.DataLider)
-      if(this.DataLider.ADICIONALES != '' && this.DataLider.ADICIONALES != null && this.DataLider.ADICIONALES != undefined){
+      if (this.DataLider.ADICIONALES != '' && this.DataLider.ADICIONALES != null && this.DataLider.ADICIONALES != undefined) {
         this.DataLider.ADICIONALES = this.DataLider.ADICIONALES.replace("|", "<br>");
       }
     }
@@ -402,9 +408,9 @@ export class RepComprasComponent implements OnInit {
       autoTable(doc, {
         styles: { fillColor: [216, 216, 216] },
         columnStyles: {
-          1: { cellWidth: 210 },
-          2: { cellWidth: 210 },
-          3: { cellWidth: 210 }
+          1: { cellWidth: 260 },
+          2: { cellWidth: 150 },
+          3: { cellWidth: 220 }
         },
         didParseCell: function (data) {
           var rows = data.table.body;
@@ -418,7 +424,7 @@ export class RepComprasComponent implements OnInit {
         },
         margin: { top: 0 },
         body: [
-          ['','A la dirección ' + this.DataLider.DIRECCION_ENTREGA,'']
+          ['A la dirección ' + this.DataLider.DIRECCION_ENTREGA, '', 'Con un valor de: ' + this.DataLider.VALOR_PAGO]
         ]
       })
       autoTable(doc, {
@@ -441,13 +447,14 @@ export class RepComprasComponent implements OnInit {
       autoTable(doc, {
         styles: { fillColor: [216, 216, 216] },
         columnStyles: {
-          1: { cellWidth: 130 },
-          2: { cellWidth: 90 },
-          3: { cellWidth: 50 },
-          4: { cellWidth: 70 },
-          5: { cellWidth: 90 },
-          6: { cellWidth: 90 },
-          7: { cellWidth: 90 }
+          1: { cellWidth: 78 },
+          2: { cellWidth: 78 },
+          3: { cellWidth: 58 },
+          4: { cellWidth: 58 },
+          5: { cellWidth: 58 },
+          6: { cellWidth: 108 },
+          7: { cellWidth: 68 },
+          8: { cellWidth: 119 }
         },
         didParseCell: function (data) {
           var rows = data.table.body;
@@ -457,26 +464,33 @@ export class RepComprasComponent implements OnInit {
             data.cell.styles.halign = 'center';
           }
         },
-        margin: { top: 1 },
+        margin: { top: 0 },
         body: [
-          ['Nombre', 'Telefono', 'Producto', 'Unidades', "Adicionales", "Valor a cancelar", "Estado pago"],
+          ['Nombre', 'Teléfono', 'Producto', 'Unidades', 'Valor Producto', "Adicionales", "Valor a cancelar", "Estado pago"],
         ]
       })
-
+      var calculaTotal: number = 0;
       this.DataParticipantes.forEach(function (respuesta: any) {
 
-        var Res = [respuesta.NombrePersona, respuesta.CelularPersona, respuesta.DesProducto, respuesta.UndsCmpradas, respuesta.DescToppings, respuesta.ValorTotalForm, respuesta.DesEstadoPago];
+        let amount: number = parseFloat(respuesta.ValorProdcuto);
+        let FormatMoneda: string = amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
+
+        calculaTotal += parseInt(respuesta.ValorTotal);
+
+        var Res = [respuesta.NombrePersona, respuesta.CelularPersona, respuesta.DesProducto, respuesta.UndsCmpradas, FormatMoneda, respuesta.DescToppings, respuesta.ValorTotalForm, respuesta.DesEstadoPago];
 
         autoTable(doc, {
           margin: { top: 0, bottom: 0 },
           columnStyles: {
-            1: { cellWidth: 130 },
-            2: { cellWidth: 90 },
-            3: { cellWidth: 50 },
-            4: { cellWidth: 70 },
-            5: { cellWidth: 90 },
-            6: { cellWidth: 90 },
-            7: { cellWidth: 90 }
+            1: { cellWidth: 78 },
+            2: { cellWidth: 78 },
+            3: { cellWidth: 58 },
+            4: { cellWidth: 58 },
+            5: { cellWidth: 58 },
+            6: { cellWidth: 108 },
+            7: { cellWidth: 68 },
+            8: { cellWidth: 119 }
           },
           didParseCell: function (data) {
             var rows = data.table.body;
@@ -492,6 +506,35 @@ export class RepComprasComponent implements OnInit {
         })
       });
 
+      //Calcula el valor a pagar del lider + el valor globar a pagar de los participantes
+      calculaTotal += (parseInt(this.DataLider.ValorProdcuto) + parseInt(this.DataLider.SumToppings))
+
+      //Se le da formato moneda
+      let FormatMoneda: string = calculaTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+
+
+      //Calcula el total
+      autoTable(doc, {
+        styles: { fillColor: [216, 216, 216] },
+        columnStyles: {
+          1: { cellWidth: 305 },
+          2: { cellWidth: 305 }
+        },
+        didParseCell: function (data) {
+          var rows = data.table.body;
+          if (data.row.index === 0) {
+
+            data.cell.styles.halign = 'center';
+          }
+        },
+        margin: { top: 0 },
+        body: [
+          ['Total a cancelar', FormatMoneda]
+        ]
+      })
+
+
+      //Firma
       autoTable(doc, {
         styles: { fillColor: [216, 216, 216] },
         columnStyles: {
@@ -510,7 +553,6 @@ export class RepComprasComponent implements OnInit {
           ['Firma ', '_________________________________________________________________']
         ]
       })
-
       doc.save('Factura Oferta ' + this.DataLider.OFERTA + '.pdf')
     } else if (bandera == "2") {
       const doc = new jsPDF('p', 'pt', 'a4');
@@ -521,6 +563,11 @@ export class RepComprasComponent implements OnInit {
 
 
       var DATAg = document.getElementById('htmlData_');
+      if (DATAg != undefined && DATAg != null) {
+        DATAg.innerHTML += '<div class="row mt-4 CentrarText"> <label class="col-2 Llave ">Firma:&nbsp;</label>  <hr class="col-8 mt-3 hrSinEstilo">  </div>';
+      }
+
+
       if (DATAg != null) {
         html2canvas(DATAg, options).then((canvas) => {
           var imgDos = canvas.toDataURL('image/PNG');
@@ -535,6 +582,7 @@ export class RepComprasComponent implements OnInit {
         })
       }
     }
+
 
 
 

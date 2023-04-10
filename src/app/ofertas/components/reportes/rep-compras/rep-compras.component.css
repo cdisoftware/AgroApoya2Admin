@@ -23,3 +23,7 @@ th{
 .dvfirma{
     padding: 0;
 }
+.LetraPequeña{
+    font-size: 10px;
+    text-align: justify !important;
+}
