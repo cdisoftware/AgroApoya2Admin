@@ -341,90 +341,45 @@ export class RepComprasComponent implements OnInit {
     if (bandera == "1") {
       autoTable(doc, {
         styles: { fillColor: [216, 216, 216] },
-        columnStyles: {
-          1: { cellWidth: 210 },
-          2: { cellWidth: 210 },
-          3: { cellWidth: 210 }
-        },
         didParseCell: function (data) {
-          var rows = data.table.body;
-          if (data.row.index === 0) {
             data.cell.styles.fillColor = [255, 255, 255];
             data.cell.styles.textColor = [24, 29, 35];
             data.cell.styles.fontSize = 15;
             data.cell.styles.cellPadding = 0;
             data.cell.styles.halign = 'center';
-          }
         },
         margin: { top: 20 },
         body: [
-          ['', 'Hola ' + this.DataLider.NOMBRES_PERSONA, '']
+          ['', 'Hola ' + this.DataLider.NOMBRES_PERSONA + ' esta es tu compra en agroapoya2', '']
         ]
       })
+    
       autoTable(doc, {
         styles: { fillColor: [216, 216, 216] },
         columnStyles: {
-          1: { cellWidth: 210 },
-          2: { cellWidth: 210 },
-          3: { cellWidth: 210 }
+          1: { cellWidth: 315 },
+          2: { cellWidth: 315 }
         },
         didParseCell: function (data) {
           var rows = data.table.body;
-          if (data.row.index === 0) {
+
+
+          if((data.column.index % 2) == 0){
+            data.cell.styles.halign = 'left';
+          }else{
+            data.cell.styles.halign = 'right';
+          }
             data.cell.styles.fillColor = [255, 255, 255];
             data.cell.styles.textColor = [24, 29, 35];
-            data.cell.styles.fontSize = 15;
             data.cell.styles.cellPadding = 0;
-            data.cell.styles.halign = 'center';
-          }
         },
         margin: { top: 0 },
         body: [
-          ['', 'Compraste ' + this.DataLider.Unidades + ' Unidad(es) de ' + this.DataLider.PRODUCTO, '']
-        ]
-      })
-      autoTable(doc, {
-        styles: { fillColor: [216, 216, 216] },
-        columnStyles: {
-          1: { cellWidth: 210 },
-          2: { cellWidth: 210 },
-          3: { cellWidth: 210 }
-        },
-        didParseCell: function (data) {
-          var rows = data.table.body;
-          if (data.row.index === 0) {
-            data.cell.styles.fillColor = [255, 255, 255];
-            data.cell.styles.textColor = [24, 29, 35];
-            data.cell.styles.fontSize = 15;
-            data.cell.styles.cellPadding = 0;
-            data.cell.styles.halign = 'center';
-          }
-        },
-        margin: { top: 0 },
-        body: [
-          ['Código:   ' + this.DataLider.CODIGO_COMPARTIR, 'Medio de pago:   ' + this.DataLider.MEDIO_PAGO, 'Estado:   ' + this.DataLider.ESTADO_CARRO]
-        ]
-      })
-      autoTable(doc, {
-        styles: { fillColor: [216, 216, 216] },
-        columnStyles: {
-          1: { cellWidth: 260 },
-          2: { cellWidth: 150 },
-          3: { cellWidth: 220 }
-        },
-        didParseCell: function (data) {
-          var rows = data.table.body;
-          if (data.row.index === 0) {
-            data.cell.styles.fillColor = [255, 255, 255];
-            data.cell.styles.textColor = [24, 29, 35];
-            data.cell.styles.fontSize = 15;
-            data.cell.styles.cellPadding = 0;
-            data.cell.styles.halign = 'center';
-          }
-        },
-        margin: { top: 0 },
-        body: [
-          ['A la dirección ' + this.DataLider.DIRECCION_ENTREGA, '', 'Con un valor de: ' + this.DataLider.VALOR_PAGO]
+          ['Compraste '+ this.DataLider.Unidades + ' Unidad(es) de ', ' ' + this.DataLider.PRODUCTO],
+          ['Tu código es:   ', this.DataLider.CODIGO_COMPARTIR],
+          ['Tu medio de pago fue:   ',  this.DataLider.MEDIO_PAGO],
+          ['El estado de tu compra es:   ', this.DataLider.ESTADO_CARRO],
+          ['A la dirección: ', this.DataLider.DIRECCION_ENTREGA]
         ]
       })
       autoTable(doc, {
@@ -466,19 +421,23 @@ export class RepComprasComponent implements OnInit {
         },
         margin: { top: 0 },
         body: [
-          ['Nombre', 'Teléfono', 'Producto', 'Unidades', 'Valor Producto', "Adicionales", "Valor a cancelar", "Estado pago"],
+          ['Nombre', 'Teléfono', 'Producto', 'Unidades', 'Valor Producto', "Adicionales", "Estado pago", "Valor a cancelar"],
         ]
       })
       var calculaTotal: number = 0;
+      var calculaTotalPagado: number = 0;
+      console.log(this.DataParticipantes)
       this.DataParticipantes.forEach(function (respuesta: any) {
 
         let amount: number = parseFloat(respuesta.ValorProdcuto);
         let FormatMoneda: string = amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 
-
-        calculaTotal += parseInt(respuesta.ValorTotal);
-
-        var Res = [respuesta.NombrePersona, respuesta.CelularPersona, respuesta.DesProducto, respuesta.UndsCmpradas, FormatMoneda, respuesta.DescToppings, respuesta.ValorTotalForm, respuesta.DesEstadoPago];
+        if (respuesta.DesEstadoPago != "Exitoso") {
+          calculaTotal += parseInt(respuesta.ValorTotal);
+        }else{
+          calculaTotalPagado += parseInt(respuesta.ValorTotal);
+        }
+        var Res = [respuesta.NombrePersona, respuesta.CelularPersona, respuesta.DesProducto, respuesta.UndsCmpradas, FormatMoneda, respuesta.DescToppings, respuesta.DesEstadoPago, respuesta.ValorTotalForm];
 
         autoTable(doc, {
           margin: { top: 0, bottom: 0 },
@@ -493,10 +452,7 @@ export class RepComprasComponent implements OnInit {
             8: { cellWidth: 119 }
           },
           didParseCell: function (data) {
-            var rows = data.table.body;
-            if (data.row.index === 0) {
               data.cell.styles.halign = 'center';
-            }
           },
 
           body:
@@ -507,7 +463,12 @@ export class RepComprasComponent implements OnInit {
       });
 
       //Calcula el valor a pagar del lider + el valor globar a pagar de los participantes
-      calculaTotal += (parseInt(this.DataLider.ValorProdcuto) + parseInt(this.DataLider.SumToppings))
+console.log(this.DataLider)
+      if (this.DataLider.ESTADO_PAGO != "Pagado") {
+        calculaTotal += (parseInt(this.DataLider.ValorProdcuto) + parseInt(this.DataLider.SumToppings))
+      }else{
+        calculaTotalPagado += (parseInt(this.DataLider.ValorProdcuto) + parseInt(this.DataLider.SumToppings))
+      }
 
       //Se le da formato moneda
       let FormatMoneda: string = calculaTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
