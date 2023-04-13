@@ -22,6 +22,7 @@ import { CarruselofertasComponent } from './ofertas/components/carruselofertas/c
 import { ComboofertasComponent } from './ofertas/components/comboofertas/comboofertas.component';
 import { EnviocorreosComponent } from './usuario/components/enviocorreos/enviocorreos.component';
 import { ConsultacorreosComponent } from './usuario/components/consultacorreos/consultacorreos.component';
+import { AdminUltMillaComponent } from './ofertas/components/admin-ult-milla/admin-ult-milla.component';
 
 const routes: Routes = [
   {
@@ -119,6 +120,10 @@ const routes: Routes = [
       {
         path: 'consultacorreos',
         component: ConsultacorreosComponent
+      },
+      {
+        path: 'AdminUltimaMilla',
+        component: AdminUltMillaComponent
       }
     ]
   },
