@@ -22,12 +22,17 @@ import { CarruselofertasComponent } from './ofertas/components/carruselofertas/c
 import { ComboofertasComponent } from './ofertas/components/comboofertas/comboofertas.component';
 import { EnviocorreosComponent } from './usuario/components/enviocorreos/enviocorreos.component';
 import { ConsultacorreosComponent } from './usuario/components/consultacorreos/consultacorreos.component';
+import { RepOfertasComponent } from './ofertas/components/reportes/rep-ofertas/rep-ofertas.component';
 
 const routes: Routes = [
   {
     path: '',
     component: LoginComponent
+  },  {
+    path: 'rep-ofertas',
+    component: RepOfertasComponent
   },
+ 
   {
     path: 'home',
     component: LayoutprincipalComponent,

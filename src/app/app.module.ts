@@ -34,6 +34,7 @@ import { SeguimientoComponent } from './ofertas/components/seguimiento/seguimien
 import { ComboofertasComponent } from './ofertas/components/comboofertas/comboofertas.component';
 import { EnviocorreosComponent } from './usuario/components/enviocorreos/enviocorreos.component';
 import { ConsultacorreosComponent } from './usuario/components/consultacorreos/consultacorreos.component';
+import { RepOfertasComponent } from './ofertas/components/reportes/rep-ofertas/rep-ofertas.component';
 
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
@@ -51,6 +52,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     CosteoComponent,
     ReporteComponent,
     RepComprasComponent,
+    RepOfertasComponent,
     DatosBasicosComponent,
     OlvidepasswordComponent,
     CarguepublicidadComponent,

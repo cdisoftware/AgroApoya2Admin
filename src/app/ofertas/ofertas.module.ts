@@ -8,13 +8,12 @@ import { CarruselofertasComponent } from './components/carruselofertas/carruselo
 
 @NgModule({
   declarations: [
-  
-    CarruselOfertasComponent,
-       CarruselofertasComponent
+
+   CarruselOfertasComponent,
+       CarruselofertasComponent    
   ],
   imports: [
     CommonModule,
-    AutocompleteLibModule
   ]
 })
 export class OfertasModule { }
