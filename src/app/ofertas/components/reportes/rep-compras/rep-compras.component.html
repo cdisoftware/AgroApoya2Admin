@@ -139,12 +139,16 @@
             <td *ngIf="Siguiente == true">{{oferta.CELULAR_PERSONA}}</td>
             <td *ngIf="Siguiente == true" class="overflow">
 
-                    {{oferta.CORREO_PERSONA}}
+                {{oferta.CORREO_PERSONA}}
 
             </td>
-            <td (click)="DetalleCompra(oferta, ModalDetalle)">
-                <button class="SinEstilo">
+            <td>
+                <button class="SinEstilo" (click)="DetalleCompra(oferta, ModalDetalle)">
                     <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/info.png" alt="">
+                </button>
+
+                <button class="SinEstilo" (click)="Cargadetallesfactura(oferta, ModalFactura)">
+                    <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_factura.png" alt="">
                 </button>
             </td>
         </tr>
@@ -265,5 +269,114 @@
     <div class="row justify-content-center">
         <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
     </div>
+    <br>
+</ng-template>
+
+
+<ng-template #ModalFactura let-modal>
+    <div class="modal-header">
+        <h1>Factura de compra</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body" *ngIf="idTipoFactura == '1'">
+        <div class="row">
+            <p class="Valor LetraPequeña">Recuerda que solo te aparecerán los participantes que ya han pagado o que tú como líder les realizaste o realizaras el pago.</p>
+        </div>
+        <div class="row" *ngFor="let part of DataParticipantes; let i = index">
+            <h6 class="textblue CentrarText" [ngClass]="{'mt-3': i != 0}">
+                <strong>{{part.NombrePersona}}</strong>
+            </h6>
+
+            <label class="Llave">{{part.DesProducto}}</label>
+
+
+            <label class="Llave" *ngIf="part.DescToppings != '' || part.DescToppings != null || part.DescToppings != undefined">Adicionales</label>
+            <label class="Valor" *ngIf="part.DescToppings != '' || part.DescToppings != null || part.DescToppings != undefined">{{part.DescToppings}}</label>
+
+            <div class="col-sm-6">
+                <label class="Llave">Unidades</label>
+                <label class="Valor">{{part.UndsCmpradas}}</label>
+            </div>
+
+            <div class="col-sm-6 textrigt">
+                <label class="Llave">Telefono:&nbsp;</label>
+                <label class="Valor">{{part.CelularPersona}}</label>
+            </div>
+
+            <div class="col-sm-6">
+                <label class="Llave">Estado Pago:&nbsp;</label>
+                <label class="Valor">{{part.DesEstadoPago}}</label>
+            </div>
+
+            <div class="col-sm-6 textrigt">
+                <label class="Llave">Precio:&nbsp;</label>
+                <label class="Valor">{{part.ValorTotalForm}}</label>
+            </div>
+            <hr class="hrSinEstilo" *ngIf="(i + 1) != DataParticipantes.length">
+
+
+
+        </div>
+    </div>
+    <div class="modal-body" id="htmlData_" *ngIf="idTipoFactura == '2'">
+        <div class="row">
+            <h6 class="textblue CentrarText mt-1">
+                <strong>Hola {{DataLider.NOMBRES_PERSONA}}</strong>
+            </h6>
+
+            <div class="CentrarText">
+                <p class="Valor">Compraste&nbsp;{{DataLider.Unidades}} Unidad(es) de {{DataLider.PRODUCTO}}</p>
+            </div>
+
+            <div class="col-sm-6 CentrarText">
+                <label class="Llave">Unidad(es):&nbsp;</label>
+                <label class="Valor">{{DataLider.Unidades}}</label>
+            </div>
+
+            <div class="col-sm-6 CentrarText">
+                <label class="Llave">Estado:&nbsp;</label>
+                <label class="Valor">{{DataLider.ESTADO_CARRO}}</label>
+            </div>
+
+            <div class="col-sm-12 CentrarText" *ngIf="DataLider.ADICIONALES != ''">
+                <label class="Llave">Adicionales:&nbsp;</label>
+                <label class="Valor" [innerHTML]="DataLider.ADICIONALES"></label>
+            </div>
+
+            <div class="col-sm-6 CentrarText mt-2">
+                <label class="Llave">Tipo de compra:&nbsp;</label>
+                <label class="Valor">{{DataLider.TIPO_USUARIO_COMPRA}}</label>
+            </div>
+
+            <div class="col-sm-6 CentrarText mt-2">
+                <label class="Llave">Dirección:&nbsp;</label>
+                <label class="Valor">{{DataLider.DIRECCION_ENTREGA}}</label>
+            </div>
+
+            <div class="col-sm-6 CentrarText">
+                <label class="Llave">Fecha entrega:&nbsp;</label>
+                <label class="Valor">{{DataLider.FECHA_ENTREGA}}</label>
+            </div>
+
+            <div class="col-sm-6 CentrarText">
+                <label class="Llave">Valor a cancelar:&nbsp;</label>
+                <label class="Valor">{{DataLider.VALOR_PAGO}}</label>
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+    <div class="row justify-content-center" *ngIf="idTipoFactura == '1'">
+        <button type="button" class="btn btn-agro-prin col-4" (click)="DescargarDatosPdf('1')">Imprimir
+            <img src="../../../../../assets/ImagenesAgroApoya2Adm/ic_pdf.png" class="imgpdf" />
+        </button>
+    </div>
+    <div class="row justify-content-center" *ngIf="idTipoFactura == '2'">
+        <button type="button" class="btn btn-agro-prin col-4" (click)="DescargarDatosPdf('2')">Imprimir
+            <img src="../../../../../assets/ImagenesAgroApoya2Adm/ic_pdf.png" class="imgpdf" />
+        </button>
+    </div>
+
     <br>
 </ng-template>

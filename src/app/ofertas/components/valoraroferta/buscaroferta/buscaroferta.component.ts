@@ -286,7 +286,6 @@ export class BuscarofertaComponent implements OnInit {
   }
 
   CargaBusqueda(seleccion: any) {
-    //console.log(seleccion)
     this.IdOferta = seleccion.cd_cnsctvo;
     this.modalService.dismissAll();
     this.ValidaBusqueda = '1';
@@ -368,10 +367,10 @@ export class BuscarofertaComponent implements OnInit {
     this.modalService.open(ModalResumen, { ariaLabelledBy: 'modal-basic-title', size: 'xl', centered: true, backdrop: 'static', keyboard: false });
     this.ConsultaSectores();
     this.ServiciosValorar.ConsultaMenuResumenOferta('1', respu.Tramite).subscribe(Resultado => {
-      console.log(Resultado)
       this.ArrayResumenOferta = Resultado;
     });
   }
+
 
   PopupEnvio(ModalEnvio: any, oferta: any, accion: string) {
     this.AccionEnvio = accion;
@@ -392,6 +391,7 @@ export class BuscarofertaComponent implements OnInit {
 
   EnviaNotificaciones(ArraySectores: any, accion: string) {
     if (ArraySectores.length > 0) {
+
       if(accion == '1'){
         for (var i = 0; i < ArraySectores.length; i++) {
           this.ServiciosValorar.CorreoMasivo('1', '9', '2', this.IdOferta, ArraySectores[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
@@ -418,14 +418,35 @@ export class BuscarofertaComponent implements OnInit {
       }
     })
   }
+  cdConsSectorResumen: string = "";
   selectSector(item: any) {
     this.CodigoOferSector = item.COD_OFERTA_SECTOR;
     this.VlrFletSect = item.VLOR_FLTE_SGRDOForm;
-    this.SessionSectorSel = item.ID_SCTOR_OFRTA
+    this.SessionSectorSel = item.ID_SCTOR_OFRTA;
+    this.cdConsSectorResumen = item.CD_CNSCTVO;
     this.ConsultaVigenciaOferta();
     this.ConsultaValoracionOferta();
     this.consultaToppingsOferta();
+    this.ConsEnvioSmsEmail();
   }
+
+  EnvioSms: boolean = false;
+  EnvioEmal: boolean = false;
+  ConsEnvioSmsEmail() {
+    this.ServiciosValorar.ConsultaSectoresOferta('1', this.cdConsSectorResumen).subscribe(ResultConsulta => {
+      if (ResultConsulta.length > 0) {
+        if (ResultConsulta[0].EnvioCorreo == "1") {
+          this.EnvioEmal = true;
+        }
+        if (ResultConsulta[0].EnvioSms == "1") {
+          this.EnvioSms = true;
+        }
+      }
+    })
+
+  }
+
+
   LimpiaSector() {
     this.CodigoOferSector = "";
     this.VlrFletSect = "";
@@ -484,12 +505,18 @@ export class BuscarofertaComponent implements OnInit {
     })
   }
 
+  TipoDescuento: string = "";
+  PorcentajeDescuento: string = "";
+  MaximoUnidadesDescuento: string = "";
   ConsultaValoracionOferta() {
     this.ServiciosValorar.ConsultaValoracionOferta('1', this.IdOferta, this.SessionSectorSel).subscribe(ResultCons => {
-      console.log('////////////')
       console.log(ResultCons)
       this.ComInvid = ResultCons[0].Nom_tpo_cmsion_indvdual;
       this.ComGrup = ResultCons[0].Nom_tpo_cmsion_grpal;
+      this.TipoDescuento = ResultCons[0].tpo_descuento;
+      this.PorcentajeDescuento = ResultCons[0].prcntje_dcto_lider;
+      this.MaximoUnidadesDescuento = ResultCons[0].mnmo_prsnas_xgrupo;
+
 
       if (ResultCons[0].TPO_OFRTA == '1') {
         this.MuestraIndividual = '1';
@@ -502,6 +529,7 @@ export class BuscarofertaComponent implements OnInit {
         this.MaxUnidI = ResultCons[0].mxmo_unddes_indvdual;
         this.VlrDomiI = ResultCons[0].vlor_dmnclio_indvdual;
         this.PreFinI = ResultCons[0].vlor_fnal_indvdual;
+        
       }
       else if (ResultCons[0].TPO_OFRTA == '2') {
         this.MuestraIndividual = '0';
