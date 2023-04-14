@@ -11,7 +11,6 @@ import { CarruselofertasComponent } from './components/carruselofertas/carruselo
   ],
   imports: [
     CommonModule,
-    AutocompleteLibModule
   ]
 })
 export class OfertasModule { }

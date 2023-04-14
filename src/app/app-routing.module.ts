@@ -23,12 +23,17 @@ import { ComboofertasComponent } from './ofertas/components/comboofertas/comboof
 import { EnviocorreosComponent } from './usuario/components/enviocorreos/enviocorreos.component';
 import { ConsultacorreosComponent } from './usuario/components/consultacorreos/consultacorreos.component';
 import { AdminUltMillaComponent } from './ofertas/components/admin-ult-milla/admin-ult-milla.component';
+import { RepOfertasComponent } from './ofertas/components/reportes/rep-ofertas/rep-ofertas.component';
 
 const routes: Routes = [
   {
     path: '',
     component: LoginComponent
+  },  {
+    path: 'rep-ofertas',
+    component: RepOfertasComponent
   },
+ 
   {
     path: 'home',
     component: LayoutprincipalComponent,

@@ -1,0 +1,110 @@
+<br>
+<div class="container bg-white">
+    <br>
+    <h1>Reporte ofertas</h1>
+    <div class="row">
+      
+        <div class="col-sm-6">
+            <input class="col-sm-9 mt-3   form-control textBox tamaño-input" type="number" placeholder="ID oferta"
+                [name]="idOferta" [(ngModel)]="idOferta">
+        </div>
+       
+        <div class="col-sm-6 br">
+            <ng-autocomplete class="col-sm-9 mt-0 textBox tamaño-input" [data]="ArrayEstadoOferta" [searchKeyword]="keyWordEstado" placeholder="Estado oferta"
+                (selected)='obtenerSelectEstadoOferta($event)' [itemTemplate]="templateRes"
+                [notFoundTemplate]="templateVacio" [(ngModel)]="estadoOferta">
+            </ng-autocomplete>
+
+            <ng-template #templateRes let-item>
+                <a [innerHTML]="item.DSCRPCION_ESTADO"></a>
+            </ng-template>
+
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+
+       
+
+        <div class="col-sm-6 br">
+            <ng-autocomplete class="col-sm-9 mt-5" [data]="ArrayProductos" [searchKeyword]="keyWordProductos" placeholder="Productos"
+                (selected)='selectProducto($event)' [itemTemplate]="templateProducto"
+                [notFoundTemplate]="templateVacio"  [(ngModel)]="producto" >
+            </ng-autocomplete>
+
+            <ng-template #templateProducto let-item>
+                <a [innerHTML]="item.des_producto"></a>
+            </ng-template>
+
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+
+
+        <div class="col-sm-6 mt-0 d-flex justify-content-between align-items-center">
+            <div class="mt-0 col-sm-5">
+                <label class="color-principal text-small" for="desde"></label>
+                <input class="form-control textBox tamaño-date" type="date" maxlength="50" [name]="fechaDesde"
+                    [(ngModel)]="fechaDesde">
+            </div>
+            <div class="mt-0 col-sm-5">
+                <label class="color-principal text-small" for="hasta"></label>
+                <input class="form-control textBox tamaño-date" type="date" maxlength="50" [name]="fechaHasta"
+                    [(ngModel)]="fechaHasta">
+            </div>
+        </div>
+    </div>
+
+    <div class="row br justify-content-center">
+        <div class="col-sm-3 col-2">
+            <button class="btn btn-agro-prin col-sm-12" (click)="buscar()">
+                Buscar
+            </button>
+        </div>
+        <div class="col-sm-3 col-2">
+            <button class="btn btn-agro-prin col-sm-12 " [disabled]="ValidaDescarga" (click)="GenerarExcel()">
+                Descargar
+            </button>
+        </div>
+        <div class="col-sm-3 col-2">
+            <button class="btn btn-agro-sec col-sm-12" (click)="limpiar()">
+                Limpiar
+            </button>
+        </div>
+    </div>
+
+</div>
+<br>
+
+
+
+<div class="row m-1">
+    <table class="col-sm-12 TableAgro">
+        <thead>
+            <tr>
+                <th>Id oferta</th>
+                <th>Estado oferta</th>
+                <th>Producto</th>
+                <th>Desde</th>
+                <th>Hasta</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let resultado of resultados">
+             
+                <td>{{resultado.IdEstado_Oferta}}</td>
+                <td>{{resultado.Desc_estado}}</td>
+                <td>{{resultado.Producto}}</td>
+                <td>{{resultado.VigenciaDesde}}</td>
+                <td>{{resultado.VigenciaHasta}}</td>
+
+            </tr>
+           
+            <tr *ngIf="ValidaConsulta=='1'">
+                <td colspan="5" >{{txtValidaCons}}</td>
+                
+            </tr>
+        </tbody>
+    </table>
+</div>
