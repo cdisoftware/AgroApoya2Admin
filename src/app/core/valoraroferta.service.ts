@@ -228,22 +228,26 @@ export class ValorarofertaService {
   constextosoferta(Bandera: string, idSector: string, cd_cnctivo: string) {
     return this.http.get<any>(this.url_servidor + 'constextosoferta/' + Bandera + '/' + cd_cnctivo + '/' + idSector)
   }
- 
+
   TextosOferta(Bandera: string, Bodymod: any) {
     return this.http.post<any>(this.url_servidor + 'TextosOferta/' + Bandera, Bodymod)
   }
 
 
-  InsertaLinks(Bandera: string, Bodymod: any){
+  InsertaLinks(Bandera: string, Bodymod: any) {
     return this.http.post<any>(this.url_servidor + 'modclinks/' + Bandera, Bodymod)
   }
 
-  ConsultaLinks(Bandera: string, IdOferta: string, IdSector: string){
-    return this.http.get<any>(this.url_servidor + 'consclinksector/' + Bandera + '/' + IdOferta + '/' +IdSector)
+  ConsultaLinks(Bandera: string, IdOferta: string, IdSector: string) {
+    return this.http.get<any>(this.url_servidor + 'consclinksector/' + Bandera + '/' + IdOferta + '/' + IdSector)
   }
-  
+
   consthorariotarea(Bandera: string) {
     return this.http.get<any>(this.url_servidor + 'consthorariotarea/' + Bandera)
 
+  }
+
+  ConsEntregasConductor(Bandera: string, ID_CNDCTOR: string, id_Sector: string, cd_cnctivo: string, coordernadas: string) {
+    return this.http.get<any>(this.url_servidor + 'consentregasconductor/' + Bandera + '/' + ID_CNDCTOR + '/' + id_Sector + '/' + cd_cnctivo + '/' + coordernadas);
   }
 }

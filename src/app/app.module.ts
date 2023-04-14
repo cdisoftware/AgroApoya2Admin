@@ -34,6 +34,7 @@ import { SeguimientoComponent } from './ofertas/components/seguimiento/seguimien
 import { ComboofertasComponent } from './ofertas/components/comboofertas/comboofertas.component';
 import { EnviocorreosComponent } from './usuario/components/enviocorreos/enviocorreos.component';
 import { ConsultacorreosComponent } from './usuario/components/consultacorreos/consultacorreos.component';
+import { AdminUltMillaComponent } from './ofertas/components/admin-ult-milla/admin-ult-milla.component';
 import { RepOfertasComponent } from './ofertas/components/reportes/rep-ofertas/rep-ofertas.component';
 
 
@@ -60,7 +61,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     SeguimientoComponent,
     ComboofertasComponent,
     EnviocorreosComponent,
-    ConsultacorreosComponent
+    ConsultacorreosComponent,
+    AdminUltMillaComponent
   ],
   imports: [
     NgxMaskModule.forRoot(options),
