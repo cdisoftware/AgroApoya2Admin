@@ -37,8 +37,8 @@
        
 
         <div class="col-sm-6 br">
-            <ng-autocomplete class="col-sm-9 mt-5" [data]="ArrayProductos" [searchKeyword]="keyWordProductos" placeholder="Productos"(inputCleared)="LimpiaProducto('')"
-                (selected)='selectProducto($event)' [itemTemplate]="templateProducto"(inputCleared)="LimpiaProducto('')"  
+            <ng-autocomplete class="col-sm-9 mt-5" [data]="ArrayProductos" [searchKeyword]="keyWordProductos" placeholder="Productos"
+                (selected)='selectProducto($event)' [itemTemplate]="templateProducto"(inputCleared)="LimpiaProducto()"  
                 [notFoundTemplate]="templateVacio"  [(ngModel)]="Producto" >
             </ng-autocomplete>
 
