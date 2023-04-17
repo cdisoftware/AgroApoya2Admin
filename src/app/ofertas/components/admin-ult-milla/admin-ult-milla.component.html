@@ -2,20 +2,188 @@
     <br><br>
     <div class="container bg-white">
         <h1>Administrador ultima milla</h1>
-        <div class="row">
+        <div class="row justify-content-center">
 
-            <div class="row mt-2 justify-content-center">
-                <div class="col-sm-12">
-                    <div id="map" class="ShowMap"></div>
+
+            <div class="col-sm-6">
+                <input class="col-sm-12 form-control textBox" type="number" placeholder="Consecutivo oferta"
+                    [(ngModel)]="OferFiltro">
+            </div>
+            <div class="col-sm-6">
+                <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" placeholder="Sector"
+                    (inputCleared)="LimpiaSector('')" (selected)='selectSector($event)' [itemTemplate]="templateSec"
+                    [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
+                </ng-autocomplete>
+                <ng-template #templateSec let-item>
+                    <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+                </ng-template>
+                <ng-template #templateVacio let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
+            </div>
+
+
+            <div class="col-sm-10">
+                <div class="p-2">
+                    <div class="m-1 row tarjetadetallehistorial">
+                        <div class="col-sm-4 p-0">
+                            <img src="https://museodelchocolate.com.co/wp-content/uploads/2022/10/historia-del-cafe.jpg"
+                                class="imgTartejaDos">
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="row justify-content-center ">
+                                <div class="col-sm-11  text-center">
+                                    <h6 class="Llave CentrarText textMay">{{ArrayCompra.Producto_ppal}} x
+                                        {{ArrayCompra.unidadesEntregar}}</h6>
+                                </div>
+                            </div>
+                            <hr class="hrSinEstilo">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="ValorIDOfer lblSmall"><strong>{{ArrayCompra.CD_CNSCTVO}} -
+                                            Bogota Prubas</strong></label>
+                                    <br>
+                                    <label class="Llave lblSmall">Tipo de compra:&nbsp;</label><label
+                                        class="Valor lblSmall">{{ArrayCompra.descTipoPago}}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="Llave lblSmall">Código grupo:&nbsp;</label><label
+                                        class="Valor lblSmall">{{ArrayCompra.tipo_usuarioCompra == '3' ||
+                                        ArrayCompra.tipo_usuarioCompra == '2' ? ArrayCompra.CodigoMostrar:
+                                        'N/A'}}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="Llave lblSmall">Presentación empaque:&nbsp;</label><label
+                                        class="Valor lblSmall">{{ArrayCompra.peso_prod_ppal}} Kilos</label>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="ArrayCompra.producto_add != null">
+                                <div class="col-sm-12">
+                                    <label class="Llave lblSmall">Adiciones:&nbsp;</label><br><label
+                                        class="Valor lblSmall" [innerHTML]="ArrayCompra.producto_add"></label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="Llave lblSmall">Dirección Entrega:&nbsp;</label><label
+                                        class="Valor lblSmall">{{ArrayCompra.DRCCION}}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="Llave lblSmall">Estado compra:&nbsp;</label><label
+                                        class="Valor lblSmall">{{ArrayCompra.descTipoPago}} -
+                                        {{ArrayCompra.descEstado}}</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="Llave lblSmall">Tipo pago:&nbsp;</label><label
+                                        class="Valor lblSmall">{{ArrayCompra.descTipoPago}}</label>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="col-sm-12">
+                                    <label class="Llave lblSmall text" style="color: red;">Valor total:&nbsp;</label>
+                                    <label class="Valor lblSmall"
+                                        style="color: red;">{{ArrayCompra.Vlor_PagarForm}}</label>
+                                </div>
+                                <div class="col-sm-12" *ngIf="ArrayCompra.IdPagoParti != 0">
+                                    <label class="Llave lblSmall">Valor mi compra:&nbsp;</label><label
+                                        class="Valor lblSmall">{{ArrayCompra.Vlor_PagarForm}}</label>
+                                </div>
+                                <div class="col-sm-12" *ngIf="ArrayCompra.IdPagoParti != 0">
+                                    <label class="Llave lblSmall">Valor compra participantes:&nbsp;</label><label
+                                        class="Valor lblSmall">{{ArrayCompra.Vlor_PagarForm}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <hr>
-            <h1 class="TextLeft">Información de compra seleccionada</h1>
 
-            <div class="col-sm-6">
-                <div class="TargetaSeleccionar">
+            <div class="row mt-2 justify-content-center">
+                <div class="col-12">
+                    <div id="map" class="ShowMap"></div>
+                </div>
+            </div>
+            <h1 class="TextLeft mt-3">Información de compra seleccionada</h1>
 
+            <div class="row justify-content-center mb-5">
+
+
+                <div class="col-sm-5 p-0 row TarAseleccionarEntreg">
+                    <div class="col-12 bagroundTituloTargSelect CentrarText">
+                        <label class="Llave lblSmall" style="color: #fff;">{{ArrayCompra.Producto_ppal}}</label>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="Llave lblSmall">Dirección Entrega:&nbsp;</label><label
+                                class="Valor lblSmall">{{ArrayCompra.DRCCION}}</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="Llave lblSmall">Presentación empaque:&nbsp;</label><label
+                                class="Valor lblSmall">{{ArrayCompra.peso_prod_ppal}} Kilos</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="Llave lblSmall">Estado compra:&nbsp;</label><label
+                                class="Valor lblSmall">{{ArrayCompra.descTipoPago}} -
+                                {{ArrayCompra.descEstado}}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-5 mt-4">
+                    <button class="SinEstilo" (click)="AgregaItemEntrega(ArrayCompra)">
+                        <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/agregarEntrega.png" />
+                    </button>
+                </div>
+
+
+            </div>
+
+            <div class="row TarEntrega p-1 justify-content-center">
+
+                <label class="Llave lblSmall col-12 mt-2 p-2">La entrega lleva un peso promedio de {{AcumPeso}}&nbsp;</label>
+
+                <div class="TarEntregaItems col-sm-3 p-1 m-2" *ngFor="let part of ArrayEntrega; let i = index">
+                    <div class="col-12 bagroundTituloTargSelect CentrarText">
+                        <label class="Llave lblSmall" style="color: #fff;">{{ArrayCompra.Producto_ppal}}</label>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="Llave lblSmall">Dirección Entrega:&nbsp;</label><label
+                                class="Valor lblSmall">{{ArrayCompra.DRCCION}}</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="Llave lblSmall">Presentación empaque:&nbsp;</label><label
+                                class="Valor lblSmall">10 Kilos</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="Llave lblSmall">Estado compra:&nbsp;</label><label
+                                class="Valor lblSmall">{{ArrayCompra.descTipoPago}} -
+                                {{ArrayCompra.descEstado}}</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

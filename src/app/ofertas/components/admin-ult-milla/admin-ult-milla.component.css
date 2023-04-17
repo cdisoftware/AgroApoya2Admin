@@ -1,6 +1,50 @@
-.TextLeft{
+.TextLeft {
     text-align: left;
 }
-.TargetaSeleccionar{
-    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+
+.OfertaSeleccionada {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 10px;
+}
+
+.tarjetadetallehistorial {
+    background-color: white;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    overflow-y: hidden;
+    height: 95%;
+}
+
+.imgTartejaDos {
+    height: 100%;
+    width: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+@media only screen and (max-width: 600px) {
+    .imgTartejaDos {
+        height: 100%;
+        width: 100%;
+        display: block;
+        object-fit: cover;
+        max-height: 150px;
+    }
+}
+
+
+
+.TarAseleccionarEntreg {
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+.bagroundTituloTargSelect{
+    background-color: #397c97;
+}
+
+
+.TarEntrega {
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+.TarEntregaItems{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }

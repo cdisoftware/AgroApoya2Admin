@@ -10,6 +10,15 @@ import { NgbModal, NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AdminUltMillaComponent implements OnInit {
 
+  //Filtros
+  OferFiltro: string = '';
+
+  Sector: string = '';
+  DataSectores: any = [];
+  keywordSec: string = '';
+  SectorSelec: string = '';
+
+
   //Mapa
   geocoder = new google.maps.Geocoder();
   map: google.maps.Map;
@@ -19,7 +28,11 @@ export class AdminUltMillaComponent implements OnInit {
 
 
   //Agrega compra a entrega
-  ArrayCompra: any =[];
+  ArrayCompra: any = [];
+
+  //Array Entrega
+  ArrayEntrega: any = [];
+  AcumPeso: number = 0;
 
 
   constructor(private modalService: NgbModal,
@@ -27,20 +40,36 @@ export class AdminUltMillaComponent implements OnInit {
     private serviciosreportes: ReporteService) { }
 
   ngOnInit(): void {
+    this.ConsultaSectores();
+
     this.Centramapa({ address: 'Bogotá' + ',' + 'Bogotá' });
     this.ConsumeService();
   }
 
 
 
+  //Metodos filtros
+  ConsultaSectores() {
+    this.ServiciosValorar.ConsultaSectores('1', '0', '0', '0', '0').subscribe(ResultCons => {
+      this.DataSectores = ResultCons
+      this.keywordSec = 'DSCRPCION_SCTOR';
+    })
+  }
+  selectSector(sector: any) {
+    this.SectorSelec = sector.SCTOR_OFRTA;
+  }
+  LimpiaSector(Sector: String) {
+    this.SectorSelec = "" + Sector;
+  }
+
+
+  //Mapa
   ConsumeService() {
     this.ServiciosValorar.ConsEntregasConductor('1', '39', '433', '2206', '0').subscribe(Resultado => {
       this.ArrayEntregas = Resultado;
       console.log(Resultado)
     })
   }
-
-
   Centramapa(request: google.maps.GeocoderRequest): void {
     var lat: number;
     var long: number;
@@ -61,8 +90,6 @@ export class AdminUltMillaComponent implements OnInit {
         console.log("Geocode was not successful for the following reason: " + e);
       });
   }
-
-
   AgregarSitios() {
     const features = [];
     this.markers = [];
@@ -109,8 +136,6 @@ export class AdminUltMillaComponent implements OnInit {
       });
     }
   }
-
-
   InfoWindow(i: any) {
     this.ArrayCompra = this.ArrayEntregas[i];
     this.infoWindow.close();
@@ -128,11 +153,7 @@ export class AdminUltMillaComponent implements OnInit {
       '<h1 id="firstHeading" class="firstHeading">' + NomCliente + '</h1>' +
       '<div id="bodyContent">' +
       '<p>' +
-      '<b>Codigo Oferta: </b>' + CodigoOferta + '' +
-      '<br>' +
       '<b>Dirección: </b>' + Direccion + '' +
-      '<br>' +
-      '<b>Producto: </b>' + Producto + '' +
       '<br>' +
       '<b>Cantidad: </b>' + Cantidad + ' Unidad(es)' +
       '<br>' +
@@ -140,13 +161,12 @@ export class AdminUltMillaComponent implements OnInit {
       '</p>' +
       '</div>' +
       '</div>' +
-      '</div>' ;
+      '</div>';
 
 
 
     for (var x = 0; x < this.markers.length; x++) {
       if (i == x) {
-
         this.infoWindow.close();
         this.infoWindow.setContent(Html);
         this.infoWindow.open(this.markers[i].getMap(), this.markers[i]);
@@ -154,4 +174,15 @@ export class AdminUltMillaComponent implements OnInit {
     }
   }
 
+
+
+  //Agregar a entrega o transport
+  AgregaItemEntrega(item: any){
+    this.AcumPeso = 0;
+    this.ArrayEntrega.push(item);
+    for(var i = 0; i < this.ArrayEntrega.length; i++){
+      this.AcumPeso += parseFloat(this.ArrayEntrega[i].peso_prod_ppal);
+      //this.AcumPeso += parseInt(this.ArrayEntrega[i].peso_prod_ppal);
+    }
+  }
 }
