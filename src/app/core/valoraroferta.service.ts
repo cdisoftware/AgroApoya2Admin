@@ -250,4 +250,14 @@ export class ValorarofertaService {
   ConsEntregasConductor(Bandera: string, ID_CNDCTOR: string, id_Sector: string, cd_cnctivo: string, coordernadas: string) {
     return this.http.get<any>(this.url_servidor + 'consentregasconductor/' + Bandera + '/' + ID_CNDCTOR + '/' + id_Sector + '/' + cd_cnctivo + '/' + coordernadas);
   }
+
+
+  
+  ConsInfoOfer(Bandera: string, CD_CNSCTVO: string, IdSector: string) {
+    return this.http.get<any>(this.url_servidor + 'conscinfoferta/' + Bandera + '/' + CD_CNSCTVO + '/' + IdSector)
+  }
+
+  ConsOferEst(Bandera: string) {
+    return this.http.get<any>(this.url_servidor + 'conscofertaestados/' + Bandera)
+  }
 }

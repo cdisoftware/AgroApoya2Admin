@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ValorarofertaService } from './../../../core/valoraroferta.service';
 import { ReporteService } from 'src/app/core/reporte.service';
 import { NgbModal, NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 
 @Component({
   selector: 'app-admin-ult-milla',
@@ -10,13 +11,19 @@ import { NgbModal, NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AdminUltMillaComponent implements OnInit {
 
+  UrlImagenes: string = '';
+
   //Filtros
   OferFiltro: string = '';
+  DataOfertas: any = [];
+  KeywordOferta: string = '';
+  SelectOferta: string = '0';
 
   Sector: string = '';
   DataSectores: any = [];
   keywordSec: string = '';
   SectorSelec: string = '';
+  DescripcionSector: string = '';
 
 
   //Mapa
@@ -37,15 +44,20 @@ export class AdminUltMillaComponent implements OnInit {
 
   constructor(private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService,
-    private serviciosreportes: ReporteService) { }
+    private serviciosreportes: ReporteService,
+    private metodosglobales: MetodosglobalesService) { }
 
   ngOnInit(): void {
+    this.UrlImagenes = this.metodosglobales.RecuperaRutaImagenes();
+    this.ConsCdOfer();
     this.ConsultaSectores();
 
     this.Centramapa({ address: 'Bogotá' + ',' + 'Bogotá' });
     this.ConsumeService();
-  }
 
+
+    this.ConsultaInfoOfer();
+  }
 
 
   //Metodos filtros
@@ -53,14 +65,45 @@ export class AdminUltMillaComponent implements OnInit {
     this.ServiciosValorar.ConsultaSectoresOferta('1', '2206').subscribe(ResultCons => {
       this.DataSectores = ResultCons
       this.keywordSec = 'DSCRPCION_SCTOR';
+      console.log(ResultCons)
     })
   }
   selectSector(sector: any) {
     this.SectorSelec = sector.SCTOR_OFRTA;
+    //this.DescripcionSector = sector.
   }
   LimpiaSector(Sector: String) {
     this.SectorSelec = "" + Sector;
   }
+
+
+  ConsCdOfer() {
+    this.ServiciosValorar.ConsOferEst('1').subscribe(ResultCons => {
+      console.log(ResultCons)
+      this.DataOfertas = ResultCons;
+      this.KeywordOferta = 'CD_CNSCTVO';
+    })
+  }
+  selectOfer(ofer: any) {
+    this.SelectOferta = ofer.CD_CNSCTVO;
+  }
+  LimpiaOfert(ofer: String) {
+    this.SelectOferta = "" + ofer;
+  }
+
+
+
+  //InformacionOferta
+  ConsultaInfoOfer() {
+    this.ServiciosValorar.ConsInfoOfer('1', '2206', '433').subscribe(Resultado => {
+      this.ArrayCompra = Resultado;
+      for (var i = 0; i < this.ArrayCompra.length; i++) {
+        this.ArrayCompra[i].DescToppings = this.ArrayCompra[i].DescToppings.replace("|", "<br>");
+      }
+      console.log(Resultado)
+    })
+  }
+
 
 
   //Mapa
@@ -177,10 +220,10 @@ export class AdminUltMillaComponent implements OnInit {
 
 
   //Agregar a entrega o transport
-  AgregaItemEntrega(item: any){
+  AgregaItemEntrega(item: any) {
     this.AcumPeso = 0;
     this.ArrayEntrega.push(item);
-    for(var i = 0; i < this.ArrayEntrega.length; i++){
+    for (var i = 0; i < this.ArrayEntrega.length; i++) {
       this.AcumPeso += parseFloat(this.ArrayEntrega[i].peso_prod_ppal);
       //this.AcumPeso += parseInt(this.ArrayEntrega[i].peso_prod_ppal);
     }

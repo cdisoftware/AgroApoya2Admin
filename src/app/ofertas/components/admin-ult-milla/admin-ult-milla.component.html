@@ -10,20 +10,21 @@
                     [(ngModel)]="OferFiltro">
             </div>-->
             <div class="col-sm-6">
-                <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" placeholder="Codigo oferta"
-                    (inputCleared)="LimpiaSector('')" (selected)='selectSector($event)' [itemTemplate]="templateSec"
-                    [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
+                <ng-autocomplete [data]="DataOfertas" [searchKeyword]="KeywordOferta" placeholder="Codigo oferta"
+                    (inputCleared)="LimpiaOfert('')" (selected)='selectOfer($event)' [itemTemplate]="templateCd"
+                    [notFoundTemplate]="templateVacioCd">
                 </ng-autocomplete>
-                <ng-template #templateSec let-item>
-                    <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+                <ng-template #templateCd let-item>
+                    <a [innerHTML]="item.CD_CNSCTVO"></a>
                 </ng-template>
-                <ng-template #templateVacio let-SinRegistro>
+                <ng-template #templateVacioCd let-SinRegistro>
                     <label for="">Sin registros</label>
                 </ng-template>
             </div>
             
+
             <div class="col-sm-6">
-                <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" placeholder="Sector"
+                <ng-autocomplete [disabled]="SelectOferta == '0'" [data]="DataSectores" [searchKeyword]="keywordSec" placeholder="Sector"
                     (inputCleared)="LimpiaSector('')" (selected)='selectSector($event)' [itemTemplate]="templateSec"
                     [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
                 </ng-autocomplete>
@@ -40,63 +41,51 @@
                 <div class="p-2">
                     <div class="m-1 row tarjetadetallehistorial">
                         <div class="col-sm-4 p-0">
-                            <img src="https://museodelchocolate.com.co/wp-content/uploads/2022/10/historia-del-cafe.jpg"
+                            <img src="{{UrlImagenes}}{{ArrayCompra[0].IMAGEN}}"
                                 class="imgTartejaDos">
                         </div>
                         <div class="col-sm-8">
                             <div class="row justify-content-center ">
                                 <div class="col-sm-11  text-center">
-                                    <h6 class="Llave CentrarText textMay">{{ArrayCompra.Producto_ppal}} x
-                                        {{ArrayCompra.unidadesEntregar}}</h6>
+                                    <h6 class="Llave CentrarText textMay">{{ArrayCompra[0].Nombre_Producto}} -
+                                        {{ArrayCompra[0].Descripcion_empaque}}</h6>
                                 </div>
                             </div>
                             <hr class="hrSinEstilo">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="ValorIDOfer lblSmall"><strong>{{ArrayCompra.CD_CNSCTVO}} -
-                                            Bogota Prubas</strong></label>
-                                    <br>
-                                    <label class="Llave lblSmall">Tipo de compra:&nbsp;</label><label
-                                        class="Valor lblSmall">{{ArrayCompra.descTipoPago}}</label>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <label class="Llave lblSmall">Código grupo:&nbsp;</label><label
-                                        class="Valor lblSmall">{{ArrayCompra.tipo_usuarioCompra == '3' ||
-                                        ArrayCompra.tipo_usuarioCompra == '2' ? ArrayCompra.CodigoMostrar:
-                                        'N/A'}}</label>
+                                    <label class="ValorIDOfer lblSmall"><strong>Codigo Oferta -
+                                            {{ArrayCompra[0].CD_CNSCTVO}}</strong></label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label class="Llave lblSmall">Presentación empaque:&nbsp;</label><label
-                                        class="Valor lblSmall">{{ArrayCompra.peso_prod_ppal}} Kilos</label>
+                                        class="Valor lblSmall">{{ArrayCompra[0].Descripcion_empaque}} Kilos</label>
                                 </div>
                             </div>
-                            <div class="row" *ngIf="ArrayCompra.producto_add != null">
+                            <div class="row" *ngIf="ArrayCompra[0].DescToppings != null">
                                 <div class="col-sm-12">
                                     <label class="Llave lblSmall">Adiciones:&nbsp;</label><br><label
-                                        class="Valor lblSmall" [innerHTML]="ArrayCompra.producto_add"></label>
+                                        class="Valor lblSmall" [innerHTML]="ArrayCompra[0].DescToppings"></label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave lblSmall">Dirección Entrega:&nbsp;</label><label
-                                        class="Valor lblSmall">{{ArrayCompra.DRCCION}}</label>
+                                    <label class="Llave lblSmall">Dirección Bodega:&nbsp;</label><label
+                                        class="Valor lblSmall">{{ArrayCompra[0].DireccionBodega}}</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave lblSmall">Estado compra:&nbsp;</label><label
-                                        class="Valor lblSmall">{{ArrayCompra.descTipoPago}} -
-                                        {{ArrayCompra.descEstado}}</label>
+                                    <label class="Llave lblSmall">Caracterización:&nbsp;</label><label
+                                        class="Valor lblSmall">{{ArrayCompra[0].caracterizacion}}</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label class="Llave lblSmall">Tipo pago:&nbsp;</label><label
-                                        class="Valor lblSmall">{{ArrayCompra.descTipoPago}}</label>
+                                    <label class="Llave lblSmall">Descripción:&nbsp;</label><label
+                                        class="Valor lblSmall">{{ArrayCompra[0].descripcion}}</label>
                                 </div>
                             </div>
                         </div>
@@ -117,34 +106,34 @@
 
                 <div class="col-sm-5 p-0 row TarAseleccionarEntreg">
                     <div class="col-12 bagroundTituloTargSelect CentrarText">
-                        <label class="Llave lblSmall" style="color: #fff;">{{ArrayCompra.Producto_ppal}}</label>
+                        <label class="Llave lblSmall" style="color: #fff;">{{ArrayCompra[0].Producto_ppal}}</label>
                     </div>
 
                     <div class="row">
                         <div class="col-sm-12">
                             <label class="Llave lblSmall">Dirección Entrega:&nbsp;</label><label
-                                class="Valor lblSmall">{{ArrayCompra.DRCCION}}</label>
+                                class="Valor lblSmall">{{ArrayCompra[0].DRCCION}}</label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-sm-12">
                             <label class="Llave lblSmall">Presentación empaque:&nbsp;</label><label
-                                class="Valor lblSmall">{{ArrayCompra.peso_prod_ppal}} Kilos</label>
+                                class="Valor lblSmall">{{ArrayCompra[0].peso_prod_ppal}} Kilos</label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-sm-12">
                             <label class="Llave lblSmall">Estado compra:&nbsp;</label><label
-                                class="Valor lblSmall">{{ArrayCompra.descTipoPago}} -
-                                {{ArrayCompra.descEstado}}</label>
+                                class="Valor lblSmall">{{ArrayCompra[0].descTipoPago}} -
+                                {{ArrayCompra[0].descEstado}}</label>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-sm-5 mt-4">
-                    <button class="SinEstilo" (click)="AgregaItemEntrega(ArrayCompra)">
+                    <button class="SinEstilo" (click)="AgregaItemEntrega(ArrayCompra[0])">
                         <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/agregarEntrega.png" />
                     </button>
                 </div>
@@ -158,13 +147,13 @@
 
                 <div class="TarEntregaItems col-sm-3 p-1 m-2" *ngFor="let part of ArrayEntrega; let i = index">
                     <div class="col-12 bagroundTituloTargSelect CentrarText">
-                        <label class="Llave lblSmall" style="color: #fff;">{{ArrayCompra.Producto_ppal}}</label>
+                        <label class="Llave lblSmall" style="color: #fff;">{{ArrayCompra[0].Producto_ppal}}</label>
                     </div>
 
                     <div class="row">
                         <div class="col-sm-12">
                             <label class="Llave lblSmall">Dirección Entrega:&nbsp;</label><label
-                                class="Valor lblSmall">{{ArrayCompra.DRCCION}}</label>
+                                class="Valor lblSmall">{{ArrayCompra[0].DRCCION}}</label>
                         </div>
                     </div>
 
@@ -178,8 +167,8 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <label class="Llave lblSmall">Estado compra:&nbsp;</label><label
-                                class="Valor lblSmall">{{ArrayCompra.descTipoPago}} -
-                                {{ArrayCompra.descEstado}}</label>
+                                class="Valor lblSmall">{{ArrayCompra[0].descTipoPago}} -
+                                {{ArrayCompra[0].descEstado}}</label>
                         </div>
                     </div>
                 </div>
