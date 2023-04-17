@@ -32,6 +32,7 @@ export class AdminUltMillaComponent implements OnInit {
 
   //Array Entrega
   ArrayEntrega: any = [];
+  AcumPeso: number = 0;
 
 
   constructor(private modalService: NgbModal,
@@ -48,7 +49,6 @@ export class AdminUltMillaComponent implements OnInit {
 
 
   //Metodos filtros
-
   ConsultaSectores() {
     this.ServiciosValorar.ConsultaSectores('1', '0', '0', '0', '0').subscribe(ResultCons => {
       this.DataSectores = ResultCons
@@ -178,6 +178,11 @@ export class AdminUltMillaComponent implements OnInit {
 
   //Agregar a entrega o transport
   AgregaItemEntrega(item: any){
+    this.AcumPeso = 0;
     this.ArrayEntrega.push(item);
+    for(var i = 0; i < this.ArrayEntrega.length; i++){
+      this.AcumPeso += parseFloat(this.ArrayEntrega[i].peso_prod_ppal);
+      //this.AcumPeso += parseInt(this.ArrayEntrega[i].peso_prod_ppal);
+    }
   }
 }

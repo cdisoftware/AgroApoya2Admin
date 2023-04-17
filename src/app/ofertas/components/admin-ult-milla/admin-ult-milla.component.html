@@ -58,7 +58,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label class="Llave lblSmall">Presentación empaque:&nbsp;</label><label
-                                        class="Valor lblSmall">10 Kilos</label>
+                                        class="Valor lblSmall">{{ArrayCompra.peso_prod_ppal}} Kilos</label>
                                 </div>
                             </div>
                             <div class="row" *ngIf="ArrayCompra.producto_add != null">
@@ -132,7 +132,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <label class="Llave lblSmall">Presentación empaque:&nbsp;</label><label
-                                class="Valor lblSmall">10 Kilos</label>
+                                class="Valor lblSmall">{{ArrayCompra.peso_prod_ppal}} Kilos</label>
                         </div>
                     </div>
 
@@ -146,12 +146,45 @@
                 </div>
 
                 <div class="col-sm-5 mt-4">
-                    <button class="SinEstilo">
-                        <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/agregarEntrega.png"/>
+                    <button class="SinEstilo" (click)="AgregaItemEntrega(ArrayCompra)">
+                        <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/agregarEntrega.png" />
                     </button>
                 </div>
 
-                
+
+            </div>
+
+            <div class="row TarEntrega p-1 justify-content-center">
+
+                <label class="Llave lblSmall col-12 mt-2 p-2">La entrega lleva un peso promedio de {{AcumPeso}}&nbsp;</label>
+
+                <div class="TarEntregaItems col-sm-3 p-1 m-2" *ngFor="let part of ArrayEntrega; let i = index">
+                    <div class="col-12 bagroundTituloTargSelect CentrarText">
+                        <label class="Llave lblSmall" style="color: #fff;">{{ArrayCompra.Producto_ppal}}</label>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="Llave lblSmall">Dirección Entrega:&nbsp;</label><label
+                                class="Valor lblSmall">{{ArrayCompra.DRCCION}}</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="Llave lblSmall">Presentación empaque:&nbsp;</label><label
+                                class="Valor lblSmall">10 Kilos</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <label class="Llave lblSmall">Estado compra:&nbsp;</label><label
+                                class="Valor lblSmall">{{ArrayCompra.descTipoPago}} -
+                                {{ArrayCompra.descEstado}}</label>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
