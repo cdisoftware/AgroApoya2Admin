@@ -12,11 +12,11 @@ import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
   styleUrls: ['./rep-ofertas.component.css']
 })
 export class RepOfertasComponent implements OnInit {
-  fechaDesde  : any = '';
-  fechaHasta  : any = '';
-  idOferta    : any = '';
-  Producto    : string = '';
-  estadoOferta: string = '';
+  fechaDesde  : any = '0';
+  fechaHasta  : any = '0';
+  idOferta    : string = '';
+  Producto    : string = '0';
+  estadoOferta: string = '0';
 
   hayOferta: string = '';
   resultados: any[] = [];
@@ -58,12 +58,13 @@ export class RepOfertasComponent implements OnInit {
  
   selectProducto(producto:any) {
     this.idProducto=producto.id_producto;
-    // alert(this.idProducto)
    }
-   LimpiaProducto(producto: any) {
-    this.idProducto = "" + producto;
+
+   LimpiaProducto() {
+    this.idProducto = "";
     
   }
+
   CargaProductos() {
     //lista Productos
   this.servicioValorOferta.ConsultaProductos('1').subscribe(Resultado => {
@@ -107,20 +108,16 @@ export class RepOfertasComponent implements OnInit {
 
   //botones principales
   buscar() {
-    let hayOfertas = '0';
-
+    var idoferta = '0'
+    if(this.idOferta == ''){
+      idoferta = '0'
+    }else{
+      idoferta = this.idOferta
+    }
     const busquedaDatos = {
-      // cd_cnsctvo: this.idOferta,
-      // Desc_estado: this.estadoOferta,
-      // Producto: '0',
-      // VigenciaDesde: this.fechaDesde,
-      // VigenciaHasta:this.fechaHasta,
-      // cd_prdcto: this.idProducto,
-      // estadoOferta: this.estadoOferta,
-
       UsuCodig: 0,
       Producto: 0,
-      cd_cnsctvo:this.idOferta,
+      cd_cnsctvo:0,
       NombreCompletoProductor: 0,
       DescripcionProducto: 0,
       Cd_cndcion: 0,
@@ -132,24 +129,17 @@ export class RepOfertasComponent implements OnInit {
       CD_RGION: 0,
       CD_MNCPIO: 0
     }
-  
-    if (this.hayOferta != '') {
-      hayOfertas = this.hayOferta;
-    }
-
     console.log(busquedaDatos)
-    this.servicioValorOferta.BusquedaOferta('1', hayOfertas, this.idProducto, this.idProductor, busquedaDatos).subscribe(Resultado => {
+  
+    this.servicioValorOferta.BusquedaOferta('2', idoferta, this.idProducto, this.idProductor, busquedaDatos).subscribe(Resultado => {
 
-       this.resultados = Resultado ;
-      console.log(this.idOferta)
-      // alert(this.idOferta)
-      console.log(this.resultados);
+      console.log(Resultado);
 
       if (Resultado.length > 0) {
+        this.resultados = Resultado;
         this.respuesta = '';
         this.ValidaDescarga = false;
         this.ValidaConsulta ='2'
-        console.log(this.respuesta)
       } else {
         this.respuesta = 'No hay resultados.';
         
