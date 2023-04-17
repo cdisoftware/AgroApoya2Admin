@@ -110,6 +110,7 @@ export class ValoracionComponent implements OnInit {
   IdOferta: string;
   UrlParticipanteC: any;
   UrlPubliC: any;
+  PesoTopping: string = '';
 
 
   constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
@@ -191,6 +192,7 @@ export class ValoracionComponent implements OnInit {
     this.serviciosvaloracion.ConsultaToppingOfer('1', this.SessionSectorSel, this.SessionOferta).subscribe(Resultcons => {
       console.log(Resultcons)
       if (Resultcons.length > 0) {
+        console.log(Resultcons)
         this.DataToppings = Resultcons;
         this.ValidaConsulta = '0';
       }
@@ -204,7 +206,7 @@ export class ValoracionComponent implements OnInit {
   GuardaTopping(templateMensaje: any) {
     this.Respuesta = ''
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
-    if (this.DesTopp == '' || this.VlrUniTopp == '' || this.UnidMaxTopp == '' || this.SessionTipoTopp == '0' || this.UnidOferta == '' || this.imagenesAdicionales == '') {
+    if (this.DesTopp == '' || this.VlrUniTopp == '' || this.UnidMaxTopp == '' || this.SessionTipoTopp == '0' || this.UnidOferta == '' || this.imagenesAdicionales == '' || this.PesoTopping == '') {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
@@ -235,6 +237,12 @@ export class ValoracionComponent implements OnInit {
         {
           campo: 'UnidMaxTopp',
           campof: 'Maximo unidades por cada compra',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'PesoTopping',
+          campof: 'Peso de adición (kilogramos)',
           class: '',
           imagen: ''
         },
@@ -326,7 +334,8 @@ export class ValoracionComponent implements OnInit {
         IdTipoTopping: Number(this.SessionTipoTopp),
         ValorUnitario: Number(this.VlrUniTopp),
         cantidadReserva: Number(this.UnidOferta),
-        imagen: validaImagen
+        imagen: validaImagen,
+        PesoKiloUnd: Number(this.PesoTopping)
       }
       console.log(Body)
       this.serviciosvaloracion.ModificaTopping('2', Body).subscribe(ResultOper => {
