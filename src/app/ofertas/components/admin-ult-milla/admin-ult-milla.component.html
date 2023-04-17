@@ -5,10 +5,23 @@
         <div class="row justify-content-center">
 
 
-            <div class="col-sm-6">
+            <!--<div class="col-sm-6">
                 <input class="col-sm-12 form-control textBox" type="number" placeholder="Consecutivo oferta"
                     [(ngModel)]="OferFiltro">
+            </div>-->
+            <div class="col-sm-6">
+                <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" placeholder="Codigo oferta"
+                    (inputCleared)="LimpiaSector('')" (selected)='selectSector($event)' [itemTemplate]="templateSec"
+                    [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
+                </ng-autocomplete>
+                <ng-template #templateSec let-item>
+                    <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+                </ng-template>
+                <ng-template #templateVacio let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
             </div>
+            
             <div class="col-sm-6">
                 <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" placeholder="Sector"
                     (inputCleared)="LimpiaSector('')" (selected)='selectSector($event)' [itemTemplate]="templateSec"
@@ -84,21 +97,6 @@
                                 <div class="col-sm-12">
                                     <label class="Llave lblSmall">Tipo pago:&nbsp;</label><label
                                         class="Valor lblSmall">{{ArrayCompra.descTipoPago}}</label>
-                                </div>
-                            </div>
-                            <div class="row ">
-                                <div class="col-sm-12">
-                                    <label class="Llave lblSmall text" style="color: red;">Valor total:&nbsp;</label>
-                                    <label class="Valor lblSmall"
-                                        style="color: red;">{{ArrayCompra.Vlor_PagarForm}}</label>
-                                </div>
-                                <div class="col-sm-12" *ngIf="ArrayCompra.IdPagoParti != 0">
-                                    <label class="Llave lblSmall">Valor mi compra:&nbsp;</label><label
-                                        class="Valor lblSmall">{{ArrayCompra.Vlor_PagarForm}}</label>
-                                </div>
-                                <div class="col-sm-12" *ngIf="ArrayCompra.IdPagoParti != 0">
-                                    <label class="Llave lblSmall">Valor compra participantes:&nbsp;</label><label
-                                        class="Valor lblSmall">{{ArrayCompra.Vlor_PagarForm}}</label>
                                 </div>
                             </div>
                         </div>

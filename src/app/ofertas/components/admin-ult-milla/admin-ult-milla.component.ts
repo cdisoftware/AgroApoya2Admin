@@ -50,7 +50,7 @@ export class AdminUltMillaComponent implements OnInit {
 
   //Metodos filtros
   ConsultaSectores() {
-    this.ServiciosValorar.ConsultaSectores('1', '0', '0', '0', '0').subscribe(ResultCons => {
+    this.ServiciosValorar.ConsultaSectoresOferta('1', '2206').subscribe(ResultCons => {
       this.DataSectores = ResultCons
       this.keywordSec = 'DSCRPCION_SCTOR';
     })
