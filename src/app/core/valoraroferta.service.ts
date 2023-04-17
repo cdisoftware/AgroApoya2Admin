@@ -250,4 +250,20 @@ export class ValorarofertaService {
   ConsEntregasConductor(Bandera: string, ID_CNDCTOR: string, id_Sector: string, cd_cnctivo: string, coordernadas: string) {
     return this.http.get<any>(this.url_servidor + 'consentregasconductor/' + Bandera + '/' + ID_CNDCTOR + '/' + id_Sector + '/' + cd_cnctivo + '/' + coordernadas);
   }
+
+  ConsultaBodegas(Bandera: string, Departamento: string, Ciudad: string){
+    return this.http.get<any>(this.url_servidor + 'constbodegas/' + Bandera + '/' + Departamento + '/' + Ciudad);
+  }
+
+  AsociarBodega(Bandera: string, DatosBodega: any){
+     return this.http.post<any>(this.url_servidor + 'modcasignabodega/' + Bandera, DatosBodega)
+  }
+
+  ConsultaCargaAsociada(Bandera: string, IdSector: string, IdOferta: string){
+    return this.http.get<any>(this.url_servidor + 'conscdtlledescargas/' + Bandera + '/' + IdSector + '/' + IdOferta);
+  }
+
+  ModificaDetalleCargas(Bandera: string, DatosCarga: any){
+    return this.http.post<any>(this.url_servidor + 'modcdtlledescargas/' + Bandera, DatosCarga)
+  }
 }
