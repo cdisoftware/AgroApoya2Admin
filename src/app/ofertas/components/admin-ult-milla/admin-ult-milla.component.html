@@ -11,11 +11,11 @@
             </div>-->
             <div class="col-sm-6">
                 <ng-autocomplete [data]="DataOfertas" [searchKeyword]="KeywordOferta" placeholder="Codigo oferta"
-                    (inputCleared)="LimpiaOfert('')" (selected)='selectOfer($event)' [itemTemplate]="templateOferta"
+                    (inputCleared)="LimpiaOfert('0')" (selected)='selectOfer($event)' [itemTemplate]="templateOferta"
                     [notFoundTemplate]="templateVacioOferta">
                 </ng-autocomplete>
                 <ng-template #templateOferta let-item>
-                    <a [innerHTML]="item.CD_CNSCTVO"></a>
+                    <a [innerHTML]="item.CD_CNSCTVO + ' - ' + item.Nombre_Producto"></a>
                 </ng-template>
                 <ng-template #templateVacioOferta let-SinRegistro>
                     <label for="">Sin registros</label>
@@ -25,7 +25,7 @@
 
             <div class="col-sm-6">
                 <ng-autocomplete [disabled]="SelectOferta == '0'" [data]="DataSectores" [searchKeyword]="keywordSec" placeholder="Sector"
-                    (inputCleared)="LimpiaSector('')" (selected)='selectSector($event)' [itemTemplate]="templateSec"
+                    (inputCleared)="LimpiaSector('0')" (selected)='selectSector($event)' [itemTemplate]="templateSec"
                     [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
                 </ng-autocomplete>
                 <ng-template #templateSec let-item>
@@ -38,54 +38,54 @@
 
 
 
-            <div class="col-sm-10">
+            <div class="col-sm-10" *ngIf="VerTargetaGeneral == true">
                 <div class="p-2">
                     <div class="m-1 row tarjetadetallehistorial">
                         <div class="col-sm-4 p-0">
-                            <img src="{{UrlImagenes}}{{ArrayCompra[0].IMAGEN}}" class="imgTartejaDos"/>
+                            <img src="{{UrlImagenes}}{{ArrayTargeneral[0].IMAGEN}}" class="imgTartejaDos"/>
                         </div>
                         <div class="col-sm-8">
                             <div class="row justify-content-center ">
                                 <div class="col-sm-11  text-center">
-                                    <h6 class="Llave CentrarText textMay">{{ArrayCompra[0].Nombre_Producto}} -
-                                        {{ArrayCompra[0].Descripcion_empaque}}</h6>
+                                    <h6 class="Llave CentrarText textMay">{{ArrayTargeneral[0].Nombre_Producto}} -
+                                        {{ArrayTargeneral[0].Descripcion_empaque}}</h6>
                                 </div>
                             </div>
                             <hr class="hrSinEstilo">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label class="ValorIDOfer lblSmall"><strong>Codigo Oferta -
-                                            {{ArrayCompra[0].CD_CNSCTVO}}</strong></label>
+                                            {{ArrayTargeneral[0].CD_CNSCTVO}}</strong></label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label class="Llave lblSmall">Presentación empaque:&nbsp;</label><label
-                                        class="Valor lblSmall">{{ArrayCompra[0].Descripcion_empaque}} Kilos</label>
+                                        class="Valor lblSmall">{{ArrayTargeneral[0].Descripcion_empaque}} Kilos</label>
                                 </div>
                             </div>
-                            <div class="row" *ngIf="ArrayCompra[0].DescToppings != null">
+                            <div class="row" *ngIf="ArrayTargeneral[0].DescToppings != null">
                                 <div class="col-sm-12">
                                     <label class="Llave lblSmall">Adiciones:&nbsp;</label><br><label
-                                        class="Valor lblSmall" [innerHTML]="ArrayCompra[0].DescToppings"></label>
+                                        class="Valor lblSmall" [innerHTML]="ArrayTargeneral[0].DescToppings"></label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label class="Llave lblSmall">Dirección Bodega:&nbsp;</label><label
-                                        class="Valor lblSmall">{{ArrayCompra[0].DireccionBodega}}</label>
+                                        class="Valor lblSmall">{{ArrayTargeneral[0].DireccionBodega}}</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label class="Llave lblSmall">Caracterización:&nbsp;</label><label
-                                        class="Valor lblSmall">{{ArrayCompra[0].caracterizacion}}</label>
+                                        class="Valor lblSmall">{{ArrayTargeneral[0].caracterizacion}}</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label class="Llave lblSmall">Descripción:&nbsp;</label><label
-                                        class="Valor lblSmall">{{ArrayCompra[0].descripcion}}</label>
+                                        class="Valor lblSmall">{{ArrayTargeneral[0].descripcion}}</label>
                                 </div>
                             </div>
                         </div>
@@ -96,36 +96,38 @@
 
             <div class="row mt-2 justify-content-center">
                 <div class="col-12">
-                    <div id="map" class="ShowMap"></div>
+                    <div id="map"  [ngClass]="VerTargetaGeneral==true ? 'ShowMap' : 'HideMap' "></div>
                 </div>
             </div>
-            <h1 class="TextLeft mt-3">Información de compra seleccionada</h1>
 
-            <div class="row justify-content-center mb-5">
+
+            <h1 class="TextLeft mt-3" *ngIf="SelectPin == true">Información de compra seleccionada</h1>
+
+            <div class="row justify-content-center mb-5" *ngIf="SelectPin == true">
 
 
                 <div class="col-sm-5 p-0 row TarAseleccionarEntreg">
                     <div class="col-12 bagroundTituloTargSelect CentrarText">
-                        <label class="Llave lblSmall" style="color: #fff;">{{ArrayCompra[0].Nombre_Producto}}</label>
+                        <label class="Llave lblSmall" style="color: #fff;">{{ArrayTargeneral[0].Nombre_Producto}}</label>
                     </div>
 
                     <div class="row">
                         <div class="col-sm-12">
                             <label class="Llave lblSmall">Dirección Entrega:&nbsp;</label><label
-                                class="Valor lblSmall">{{ArrayCompra[0].DireccionBodega}}</label>
+                                class="Valor lblSmall">{{ArrayEntregas[0].DireccionEntrega}}</label>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-sm-12">
                             <label class="Llave lblSmall">Presentación empaque:&nbsp;</label><label
-                                class="Valor lblSmall">{{ArrayCompra[0].Descripcion_empaque}} Kilos</label>
+                                class="Valor lblSmall">{{ArrayTargeneral[0].Descripcion_empaque}}</label>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-sm-5 mt-4">
-                    <button class="SinEstilo" (click)="AgregaItemEntrega(ArrayCompra[0])">
+                <div class="col-sm-5 mt-4" *ngIf="ArrayEntregas[0].GrupoMilla == 0">
+                    <button class="SinEstilo" (click)="AgregaItemEntrega()">
                         <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/agregarEntrega.png" />
                     </button>
                 </div>
@@ -133,30 +135,58 @@
 
             </div>
 
-            <div class="row TarEntrega p-1 justify-content-center">
+            <div class="row TarEntrega p-1 justify-content-center"  *ngIf="SelectPin == true">
 
-                <label class="Llave lblSmall col-12 mt-2 p-2">La entrega lleva un peso promedio de {{AcumPeso}} Kilogramos&nbsp;</label>
+                <label class="Llave lblSmall col-12 mt-2 p-2">La entrega tiene un peso promedio de {{AcumPeso}} Kilogramos&nbsp;</label>
 
-                <div class="TarEntregaItems col-sm-3 p-1 m-2" *ngFor="let part of ArrayEntrega; let i = index">
+                <label class="Llave lblSmall col-12 mt-3 p-2">{{NomreGrupoMilla}}</label>
+                <hr>
+                <div class="TarEntregaItems col-sm-3 p-1 m-2" *ngFor="let part of ArrayEntregas; let i = index">
+                    <div class="row" *ngIf="IdGrupoMilla == part.GrupoMilla">
+
+                    </div>
                     <div class="col-12 bagroundTituloTargSelect CentrarText">
-                        <label class="Llave lblSmall" style="color: #fff;">{{ArrayCompra[0].Nombre_Producto}}</label>
+                        <label class="Llave lblSmall" style="color: #fff;">{{ArrayTargeneral[0].Nombre_Producto}} - {{part.UndProd}}</label>
                     </div>
 
                     <div class="row">
-                        <div class="col-sm-12">
                             <label class="Llave lblSmall">Dirección Entrega:&nbsp;</label><label
-                                class="Valor lblSmall">{{ArrayCompra[0].DireccionBodega}}</label>
-                        </div>
+                                class="Valor lblSmall">{{part.DireccionEntrega}}</label>
                     </div>
 
                     <div class="row">
-                        <div class="col-sm-12">
                             <label class="Llave lblSmall">Presentación empaque:&nbsp;</label><label
-                                class="Valor lblSmall">10 Kilos</label>
-                        </div>
+                                class="Valor lblSmall">{{ArrayTargeneral[0].Descripcion_empaque}}</label>
+                    </div>
+
+                    <div class="row justify-content-center" (click)="AbreModalQuitaCompra(Modalquitacompra)">
+                        <label class="col-sm-10 Llave lblSmall p-1 mt-2 bagroundTituloTargSelect btnEliminar">Eliminar</label>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+<ng-template #Modalquitacompra let-modal>
+    <div class="modal-body mt-3">
+        <div class="row br justify-content-center">
+            <h1>¿Esta seguro de quitar esta compra de la entrega {{NomreGrupoMilla}} ?</h1>
+
+            <div class="col-sm-4 mt-2">
+                <button class="SinEstilo">
+                    <label class="col-sm-10 Llave lblSmall p-1 mt-2 bagroundTituloTargSelect btnEliminar">Eliminar</label>
+                </button>
+            </div>
+
+            <div class="col-sm-4 mt-2">
+                <button class="SinEstilo">
+                    <label class="col-sm-10 Llave lblSmall p-1 mt-2 bagroundTituloTargSelect btnEliminar">Cancelar</label>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br>
+</ng-template>
