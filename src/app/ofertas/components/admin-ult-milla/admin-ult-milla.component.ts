@@ -14,7 +14,7 @@ export class AdminUltMillaComponent implements OnInit {
   UrlImagenes: string = '';
 
   //Filtros
-  OferFiltro: string = '';
+  Oferta: string = '';
   DataOfertas: any = [];
   KeywordOferta: string = '';
   SelectOferta: string = '0';
