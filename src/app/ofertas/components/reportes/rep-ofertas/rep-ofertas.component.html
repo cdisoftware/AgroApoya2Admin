@@ -16,12 +16,12 @@
                 <label for="">Sin registros</label>
             </ng-template> -->
             <input class="col-sm-9 mt-3   form-control textBox tamaño-input" type="number" placeholder="ID oferta"
-                [name]="idOferta" [(ngModel)]="idOferta">
+                [name]="IdOferta" [(ngModel)]="IdOferta" >
         </div>
        
         <div class="col-sm-6 br">
             <ng-autocomplete class="col-sm-9 mt-0 textBox tamaño-input" [data]="ArrayEstadoOferta" [searchKeyword]="keyWordEstado" placeholder="Estado oferta"
-                (selected)='obtenerSelectEstadoOferta($event)' [itemTemplate]="templateRes"
+                (selected)='obtenerSelectEstadoOferta($event)' [itemTemplate]="templateRes"(inputCleared)="LimpiaEstadoOferta()"
                 [notFoundTemplate]="templateVacio" [(ngModel)]="estadoOferta" >
             </ng-autocomplete>
            
@@ -56,7 +56,7 @@
             <div class="mt-0 col-sm-5">
                 <label class="color-principal text-small" for="desde">Desde</label>
                 <input class="form-control textBox tamaño-date" type="date" maxlength="50" [name]="fechaDesde"
-                    [(ngModel)]="fechaDesde">
+                    [(ngModel)]="fechaDesde" >
             </div>
             <div class="mt-0 col-sm-5">
                 <label class="color-principal text-small" for="hasta">Hasta</label>
@@ -101,7 +101,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let resultado of resultados">
+            <tr *ngFor="let resultado of Arrayresultados">
              
                 <td>{{resultado.cd_cnsctvo}}</td>
                 <td>{{resultado.Desc_estado}}</td>
