@@ -1,0 +1,23 @@
+<div class="container">
+    <h1 class="mt-3">Asigna transportistas última milla</h1>
+    <div class="row justify-content-center">
+        <div class="col-sm-4">
+            <label class="Llave">Oferta</label>
+            <input placeholder="Número oferta" type="text" class="form-control form-control-sm textBox"
+                [(ngModel)]="IdOferta" name="NoOferta" (keyup)="ValidaSector()">
+        </div>
+        <div class="col-sm-4">
+            <label class="Llave">Sector</label>
+            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" (selected)='selectSector($event)'
+                (inputCleared)='LimpiaSector()' placeholder="Sector" [itemTemplate]="templateSec"
+                [notFoundTemplate]="templateVacio" [disabled]="ValidaOferta">
+            </ng-autocomplete>
+            <ng-template #templateSec let-item>
+                <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+    </div>
+</div>

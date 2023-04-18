@@ -272,13 +272,13 @@
                             <label class="col-sm-12 Llave">Mínimo unidades</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox"
                                 (blur)="ValidaCantidadMinimaIndiv(MinUnidI,ModalRespuesta)" [(ngModel)]="MinUnidI"
-                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}" 
+                                onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}"
                                 [disabled]="MuestraGrupal == '1' ">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Máximo unidades</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox"
-                                (blur)="ValidaCantidadmaxIndiv(MaxUnidI,ModalRespuesta)" [(ngModel)]="MaxUnidI" 
+                                (blur)="ValidaCantidadmaxIndiv(MaxUnidI,ModalRespuesta)" [(ngModel)]="MaxUnidI"
                                 onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}"
                                 [disabled]="MuestraGrupal == '1' ">
                         </div>
@@ -432,6 +432,13 @@
                                 [disabled]="ValidaTipoTopp">
                         </div>
                         <div class="col-sm-4" *ngIf="IsEnables == false ">
+                            <label class="col-sm-12 Llave">Peso adición en kilogramos</label>
+                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PesoTopping"
+                                [disabled]="ValidaTipoTopp">
+                        </div>
+                    </div>
+                    <div class="row br">
+                        <div class="col-sm-4" *ngIf="IsEnables == false ">
                             <button type="button" class="btn-warning col-sm-12">
                                 <i class="fa fa-upload marginleft"></i> Subir Imagen
                                 <input name="file-input3" id="file-input3" type="file"
@@ -457,6 +464,7 @@
                                     <th>Tipo</th>
                                     <th>Unidades para oferta</th>
                                     <th>Máximo unidades por compra</th>
+                                    <th>Peso Adición</th>
                                     <th>Acciones</th>
                                 </tr>
                                 <tr *ngFor="let topping of DataToppings">
@@ -465,6 +473,7 @@
                                     <td>{{topping.descTipotopping}}</td>
                                     <td>{{topping.cantidadReserva}}</td>
                                     <td>{{topping.MaxCantidad}}</td>
+                                    <td>{{topping.PesoKilos}}</td>
                                     <td>
                                         <button class="SinEstilo" title="Activar/Desactivar amparado"
                                             (click)="ModificaTopping('1', topping)">
@@ -522,7 +531,8 @@
                     <div class="row br">
                         <div class="col-sm-12">
                             <label class="col-sm-12 Llave">Mensaje compartir líder WhatsApp</label>
-                            <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="arreglo.TextoWhat" [disabled]="MuestraGrupal != '1' ">
+                            <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="arreglo.TextoWhat"
+                                [disabled]="MuestraGrupal != '1' ">
                         </div>
                     </div>
 
@@ -562,7 +572,8 @@
             <input type="checkbox" [(ngModel)]="EnvioCorreo" style="margin-left: 10px; margin-right: 10px;">
             <strong>Enviar correos masivos cliente</strong>
             <br>
-            <input type="checkbox" [(ngModel)]="EnvioSms"  [checked]="EnvioSms" style="margin-left: 10px; margin-right: 10px;">
+            <input type="checkbox" [(ngModel)]="EnvioSms" [checked]="EnvioSms"
+                style="margin-left: 10px; margin-right: 10px;">
             <strong>Enviar mensaje texto masivos cliente</strong>
             <br><br><br>
         </div>

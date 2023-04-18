@@ -59,15 +59,25 @@ export class SectorizacionComponent implements OnInit {
   SessionzonaIns: any = '';
   keywordZonasInsertSecor: string = '';
   keywordZonasAsignaSector: string = '';
+  keywordBodega: string = 'NombreBodega';
   ZonaInsertSecor: string = '';
   ZonaAsignaSector: string = '';
   seleczona: string = '0';
   NumUsuarios: string = '';
   UserSector: string = '';
   TiempoSector: string = '1';
-
+  DataBodegas: any = [];
   //Cantidades totales
   CantidadDispinible: number = 0;
+  IdBodega: any;
+  Bodega: string = '';
+
+  //Editar Bodega
+  CantMax: string = '';
+  CargMax: string = '';
+  DistMax: string = '';
+  SectorSelect: string = '';
+  AlertEditBodega: string = '';
 
 
 
@@ -94,6 +104,8 @@ export class SectorizacionComponent implements OnInit {
     this.ConsultaCiudadOferta();
     this.ConsultaSectoresOferta();
     this.ConsultaDetalleOferta();
+    this.ConsultaBodegas();
+
 
   }
 
@@ -130,6 +142,14 @@ export class SectorizacionComponent implements OnInit {
       this.SessionCantSecOferta = ResultConsu[0].Unidades_disponibles;
     })
   }
+
+  ConsultaBodegas() {
+    this.sectoresservices.ConsultaBodegas('1', '261', '401').subscribe(Resultado => {
+      if (Resultado.length > 0) {
+        this.DataBodegas = Resultado
+      }
+    })
+  }
   ConsultaZonas(idCiudad: string, IdDepartamento: string) {
     const descripcion = {
       "Descripcion": ""
@@ -138,6 +158,7 @@ export class SectorizacionComponent implements OnInit {
       this.DataZonas = ResultadoCons;
       this.keywordZonasInsertSecor = 'Descripcion';
       this.keywordZonasAsignaSector = 'Descripcion';
+
     })
   }
   LimpiaZona(result: string) {
@@ -145,6 +166,10 @@ export class SectorizacionComponent implements OnInit {
     this.seleczona = '0';
     this.Sector = '';
     this.Cant = '';
+  }
+
+  LimpiaBodega() {
+    this.IdBodega = '';
   }
   ConsultaCiudadOferta() {
 
@@ -251,6 +276,7 @@ export class SectorizacionComponent implements OnInit {
             var respuesta = ResultInsert.split('|')
             this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
             this.Respuesta = respuesta[1];
+            this.AsociarBodega('3', this.SectSelec)
             this.ConsultaSectoresOferta();
             this.ValidaCoord = '0';
             this.LimpiaForm();
@@ -262,6 +288,22 @@ export class SectorizacionComponent implements OnInit {
         }
       }
       //this.LimpiaForm();
+    })
+  }
+
+  AsociarBodega(bandera: string, sector: string) {
+    const DatosBodega = {
+      IdDescarga: 0,
+      cd_cnctvo: this.SessionOferta,
+      IdBodega: this.IdBodega,
+      IdTran: 0,
+      IdSector: sector,
+      Observacion: "Asociacion Bodega"
+    }
+    console.log(DatosBodega)
+    this.sectoresservices.AsociarBodega(bandera, DatosBodega).subscribe(Resultado => {
+      console.log('*-*-*-* Bodega *-*-*-*')
+      console.log(Resultado)
     })
   }
 
@@ -277,6 +319,7 @@ export class SectorizacionComponent implements OnInit {
       var respuesta = ResultDelet.split('|')
       this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
       this.Respuesta = respuesta[1]
+      this.AsociarBodega('4', sector.ID_SCTOR_OFRTA);
       this.ConsultaSectoresOferta();
     })
   }
@@ -484,6 +527,10 @@ export class SectorizacionComponent implements OnInit {
     //Cada vez que seleccione una zona debo ir a consultar los sectores de esa zona, metodo ConsultaSectores(),
     //a dicho metodo falta agregarle parametro idzona
   }
+
+  selectBodega(item: any) {
+    this.IdBodega = item.IdBodega
+  }
   BlurCantidad(ModalRespuesta: any) {
     console.log(this.UserSector)
     if (this.CantidadDispinible >= Number(this.Cant)) {
@@ -561,7 +608,9 @@ export class SectorizacionComponent implements OnInit {
     this.Zona = '';
     this.ZonaAsignaSector = '';
     this.ZonaInsertSecor = '';
+    this.Bodega = ''
     this.ValidaCoord = '0';
+    this.IdBodega = ''
   }
 
   Enviar(templateRespuesta: any) {
@@ -592,7 +641,7 @@ export class SectorizacionComponent implements OnInit {
         }
       })
 
-      
+
 
     }
     else {
@@ -600,7 +649,7 @@ export class SectorizacionComponent implements OnInit {
     }
   }
 
-  InsertaLinks(){
+  InsertaLinks() {
     const DatosLink = {
       CD_CNSCTVO: this.SessionOferta,
       PRFJO_URL: this.ServiciosGenerales.RecuperarRutaAmbiente()
@@ -638,5 +687,39 @@ export class SectorizacionComponent implements OnInit {
     this.ZonaInsertSecor = result;
     this.ValidaSelecZona = '1';
     this.NombreSec = '';
+  }
+
+  EditarBodega(sector: any, modalbodega: any) {
+    this.AlertEditBodega  = ''
+    this.SectorSelect = sector.ID_SCTOR_OFRTA;
+    this.sectoresservices.ConsultaCargaAsociada('1', sector.ID_SCTOR_OFRTA, sector.CD_CNSCTVO).subscribe(Resultado => {
+      if (Resultado.length > 0) {
+        this.CantMax = Resultado[0].CantidadMax;
+        this.CargMax = Resultado[0].KilosMax;
+        this.DistMax = Resultado[0].DistanciaMax
+      }
+    })
+    this.modalService.open(modalbodega, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+
+  }
+
+  AceptarEditaBodega() {
+
+    if (this.CantMax == null || this.CargMax == null|| this.DistMax == null) {
+      this.AlertEditBodega = 'Todos los campos son obligatorios';
+    } else {
+      const DatosCarga = {
+        cd_cnctvo: this.SessionOferta,
+        CantidadMax: this.CantMax,
+        KilosMax: this.CargMax,
+        DistanciaMax: this.DistMax,
+        IdSector: this.SectorSelect
+      }
+      this.sectoresservices.ModificaDetalleCargas('2', DatosCarga).subscribe(Resultado => {
+        this.modalService.dismissAll()
+      })
+    }
+
+
   }
 }
