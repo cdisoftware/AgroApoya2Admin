@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ValorarofertaService } from './../../../core/valoraroferta.service';
 import { ReporteService } from 'src/app/core/reporte.service';
 import { NgbModal, NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 
 @Component({
   selector: 'app-admin-ult-milla',
@@ -10,14 +11,23 @@ import { NgbModal, NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AdminUltMillaComponent implements OnInit {
 
+  UrlImagenes: string = '';
+
   //Filtros
-  OferFiltro: string = '';
+  Oferta: string = '';
+  DataOfertas: any = [];
+  KeywordOferta: string = '';
+  SelectOferta: string = '0';
 
   Sector: string = '';
   DataSectores: any = [];
   keywordSec: string = '';
   SectorSelec: string = '';
+  DescripcionSector: string = '';
 
+  //TargetaGeneral
+  VerTargetaGeneral: boolean = false;
+  ArrayTargeneral: any = [];
 
   //Mapa
   geocoder = new google.maps.Geocoder();
@@ -27,8 +37,11 @@ export class AdminUltMillaComponent implements OnInit {
   ArrayEntregas: any = [];
 
 
-  //Agrega compra a entrega
-  ArrayCompra: any = [];
+  //ArraySelectPin
+  ArraySelectPin: any = [];
+  NomreGrupoMilla: string = '';
+  SelectPin: boolean = false;
+  IdGrupoMilla: string = '';
 
   //Array Entrega
   ArrayEntrega: any = [];
@@ -37,37 +50,73 @@ export class AdminUltMillaComponent implements OnInit {
 
   constructor(private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService,
-    private serviciosreportes: ReporteService) { }
+    private serviciosreportes: ReporteService,
+    private metodosglobales: MetodosglobalesService) { }
 
   ngOnInit(): void {
-    this.ConsultaSectores();
-
-    this.Centramapa({ address: 'Bogotá' + ',' + 'Bogotá' });
-    this.ConsumeService();
+    this.UrlImagenes = this.metodosglobales.RecuperaRutaImagenes();
+    this.ConsCdOfer();
   }
-
 
 
   //Metodos filtros
   ConsultaSectores() {
-    this.ServiciosValorar.ConsultaSectores('1', '0', '0', '0', '0').subscribe(ResultCons => {
+    this.ServiciosValorar.ConsultaSectoresOferta('1', this.SelectOferta).subscribe(ResultCons => {
       this.DataSectores = ResultCons
       this.keywordSec = 'DSCRPCION_SCTOR';
     })
   }
   selectSector(sector: any) {
-    this.SectorSelec = sector.SCTOR_OFRTA;
+    this.SectorSelec = sector.ID_SCTOR_OFRTA;
+    this.VerTargetaGeneral = true;
+
+    this.ConsultaInfoOfer();
+    this.ConsPins();
+    this.Centramapa({ address: 'Bogotá' + ',' + 'Bogotá' });
   }
   LimpiaSector(Sector: String) {
     this.SectorSelec = "" + Sector;
   }
 
 
+  ConsCdOfer() {
+    this.ServiciosValorar.ConsOferEst('1').subscribe(ResultCons => {
+      this.DataOfertas = ResultCons;
+      this.KeywordOferta = 'Nombre_Producto';
+    })
+  }
+  selectOfer(ofer: any) {
+    this.SelectOferta = ofer.CD_CNSCTVO;
+    this.ConsultaSectores();
+  }
+  LimpiaOfert(ofer: String) {
+    this.SelectOferta = "" + ofer;
+    this.LimpiaSector('0');
+    this.Sector = '';
+    this.VerTargetaGeneral = false;
+  }
+
+
+
+  //InformacionOferta
+  ConsultaInfoOfer() {
+    this.ServiciosValorar.ConsInfoOfer('1', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
+      this.ArrayTargeneral = Resultado;
+      for (var i = 0; i < this.ArrayTargeneral.length; i++) {
+        if (this.ArrayTargeneral[i].DescToppings != null) {
+          this.ArrayTargeneral[i].DescToppings = this.ArrayTargeneral[i].DescToppings.replace("|", "<br>");
+        }
+      }
+    })
+  }
+
+
+
   //Mapa
-  ConsumeService() {
-    this.ServiciosValorar.ConsEntregasConductor('1', '39', '433', '2206', '0').subscribe(Resultado => {
-      this.ArrayEntregas = Resultado;
+  ConsPins() {
+    this.ServiciosValorar.ConsPinsUltMilla('1', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
       console.log(Resultado)
+      this.ArrayEntregas = Resultado;
     })
   }
   Centramapa(request: google.maps.GeocoderRequest): void {
@@ -91,16 +140,18 @@ export class AdminUltMillaComponent implements OnInit {
       });
   }
   AgregarSitios() {
+
     const features = [];
     this.markers = [];
     var lat: number;
     var long: number;
+    console.log(this.ArrayEntregas)
     for (var i = 0; i < this.ArrayEntregas.length; i++) {
-      if (this.ArrayEntregas[i].COORDENADAS_ENTR != null && this.ArrayEntregas[i].COORDENADAS_ENTR != undefined && this.ArrayEntregas[i].COORDENADAS_ENTR != '') {
-        var auxcoor = this.ArrayEntregas[i].COORDENADAS_ENTR.split(",");
+      if (this.ArrayEntregas[i].CoordenadasEntrega != null && this.ArrayEntregas[i].CoordenadasEntrega != undefined && this.ArrayEntregas[i].CoordenadasEntrega != '') {
+        var auxcoor = this.ArrayEntregas[i].CoordenadasEntrega.split(",");
         lat = parseFloat(auxcoor[0]);
         long = parseFloat(auxcoor[1]);
-        features.push({ position: new google.maps.LatLng(lat, long), Estado: this.ArrayEntregas[i].DescripcionProducto, NomCli: this.ArrayEntregas[i].NombreCompletoProductor, IdCompra: this.ArrayEntregas[i].IdEstado_Oferta });
+        features.push({ position: new google.maps.LatLng(lat, long), NomCli: this.ArrayEntregas[i].NombreCliente, IdGrupoMilla: this.ArrayEntregas[i].GrupoMilla, Estado: '1' });
 
       }
     }
@@ -128,6 +179,7 @@ export class AdminUltMillaComponent implements OnInit {
         label: LabelOption
       });
       this.markers.push(marker);
+      console.log(this.markers.length)
 
 
       const infoWindow = new google.maps.InfoWindow();
@@ -137,14 +189,16 @@ export class AdminUltMillaComponent implements OnInit {
     }
   }
   InfoWindow(i: any) {
-    this.ArrayCompra = this.ArrayEntregas[i];
     this.infoWindow.close();
-    var NomCliente: string = '' + this.ArrayEntregas[i].NOMBRES_PERSONA + ' ' + this.ArrayEntregas[i].APELLIDOS_PERSONA;
-    var CodigoOferta: string = '' + this.ArrayEntregas[i].CD_CNSCTVO;
-    var Direccion: string = '' + this.ArrayEntregas[i].DRCCION;
-    var Producto: string = '' + this.ArrayEntregas[i].Producto_ppal;
-    var Cantidad: string = '' + this.ArrayEntregas[i].unidadesEntregar;
-    var Peso: string = '' + this.ArrayEntregas[i].peso_prod_ppal;
+    this.NomreGrupoMilla = '' + this.ArrayEntregas[i].NombreGrupoMilla;
+    this.IdGrupoMilla = '' + this.ArrayEntregas[i].GrupoMilla;
+    this.SelectPin = true;
+    this.AgregaItemEntrega();
+
+    var NomCliente: string = '' + this.ArrayEntregas[i].NombreCliente;
+    var Direccion: string = '' + this.ArrayEntregas[i].DireccionEntrega;
+    var Cantidad: string = '' + this.ArrayEntregas[i].UndProd;
+    var Peso: string = '' + this.ArrayEntregas[i].PesoTotalCarga;
 
     const Html =
       //DivSensillo
@@ -177,12 +231,16 @@ export class AdminUltMillaComponent implements OnInit {
 
 
   //Agregar a entrega o transport
-  AgregaItemEntrega(item: any){
+  AgregaItemEntrega() {
     this.AcumPeso = 0;
-    this.ArrayEntrega.push(item);
-    for(var i = 0; i < this.ArrayEntrega.length; i++){
-      this.AcumPeso += parseFloat(this.ArrayEntrega[i].peso_prod_ppal);
+    for (var i = 0; i < this.ArrayEntregas.length; i++) {
+      this.AcumPeso += parseFloat(this.ArrayEntregas[i].PesoTotalCarga);
       //this.AcumPeso += parseInt(this.ArrayEntrega[i].peso_prod_ppal);
     }
+  }
+
+
+  AbreModalQuitaCompra(templateQuitaCompra: any){
+    this.modalService.open(templateQuitaCompra, { ariaLabelledBy: 'modal-basic-title' });
   }
 }
