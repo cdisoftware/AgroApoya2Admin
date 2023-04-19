@@ -13,7 +13,7 @@ import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 export class RepOfertasComponent implements OnInit {
   fechaDesde  : any = '';
   fechaHasta  : any = '';
-  IdOferta    : string = '';
+  IdOferta    : any = '';
   Producto    : string = '';
   estadoOferta: string = '';
 
@@ -56,7 +56,8 @@ export class RepOfertasComponent implements OnInit {
     this.idProducto=producto.id_producto;
    }
  LimpiaProducto() {
-    this.idProducto = '';
+    this.idProducto= '0';
+    this.Producto = '';
     
   }
  CargaProductos() {
@@ -139,12 +140,12 @@ export class RepOfertasComponent implements OnInit {
       Cd_tmno: 0,
       ID_EMPAQUE: 0,
       VigenciaDesde:this.fechaDesde,
-      VigenciaHasta: 0,
+      VigenciaHasta: this.fechaHasta,
       IdEstado_Oferta: this.IdEstadoOferta,
       CD_RGION: 0,
       CD_MNCPIO: 0
     }
-    console.log(busquedaDatos)
+    // console.log(busquedaDatos)
   
     this.servicioValorOferta.BusquedaOferta('2', idoferta, this.idProducto, this.idProductor, busquedaDatos).subscribe(Resultado => {
 
@@ -170,20 +171,26 @@ export class RepOfertasComponent implements OnInit {
   }
 
   limpiar() {
+  // location.reload();
     this.IdOferta = '';
     this.estadoOferta = '';
     this.Producto = '';
-    this.fechaDesde = '0';
-    this.fechaHasta = '0';
+    this.fechaDesde = '';
+    this.fechaHasta = '';
     this.Arrayresultados = [];
     this.ValidaDescarga = true;
     this.ValidaConsulta='1';
-    this.LimpiaEstadoOferta;
-    this.LimpiaProducto;
+    this.respuesta='';
+
+    this.idProducto= '0'
+    this.idProductor='0'
+    // this.LimpiaEstadoOferta;
+    // this.LimpiaProducto;
+    
     console.log(this.fechaDesde)
    
     console.log("limpia")
-
+  
   }
 
   GenerarExcel() {
