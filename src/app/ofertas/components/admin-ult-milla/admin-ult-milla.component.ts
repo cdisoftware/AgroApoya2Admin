@@ -12,6 +12,8 @@ import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 export class AdminUltMillaComponent implements OnInit {
 
   UrlImagenes: string = '';
+  MesajeModal: string = '';
+  banderaModalConfirmacion: string = '0';//Bandera 1 actualiza precio de ruta, 2 elimina entrega de ruta
 
   //Filtros
   Oferta: string = '';
@@ -42,6 +44,9 @@ export class AdminUltMillaComponent implements OnInit {
   NomreGrupoMilla: string = '';
   SelectPin: boolean = false;
   VerBtnAgregarGrupo: boolean = false;
+
+  verGrupo: boolean;
+
   IdGrupoMilla: string = '';
   NombreCliente: string = '';
   CantidadCompraCliente: string = '';
@@ -56,8 +61,14 @@ export class AdminUltMillaComponent implements OnInit {
   ArrayEntrega: any = [];
   AcumPeso: number = 0;
 
-  //Modifica entregas de grupo ultima milla
+  //Eliminar entregas de ruta ultima milla
   ArrayElimina: any = [];
+
+  //Agregar entrega a ruta
+  ArrayAgregaEntrega: any = [];
+
+  //ArrayDetalle
+  ArrayDetalleEntrega: any = [];
 
 
   constructor(private modalService: NgbModal,
@@ -82,7 +93,7 @@ export class AdminUltMillaComponent implements OnInit {
     this.SectorSelec = sector.ID_SCTOR_OFRTA;
     this.ConsultaInfoOfer();
     this.ConsPins();
-    this.Centramapa({ address: 'Bogotá' + ',' + 'Bogotá' });
+
   }
   LimpiaSector(Sector: String) {
     this.SectorSelec = "" + Sector;
@@ -112,9 +123,7 @@ export class AdminUltMillaComponent implements OnInit {
   //InformacionOferta
   ConsultaInfoOfer() {
     this.ServiciosValorar.ConsInfoOfer('2', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
-      console.log(this.SelectOferta + '    ' + this.SectorSelec)
       this.ArrayTargeneral = Resultado;
-      console.log(this.ArrayTargeneral)
       this.VerTargetaGeneral = true;
       for (var i = 0; i < this.ArrayTargeneral.length; i++) {
         if (this.ArrayTargeneral[i].DescToppings != null) {
@@ -130,7 +139,7 @@ export class AdminUltMillaComponent implements OnInit {
   ConsPins() {
     this.ServiciosValorar.ConsPinsUltMilla('1', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
       this.ArrayEntregas = Resultado;
-      console.log(Resultado)
+      this.Centramapa({ address: 'Bogotá' + ',' + 'Bogotá' });
     })
   }
   Centramapa(request: google.maps.GeocoderRequest): void {
@@ -159,7 +168,6 @@ export class AdminUltMillaComponent implements OnInit {
     this.markers = [];
     var lat: number;
     var long: number;
-    console.log(this.ArrayEntregas)
     var auxEstado = '';
     for (var i = 0; i < this.ArrayEntregas.length; i++) {
       if (this.ArrayEntregas[i].CoordenadasEntrega != null && this.ArrayEntregas[i].CoordenadasEntrega != undefined && this.ArrayEntregas[i].CoordenadasEntrega != '') {
@@ -196,7 +204,6 @@ export class AdminUltMillaComponent implements OnInit {
         label: LabelOption
       });
       this.markers.push(marker);
-      console.log(this.markers.length)
 
 
       const infoWindow = new google.maps.InfoWindow();
@@ -217,19 +224,22 @@ export class AdminUltMillaComponent implements OnInit {
     } else {
       this.AdicionalesSelectPin = '' + this.ArrayEntregas[i].DescToppings;
     }
-    console.log(this.ArrayEntregas[i].GrupoMilla)
     if (this.ArrayEntregas[i].GrupoMilla != null) {
       this.VerBtnAgregarGrupo = false;
+      this.verGrupo = true;
+
+      this.ConsPartGrupoMilla(this.IdGrupoMilla);
     } else {
+      this.ArrayAgregaEntrega = this.ArrayEntregas[i];
       this.VerBtnAgregarGrupo = true;
+      this.verGrupo = false;
     }
 
 
 
     this.SelectPin = true;
-    
+
     this.ConsultaGrupos();
-    this.ConsPartGrupoMilla(this.IdGrupoMilla);
 
     var NomCliente: string = '' + this.ArrayEntregas[i].NombreCliente;
     var Direccion: string = '' + this.ArrayEntregas[i].DireccionEntrega;
@@ -269,21 +279,20 @@ export class AdminUltMillaComponent implements OnInit {
   //Agregar a entrega o transport
   PesoRuta() {
     this.AcumPeso = 0;
-    console.log('Entro' + this.ArrayPartGrupos.length)
     for (var i = 0; i < this.ArrayPartGrupos.length; i++) {
       this.AcumPeso += parseFloat(this.ArrayPartGrupos[i].PesoTotalCarga);
-      console.log(this.AcumPeso)
     }
   }
   ConsultaGrupos() {
     this.ServiciosValorar.ConsGruposUltimaMilla('1', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
-      this.ArrayGrupos = Resultado;
       console.log(Resultado)
+      this.ArrayGrupos = Resultado;
     })
   }
   ConsPartGrupoMilla(IdGrupo: string) {
     this.ServiciosValorar.ConsParadasRutaUltMilla('1', '' + IdGrupo).subscribe(Resultado => {
       this.ArrayPartGrupos = Resultado;
+      console.log(Resultado)
       this.PesoRuta();
     })
 
@@ -291,16 +300,46 @@ export class AdminUltMillaComponent implements OnInit {
 
 
 
+  OpcionModalConfirm(bandera: string) {
+    //Bandera 1 actualiza precio de ruta, 2 elimina entrega de ruta
+    if (bandera == '1') {
+      this.ActualizarValorTransporte()
+    } else if (bandera == '2') {
+      this.ConfirmEliminaGrupo();
+    }
+  }
+
+  AbreModalConfirmacion(templateQuitaCompra: any, item: any) {
+    console.log(item)
+    this.banderaModalConfirmacion = '1';
+    this.MesajeModal = '¿Esta seguro de actualizar el precio de la ruta ' + this.NomreGrupoMilla + ' ?';
+    this.ArrayElimina = item;
+    this.modalService.open(templateQuitaCompra, { ariaLabelledBy: 'modal-basic-title' });
+  }
+  ActualizarValorTransporte() {
+    const body = {
+      ValorTrans: this.ArrayElimina.ValorTransporte,
+      cd_cnctvo: this.ArrayElimina.cd_cnctvo,
+      idSector: this.ArrayElimina.id_sector,
+      IdGrupo: this.ArrayElimina.IdGrupo
+    }
+    this.ServiciosValorar.ModValorUberUltMilla('3', body).subscribe(Resultado => {
+      this.modalService.dismissAll();
+      console.log(Resultado)
+    })
+  }
+
+
 
 
 
 
   AbreModalEliminaDeGrupo(templateQuitaCompra: any, item: any) {
+    this.banderaModalConfirmacion = '2';
+    this.MesajeModal = '¿Esta seguro de quitar esta compra de la entrega ' + this.NomreGrupoMilla + ' ?';
     this.ArrayElimina = item;
     this.modalService.open(templateQuitaCompra, { ariaLabelledBy: 'modal-basic-title' });
   }
-
-
   ConfirmEliminaGrupo() {
     const elimina = {
       IdGrupo: this.ArrayElimina.GrupoMilla,
@@ -308,9 +347,36 @@ export class AdminUltMillaComponent implements OnInit {
       cd_csctvo: this.SelectOferta,
       IdSector: this.SectorSelec
     }
-    console.log(elimina)
     this.ServiciosValorar.ModPinMilla('4', elimina).subscribe(Resultado => {
-      console.log(Resultado)
+      this.modalService.dismissAll();
+      this.ConsPins();
+      this.ConsPartGrupoMilla(this.ArrayElimina.GrupoMilla);
     })
+  }
+
+
+
+  AbreModalGrupos(ModalRutasUltMilla: any) {
+    this.modalService.open(ModalRutasUltMilla, { ariaLabelledBy: 'modal-basic-title' });
+  }
+  AgregaComprasAruta(respugrupo: any) {
+    const agregar = {
+      IdGrupo: respugrupo.IdGrupo,
+      IdCarro: this.ArrayAgregaEntrega.ID_CARRO,
+      cd_csctvo: this.ArrayAgregaEntrega.CD_CNSCTVO,
+      IdSector: this.ArrayAgregaEntrega.IdSector
+    }
+    this.ServiciosValorar.ModPinMilla('3', agregar).subscribe(Resultado => {
+      this.modalService.dismissAll();
+      this.ConsPins();
+      this.PesoRuta();
+      this.ConsPartGrupoMilla(respugrupo.IdGrupo);
+    })
+  }
+
+
+  DetalleCompra(ModalDetalleCompra: any, respu: any) {
+    this.ArrayDetalleEntrega = respu;
+    this.modalService.open(ModalDetalleCompra, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
   }
 }
