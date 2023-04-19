@@ -262,7 +262,7 @@ export class ValorarofertaService {
   ConsPinsUltMilla(Bandera: string, CD_CNSCTVO: string, IdSector: string) {
     return this.http.get<any>(this.url_servidor + 'conscpinultimailla/' + Bandera + '/' + CD_CNSCTVO + '/' + IdSector)
   }
-  
+
   ConsultaBodegas(Bandera: string, Departamento: string, Ciudad: string) {
     return this.http.get<any>(this.url_servidor + 'constbodegas/' + Bandera + '/' + Departamento + '/' + Ciudad);
   }
@@ -288,7 +288,15 @@ export class ValorarofertaService {
     return this.http.get<any>(this.url_servidor + 'conscultimamilla/' + Bandera + '/' + CD_CNSCTVO + '/' + IdSector)
   }
 
-  ConsParadasRutaUltMilla(Bandera: string, IdGrupo: string) {
-    return this.http.get<any>(this.url_servidor + 'conscagrogruposultimamilla/' + Bandera + '/' + IdGrupo)
+  ConsParadasRutaUltMilla(Bandera: string, IdGrupo: string, IdOferta: string, Sector: string) {
+    return this.http.get<any>(this.url_servidor + 'conscagrogruposultimamilla/' + Bandera + '/' + IdGrupo + '/' + IdOferta + '/' + Sector)
+  }
+  
+  ConsultaConductores(Bandera: string, IdOferta: string, Sector: string) {
+    return this.http.get<any>(this.url_servidor + 'consclistaconductor/' + Bandera  + '/' + IdOferta + '/' + Sector)
+  }
+
+  ModificaConductor(Bandera: string, Datos: any){
+    return this.http.post<any>(this.url_servidor + 'modctorultmilla/' + Bandera, Datos)
   }
 }

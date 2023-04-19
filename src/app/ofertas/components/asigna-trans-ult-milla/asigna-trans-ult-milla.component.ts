@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
+import { NgbModal, NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-asigna-trans-ult-milla',
@@ -15,9 +16,16 @@ export class AsignaTransUltMillaComponent implements OnInit {
   NomSector: string = ''
   ValidaOferta: boolean = true;
   arrayGrupos: any = [];
+  arrayDescargas: any = [];
+  ArrayConductores: any = [];
+  IdGrupoSelect: string;
+  IdConductor: string;
+
+
 
   constructor(
-    private serviciosvaloracion: ValorarofertaService
+    private serviciosvaloracion: ValorarofertaService,
+    private ModalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -58,29 +66,73 @@ export class AsignaTransUltMillaComponent implements OnInit {
     if (this.IdOferta == null || this.IdSector == '') {
       alert('los campos son obligatorios')
     } else {
-      this.serviciosvaloracion.ConsPinsUltMilla('1', this.IdOferta, this.IdSector).subscribe(Resultado => {
-        for(var i = 0; i< Resultado.length; i++){
-          alert(this.arrayGrupos.length)
-          if(this.arrayGrupos.length == 0){
-            this.arrayGrupos = Resultado[i]
-            console.log('*-*-*-*')
-            console.log(this.arrayGrupos)
-          }else{
-            for(var a = 0; a < this.arrayGrupos.length; a++){
-              alert(a)
-              if(Resultado[i].GrupoMilla == this.arrayGrupos[a].GrupoMilla){
-                this.arrayGrupos.splice(Resultado[i])
-              }else{
-                this.arrayGrupos[a+1].splice(Resultado[i])
-              }
-            }
-          }
+      this.serviciosvaloracion.ConsGruposUltimaMilla('1', this.IdOferta, this.IdSector).subscribe(Resultado => {
+        if (Resultado.length > 0) {
+          console.log(Resultado)
+          this.arrayGrupos = Resultado;
         }
-        console.log(this.arrayGrupos)
       })
     }
-
   }
 
+  EditarGrupo(modalGrupo: any, grupo: any){
+    this.IdGrupoSelect = grupo.IdGrupo
+    this.ConsultaConductores();
+    this.serviciosvaloracion.ConsParadasRutaUltMilla('1', this.IdGrupoSelect, this.IdOferta, this.IdSector).subscribe(Resultado => {
+      console.log(Resultado)
+      if (Resultado.length > 0) {
+        alert('entra')
+        this.arrayDescargas = Resultado
+        this.ModalService.open(modalGrupo, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+      }
+
+    })
+    
+  }
+
+  SelConductor(idconductor: string){
+    this.IdConductor = idconductor;
+  }
+
+  ConsultaConductores(){
+    this.serviciosvaloracion.ConsultaConductores('1', this.IdOferta, this.IdSector).subscribe(Resultado => {
+      console.log(Resultado)
+      if(Resultado.length > 0){
+        this.ArrayConductores = Resultado
+      }
+    })
+  }
+
+  AceptaEditar(){
+    this.ModificaConductor('2');
+    this.BuscarGruposMilla();
+    this.ModalService.dismissAll();
+  }
+
+  ModificaConductor(bandera: string) {
+    const Datos = {
+      IdGrupo: this.IdGrupoSelect,
+      cd_cnsctivo: this.IdOferta,
+      idSector: this.IdSector,
+      idConductor: this.IdConductor
+    }
+    this.serviciosvaloracion.ModificaConductor(bandera, Datos).subscribe(Resultado => {
+      console.log(Resultado)
+    })
+  }
+
+  EliminaConductor(grupo: any){
+    const Datos = {
+      IdGrupo: grupo.IdGrupo,
+      cd_cnsctivo: this.IdOferta,
+      idSector: this.IdSector,
+      idConductor: grupo.ID_CNDCTOR
+    }
+    this.serviciosvaloracion.ModificaConductor('4', Datos).subscribe(Resultado => {
+      console.log(Resultado)
+      this.BuscarGruposMilla();
+    })
+
+  }
 
 }

@@ -22,7 +22,85 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-sm-4">
-            <button class="btn btn-agro-prin w-100 br" (click)="BuscarGruposMilla()" >Buscar</button>
+            <button class="btn btn-agro-prin w-100 br" (click)="BuscarGruposMilla()">Buscar</button>
         </div>
     </div>
+    <div class="row justify-content-center">
+        <div class="col-sm-5 tarjetadetalle br" *ngFor="let grupo of arrayGrupos">
+            <h1>{{grupo.NombreGrupo}}</h1>
+            <div class="row">
+                <strong>Valor transporte: &nbsp; </strong> <label>{{grupo.ValorTransporte | currency}}</label>
+            </div>
+            <div class="row" *ngIf="grupo.NMBRE_CNDCTOR != null">
+                <div class="col-sm-6">
+                    <strong>Transportista: &nbsp; </strong> <label>{{grupo.NMBRE_CNDCTOR}}</label>
+                </div>
+                <div class="col-sm-3">
+                    <strong>Placa: &nbsp; </strong> <label>{{grupo.PLCA}}</label>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-agro-prin" (click)="EliminaConductor(grupo);">Eliminar</button>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-sm-4 br">
+                    <button class="btn btn-agro-prin w-100" (click)="EditarGrupo(ModalEditar, grupo)">Editar</button>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+
+    <ng-template #ModalEditar let-modal>
+        <div class="modal-header">
+            <h1>AgroApoya2</h1>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row br" *ngFor="let descarga of arrayDescargas">
+                <table class="col-sm-12 TableAgro">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Telefono</th>
+                            <th>Direccion</th>
+                            <th>Tipo</th>
+                            <th>Unidades</th>
+                            <th>Peso</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let descarga of arrayDescargas">
+
+                            <td>{{descarga.NombreCliente}}</td>
+                            <td>{{descarga.Telefono}}</td>
+                            <td>{{descarga.DireccionEntrega}}</td>
+                            <td>{{descarga.DesTipoUsuCompra}}</td>
+                            <td>{{descarga.UndProd}}</td>
+                            <td>{{descarga.PesoTotalCarga}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+            <div class="row justify-content-center">
+                <div class="col-sm-6">
+                    <strong>Conductores disponibles</strong>
+                    <select class="form-control form-control-sm textBox" #SelectCond id="SelectCond"
+                        (change)='SelConductor(SelectCond.value)'>
+                        <option value="0">Producto(Obligatorio)</option>
+                        <option *ngFor="let Conductor of ArrayConductores;" [value]="Conductor.ID_CNDCTOR">
+                            {{Conductor.NMBRE_CNDCTOR}} - {{Conductor.PLCA}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-sm-3"><button type="button" class="btn btn-agro-sec w-100"
+                    (click)="AceptaEditar()">Aceptar</button></div>
+
+        </div>
+        <br>
+    </ng-template>
 </div>
