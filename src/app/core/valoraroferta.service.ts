@@ -288,6 +288,22 @@ export class ValorarofertaService {
     return this.http.get<any>(this.url_servidor + 'conscultimamilla/' + Bandera + '/' + CD_CNSCTVO + '/' + IdSector)
   }
 
+  ConsParadasRutaUltMilla(Bandera: string, IdGrupo: string, CD_CNSCTVO: string, IdSector: string) {
+    console.log(this.url_servidor + 'conscagrogruposultimamilla/' + Bandera + '/' + IdGrupo + '/' + CD_CNSCTVO + '/' + IdSector)
+    return this.http.get<any>(this.url_servidor + 'conscagrogruposultimamilla/' + Bandera + '/' + IdGrupo + '/' + CD_CNSCTVO + '/' + IdSector)
+  }
+
+
+  ModValorUberUltMilla(Bandera: string, body: any) {
+    return this.http.post<any>(this.url_servidor + 'modcvaloruberoferta/' + Bandera, body)
+  }
+
+  ConsInfoValUber(Bandera: string, IdeDepto: string, IdCiudad: string) {
+    return this.http.get<any>(this.url_servidor + 'conscvalorubersgen/' + Bandera + '/' + IdeDepto + '/' + IdCiudad)
+  }
+  ModRutasaUltimMilla(Bandera: string, body: any) {
+    return this.http.post<any>(this.url_servidor + 'modcgrupomilla/' + Bandera, body)
+
   ConsParadasRutaUltMilla(Bandera: string, IdGrupo: string, IdOferta: string, Sector: string) {
     return this.http.get<any>(this.url_servidor + 'conscagrogruposultimamilla/' + Bandera + '/' + IdGrupo + '/' + IdOferta + '/' + Sector)
   }

@@ -68,3 +68,22 @@
     width: 32px;
     height: 32px;
 }
+
+.RutasUltimMilla{
+    box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+}
+.sinmp{
+    padding: 0;
+    margin: 0;
+}
+.textcolor{
+    color: #fff;
+}
+.ImgAgrgar{
+    width: 64px !important;
+    height: 64px !important;
+}
+.Grups{
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+    border-radius: 10px;
+}
