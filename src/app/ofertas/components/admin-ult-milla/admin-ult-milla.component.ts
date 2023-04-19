@@ -47,6 +47,11 @@ export class AdminUltMillaComponent implements OnInit {
   CantidadCompraCliente: string = '';
   AdicionalesSelectPin: string = '';
 
+  //ArrayGrupos
+  ArrayGrupos: any = [];
+  ArrayPartGrupos: any = [];
+
+
   //Array Entrega
   ArrayEntrega: any = [];
   AcumPeso: number = 0;
@@ -163,7 +168,7 @@ export class AdminUltMillaComponent implements OnInit {
         long = parseFloat(auxcoor[1]);
         if (this.ArrayEntregas[i].GrupoMilla != null) {
           auxEstado = '1';
-        }else{
+        } else {
           auxEstado = '2';
         }
 
@@ -213,16 +218,18 @@ export class AdminUltMillaComponent implements OnInit {
       this.AdicionalesSelectPin = '' + this.ArrayEntregas[i].DescToppings;
     }
     console.log(this.ArrayEntregas[i].GrupoMilla)
-    if(this.ArrayEntregas[i].GrupoMilla != null){
+    if (this.ArrayEntregas[i].GrupoMilla != null) {
       this.VerBtnAgregarGrupo = false;
-    }else{
+    } else {
       this.VerBtnAgregarGrupo = true;
     }
-    
+
 
 
     this.SelectPin = true;
-    this.PesoRuta();
+    
+    this.ConsultaGrupos();
+    this.ConsPartGrupoMilla(this.IdGrupoMilla);
 
     var NomCliente: string = '' + this.ArrayEntregas[i].NombreCliente;
     var Direccion: string = '' + this.ArrayEntregas[i].DireccionEntrega;
@@ -262,18 +269,26 @@ export class AdminUltMillaComponent implements OnInit {
   //Agregar a entrega o transport
   PesoRuta() {
     this.AcumPeso = 0;
-    for (var i = 0; i < this.ArrayEntregas.length; i++) {
-      this.AcumPeso += parseFloat(this.ArrayEntregas[i].PesoTotalCarga);
-      //this.AcumPeso += parseInt(this.ArrayEntrega[i].peso_prod_ppal);
+    console.log('Entro' + this.ArrayPartGrupos.length)
+    for (var i = 0; i < this.ArrayPartGrupos.length; i++) {
+      this.AcumPeso += parseFloat(this.ArrayPartGrupos[i].PesoTotalCarga);
+      console.log(this.AcumPeso)
     }
   }
-  ConsultaGrupos(){
+  ConsultaGrupos() {
     this.ServiciosValorar.ConsGruposUltimaMilla('1', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
-      this.ArrayEntregas = Resultado;
+      this.ArrayGrupos = Resultado;
       console.log(Resultado)
     })
   }
-  
+  ConsPartGrupoMilla(IdGrupo: string) {
+    this.ServiciosValorar.ConsParadasRutaUltMilla('1', '' + IdGrupo).subscribe(Resultado => {
+      this.ArrayPartGrupos = Resultado;
+      this.PesoRuta();
+    })
+
+  }
+
 
 
 
