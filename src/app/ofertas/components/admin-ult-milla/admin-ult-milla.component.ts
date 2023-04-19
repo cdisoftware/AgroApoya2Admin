@@ -303,6 +303,7 @@ export class AdminUltMillaComponent implements OnInit {
       this.ArrayGrupos = Resultado;
     })
   }
+
   ConsPartGrupoMilla(IdGrupo: string) {
     this.ServiciosValorar.ConsParadasRutaUltMilla('1', '0', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
       console.log(Resultado)
@@ -310,7 +311,12 @@ export class AdminUltMillaComponent implements OnInit {
       this.PesoRuta(IdGrupo);
     })
 
+
   }
+
+  
+
+
 
 
 
