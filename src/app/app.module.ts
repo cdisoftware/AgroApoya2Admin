@@ -39,6 +39,7 @@ import { RepOfertasComponent } from './ofertas/components/reportes/rep-ofertas/r
 import { AsignaTransUltMillaComponent } from './ofertas/components/asigna-trans-ult-milla/asigna-trans-ult-milla.component';
 
 
+
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
   declarations: [
