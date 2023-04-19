@@ -227,7 +227,7 @@ export class AdminUltMillaComponent implements OnInit {
 
 
     this.SelectPin = true;
-    
+
     this.ConsultaGrupos();
     this.ConsPartGrupoMilla(this.IdGrupoMilla);
 
@@ -281,13 +281,19 @@ export class AdminUltMillaComponent implements OnInit {
       console.log(Resultado)
     })
   }
+
   ConsPartGrupoMilla(IdGrupo: string) {
-    this.ServiciosValorar.ConsParadasRutaUltMilla('1', '' + IdGrupo).subscribe(Resultado => {
+    this.ServiciosValorar.ConsParadasRutaUltMilla('1', '' + IdGrupo, this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
       this.ArrayPartGrupos = Resultado;
       this.PesoRuta();
     })
 
+
   }
+
+  
+
+
 
 
 
