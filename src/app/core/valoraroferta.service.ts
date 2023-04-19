@@ -161,7 +161,6 @@ export class ValorarofertaService {
 
 
   CorreoMasivo(bandera: string, IdPlantilla: string, IdTipoUsuario: string, cd_cnctvo: string, id_sector: string) {
-    console.log(this.url_servidor + 'correosmasivospanda/' + bandera + '/' + IdPlantilla + '/' + IdTipoUsuario + '/' + cd_cnctvo + '/' + id_sector)
     return this.http.get<any[]>(this.url_servidor + 'correosmasivospanda/' + bandera + '/' + IdPlantilla + '/' + IdTipoUsuario + '/' + cd_cnctvo + '/' + id_sector)
   }
 
@@ -278,5 +277,18 @@ export class ValorarofertaService {
 
   ModificaDetalleCargas(Bandera: string, DatosCarga: any) {
     return this.http.post<any>(this.url_servidor + 'modcdtlledescargas/' + Bandera, DatosCarga)
+  }
+
+  ModPinMilla(Bandera: string, body: any) {
+    return this.http.post<any>(this.url_servidor + 'modcpinmilla/' + Bandera, body)
+  }
+
+
+  ConsGruposUltimaMilla(Bandera: string, CD_CNSCTVO: string, IdSector: string) {
+    return this.http.get<any>(this.url_servidor + 'conscultimamilla/' + Bandera + '/' + CD_CNSCTVO + '/' + IdSector)
+  }
+
+  ConsParadasRutaUltMilla(Bandera: string, IdGrupo: string) {
+    return this.http.get<any>(this.url_servidor + 'conscagrogruposultimamilla/' + Bandera + '/' + IdGrupo)
   }
 }

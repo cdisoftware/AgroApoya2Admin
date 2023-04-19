@@ -1,6 +1,9 @@
 .TextLeft {
     text-align: left;
 }
+.TextRight {
+    text-align: right;
+}
 
 .OfertaSeleccionada {
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -53,4 +56,15 @@
     cursor: pointer;
     text-align: center;
     color: #fff;
+}
+.inputValor{
+    max-width: 80px;
+}
+.Parada{
+    margin-left: 0;
+    margin-right: 0;
+}
+.SinEstilo img{
+    width: 32px;
+    height: 32px;
 }
