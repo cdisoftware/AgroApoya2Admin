@@ -303,10 +303,8 @@ export class ValorarofertaService {
   }
   ModRutasaUltimMilla(Bandera: string, body: any) {
     return this.http.post<any>(this.url_servidor + 'modcgrupomilla/' + Bandera, body)
-
-  ConsParadasRutaUltMilla(Bandera: string, IdGrupo: string, IdOferta: string, Sector: string) {
-    return this.http.get<any>(this.url_servidor + 'conscagrogruposultimamilla/' + Bandera + '/' + IdGrupo + '/' + IdOferta + '/' + Sector)
   }
+
   
   ConsultaConductores(Bandera: string, IdOferta: string, Sector: string) {
     return this.http.get<any>(this.url_servidor + 'consclistaconductor/' + Bandera  + '/' + IdOferta + '/' + Sector)
