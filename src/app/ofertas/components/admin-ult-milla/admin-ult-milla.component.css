@@ -83,3 +83,7 @@
     width: 64px !important;
     height: 64px !important;
 }
+.Grups{
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+    border-radius: 10px;
+}

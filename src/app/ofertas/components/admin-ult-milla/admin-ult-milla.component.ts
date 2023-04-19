@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ValorarofertaService } from './../../../core/valoraroferta.service';
 import { ReporteService } from 'src/app/core/reporte.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -11,9 +11,11 @@ import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 })
 export class AdminUltMillaComponent implements OnInit {
 
+  @ViewChild('ModalMensaje', { static: false }) ModalMensaje: any;
+
   UrlImagenes: string = '';
   MesajeModal: string = '';
-  banderaModalConfirmacion: string = '0';//Bandera 1 actualiza precio de ruta, 2 elimina entrega de ruta
+  banderaModalConfirmacion: string = '0';//Bandera 1 actualiza precio de ruta, 2 elimina entrega de ruta, 3 elimina grupo
 
   //Filtros
   Oferta: string = '';
@@ -83,6 +85,14 @@ export class AdminUltMillaComponent implements OnInit {
     this.UrlImagenes = this.metodosglobales.RecuperaRutaImagenes();
     this.ConsCdOfer();
   }
+
+  //Reinicia la data de la ruta arreglos etc...
+  ReiniciaDataRuta() {
+
+    this.ConsultaGrupos();
+    this.ConsPartGrupoMilla('0');
+  }
+
 
 
   //Metodos filtros
@@ -280,9 +290,10 @@ export class AdminUltMillaComponent implements OnInit {
 
 
   //Agregar a entrega o transport
-  PesoRuta() {
+  PesoRuta(IdGrupo: string) {
     this.AcumPeso = 0;
     for (var i = 0; i < this.ArrayPartGrupos.length; i++) {
+
       this.AcumPeso += parseFloat(this.ArrayPartGrupos[i].PesoTotalCarga);
     }
   }
@@ -293,10 +304,10 @@ export class AdminUltMillaComponent implements OnInit {
     })
   }
   ConsPartGrupoMilla(IdGrupo: string) {
-    this.ServiciosValorar.ConsParadasRutaUltMilla('1', '' + IdGrupo).subscribe(Resultado => {
-      this.ArrayPartGrupos = Resultado;
+    this.ServiciosValorar.ConsParadasRutaUltMilla('1', '0', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
       console.log(Resultado)
-      this.PesoRuta();
+      this.ArrayPartGrupos = Resultado;
+      this.PesoRuta(IdGrupo);
     })
 
   }
@@ -304,11 +315,13 @@ export class AdminUltMillaComponent implements OnInit {
 
 
   OpcionModalConfirm(bandera: string) {
-    //Bandera 1 actualiza precio de ruta, 2 elimina entrega de ruta
+    //Bandera 1 actualiza precio de ruta, 2 elimina entrega de ruta, 3 eliminina grupo
     if (bandera == '1') {
       this.ActualizarValorTransporte()
     } else if (bandera == '2') {
       this.ConfirmEliminaGrupo();
+    } else if (bandera == '3') {
+      this.ElimnarRuta();
     }
   }
 
@@ -329,6 +342,7 @@ export class AdminUltMillaComponent implements OnInit {
     console.log(body)
     this.ServiciosValorar.ModValorUberUltMilla('3', body).subscribe(Resultado => {
       this.modalService.dismissAll();
+      this.ReiniciaDataRuta();
       console.log(Resultado)
     })
   }
@@ -354,7 +368,10 @@ export class AdminUltMillaComponent implements OnInit {
     this.ServiciosValorar.ModPinMilla('4', elimina).subscribe(Resultado => {
       this.modalService.dismissAll();
       this.ConsPins();
-      this.ConsPartGrupoMilla(this.ArrayElimina.GrupoMilla);
+      this.ReiniciaDataRuta();
+      var auxrespu = Resultado.split("|");
+      this.MesajeModal = auxrespu[1].toString();
+      this.modalService.open(this.ModalMensaje, { size: 'sm', centered: true, backdrop: 'static', keyboard: false });
     })
   }
 
@@ -373,8 +390,8 @@ export class AdminUltMillaComponent implements OnInit {
     this.ServiciosValorar.ModPinMilla('3', agregar).subscribe(Resultado => {
       this.modalService.dismissAll();
       this.ConsPins();
-      this.PesoRuta();
-      this.ConsPartGrupoMilla(respugrupo.IdGrupo);
+      this.PesoRuta(respugrupo.IdGrupo);
+      this.ReiniciaDataRuta();
     })
   }
 
@@ -401,6 +418,34 @@ export class AdminUltMillaComponent implements OnInit {
     }
     this.ServiciosValorar.ModRutasaUltimMilla('3', body).subscribe(Resultado => {
       console.log(Resultado)
+      this.ReiniciaDataRuta();
+      var auxrespu = Resultado.split("|");
+      this.MesajeModal = auxrespu[1].toString();
+      this.modalService.open(this.ModalMensaje, { size: 'sm', centered: true, backdrop: 'static', keyboard: false });
+    })
+  }
+
+  ConfirmacionElimRuta(templateQuitaCompra: any, item: any) {
+    console.log(item)
+    this.banderaModalConfirmacion = '3';
+    this.MesajeModal = '¿Esta seguro de eliminar el grupo ' + item.NombreGrupo + ' ?';
+    this.ArrayElimina = item;
+    this.modalService.open(templateQuitaCompra, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  ElimnarRuta() {
+    const body = {
+      IdGrupo: this.ArrayElimina.IdGrupo,
+      cd_csctvo: this.SelectOferta,
+      IdSector: this.SectorSelec
+    }
+    this.ServiciosValorar.ModRutasaUltimMilla('4', body).subscribe(Resultado => {
+      this.modalService.dismissAll();
+      this.ReiniciaDataRuta();
+      console.log(Resultado)
+      var auxrespu = Resultado.split("|");
+      this.MesajeModal = auxrespu[1].toString();
+      this.modalService.open(this.ModalMensaje, { size: 'sm', centered: true, backdrop: 'static', keyboard: false });
     })
   }
 }
