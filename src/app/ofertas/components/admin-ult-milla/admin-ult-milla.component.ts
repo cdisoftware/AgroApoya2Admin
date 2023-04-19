@@ -70,6 +70,9 @@ export class AdminUltMillaComponent implements OnInit {
   //ArrayDetalle
   ArrayDetalleEntrega: any = [];
 
+  //Informacion uber
+  ArrayInfoUber: any = [];
+
 
   constructor(private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService,
@@ -323,6 +326,7 @@ export class AdminUltMillaComponent implements OnInit {
       idSector: this.ArrayElimina.id_sector,
       IdGrupo: this.ArrayElimina.IdGrupo
     }
+    console.log(body)
     this.ServiciosValorar.ModValorUberUltMilla('3', body).subscribe(Resultado => {
       this.modalService.dismissAll();
       console.log(Resultado)
@@ -378,5 +382,25 @@ export class AdminUltMillaComponent implements OnInit {
   DetalleCompra(ModalDetalleCompra: any, respu: any) {
     this.ArrayDetalleEntrega = respu;
     this.modalService.open(ModalDetalleCompra, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+  }
+
+  AbreModalInfoUber(templateQuitaCompra: any) {
+    this.ServiciosValorar.ConsInfoValUber('1', '261', '401').subscribe(Resultado => {
+      this.ArrayInfoUber = Resultado;
+      console.log(Resultado)
+      this.modalService.open(templateQuitaCompra, { ariaLabelledBy: 'modal-basic-title' });
+    })
+  }
+
+
+  CrearRuta() {
+    const body = {
+      IdGrupo: 0,
+      cd_csctvo: this.SelectOferta,
+      IdSector: this.SectorSelec
+    }
+    this.ServiciosValorar.ModRutasaUltimMilla('3', body).subscribe(Resultado => {
+      console.log(Resultado)
+    })
   }
 }

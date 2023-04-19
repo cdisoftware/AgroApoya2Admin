@@ -296,4 +296,11 @@ export class ValorarofertaService {
   ModValorUberUltMilla(Bandera: string, body: any) {
     return this.http.post<any>(this.url_servidor + 'modcvaloruberoferta/' + Bandera, body)
   }
+
+  ConsInfoValUber(Bandera: string, IdeDepto: string, IdCiudad: string) {
+    return this.http.get<any>(this.url_servidor + 'conscvalorubersgen/' + Bandera + '/' + IdeDepto + '/' + IdCiudad)
+  }
+  ModRutasaUltimMilla(Bandera: string, body: any) {
+    return this.http.post<any>(this.url_servidor + 'modcgrupomilla/' + Bandera, body)
+  }
 }
