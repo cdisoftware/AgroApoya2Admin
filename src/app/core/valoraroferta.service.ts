@@ -258,9 +258,11 @@ export class ValorarofertaService {
   ConsOferEst(Bandera: string) {
     return this.http.get<any>(this.url_servidor + 'conscofertaestados/' + Bandera)
   }
+
   ConsPinsUltMilla(Bandera: string, CD_CNSCTVO: string, IdSector: string) {
     return this.http.get<any>(this.url_servidor + 'conscpinultimailla/' + Bandera + '/' + CD_CNSCTVO + '/' + IdSector)
   }
+  
   ConsultaBodegas(Bandera: string, Departamento: string, Ciudad: string) {
     return this.http.get<any>(this.url_servidor + 'constbodegas/' + Bandera + '/' + Departamento + '/' + Ciudad);
   }
