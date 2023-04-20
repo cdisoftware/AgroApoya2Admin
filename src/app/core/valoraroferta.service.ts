@@ -271,8 +271,8 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'modcasignabodega/' + Bandera, DatosBodega)
   }
 
-  ConsultaCargaAsociada(Bandera: string, IdSector: string, IdOferta: string) {
-    return this.http.get<any>(this.url_servidor + 'conscdtlledescargas/' + Bandera + '/' + IdSector + '/' + IdOferta);
+  ConsultaCargaAsociada(Bandera: string, IdSector: string, IdOferta: string, IdBodega: string) {
+    return this.http.get<any>(this.url_servidor + 'conscdtlledescargas/' + Bandera + '/' + IdSector + '/' + IdOferta + '/' + IdBodega);
   }
 
   ModificaDetalleCargas(Bandera: string, DatosCarga: any) {
@@ -305,12 +305,12 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'modcgrupomilla/' + Bandera, body)
   }
 
-  
+
   ConsultaConductores(Bandera: string, IdOferta: string, Sector: string) {
-    return this.http.get<any>(this.url_servidor + 'consclistaconductor/' + Bandera  + '/' + IdOferta + '/' + Sector)
+    return this.http.get<any>(this.url_servidor + 'consclistaconductor/' + Bandera + '/' + IdOferta + '/' + Sector)
   }
 
-  ModificaConductor(Bandera: string, Datos: any){
+  ModificaConductor(Bandera: string, Datos: any) {
     return this.http.post<any>(this.url_servidor + 'modctorultmilla/' + Bandera, Datos)
   }
 

@@ -10,7 +10,7 @@
             <label class="Llave">Sector</label>
             <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" (selected)='selectSector($event)'
                 (inputCleared)='LimpiaSector()' placeholder="Sector" [itemTemplate]="templateSec"
-                [notFoundTemplate]="templateVacio" [disabled]="ValidaOferta">
+                [notFoundTemplate]="templateVacio" [disabled]="ValidaOferta" [(ngModel)]="NomSector">
             </ng-autocomplete>
             <ng-template #templateSec let-item>
                 <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
@@ -22,29 +22,35 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-sm-4">
+            <button class="btn btn-agro-sec w-100 br" (click)="limpiarForm()">Limpiar</button>
+        </div>
+        <div class="col-sm-4">
             <button class="btn btn-agro-prin w-100 br" (click)="BuscarGruposMilla()">Buscar</button>
         </div>
     </div>
-    <div class="row justify-content-center">
-        <div class="col-sm-5 tarjetadetalle br" *ngFor="let grupo of arrayGrupos">
-            <h1>Grupo - {{grupo.NombreGrupo}}</h1>
+    <div class="row justify-content-center wrapper">
+        <div class="col-sm-12 tarjetadetalle br bg-white " *ngFor="let grupo of arrayGrupos">
+            <h1>Ruta - {{grupo.NombreGrupo}}</h1>
             <div class="row">
-                <strong>Valor transporte: &nbsp; </strong> <label>{{grupo.ValorTransporte | currency}}</label>
+                <label><strong>Valor transporte: &nbsp; </strong> {{grupo.ValorTransporte | currency}}</label>
             </div>
             <div class="row" *ngIf="grupo.NMBRE_CNDCTOR != null">
-                <div class="col-sm-6">
-                    <strong>Transportista: &nbsp; </strong> <label>{{grupo.NMBRE_CNDCTOR}}</label>
+                <div class="col-sm-6 mt-1">
+                    <label><strong>Transportista: &nbsp; </strong> {{grupo.NMBRE_CNDCTOR}}</label>
                 </div>
-                <div class="col-sm-3">
-                    <strong>Placa: &nbsp; </strong> <label>{{grupo.PLCA}}</label>
+                <div class="col-sm-4 mt-1">
+                    <label> <strong>Placa: &nbsp; </strong> {{grupo.PLCA}}</label>
                 </div>
-                <div class="col-sm-2">
-                    <button class="btn btn-agro-prin" (click)="EliminaConductor(grupo);">Eliminar</button>
+                <div class="col-sm-1">
+                    <button class="SinEstilo " (click)="EliminaConductor(grupo);">
+                        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" title="Desasociar">
+                    </button>
                 </div>
             </div>
+            <hr>
             <div class="row justify-content-center">
                 <div class="col-sm-4 br">
-                    <button class="btn btn-agro-prin w-100" (click)="EditarGrupo(ModalEditar, grupo)">Editar</button>
+                    <button class="btn btn-agro-prin w-100 " (click)="EditarGrupo(ModalEditar, grupo)">Ver detalles</button>
                 </div>
             </div>
             <br>
@@ -57,7 +63,7 @@
             <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
         </div>
         <div class="modal-body">
-            <div class="row br" *ngFor="let descarga of arrayDescargas">
+            <div class="row br" >
                 <table class="col-sm-12 TableAgro">
                     <thead>
                         <tr>
@@ -83,12 +89,12 @@
                 </table>
             </div>
             <hr>
-            <div class="row justify-content-center">
+            <div class="row justify-content-center" *ngIf="ValidaConductor == true">
                 <div class="col-sm-6">
                     <strong>Conductores disponibles</strong>
                     <select class="form-control form-control-sm textBox" #SelectCond id="SelectCond"
                         (change)='SelConductor(SelectCond.value)'>
-                        <option value="0">Producto(Obligatorio)</option>
+                        <option value="-1">Seleccione...</option>
                         <option *ngFor="let Conductor of ArrayConductores;" [value]="Conductor.ID_CNDCTOR">
                             {{Conductor.NMBRE_CNDCTOR}} - {{Conductor.PLCA}}
                         </option>

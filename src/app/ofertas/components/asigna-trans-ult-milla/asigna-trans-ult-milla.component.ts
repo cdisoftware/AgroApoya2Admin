@@ -19,7 +19,8 @@ export class AsignaTransUltMillaComponent implements OnInit {
   arrayDescargas: any = [];
   ArrayConductores: any = [];
   IdGrupoSelect: string;
-  IdConductor: string;
+  IdConductor: string = '-1';
+  ValidaConductor: boolean = false;
 
 
 
@@ -75,38 +76,55 @@ export class AsignaTransUltMillaComponent implements OnInit {
     }
   }
 
-  EditarGrupo(modalGrupo: any, grupo: any){
+  EditarGrupo(modalGrupo: any, grupo: any) {
+    console.log(grupo)
+    if(grupo.ID_CNDCTOR == null){
+      this.ValidaConductor = true
+    }else{
+      this.ValidaConductor = false
+    }
     this.IdGrupoSelect = grupo.IdGrupo
     this.ConsultaConductores();
     this.serviciosvaloracion.ConsParadasRutaUltMilla('1', this.IdGrupoSelect, this.IdOferta, this.IdSector).subscribe(Resultado => {
       console.log(Resultado)
       if (Resultado.length > 0) {
-        alert('entra')
         this.arrayDescargas = Resultado
         this.ModalService.open(modalGrupo, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
       }
 
     })
-    
+
   }
 
-  SelConductor(idconductor: string){
+  SelConductor(idconductor: string) {
     this.IdConductor = idconductor;
   }
 
-  ConsultaConductores(){
+  ConsultaConductores() {
     this.serviciosvaloracion.ConsultaConductores('1', this.IdOferta, this.IdSector).subscribe(Resultado => {
       console.log(Resultado)
-      if(Resultado.length > 0){
+      if (Resultado.length > 0) {
         this.ArrayConductores = Resultado
       }
     })
   }
 
-  AceptaEditar(){
-    this.ModificaConductor('2');
-    this.BuscarGruposMilla();
-    this.ModalService.dismissAll();
+  AceptaEditar() {
+    if (this.IdConductor != '-1') {
+      const Datos = {
+        IdGrupo: this.IdGrupoSelect,
+        cd_cnsctivo: this.IdOferta,
+        idSector: this.IdSector,
+        idConductor: this.IdConductor
+      }
+      this.serviciosvaloracion.ModificaConductor('2', Datos).subscribe(Resultado => {
+        console.log(Resultado)
+        this.BuscarGruposMilla();
+      })
+      
+      this.ModalService.dismissAll();
+    }
+
   }
 
   ModificaConductor(bandera: string) {
@@ -121,7 +139,7 @@ export class AsignaTransUltMillaComponent implements OnInit {
     })
   }
 
-  EliminaConductor(grupo: any){
+  EliminaConductor(grupo: any) {
     const Datos = {
       IdGrupo: grupo.IdGrupo,
       cd_cnsctivo: this.IdOferta,
@@ -132,7 +150,16 @@ export class AsignaTransUltMillaComponent implements OnInit {
       console.log(Resultado)
       this.BuscarGruposMilla();
     })
+  }
 
+  limpiarForm(){
+    this.NomSector = ''
+    this.IdSector = ''
+    this.IdOferta = ''
+    this.arrayGrupos = []
+    this.arrayDescargas = []
+    this.DataSectores = []
+    this.ValidaOferta = true
   }
 
 }
