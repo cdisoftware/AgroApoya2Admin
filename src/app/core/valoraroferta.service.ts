@@ -313,4 +313,9 @@ export class ValorarofertaService {
   ModificaConductor(Bandera: string, Datos: any){
     return this.http.post<any>(this.url_servidor + 'modctorultmilla/' + Bandera, Datos)
   }
+
+  //modcultimmillainicial
+  ModUltimMillaIni(Bandera: string, Datos: any){
+    return this.http.post<any>(this.url_servidor + 'modcultimmillainicial/' + Bandera, Datos)
+  }
 }

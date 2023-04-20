@@ -170,23 +170,23 @@
 
                 <div class="col-sm-9 p-1 row Grups mb-4 Parada" *ngFor="let grup of ArrayGrupos; let p = index">
                     <div class="row sinmp">
-                        <div class="col-sm-4 mt-2">
+                        <div class="col-sm-4 mt-2 mb-2">
                             <label class="Llave lblSmall">Nombre de
                                 grupo:&nbsp;{{grup.NombreGrupo}}</label>
                         </div>
-                        <div class="col-sm-8 row mt-2">
-                            <div class="col-6">
+                        <div class="col-sm-8 row mt-2 mb-2">
+                            <div class="col-sm-5">
                                 <label class="Llave lblSmall">Su precio sugerido es de:</label>
                             </div>
-                            <div class="col-3 TextRight">
+                            <div class="col-sm-3 TextRight">
                                 <input type="text" mask="separator" thousandSeparator=","
                                     class="form-control form-control-sm inputValor" placeholder="Valor contra oferta"
                                     required="required" [(ngModel)]="grup.ValorTransporte">
                             </div>
-                            <div class="col-3 TextRight">
+                            <div class="col-sm-4 StileImgRuta">
                                 <button class="SinEstilo" title="Actualizar precio"
                                     (click)="AbreModalConfirmacion(Modalquitacompra,grup)">
-                                    <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/actualizar.png">
+                                    <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_guardar.png">
                                 </button>
                                 <button class="SinEstilo" title="Información"
                                     (click)="AbreModalInfoUber(ModalDetaUber)">
