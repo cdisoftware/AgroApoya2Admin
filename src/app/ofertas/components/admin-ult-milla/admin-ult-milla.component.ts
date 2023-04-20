@@ -77,6 +77,10 @@ export class AdminUltMillaComponent implements OnInit {
   //Informacion uber
   ArrayInfoUber: any = [];
 
+  //Polilineas
+  latbodega: number;
+  longbodega: number;
+
 
   constructor(private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService,
@@ -138,11 +142,15 @@ export class AdminUltMillaComponent implements OnInit {
   }
 
 
-
-  //InformacionOferta
   ConsultaInfoOfer() {
     this.ServiciosValorar.ConsInfoOfer('2', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
       this.ArrayTargeneral = Resultado;
+
+
+      var coorbodega = this.ArrayTargeneral[0].CoordenadasBodega.split(",");
+      this.latbodega = parseFloat(coorbodega[0]);
+      this.longbodega = parseFloat(coorbodega[1]);
+
       this.VerTargetaGeneral = true;
       for (var i = 0; i < this.ArrayTargeneral.length; i++) {
         if (this.ArrayTargeneral[i].DescToppings != null) {
@@ -169,14 +177,13 @@ export class AdminUltMillaComponent implements OnInit {
     })
   }
   Centramapa(request: google.maps.GeocoderRequest): void {
-    var lat: number;
-    var long: number;
+
     this.geocoder.geocode(request).then((result) => {
       const { results } = result;
       this.map = new google.maps.Map(
         document.getElementById("map") as HTMLElement,
         {
-          center: { lat: 4.700694915619172, lng: -74.07112294318878 },
+          center: { lat: this.latbodega, lng: this.longbodega },
           zoom: 11,
         }
       );
@@ -198,16 +205,22 @@ export class AdminUltMillaComponent implements OnInit {
     var lat: number;
     var long: number;
     var auxEstado = '';
+
+
+    var marker = new google.maps.Marker({
+      title: "Bodega / Punto de partida",
+      animation: google.maps.Animation.DROP,
+      position: new google.maps.LatLng(this.latbodega, this.longbodega),
+      map: this.map,
+      icon: "../../../../assets/ImagenesAgroApoya2Adm/ic_bodega.png",
+      label: ""
+    });
+    this.markers.push(marker);
+
+
     for (var i = 0; i < this.ArrayEntregas.length; i++) {
-      console.log(this.ArrayEntregas)
       if (this.ArrayEntregas[i].CoordenadasEntrega != null && this.ArrayEntregas[i].CoordenadasEntrega != undefined && this.ArrayEntregas[i].CoordenadasEntrega != '') {
         var auxcoor = this.ArrayEntregas[i].CoordenadasEntrega.split(",");
-        /*if (auxcoor[0].length >= 10) {
-          auxcoor[0] = auxcoor[0].substr(0,9);
-        }
-        if(auxcoor[1].length >= 10){
-          auxcoor[1] = auxcoor[1].substr(0,9);
-        }*/
         lat = parseFloat(auxcoor[0]);
         long = parseFloat(auxcoor[1]);
         if (this.ArrayEntregas[i].GrupoMilla != null) {
@@ -241,6 +254,7 @@ export class AdminUltMillaComponent implements OnInit {
       this.markers.push(marker);
 
 
+
       const infoWindow = new google.maps.InfoWindow();
       this.markers[i].addListener("click", () => {
         this.InfoWindow(this.markers[i].getZIndex());
@@ -256,6 +270,8 @@ export class AdminUltMillaComponent implements OnInit {
       });
       flightPath.setMap(this.map);
     }
+
+    this.PolilimeasDinamicas();
   }
   InfoWindow(i: any) {
     this.infoWindow.close();
@@ -496,5 +512,57 @@ export class AdminUltMillaComponent implements OnInit {
       this.MesajeModal = 'No puedes publicar las rutas debido a que tienes entrega(s) no asignadas a una ruta.';
       this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
     }
+  }
+
+
+
+
+
+
+
+
+
+
+  PolilimeasDinamicas() {
+
+
+
+
+    const ArrayGeneralPoly = [];
+    const ArrayPoliFin: any = [10][10];
+    var lat: number;
+    var long: number;
+
+    console.log(ArrayPoliFin.length)
+
+    for (var i = 0; i < this.ArrayPartGrupos.length; i++) {
+      if (this.ArrayPartGrupos[i].GrupoMilla != null) {
+        var auxcoor = this.ArrayPartGrupos[i].CoordenadasEntrega.split(",");
+        lat = parseFloat(auxcoor[0]);
+        long = parseFloat(auxcoor[1]);
+        ArrayGeneralPoly.push({ GrupoMilla: this.ArrayPartGrupos[i].GrupoMilla, lat: lat, lng: long });
+      }
+    }
+    console.log(ArrayGeneralPoly)
+    /*for (var j = 0; j < ArrayGeneralPoly.length; j++) {
+      if (j == 0) {
+        ArrayPoliFin[0].push(ArrayGeneralPoly[j])
+      } else {
+        if (ArrayPoliFin.includes(ArrayPoliFin.GrupoMilla) == true) {
+          console.log('Ya existe')
+        } else {
+          console.log('No existe')
+          ArrayPoliFin[j].push(ArrayGeneralPoly[j])
+        }
+      }
+    }*/
+
+    var matrix = [];
+    for (var i = 0; i < ArrayGeneralPoly.length; i++) {
+      ArrayPoliFin[i] = new Array(ArrayGeneralPoly);
+    }
+    console.log(ArrayPoliFin)
+
+
   }
 }
