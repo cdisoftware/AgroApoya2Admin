@@ -20,6 +20,7 @@ export class AsignaTransUltMillaComponent implements OnInit {
   ArrayConductores: any = [];
   IdGrupoSelect: string;
   IdConductor: string = '-1';
+  ValidaConductor: boolean = false;
 
 
 
@@ -76,6 +77,12 @@ export class AsignaTransUltMillaComponent implements OnInit {
   }
 
   EditarGrupo(modalGrupo: any, grupo: any) {
+    console.log(grupo)
+    if(grupo.ID_CNDCTOR == null){
+      this.ValidaConductor = true
+    }else{
+      this.ValidaConductor = false
+    }
     this.IdGrupoSelect = grupo.IdGrupo
     this.ConsultaConductores();
     this.serviciosvaloracion.ConsParadasRutaUltMilla('1', this.IdGrupoSelect, this.IdOferta, this.IdSector).subscribe(Resultado => {
@@ -143,6 +150,16 @@ export class AsignaTransUltMillaComponent implements OnInit {
       console.log(Resultado)
       this.BuscarGruposMilla();
     })
+  }
+
+  limpiarForm(){
+    this.NomSector = ''
+    this.IdSector = ''
+    this.IdOferta = ''
+    this.arrayGrupos = []
+    this.arrayDescargas = []
+    this.DataSectores = []
+    this.ValidaOferta = true
   }
 
 }
