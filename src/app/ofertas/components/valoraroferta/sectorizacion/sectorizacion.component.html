@@ -428,8 +428,24 @@
 
 <ng-template #ModalBodega let-modal>
     <div class="modal-header ">
-        <h1>Editar Bodega</h1>
+        <h1>{{NombreBodega}}</h1>
         <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
+    </div>
+    <div class="row justify-content-center">
+        <table class="col-sm-10 TableAgro br">
+            <thead>
+                <tr>
+                    <th>Dirección Bodega</th>
+                    <th>Coordenadas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{DireccionBodega}}</td>
+                    <td>{{CoordenadasBodega}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div class="row justify-content-center m-1 br">
         <div class="col-sm-10">
@@ -444,12 +460,12 @@
             <input type="number" placeholder="Carga maxima (kg)" class="form-control" [(ngModel)]="CargMax">
         </div>
     </div>
-    <div class="row justify-content-center m-1 br">
+    <!-- <div class="row justify-content-center m-1 br">
         <div class="col-sm-10">
             <label>Distancia maxima por vehiculo:</label>
             <input type="number" placeholder="Distancia maxima (km)" class="form-control" [(ngModel)]="DistMax">
         </div>
-    </div>
+    </div> -->
     <div class="row justify-content-center m-1 br">
         <label class="TextAlert col-sm-10">{{AlertEditBodega}}</label>
     </div>

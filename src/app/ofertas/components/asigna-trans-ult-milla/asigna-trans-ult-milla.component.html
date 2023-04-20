@@ -57,7 +57,7 @@
             <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
         </div>
         <div class="modal-body">
-            <div class="row br" *ngFor="let descarga of arrayDescargas">
+            <div class="row br" >
                 <table class="col-sm-12 TableAgro">
                     <thead>
                         <tr>
@@ -88,7 +88,7 @@
                     <strong>Conductores disponibles</strong>
                     <select class="form-control form-control-sm textBox" #SelectCond id="SelectCond"
                         (change)='SelConductor(SelectCond.value)'>
-                        <option value="0">Producto(Obligatorio)</option>
+                        <option value="-1">Seleccione...</option>
                         <option *ngFor="let Conductor of ArrayConductores;" [value]="Conductor.ID_CNDCTOR">
                             {{Conductor.NMBRE_CNDCTOR}} - {{Conductor.PLCA}}
                         </option>

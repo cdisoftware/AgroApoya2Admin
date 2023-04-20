@@ -78,6 +78,9 @@ export class SectorizacionComponent implements OnInit {
   DistMax: string = '';
   SectorSelect: string = '';
   AlertEditBodega: string = '';
+  NombreBodega: string;
+  DireccionBodega: string;
+  CoordenadasBodega: string;
 
 
 
@@ -529,6 +532,10 @@ export class SectorizacionComponent implements OnInit {
   }
 
   selectBodega(item: any) {
+    console.log(item)
+    this.NombreBodega = item.NombreBodega
+    this.DireccionBodega = item.Direccion
+    this.CoordenadasBodega = item.Coordenadas
     this.IdBodega = item.IdBodega
   }
   BlurCantidad(ModalRespuesta: any) {
@@ -692,11 +699,16 @@ export class SectorizacionComponent implements OnInit {
   EditarBodega(sector: any, modalbodega: any) {
     this.AlertEditBodega  = ''
     this.SectorSelect = sector.ID_SCTOR_OFRTA;
-    this.sectoresservices.ConsultaCargaAsociada('1', sector.ID_SCTOR_OFRTA, sector.CD_CNSCTVO).subscribe(Resultado => {
+    
+    this.sectoresservices.ConsultaCargaAsociada('1', sector.ID_SCTOR_OFRTA, sector.CD_CNSCTVO, sector.IdBodega).subscribe(Resultado => {
+      console.log(Resultado)
       if (Resultado.length > 0) {
         this.CantMax = Resultado[0].CantidadMax;
         this.CargMax = Resultado[0].KilosMax;
         this.DistMax = Resultado[0].DistanciaMax
+        this.NombreBodega = Resultado[0].NombreBodega
+        this.DireccionBodega = Resultado[0].Direccion;
+        this.CoordenadasBodega = Resultado[0].Coordenadas;
       }
     })
     this.modalService.open(modalbodega, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
