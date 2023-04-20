@@ -3,6 +3,7 @@ import { ValorarofertaService } from './../../../core/valoraroferta.service';
 import { ReporteService } from 'src/app/core/reporte.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-admin-ult-milla',
@@ -22,6 +23,7 @@ export class AdminUltMillaComponent implements OnInit {
   DataOfertas: any = [];
   KeywordOferta: string = '';
   SelectOferta: string = '0';
+  UsuCod: string = '';
 
   Sector: string = '';
   DataSectores: any = [];
@@ -79,9 +81,11 @@ export class AdminUltMillaComponent implements OnInit {
   constructor(private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService,
     private serviciosreportes: ReporteService,
-    private metodosglobales: MetodosglobalesService) { }
+    private metodosglobales: MetodosglobalesService,
+    public cookies: CookieService) { }
 
   ngOnInit(): void {
+    this.UsuCod = this.cookies.get('IDU');
     this.UrlImagenes = this.metodosglobales.RecuperaRutaImagenes();
     this.ConsCdOfer();
   }
@@ -111,6 +115,7 @@ export class AdminUltMillaComponent implements OnInit {
   }
   LimpiaSector(Sector: String) {
     this.SectorSelec = "" + Sector;
+    this.SelectPin = false;
   }
 
 
@@ -172,7 +177,7 @@ export class AdminUltMillaComponent implements OnInit {
         document.getElementById("map") as HTMLElement,
         {
           center: { lat: 4.700694915619172, lng: -74.07112294318878 },
-          zoom: 13,
+          zoom: 11,
         }
       );
       this.AgregarSitios();
@@ -186,13 +191,23 @@ export class AdminUltMillaComponent implements OnInit {
   AgregarSitios() {
 
     const features = [];
+
+    const Polylines = [];
+
     this.markers = [];
     var lat: number;
     var long: number;
     var auxEstado = '';
     for (var i = 0; i < this.ArrayEntregas.length; i++) {
+      console.log(this.ArrayEntregas)
       if (this.ArrayEntregas[i].CoordenadasEntrega != null && this.ArrayEntregas[i].CoordenadasEntrega != undefined && this.ArrayEntregas[i].CoordenadasEntrega != '') {
         var auxcoor = this.ArrayEntregas[i].CoordenadasEntrega.split(",");
+        /*if (auxcoor[0].length >= 10) {
+          auxcoor[0] = auxcoor[0].substr(0,9);
+        }
+        if(auxcoor[1].length >= 10){
+          auxcoor[1] = auxcoor[1].substr(0,9);
+        }*/
         lat = parseFloat(auxcoor[0]);
         long = parseFloat(auxcoor[1]);
         if (this.ArrayEntregas[i].GrupoMilla != null) {
@@ -200,9 +215,8 @@ export class AdminUltMillaComponent implements OnInit {
         } else {
           auxEstado = '2';
         }
-
         features.push({ position: new google.maps.LatLng(lat, long), NomCli: this.ArrayEntregas[i].NombreCliente, IdGrupoMilla: this.ArrayEntregas[i].GrupoMilla, Estado: auxEstado });
-
+        Polylines.push({ lat: lat, lng: long });
       }
     }
 
@@ -210,9 +224,9 @@ export class AdminUltMillaComponent implements OnInit {
       var icon;
       var LabelOption;
       if (features[i].Estado == '1') {
-        icon = '../../../../assets/ImagenesAgroApoya2Adm/Entregado.png';
+        icon = '../../../../assets/ImagenesAgroApoya2Adm/ic_AsignadoAruta.png';
       } else if (features[i].Estado == '2') {
-        icon = '../../../../assets/ImagenesAgroApoya2Adm/Pendiente.png';
+        icon = '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png';
       }
 
       var marker = new google.maps.Marker({
@@ -231,6 +245,16 @@ export class AdminUltMillaComponent implements OnInit {
       this.markers[i].addListener("click", () => {
         this.InfoWindow(this.markers[i].getZIndex());
       });
+
+
+      const flightPath = new google.maps.Polyline({
+        path: Polylines,
+        geodesic: true,
+        strokeColor: "#397c97",
+        strokeOpacity: 1.0,
+        strokeWeight: 3,
+      });
+      flightPath.setMap(this.map);
     }
   }
   InfoWindow(i: any) {
@@ -247,7 +271,7 @@ export class AdminUltMillaComponent implements OnInit {
     }
     if (this.ArrayEntregas[i].GrupoMilla != null) {
       this.VerBtnAgregarGrupo = false;
-      
+
     } else {
       this.ArrayAgregaEntrega = this.ArrayEntregas[i];
       this.VerBtnAgregarGrupo = true;
@@ -300,14 +324,12 @@ export class AdminUltMillaComponent implements OnInit {
   }
   ConsultaGrupos() {
     this.ServiciosValorar.ConsGruposUltimaMilla('1', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
-      console.log(Resultado)
       this.ArrayGrupos = Resultado;
     })
   }
 
   ConsPartGrupoMilla(IdGrupo: string) {
     this.ServiciosValorar.ConsParadasRutaUltMilla('1', '0', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
-      console.log(Resultado)
       this.ArrayPartGrupos = Resultado;
       this.PesoRuta(IdGrupo);
     })
@@ -315,7 +337,7 @@ export class AdminUltMillaComponent implements OnInit {
 
   }
 
-  
+
 
 
 
@@ -333,7 +355,6 @@ export class AdminUltMillaComponent implements OnInit {
   }
 
   AbreModalConfirmacion(templateQuitaCompra: any, item: any) {
-    console.log(item)
     this.banderaModalConfirmacion = '1';
     this.MesajeModal = '¿Esta seguro de actualizar el precio de la ruta ' + this.NomreGrupoMilla + ' ?';
     this.ArrayElimina = item;
@@ -346,11 +367,9 @@ export class AdminUltMillaComponent implements OnInit {
       idSector: this.ArrayElimina.id_sector,
       IdGrupo: this.ArrayElimina.IdGrupo
     }
-    console.log(body)
     this.ServiciosValorar.ModValorUberUltMilla('3', body).subscribe(Resultado => {
       this.modalService.dismissAll();
       this.ReiniciaDataRuta();
-      console.log(Resultado)
     })
   }
 
@@ -411,7 +430,6 @@ export class AdminUltMillaComponent implements OnInit {
   AbreModalInfoUber(templateQuitaCompra: any) {
     this.ServiciosValorar.ConsInfoValUber('1', '261', '401').subscribe(Resultado => {
       this.ArrayInfoUber = Resultado;
-      console.log(Resultado)
       this.modalService.open(templateQuitaCompra, { ariaLabelledBy: 'modal-basic-title' });
     })
   }
@@ -424,7 +442,6 @@ export class AdminUltMillaComponent implements OnInit {
       IdSector: this.SectorSelec
     }
     this.ServiciosValorar.ModRutasaUltimMilla('3', body).subscribe(Resultado => {
-      console.log(Resultado)
       this.ReiniciaDataRuta();
       var auxrespu = Resultado.split("|");
       this.MesajeModal = auxrespu[1].toString();
@@ -433,7 +450,6 @@ export class AdminUltMillaComponent implements OnInit {
   }
 
   ConfirmacionElimRuta(templateQuitaCompra: any, item: any) {
-    console.log(item)
     this.banderaModalConfirmacion = '3';
     this.MesajeModal = '¿Esta seguro de eliminar el grupo ' + item.NombreGrupo + ' ?';
     this.ArrayElimina = item;
@@ -449,10 +465,36 @@ export class AdminUltMillaComponent implements OnInit {
     this.ServiciosValorar.ModRutasaUltimMilla('4', body).subscribe(Resultado => {
       this.modalService.dismissAll();
       this.ReiniciaDataRuta();
-      console.log(Resultado)
       var auxrespu = Resultado.split("|");
       this.MesajeModal = auxrespu[1].toString();
       this.modalService.open(this.ModalMensaje, { size: 'sm', centered: true, backdrop: 'static', keyboard: false });
     })
+  }
+
+
+  PublicarRuta() {
+    var coun: number = 0;
+    for (var i = 0; i < this.ArrayEntregas.length; i++) {
+      if (this.ArrayEntregas[i].GrupoMilla == null) {
+        coun = 1;
+        break;
+      }
+    }
+    if (coun == 0) {
+      const body = {
+        usucodig: this.UsuCod,
+        cnctivoOferta: this.SelectOferta,
+        descripcion: "Publicada desde la web",
+        estado: 16
+      }
+      this.ServiciosValorar.PublicarOferta("3", body).subscribe(Respu => {
+        var auxrespu = Respu.split("|");
+        this.MesajeModal = auxrespu[1];
+        this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      })
+    } else {
+      this.MesajeModal = 'No puedes publicar las rutas debido a que tienes entrega(s) no asignadas a una ruta.';
+      this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+    }
   }
 }
