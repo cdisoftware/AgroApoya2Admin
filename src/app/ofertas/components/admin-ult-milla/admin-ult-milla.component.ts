@@ -106,6 +106,7 @@ export class AdminUltMillaComponent implements OnInit {
     this.SectorSelec = sector.ID_SCTOR_OFRTA;
     this.ConsultaInfoOfer();
     this.ConsPins();
+    this.ReiniciaDataRuta();
 
   }
   LimpiaSector(Sector: String) {
@@ -116,7 +117,7 @@ export class AdminUltMillaComponent implements OnInit {
   ConsCdOfer() {
     this.ServiciosValorar.ConsOferEst('1').subscribe(ResultCons => {
       this.DataOfertas = ResultCons;
-      this.KeywordOferta = 'Nombre_Producto';
+      this.KeywordOferta = 'CD_CNSCTVO';
     })
   }
   selectOfer(ofer: any) {
@@ -150,9 +151,16 @@ export class AdminUltMillaComponent implements OnInit {
 
   //Mapa
   ConsPins() {
-    this.ServiciosValorar.ConsPinsUltMilla('1', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
-      this.ArrayEntregas = Resultado;
-      this.Centramapa({ address: 'Bogotá' + ',' + 'Bogotá' });
+    this.verGrupo = true;
+    const body = {
+      cd_csctvo: this.SelectOferta,
+      idSector: this.SectorSelec
+    }
+    this.ServiciosValorar.ModUltimMillaIni('1', body).subscribe(Resultado => {
+      this.ServiciosValorar.ConsPinsUltMilla('1', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
+        this.ArrayEntregas = Resultado;
+        this.Centramapa({ address: 'Bogotá' + ',' + 'Bogotá' });
+      })
     })
   }
   Centramapa(request: google.maps.GeocoderRequest): void {
@@ -239,20 +247,13 @@ export class AdminUltMillaComponent implements OnInit {
     }
     if (this.ArrayEntregas[i].GrupoMilla != null) {
       this.VerBtnAgregarGrupo = false;
-      this.verGrupo = true;
-
-      this.ConsPartGrupoMilla(this.IdGrupoMilla);
+      
     } else {
       this.ArrayAgregaEntrega = this.ArrayEntregas[i];
       this.VerBtnAgregarGrupo = true;
-      this.verGrupo = false;
     }
 
-
-
     this.SelectPin = true;
-
-    this.ConsultaGrupos();
 
     var NomCliente: string = '' + this.ArrayEntregas[i].NombreCliente;
     var Direccion: string = '' + this.ArrayEntregas[i].DireccionEntrega;
