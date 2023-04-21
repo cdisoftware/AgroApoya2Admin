@@ -199,8 +199,6 @@ export class AdminUltMillaComponent implements OnInit {
 
     const features = [];
 
-    const Polylines = [];
-
     this.markers = [];
     var lat: number;
     var long: number;
@@ -229,7 +227,6 @@ export class AdminUltMillaComponent implements OnInit {
           auxEstado = '2';
         }
         features.push({ position: new google.maps.LatLng(lat, long), NomCli: this.ArrayEntregas[i].NombreCliente, IdGrupoMilla: this.ArrayEntregas[i].GrupoMilla, Estado: auxEstado });
-        Polylines.push({ lat: lat, lng: long });
       }
     }
 
@@ -259,18 +256,7 @@ export class AdminUltMillaComponent implements OnInit {
       this.markers[i].addListener("click", () => {
         this.InfoWindow(this.markers[i].getZIndex());
       });
-
-
-      const flightPath = new google.maps.Polyline({
-        path: Polylines,
-        geodesic: true,
-        strokeColor: "#397c97",
-        strokeOpacity: 1.0,
-        strokeWeight: 3,
-      });
-      flightPath.setMap(this.map);
     }
-
     this.PolilimeasDinamicas();
   }
   InfoWindow(i: any) {
@@ -524,17 +510,9 @@ export class AdminUltMillaComponent implements OnInit {
 
 
   PolilimeasDinamicas() {
-
-
-
-
     const ArrayGeneralPoly = [];
-    const ArrayPoliFin: any = [10][10];
     var lat: number;
     var long: number;
-
-    console.log(ArrayPoliFin.length)
-
     for (var i = 0; i < this.ArrayPartGrupos.length; i++) {
       if (this.ArrayPartGrupos[i].GrupoMilla != null) {
         var auxcoor = this.ArrayPartGrupos[i].CoordenadasEntrega.split(",");
@@ -543,26 +521,47 @@ export class AdminUltMillaComponent implements OnInit {
         ArrayGeneralPoly.push({ GrupoMilla: this.ArrayPartGrupos[i].GrupoMilla, lat: lat, lng: long });
       }
     }
-    console.log(ArrayGeneralPoly)
-    /*for (var j = 0; j < ArrayGeneralPoly.length; j++) {
-      if (j == 0) {
-        ArrayPoliFin[0].push(ArrayGeneralPoly[j])
-      } else {
-        if (ArrayPoliFin.includes(ArrayPoliFin.GrupoMilla) == true) {
-          console.log('Ya existe')
-        } else {
-          console.log('No existe')
-          ArrayPoliFin[j].push(ArrayGeneralPoly[j])
-        }
-      }
-    }*/
-
-    var matrix = [];
+    let ArrayPoliFin: any[] = new Array(ArrayGeneralPoly.length); // Definir un array delas posiciones utilizables
+    var numposition: number = 0;
+    const IdRuta: string | any[] = [];
     for (var i = 0; i < ArrayGeneralPoly.length; i++) {
-      ArrayPoliFin[i] = new Array(ArrayGeneralPoly);
+      if (IdRuta.includes(ArrayGeneralPoly[i].GrupoMilla) == true) {
+        for (var f = 0; f < IdRuta.length; f++) {
+          if (IdRuta[f] == ArrayGeneralPoly[i].GrupoMilla) {
+            ArrayPoliFin[f].push(ArrayGeneralPoly[i]);
+          }
+        }
+      } else {
+        IdRuta.push(ArrayGeneralPoly[i].GrupoMilla)
+        ArrayPoliFin[numposition] = new Array(ArrayGeneralPoly[i]);
+        numposition += 1;
+      }
     }
-    console.log(ArrayPoliFin)
-
-
+    for (var i = 0; i < numposition; i++) {
+      var color = this.GenColor();
+      const Polylines = [];
+      Polylines.push({ lat: this.latbodega, lng: this.longbodega });
+      for (var j = 0; j < ArrayPoliFin[i].length; j++) {
+        lat = parseFloat(ArrayPoliFin[i][j].lat);
+        long = parseFloat(ArrayPoliFin[i][j].lng);
+        Polylines.push({ lat: lat, lng: long });
+      }
+      const flightPath = new google.maps.Polyline({
+        path: Polylines,
+        geodesic: true,
+        strokeColor: color,
+        strokeOpacity: 1.0,
+        strokeWeight: 3,
+      });
+      flightPath.setMap(this.map);
+    }
+  }
+  GenColor() {
+    var color = "";
+    for (var i = 0; i < 3; i++) {
+      var sub = Math.floor(Math.random() * 256).toString(16);
+      color += (sub.length == 1 ? "0" + sub : sub);
+    }
+    return "#" + color;
   }
 }
