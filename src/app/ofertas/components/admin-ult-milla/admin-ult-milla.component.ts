@@ -77,6 +77,10 @@ export class AdminUltMillaComponent implements OnInit {
   //Informacion uber
   ArrayInfoUber: any = [];
 
+  //Polilineas
+  latbodega: number;
+  longbodega: number;
+
 
   constructor(private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService,
@@ -138,11 +142,15 @@ export class AdminUltMillaComponent implements OnInit {
   }
 
 
-
-  //InformacionOferta
   ConsultaInfoOfer() {
     this.ServiciosValorar.ConsInfoOfer('2', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
       this.ArrayTargeneral = Resultado;
+
+
+      var coorbodega = this.ArrayTargeneral[0].CoordenadasBodega.split(",");
+      this.latbodega = parseFloat(coorbodega[0]);
+      this.longbodega = parseFloat(coorbodega[1]);
+
       this.VerTargetaGeneral = true;
       for (var i = 0; i < this.ArrayTargeneral.length; i++) {
         if (this.ArrayTargeneral[i].DescToppings != null) {
@@ -169,14 +177,13 @@ export class AdminUltMillaComponent implements OnInit {
     })
   }
   Centramapa(request: google.maps.GeocoderRequest): void {
-    var lat: number;
-    var long: number;
+
     this.geocoder.geocode(request).then((result) => {
       const { results } = result;
       this.map = new google.maps.Map(
         document.getElementById("map") as HTMLElement,
         {
-          center: { lat: 4.700694915619172, lng: -74.07112294318878 },
+          center: { lat: this.latbodega, lng: this.longbodega },
           zoom: 11,
         }
       );
@@ -192,22 +199,26 @@ export class AdminUltMillaComponent implements OnInit {
 
     const features = [];
 
-    const Polylines = [];
-
     this.markers = [];
     var lat: number;
     var long: number;
     var auxEstado = '';
+
+
+    var marker = new google.maps.Marker({
+      title: "Bodega / Punto de partida",
+      animation: google.maps.Animation.DROP,
+      position: new google.maps.LatLng(this.latbodega, this.longbodega),
+      map: this.map,
+      icon: "../../../../assets/ImagenesAgroApoya2Adm/ic_bodega.png",
+      label: ""
+    });
+    this.markers.push(marker);
+
+
     for (var i = 0; i < this.ArrayEntregas.length; i++) {
-      console.log(this.ArrayEntregas)
       if (this.ArrayEntregas[i].CoordenadasEntrega != null && this.ArrayEntregas[i].CoordenadasEntrega != undefined && this.ArrayEntregas[i].CoordenadasEntrega != '') {
         var auxcoor = this.ArrayEntregas[i].CoordenadasEntrega.split(",");
-        /*if (auxcoor[0].length >= 10) {
-          auxcoor[0] = auxcoor[0].substr(0,9);
-        }
-        if(auxcoor[1].length >= 10){
-          auxcoor[1] = auxcoor[1].substr(0,9);
-        }*/
         lat = parseFloat(auxcoor[0]);
         long = parseFloat(auxcoor[1]);
         if (this.ArrayEntregas[i].GrupoMilla != null) {
@@ -216,7 +227,6 @@ export class AdminUltMillaComponent implements OnInit {
           auxEstado = '2';
         }
         features.push({ position: new google.maps.LatLng(lat, long), NomCli: this.ArrayEntregas[i].NombreCliente, IdGrupoMilla: this.ArrayEntregas[i].GrupoMilla, Estado: auxEstado });
-        Polylines.push({ lat: lat, lng: long });
       }
     }
 
@@ -241,21 +251,13 @@ export class AdminUltMillaComponent implements OnInit {
       this.markers.push(marker);
 
 
+
       const infoWindow = new google.maps.InfoWindow();
       this.markers[i].addListener("click", () => {
         this.InfoWindow(this.markers[i].getZIndex());
       });
-
-
-      const flightPath = new google.maps.Polyline({
-        path: Polylines,
-        geodesic: true,
-        strokeColor: "#397c97",
-        strokeOpacity: 1.0,
-        strokeWeight: 3,
-      });
-      flightPath.setMap(this.map);
     }
+    this.PolilimeasDinamicas();
   }
   InfoWindow(i: any) {
     this.infoWindow.close();
@@ -496,5 +498,70 @@ export class AdminUltMillaComponent implements OnInit {
       this.MesajeModal = 'No puedes publicar las rutas debido a que tienes entrega(s) no asignadas a una ruta.';
       this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
     }
+  }
+
+
+
+
+
+
+
+
+
+
+  PolilimeasDinamicas() {
+    const ArrayGeneralPoly = [];
+    var lat: number;
+    var long: number;
+    for (var i = 0; i < this.ArrayPartGrupos.length; i++) {
+      if (this.ArrayPartGrupos[i].GrupoMilla != null) {
+        var auxcoor = this.ArrayPartGrupos[i].CoordenadasEntrega.split(",");
+        lat = parseFloat(auxcoor[0]);
+        long = parseFloat(auxcoor[1]);
+        ArrayGeneralPoly.push({ GrupoMilla: this.ArrayPartGrupos[i].GrupoMilla, lat: lat, lng: long });
+      }
+    }
+    let ArrayPoliFin: any[] = new Array(ArrayGeneralPoly.length); // Definir un array delas posiciones utilizables
+    var numposition: number = 0;
+    const IdRuta: string | any[] = [];
+    for (var i = 0; i < ArrayGeneralPoly.length; i++) {
+      if (IdRuta.includes(ArrayGeneralPoly[i].GrupoMilla) == true) {
+        for (var f = 0; f < IdRuta.length; f++) {
+          if (IdRuta[f] == ArrayGeneralPoly[i].GrupoMilla) {
+            ArrayPoliFin[f].push(ArrayGeneralPoly[i]);
+          }
+        }
+      } else {
+        IdRuta.push(ArrayGeneralPoly[i].GrupoMilla)
+        ArrayPoliFin[numposition] = new Array(ArrayGeneralPoly[i]);
+        numposition += 1;
+      }
+    }
+    for (var i = 0; i < numposition; i++) {
+      var color = this.GenColor();
+      const Polylines = [];
+      Polylines.push({ lat: this.latbodega, lng: this.longbodega });
+      for (var j = 0; j < ArrayPoliFin[i].length; j++) {
+        lat = parseFloat(ArrayPoliFin[i][j].lat);
+        long = parseFloat(ArrayPoliFin[i][j].lng);
+        Polylines.push({ lat: lat, lng: long });
+      }
+      const flightPath = new google.maps.Polyline({
+        path: Polylines,
+        geodesic: true,
+        strokeColor: color,
+        strokeOpacity: 1.0,
+        strokeWeight: 3,
+      });
+      flightPath.setMap(this.map);
+    }
+  }
+  GenColor() {
+    var color = "";
+    for (var i = 0; i < 3; i++) {
+      var sub = Math.floor(Math.random() * 256).toString(16);
+      color += (sub.length == 1 ? "0" + sub : sub);
+    }
+    return "#" + color;
   }
 }
