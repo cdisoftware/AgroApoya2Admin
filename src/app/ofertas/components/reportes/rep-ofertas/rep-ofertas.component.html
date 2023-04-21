@@ -67,18 +67,18 @@
     </div>
 
     <div class="row br justify-content-center">
-        <div class="col-sm-3 col-2">
-            <button class="btn btn-agro-prin col-sm-12" (click)="buscar()">
+        <div class="col-sm-3 col-2 boton">
+            <button class="btn btn-agro-prin col-sm-12 " (click)="buscar()">
                 Buscar
             </button>
         </div>
-        <div class="col-sm-3 col-2">
+        <div class="col-sm-3 col-2 boton">
             <button class="btn btn-agro-prin col-sm-12 " [disabled]="ValidaDescarga" (click)="GenerarExcel()">
                 Descargar
             </button>
         </div>
-        <div class="col-sm-3 col-2">
-            <button class="btn btn-agro-sec col-sm-12" (click)="limpiar()">
+        <div class="col-sm-3 col-2 boton">
+            <button class="btn btn-agro-sec col-sm-12 " (click)="limpiar()">
                 Limpiar
             </button>
         </div>
@@ -103,11 +103,11 @@
         <tbody>
             <tr *ngFor="let resultado of Arrayresultados">
              
-                <td>{{resultado.cd_cnsctvo}}</td>
-                <td>{{resultado.Desc_estado}}</td>
+                <td>{{resultado.CODIGO_OFERTA}}</td>
+                <td>{{resultado.ESTADO_OFERTA}}</td>
                 <td>{{resultado.Producto}}</td>
-                <td>{{resultado.VigenciaDesde}}</td>
-                <td>{{resultado.VigenciaHasta}}</td>
+                <td>{{resultado.VIGENCIA_DESDE}}</td>
+                <td>{{resultado.VIGENCIA_HASTA}}</td>
 
             </tr>
            
