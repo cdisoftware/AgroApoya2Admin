@@ -195,10 +195,44 @@ export class RepOfertasComponent implements OnInit {
         "Estado de la oferta",
         "Producto",
         "Fecha desde",
-        "Fecha hasta"
+        "Fecha hasta",
+
+"CODIGO OFERTA",
+"Condicion Entrega" ,
+"ESTADO OFERTA",
+"Empaque",
+"FECHA ENTREGA", 
+"FECHA RECOGIDA", 
+"ID" ,
+"PRODUCTOS ADICIONALES",
+"Porcentaje descuento lider", 
+"Producto",
+"Productor", 
+"SECTOR" ,
+"TIPO OFERTA", 
+"Tamano" ,
+"Tipo comisión grupal",
+"Tipo comisión individual", 
+"Unidades" ,
+"VIGENCIA DESDE", 
+"VIGENCIA HASTA" ,
+"Valor Total Oferta",
+"Valor Unidad productor", 
+"cantidad grupos",
+"maximo personas grupo", 
+"tipo descuento grupal" ,
+"valor arranque lider" ,
+"valor domicilio grupal", 
+"valor comsion grupal" ,
+"valor comsion indvdual",
+"valor domicilio indvdual",
+"valor final participante",
+"Valor final individual",
+
       ];
       worksheet.addRow(header);
-      ['A1', 'B1', 'C1', 'D1', 'E1', ].map(key => {
+      ['A1', 'B1', 'C1', 'D1', 'E1','F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1','U1','V1',
+      'W1','X1','Y1','Z1','AA1','AB1','AC1','AD1','AE1','AF1','AG1','AH1','AI1','AJ1','AK1'].map(key => {
         worksheet.getCell(key).fill = {
           type: 'pattern',
           pattern: 'darkTrellis',
@@ -210,16 +244,50 @@ export class RepOfertasComponent implements OnInit {
         };
       });
       worksheet.columns = [
-        { width: 15, key: 'A' }, { width: 25, key: 'B' }, { width: 25, key: 'C' }, { width: 25, key: 'D' }, { width: 25, key: 'E' }
+        { width: 15, key: 'A' }, { width: 25, key: 'B' }, { width: 25, key: 'C' }, { width: 25, key: 'D' }, { width: 25, key: 'E' },{ width: 15, key: 'F' }, { width: 25, key: 'G' }, { width: 25, key: 'H' }, { width: 15, key: 'I' }, { width: 25, key: 'J' },
+        { width: 15, key: 'K' }, { width: 25, key: 'L' }, { width: 25, key: 'M' }, { width: 25, key: 'N' }, { width: 25, key: 'O' },{ width: 15, key: 'P' }, { width: 25, key: 'Q' }, { width: 25, key: 'R' }, { width: 25, key: 'S' }, { width: 25, key: 'T' },
+        { width: 15, key: 'U' }, { width: 25, key: 'V' }, { width: 25, key: 'W' }, { width: 25, key: 'X' }, { width: 25, key: 'Y' },{ width: 15, key: 'Z' }, { width: 25, key: 'AA' }, { width: 25, key: 'AB' }, { width: 25, key: 'AC' }, { width: 25, key: 'AD' },
+        { width: 15, key: 'AE' },{ width: 25, key: 'AF' },{ width: 25, key: 'AG' },{ width: 25, key: 'AH' },{ width: 25, key: 'AI' },{ width: 25, key: 'AJ'}
       ];
-      worksheet.autoFilter = 'A1:E1';
+      worksheet.autoFilter = 'A1:AJ1';
       for (let fila of this.Arrayresultados) {
         let temp = []
+        // temp.push(fila["CODIGO_OFERTA"])
+        // temp.push(fila["ESTADO_OFERTA"])
+        // temp.push(fila["Producto"])
+        // temp.push(fila["VIGENCIA_DESDE"])
+        // temp.push(fila["VIGENCIA_HASTA"])
         temp.push(fila["CODIGO_OFERTA"])
+        temp.push(fila["Condicion_Entrega"])
         temp.push(fila["ESTADO_OFERTA"])
+        temp.push(fila["Empaque"])
+        temp.push(fila["FECHA_ENTREGA"])
+        temp.push(fila["FECHA_RECOGIDA"])
+        temp.push(fila["ID"])
+        temp.push(fila["PRODUCTOS_ADICIONALES"])
+        temp.push(fila["Porcentaje_descuento_lider"])
         temp.push(fila["Producto"])
+        temp.push(fila["Productor"])
+        temp.push(fila["SECTOR"])
+        temp.push(fila["TIPO_OFERTA"])
+        temp.push(fila["Tamano"])
+        temp.push(fila["Tipo_comisión_grupal"])
+        temp.push(fila["Tipo_comisión_individual"])
+        temp.push(fila["Unidades"])
         temp.push(fila["VIGENCIA_DESDE"])
         temp.push(fila["VIGENCIA_HASTA"])
+        temp.push(fila["Valor_Total_Oferta"])
+        temp.push(fila["Valor_Unidad_productor"])
+        temp.push(fila["cantidad_grupos"])
+        temp.push(fila["maximo_personas_grupo"])
+        temp.push(fila["tipo_descuento_grupal"])
+        temp.push(fila["valor_arranque_lider"])
+        temp.push(fila["valor_domicilio_grupal"])
+        temp.push(fila["vlor_cmsion_grpal"])
+        temp.push(fila["vlor_cmsion_indvdual"])
+        temp.push(fila["vlor_domicilio_indvdual"])
+        temp.push(fila["vlor_final_participante"])
+        temp.push(fila["vlor_fnal_indvdual"])
         worksheet.addRow(temp)
       }
       let fname = "Reporte ofertas";
