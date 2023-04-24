@@ -357,8 +357,10 @@ export class AdminUltMillaComponent implements OnInit {
       for (var f = 0; f < Resultado.length; f++) {
         if (IdRuta.includes(Resultado[f].GrupoMilla) == true) {
           for (var i = 0; i < IdRuta.length; i++) {
-            if (IdRuta[i].IdRuta == Resultado[f].GrupoMilla) {
-              RutaPeso[i].PesoKg = IdRuta[i].PesoKg + parseFloat(Resultado[f].PesoTotalCarga);
+            console.log(IdRuta[i] == Resultado[f].GrupoMilla)
+            if (IdRuta[i] == Resultado[f].GrupoMilla) {
+              RutaPeso[i].PesoKg = parseInt(RutaPeso[i].PesoKg) + parseInt(Resultado[f].PesoTotalCarga);
+              console.log(RutaPeso[i].PesoKg)
             }
           }
         } else {
@@ -374,6 +376,7 @@ export class AdminUltMillaComponent implements OnInit {
         }
       }
       this.ArrayPartGrupos = Resultado;
+      console.log(this.ArrayPartGrupos)
       this.PesoRuta(IdGrupo);
     })
 
