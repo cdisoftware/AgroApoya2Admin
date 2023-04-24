@@ -191,12 +191,7 @@ export class RepOfertasComponent implements OnInit {
       let workbook = new Workbook();
       let worksheet = workbook.addWorksheet("Reporte Ofertas");
 
-      let header = ["Id Oferta",
-        "Estado de la oferta",
-        "Producto",
-        "Fecha desde",
-        "Fecha hasta",
-
+      let header = [
 "CODIGO OFERTA",
 "Condicion Entrega" ,
 "ESTADO OFERTA",
