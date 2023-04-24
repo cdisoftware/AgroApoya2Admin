@@ -68,6 +68,9 @@ export class ValorarofertaService {
   BusquedaOferta(bandera: string, cnctivoOferta: string, IdProducto: string, IdProductor: string, datos: any) {
     return this.http.post<any>(this.url_servidor + 'consaofertas/' + bandera + '/' + cnctivoOferta + '/' + IdProducto + '/' + IdProductor, datos)
   }
+  ConscReporteOfertas(bandera: string, cd_cnscutivo: string, Id_Estado_oferta: string, cd_producto: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'conscreporteofertas/' + bandera + '/' + cd_cnscutivo + '/' + Id_Estado_oferta + '/' + cd_producto, Body)
+  }
 
   ConsultaJornada(Bandera: string) {
     return this.http.get<any[]>(this.url_servidor + 'consjorndofertas/' + Bandera)

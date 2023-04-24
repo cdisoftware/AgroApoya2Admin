@@ -81,6 +81,8 @@ export class SectorizacionComponent implements OnInit {
   NombreBodega: string;
   DireccionBodega: string;
   CoordenadasBodega: string;
+  IdDepa: string = '';
+  IdCiudad: string = '';
 
 
 
@@ -107,7 +109,7 @@ export class SectorizacionComponent implements OnInit {
     this.ConsultaCiudadOferta();
     this.ConsultaSectoresOferta();
     this.ConsultaDetalleOferta();
-    this.ConsultaBodegas();
+    
 
 
   }
@@ -138,16 +140,19 @@ export class SectorizacionComponent implements OnInit {
   ConsultaDetalleOferta() {
     //console.log('1', this.SessionOferta)
     this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
-      //console.log(ResultConsu)
+      console.log(ResultConsu)
       this.DataOferta = ResultConsu;
       this.CantidadDispinible = ResultConsu[0].Unidades_disponibles;
       this.SessionNomOferta = ResultConsu[0].Nombre_Producto + ' - ' + ResultConsu[0].Descripcion_empaque + ' - ' + ResultConsu[0].Nombre_productor;
       this.SessionCantSecOferta = ResultConsu[0].Unidades_disponibles;
+      this.IdDepa = ResultConsu[0].Departamentos;
+      this.IdCiudad = ResultConsu[0].Ciudad;
+      this.ConsultaBodegas();
     })
   }
 
   ConsultaBodegas() {
-    this.sectoresservices.ConsultaBodegas('1', '261', '401').subscribe(Resultado => {
+    this.sectoresservices.ConsultaBodegas('1', this.IdDepa, this.IdCiudad).subscribe(Resultado => {
       if (Resultado.length > 0) {
         this.DataBodegas = Resultado
       }

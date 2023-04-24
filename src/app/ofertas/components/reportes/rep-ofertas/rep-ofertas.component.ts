@@ -11,8 +11,8 @@ import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
   styleUrls: ['./rep-ofertas.component.css']
 })
 export class RepOfertasComponent implements OnInit {
-  fechaDesde  : any = '';
-  fechaHasta  : any = '';
+  fechaDesde  : any = 0;
+  fechaHasta  : any = 0;
   IdOferta    : any = '';
   Producto    : string = '';
   estadoOferta: string = '';
@@ -98,76 +98,152 @@ export class RepOfertasComponent implements OnInit {
   // }
 
   //botones principales
-  buscar() {
-    var idoferta = '0'
-    var producto='0'
-    var estadooferta='0'
-    var fechadesde='0'
-    var fechahasta='0'
-    if(this.IdOferta == ''){
-      idoferta = '0'
-    }else{
-      idoferta = this.IdOferta
-    }
-    if(this.Producto==''){
-      producto='0'
-    }else{
-      producto= this.Producto
-    }
-    if(this.estadoOferta==''){
-      estadooferta='0'
-    }else{
-      estadooferta=this.estadoOferta
-    }
-    if (this.fechaDesde==''){
-      fechadesde='0'
-    }else{
-      fechadesde=this.fechaDesde
-    }
-    if(this.fechaHasta==''){
-      fechahasta='0'
-    }else{
-      fechahasta=this.fechaHasta
-    }
+  // buscar() {
+  //   var idoferta = '0'
+  //   var producto='0'
+  //   var estadooferta='0'
+  //   var fechadesde='0'
+  //   var fechahasta='0'
+  //   if(this.IdOferta == ''){
+  //     idoferta = '0'
+  //   }else{
+  //     idoferta = this.IdOferta
+  //   }
+  //   if(this.Producto==''){
+  //     producto='0'
+  //   }else{
+  //     producto= this.Producto
+  //   }
+  //   if(this.estadoOferta==''){
+  //     estadooferta='0'
+  //   }else{
+  //     estadooferta=this.estadoOferta
+  //   }
+  //   if (this.fechaDesde==''){
+  //     fechadesde='0'
+  //   }else{
+  //     fechadesde=this.fechaDesde
+  //   }
+  //   if(this.fechaHasta==''){
+  //     fechahasta='0'
+  //   }else{
+  //     fechahasta=this.fechaHasta
+  //   }
     
-    const busquedaDatos = {
-      UsuCodig: 0,
-      Producto: 0,
-      cd_cnsctvo:0,
-      NombreCompletoProductor: 0,
-      DescripcionProducto: 0,
-      Cd_cndcion: 0,
-      Cd_tmno: 0,
-      ID_EMPAQUE: 0,
-      VigenciaDesde:this.fechaDesde,
-      VigenciaHasta: this.fechaHasta,
-      IdEstado_Oferta: this.IdEstadoOferta,
-      CD_RGION: 0,
-      CD_MNCPIO: 0
-    }
-    // console.log(busquedaDatos)
+  //   const busquedaDatos = {
+  //     UsuCodig: 0,
+  //     Producto: 0,
+  //     cd_cnsctvo:0,
+  //     NombreCompletoProductor: 0,
+  //     DescripcionProducto: 0,
+  //     Cd_cndcion: 0,
+  //     Cd_tmno: 0,
+  //     ID_EMPAQUE: 0,
+  //     VigenciaDesde:this.fechaDesde,
+  //     VigenciaHasta: this.fechaHasta,
+  //     IdEstado_Oferta: this.IdEstadoOferta,
+  //     CD_RGION: 0,
+  //     CD_MNCPIO: 0
+  //   }
+  //   console.log(busquedaDatos)
   
-    this.servicioValorOferta.BusquedaOferta('2', idoferta, this.idProducto, this.idProductor, busquedaDatos).subscribe(Resultado => {
+  //   this.servicioValorOferta.BusquedaOferta('2', idoferta, this.idProducto, this.idProductor, busquedaDatos).subscribe(Resultado => {
 
-      console.log(Resultado);
+  //     console.log(Resultado);
 
+  //     if (Resultado.length > 0) {
+  //       this.Arrayresultados = Resultado;
+  //       this.respuesta = '';
+  //       this.ValidaDescarga = false;
+  //       this.ValidaConsulta ='2'
+  //       console.log(this.Arrayresultados)
+  //       console.log(this.IdEstadoOferta)
+  //     } else {
+        
+  //       this.Arrayresultados=[]
+  //       this.ValidaConsulta='1'
+  //       this.respuesta = 'No hay resultados.';
+   
+  //     }
+  //   });
+    
+  // }
+  // if(this.idProducto='0'){
+  //   cd_producto='0'
+  // }else{
+  //   cd_producto=this.idProducto
+  // }
+  buscar(){   
+    var cd_producto='0'
+    var idoferta='0'
+    var idestadooferta='0'
+    if(this.idProducto=='' ||this.idProducto=='0'){
+      cd_producto='0'
+    }else{
+      cd_producto=this.idProducto
+    }
+    if(this.IdOferta=='' ||this.IdOferta== null){
+      idoferta='0'
+    }else{
+      idoferta=this.IdOferta
+    }
+     if(this.IdEstadoOferta=='0'||this.IdEstadoOferta=='' ||this.IdEstadoOferta==null ||this.IdEstadoOferta==undefined){
+      idestadooferta='0'
+    }else{
+      idestadooferta=this.IdEstadoOferta    
+    }
+    const body={
+      CODIGO_OFERTA:this.IdEstadoOferta,
+      Condicion_Entrega:0, 
+      ESTADO_OFERTA:0,
+      Empaque:0, 
+      FECHA_ENTREGA:0,
+      FECHA_RECOGIDA:0, 
+      ID:0,
+      PRODUCTOS_ADICIONALES:0 ,
+      Porcentaje_descuento_lider:0,
+      Producto:0,
+      Productor: 0,
+      SECTOR:0,
+      TIPO_OFERTA:0, 
+      Tamano:0, 
+      Tipo_comisión_grupal:0, 
+      Tipo_comisión_individual:0, 
+      Unidades:0,
+      VIGENCIA_DESDE:this.fechaDesde,
+      VIGENCIA_HASTA: this.fechaHasta,
+      Valor_Total_Oferta:0, 
+      Valor_Unidad_productor: 0,
+      cantidad_grupos: 0,
+      maximo_personas_grupo: 0,
+      tipo_descuento_grupal: 0,
+      valor_arranque_lider:0, 
+      valor_domicilio_grupal:0, 
+      vlor_cmsion_grpal:0,
+      vlor_cmsion_indvdual:0,
+      vlor_domicilio_indvdual:0,
+      vlor_final_participante:0,
+      vlor_fnal_indvdual:0,
+      fcha_vig_ini:0,
+      fcha_vig_fin:0
+    }
+    console.log(body)
+    this.servicioValorOferta.ConscReporteOfertas('2',idoferta,idestadooferta,cd_producto,body).subscribe(Resultado=>{
+      console.log(Resultado)
       if (Resultado.length > 0) {
         this.Arrayresultados = Resultado;
         this.respuesta = '';
         this.ValidaDescarga = false;
         this.ValidaConsulta ='2'
         console.log(this.Arrayresultados)
-        console.log(this.fechaDesde)
-      } else {
-        
+
+        } else {
+              
         this.Arrayresultados=[]
         this.ValidaConsulta='1'
         this.respuesta = 'No hay resultados.';
-        console.log(this.fechaDesde)
-        
-      }
-    });
-    
+        }
+    })
   }
 
   limpiar() {
@@ -175,8 +251,8 @@ export class RepOfertasComponent implements OnInit {
     this.IdOferta = '';
     this.estadoOferta = '';
     this.Producto = '';
-    this.fechaDesde = '';
-    this.fechaHasta = '';
+    this.fechaDesde = 0;
+    this.fechaHasta = 0;
     this.Arrayresultados = [];
     this.ValidaDescarga = true;
     this.ValidaConsulta='1';

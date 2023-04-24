@@ -691,15 +691,15 @@ export class ValoracionComponent implements OnInit {
   }
 
   ConsultaLinks() {
-    
+
     this.serviciosvaloracion.ConsultaLinks('1', this.IdOferta, this.SessionSectorSel).subscribe(Resultado => {
       console.log('------------------*')
       console.log(Resultado)
-      for(var i = 0; Resultado.length >= i; i++){
-        if(Resultado[i].Tipo_Link == '1'){
+      for (var i = 0; Resultado.length >= i; i++) {
+        if (Resultado[i].Tipo_Link == '1') {
           this.UrlParticipante = Resultado[i].link_largo;
           this.UrlParticipanteC = Resultado[i].link_corto;
-        }else if(Resultado[i].Tipo_Link == '2'){
+        } else if (Resultado[i].Tipo_Link == '2') {
           this.UrlPubli = Resultado[i].link_largo;
           this.UrlPubliC = Resultado[i].link_corto;
         }
@@ -1289,8 +1289,11 @@ export class ValoracionComponent implements OnInit {
         this.ValidaToppings = '1';
         this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
           console.log(ResultUpdate)
-          this.ArrayTextoModifica = ResultUpdate;
-          this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
+          if (ResultUpdate.length > 0) {
+            this.ArrayTextoModifica = ResultUpdate;
+            this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
+          }
+
         })
       })
 
