@@ -357,10 +357,8 @@ export class AdminUltMillaComponent implements OnInit {
       for (var f = 0; f < Resultado.length; f++) {
         if (IdRuta.includes(Resultado[f].GrupoMilla) == true) {
           for (var i = 0; i < IdRuta.length; i++) {
-            console.log(IdRuta[i] == Resultado[f].GrupoMilla)
             if (IdRuta[i] == Resultado[f].GrupoMilla) {
               RutaPeso[i].PesoKg = parseInt(RutaPeso[i].PesoKg) + parseInt(Resultado[f].PesoTotalCarga);
-              console.log(RutaPeso[i].PesoKg)
             }
           }
         } else {
@@ -376,7 +374,6 @@ export class AdminUltMillaComponent implements OnInit {
         }
       }
       this.ArrayPartGrupos = Resultado;
-      console.log(this.ArrayPartGrupos)
       this.PesoRuta(IdGrupo);
     })
 
@@ -536,7 +533,7 @@ export class AdminUltMillaComponent implements OnInit {
       this.ServiciosValorar.PublicarOferta("3", body).subscribe(Respu => {
         var auxrespu = Respu.split("|");
         if (auxrespu[0] == '1') {
-          this.rutas.navigateByUrl('home/transultimamilla');
+          this.rutas.navigateByUrl('home/transultimamilla/' + this.SelectOferta + '/'+ this.SectorSelec);
         }
         this.MesajeModal = auxrespu[1];
         this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
