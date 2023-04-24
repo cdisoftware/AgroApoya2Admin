@@ -533,7 +533,7 @@ export class AdminUltMillaComponent implements OnInit {
       this.ServiciosValorar.PublicarOferta("3", body).subscribe(Respu => {
         var auxrespu = Respu.split("|");
         if (auxrespu[0] == '1') {
-          this.rutas.navigateByUrl('transultimamilla');
+          this.rutas.navigateByUrl('home/transultimamilla');
         }
         this.MesajeModal = auxrespu[1];
         this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
