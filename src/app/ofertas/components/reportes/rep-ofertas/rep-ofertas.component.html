@@ -101,6 +101,20 @@
             </tr>
         </thead>
         <tbody>
+            <ng-container *ngFor="let resultado of Arrayresultados">
+              <tr *ngIf="validarResultado(resultado)">
+                <td>{{resultado.CODIGO_OFERTA}}</td>
+                <td>{{resultado.ESTADO_OFERTA}}</td>
+                <td>{{resultado.Producto}}</td>
+                <td>{{resultado.VIGENCIA_DESDE}}</td>
+                <td>{{resultado.VIGENCIA_HASTA}}</td>
+              </tr>
+            </ng-container>
+            <tr *ngIf="ValidaConsulta=='1'">
+              <td colspan="5" >{{txtValidaCons}}</td>
+            </tr>
+          </tbody>
+        <!-- <tbody>
             <tr *ngFor="let resultado of Arrayresultados">
              
                 <td>{{resultado.CODIGO_OFERTA}}</td>
@@ -115,6 +129,6 @@
                 <td colspan="5" >{{txtValidaCons}}</td>
                 
             </tr>
-        </tbody>
+        </tbody> -->
     </table>
 </div>

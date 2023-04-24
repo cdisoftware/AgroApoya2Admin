@@ -39,7 +39,7 @@ export class RepOfertasComponent implements OnInit {
   ValidaDescarga: Boolean = true
   ValidaConsulta:string =''
   txtValidaCons:string =''
-
+  resultado:any='';
   
   constructor(private servicioValorOferta: ValorarofertaService) { }
 
@@ -84,95 +84,7 @@ export class RepOfertasComponent implements OnInit {
     })
 
   }
-  // selectIdOferta(item: any) {
-  //   this.idOferta = item.cd_cnsctvo
-   
-  // }
-  // cargarIdOferta() {
-  //   //lista estadoOferta
-  //   this.servicioValorOferta.ConsultaEstado('1').subscribe(Resultado => {
-  //     this.ArrayIdOferta = Resultado;
-       
-  //     console.log(this.ArrayIdOferta);
-  //   })
-  // }
-
-  //botones principales
-  // buscar() {
-  //   var idoferta = '0'
-  //   var producto='0'
-  //   var estadooferta='0'
-  //   var fechadesde='0'
-  //   var fechahasta='0'
-  //   if(this.IdOferta == ''){
-  //     idoferta = '0'
-  //   }else{
-  //     idoferta = this.IdOferta
-  //   }
-  //   if(this.Producto==''){
-  //     producto='0'
-  //   }else{
-  //     producto= this.Producto
-  //   }
-  //   if(this.estadoOferta==''){
-  //     estadooferta='0'
-  //   }else{
-  //     estadooferta=this.estadoOferta
-  //   }
-  //   if (this.fechaDesde==''){
-  //     fechadesde='0'
-  //   }else{
-  //     fechadesde=this.fechaDesde
-  //   }
-  //   if(this.fechaHasta==''){
-  //     fechahasta='0'
-  //   }else{
-  //     fechahasta=this.fechaHasta
-  //   }
-    
-  //   const busquedaDatos = {
-  //     UsuCodig: 0,
-  //     Producto: 0,
-  //     cd_cnsctvo:0,
-  //     NombreCompletoProductor: 0,
-  //     DescripcionProducto: 0,
-  //     Cd_cndcion: 0,
-  //     Cd_tmno: 0,
-  //     ID_EMPAQUE: 0,
-  //     VigenciaDesde:this.fechaDesde,
-  //     VigenciaHasta: this.fechaHasta,
-  //     IdEstado_Oferta: this.IdEstadoOferta,
-  //     CD_RGION: 0,
-  //     CD_MNCPIO: 0
-  //   }
-  //   console.log(busquedaDatos)
-  
-  //   this.servicioValorOferta.BusquedaOferta('2', idoferta, this.idProducto, this.idProductor, busquedaDatos).subscribe(Resultado => {
-
-  //     console.log(Resultado);
-
-  //     if (Resultado.length > 0) {
-  //       this.Arrayresultados = Resultado;
-  //       this.respuesta = '';
-  //       this.ValidaDescarga = false;
-  //       this.ValidaConsulta ='2'
-  //       console.log(this.Arrayresultados)
-  //       console.log(this.IdEstadoOferta)
-  //     } else {
-        
-  //       this.Arrayresultados=[]
-  //       this.ValidaConsulta='1'
-  //       this.respuesta = 'No hay resultados.';
-   
-  //     }
-  //   });
-    
-  // }
-  // if(this.idProducto='0'){
-  //   cd_producto='0'
-  // }else{
-  //   cd_producto=this.idProducto
-  // }
+ 
   buscar(){   
     var cd_producto='0'
     var idoferta='0'
@@ -246,6 +158,11 @@ export class RepOfertasComponent implements OnInit {
     })
   }
 
+  validarResultado(resultado: any): boolean {
+    return resultado.CODIGO_OFERTA != null && resultado.ESTADO_OFERTA != null &&
+           resultado.Producto != null && resultado.VIGENCIA_DESDE != null &&
+           resultado.VIGENCIA_HASTA != null;
+  }
   limpiar() {
   // location.reload();
     this.IdOferta = '';
@@ -298,11 +215,11 @@ export class RepOfertasComponent implements OnInit {
       worksheet.autoFilter = 'A1:E1';
       for (let fila of this.Arrayresultados) {
         let temp = []
-        temp.push(fila["cd_cnsctvo"])
-        temp.push(fila["Desc_estado"])
+        temp.push(fila["CODIGO_OFERTA"])
+        temp.push(fila["ESTADO_OFERTA"])
         temp.push(fila["Producto"])
-        temp.push(fila["VigenciaDesde"])
-        temp.push(fila["fechaHasta"])
+        temp.push(fila["VIGENCIA_DESDE"])
+        temp.push(fila["VIGENCIA_HASTA"])
         worksheet.addRow(temp)
       }
       let fname = "Reporte ofertas";
