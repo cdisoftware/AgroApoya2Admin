@@ -227,7 +227,7 @@ export class RepOfertasComponent implements OnInit {
       ];
       worksheet.addRow(header);
       ['A1', 'B1', 'C1', 'D1', 'E1','F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1','U1','V1',
-      'W1','X1','Y1','Z1','AA1','AB1','AC1','AD1','AE1','AF1','AG1','AH1','AI1','AJ1','AK1'].map(key => {
+      'W1','X1','Y1','Z1','AA1','AB1','AC1','AD1','AE1'].map(key => {
         worksheet.getCell(key).fill = {
           type: 'pattern',
           pattern: 'darkTrellis',
@@ -242,9 +242,9 @@ export class RepOfertasComponent implements OnInit {
         { width: 15, key: 'A' }, { width: 25, key: 'B' }, { width: 25, key: 'C' }, { width: 25, key: 'D' }, { width: 25, key: 'E' },{ width: 15, key: 'F' }, { width: 25, key: 'G' }, { width: 25, key: 'H' }, { width: 15, key: 'I' }, { width: 25, key: 'J' },
         { width: 15, key: 'K' }, { width: 25, key: 'L' }, { width: 25, key: 'M' }, { width: 25, key: 'N' }, { width: 25, key: 'O' },{ width: 15, key: 'P' }, { width: 25, key: 'Q' }, { width: 25, key: 'R' }, { width: 25, key: 'S' }, { width: 25, key: 'T' },
         { width: 15, key: 'U' }, { width: 25, key: 'V' }, { width: 25, key: 'W' }, { width: 25, key: 'X' }, { width: 25, key: 'Y' },{ width: 15, key: 'Z' }, { width: 25, key: 'AA' }, { width: 25, key: 'AB' }, { width: 25, key: 'AC' }, { width: 25, key: 'AD' },
-        { width: 15, key: 'AE' },{ width: 25, key: 'AF' },{ width: 25, key: 'AG' },{ width: 25, key: 'AH' },{ width: 25, key: 'AI' },{ width: 25, key: 'AJ'}
+        { width: 15, key: 'AE' }
       ];
-      worksheet.autoFilter = 'A1:AJ1';
+      worksheet.autoFilter = 'A1:AE1';
       for (let fila of this.Arrayresultados) {
         let temp = []
         // temp.push(fila["CODIGO_OFERTA"])
