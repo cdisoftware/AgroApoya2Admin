@@ -4,6 +4,7 @@ import { ReporteService } from 'src/app/core/reporte.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-ult-milla',
@@ -87,7 +88,8 @@ export class AdminUltMillaComponent implements OnInit {
     private ServiciosValorar: ValorarofertaService,
     private serviciosreportes: ReporteService,
     private metodosglobales: MetodosglobalesService,
-    public cookies: CookieService) { }
+    public cookies: CookieService,
+    public rutas: Router) { }
 
   ngOnInit(): void {
     this.UsuCod = this.cookies.get('IDU');
@@ -215,10 +217,9 @@ export class AdminUltMillaComponent implements OnInit {
       label: ""
     });
     this.markerBodega.push(marker);
-
-
     for (var i = 0; i < this.ArrayEntregas.length; i++) {
       if (this.ArrayEntregas[i].CoordenadasEntrega != null && this.ArrayEntregas[i].CoordenadasEntrega != undefined && this.ArrayEntregas[i].CoordenadasEntrega != '') {
+        console.log(i)
         var auxcoor = this.ArrayEntregas[i].CoordenadasEntrega.split(",");
         lat = parseFloat(auxcoor[0]);
         long = parseFloat(auxcoor[1]);
@@ -492,6 +493,9 @@ export class AdminUltMillaComponent implements OnInit {
       }
       this.ServiciosValorar.PublicarOferta("3", body).subscribe(Respu => {
         var auxrespu = Respu.split("|");
+        if(auxrespu[0] == '1'){
+          this.rutas.navigateByUrl('home');
+        }
         this.MesajeModal = auxrespu[1];
         this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
       })
