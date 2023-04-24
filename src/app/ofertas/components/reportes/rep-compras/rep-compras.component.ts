@@ -351,6 +351,7 @@ export class RepComprasComponent implements OnInit {
         },
         didDrawCell: (data) => {
           if (data.section === 'body' && data.column.index === 1) {
+            console.log(this.base64Img.length)
             doc.addImage(this.base64Img, 'JPEG', data.cell.x + 2, data.cell.y + 2, 25, 25);
           }
         },
