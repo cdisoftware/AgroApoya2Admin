@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 import { NgbModal, NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-asigna-trans-ult-milla',
@@ -9,10 +10,10 @@ import { NgbModal, NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AsignaTransUltMillaComponent implements OnInit {
 
-  IdOferta: string = ''
+  IdOferta: any = ''
   DataSectores: any = []
   keywordSec: string = 'DSCRPCION_SCTOR'
-  IdSector: string = ''
+  IdSector: any = ''
   NomSector: string = ''
   ValidaOferta: boolean = true;
   arrayGrupos: any = [];
@@ -26,10 +27,25 @@ export class AsignaTransUltMillaComponent implements OnInit {
 
   constructor(
     private serviciosvaloracion: ValorarofertaService,
-    private ModalService: NgbModal
-  ) { }
+    private ModalService: NgbModal,
+    private rutaActiva: ActivatedRoute
+  ) {
+    
+
+   }
 
   ngOnInit(): void {
+    this.IdOferta = this.rutaActiva.snapshot.paramMap.get('IdOferta');
+    this.IdSector = this.rutaActiva.snapshot.paramMap.get('IdSector');
+    if(this.IdOferta != ''){
+      this.ValidaSector()
+      
+      this.BuscarGruposMilla()
+    }
+  }
+
+  ngAfterViewInit() {
+    this.NomSector = this.DataSectores.DSCRPCION_SCTOR;
   }
 
   LimpiaSector() {
@@ -59,6 +75,9 @@ export class AsignaTransUltMillaComponent implements OnInit {
       if (ResultConsulta.length > 0) {
         this.keywordSec = 'DSCRPCION_SCTOR';
         this.DataSectores = ResultConsulta;
+        if(this.IdSector != ''){
+          this.NomSector = ResultConsulta[0].DSCRPCION_SCTOR
+        }
       }
     })
   }

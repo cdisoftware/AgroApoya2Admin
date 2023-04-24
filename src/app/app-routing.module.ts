@@ -131,7 +131,7 @@ const routes: Routes = [
         component: AdminUltMillaComponent
       },
       {
-        path: 'transultimamilla',
+        path: 'transultimamilla/:IdOferta/:IdSector',
         component: AsignaTransUltMillaComponent
       }
     ]
