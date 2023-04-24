@@ -219,7 +219,6 @@ export class AdminUltMillaComponent implements OnInit {
     this.markerBodega.push(marker);
     for (var i = 0; i < this.ArrayEntregas.length; i++) {
       if (this.ArrayEntregas[i].CoordenadasEntrega != null && this.ArrayEntregas[i].CoordenadasEntrega != undefined && this.ArrayEntregas[i].CoordenadasEntrega != '') {
-        console.log(i)
         var auxcoor = this.ArrayEntregas[i].CoordenadasEntrega.split(",");
         lat = parseFloat(auxcoor[0]);
         long = parseFloat(auxcoor[1]);
@@ -328,12 +327,52 @@ export class AdminUltMillaComponent implements OnInit {
   }
   ConsultaGrupos() {
     this.ServiciosValorar.ConsGruposUltimaMilla('1', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
-      this.ArrayGrupos = Resultado;
+      for (var i = 0; i < Resultado.length; i++) {
+        this.ArrayGrupos.push({
+          ID_CNDCTOR: Resultado[i].ID_CNDCTOR,
+          IdCiudad: Resultado[i].IdCiudad,
+          IdDepa: Resultado[i].IdDepa,
+          IdGrupo: Resultado[i].IdGrupo,
+          IdRegistro: Resultado[i].IdRegistro,
+          IdUltimaMilla: Resultado[i].IdUltimaMilla,
+          NMBRE_CNDCTOR: Resultado[i].NMBRE_CNDCTOR,
+          NombreGrupo: Resultado[i].NombreGrupo,
+          PLCA: Resultado[i].PLCA,
+          Regitro: Resultado[i].Regitro,
+          ValorTransporte: Resultado[i].ValorTransporte,
+          cd_cnctvo: Resultado[i].cd_cnctvo,
+          estado: Resultado[i].estado,
+          id_sector: Resultado[i].id_sector,
+          PesoRuta: 0
+        });
+      }
+      //this.ArrayGrupos = Resultado;
     })
   }
 
   ConsPartGrupoMilla(IdGrupo: string) {
     this.ServiciosValorar.ConsParadasRutaUltMilla('1', '0', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
+      const IdRuta: string | any[] = [];
+      const RutaPeso: string | any[] = [];
+      for (var f = 0; f < Resultado.length; f++) {
+        if (IdRuta.includes(Resultado[f].GrupoMilla) == true) {
+          for (var i = 0; i < IdRuta.length; i++) {
+            if (IdRuta[i].IdRuta == Resultado[f].GrupoMilla) {
+              RutaPeso[i].PesoKg = IdRuta[i].PesoKg + parseFloat(Resultado[f].PesoTotalCarga);
+            }
+          }
+        } else {
+          IdRuta.push(Resultado[f].GrupoMilla)
+          RutaPeso.push({ IdRuta: Resultado[f].GrupoMilla, PesoKg: Resultado[f].PesoTotalCarga })
+        }
+      }
+      for (var k = 0; k < this.ArrayGrupos.length; k++) {
+        for (var t = 0; t < RutaPeso.length; t++) {
+          if (RutaPeso[t].IdRuta == this.ArrayGrupos[k].IdGrupo) {
+            this.ArrayGrupos[k].PesoRuta = RutaPeso[t].PesoKg;
+          }
+        }
+      }
       this.ArrayPartGrupos = Resultado;
       this.PesoRuta(IdGrupo);
     })
@@ -493,8 +532,8 @@ export class AdminUltMillaComponent implements OnInit {
       }
       this.ServiciosValorar.PublicarOferta("3", body).subscribe(Respu => {
         var auxrespu = Respu.split("|");
-        if(auxrespu[0] == '1'){
-          this.rutas.navigateByUrl('home');
+        if (auxrespu[0] == '1') {
+          this.rutas.navigateByUrl('home/transultimamilla');
         }
         this.MesajeModal = auxrespu[1];
         this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });

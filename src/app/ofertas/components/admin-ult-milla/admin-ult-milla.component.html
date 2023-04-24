@@ -158,7 +158,7 @@
             </div>
             <div class="row justify-content-center TarEntrega p-1" *ngIf="verGrupo == true">
 
-                <label class="Llave lblSmall col-12 mt-2 p-2">La entrega tiene un peso promedio de {{AcumPeso}}
+                <label class="Llave lblSmall col-12 mt-2 p-2">La oferta tiene un peso promedio de {{AcumPeso}}
                     Kilogramos&nbsp;</label>
 
 
@@ -166,11 +166,11 @@
                 <div class="col-sm-9 p-3 mt-2  mb-4 Parada tarjetadetalle"
                     *ngFor="let grup of ArrayGrupos; let p = index">
                     <div class="row sinmp">
-                        <div class="col-sm-4 mt-2 mb-2">
+                        <div class="col-sm-5 mt-2 mb-2">
                             <label class="Llave lblSmall">Nombre de
                                 grupo:&nbsp;{{grup.NombreGrupo}}</label>
                         </div>
-                        <div class="col-sm-8 row mt-2 mb-2">
+                        <div class="col-sm-7 row mt-2 mb-2">
                             <div class="col-sm-5">
                                 <label class="Llave lblSmall">Su precio sugerido es de:</label>
                             </div>
@@ -194,6 +194,10 @@
                                 </button>-->
                             </div>
                         </div>
+                    </div>
+                    <div class="row sinmp">
+                    <label class="Llave lblSmall col-12 mt-2 p-2">La entrega tiene un peso promedio de {{grup.PesoRuta}}
+                        Kilogramos&nbsp;</label>
                     </div>
                     <div class="row justify-content-center sinmp" *ngFor="let part of ArrayPartGrupos; let i = index">
 
