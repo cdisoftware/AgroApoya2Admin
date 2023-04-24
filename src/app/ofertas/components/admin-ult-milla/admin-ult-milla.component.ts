@@ -369,12 +369,10 @@ export class AdminUltMillaComponent implements OnInit {
       for (var k = 0; k < this.ArrayGrupos.length; k++) {
         for (var t = 0; t < RutaPeso.length; t++) {
           if (RutaPeso[t].IdRuta == this.ArrayGrupos[k].IdGrupo) {
-            console.log( RutaPeso[t].PesoKg)
             this.ArrayGrupos[k].PesoRuta = RutaPeso[t].PesoKg;
           }
         }
       }
-      console.log(this.ArrayGrupos)
       this.ArrayPartGrupos = Resultado;
       this.PesoRuta(IdGrupo);
     })
@@ -535,7 +533,7 @@ export class AdminUltMillaComponent implements OnInit {
       this.ServiciosValorar.PublicarOferta("3", body).subscribe(Respu => {
         var auxrespu = Respu.split("|");
         if (auxrespu[0] == '1') {
-          this.rutas.navigateByUrl('home');
+          this.rutas.navigateByUrl('transultimamilla');
         }
         this.MesajeModal = auxrespu[1];
         this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
