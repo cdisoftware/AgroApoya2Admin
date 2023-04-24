@@ -35,10 +35,6 @@ const routes: Routes = [
     component: RepOfertasComponent
   },
   {
-    path: 'transultimamilla',
-    component: AsignaTransUltMillaComponent
-  },
-  {
     path: 'home',
     component: LayoutprincipalComponent,
     children: [
@@ -133,6 +129,10 @@ const routes: Routes = [
       {
         path: 'AdminUltimaMilla',
         component: AdminUltMillaComponent
+      },
+      {
+        path: 'transultimamilla',
+        component: AsignaTransUltMillaComponent
       }
     ]
   },
