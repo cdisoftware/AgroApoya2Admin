@@ -22,4 +22,7 @@ th{
       width: 100%;
       height: 38px;
   }
+  .boton{
+      cursor: pointer;
+  }
 
