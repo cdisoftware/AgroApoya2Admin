@@ -39,6 +39,7 @@ export class AdminUltMillaComponent implements OnInit {
   geocoder = new google.maps.Geocoder();
   map: google.maps.Map;
   markers: google.maps.Marker[] = [];
+  markerBodega: google.maps.Marker[] = [];
   infoWindow = new google.maps.InfoWindow();
   ArrayEntregas: any = [];
 
@@ -199,7 +200,7 @@ export class AdminUltMillaComponent implements OnInit {
 
     const features = [];
 
-    this.markers = [];
+    this.markerBodega = [];
     var lat: number;
     var long: number;
     var auxEstado = '';
@@ -213,7 +214,7 @@ export class AdminUltMillaComponent implements OnInit {
       icon: "../../../../assets/ImagenesAgroApoya2Adm/ic_bodega.png",
       label: ""
     });
-    this.markers.push(marker);
+    this.markerBodega.push(marker);
 
 
     for (var i = 0; i < this.ArrayEntregas.length; i++) {
