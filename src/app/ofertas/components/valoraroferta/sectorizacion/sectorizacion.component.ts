@@ -145,14 +145,16 @@ export class SectorizacionComponent implements OnInit {
       this.CantidadDispinible = ResultConsu[0].Unidades_disponibles;
       this.SessionNomOferta = ResultConsu[0].Nombre_Producto + ' - ' + ResultConsu[0].Descripcion_empaque + ' - ' + ResultConsu[0].Nombre_productor;
       this.SessionCantSecOferta = ResultConsu[0].Unidades_disponibles;
-      this.IdDepa = ResultConsu[0].Departamentos;
-      this.IdCiudad = ResultConsu[0].Ciudad;
+      this.IdDepa = ResultConsu[0].MunicipioEntrega;
+      this.IdCiudad = ResultConsu[0].deptoEntrega;
       this.ConsultaBodegas();
     })
   }
 
   ConsultaBodegas() {
-    this.sectoresservices.ConsultaBodegas('1', this.IdDepa, this.IdCiudad).subscribe(Resultado => {
+    alert(this.IdDepa + '/' + this.IdCiudad)
+    this.sectoresservices.ConsultaBodegas('1', this.IdCiudad, this.IdDepa).subscribe(Resultado => {
+      console.log(Resultado)
       if (Resultado.length > 0) {
         this.DataBodegas = Resultado
       }
@@ -183,7 +185,7 @@ export class SectorizacionComponent implements OnInit {
 
     //console.log('1', this.SessionOferta)
     this.sectoresservices.ConsultaCiudadOferta('1', this.SessionOferta).subscribe(ResultadoCons => {
-      //console.log(ResultadoCons)
+      console.log(ResultadoCons)
       this.SessionCiudad = ResultadoCons[0].Cuidad;
       this.SessionCDMunicipio = ResultadoCons[0].CD_MNCPIO;
       this.SessionCDRegion = ResultadoCons[0].CD_RGION;
