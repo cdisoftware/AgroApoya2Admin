@@ -152,7 +152,7 @@ export class SectorizacionComponent implements OnInit {
   }
 
   ConsultaBodegas() {
-    alert(this.IdDepa + '/' + this.IdCiudad)
+
     this.sectoresservices.ConsultaBodegas('1', this.IdCiudad, this.IdDepa).subscribe(Resultado => {
       console.log(Resultado)
       if (Resultado.length > 0) {
