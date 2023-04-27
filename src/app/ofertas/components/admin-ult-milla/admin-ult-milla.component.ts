@@ -600,6 +600,7 @@ export class AdminUltMillaComponent implements OnInit {
       });
       flightPath.setMap(this.map);
     }
+    this.ArrayColors = [];
   }
 
   GenColor() {
