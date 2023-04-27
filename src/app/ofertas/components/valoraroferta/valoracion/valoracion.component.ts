@@ -1070,6 +1070,19 @@ export class ValoracionComponent implements OnInit {
           campof: 'Precio final participante',
           class: '',
           imagen: ''
+        },
+        {
+          campo: 'MinUnidLider',
+          campof: 'Unidades mímina mixta',
+          class: '',
+          imagen: ''
+        }
+        ,
+        {
+          campo: 'MaxUnidLider',
+          campof: 'Unidades máximas mixta',
+          class: '',
+          imagen: ''
         }
       ]
       for (var i = 0; i < this.ArrayCamposValida.length; i++) {
@@ -1260,20 +1273,20 @@ export class ValoracionComponent implements OnInit {
         TPO_OFRTA: this.SessionTipoOferta,
         TPO_CMSION_INDVDUAL: Number(this.SessionTipoComI),
         VLOR_CMSION_INDVDUAL: validacomision,
-        MNMO_UNDDES_INDVDUAL: this.MinUnidI,
-        MXMO_UNDDES_INDVDUAL: this.MaxUnidI,
+        MNMO_UNDDES_INDVDUAL: this.MinUnidLider,
+        MXMO_UNDDES_INDVDUAL: this.MaxUnidLider,
         VLOR_DMNCLIO_INDVDUAL: this.VlrDomiI,
         VLOR_FNAL_INDVDUAL: this.PreFinI,
         TPO_CMSION_GRPAL: Number(this.SessionTipoComG),
         VLOR_CMSION_GRPAL: validacomisionG,
-        MNMO_UNDDES_LIDER: 1,
-        MXMO_UNDDES_LIDER: 1,
+        MNMO_UNDDES_LIDER: this.MinUnidLider,
+        MXMO_UNDDES_LIDER: this.MaxUnidLider,
         PRCNTJE_DCTO_LIDER: this.PorcDescLider,
         VLOR_DMNCLIO_GRPAL: 0,
         CNTDAD_GRPOS: 0,
         MNMO_PRSNAS_XGRUPO: this.UnidXGrupos,
-        MNMO_UNDDES_PRCPNTE: 1,
-        MXMO_UNDDES_PRCPNTE: 1,
+        MNMO_UNDDES_PRCPNTE: this.MinUnidLider,
+        MXMO_UNDDES_PRCPNTE: this.MaxUnidLider,
         CNTDAD_CMPRAS_INDVDLES: 0,
         VLOR_ARRNQUE_LIDER: this.PrecioFinLider,
         VLOR_FNAL_PRTCPNTE: this.PrecioFinPart,
