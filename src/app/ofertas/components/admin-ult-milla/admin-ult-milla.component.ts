@@ -82,6 +82,7 @@ export class AdminUltMillaComponent implements OnInit {
   //Polilineas
   latbodega: number;
   longbodega: number;
+  ArrayColors: any = [];
 
 
   constructor(private modalService: NgbModal,
@@ -533,7 +534,7 @@ export class AdminUltMillaComponent implements OnInit {
       this.ServiciosValorar.PublicarOferta("3", body).subscribe(Respu => {
         var auxrespu = Respu.split("|");
         if (auxrespu[0] == '1') {
-          this.rutas.navigateByUrl('home/transultimamilla/' + this.SelectOferta + '/'+ this.SectorSelec);
+          this.rutas.navigateByUrl('home/transultimamilla/' + this.SelectOferta + '/' + this.SectorSelec);
         }
         this.MesajeModal = auxrespu[1];
         this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
@@ -599,17 +600,23 @@ export class AdminUltMillaComponent implements OnInit {
       });
       flightPath.setMap(this.map);
     }
+    this.ArrayColors = [];
   }
+
   GenColor() {
     var color = "";
     for (var i = 0; i < 3; i++) {
       var sub = Math.floor(Math.random() * 256).toString(16);
-      if(sub =='ff'){
-        var sub = Math.floor(Math.random() * 256).toString(16);
+      this.ArrayColors.push(color)
+      for (var j = 0; 1 < 10; j++) {
+        if (this.ArrayColors.includes(sub) == false && sub != 'ff') {
+          this.ArrayColors.push(color)
+          break;
+        }
       }
-      
       color += (sub.length == 1 ? "0" + sub : sub);
     }
+    console.log("#" + color)
     return "#" + color;
   }
 }
