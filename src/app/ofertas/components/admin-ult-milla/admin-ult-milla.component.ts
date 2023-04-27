@@ -584,6 +584,7 @@ export class AdminUltMillaComponent implements OnInit {
     }
     for (var i = 0; i < numposition; i++) {
       var color = this.GenColor();
+      console.log(color)
       const Polylines = [];
       Polylines.push({ lat: this.latbodega, lng: this.longbodega });
       for (var j = 0; j < ArrayPoliFin[i].length; j++) {
@@ -604,19 +605,26 @@ export class AdminUltMillaComponent implements OnInit {
   }
 
   GenColor() {
+
+    const Colors = ["#1C2833", "#7F8C8D", "#C0392B", "#9B59B6", "#2E86C1", "#D35400", "#7D6608", "#7D3C98", "#172A40", "#000000"];
     var color = "";
-    for (var i = 0; i < 3; i++) {
-      var sub = Math.floor(Math.random() * 256).toString(16);
-      this.ArrayColors.push(color)
-      for (var j = 0; 1 < 10; j++) {
-        if (this.ArrayColors.includes(sub) == false && sub != 'ff') {
-          this.ArrayColors.push(color)
+    for (var i = 0; i < 10; i++) {
+      console.log(this.ArrayColors)
+      if (Colors.length <= i) {
+        if (this.ArrayColors.includes(Colors[i]) == false) {
+          this.ArrayColors.push(Colors[i])
+          color = "" + Colors[i];
           break;
         }
+      } else {
+        color = '#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6);
       }
-      color += (sub.length == 1 ? "0" + sub : sub);
     }
-    console.log("#" + color)
-    return "#" + color;
+    return color;
+  }
+
+
+  ColorRandom() {
+
   }
 }
