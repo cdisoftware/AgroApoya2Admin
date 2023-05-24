@@ -321,4 +321,6 @@ export class ValorarofertaService {
   ModUltimMillaIni(Bandera: string, Datos: any){
     return this.http.post<any>(this.url_servidor + 'modcultimmillainicial/' + Bandera, Datos)
   }
+
+  
 }

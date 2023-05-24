@@ -290,5 +290,4 @@ export class TransportistaComponent implements OnInit, OnDestroy {
       this.modalService.open(templateDetalle, { ariaLabelledBy: 'modal-basic-title' })
     })
   }
-
 }

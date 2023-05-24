@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 import { NgbModal, NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-asigna-trans-ult-milla',
@@ -22,24 +23,28 @@ export class AsignaTransUltMillaComponent implements OnInit {
   IdGrupoSelect: string;
   IdConductor: string = '-1';
   ValidaConductor: boolean = false;
+  Respuesta: string = '';
+  IdUsuario: any;
 
 
 
   constructor(
     private serviciosvaloracion: ValorarofertaService,
     private ModalService: NgbModal,
-    private rutaActiva: ActivatedRoute
+    private rutaActiva: ActivatedRoute,
+    private cookies: CookieService
   ) {
-    
 
-   }
+
+  }
 
   ngOnInit(): void {
     this.IdOferta = this.rutaActiva.snapshot.paramMap.get('IdOferta');
     this.IdSector = this.rutaActiva.snapshot.paramMap.get('IdSector');
-    if(this.IdOferta != ''){
+    this.IdUsuario = this.cookies.get('IDU');
+    if (this.IdOferta != '') {
       this.ValidaSector()
-      
+
       this.BuscarGruposMilla()
     }
   }
@@ -75,7 +80,7 @@ export class AsignaTransUltMillaComponent implements OnInit {
       if (ResultConsulta.length > 0) {
         this.keywordSec = 'DSCRPCION_SCTOR';
         this.DataSectores = ResultConsulta;
-        if(this.IdSector != ''){
+        if (this.IdSector != '') {
           this.NomSector = ResultConsulta[0].DSCRPCION_SCTOR
         }
       }
@@ -97,9 +102,9 @@ export class AsignaTransUltMillaComponent implements OnInit {
 
   EditarGrupo(modalGrupo: any, grupo: any) {
     console.log(grupo)
-    if(grupo.ID_CNDCTOR == null){
+    if (grupo.ID_CNDCTOR == null) {
       this.ValidaConductor = true
-    }else{
+    } else {
       this.ValidaConductor = false
     }
     this.IdGrupoSelect = grupo.IdGrupo
@@ -140,7 +145,7 @@ export class AsignaTransUltMillaComponent implements OnInit {
         console.log(Resultado)
         this.BuscarGruposMilla();
       })
-      
+
       this.ModalService.dismissAll();
     }
 
@@ -171,7 +176,7 @@ export class AsignaTransUltMillaComponent implements OnInit {
     })
   }
 
-  limpiarForm(){
+  limpiarForm() {
     this.NomSector = ''
     this.IdSector = ''
     this.IdOferta = ''
@@ -179,6 +184,24 @@ export class AsignaTransUltMillaComponent implements OnInit {
     this.arrayDescargas = []
     this.DataSectores = []
     this.ValidaOferta = true
+  }
+
+  EnviaConductores(templateRespuesta: any) {
+    const Datos = {
+      usucodig: this.IdUsuario,
+      cnctivoOferta: this.IdOferta,
+      descripcion: "Envio conductores consola",
+      estado: 19
+    }
+    this.serviciosvaloracion.PublicarOferta('3', Datos).subscribe(Resultado => {
+      console.log(Resultado)
+      if(Resultado.length > 0){
+        this.Respuesta = Resultado; 
+        this.ModalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+      }
+    })
+    
+    
   }
 
 }
