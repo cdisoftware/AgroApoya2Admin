@@ -235,6 +235,17 @@
         </div>
     </div>
     <div class="row br">
+        <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-one" *ngIf="MuestraValoReferencia=='1'">
+            <ngb-panel title="Valor de referencia" id="config-panel-one">
+                <ng-template ngbPanelContent>
+                    <div class="col-sm-6">
+                        <label class="col-sm-12 Llave">Valor referencia</label>
+                        <input mask="separator" thousandSeparator="." type="text"
+                            class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlReferencia">
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
         <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-one" *ngIf="MuestraIndividual=='1'">
             <ngb-panel title="Compra individual" id="config-panel-one">
                 <ng-template ngbPanelContent>
@@ -398,6 +409,53 @@
         <h5 class="SubTituloForm">Definición conceptos adicionales</h5>
     </div>
     <div class="row br" *ngIf="ValidaToppings=='1'">
+
+
+
+        <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three" *ngIf="MuestraValUnidades=='1'">
+            <ngb-panel title="Valor unidades" id="config-panel-three">
+                <ng-template ngbPanelContent>
+                    <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Valor</label>
+                            <input mask="separator" thousandSeparator="." type="text"
+                                class="col-sm-12 form-control mt-1 textBox">
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="SinEstilo" title="Agregar a unidad">
+                                <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/mas.png" width="30px"
+                                    height="30px">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center br">
+                        <div class="table-responsive">
+                            <table class="table col-sm-12 TableAgro">
+                                <tr id="TablaValoracion">
+                                    <th>Valor</th>
+                                    <th>Orden</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                <tr>
+                                    <td>12.000</td>
+                                    <td>1</td>
+                                    <td>
+                                        <button class="SinEstilo" title="Eliminar amparado">
+                                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+
+
+
+
         <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
             <ngb-panel title="Adicionales" id="config-panel-three">
                 <ng-template ngbPanelContent>

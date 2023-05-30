@@ -20,6 +20,7 @@ export class ValoracionComponent implements OnInit {
   keywordSec: string = '';
   DataTipoOferta: any[] = []
   DataTipoComisiono: any[] = []
+  MuestraValoReferencia: string = '';
   MuestraIndividual: string = '';
   MuestraGrupal: string = '';
   MuestraFijo: string = '';
@@ -27,6 +28,8 @@ export class ValoracionComponent implements OnInit {
   MuestraPorcentaje: string = '';
   MuestraPorcentajeI: string = '';
   MuestraVigencial: string = '';
+  MuestraValUnidades: string = '';
+  VlReferencia: any;
   VlrComFijaI: string = '';
   MinUnidI: any;
   MaxUnidI: any;
@@ -154,6 +157,7 @@ export class ValoracionComponent implements OnInit {
     this.SessionTipoTopp = '0';
     this.MuestraVigencial = '0';
     this.MuestraGrupal = '0';
+    this.MuestraValoReferencia = '0';
     this.MuestraIndividual = '0';
     this.ValidaVigencia = '0';
     this.ValidaTipoOfer = '0';
@@ -165,6 +169,7 @@ export class ValoracionComponent implements OnInit {
     this.MinUnidI = '1';
     this.VlrComFijaI = '';
     this.PreFinI = '';
+    this.VlReferencia = '';
     this.VlrComFijaG = '';
     this.VlrDomiG = '';
     this.VlrComPorG = '';
@@ -516,6 +521,7 @@ export class ValoracionComponent implements OnInit {
         }
       ]
       if (ResultCons[0].TPO_OFRTA == '1') {
+        this.MuestraValoReferencia = '1';
         this.MuestraIndividual = '1';
         this.MuestraGrupal = '0';
         this.MuestraCantIndiv = '1';
@@ -529,9 +535,11 @@ export class ValoracionComponent implements OnInit {
         this.MaxUnidI = ResultCons[0].mxmo_unddes_indvdual;
         this.VlrDomiI = ResultCons[0].vlor_dmnclio_indvdual;
         this.PreFinI = ResultCons[0].vlor_fnal_indvdual;
+        this.VlReferencia = ResultCons[0].valorReferenciaProd
       }
 
       else if (ResultCons[0].TPO_OFRTA == '2') {
+        this.MuestraValoReferencia = '1';
         this.MuestraIndividual = '0';
         this.MuestraGrupal = '1';
         this.MuestraCantIndiv = '0';
@@ -552,8 +560,10 @@ export class ValoracionComponent implements OnInit {
         this.CantComprI = ResultCons[0].cntdad_cmpras_indvdles;
         this.PrecioFinLider = ResultCons[0].vlor_arrnque_lider;
         this.PrecioFinPart = ResultCons[0].vlor_fnal_prtcpnte;
+        this.VlReferencia = ResultCons[0].valorReferenciaProd
       }
       else if (ResultCons[0].TPO_OFRTA == 3) {
+        this.MuestraValoReferencia = '1';
         this.MuestraIndividual = '1';
         this.MuestraGrupal = '1';
         this.MuestraCantIndiv = '1';
@@ -584,6 +594,7 @@ export class ValoracionComponent implements OnInit {
         this.CantComprI = ResultCons[0].cntdad_cmpras_indvdles;
         this.PrecioFinLider = ResultCons[0].vlor_arrnque_lider;
         this.PrecioFinPart = ResultCons[0].vlor_fnal_prtcpnte;
+        this.VlReferencia = ResultCons[0].valorReferenciaProd
       }
     })
   }
@@ -605,6 +616,7 @@ export class ValoracionComponent implements OnInit {
 
     }
   }
+
 
   CalcuPreFinInd() {
     if (this.SessionTipoComI != '') {
@@ -669,6 +681,7 @@ export class ValoracionComponent implements OnInit {
     this.SessionSectorSel = ''
     this.ValidaVigencia = '0'
     this.ValidaTipoOfer = '0'
+    this.MuestraValoReferencia = '0';
     this.MuestraIndividual = '0';
     this.MuestraGrupal = '0'
   }
@@ -712,6 +725,7 @@ export class ValoracionComponent implements OnInit {
     this.SessionTipoOferta = item.id;
     this.MuestraVigencial = '1';
     if (item.id == 1) {
+      this.MuestraValoReferencia = '1';
       this.MuestraIndividual = '1';
       this.MuestraGrupal = '0';
       this.MuestraCantIndiv = '1';
@@ -720,6 +734,7 @@ export class ValoracionComponent implements OnInit {
       this.MuestraBtnMixta = '0';
     }
     else if (item.id == 2) {
+      this.MuestraValoReferencia = '1';
       this.MuestraIndividual = '0';
       this.MuestraGrupal = '1';
       this.MuestraCantIndiv = '0';
@@ -731,7 +746,7 @@ export class ValoracionComponent implements OnInit {
       this.MinUnidI = '1';
       this.MaxUnidI = '1';
       this.VlrDomiI = '0';
-
+      this.MuestraValoReferencia = '1';
       this.MuestraIndividual = '1';
       this.MuestraGrupal = '1';
       this.MuestraCantIndiv = '1';
@@ -741,6 +756,7 @@ export class ValoracionComponent implements OnInit {
     }
     else {
       this.MuestraVigencial = '0';
+      this.MuestraValoReferencia = '0';
       this.MuestraIndividual = '0';
       this.MuestraGrupal = '0';
       this.MuestraCantIndiv = '0';
@@ -782,6 +798,7 @@ export class ValoracionComponent implements OnInit {
     this.MuestraGrupal = '0';
     this.MuestraIndividual = '0';
     this.MuestraVigencial = '0';
+    this.MuestraValoReferencia = '0';
   }
 
   LimpiaTipoComisionI(item: any) {
@@ -942,12 +959,14 @@ export class ValoracionComponent implements OnInit {
         VLOR_ARRNQUE_LIDER: "0",
         VLOR_FNAL_PRTCPNTE: "0",
         ID_SCTOR_OFRTA: this.SessionSectorSel,
-        LINKLANDIGN: this.LinkSms
+        LINKLANDIGN: this.LinkSms,
+        VALOR_REFERENCIA: this.VlReferencia
       }
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         var arreglores = ResultUpdate.split('|')
         this.Respuesta = arreglores[1];
         this.ValidaToppings = '1';
+        this.MuestraValUnidades = '1';
         this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
           console.log(ResultUpdate)
           this.ArrayTextoModifica = ResultUpdate;
@@ -991,7 +1010,7 @@ export class ValoracionComponent implements OnInit {
     console.log('entra valor domicilio mixta')
     console.log(this.VlrDomiI)
 
-    if ((this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
+    if ((this.VlReferencia == null || this.VlReferencia == '' || this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
       || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null) || (this.SessionTipoComG == null || this.SessionTipoComG == '') || (validacomisionG == '' || validacomisionG == null) ||
       (this.PrecioFinLider == '' || this.PrecioFinLider == null) || (this.PrecioFinPart == '' || this.PrecioFinPart == null)
       || (this.UnidXGrupos == '' || this.UnidXGrupos == null) || (this.PorcDescLider == '' || this.PorcDescLider == null)
@@ -999,6 +1018,12 @@ export class ValoracionComponent implements OnInit {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
+        {
+          campo: 'VlReferencia',
+          campof: 'valor referencia',
+          class: '',
+          imagen: ''
+        },
         {
           campo: 'SessionTipoComI',
           campof: 'Tipo comisión individual',
@@ -1086,7 +1111,17 @@ export class ValoracionComponent implements OnInit {
         }
       ]
       for (var i = 0; i < this.ArrayCamposValida.length; i++) {
-        if (this.ArrayCamposValida[i].campo == 'SessionTipoComI') {
+        if (this.ArrayCamposValida[i].campo == 'VlReferencia') {
+          if (this.VlReferencia == '' || this.VlReferencia == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'SessionTipoComI') {
           if (this.SessionTipoComI == '' || this.SessionTipoComI == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
@@ -1292,7 +1327,8 @@ export class ValoracionComponent implements OnInit {
         VLOR_FNAL_PRTCPNTE: this.PrecioFinPart,
         ID_SCTOR_OFRTA: this.SessionSectorSel,
         LINKLANDIGN: this.LinkSms,
-        TPO_DESCUENTO: Number(this.SessionTipoDescuento)
+        TPO_DESCUENTO: Number(this.SessionTipoDescuento),
+        VALOR_REFERENCIA: this.VlReferencia
       }
       console.log(Body)
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
