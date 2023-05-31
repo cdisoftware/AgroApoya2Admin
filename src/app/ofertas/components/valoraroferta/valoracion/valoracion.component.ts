@@ -196,8 +196,7 @@ export class ValoracionComponent implements OnInit {
     this.SessionIdUsuario = this.cookies.get('IDU');
     this.ConsultaDetalleOferta();
     this.ConsultaSectores();
-    this.Consultatoppings();
-    this.consultaValoresUni();
+    this.Consultatoppings();   
   }
   consultaToppingsOferta() {
     this.serviciosvaloracion.ConsultaToppingOfer('1', this.SessionSectorSel, this.SessionOferta).subscribe(Resultcons => {
@@ -248,7 +247,7 @@ export class ValoracionComponent implements OnInit {
         IdSector: Number(this.SessionSectorSel),
         IdValor: 0,
         ValorUnd: this.ValorUni
-      } 
+      }
       this.serviciosvaloracion.ModValoresUnidades('2', Body).subscribe(ResultOper => {
         this.Respuesta = ResultOper;
         this.consultaValoresUni();
@@ -258,18 +257,18 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
-  EliminaValorUni(idValor: any) {    
+  EliminaValorUni(idValor: any) {
     const Body = {
       Cd_cnsctvo: Number(this.SessionOferta),
       IdSector: Number(this.SessionSectorSel),
       IdValor: idValor.IdValor,
       ValorUnd: this.ValorUni
-    }  
+    }
     this.serviciosvaloracion.ModValoresUnidades('4', Body).subscribe(ResultOper => {
       console.log(ResultOper)
       this.Respuesta = ResultOper;
       this.consultaValoresUni();
-    })   
+    })
   }
 
   consultaValoresUni() {
@@ -1048,7 +1047,7 @@ export class ValoracionComponent implements OnInit {
           this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
         })
       })
-
+      this.consultaValoresUni();
     }
   }
 
