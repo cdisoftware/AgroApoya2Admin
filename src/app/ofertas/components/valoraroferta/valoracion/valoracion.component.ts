@@ -81,6 +81,10 @@ export class ValoracionComponent implements OnInit {
   ValidaVigencia: string;
   ArrayCamposValida: any = []
   ValidaCam: string;
+
+  DataValores: any[];
+  ValorUni: string = '';
+
   ValidaToppings: string;
   DataTipotopping: { id: number; name: string; }[];
   DataToppings: any[];
@@ -183,6 +187,7 @@ export class ValoracionComponent implements OnInit {
     this.VigenHasta = '';
     this.FechaEntrega = '';
     this.UnidOferta = '';
+    this.DataValores = [];
     this.DataToppings = [];
     this.RutaImagen = this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.RutaLanding = this.SeriviciosGenerales.RecuperarRutaVista('1');
@@ -192,18 +197,88 @@ export class ValoracionComponent implements OnInit {
     this.ConsultaDetalleOferta();
     this.ConsultaSectores();
     this.Consultatoppings();
+    this.consultaValoresUni();
   }
   consultaToppingsOferta() {
     this.serviciosvaloracion.ConsultaToppingOfer('1', this.SessionSectorSel, this.SessionOferta).subscribe(Resultcons => {
-      console.log(Resultcons)
       if (Resultcons.length > 0) {
-        console.log(Resultcons)
         this.DataToppings = Resultcons;
         this.ValidaConsulta = '0';
       }
       else {
         this.DataToppings = [];
         this.ValidaConsulta = '1';
+      }
+    })
+  }
+
+  AgregaValorUni(templateMensaje: any) {
+    this.Respuesta = ''
+    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
+    if (this.ValorUni == '' || this.ValorUni == null || this.ValorUni == '0') {
+      this.ValidaCam = '1';
+      this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
+      this.ArrayCamposValida = [
+        {
+          campo: 'ValorUni',
+          campof: 'Valor',
+          class: '',
+          imagen: ''
+        }
+      ]
+      for (var i = 0; i < this.ArrayCamposValida.length; i++) {
+        if (this.ArrayCamposValida[i].campo == 'ValorUni') {
+          if (this.ValorUni == '' || this.ValorUni == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
+        }
+      }
+    }
+    else {
+      this.ValidaCam = '0';
+      this.ArrayCamposValida = [];
+
+      const Body = {
+        Cd_cnsctvo: Number(this.SessionOferta),
+        IdSector: Number(this.SessionSectorSel),
+        IdValor: 0,
+        ValorUnd: this.ValorUni
+      } 
+      this.serviciosvaloracion.ModValoresUnidades('2', Body).subscribe(ResultOper => {
+        this.Respuesta = ResultOper;
+        this.consultaValoresUni();
+      })
+      this.ValorUni = '';
+
+    }
+  }
+
+  EliminaValorUni(idValor: any) {    
+    const Body = {
+      Cd_cnsctvo: Number(this.SessionOferta),
+      IdSector: Number(this.SessionSectorSel),
+      IdValor: idValor.IdValor,
+      ValorUnd: this.ValorUni
+    }  
+    this.serviciosvaloracion.ModValoresUnidades('4', Body).subscribe(ResultOper => {
+      console.log(ResultOper)
+      this.Respuesta = ResultOper;
+      this.consultaValoresUni();
+    })   
+  }
+
+  consultaValoresUni() {
+    this.serviciosvaloracion.ConsultaValUnidades('1', this.SessionOferta, this.SessionSectorSel).subscribe(Resultcons => {
+      if (Resultcons.length > 0) {
+        this.DataValores = Resultcons;
+      }
+      else {
+        this.DataValores = [];
       }
     })
   }

@@ -322,5 +322,11 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'modcultimmillainicial/' + Bandera, Datos)
   }
 
-  
+  ConsultaValUnidades(Bandera: string, Cd_cnsctvo: string, IdSector: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscvalores/' + Bandera + '/' + Cd_cnsctvo + '/' + IdSector)
+  }
+
+  ModValoresUnidades(Bandera: string, body: any) {
+    return this.http.post<any>(this.url_servidor + 'modcanadorvalor/' + Bandera, body)
+  }
 }
