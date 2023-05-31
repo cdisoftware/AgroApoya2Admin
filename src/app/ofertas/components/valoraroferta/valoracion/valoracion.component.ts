@@ -1419,6 +1419,7 @@ export class ValoracionComponent implements OnInit {
 
         })
       })
+      this.MuestraValUnidades = '0';
 
     }
   }
