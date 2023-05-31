@@ -124,6 +124,7 @@ export class AdminUltMillaComponent implements OnInit {
   LimpiaSector(Sector: String) {
     this.SectorSelec = "" + Sector;
     this.SelectPin = false;
+    this.VerTargetaGeneral = false;
   }
 
 
@@ -327,6 +328,7 @@ export class AdminUltMillaComponent implements OnInit {
     }
   }
   ConsultaGrupos() {
+    this.ArrayGrupos = [];
     this.ServiciosValorar.ConsGruposUltimaMilla('1', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
       for (var i = 0; i < Resultado.length; i++) {
         this.ArrayGrupos.push({

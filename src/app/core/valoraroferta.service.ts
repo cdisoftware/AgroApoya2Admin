@@ -107,6 +107,7 @@ export class ValorarofertaService {
   }
 
   PublicarOferta(Bandera: string, Body: any) {
+    console.log(this.url_servidor + 'aestadofertamod/' + Bandera, Body)
     return this.http.post<any>(this.url_servidor + 'aestadofertamod/' + Bandera, Body)
   }
 
@@ -288,6 +289,7 @@ export class ValorarofertaService {
 
 
   ConsGruposUltimaMilla(Bandera: string, CD_CNSCTVO: string, IdSector: string) {
+    console.log(this.url_servidor + 'conscultimamilla/' + Bandera + '/' + CD_CNSCTVO + '/' + IdSector)
     return this.http.get<any>(this.url_servidor + 'conscultimamilla/' + Bandera + '/' + CD_CNSCTVO + '/' + IdSector)
   }
 
