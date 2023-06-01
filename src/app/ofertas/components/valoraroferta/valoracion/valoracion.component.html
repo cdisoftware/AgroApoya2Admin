@@ -406,7 +406,7 @@
         </ngb-accordion>
     </div>
     <div class="row br" *ngIf="ValidaToppings=='1'">
-        <h5 class="SubTituloForm">Definición conceptos adicionales</h5>
+        <h5 class="SubTituloForm">Definición valor de las unidades</h5>
     </div>
     <div class="row br" *ngIf="ValidaToppings=='1'">
         <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three" *ngIf="MuestraValUnidades=='1'">
@@ -415,17 +415,17 @@
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Valor</label>
-                            <input mask="separator" thousandSeparator="." type="text" [(ngModel)]="ValorUni" 
+                            <input mask="separator" thousandSeparator="." type="text" [(ngModel)]="ValorUni"
                                 class="col-sm-12 form-control mt-1 textBox">
                         </div>
                         <div class="col-sm-1 position-relative">
-                            <button class="SinEstilo position-absolute bottom-0 start-0" title="Agregar unidades" (click)="AgregaValorUni(ModalRespuesta)">
+                            <button class="SinEstilo position-absolute bottom-0 start-0" title="Agregar unidades"
+                                (click)="AgregaValorUni(ModalRespuesta)">
                                 <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/mas.png" width="30px"
                                     height="30px">
                             </button>
                         </div>
                     </div>
-
                     <div class="row justify-content-center br">
                         <div class="table-responsive">
                             <table class="table col-sm-12 TableAgro">
@@ -438,7 +438,8 @@
                                     <td>{{valores.ValorUnidad}}</td>
                                     <td>{{valores.OrdenMostrar}}</td>
                                     <td>
-                                        <button class="SinEstilo" title="Eliminar amparado" (click)="EliminaValorUni(valores)">
+                                        <button class="SinEstilo" title="Eliminar amparado"
+                                            (click)="EliminaValorUni(valores)">
                                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
                                         </button>
                                     </td>
@@ -449,6 +450,11 @@
                 </ng-template>
             </ngb-panel>
         </ngb-accordion>
+    </div>
+    <div class="row br" *ngIf="ValidaToppings=='1'">
+        <h5 class="SubTituloForm">Definición conceptos adicionales</h5>
+    </div>
+    <div class="row br" *ngIf="ValidaToppings=='1'">
         <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
             <ngb-panel title="Adicionales" id="config-panel-three">
                 <ng-template ngbPanelContent>
@@ -460,7 +466,6 @@
                                 class="col-sm-12 form-control mt-1 textBox" maxlength="150" [(ngModel)]="DesTopp"
                                 [ngModelOptions]="{standalone: true}">
                         </div>
-
                         <div class="col-sm-4">
                             <label class="col-sm-12 Llave">Valor unitario</label>
                             <input mask="separator" thousandSeparator="." type="text"
