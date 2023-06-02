@@ -81,10 +81,9 @@ export class ValoracionComponent implements OnInit {
   ValidaVigencia: string;
   ArrayCamposValida: any = []
   ValidaCam: string;
-
+  SumaPrecios: number;
   DataValores: any[];
   ValorUni: string = '';
-
   ValidaToppings: string;
   DataTipotopping: { id: number; name: string; }[];
   DataToppings: any[];
@@ -196,7 +195,7 @@ export class ValoracionComponent implements OnInit {
     this.SessionIdUsuario = this.cookies.get('IDU');
     this.ConsultaDetalleOferta();
     this.ConsultaSectores();
-    this.Consultatoppings();   
+    this.Consultatoppings();
   }
   consultaToppingsOferta() {
     this.serviciosvaloracion.ConsultaToppingOfer('1', this.SessionSectorSel, this.SessionOferta).subscribe(Resultcons => {
@@ -913,11 +912,17 @@ export class ValoracionComponent implements OnInit {
     }
 
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
-    if ((this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
+    if ((this.VlReferencia == null || this.VlReferencia == '' || this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
       || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null)) {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
+        {
+          campo: 'VlReferencia',
+          campof: 'Valor referencia',
+          class: '',
+          imagen: ''
+        },
         {
           campo: 'SessionTipoComI',
           campof: 'Tipo comisión',
@@ -950,7 +955,17 @@ export class ValoracionComponent implements OnInit {
         }
       ]
       for (var i = 0; i < this.ArrayCamposValida.length; i++) {
-        if (this.ArrayCamposValida[i].campo == 'SessionTipoComI') {
+        if (this.ArrayCamposValida[i].campo == 'VlReferencia') {
+          if (this.VlReferencia == '' || this.VlReferencia == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'SessionTipoComI') {
           if (this.SessionTipoComI == '' || this.SessionTipoComI == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
@@ -1046,7 +1061,9 @@ export class ValoracionComponent implements OnInit {
           this.ArrayTextoModifica = ResultUpdate;
           this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
         })
-      })
+      })         
+      this.SumaPrecios = parseInt(this.VlrDomiI) + parseInt(this.PreFinI);
+      this.ValorUni = this.SumaPrecios.toString();
       this.consultaValoresUni();
     }
   }
@@ -1094,7 +1111,7 @@ export class ValoracionComponent implements OnInit {
       this.ArrayCamposValida = [
         {
           campo: 'VlReferencia',
-          campof: 'valor referencia',
+          campof: 'Valor referencia',
           class: '',
           imagen: ''
         },
@@ -1419,6 +1436,7 @@ export class ValoracionComponent implements OnInit {
 
         })
       })
+      this.MuestraValUnidades = '0';
 
     }
   }
