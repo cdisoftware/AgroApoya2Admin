@@ -268,18 +268,22 @@ export class EvaluacionofertaComponent implements OnInit {
     moveItemInArray(this.PreguntasOferta, event.previousIndex, event.currentIndex);
     var orden: string = '';
     for (var i = 0; i < this.PreguntasOferta.length; i++) {
-      if(i + 1 == this.PreguntasOferta.length){
-        orden = orden + this.PreguntasOferta[i].ID_PRGNTA_OFR + '-' + (i + 1);
-      }else{
-        orden = orden + this.PreguntasOferta[i].ID_PRGNTA_OFR + '-' + (i + 1) + '|';
-      }
+      orden = orden + this.PreguntasOferta[i].ID_PRGNTA_OFR + '-' + (i + 1) + '|';
     }
     //ModificaOrden
     console.log(orden)
+
+    var auxbandera = "";
+    if(this.ValidaAdministra == "0"){
+      auxbandera = "1";
+    }else if(this.ValidaAdministra == "1"){
+      auxbandera = "2";
+    }
+
     const BodyOrden = {
       Texto: orden
     };
-    this.evaluacionservices.ModificaOrden('1', BodyOrden).subscribe(ResultInsert => {
+    this.evaluacionservices.ModificaOrden(auxbandera, BodyOrden).subscribe(ResultInsert => {
       console.log(ResultInsert)
     })
   }
