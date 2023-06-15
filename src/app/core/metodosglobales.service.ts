@@ -14,7 +14,7 @@ export class MetodosglobalesService {
   ) { }
 
   //ambiente de trabajo 1 desarrollo 2 produccion
-  ambientedetrabajo: string = '2';
+  ambientedetrabajo: string = '1';
 
   public url_DesarrolloCDI = 'http://190.147.38.91:1007/Agroapoya2/';
   public url_ProduccionCDI = 'https://srv.apptotrip.com:1016/Agroapoya2/';
