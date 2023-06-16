@@ -127,7 +127,7 @@ export class AdminsectoresComponent implements OnInit {
 
 
   ConsultaSectores(IdZona: string) {
-    this.sectoresservices.ConsultaSectoresEtv('1', '0', IdZona, this.SessionOferta).subscribe(Result => {
+    this.sectoresservices.ConsultaSectoresEtv('1', '0', IdZona, '0').subscribe(Result => {
       console.log(Result)
       this.DataSectores = Result;
     })
