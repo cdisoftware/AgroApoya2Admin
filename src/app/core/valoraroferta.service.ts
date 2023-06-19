@@ -210,7 +210,6 @@ export class ValorarofertaService {
   }
   //EJEMPLO=1/0/0/2510
   ConsultaSectoresEtv(Bandera: string, nomSector: string, IdZona: string, cd_cnctivo: string) {
-    console.log(this.url_servidor + 'constsectoresEtv/' + Bandera + '/' + nomSector + '/' + IdZona + '/' + cd_cnctivo)
     return this.http.get<any[]>(this.url_servidor + 'constsectoresEtv/' + Bandera + '/' + nomSector + '/' + IdZona + '/' + cd_cnctivo)
   }
   ConsZona(Bandera: string, id: string, Municipio: string, Departamento: string, Bodymod: any) {
