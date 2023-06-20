@@ -25,6 +25,7 @@ import { ConsultacorreosComponent } from './usuario/components/consultacorreos/c
 import { AdminUltMillaComponent } from './ofertas/components/admin-ult-milla/admin-ult-milla.component';
 import { RepOfertasComponent } from './ofertas/components/reportes/rep-ofertas/rep-ofertas.component';
 import { AsignaTransUltMillaComponent } from './ofertas/components/asigna-trans-ult-milla/asigna-trans-ult-milla.component';
+import { AdminsectoresComponent } from './ofertas/components/adminsectores/adminsectores.component';
 
 const routes: Routes = [
   {
@@ -133,6 +134,10 @@ const routes: Routes = [
       {
         path: 'transultimamilla/:IdOferta/:IdSector',
         component: AsignaTransUltMillaComponent
+      },
+      {
+        path: 'AdminSectores',
+        component: AdminsectoresComponent
       }
     ]
   },

@@ -1,0 +1,237 @@
+<img class="IcVolver" (click)="Volver()" src="../../../../assets/ImagenesAgroApoya2Adm/ic_volver.png" title="Volver"
+    *ngIf="VerSectorComponent == '2' || VerSectorComponent =='3'" />
+<div class="container bg-white">
+    <br>
+    <h1>{{TituloComponent}}</h1>
+    <!--Seccion lista-->
+    <div class="row mt-3" *ngIf="VerSectorComponent == '1'">
+        <!--Listas-->
+        <div class="col-sm-6 mt-1">
+            <ng-autocomplete [data]="DataZonas" [searchKeyword]="keywordZonasAsignaSector" placeholder="Zona"
+                (selected)='selectZona($event)' [itemTemplate]="templateResZona" [notFoundTemplate]="templateVacio"
+                [(ngModel)]="ZonaAsignaSector" (inputCleared)="LimpiaZona('')">
+            </ng-autocomplete>
+            <ng-template #templateResZona let-item>
+                <a [innerHTML]="item.Descripcion"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+        <div class="col-sm-6 mt-1">
+            <ng-autocomplete [data]="DataTipoSector" [searchKeyword]="keywordTipoSector" placeholder="Tipo sector"
+                (selected)='SelectTipoSect($event)' [itemTemplate]="templateResTipoSec"
+                [notFoundTemplate]="templateVacio" [(ngModel)]="TipoSector" (inputCleared)="LimpiaTipoSect('')">
+            </ng-autocomplete>
+            <ng-template #templateResTipoSec let-item>
+                <a [innerHTML]="item.Descripcion"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+
+        <!--Botones-->
+        <div class="row br justify-content-center TextCenter mt-3">
+            <div class="col-6 br">
+                <button class="col-sm-12 col-lg-8 btn btn-agro-prin" (click)="CrearSector()">Crear</button>
+            </div>
+            <div class="col-6 br">
+                <button class="col-sm-12 col-lg-8 btn btn-agro-sec" (click)="LimpiarFiltros()">Limpiar</button>
+            </div>
+        </div>
+        <!--Grilla-->
+        <div class="row mt-3">
+            <table class="col-sm-12 TableAgro">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Tipo sector</th>
+                    <th>Acciones</th>
+                </tr>
+                <tr class="click" *ngFor="let respu of DataSectores; let i = index">
+                    <td>{{respu.DSCRPCION_SCTOR}}</td>
+                    <td>{{respu.Temporal=='1' || respu.Temporal==null ? 'Temporal' : 'Permanente'}}</td>
+                    <td>
+                        <button class="SinEstilo" title="Ver sector" (click)="SelecctItemGrilla(respu, ModalMapa)">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/ic_map.png" class="ic_grilla">
+                        </button>
+
+                        <button class="SinEstilo" title="Editar sector" (click)="SelectSectorEditar(respu)">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png" class="ic_grilla">
+                        </button>
+
+                        <button class="SinEstilo" title="Elimina sector" (click)="EliminaSector(respu, ModalRespuesta)">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" class="ic_grilla">
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!--Seccion crear-->
+    <div class="row" *ngIf="VerSectorComponent == '2'">
+        <!--Listas-->
+        <div class="col-sm-8 mt-1">
+            <ng-autocomplete [data]="DataZonas" [searchKeyword]="keywordZonasInsert" placeholder="Zona"
+                (selected)='selectZonaInsert($event)' [itemTemplate]="templateResZona"
+                [notFoundTemplate]="templateVacio" [(ngModel)]="ZonaAsignaSectorInsert"
+                (inputCleared)="LimpiaZonaInsert('')" [disabled]="ValidaSelecZonaInsert == '3'">
+            </ng-autocomplete>
+            <ng-template #templateResZona let-item>
+                <a [innerHTML]="item.Descripcion"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+
+        <!--Radio Buton-->
+        <div class="col-sm-2 mt-2">
+            <div class="col-sm-6">
+                <div class="row">
+                    <input class="col-sm-2" value="Permanente" type="radio" name="tipoSec" id="RadioPer" (focus)="true"
+                        [disabled]="ValidaSelecZonaInsert == '3'" [(ngModel)]="SelectRadio">
+                    <label class="col-sm-10" for="RadioPer">Permanente</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2 mt-2">
+            <div class="col-sm-6">
+                <div class="row">
+                    <input class="col-sm-2" value="Temporal" type="radio" name="tipoSec" id="RadioPar"
+                        [disabled]="ValidaSelecZonaInsert == '3'" [(ngModel)]="SelectRadio">
+                    <label class="col-sm-10" for="RadioPar">Temporal</label>
+                </div>
+            </div>
+        </div>
+
+        <!--Nombre del sector-->
+        <div class="col-sm-8 col-12 mt-2">
+            <input type="text" class="form-control textBox" placeholder="Nombre sector" [(ngModel)]="NombreSecInsert"
+                [disabled]="ValidaSelecZonaInsert=='1' || ValidaSelecZonaInsert=='3'">
+        </div>
+        <div class="col-sm-4 col-12 mt-2">
+            <button [disabled]="ValidaSelecZonaInsert == '3'" class="col-12 btn btn-agro-prin"
+                (click)="InsertSector(ModalRespuesta)">Crear</button>
+        </div>
+
+        <!--Mapa insert-->
+        <div class="row mt-5 justify-content-center" *ngIf="ValidaSelecZonaInsert == '3'">
+
+            <hr class="mb-2">
+            <div class="col-md-5 col-12">
+                <input type="text" class="form-control textBox" placeholder="Latitude"
+                    [(ngModel)]="LatitudeCoordenadas" />
+            </div>
+            <div class="col-md-5 col-12">
+                <input type="text" class="form-control textBox" placeholder="Longitude"
+                    [(ngModel)]="LongitudeCoordenadas" />
+            </div>
+            <div class="col-md-2 col-12">
+                <button class="col-12 btn btn-agro-prin" (click)="AgregarCoordenada(ModalRespuesta)">Agregar</button>
+            </div>
+            <label class="col-sm-12 mt-2"><strong>Número de usuarios en este
+                    sector:&nbsp;</strong>{{NumUserSector}}</label>
+            <div class="col-sm-12 row">
+                <div id="mapInsertSector" class="ShowMap col-12 col-lg-8"></div>
+
+                <div class="col-12 col-lg-4 justify-content-center ListCoordenadas">
+                    <div class="col-12 p-1 mt-2 row sinmp coordenadas" *ngFor="let pin of DataCoor; let i = index">
+                        <label class="NumHorden"><strong>#{{i+1}}</strong></label>
+                        <div class="col-10">
+                            <label><strong>Latitude: {{pin.Latitud}}</strong></label>
+                            <br>
+                            <label><strong>Longitude: {{pin.Longitud}}</strong></label>
+                        </div>
+                        <div class="col-2">
+                            <img src="../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" title="Borrar"
+                                class="icborrar" (click)="EliminaCoordenada(pin, i, ModalRespuesta)"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <!--Seccion Editar-->
+    <div class="row mt-5 justify-content-center" *ngIf="VerSectorComponent == '3'">
+
+        <label class="col-sm-12 mt-2 TextCenter"><strong>Nombre de sector:&nbsp;</strong>{{NombreSectorEditar}}</label>
+
+        <hr class="mb-2 mt-3">
+        <div class="col-md-5 col-12">
+            <input type="text" class="form-control textBox" placeholder="Latitude" [(ngModel)]="LatitudeCoordenadas" />
+        </div>
+        <div class="col-md-5 col-12">
+            <input type="text" class="form-control textBox" placeholder="Longitude"
+                [(ngModel)]="LongitudeCoordenadas" />
+        </div>
+        <div class="col-md-2 col-12">
+            <button class="col-12 btn btn-agro-prin" (click)="AgregarCoordenadaEdit(ModalRespuesta)">Agregar</button>
+        </div>
+        <label class="col-sm-12 mt-2"><strong>Número de usuarios en este sector:&nbsp;</strong>{{NumUserSector}}</label>
+        <div class="col-sm-12 row">
+            <div id="mapEditSector" class="ShowMap col-12 col-lg-8"></div>
+
+            <div class="col-12 col-lg-4 justify-content-center ListCoordenadas">
+                <div class="col-12 p-1 mt-2 row sinmp coordenadas" *ngFor="let pin of DataCoor; let i = index">
+                    <div class="col-10">
+                        <label><strong>Latitude:</strong></label>
+                        <label><strong>{{pin.Latitud}}</strong></label>
+                        <br>
+                        <label><strong>Longitude:</strong></label>
+                        <label><strong>{{pin.Longitud}}</strong></label>
+                    </div>
+                    <div class="col-2">
+                        <img src="../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" title="Borrar"
+                            class="icborrar" (click)="EliminaCoordenada(pin, i, ModalRespuesta)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!--Modales-->
+<ng-template #ModalMapa let-modal>
+    <div class="modal-header ">
+        <h1>Detalle sector - {{NombreSector}}</h1>
+        <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
+    </div>
+    <div class="row justify-content-center m-1">
+        <label class="col-sm-12 mt-2"><strong>Número de usuarios en este sector:&nbsp;</strong>{{NumUserSector}}</label>
+        <div class="col-sm-12 m-3">
+            <div id="mapSelectSector" class="ShowMap"></div>
+        </div>
+    </div>
+    <div class="row justify-content-center ">
+        <button type="button " class="btn btn-agro-prin col-sm-4 " (click)="modal.dismiss() ">Continuar</button>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalRespuesta let-modal>
+    <div class="modal-header ">
+        <h1>Respuesta</h1>
+        <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
+    </div>
+    <div class="modal-body ">
+        <div class="row br ">
+            <div class="col-sm-12 ">
+                <h2 class="TituloDetalle ">{{Respuesta}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center ">
+        <button type="button " class="btn btn-agro-prin col-sm-6" (click)="modal.dismiss() ">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
