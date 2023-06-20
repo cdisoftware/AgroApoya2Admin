@@ -1,5 +1,5 @@
 <img class="IcVolver" (click)="Volver()" src="../../../../assets/ImagenesAgroApoya2Adm/ic_volver.png" title="Volver"
-    *ngIf="VerSectorComponent == '2'" />
+    *ngIf="VerSectorComponent == '2' || VerSectorComponent =='3'" />
 <div class="container bg-white">
     <br>
     <h1>{{TituloComponent}}</h1>
@@ -53,7 +53,15 @@
                     <td>{{respu.Temporal=='1' || respu.Temporal==null ? 'Temporal' : 'Permanente'}}</td>
                     <td>
                         <button class="SinEstilo" title="Ver sector" (click)="SelecctItemGrilla(respu, ModalMapa)">
-                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/ic_map.png">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/ic_map.png" class="ic_grilla">
+                        </button>
+
+                        <button class="SinEstilo" title="Editar sector" (click)="SelectSectorEditar(respu)">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png" class="ic_grilla">
+                        </button>
+
+                        <button class="SinEstilo" title="Elimina sector" (click)="EliminaSector(respu, ModalRespuesta)">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" class="ic_grilla">
                         </button>
                     </td>
                 </tr>
@@ -130,13 +138,15 @@
 
                 <div class="col-12 col-lg-4 justify-content-center ListCoordenadas">
                     <div class="col-12 p-1 mt-2 row sinmp coordenadas" *ngFor="let pin of DataCoor; let i = index">
+                        <label class="NumHorden"><strong>#{{i+1}}</strong></label>
                         <div class="col-10">
                             <label><strong>Latitude: {{pin.Latitud}}</strong></label>
                             <br>
                             <label><strong>Longitude: {{pin.Longitud}}</strong></label>
                         </div>
                         <div class="col-2">
-                            <img src="../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" title="Borrar" class="icborrar"/>
+                            <img src="../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" title="Borrar"
+                                class="icborrar" (click)="EliminaCoordenada(pin, i, ModalRespuesta)"/>
                         </div>
                     </div>
                 </div>
@@ -145,6 +155,44 @@
 
 
 
+    </div>
+
+    <!--Seccion Editar-->
+    <div class="row mt-5 justify-content-center" *ngIf="VerSectorComponent == '3'">
+
+        <label class="col-sm-12 mt-2 TextCenter"><strong>Nombre de sector:&nbsp;</strong>{{NombreSectorEditar}}</label>
+
+        <hr class="mb-2 mt-3">
+        <div class="col-md-5 col-12">
+            <input type="text" class="form-control textBox" placeholder="Latitude" [(ngModel)]="LatitudeCoordenadas" />
+        </div>
+        <div class="col-md-5 col-12">
+            <input type="text" class="form-control textBox" placeholder="Longitude"
+                [(ngModel)]="LongitudeCoordenadas" />
+        </div>
+        <div class="col-md-2 col-12">
+            <button class="col-12 btn btn-agro-prin" (click)="AgregarCoordenadaEdit(ModalRespuesta)">Agregar</button>
+        </div>
+        <label class="col-sm-12 mt-2"><strong>Número de usuarios en este sector:&nbsp;</strong>{{NumUserSector}}</label>
+        <div class="col-sm-12 row">
+            <div id="mapEditSector" class="ShowMap col-12 col-lg-8"></div>
+
+            <div class="col-12 col-lg-4 justify-content-center ListCoordenadas">
+                <div class="col-12 p-1 mt-2 row sinmp coordenadas" *ngFor="let pin of DataCoor; let i = index">
+                    <div class="col-10">
+                        <label><strong>Latitude:</strong></label>
+                        <label><strong>{{pin.Latitud}}</strong></label>
+                        <br>
+                        <label><strong>Longitude:</strong></label>
+                        <label><strong>{{pin.Longitud}}</strong></label>
+                    </div>
+                    <div class="col-2">
+                        <img src="../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" title="Borrar"
+                            class="icborrar" (click)="EliminaCoordenada(pin, i, ModalRespuesta)" />
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
