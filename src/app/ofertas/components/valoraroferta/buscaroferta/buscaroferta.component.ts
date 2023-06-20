@@ -116,6 +116,8 @@ export class BuscarofertaComponent implements OnInit {
   ValidaEnvio: any = '';
   AccionEnvio: string;
 
+  TextoNotificacion: string = '';
+
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
     private ServiciosValorar: ValorarofertaService,
@@ -286,7 +288,9 @@ export class BuscarofertaComponent implements OnInit {
   }
 
   CargaBusqueda(seleccion: any) {
+    console.log(seleccion)
     this.IdOferta = seleccion.cd_cnsctvo;
+
     this.modalService.dismissAll();
     this.ValidaBusqueda = '1';
     this.CargaInfoOferta();
@@ -373,39 +377,40 @@ export class BuscarofertaComponent implements OnInit {
 
 
   PopupEnvio(ModalEnvio: any, oferta: any, accion: string) {
+    this.ConsultaTextos()
     this.AccionEnvio = accion;
     this.modalService.dismissAll();
-    if (this.AccionEnvio  == '1'){
+    if (this.AccionEnvio == '1') {
       this.Respuesta = 'Estas seguro de enviar los correos de la oferta: ' + oferta.Nombre_Producto + ' ' + oferta.COD_OFR_PUBLICO
-    }else{
+    } else {
       this.Respuesta = 'Estas seguro de enviar los mensajes de texto de la oferta: ' + oferta.Nombre_Producto + ' ' + oferta.COD_OFR_PUBLICO
     }
-      
+
     this.modalService.open(ModalEnvio, { ariaLabelledBy: 'modal-basic-title', size: 'lg', centered: true, backdrop: 'static', keyboard: false });
   }
 
   AceptaEnviar() {
-    this.EnviaNotificaciones(this.DataSectores, this.AccionEnvio );
+    this.EnviaNotificaciones(this.DataSectores, this.AccionEnvio);
     this.modalService.dismissAll();
   }
 
   EnviaNotificaciones(ArraySectores: any, accion: string) {
     if (ArraySectores.length > 0) {
 
-      if(accion == '1'){
+      if (accion == '1') {
         for (var i = 0; i < ArraySectores.length; i++) {
           this.ServiciosValorar.CorreoMasivo('1', '9', '2', this.IdOferta, ArraySectores[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
             console.log(ResultCorreo)
           })
         }
-      }else{
+      } else {
         for (var i = 0; i < ArraySectores.length; i++) {
           this.ServiciosValorar.EnviarSms('7', '0', this.IdOferta, ArraySectores[i].ID_SCTOR_OFRTA, '0', '0', '0').subscribe(Resultado => {
             console.log(Resultado)
           })
         }
       }
-      
+
     }
   }
 
@@ -428,6 +433,7 @@ export class BuscarofertaComponent implements OnInit {
     this.ConsultaValoracionOferta();
     this.consultaToppingsOferta();
     this.ConsEnvioSmsEmail();
+    this.ConsultaTextos();
   }
 
   EnvioSms: boolean = false;
@@ -529,7 +535,7 @@ export class BuscarofertaComponent implements OnInit {
         this.MaxUnidI = ResultCons[0].mxmo_unddes_indvdual;
         this.VlrDomiI = ResultCons[0].vlor_dmnclio_indvdual;
         this.PreFinI = ResultCons[0].vlor_fnal_indvdual;
-        
+
       }
       else if (ResultCons[0].TPO_OFRTA == '2') {
         this.MuestraIndividual = '0';
@@ -606,5 +612,16 @@ export class BuscarofertaComponent implements OnInit {
     this.MuestraGrupal = '0';
     this.MuestraCantIndiv = '0';
     this.modalService.dismissAll();
+  }
+
+  ConsultaTextos() {
+    if (this.SessionSectorSel != '' && this.IdOferta != '') {
+      this.ServiciosValorar.constextosoferta('1',this.IdOferta, this.SessionSectorSel).subscribe(Resultado => {
+        //console.log('5564654654654654654/' + this.SessionSectorSel +'/'+ this.IdOferta)
+        //console.log(Resultado)
+        this.TextoNotificacion = Resultado[0].TextoCorreo;
+      })
+    }
+
   }
 }
