@@ -168,10 +168,18 @@ export class AdminsectoresComponent implements OnInit {
     this.DataTipoSector.push({ IdTs: "2", Descripcion: "Permanente" });
   }
   SelectTipoSect(item: any) {
-    console.log(item)
+    var arrGrid: any = [];
+    arrGrid = this.DataSectores;
+    this.DataSectores = [];
+    for(var i = 0; i < arrGrid.length; i++){
+      if(arrGrid[i].Temporal == item.IdTs){
+        this.DataSectores.push(arrGrid[i]);
+      }
+    }
   }
   LimpiaTipoSect(result: string) {
     this.TipoSector = result;
+    this.ConsultaSectores('0');
   }
 
   //Grilla
@@ -183,7 +191,7 @@ export class AdminsectoresComponent implements OnInit {
   SelecctItemGrilla(item: any, modalmapa: any) {
     this.modalService.open(modalmapa, { size: 'lg' });
     this.NombreSector = item.DSCRPCION_SCTOR;
-    this.NombreCiudad = "Bogota DC";//Se debe cambiar por el campo que debe llegar en el servicio
+    this.NombreCiudad = item.Ciudad;//Se debe cambiar por el campo que debe llegar en el servicio
     this.CoordenadasSector = item.coordenadas;
     this.ConsultaUserSector(item);
     this.ConsultaMapaSector('mapSelectSector');
@@ -320,6 +328,7 @@ export class AdminsectoresComponent implements OnInit {
       if (Result.length > 0) {
         if (this.AreaPolygon != undefined) {
           this.AreaPolygon.setMap(null)
+          console.log(this.AreaPolygon)
         }
         this.DataCoor = Result;
         var coordenadas = '';
@@ -348,6 +357,7 @@ export class AdminsectoresComponent implements OnInit {
           fillOpacity: 0.35,
         });
         this.AreaPolygon.setMap(this.map);
+        console.log(this.AreaPolygon)
       }
       else {
         this.DataCoor = [];
@@ -393,12 +403,12 @@ export class AdminsectoresComponent implements OnInit {
     this.markers = [];
     this.VerSectorComponent = "3";
     this.TituloComponent = "Editar sector";
-    this.NombreCiudad = "Bogota DC"//Se debe cambiar a lo que llega de el micro servicio
+    this.NombreCiudad = item.Ciudad//Se debe cambiar a lo que llega de el micro servicio
+    this.CreaMapaEdit('mapEditSector');
     this.NombreSectorEditar = item.DSCRPCION_SCTOR;
     this.CoordenadasSector = "" + item.coordenadas;
     this.IdSectorSelect = item.SCTOR_OFRTA;
     this.ConsultaNumeroUserSector(item.SCTOR_OFRTA);
-    this.CreaMapaEdit('mapEditSector');
     this.ConsultaCoordenadasEdit();
   }
 
@@ -446,10 +456,6 @@ export class AdminsectoresComponent implements OnInit {
           mapTypeId: "terrain"
         }
       );
-      const Cordenadas: string[] = this.CoordenadasSector.split("|");
-      for (var i = 0; i < Cordenadas.length; i++) {
-        this.MarcaPins(Cordenadas[i]);
-      }
       this.map.addListener("click", (e: any) => {
         this.AgregarMarcadoresEdit(e.latLng, this.map);
         this.LatitudeCoordenadas = e.latLng.toString()
@@ -496,11 +502,55 @@ export class AdminsectoresComponent implements OnInit {
     this.markers.push(marker);
   }
   ConsultaCoordenadasEdit() {
+    /*this.sectoresservices.ConsultaCoordenada('1', this.IdSectorSelect).subscribe(Result => {
+      if (Result.length > 0) {
+        if (this.AreaPolygon != undefined) {
+          console.log('Entra a cuando esta vacio');
+          //this.map.
+          this.AreaPolygon.setMap(null);
+          alert(this.AreaPolygon.setMap(null));
+        }
+        this.DataCoor = Result;
+        var coordenadas = '';
+        for (var i = 0; i < this.DataCoor.length; i++) {
+          coordenadas += this.DataCoor[i].Latitud.trim() + ',' + this.DataCoor[i].Longitud.trim() + '|';
+        }
+        var nuevaCoord = coordenadas.substring(0, coordenadas.length - 1)
+        //var nuevaCoord = "4.711719820895,-74.11319514221|4.712746307730,-74.10924693054|4.709923465287,-74.10795947022|4.708554810281,-74.11036272949|4.711719820895,-74.11319514221";
+        var bounds = new google.maps.LatLngBounds;
+        var coords = nuevaCoord.split('|').map(function (data: string) {
+          var info = data.split(','), // Separamos por coma
+            coord = { // Creamos el obj de coordenada
+              lat: parseFloat(info[0]),
+              lng: parseFloat(info[1])
+            };
+          // Agregamos la coordenada al bounds
+          bounds.extend(coord);
+          return coord;
+        });
+        console.log(this.AreaPolygon)
+        this.AreaPolygon = new google.maps.Polygon({
+          paths: coords,
+          strokeColor: '#397c97',
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+          fillColor: '#B1B0B0',
+          fillOpacity: 0.35,
+        });
+        this.AreaPolygon.setMap(this.map);
+        alert(this.AreaPolygon.setMap(this.map));
+      }
+      else {
+        this.DataCoor = [];
+      }
+      this.ConsultaUsuariosSectr(this.IdSectorSelect);
+    })*/
+
     this.sectoresservices.ConsultaCoordenada('1', this.IdSectorSelect).subscribe(Result => {
       if (Result.length > 0) {
         if (this.AreaPolygon != undefined) {
-          console.log('Entra a cuando no esta vacio')
           this.AreaPolygon.setMap(null)
+          console.log(this.AreaPolygon)
         }
         this.DataCoor = Result;
         var coordenadas = '';
@@ -529,6 +579,7 @@ export class AdminsectoresComponent implements OnInit {
           fillOpacity: 0.35,
         });
         this.AreaPolygon.setMap(this.map);
+        console.log(this.AreaPolygon)
       }
       else {
         this.DataCoor = [];
@@ -536,18 +587,8 @@ export class AdminsectoresComponent implements OnInit {
       this.ConsultaUsuariosSectr(this.IdSectorSelect);
     })
   }
-  MarcaPins(coordenadas: string) {
-    const [latitud, longitud] = coordenadas.split(", ");
-    const latLng = new google.maps.LatLng(parseFloat(latitud), parseFloat(longitud));
-    var marker = new google.maps.Marker({
-      position: latLng,
-      map: this.map,
-    });
-    this.markers.push(marker);
-  }
   EliminaCoordenada(coordenada: any, NumHorden: number, ModalRespuesta: any) {
-    console.log(coordenada)
-    if ((NumHorden + 1) == this.DataCoor.length) {
+
       var auxIdSecor: string = "";
       if (this.VerSectorComponent == "2") {
         auxIdSecor = this.IdSectorCreado;
@@ -561,7 +602,6 @@ export class AdminsectoresComponent implements OnInit {
         LTTUD: coordenada.Latitud,
         LNGTUD: coordenada.Longitud
       }
-      console.log(BodyInsertCoo)
       this.sectoresservices.InsertarCoordenadas('4', BodyInsertCoo).subscribe(Resultado => {
         console.log(Resultado)
         this.LatitudeCoordenadas = '';
@@ -575,10 +615,6 @@ export class AdminsectoresComponent implements OnInit {
         this.ConsultaUsuariosSectr(auxIdSecor);
         this.markers[0].setMap(null)
       })
-    } else {
-      this.Respuesta = "No es posible eliminar esta coordenada, por favor elimina la última coordenada registrada, para tu facilidad esta están enumeradas";
-      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-    }
   }
   // #endregion Editar
 
@@ -588,7 +624,6 @@ export class AdminsectoresComponent implements OnInit {
   //No se puede borrar el sector por que primero se tienen qque borrar las coordenas en la tabla AGRO_SECTOR_COORDENADAS
 
   EliminaSector(item: any, ModalRespuesta: any) {
-    console.log(item)
     const BodyInsert = {
       USUCODIG: this.SessionIdUsuario,
       SCTOR_OFR: parseInt(item.SCTOR_OFRTA),//Es el unico campo necesario
@@ -599,6 +634,7 @@ export class AdminsectoresComponent implements OnInit {
       TEMPORAL: '0',
       ID_ZONA: '0'
     }
+    console.log(BodyInsert)
     this.sectoresservices.InsertarSector('4', BodyInsert).subscribe(ResultInsert => {
       console.log(ResultInsert)
       const arrayRes = ResultInsert.split('|')

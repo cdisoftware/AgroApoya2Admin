@@ -158,7 +158,7 @@
     </div>
 
     <!--Seccion Editar-->
-    <div class="row mt-5 justify-content-center" *ngIf="VerSectorComponent == '3'">
+    <div class="row justify-content-center" *ngIf="VerSectorComponent == '3'">
 
         <label class="col-sm-12 mt-2 TextCenter"><strong>Nombre de sector:&nbsp;</strong>{{NombreSectorEditar}}</label>
 
@@ -179,6 +179,7 @@
 
             <div class="col-12 col-lg-4 justify-content-center ListCoordenadas">
                 <div class="col-12 p-1 mt-2 row sinmp coordenadas" *ngFor="let pin of DataCoor; let i = index">
+                    <label class="NumHorden"><strong>#{{i+1}}</strong></label>
                     <div class="col-10">
                         <label><strong>Latitude:</strong></label>
                         <label><strong>{{pin.Latitud}}</strong></label>
