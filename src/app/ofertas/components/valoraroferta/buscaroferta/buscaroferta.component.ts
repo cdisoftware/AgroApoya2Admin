@@ -117,7 +117,9 @@ export class BuscarofertaComponent implements OnInit {
   AccionEnvio: string;
 
   TextoNotificacion: string = '';
-
+  Plantilla: string = '';
+  ImgCorreo: string = '';
+  Previsucorreo: string = '';
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
     private ServiciosValorar: ValorarofertaService,
@@ -377,16 +379,9 @@ export class BuscarofertaComponent implements OnInit {
 
 
   PopupEnvio(ModalEnvio: any, oferta: any, accion: string) {
-    this.ConsultaTextos()
+    this.SessionSectorSel = '';
     this.AccionEnvio = accion;
-    this.modalService.dismissAll();
-    if (this.AccionEnvio == '1') {
-      this.Respuesta = 'Estas seguro de enviar los correos de la oferta: ' + oferta.Nombre_Producto + ' ' + oferta.COD_OFR_PUBLICO
-    } else {
-      this.Respuesta = 'Estas seguro de enviar los mensajes de texto de la oferta: ' + oferta.Nombre_Producto + ' ' + oferta.COD_OFR_PUBLICO
-    }
-
-    this.modalService.open(ModalEnvio, { ariaLabelledBy: 'modal-basic-title', size: 'lg', centered: true, backdrop: 'static', keyboard: false });
+    this.modalService.open(ModalEnvio, { ariaLabelledBy: 'modal-basic-title', size: 'xl', centered: true, backdrop: 'static', keyboard: false });
   }
 
   AceptaEnviar() {
@@ -396,7 +391,6 @@ export class BuscarofertaComponent implements OnInit {
 
   EnviaNotificaciones(ArraySectores: any, accion: string) {
     if (ArraySectores.length > 0) {
-
       if (accion == '1') {
         for (var i = 0; i < ArraySectores.length; i++) {
           this.ServiciosValorar.CorreoMasivo('1', '9', '2', this.IdOferta, ArraySectores[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
@@ -616,12 +610,97 @@ export class BuscarofertaComponent implements OnInit {
 
   ConsultaTextos() {
     if (this.SessionSectorSel != '' && this.IdOferta != '') {
-      this.ServiciosValorar.constextosoferta('1',this.IdOferta, this.SessionSectorSel).subscribe(Resultado => {
-        //console.log('5564654654654654654/' + this.SessionSectorSel +'/'+ this.IdOferta)
-        //console.log(Resultado)
-        this.TextoNotificacion = Resultado[0].TextoCorreo;
+      this.ServiciosValorar.constextosoferta('1', this.IdOferta, this.SessionSectorSel).subscribe(Resultado => {
+        console.log(Resultado)
+        if (this.AccionEnvio == '1') {
+          this.TextoNotificacion = Resultado[0].TextoCorreo;
+          this.Plantilla = Resultado[0].Plantilla;
+          this.ImgCorreo = Resultado[0].ImgCorreo;
+        } else {
+          this.TextoNotificacion = Resultado[0].TextoSms;
+        }
       })
     }
+  }
+  
+  PrevisualizaCorreo(){
+    this.Previsucorreo = this.Plantilla.replace("[imgCorreoMasivo]", this.ImgCorreo.trim());
+    this.Previsucorreo = this.Previsucorreo.replace("[ContenidoMasivo]", this.TextoNotificacion);
+
+  }
+
+  public CargaImagenCorreo(event: any, modalmensaje: any) {
+
+    if (!(/\.(jpg|png|jpeg)$/i).test(event.target.files[0].name)) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El archivo no pudo ser cargado, valide la extención, las permitidas son .jpg .png .jpeg";
+    }
+    else if (event.target.files[0].name.includes(" ")) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El archivo no pudo ser cargado, el nombre no debe contener espacios";
+    }
+    else if (event.target.files[0].size > 1300000) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El peso del archivo no puede exceder 1.3 megabyte";
+    } else {
+      this.ServiciosValorar.postImgToppings(event.target.files[0]).subscribe(
+        response => {
+          if (response <= 1) {
+            console.log("Error en el servidor");
+          } else {
+            if (response == 'Archivo Subido Correctamente') {
+              this.ImgCorreo = this.RutaImagenTopping + event.target.files[0].name;
+              console.log(this.ImgCorreo)
+              
+              const Bodymod = {
+                idSector: this.SessionSectorSel,
+                cd_cnctivo: this.IdOferta,
+                TextoCorreo: "0",
+                TextoWhat: "0",
+                ImgCorreo: this.ImgCorreo
+              }
+
+              this.ServiciosValorar.TextosOferta('2', Bodymod).subscribe(ResultCorreo => {
+                this.PrevisualizaCorreo()
+              })
+
+              this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+              this.Respuesta = "Imagen cargada correctamente.";
+            } else {
+              console.log(response)
+            }
+          }
+        },
+        error => {
+          console.log(<any>error);
+          this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+          this.Respuesta = "No hemos podido subir el archivo, intente nuevamente.";
+        }
+      );
+    }
+  }
+
+  GuardarTexto(modalmensaje: any) {
+    var bandera = '0';
+    const Bodymod = {
+      idSector: this.SessionSectorSel,
+      cd_cnctivo: this.IdOferta,
+      TextoCorreo: this.TextoNotificacion,
+      TextoWhat: '',
+      ImgCorreo: this.ImgCorreo,
+      TextoSms: this.TextoNotificacion
+    }
+    //Bandera 3 actualiza solo correo y bandera 4 actualiza solo sms
+    if(this.AccionEnvio == '1'){
+      bandera = '3'
+    }else if(this.AccionEnvio == '2'){
+      bandera = '4'
+    }
+    this.ServiciosValorar.TextosOferta(bandera, Bodymod).subscribe(ResultCorreo => {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = ResultCorreo;
+      this.PrevisualizaCorreo()
+    })
 
   }
 }
