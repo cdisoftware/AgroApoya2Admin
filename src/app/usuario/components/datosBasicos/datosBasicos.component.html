@@ -2,11 +2,7 @@
   <h1 class="mt-1">Datos Básicos</h1>
   <div class="row justify-content-center">
     <div class="col-6 mt-5 text-center">
-      <select
-        class="form-control"
-        [(ngModel)]="tipoModelo"
-        (change)="cargarBotones()"
-      >
+      <select class="form-control" [(ngModel)]="tipoModelo" (change)="cargarBotones()">
         <option value="0">Seleccione módulo</option>
         <option *ngFor="let Mod of ArrayModelo" [value]="Mod.IdModulo">
           {{ Mod.Descripcion }}
@@ -15,18 +11,10 @@
     </div>
   </div>
   <div class="row mt-5 text-center justify-content-center" *ngIf="breakUno">
-    <div
-      class="col-3 text-center justify-content-center CursorPointer"
-      *ngFor="let boton of ArrayBotones"
-    >
-      <div
-        class="ColorAgro rounded p-2 w-75 text-center m-auto"
-        (click)="cargarGrilla(boton.IdDatoBasico, boton.Nombre)"
-      >
-        <img
-          class="imagenIcono"
-          src="../../../../assets/ImagenesAgroApoya2Adm/configuraciones.png"
-        />
+    <div class="col-3 text-center justify-content-center CursorPointer" *ngFor="let boton of ArrayBotones">
+      <div class="ColorAgro rounded p-2 w-75 text-center m-auto"
+        (click)="cargarGrilla(boton.IdDatoBasico, boton.Nombre)">
+        <img class="imagenIcono" src="../../../../assets/ImagenesAgroApoya2Adm/configuraciones.png" />
         <br />
         <label> {{ boton.Nombre }} </label>
       </div>
@@ -37,30 +25,16 @@
     <div class="row">
       <div class="col-1"></div>
       <div class="col-6">
-        <input
-          class="form-control"
-          type="text"
-          maxlength="50"
-          [(ngModel)]="descripcion"
-          (keydown)="activarBoton()"
-        />
+        <input class="form-control" type="text" maxlength="50" [(ngModel)]="descripcion" (keydown)="activarBoton()" />
       </div>
       <div class="col-2">
-        <button
-          type="button"
-          class="btn btn-agro-prin w-100"
-          (click)="buscarGrilla(descripcion)"
-        >
+        <button type="button" class="btn btn-agro-prin w-100" (click)="buscarGrilla(descripcion)">
           Buscar
         </button>
       </div>
       <div class="col-2">
-        <button
-          type="button"
-          class="btn btn-agro-prin w-100"
-          (click)="abrirModal(ModalAgregar)"
-          [disabled]="isEnabled == true"
-        >
+        <button type="button" class="btn btn-agro-prin w-100" (click)="abrirModal(ModalAgregar)"
+          [disabled]="isEnabled == true">
           Agregar
         </button>
       </div>
@@ -76,44 +50,18 @@
         <th>{{ Item.ID }}</th>
         <th>{{ Item.DSCRIPCION }}</th>
         <th>
-          <button
-            *ngIf="Item.ESTADO == 1"
-            class="btn"
-            (click)="modVisibleItem(Item.ID, Item.ESTADO, Item.DSCRIPCION, Item.DSCRIPCIONDOS)"
-          >
-            <img
-              src="../../../../assets/ImagenesAgroApoya2Adm/ver.png"
-              height="30px"
-            />
+          <button *ngIf="Item.ESTADO == 1" class="btn"
+            (click)="modVisibleItem(Item.ID, Item.ESTADO, Item.DSCRIPCION, Item.DSCRIPCIONDOS)">
+            <img src="../../../../assets/ImagenesAgroApoya2Adm/ver.png" height="30px" />
           </button>
-          <button
-            *ngIf="Item.ESTADO == 2"
-            class="btn"
-            (click)="modVisibleItem(Item.ID, Item.ESTADO, Item.DSCRIPCION, Item.DSCRIPCIONDOS)"
-          >
-            <img
-              src="../../../../assets/ImagenesAgroApoya2Adm/novisible.png"
-              height="30px"
-            />
+          <button *ngIf="Item.ESTADO == 2" class="btn"
+            (click)="modVisibleItem(Item.ID, Item.ESTADO, Item.DSCRIPCION, Item.DSCRIPCIONDOS)">
+            <img src="../../../../assets/ImagenesAgroApoya2Adm/novisible.png" height="30px" />
           </button>
         </th>
         <th>
-          <button
-            class="btn"
-            (click)="
-              abrirModalEditar(
-                ModalEditar,
-                Item.ID,
-                Item.DSCRIPCION,
-                Item.DSCRIPCIONDOS,
-                Item.ESTADO
-              )
-            "
-          >
-            <img
-              src="../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
-              height="30px"
-            />
+          <button class="btn" (click)="abrirModalEditar(ModalEditar,Item.ID,Item.DSCRIPCION,Item.DSCRIPCIONDOS,Item.ESTADO)">
+            <img src="../../../../assets/ImagenesAgroApoya2Adm/Editar.png" height="30px" />
           </button>
         </th>
       </tr>
@@ -124,13 +72,8 @@
 <ng-template #ModalAgregar let-modal>
   <div class="modal-header">
     <h1>Respuesta</h1>
-    <button
-      (keyup.enter)="modal.close()"
-      type="button"
-      class="btn-close"
-      aria-label="Close"
-      (click)="modal.dismiss()"
-    ></button>
+    <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
+      (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body">
     <div class="row br">
@@ -142,23 +85,12 @@
     </div>
   </div>
   <div class="row justify-content-center g-5">
-    <button
-      (keyup.enter)="modal.close()"
-      type="button"
-      class="btn btn-agro-prin col-sm-2"
-      (click)="Agregar()"
-      (click)="modal.close()"
-      (click)="abrirModal(ModalRespuesta)"
-    >
+    <button (keyup.enter)="modal.close()" type="button" class="btn btn-agro-prin col-sm-2" (click)="Agregar()"
+      (click)="modal.close()" (click)="abrirModal(ModalRespuesta)">
       Aceptar
     </button>
     <div class="col-sm-1"></div>
-    <button
-      (keyup.enter)="modal.close()"
-      type="button"
-      class="btn btn-danger col-sm-2"
-      (click)="modal.close()"
-    >
+    <button (keyup.enter)="modal.close()" type="button" class="btn btn-danger col-sm-2" (click)="modal.close()">
       Cancelar
     </button>
   </div>
@@ -168,25 +100,17 @@
 <ng-template #ModalEditar let-modal>
   <div class="modal-header">
     <h1>AgroApoya2</h1>
-    <button
-      (keyup.enter)="modal.close()"
-      type="button"
-      class="btn-close"
-      aria-label="Close"
-      (click)="modal.dismiss()"
-    ></button>
+    <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
+      (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body text-start mb-0">
     <div class="row justify-content-start">
       <div class="col-12 text-center mb-2">
-        <span ><strong>{{ nombreItem }}</strong></span>
+        <span><strong>{{ nombreItem }}</strong></span>
       </div>
     </div>
     <div class="row align-items-center">
-      <div
-        class="row text-center col-10"
-        *ngFor="let label of ArrayLabels"
-      >
+      <div class="row text-center col-10" *ngFor="let label of ArrayLabels">
         <div class="col-3">
           <strong>{{ label.MID }}</strong>
 
@@ -204,73 +128,34 @@
 
         </div>
         <div class="col-3">
-          <input
-            class="form-control"
-            type="text"
-            maxlength="50"
-            [(ngModel)]="IdItem"
-            disabled
-          />
+          <input class="form-control" type="text" maxlength="50" [(ngModel)]="IdItem" disabled />
         </div>
         <div class="col-3">
-          <input
-            class="form-control"
-            type="text"
-            maxlength="50"
-            [(ngModel)]="nombreItem"
-          />
+          <input class="form-control" type="text" maxlength="50" [(ngModel)]="nombreItem" />
         </div>
         <div class="col-3">
-          <input
-            *ngIf="descripcionDos != '0'"
-            class="form-control"
-            type="text"
-            maxlength="50"
-            [(ngModel)]="descripcionDos"
-          />
-          <input
-            *ngIf="descripcionDos == '0'"
-            class="form-control"
-            type="text"
-            maxlength="50"
-            [(ngModel)]="descripcionDos"
-            disabled
-          />
+          <input *ngIf="descripcionDos != '0'" class="form-control" type="text" maxlength="50"
+            [(ngModel)]="descripcionDos" />
+          <input *ngIf="descripcionDos == '0'" class="form-control" type="text" maxlength="50"
+            [(ngModel)]="descripcionDos" disabled />
         </div>
         <div class="col-3">
-          <img
-            *ngIf="estadoItem == '1'"
-            (click)="cambiarOjo()"
-            class="CursorPointer"
-            src="../../../../assets/ImagenesAgroApoya2Adm/ver.png"
-            height="30px"
-          />
-          <img
-            *ngIf="estadoItem == '2'"
-            (click)="cambiarOjo()"
-            class="CursorPointer"
-            src="../../../../assets/ImagenesAgroApoya2Adm/novisible.png"
-            height="30px"
-          />
+          <img *ngIf="estadoItem == '1'" (click)="cambiarOjo()" class="CursorPointer"
+            src="../../../../assets/ImagenesAgroApoya2Adm/ver.png" height="30px" />
+          <img *ngIf="estadoItem == '2'" (click)="cambiarOjo()" class="CursorPointer"
+            src="../../../../assets/ImagenesAgroApoya2Adm/novisible.png" height="30px" />
         </div>
       </div>
       <div class="col-2">
-        <button
-          type="button"
-          class="btn btn-agro-sec w-75"
-          (click)="modificarItem(ModalRespuesta)"
-        >
+        <button type="button" class="btn btn-agro-sec w-75" (click)="modificarItem(ModalRespuesta)">
           Editar
         </button>
       </div>
     </div>
     <div class="row text-center mt-2">
       <div class="col-3">
-        <button
-          *ngFor="let relacion of ArrayRelaciones"
-          class="btn btn-agro-prin col-12 mt-3 w-75 botonesRelacion"
-          (click)="cargarRelaciones(relacion.IdDatoBasico)"
-        >
+        <button *ngFor="let relacion of ArrayRelaciones" class="btn btn-agro-prin col-12 mt-3 w-75 botonesRelacion"
+          (click)="cargarRelaciones(relacion.IdDatoBasico)">
           {{ relacion.Nombre }}
         </button>
       </div>
@@ -279,25 +164,13 @@
           <div class="col-8 mt-4 mr-1">
             {{ relacion.DESCRIPCION }}
           </div>
-          <button
-            *ngIf="relacion.PERTENECE == '0'"
-            class="btn col-4 mt-3 SinEstilo"
-            (click)="modRelacion(relacion.ID, '3')"
-          >
-            <img
-              src="../../../../assets/ImagenesAgroApoya2Adm/add.png"
-              height="30px"
-            />
+          <button *ngIf="relacion.PERTENECE == '0'" class="btn col-4 mt-3 SinEstilo"
+            (click)="modRelacion(relacion.ID, '3')">
+            <img src="../../../../assets/ImagenesAgroApoya2Adm/add.png" height="30px" />
           </button>
-          <button
-            *ngIf="relacion.PERTENECE == '1'"
-            class="btn col-4 mt-3 SinEstilo"
-            (click)="modRelacion(relacion.ID, '4')"
-          >
-            <img
-              src="../../../../assets/ImagenesAgroApoya2Adm/cancel.png"
-              height="30px"
-            />
+          <button *ngIf="relacion.PERTENECE == '1'" class="btn col-4 mt-3 SinEstilo"
+            (click)="modRelacion(relacion.ID, '4')">
+            <img src="../../../../assets/ImagenesAgroApoya2Adm/cancel.png" height="30px" />
           </button>
           <hr class="mt-3 w-100 m-auto" />
         </div>
@@ -306,24 +179,26 @@
   </div>
 </ng-template>
 
+
+
+
 <ng-template #ModalRespuesta let-modal>
   <div class="modal-header">
-      <h1>Respuesta</h1>
-      <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
-          (click)="modal.dismiss()"></button>
+    <h1>Respuesta</h1>
+    <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
+      (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body">
-      <div class="row br">
-          <div class="col-sm-12">
-              <h2 class="TituloDetalle">{{Respuesta}}</h2>
-          </div>
+    <div class="row br">
+      <div class="col-sm-12">
+        <h2 class="TituloDetalle">{{Respuesta}}</h2>
       </div>
+    </div>
   </div>
   <div class="row justify-content-center">
-      <button (keyup.enter)="modal.close()" type="button" class="btn btn-agro-prin col-sm-2 col-6"
-          (click)="modal.close()"
-          (click)="buscarGrilla('0')">Aceptar
-          </button>
+    <button (keyup.enter)="modal.close()" type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()"
+      (click)="buscarGrilla('0')">Aceptar
+    </button>
   </div>
   <br>
 </ng-template>
