@@ -42,7 +42,6 @@ export class DatosBasicosComponent implements OnInit {
   isEnabled: boolean = true;
 
   Respuesta: string = "";
-  VerSeccionProd: boolean = false;
 
   llenarModelo() {
     this.DatosService.ConsultaDatos("1").subscribe(Resultado => {
