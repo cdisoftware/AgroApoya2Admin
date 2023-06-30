@@ -36,12 +36,12 @@ export class DatosBasicosComponent implements OnInit {
   descripcionDos: string = '';
   estadoItem: string = '';
   IdItem: string = '';
-  descripcion: string = ''
-  textoayuda: string = ''
-  idRelacion: string = ''
+  descripcion: string = '';
+  textoayuda: string = '';
+  idRelacion: string = '';
   isEnabled: boolean = true;
 
-  Respuesta:string=''
+  Respuesta: string = "";
 
   llenarModelo() {
     this.DatosService.ConsultaDatos("1").subscribe(Resultado => {
@@ -145,44 +145,40 @@ export class DatosBasicosComponent implements OnInit {
       "Descripcion": this.nombreItem,
       "Texto": this.descripcionDos
     }
-    console.log(bodyPost);
     this.DatosService.AgregarItem("2", bodyPost).subscribe(Resultado => {
       this.textoayuda = Resultado;
-      console.log(this.textoayuda)
-      this.Respuesta='Modificado correctamente'
+      this.Respuesta = 'Modificado correctamente'
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 's' })
     })
   }
 
   cargarRelaciones(idRelacion: string) {
-    console.log(this.tipoBoton, idRelacion, this.IdItem)
     this.DatosService.ConsultaRelacionItem(this.tipoBoton, idRelacion, this.IdItem).subscribe(Resultado => {
       this.ArrayRelacionItem = Resultado;
-      console.log(Resultado)
     })
     this.idRelacion = idRelacion
   }
 
   modRelacion(idRelacion: string, bandera: string) {
-
-    const bodyPost = {
-      "IdDtoBasico": this.tipoBoton,
-      "IdDtoRelacion": this.idRelacion,
-      "IdSubitem": this.IdItem,
-      "IdSubitemDos": idRelacion
+    if (this.tipoBoton == "1") {
+      const bodyPost = {
+        "IdDtoBasico": this.tipoBoton,
+        "IdDtoRelacion": this.idRelacion,
+        "IdSubitem": this.IdItem,
+        "IdSubitemDos": idRelacion
+      }
+      this.DatosService.modificarRelacion(bandera, bodyPost).subscribe(Resultado => {
+        this.textoayuda = Resultado;
+        this.cargarRelaciones(this.idRelacion)
+      })  
+    }else{
+      this.ArrayRelacionItem = [];
     }
-    console.log(bodyPost);
-    this.DatosService.modificarRelacion(bandera, bodyPost).subscribe(Resultado => {
-      this.textoayuda = Resultado;
-      this.cargarRelaciones(this.idRelacion)
-      console.log(this.textoayuda)
-    })
-
   }
 
 
   abrirModal(templateMensaje: any) {
-    this.Respuesta='Se ha agregado correctamente'
+    this.Respuesta = 'Se ha agregado correctamente'
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 's' })
   }
 
@@ -192,10 +188,17 @@ export class DatosBasicosComponent implements OnInit {
     this.descripcionDos = descripcionDos;
     this.estadoItem = estado;
     this.cargarLabel();
-    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
-    this.DatosService.CosultaRelacion(this.tipoBoton).subscribe(Resultado => {
-      this.ArrayRelaciones = Resultado;
-    })
+    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
+
+    if (this.tipoBoton == "1") {
+
+      this.DatosService.CosultaRelacion(this.tipoBoton).subscribe(Resultado => {
+        this.ArrayRelaciones = Resultado;
+      });
+    } else {
+      this.ArrayRelaciones = [];
+    }
+
   }
 
   cambiarOjo() {
@@ -205,9 +208,4 @@ export class DatosBasicosComponent implements OnInit {
     else
       this.estadoItem = '1';
   }
-
-
-
-
-
 }
