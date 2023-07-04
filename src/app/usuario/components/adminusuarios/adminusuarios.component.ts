@@ -80,12 +80,19 @@ export class AdminusuariosComponent implements OnInit {
     //lista Tipo usuarios
     this.serviciosreportes.ConsultaUsuario('1').subscribe(Resultado => {
       this.ArrayTipUsuario = Resultado;
-
     })
   }
 
-  SelTipoUser(idUser: string) {
+  SelTipoUser(idUser: string, modalmensaje: any) {
     this.TipoUsuarioBuscar = idUser;
+    console.log(this.TipoUsuarioBuscar)
+
+    if (this.TipoUsuarioBuscar != '1') {
+      this.Respuesta = 'Estamos trabajando en esta funcionalidad.';
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    } 
+      
+    
   }
 
 
@@ -97,8 +104,8 @@ export class AdminusuariosComponent implements OnInit {
       CELULAR_PERSONA: this.TelefonoBuscar,
       DOCUMENTO_USUARIO: this.CedulaBuscar,
       NOMBRES_PERSONA: this.IdNombre
-    }  
-    this.serviciosreportes.ConsultaListaPersona('3', body).subscribe(Resultado => {     
+    }
+    this.serviciosreportes.ConsultaListaPersona('3', body).subscribe(Resultado => {
       if (Resultado.length == 0) {
         this.Respuesta = 'No hay resultados.';
         this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -111,14 +118,16 @@ export class AdminusuariosComponent implements OnInit {
 
   //Carga los filtros de usuario
   ConsultaPerfilUser(arregloPerfil: any) {
+    console.log(arregloPerfil)
     this.UsucodigConsulta = arregloPerfil.USUCODIG;
     this.modalService.dismissAll();
     this.CargaPerfil()
   }
 
   CargaPerfil() {
-    this.serviciosreportes.ConsultaPerfil(this.UsucodigConsulta).subscribe(Resultado => {    
+    this.serviciosreportes.ConsultaPerfil(this.UsucodigConsulta).subscribe(Resultado => {
       this.arregloListaPerfil = Resultado;
+      console.log(this.arregloListaPerfil)
       this.INPNombre = Resultado[0].NOMBRES_PERSONA;
       this.INPApellido = Resultado[0].APELLIDOS_PERSONA;
       this.INPTipoDocumento = Resultado[0].TIPO_DOCUMENTO;
@@ -135,7 +144,13 @@ export class AdminusuariosComponent implements OnInit {
       this.INPDescDos = Resultado[0].DscripDos;
       this.INPDescTres = Resultado[0].DscripTres;
       this.INPObservacion = Resultado[0].Observacion;
-      this.ImagenAdd = Resultado[0].Imagen;
+
+      if (Resultado[0].Imagen == null || Resultado[0].Imagen == '') {
+        this.ImagenAdd = '../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+      } else {
+        this.ImagenAdd = this.RutaImagenes + Resultado[0].Imagen;
+      }
+      this.NomImagen1 = Resultado[0].Imagen;
       this.ValidaMostrar = '1';
     })
   }
@@ -204,9 +219,6 @@ export class AdminusuariosComponent implements OnInit {
     } else if (this.INPCompltDireccion == undefined || this.INPCompltDireccion == null || this.INPCompltDireccion == '') {
       this.Respuesta = 'El campo complemento dirección es obligatorio.';
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.INPIdManychat == undefined || this.INPIdManychat == null || this.INPIdManychat == '') {
-      this.Respuesta = 'El campo id ManyChat es obligatorio.';
-      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else if (this.IdDepartamento == undefined || this.IdDepartamento == null || this.IdDepartamento == '') {
       this.Respuesta = 'El campo departamento es obligatorio.';
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -235,7 +247,7 @@ export class AdminusuariosComponent implements OnInit {
         DescripDos: this.INPDescDos,
         DescripTres: this.INPDescTres,
         Observacion: this.INPObservacion,
-        Imagen: this.ImagenAdd
+        Imagen: this.NomImagen1
       }
 
       this.serviciosreportes.AgregaInfoPerfil('3', BodyInsert).subscribe(Resultado => {
