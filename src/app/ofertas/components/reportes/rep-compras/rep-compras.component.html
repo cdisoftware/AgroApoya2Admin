@@ -85,71 +85,73 @@
             *ngIf="Siguiente == true" />
     </div>
 </div>
-<div class="row m-1">
+<div class="row m-0 p-0">
     <table class="col-sm-12 TableAgro">
         <tr>
-            <th *ngIf="Siguiente == false">Oferta</th>
-            <th *ngIf="Siguiente == false">Nombre Sector</th>
-            <th *ngIf="Siguiente == false">Fecha Compra</th>
-            <th *ngIf="Siguiente == false">Estado Compra</th>
+            <th *ngIf="Siguiente == false">Fecha / Oferta / Sector</th>
             <th *ngIf="Siguiente == false">Nombre</th>
-            <th *ngIf="Siguiente == false">Apellido</th>
-            <th *ngIf="Siguiente == false">Tipo Comprador</th>
-            <th *ngIf="Siguiente == false">Codigo a compartir</th>
-            <th *ngIf="Siguiente == false">Codigo Lider</th>
-            <th *ngIf="Siguiente == false">Producto</th>
-            <th *ngIf="Siguiente == false">Unidades</th>
+            <th *ngIf="Siguiente == false">Direccion entrega</th>
+            <th *ngIf="Siguiente == false">Telefono</th>
+            <th *ngIf="Siguiente == false">Producto Ancla</th>
+            <th *ngIf="Siguiente == false">Adicionales</th>
+            <th *ngIf="Siguiente == false">Valor Domicilio</th>
+            <th *ngIf="Siguiente == false">Valor Total</th>
 
 
-            <th *ngIf="Siguiente == true">Adicionales</th>
-
-
-            <th *ngIf="Siguiente == true">Valor</th>
+            <th *ngIf="Siguiente == true">Estado Compra</th>
+            <th *ngIf="Siguiente == true">Tipo Comprador</th>
+            <th *ngIf="Siguiente == true">Codigo participante</th>
+            <th *ngIf="Siguiente == true">Codigo Lider</th>
             <th *ngIf="Siguiente == true">Medio de pago</th>
             <th *ngIf="Siguiente == true">Estado de pago</th>
             <th *ngIf="Siguiente == true">Fecha entrega</th>
-            <th *ngIf="Siguiente == true">Direccion entrega</th>
-            <th *ngIf="Siguiente == true">Telefono</th>
             <th *ngIf="Siguiente == true">Email</th>
             <th scope="col">Detalle</th>
         </tr>
         <tr *ngFor="let oferta of DataConsulta">
-            <td *ngIf="Siguiente == false">{{oferta.OFERTA}}</td>
-            <td *ngIf="Siguiente == false">{{oferta.SECTOR}}</td>
-            <td *ngIf="Siguiente == false">{{oferta.FECHA_COMPRA}}</td>
-            <td *ngIf="Siguiente == false">{{oferta.ESTADO_CARRO}}</td>
-            <td *ngIf="Siguiente == false">{{oferta.NOMBRES_PERSONA}}</td>
-            <td *ngIf="Siguiente == false">{{oferta.APELLIDOS_PERSONA}}</td>
-            <td *ngIf="Siguiente == false">{{oferta.TIPO_USUARIO_COMPRA}}</td>
-            <td *ngIf="Siguiente == false">{{oferta.CODIGO_COMPARTIR}}</td>
-            <td *ngIf="Siguiente == false">{{oferta.CODIGO_LIDER}}</td>
-            <td *ngIf="Siguiente == false">{{oferta.PRODUCTO}}</td>
-            <td *ngIf="Siguiente == false">{{oferta.Unidades}}</td>
-
-
-            <td *ngIf="Siguiente == true">{{oferta.ADICIONALES}}</td>
-
-
-
-            <td *ngIf="Siguiente == true">{{oferta.VALOR_PAGO}}</td>
+            <td *ngIf="Siguiente == false">
+                {{oferta.FECHA_COMPRA}}
+                <br> {{oferta.OFERTA}}
+                <br> {{oferta.SECTOR}}
+            </td>
+            <td *ngIf="Siguiente == false">{{oferta.NOMBRES_PERSONA}} {{oferta.APELLIDOS_PERSONA}}</td>
+            <td *ngIf="Siguiente == false">{{oferta.DIRECCION_ENTREGA}}</td>
+            <td *ngIf="Siguiente == false">{{oferta.CELULAR_PERSONA}}</td>
+            <td *ngIf="Siguiente == false ">
+                <div class="m-0 p-0" *ngIf="oferta.Unidades != 0 ">
+                    <strong>{{oferta.Unidades}} Und</strong> <br> {{oferta.PRODUCTO}} <br>
+                    {{oferta.ValorProdcuto | currency : 'USD' : 'symbol' :
+                    '1.0-0'}}
+                </div>
+                <div class="m-0 p-0" *ngIf="oferta.Unidades == 0 ">
+                    <label>N/A</label>
+                </div>
+            </td>
+            <td *ngIf="Siguiente == false">
+                <div [innerHTML]="oferta.ADICIONALES"></div>
+            </td>
+            <td *ngIf="Siguiente == false">{{oferta.ValorDomicilio | currency : 'USD' : 'symbol' :
+                '1.0-0'}}</td>
+            <td *ngIf="Siguiente == false">{{oferta.VALOR_PAGO | currency : 'USD' : 'symbol' :
+                '1.0-0'}}</td>
+            <td *ngIf="Siguiente == true">{{oferta.ESTADO_CARRO}}</td>
+            <td *ngIf="Siguiente == true">{{oferta.TIPO_USUARIO_COMPRA}}</td>
+            <td *ngIf="Siguiente == true">{{oferta.CODIGO_COMPARTIR}}</td>
+            <td *ngIf="Siguiente == true">{{oferta.CODIGO_LIDER}}</td>
             <td *ngIf="Siguiente == true">{{oferta.MEDIO_PAGO}}</td>
             <td *ngIf="Siguiente == true">{{oferta.ESTADO_PAGO}}</td>
             <td *ngIf="Siguiente == true">{{oferta.FECHA_ENTREGA}}</td>
-            <td *ngIf="Siguiente == true">{{oferta.DIRECCION_ENTREGA}}</td>
-            <td *ngIf="Siguiente == true">{{oferta.CELULAR_PERSONA}}</td>
-            <td *ngIf="Siguiente == true" class="overflow">
-
-                {{oferta.CORREO_PERSONA}}
-
-            </td>
+            <td *ngIf="Siguiente == true" class="overflow">{{oferta.CORREO_PERSONA}} </td>
             <td>
                 <button class="SinEstilo" (click)="DetalleCompra(oferta, ModalDetalle)">
                     <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/info.png" alt="">
                 </button>
 
-                <button class="SinEstilo" (click)="Cargadetallesfactura(oferta, ModalFactura)">
+                <!--
+                    <button class="SinEstilo" (click)="Cargadetallesfactura(oferta, ModalFactura)">
                     <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_factura.png" alt="">
                 </button>
+                -->
             </td>
         </tr>
         <tr *ngIf="ValidaConsulta=='1'">
@@ -280,7 +282,8 @@
     </div>
     <div class="modal-body" *ngIf="idTipoFactura == '1'">
         <div class="row">
-            <p class="Valor LetraPequeña">Recuerda que solo te aparecerán los participantes que ya han pagado o que tú como líder les realizaste o realizaras el pago.</p>
+            <p class="Valor LetraPequeña">Recuerda que solo te aparecerán los participantes que ya han pagado o que tú
+                como líder les realizaste o realizaras el pago.</p>
         </div>
         <div class="row" *ngFor="let part of DataParticipantes; let i = index">
             <h6 class="textblue CentrarText" [ngClass]="{'mt-3': i != 0}">
@@ -290,8 +293,10 @@
             <label class="Llave">{{part.DesProducto}}</label>
 
 
-            <label class="Llave" *ngIf="part.DescToppings != '' || part.DescToppings != null || part.DescToppings != undefined">Adicionales</label>
-            <label class="Valor" *ngIf="part.DescToppings != '' || part.DescToppings != null || part.DescToppings != undefined">{{part.DescToppings}}</label>
+            <label class="Llave"
+                *ngIf="part.DescToppings != '' || part.DescToppings != null || part.DescToppings != undefined">Adicionales</label>
+            <label class="Valor"
+                *ngIf="part.DescToppings != '' || part.DescToppings != null || part.DescToppings != undefined">{{part.DescToppings}}</label>
 
             <div class="col-sm-6">
                 <label class="Llave">Unidades</label>
