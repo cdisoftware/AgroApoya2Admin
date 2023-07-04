@@ -8,7 +8,7 @@
             <div class="col-sm-12 br">
                 <label class="col-sm-12 Llave">Tipo usuario</label>
                 <select class="form-control form-control-sm textBox" #SelectipUsuario id="SelectipUsuario"
-                    (change)='SelTipoUser(SelectipUsuario.value)'>
+                    (change)='SelTipoUser(SelectipUsuario.value, ModalRespuesta)'>
                     <option value="0">Tipo usuario</option>
                     <option *ngFor="let TipoUser of ArrayTipUsuario;" [value]="TipoUser.IdTipoUsuario"
                         [selected]="TipoUser.IdTipoUsuario == TipoUsuarioBuscar">
@@ -141,7 +141,7 @@
                         <div class="col-sm-6 br">
                             <label class="col-sm-12 Llave">Id ManyChat</label>
                             <input type="number" class="form-control form-control-sm textBox"
-                                placeholder="Id ManyChat (Obligatorio)" required="required" name="id_manychat"
+                                placeholder="Id ManyChat" required="required" name="id_manychat"
                                 [(ngModel)]="INPIdManychat">
 
                         </div>
