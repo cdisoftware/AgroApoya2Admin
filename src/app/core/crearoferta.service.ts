@@ -44,4 +44,12 @@ export class CrearofertaService {
     formData.append('file', imagenParaSubir, imagenParaSubir.name);
     return this.http.post(this.url_servidor + 'uploadFile', formData);
   }
+
+  public postFileImgUsers(AddImgUser: File) {
+    const formData = new FormData();
+    formData.append('file', AddImgUser, AddImgUser.name);
+    return this.http.post(this.url_servidor + 'uploadImgUsuarios', formData);
+  }
+
+
 }

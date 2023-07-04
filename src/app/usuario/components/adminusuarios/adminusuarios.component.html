@@ -1,0 +1,265 @@
+<form class="Fondo">
+    <br><br>
+    <div class="container bg-white">
+        <br>
+        <h1>Administración de usuarios </h1>
+
+        <div class="row">
+            <div class="col-sm-12 br">
+                <label class="col-sm-12 Llave">Tipo usuario</label>
+                <select class="form-control form-control-sm textBox" #SelectipUsuario id="SelectipUsuario"
+                    (change)='SelTipoUser(SelectipUsuario.value)'>
+                    <option value="0">Tipo usuario</option>
+                    <option *ngFor="let TipoUser of ArrayTipUsuario;" [value]="TipoUser.IdTipoUsuario"
+                        [selected]="TipoUser.IdTipoUsuario == TipoUsuarioBuscar">
+                        {{TipoUser.Descripcion}}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row br">
+
+            <div class="col-sm-6 br">
+                <label class="col-sm-12 Llave">Correo</label>
+                <input type="text" class="form-control form-control-sm textBox" required="required" name="Correo"
+                    [(ngModel)]="CorreoBuscar" [ngModelOptions]="{standalone: true}">
+            </div>
+
+            <div class="col-sm-6 br">
+                <label class="col-sm-12 Llave">Cedula</label>
+                <input type="text" class="form-control form-control-sm textBox" required="required" name="Cedula"
+                    [(ngModel)]="CedulaBuscar" [ngModelOptions]="{standalone: true}">
+            </div>
+
+            <div class="row br justify-content-center mt-3">
+                <div class="col-sm-3 col-12 br">
+                    <button class="col-sm-12 btn btn-agro-prin"
+                        (click)="BuscarPerfil(templateBuscarPerfil, ModalRespuesta)">Buscar</button>
+                </div>
+                <div class="col-sm-3 col-12 br">
+                    <button class="col-sm-12 btn btn-agro-sec" (click)="Limpiar()">Limpiar</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row br" *ngIf="ValidaMostrar=='1'">
+            <hr>
+            <div class="row justify-content-center br tarjetadetalle">
+
+                <div class="row m-3">
+                    <h1>Información basica</h1>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Nombres</label>
+                            <input type="text" class="form-control form-control-sm textBox"
+                                placeholder="Nombres (Obligatorio)" required="required" name="Nombres"
+                                [(ngModel)]="INPNombre">
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Apellidos</label>
+                            <input type="text" class="form-control form-control-sm textBox"
+                                placeholder="Apellidos (Obligatorio)" required="required" name="Apellidos"
+                                [(ngModel)]="INPApellido">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 br">
+                            <label class="col-sm-12 Llave">Tipo de documento</label>
+                            <input type="text" class="form-control form-control-sm textBox"
+                                placeholder="Tipo de documento (Obligatorio)" disabled required="required"
+                                name="tipodoc" [(ngModel)]="INPTipoDocumento">
+
+                        </div>
+                        <div class="col-sm-6 br">
+                            <label class="col-sm-12 Llave">Número de identificación</label>
+                            <input type="number" class="form-control form-control-sm textBox"
+                                placeholder="Número de identificación (Obligatorio)" disabled required="required"
+                                name="numident" [(ngModel)]="INPNumIdentidad">
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-sm-6 br">
+                            <select class="form-control form-control-sm textBox" [(ngModel)]="IdDepartamento"
+                                (change)='SelDepa()' [ngModelOptions]="{standalone: true}">
+                                <option selected value="0">Departamento (Obligatorio)</option>
+                                <option *ngFor="let Departamento of ArrayDepa;" [value]="Departamento.CD_RGION"
+                                    [selected]="Departamento.CD_RGION == IdDepartamento">
+                                    {{Departamento.DSCRPCION}}
+                                </option>
+                            </select>
+
+                        </div>
+
+                        <div class="col-sm-6 br">
+                            <select class="form-control form-control-sm textBox" [(ngModel)]="IdCiudad"
+                                [ngModelOptions]="{standalone: true}">
+                                <option selected value="0">Ciudad (Obligatorio)</option>
+                                <option *ngFor="let Ciudad of ArrayCiud;" [value]="Ciudad.CD_MNCPIO"
+                                    [selected]="Ciudad.CD_MNCPIO == IdCiudad">
+                                    {{Ciudad.DSCRPCION}}
+                                </option>
+                            </select>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 br">
+                            <label class="col-sm-12 Llave">Dirección</label>
+                            <input type="text" class="form-control form-control-sm textBox"
+                                placeholder="Dirección (Obligatorio)" required="required" name="direccion"
+                                [(ngModel)]="INPDireccion">
+
+                        </div>
+                        <div class="col-sm-6 br">
+                            <label class="col-sm-12 Llave">Complemento dirección</label>
+                            <input type="text" class="form-control form-control-sm textBox"
+                                placeholder="Complemento dirección (Obligatorio)" required="required"
+                                name="complementodireccion" [(ngModel)]="INPCompltDireccion">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 br">
+                            <label class="col-sm-12 Llave">Número celular</label>
+                            <input type="text" class="form-control form-control-sm textBox"
+                                placeholder="Número celular (Obligatorio)" required="required" name="celular"
+                                [(ngModel)]="INPCelular">
+
+                        </div>
+                        <div class="col-sm-6 br">
+                            <label class="col-sm-12 Llave">Correo electrónico</label>
+                            <input type="text" class="form-control form-control-sm textBox"
+                                placeholder="Correo electrónico (Obligatorio)" disabled required="required"
+                                name="correo" [(ngModel)]="INPCorreo">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 br">
+                            <label class="col-sm-12 Llave">Id ManyChat</label>
+                            <input type="number" class="form-control form-control-sm textBox"
+                                placeholder="Id ManyChat (Obligatorio)" required="required" name="id_manychat"
+                                [(ngModel)]="INPIdManychat">
+
+                        </div>
+                        <div class="col-sm-6 br">
+                            <label class="col-sm-12 Llave">Comentario</label>
+                            <textarea required="required" name="comentario" id="comentario"
+                                class="form-control form-control-sm textArea" cols="30"
+                                placeholder="Comentario (Obligatorio)" rows="2" [(ngModel)]="INPComentario"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center br tarjetadetalle">
+                <div class="row m-3">
+                    <h1>Información adicional</h1>
+                    <div class="col-sm-4 ContentCenter">
+                        <div class="image-upload">
+                            <label for="file-input1">
+                                <img id="Imagen1" title="Selecciona una imagen" [src]="ImagenAdd" class="w-100 ImgUser">
+                            </label>
+                            <input name="file-input" id="file-input1" type="file" (change)="CargaImagen($event)"
+                                [(ngModel)]="ImagenAdd" />
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Descripción Uno:&nbsp;</label><textarea required="required"
+                                    name="desuno" id="descuno" class="form-control form-control-sm textArea" cols="30"
+                                    rows="3" [(ngModel)]="INPDescUno"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 br">
+                                <label class="Llave">Descripción Dos:&nbsp;</label>
+                                <textarea required="required" name="desdos" id="descdos"
+                                    class="form-control form-control-sm textArea" cols="30" rows="3"
+                                    [(ngModel)]="INPDescDos"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 br">
+                                <label class="Llave">Descripción Tres:&nbsp;</label>
+                                <textarea required="required" name="destres" id="desctres"
+                                    class="form-control form-control-sm textArea" cols="30" rows="3"
+                                    [(ngModel)]="INPDescTres"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Observación:&nbsp;</label>
+                                <textarea required="required" name="obvacion" id="observacion"
+                                    class="form-control form-control-sm textArea" cols="30" rows="3"
+                                    [(ngModel)]="INPObservacion"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="row br justify-content-center mt-3">
+                <div class="col-sm-3 col-12 br">
+                    <button class="col-sm-12 btn btn-agro-prin" (click)="InsertPerfil(ModalRespuesta)">Guardar</button>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+</form>
+<!-- Template Modal Buscar-->
+<ng-template class="row justify-content-center" #templateBuscarPerfil let-modal>
+
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title">Selecciona Usuario</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="moda-body">
+        <div class="row justify-content-center m-3">
+            <ul>
+                <li class="displayflex col-sm-12 m-1" *ngFor="let respuesta of arregloListaPerfil">
+                    <div class="col-sm-10">
+                        <input type="text" value="{{respuesta.NOMBRES_PERSONA}}" class="form-control" disabled>
+                    </div>
+                    <div>
+                        <button class="SinEstilo" (click)="ConsultaPerfilUser(respuesta)">
+                            <img class="Iconos" src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
+                                alt="Ver">
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-sm-12 text-center">
+                <button type="button" class="col-sm-3 btn btn-agro-prin" (click)="modal.close()">Aceptar</button>
+            </div>
+        </div>
+        <br>
+    </div>
+</ng-template>
+<ng-template #ModalRespuesta let-modal>
+    <div class="modal-header">
+        <h1>Respuesta</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">{{Respuesta}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>

@@ -38,7 +38,7 @@ import { AdminUltMillaComponent } from './ofertas/components/admin-ult-milla/adm
 import { RepOfertasComponent } from './ofertas/components/reportes/rep-ofertas/rep-ofertas.component';
 import { AsignaTransUltMillaComponent } from './ofertas/components/asigna-trans-ult-milla/asigna-trans-ult-milla.component';
 import { AdminsectoresComponent } from './ofertas/components/adminsectores/adminsectores.component';
-
+import { AdminusuariosComponent } from './usuario/components/adminusuarios/adminusuarios.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
@@ -66,7 +66,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     ConsultacorreosComponent,
     AdminUltMillaComponent,
     AsignaTransUltMillaComponent,
-    AdminsectoresComponent
+    AdminsectoresComponent,
+    AdminusuariosComponent
   ],
   imports: [
     NgxMaskModule.forRoot(options),

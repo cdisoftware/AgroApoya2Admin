@@ -26,7 +26,7 @@ import { AdminUltMillaComponent } from './ofertas/components/admin-ult-milla/adm
 import { RepOfertasComponent } from './ofertas/components/reportes/rep-ofertas/rep-ofertas.component';
 import { AsignaTransUltMillaComponent } from './ofertas/components/asigna-trans-ult-milla/asigna-trans-ult-milla.component';
 import { AdminsectoresComponent } from './ofertas/components/adminsectores/adminsectores.component';
-
+import { AdminusuariosComponent } from './usuario/components/adminusuarios/adminusuarios.component';
 const routes: Routes = [
   {
     path: '',
@@ -138,6 +138,10 @@ const routes: Routes = [
       {
         path: 'AdminSectores',
         component: AdminsectoresComponent
+      },
+      {
+        path: 'AdminUsuarios',
+        component: AdminusuariosComponent
       }
     ]
   },

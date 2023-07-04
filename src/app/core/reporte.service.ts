@@ -14,7 +14,7 @@ export class ReporteService {
   url_servidor = this.metodosglobales.SeleccionAmbiente();
 
 
-  private libro : Workbook
+  private libro: Workbook
 
   ConsultaUsuario(Bandera: string) {
 
@@ -33,7 +33,7 @@ export class ReporteService {
   ConsultaTipoTranspor(Bandera: string, usuCodigo: string) {
     return this.http.get<any>(this.url_servidor + 'consctipotransport/' + Bandera + '/' + usuCodigo)
   }
-  ConsultaComprasXOfer(Bandera: string, cd_cnscutivo: string, IdSector: string, IdCompra: string, IdPago:string, body: any) {
+  ConsultaComprasXOfer(Bandera: string, cd_cnscutivo: string, IdSector: string, IdCompra: string, IdPago: string, body: any) {
     console.log(this.url_servidor + 'conscreporteventas/' + Bandera + '/' + cd_cnscutivo + '/' + IdSector + '/' + IdCompra + '/' + IdPago)
     console.log(body)
     return this.http.post<any>(this.url_servidor + 'conscreporteventas/' + Bandera + '/' + cd_cnscutivo + '/' + IdSector + '/' + IdCompra + '/' + IdPago, body)
@@ -42,39 +42,51 @@ export class ReporteService {
     return this.http.get<any[]>(this.url_servidor + 'conscparticipantegrupo/' + Bandera + '/' + IdGrupo + '/' + Usucodig)
   }
 
+  ConsultaPerfil(Usucodig: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscperfilcampesino/' + Usucodig)
+  }
+
+  AgregaInfoPerfil(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modPerfilCampesino/' + Bandera, Body)
+  }
+
+  ConsultaListaPersona(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'consclistapersona/' + Bandera, Body)
+  }
+
   //Métodos para descargar el Excel
 
   async decargarExcel(data: any): Promise<void> {
     this.libro = new Workbook();
 
-    this.libro.creator='CDI software'
+    this.libro.creator = 'CDI software'
 
     await this.crearTabla(data);
 
     this.crearTabla(data)
-    this.libro.xlsx.writeBuffer().then((data)=>{
+    this.libro.xlsx.writeBuffer().then((data) => {
       const blob = new Blob([data])
       FileSaver.saveAs(blob, "UsuariosAgro.xlsx");
     })
   }
 
   async crearTabla(data: any): Promise<void> {
-    const sheet= this.libro.addWorksheet("Reporte");
-    sheet.getColumn("A").width =8;
-    sheet.getColumn("B").width =17;
-    sheet.getColumn("C").width =22;
-    sheet.getColumn("D").width =12;
-    sheet.getColumn("E").width =34;
-    sheet.getColumn("F").width =20;
-    sheet.getColumn("G").width =20;
-    sheet.getColumn("H").width =12;
-    sheet.getColumn("I").width =12;
-    sheet.getColumn("J").width =12;
-    sheet.getColumn("K").width =34;
-    sheet.getColumn("L").width =34;
+    const sheet = this.libro.addWorksheet("Reporte");
+    sheet.getColumn("A").width = 8;
+    sheet.getColumn("B").width = 17;
+    sheet.getColumn("C").width = 22;
+    sheet.getColumn("D").width = 12;
+    sheet.getColumn("E").width = 34;
+    sheet.getColumn("F").width = 20;
+    sheet.getColumn("G").width = 20;
+    sheet.getColumn("H").width = 12;
+    sheet.getColumn("I").width = 12;
+    sheet.getColumn("J").width = 12;
+    sheet.getColumn("K").width = 34;
+    sheet.getColumn("L").width = 34;
     const header = sheet.getRow(1);
 
-    header.values=[
+    header.values = [
       'UsuCodig',
       'Tipo Persona',
       'Nombre',
@@ -91,25 +103,24 @@ export class ReporteService {
 
     const filas = sheet.getRows(2, data.length)!;
 
-    for(let index = 0; index<data.length;index++)
-    {
-        const fila = filas[index];
-        const itemData = data[index]
+    for (let index = 0; index < data.length; index++) {
+      const fila = filas[index];
+      const itemData = data[index]
 
-        fila.values=[
-          itemData.Usucodig,
-          itemData.DesTipoPersona,
-          itemData.NombrePersona + itemData.ApellidoPersona,
-          itemData.NumeroCelular,
-          itemData.CorreoPersona,
-          itemData.FechaCreacion,
-          itemData.DesTipoDocumento,
-          itemData.NumeroDoc,
-          itemData.DesDepto,
-          itemData.DesCiudad,
-          itemData.Direccion,
-          itemData.Observacion,
-        ]
+      fila.values = [
+        itemData.Usucodig,
+        itemData.DesTipoPersona,
+        itemData.NombrePersona + itemData.ApellidoPersona,
+        itemData.NumeroCelular,
+        itemData.CorreoPersona,
+        itemData.FechaCreacion,
+        itemData.DesTipoDocumento,
+        itemData.NumeroDoc,
+        itemData.DesDepto,
+        itemData.DesCiudad,
+        itemData.Direccion,
+        itemData.Observacion,
+      ]
     }
   }
 

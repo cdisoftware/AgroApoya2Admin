@@ -1,0 +1,17 @@
+.ContentCenter {   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ImgUser{
+    border-radius: 10px;
+}
+.displayflex{
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .Iconos{
+    width: 25px;
+    margin-left: 20px;
+  }

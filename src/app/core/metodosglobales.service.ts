@@ -59,7 +59,9 @@ export class MetodosglobalesService {
     } else if (tipoimagen == '4') {
       return ruta + 'ImagenesToppings/'
     } else if (tipoimagen == '5') {
-      return ruta + 'ImagenesPublicidad/'
+      return ruta + 'ImagenesPublicidad/'    
+    } else if (tipoimagen == '6') {
+      return ruta + 'ImagenesUsuarios/'
     } else {
       return 'no se encontro la imagen'
     }
