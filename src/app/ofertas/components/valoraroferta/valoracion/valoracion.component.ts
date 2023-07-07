@@ -198,7 +198,8 @@ export class ValoracionComponent implements OnInit {
     this.Consultatoppings();
   }
   consultaToppingsOferta() {
-    this.serviciosvaloracion.ConsultaToppingOfer('1', this.SessionSectorSel, this.SessionOferta).subscribe(Resultcons => {
+    this.serviciosvaloracion.ConsultaToppingOfer('1', this.SessionSectorSel, this.SessionOferta, '0').subscribe(Resultcons => {
+      console.log(Resultcons)
       if (Resultcons.length > 0) {
         this.DataToppings = Resultcons;
         this.ValidaConsulta = '0';
@@ -284,7 +285,8 @@ export class ValoracionComponent implements OnInit {
   GuardaTopping(templateMensaje: any) {
     this.Respuesta = ''
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
-    if (this.DesTopp == '' || this.VlrUniTopp == '' || this.UnidMaxTopp == '' || this.SessionTipoTopp == '0' || this.UnidOferta == '' || this.imagenesAdicionales == '' || this.PesoTopping == '') {
+    console.log(Number(this.VlrUniTopp))
+    if (this.DesTopp == '' || this.VlrUniTopp == null || this.UnidMaxTopp == '' || this.SessionTipoTopp == '0' || this.UnidOferta == '' || this.imagenesAdicionales == '' || this.PesoTopping == '') {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
@@ -343,7 +345,7 @@ export class ValoracionComponent implements OnInit {
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'VlrUniTopp') {
-          if (this.VlrUniTopp == '' || this.VlrUniTopp == null) {
+          if (this.VlrUniTopp == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
@@ -415,7 +417,6 @@ export class ValoracionComponent implements OnInit {
         imagen: validaImagen,
         PesoKiloUnd: Number(this.PesoTopping)
       }
-      console.log(Body)
       this.serviciosvaloracion.ModificaTopping('2', Body).subscribe(ResultOper => {
         this.Respuesta = ResultOper;
         this.consultaToppingsOferta();
@@ -516,7 +517,6 @@ export class ValoracionComponent implements OnInit {
 
   selectTipTopp(item: any) {
     this.SessionTipoTopp = item.id;
-    console.log(item)
     if (item.id == 2) {
       this.ValidaTipoTopp = true;
       this.UnidMaxTopp = '1';
@@ -1061,7 +1061,7 @@ export class ValoracionComponent implements OnInit {
           this.ArrayTextoModifica = ResultUpdate;
           this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
         })
-      })         
+      })
       this.SumaPrecios = parseInt(this.VlrDomiI) + parseInt(this.PreFinI);
       this.ValorUni = this.SumaPrecios.toString();
       this.consultaValoresUni();

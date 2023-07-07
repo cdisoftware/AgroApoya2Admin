@@ -582,7 +582,7 @@ export class BuscarofertaComponent implements OnInit {
     this.consultaimagen = this.RutaImagenTopping + imagenesAdicional;
   }
   consultaToppingsOferta() {
-    this.ServiciosValorar.ConsultaToppingOfer('1', this.SessionSectorSel, this.IdOferta).subscribe(Resultcons => {
+    this.ServiciosValorar.ConsultaToppingOfer('1', this.SessionSectorSel, this.IdOferta, '0').subscribe(Resultcons => {
       if (Resultcons.length > 0) {
         this.DataToppings = Resultcons;
         this.VerTopping = '1';
