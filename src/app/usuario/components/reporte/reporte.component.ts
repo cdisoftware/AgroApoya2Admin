@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReporteService } from 'src/app/core/reporte.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
+import { InteraccionMenyChat } from 'src/app/core/InteraccionMenyChat';
 
 @Component({
   selector: 'app-reporte',
@@ -13,7 +14,8 @@ export class ReporteComponent implements OnInit {
   constructor(
     private ReporteService: ReporteService,
     private modalService: NgbModal,
-    public cookies: CookieService
+    public cookies: CookieService,
+    public InteraccionMenyChat: InteraccionMenyChat
   ) { }
 
   mail: string = '';
@@ -67,15 +69,16 @@ export class ReporteComponent implements OnInit {
 
   Siguiente: boolean = true;
 
-  ngOnInit() {
+  //William
+  ArrayUserManyChat: any = [];
 
+  ngOnInit() {
     this.cargarListas();
   }
 
   cargarListas() {
     this.ReporteService.ConsultaUsuario('1').subscribe(Resultado => {
       this.ArrayTipoUsuario = Resultado;
-      console.log(this.ArrayTipoUsuario[0]);
     })
 
   }
@@ -105,12 +108,11 @@ export class ReporteComponent implements OnInit {
       CorreoPersona: this.mail,
       NombrePersona: this.nombre
     }
-    console.log(bodyPost)
     this.ReporteService.ReporteUsuarios("1", this.FechaDesde, this.FechaHasta, bodyPost).subscribe(Resultado => {
       if (Resultado.length > 0) {
         console.log(Resultado)
         this.ArrayUsuarios = Resultado;
-      }else{
+      } else {
         this.ArrayUsuarios = [];
       }
     })
@@ -322,4 +324,101 @@ export class ReporteComponent implements OnInit {
     this.ArrayUsuarios = []
   }
 
+
+  //William
+  //#region UpdateMenyChat
+  UpdateManyChatUsers() {
+    try {
+      this.ArrayUserManyChat = [];
+      const bodyPost = {
+        IdTipoPersona: '0',
+        Usucodig: '0',
+        CorreoPersona: '0',
+        NombrePersona: '0'
+      }
+      this.ReporteService.ReporteUsuarios("1", '0', '0', bodyPost).subscribe(Resultado => {
+        for (var i = 0; i < Resultado.length; i++) {
+          if (Resultado[i].Id_ManyChat == null || Resultado[i].Id_ManyChat == undefined || Resultado[i].Id_ManyChat == "" || Resultado[i].Id_ManyChat == "null") {
+            this.ArrayUserManyChat.push(Resultado[i]);
+          }
+        }
+        console.log(this.ArrayUserManyChat)
+        this.ConsultaUserMenyChat();
+      });
+    } catch {
+
+    }
+  }
+
+
+  async ConsultaUserMenyChat() {
+    for (var i = 0; i < this.ArrayUserManyChat.length; i++) {
+      await new Promise((resolve, reject) => {
+        const body = {
+          phone: this.ArrayUserManyChat[i].NumeroCelular,
+          email: this.ArrayUserManyChat[i].CorreoPersona.toLowerCase().replace(' ', '')
+        }
+        this.InteraccionMenyChat.infoUserManyChat(body).subscribe(Resultado => {
+          console.log(Resultado)
+          if (Resultado.data.length == 0) {
+            if(this.ArrayUserManyChat[i] != undefined){
+              this.InsertUserInMenyChat(this.ArrayUserManyChat[i]);
+            }else{
+              resolve(false);
+            }
+          } else {
+            this.UpdateIdManyChatUser(Resultado.data.id);
+          }
+        });
+        resolve(true);
+      });
+    }
+  }
+
+  async InsertUserInMenyChat(Item: any) {
+    console.log(Item)
+    await new Promise((resolve, reject) => {
+      console.log('Inserta el usuario en mennychat')
+      const body = {
+        first_name: Item.NombrePersona,
+        last_name: Item.ApellidoPersona,
+        phone: "+57" + Item.NumeroCelular,
+        whatsapp_phone: "+57" + Item.NumeroCelular,
+        email: Item.CorreoPersona.toLowerCase().replace(' ', ''),
+        gender: "male",//Genero (male=masculino, female=femenino)
+        has_opt_in_sms: true,
+        has_opt_in_email: true,
+        consent_phrase: "string"
+      }
+      this.InteraccionMenyChat.modmanychatcreateuser(body).subscribe(Resultado => {
+        console.log(Resultado)
+        var IdMenyChat: string = "";
+        if (Resultado.status == "success" && Resultado.data.id != "") {
+          IdMenyChat = Resultado.data.id;
+          console.log('El Id menychat cuando es user no existe es: ' + IdMenyChat)
+          this.UpdateIdManyChatUser(IdMenyChat);
+        }
+      });
+    });
+  }
+  //Actualiza el id de menychat en la bd
+  async UpdateIdManyChatUser(IdMenyChat: string) {
+    await new Promise((resolve, reject) => {
+      console.log('Inserta el usuario en bd')
+      const body = {
+        correo_persona: this.mail.toLowerCase().replace(' ', ''),
+        ID_MANYCHAT: IdMenyChat
+      }
+      this.InteraccionMenyChat.ActualizaIdManyChat('3', body).subscribe(Resultado => {
+        console.log(Resultado)
+        var respu: string = Resultado.split("|");
+        if (respu[0].trim() == "1") {
+
+        } else {
+
+        }
+      });
+    });
+  }
+  //#endregion UpdateMenyChat
 }

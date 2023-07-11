@@ -21,7 +21,6 @@ export class ReporteService {
     return this.http.get<any>(this.url_servidor + 'consctipousuario/' + Bandera)
   }
   ReporteUsuarios(Bandera: string, FechaDesde: string, FechaHasta: string, Datos: any) {
-    console.log(this.url_servidor + 'conscreporteusuarios/' + Bandera)
     return this.http.post<any>(this.url_servidor + 'conscreporteusuarios/' + Bandera + '/' + FechaDesde + '/' + FechaHasta, Datos)
   }
   ConsultaTipoCliente(Bandera: string, usuCodigo: string) {
