@@ -76,6 +76,8 @@ export class ReporteComponent implements OnInit {
   ArrayUserManyChat: any = [];
   ArrayUsersActualizados: any = [];
   Loader = false;
+  Date: Date = new Date;
+  FechaVer: string = this.Date.getFullYear() + "/" + this.Date.getMonth() + "/" + this.Date.getDay();
 
   ngOnInit() {
     this.cargarListas();
@@ -114,6 +116,7 @@ export class ReporteComponent implements OnInit {
       NombrePersona: this.nombre
     }
     this.ReporteService.ReporteUsuarios("1", this.FechaDesde, this.FechaHasta, bodyPost).subscribe(Resultado => {
+      console.log(Resultado)
       if (Resultado.length > 0) {
         this.ArrayUsuarios = Resultado;
       } else {
@@ -349,6 +352,7 @@ export class ReporteComponent implements OnInit {
             this.ArrayUserManyChat.push(Resultado[i]);
           }
         }
+        console.log(this.ArrayUserManyChat)
         this.ConsultaUserMenyChat();
       });
     } catch {
@@ -359,8 +363,7 @@ export class ReporteComponent implements OnInit {
     for (var i = 0; i < this.ArrayUserManyChat.length; i++) {
       await new Promise((resolve, reject) => {
         const body = {
-          phone: this.ArrayUserManyChat[i].NumeroCelular,
-          email: this.ArrayUserManyChat[i].CorreoPersona.toLowerCase().replace(' ', '')
+          phone: this.ArrayUserManyChat[i].NumeroCelular
         }
         this.InteraccionMenyChat.infoUserManyChat(body).subscribe(Resultado => {
           if (Resultado.data.length == 0) {
@@ -378,20 +381,18 @@ export class ReporteComponent implements OnInit {
     }
     //Finaliza el recorido abre el modal con los users actualizados
     if (this.ArrayUsersActualizados.length > 0) {
-      this.modalService.open(this.templateUserAct);
+      this.modalService.open(this.templateUserAct, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
     } else {
       this.modalService.open(this.templaMensaje);
     }
     this.Loader = false;
-    console.log('Finaliza for')
   }
   async InsertUserInMenyChat(Item: any) {
     await new Promise((resolve, reject) => {
       const body = {
         first_name: Item.NombrePersona,
         last_name: Item.ApellidoPersona,
-        phone: "+57" + Item.NumeroCelular,
-        whatsapp_phone: "+57" + Item.NumeroCelular,
+        phone: Item.NumeroCelular,
         email: Item.CorreoPersona.toLowerCase().replace(' ', ''),
         gender: "male",//Genero (male=masculino, female=femenino)
         has_opt_in_sms: true,
@@ -399,6 +400,7 @@ export class ReporteComponent implements OnInit {
         consent_phrase: "string"
       }
       this.InteraccionMenyChat.modmanychatcreateuser(body).subscribe(Resultado => {
+        console.log(Resultado)
         var IdMenyChat: string = "";
         if (Resultado.status == "success" && Resultado.data.id != "") {
           IdMenyChat = Resultado.data.id;
@@ -418,15 +420,12 @@ export class ReporteComponent implements OnInit {
       this.InteraccionMenyChat.ActualizaIdManyChat('3', body).subscribe(Resultado => {
         var respu: string = Resultado.split("|");
         if (respu[0].trim() == "1") {
-          //this.UsersActualizadosManyChat(item);
+          this.UsersActualizadosManyChat(item);
         }
         resolve(true);
       });
     });
   }
-
-
-
   UsersActualizadosManyChat(item: any) {
     this.ArrayUsersActualizados.push(item);
   }
