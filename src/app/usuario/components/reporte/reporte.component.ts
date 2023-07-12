@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReporteService } from 'src/app/core/reporte.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
@@ -10,6 +10,9 @@ import { InteraccionMenyChat } from 'src/app/core/InteraccionMenyChat';
   styleUrls: ['./reporte.component.css']
 })
 export class ReporteComponent implements OnInit {
+
+  @ViewChild('templaUsersCtualizados', { static: false }) templateUserAct: any;
+  @ViewChild('templaMensaje', { static: false }) templaMensaje: any;
 
   constructor(
     private ReporteService: ReporteService,
@@ -71,6 +74,8 @@ export class ReporteComponent implements OnInit {
 
   //William
   ArrayUserManyChat: any = [];
+  ArrayUsersActualizados: any = [];
+  Loader = false;
 
   ngOnInit() {
     this.cargarListas();
@@ -329,6 +334,9 @@ export class ReporteComponent implements OnInit {
   UpdateManyChatUsers() {
     try {
       this.ArrayUserManyChat = [];
+      this.ArrayUsersActualizados = [];
+      this.Loader = true;
+
       const bodyPost = {
         IdTipoPersona: '0',
         Usucodig: '0',
@@ -356,18 +364,26 @@ export class ReporteComponent implements OnInit {
         }
         this.InteraccionMenyChat.infoUserManyChat(body).subscribe(Resultado => {
           if (Resultado.data.length == 0) {
-            if(this.ArrayUserManyChat[i] != undefined){
+            if (this.ArrayUserManyChat[i] != undefined) {
               this.InsertUserInMenyChat(this.ArrayUserManyChat[i]);
-            }else{
+            } else {
               resolve(false);
             }
           } else {
-            this.UpdateIdManyChatUser(Resultado.data.id, this.ArrayUserManyChat[i].CorreoPersona);
+            this.UpdateIdManyChatUser(Resultado.data.id, this.ArrayUserManyChat[i]);
           }
           resolve(true);
         });
       });
     }
+    //Finaliza el recorido abre el modal con los users actualizados
+    if (this.ArrayUsersActualizados.length > 0) {
+      this.modalService.open(this.templateUserAct);
+    } else {
+      this.modalService.open(this.templaMensaje);
+    }
+    this.Loader = false;
+    console.log('Finaliza for')
   }
   async InsertUserInMenyChat(Item: any) {
     await new Promise((resolve, reject) => {
@@ -386,29 +402,33 @@ export class ReporteComponent implements OnInit {
         var IdMenyChat: string = "";
         if (Resultado.status == "success" && Resultado.data.id != "") {
           IdMenyChat = Resultado.data.id;
-          this.UpdateIdManyChatUser(IdMenyChat, Item.CorreoPersona);
+          this.UpdateIdManyChatUser(IdMenyChat, Item);
         }
         resolve(true);
       });
     });
   }
   //Actualiza el id de menychat en la bd
-  async UpdateIdManyChatUser(IdMenyChat: string, Email: string) {
+  async UpdateIdManyChatUser(IdMenyChat: string, item: any) {
     await new Promise((resolve, reject) => {
       const body = {
-        correo_persona: Email.toLowerCase().replace(' ', ''),
+        correo_persona: item.CorreoPersona.toLowerCase().replace(' ', ''),
         ID_MANYCHAT: IdMenyChat
       }
       this.InteraccionMenyChat.ActualizaIdManyChat('3', body).subscribe(Resultado => {
         var respu: string = Resultado.split("|");
         if (respu[0].trim() == "1") {
-
-        } else {
-
+          //this.UsersActualizadosManyChat(item);
         }
         resolve(true);
       });
     });
+  }
+
+
+
+  UsersActualizadosManyChat(item: any) {
+    this.ArrayUsersActualizados.push(item);
   }
   //#endregion UpdateMenyChat
 }
