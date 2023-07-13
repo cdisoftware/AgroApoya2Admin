@@ -264,15 +264,17 @@
         <thead>
           <tr>
             <th scope="col">Usuario</th>
-            <th scope="col">Fecha</th>
+            <th scope="col">Email</th>
+            <th scope="col">Telefono</th>
             <th scope="col">Estado</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let res of ArrayUsersActualizados; let i = index">
             <th scope="row">{{res.NombrePersona}}</th>
-            <td>{{FechaVer}}</td>
-            <td><img style="width: 20px;" src="../../../../assets/ImagenesAgroApoya2Adm/aprobar.png"></td>
+            <td style="overflow: auto;">{{res.CorreoElectronico}}</td>
+            <td>{{res.NumTelefono}}</td>
+            <td><img style="width: 20px;" src="{{res.img}}"></td>
           </tr>
         </tbody>
       </table>

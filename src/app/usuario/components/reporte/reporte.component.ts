@@ -76,8 +76,6 @@ export class ReporteComponent implements OnInit {
   ArrayUserManyChat: any = [];
   ArrayUsersActualizados: any = [];
   Loader = false;
-  Date: Date = new Date;
-  FechaVer: string = this.Date.getFullYear() + "/" + this.Date.getMonth() + "/" + this.Date.getDay();
 
   ngOnInit() {
     this.cargarListas();
@@ -116,7 +114,6 @@ export class ReporteComponent implements OnInit {
       NombrePersona: this.nombre
     }
     this.ReporteService.ReporteUsuarios("1", this.FechaDesde, this.FechaHasta, bodyPost).subscribe(Resultado => {
-      console.log(Resultado)
       if (Resultado.length > 0) {
         this.ArrayUsuarios = Resultado;
       } else {
@@ -352,7 +349,6 @@ export class ReporteComponent implements OnInit {
             this.ArrayUserManyChat.push(Resultado[i]);
           }
         }
-        console.log(this.ArrayUserManyChat)
         this.ConsultaUserMenyChat();
       });
     } catch {
@@ -361,23 +357,27 @@ export class ReporteComponent implements OnInit {
   }
   async ConsultaUserMenyChat() {
     for (var i = 0; i < this.ArrayUserManyChat.length; i++) {
-      await new Promise((resolve, reject) => {
-        const body = {
-          phone: this.ArrayUserManyChat[i].NumeroCelular
-        }
-        this.InteraccionMenyChat.infoUserManyChat(body).subscribe(Resultado => {
-          if (Resultado.data.length == 0) {
-            if (this.ArrayUserManyChat[i] != undefined) {
-              this.InsertUserInMenyChat(this.ArrayUserManyChat[i]);
-            } else {
-              resolve(false);
-            }
-          } else {
-            this.UpdateIdManyChatUser(Resultado.data.id, this.ArrayUserManyChat[i]);
+      if(this.ArrayUserManyChat[i].NumeroCelular.length == 10){
+        await new Promise((resolve, reject) => {
+          const body = {
+            phone: this.ArrayUserManyChat[i].NumeroCelular
           }
-          resolve(true);
+          this.InteraccionMenyChat.infoUserManyChat(body).subscribe(Resultado => {
+            if (Resultado.data.length == 0) {
+              if (this.ArrayUserManyChat[i] != undefined) {
+                this.InsertUserInMenyChat(this.ArrayUserManyChat[i]);
+              } else {
+                resolve(false);
+              }
+            } else {
+              this.UpdateIdManyChatUser(Resultado.data.id, this.ArrayUserManyChat[i]);
+            }
+            resolve(true);
+          });
         });
-      });
+      }else{
+        this.UsersActualizadosManyChat(this.ArrayUserManyChat[i], false);
+      }
     }
     //Finaliza el recorido abre el modal con los users actualizados
     if (this.ArrayUsersActualizados.length > 0) {
@@ -400,11 +400,12 @@ export class ReporteComponent implements OnInit {
         consent_phrase: "string"
       }
       this.InteraccionMenyChat.modmanychatcreateuser(body).subscribe(Resultado => {
-        console.log(Resultado)
         var IdMenyChat: string = "";
         if (Resultado.status == "success" && Resultado.data.id != "") {
           IdMenyChat = Resultado.data.id;
           this.UpdateIdManyChatUser(IdMenyChat, Item);
+        }else{
+          this.UsersActualizadosManyChat(Item, false);
         }
         resolve(true);
       });
@@ -420,14 +421,27 @@ export class ReporteComponent implements OnInit {
       this.InteraccionMenyChat.ActualizaIdManyChat('3', body).subscribe(Resultado => {
         var respu: string = Resultado.split("|");
         if (respu[0].trim() == "1") {
-          this.UsersActualizadosManyChat(item);
+          this.UsersActualizadosManyChat(item, true);
         }
         resolve(true);
       });
     });
   }
-  UsersActualizadosManyChat(item: any) {
-    this.ArrayUsersActualizados.push(item);
+  UsersActualizadosManyChat(item: any, Estado: boolean) {
+    var AuxImg: string = "";
+    if(Estado == true){
+      AuxImg = "../../../../assets/ImagenesAgroApoya2Adm/aprobar.png";
+    }else{
+      AuxImg = "../../../../assets/ImagenesAgroApoya2Adm/Cerrar.png";
+    }
+
+    const ite = {
+      NombrePersona: item.NombrePersona,
+      CorreoElectronico: item.CorreoPersona,
+      NumTelefono: item.NumeroCelular,
+      img: AuxImg
+    }
+    this.ArrayUsersActualizados.push(ite);
   }
   //#endregion UpdateMenyChat
 }

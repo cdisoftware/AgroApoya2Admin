@@ -1057,7 +1057,6 @@ export class ValoracionComponent implements OnInit {
         this.ValidaToppings = '1';
         this.MuestraValUnidades = '1';
         this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
-          console.log(ResultUpdate)
           this.ArrayTextoModifica = ResultUpdate;
           this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
         })
@@ -1536,11 +1535,7 @@ export class ValoracionComponent implements OnInit {
 
   PublicaOferta(templateMensaje: any) {
 
-    if (this.imagenesCorreo == null || this.imagenesCorreo == '') {
-      this.Respuesta = 'Es obligatoria la imagen del correo, porfavor subela.';
-      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
-    } else {
-      const Body = {
+    const Body = {
         usucodig: this.SessionIdUsuario,
         cnctivoOferta: this.SessionOferta,
         ObsEstado: this.PubliOferObser,
@@ -1560,8 +1555,7 @@ export class ValoracionComponent implements OnInit {
           this.EnvioCorreoMaisivo();
           this.EnvioSmsMasivo();
         }
-      })
-    }
+      });
 
   }
 
