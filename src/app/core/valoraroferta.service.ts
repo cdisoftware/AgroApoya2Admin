@@ -227,6 +227,7 @@ export class ValorarofertaService {
   }
 
   constextosoferta(Bandera: string, idSector: string, cd_cnctivo: string) {
+    console.log(this.url_servidor + 'constextosoferta/' + Bandera + '/' + cd_cnctivo + '/' + idSector)
     return this.http.get<any>(this.url_servidor + 'constextosoferta/' + Bandera + '/' + cd_cnctivo + '/' + idSector)
   }
 

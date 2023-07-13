@@ -199,7 +199,6 @@ export class ValoracionComponent implements OnInit {
   }
   consultaToppingsOferta() {
     this.serviciosvaloracion.ConsultaToppingOfer('1', this.SessionSectorSel, this.SessionOferta, '0').subscribe(Resultcons => {
-      console.log(Resultcons)
       if (Resultcons.length > 0) {
         this.DataToppings = Resultcons;
         this.ValidaConsulta = '0';
@@ -265,7 +264,6 @@ export class ValoracionComponent implements OnInit {
       ValorUnd: this.ValorUni
     }
     this.serviciosvaloracion.ModValoresUnidades('4', Body).subscribe(ResultOper => {
-      console.log(ResultOper)
       this.Respuesta = ResultOper;
       this.consultaValoresUni();
     })
@@ -285,7 +283,6 @@ export class ValoracionComponent implements OnInit {
   GuardaTopping(templateMensaje: any) {
     this.Respuesta = ''
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
-    console.log(Number(this.VlrUniTopp))
     if (this.DesTopp == '' || this.VlrUniTopp == null || this.UnidMaxTopp == '' || this.SessionTipoTopp == '0' || this.UnidOferta == '' || this.imagenesAdicionales == '' || this.PesoTopping == '') {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
@@ -543,7 +540,6 @@ export class ValoracionComponent implements OnInit {
 
   ConsultaVigenciaOferta() {
     this.serviciosvaloracion.ConsultaVigenciaOferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultCons => {
-      console.log(ResultCons)
       if (ResultCons.length > 0) {
         this.VigenDesde = ResultCons[0].vgncia_desde;
         this.VigenHasta = ResultCons[0].vgncia_hasta;
@@ -558,7 +554,6 @@ export class ValoracionComponent implements OnInit {
 
   ConsultaDetalleOferta() {
     this.serviciosvaloracion.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
-      //console.log(ResultConsu)
       this.DataOferta = ResultConsu;
       this.SessionFechaRecogida = this.DataOferta[0].fecha_recogida;
     })
@@ -699,7 +694,6 @@ export class ValoracionComponent implements OnInit {
         })
       }
       else if (this.SessionTipoComI == '2') {
-        //console.log('1', this.SessionOferta, this.SessionSectorSel, this.SessionTipoComI, this.VlrComPorI)
         this.serviciosvaloracion.CalculaPFIndividual('1', this.SessionOferta, this.SessionSectorSel, this.SessionTipoComI, this.VlrComPorI).subscribe(ResultCons => {
           this.PreFinI = ResultCons[0].PRECIO_FINAL;
         })
@@ -740,7 +734,6 @@ export class ValoracionComponent implements OnInit {
       })
     }
     else if (this.SessionTipoComG == '2') {
-      //console.log('1', this.SessionOferta, this.SessionSectorSel, this.SessionTipoComG, validaVlrComP, validadomi, validaunixgru)
       this.serviciosvaloracion.CalculaPreOferGrupal('1', this.SessionOferta, this.SessionSectorSel, this.SessionTipoComG, validaVlrComP, validadomi, validaunixgru).subscribe(ResultCons => {
         this.PrecioFinLider = ResultCons[0].PRECIO_ARRANQUE_LIDER;
         this.PrecioFinPart = ResultCons[0].PRECIO_FINAL_PARTICIPANTE;
@@ -760,7 +753,6 @@ export class ValoracionComponent implements OnInit {
   }
 
   selectSector(item: any) {
-    console.log(item)
     this.ValidaVigencia = '1';
     this.CodigoOferSector = item.COD_OFERTA_SECTOR;
     this.VlrFletSect = item.VLOR_FLTE_SGRDOForm;
@@ -779,8 +771,6 @@ export class ValoracionComponent implements OnInit {
   ConsultaLinks() {
 
     this.serviciosvaloracion.ConsultaLinks('1', this.IdOferta, this.SessionSectorSel).subscribe(Resultado => {
-      console.log('------------------*')
-      console.log(Resultado)
       for (var i = 0; Resultado.length >= i; i++) {
         if (Resultado[i].Tipo_Link == '1') {
           this.UrlParticipante = Resultado[i].link_largo;
@@ -794,7 +784,6 @@ export class ValoracionComponent implements OnInit {
   }
 
   selectTipOferta(item: any) {
-    //console.log(item)
     this.SessionTipoOferta = item.id;
     this.MuestraVigencial = '1';
     if (item.id == 1) {
@@ -1024,7 +1013,6 @@ export class ValoracionComponent implements OnInit {
       // bitly.shorten(this.RutaLanding +this.SessionSectorSel+'/'+this.SessionOferta+'/0/0').then(result => {}catch{result.link}
 
       this.LinkSms = 'https://bit.ly/3HbpHIJ';
-      console.log(this.LinkSms)
       const Body = {
         CD_CNSCTVO: this.SessionOferta,
         TPO_OFRTA: this.SessionTipoOferta,
@@ -1057,6 +1045,7 @@ export class ValoracionComponent implements OnInit {
         this.ValidaToppings = '1';
         this.MuestraValUnidades = '1';
         this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
+          console.log(ResultUpdate)
           this.ArrayTextoModifica = ResultUpdate;
           this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
         })
@@ -1071,12 +1060,6 @@ export class ValoracionComponent implements OnInit {
     this.Respuesta = '';
     var validacomision = '';
     var validacomisionG = '';
-
-    console.log('entra-------------')
-    console.log(this.PrecioFinLider);
-    console.log(this.PrecioFinPart);
-    console.log(this.PreFinI);
-    console.log('-------------')
 
     if (this.SessionTipoComI == '1') {
       validacomision = this.VlrComFijaI
@@ -1095,10 +1078,6 @@ export class ValoracionComponent implements OnInit {
       this.VlrDomiI = '0'
     }
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
-
-
-    console.log('entra valor domicilio mixta')
-    console.log(this.VlrDomiI)
 
     if ((this.VlReferencia == null || this.VlReferencia == '' || this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
       || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null) || (this.SessionTipoComG == null || this.SessionTipoComG == '') || (validacomisionG == '' || validacomisionG == null) ||
@@ -1387,12 +1366,8 @@ export class ValoracionComponent implements OnInit {
       this.ValidaCam = '0';
       this.ArrayCamposValida = [];
 
-      console.log(this.PrecioFinLider);
-      console.log(this.PrecioFinPart);
-
       // bitly.shorten(this.RutaLanding +this.SessionSectorSel+'/'+this.SessionOferta+'/0/0').then(result => {  }catch{ }
       this.LinkSms = 'https://bit.ly/3HbpHIJ';
-      console.log(this.LinkSms)
       const Body = {
         CD_CNSCTVO: this.SessionOferta,
         TPO_OFRTA: this.SessionTipoOferta,
@@ -1420,14 +1395,12 @@ export class ValoracionComponent implements OnInit {
         TPO_DESCUENTO: Number(this.SessionTipoDescuento),
         VALOR_REFERENCIA: this.VlReferencia
       }
-      console.log(Body)
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         this.Respuesta = '';
         var arreglores = ResultUpdate.split('|')
         this.Respuesta = arreglores[1];
         this.ValidaToppings = '1';
         this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
-          console.log(ResultUpdate)
           if (ResultUpdate.length > 0) {
             this.ArrayTextoModifica = ResultUpdate;
             this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
@@ -1577,19 +1550,16 @@ export class ValoracionComponent implements OnInit {
       this.serviciosvaloracion.postImgToppings(event.target.files[0]).subscribe(
         response => {
           if (response <= 1) {
-            console.log("Error en el servidor");
           } else {
             if (response == 'Archivo Subido Correctamente') {
               this.imagenesAdicionales = event.target.files[0].name;
               this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
               this.Respuesta = "Imagen cargada correctamente.";
             } else {
-              console.log(response)
             }
           }
         },
         error => {
-          console.log(<any>error);
           this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
           this.Respuesta = "No hemos podido subir el archivo, intente nuevamente.";
         }
@@ -1715,11 +1685,9 @@ export class ValoracionComponent implements OnInit {
       this.serviciosvaloracion.postImgToppings(event.target.files[0]).subscribe(
         response => {
           if (response <= 1) {
-            console.log("Error en el servidor");
           } else {
             if (response == 'Archivo Subido Correctamente') {
               this.imagenesCorreo = this.RutaImagenTopping + event.target.files[0].name;
-              console.log(this.imagenesCorreo)
 
               const Bodymod = {
                 idSector: this.SessionSectorSel,
@@ -1730,18 +1698,15 @@ export class ValoracionComponent implements OnInit {
               }
 
               this.serviciosvaloracion.TextosOferta('2', Bodymod).subscribe(ResultCorreo => {
-                console.log(ResultCorreo)
               })
 
               this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
               this.Respuesta = "Imagen cargada correctamente.";
             } else {
-              console.log(response)
             }
           }
         },
         error => {
-          console.log(<any>error);
           this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
           this.Respuesta = "No hemos podido subir el archivo, intente nuevamente.";
         }
@@ -1773,22 +1738,16 @@ export class ValoracionComponent implements OnInit {
 
     this.Previsucorreo = this.ArrayTextoModifica[0].Plantilla.replace("[imgCorreoMasivo]", this.imagenesCorreo.trim());
 
-    console.log(this.Previsucorreo)
-
     this.Previsucorreo = this.Previsucorreo.replace("[ContenidoMasivo]", this.ArrayTextoModifica[0].TextoCorreo);
     this.modalService.open(Previsualizarcion, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
 
   }
 
   EnvioCorreoMaisivo() {
-    console.log('Entra envio correo')
-    console.log(this.EnvioCorreo)
     if (this.EnvioCorreo == true) {
-      console.log('Entra correo')
       if (this.DataSectores.length > 0) {
         for (var i = 0; i < this.DataSectores.length; i++) {
           this.serviciosvaloracion.CorreoMasivo('1', '9', '2', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
-            console.log(ResultCorreo)
           })
         }
       }
@@ -1796,13 +1755,10 @@ export class ValoracionComponent implements OnInit {
   }
 
   EnvioSmsMasivo() {
-    console.log(this.EnvioSms)
     if (this.EnvioSms == true) {
-      console.log('Entra sms texto')
       if (this.DataSectores.length > 0) {
         for (var i = 0; i < this.DataSectores.length; i++) {
           this.serviciosvaloracion.EnviarSms('7', '0', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA, '0', '0', '0').subscribe(Resultado => {
-            console.log(Resultado)
           })
         }
       }
