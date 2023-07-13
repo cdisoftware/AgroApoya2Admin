@@ -1,7 +1,6 @@
-<div class="container py-5">
+<div class="container py-5" [ngClass]="Loader == true ? 'Opacity' : '' ">
   <div class="row">
-    <div class="col-1"></div>
-    <div class="col-3">
+    <div class="col-12 col-sm-6 col-md-4">
       <label class="textoDir"> Seleccione tipo de usuario </label>
       <select class="form-control" [(ngModel)]="tipoUsuario">
         <option value="0">Seleccione tipo de usuario</option>
@@ -10,56 +9,56 @@
         </option>
       </select>
     </div>
-    <div class="col-3">
+    <div class="col-12 col-sm-6 col-md-4">
       <label class="textoDir"> Correo persona </label>
       <input [(ngModel)]="mail" class="form-control" type="text" maxlength="50" placeholder="Correo persona">
     </div>
-    <div class="col-3">
+    <div class="col-12 col-sm-6 col-md-4">
       <label class="textoDir"> Nombre Persona </label>
       <input [(ngModel)]="nombre" class="form-control" type="text" maxlength="20" placeholder="Nombre persona">
     </div>
-    <div class="col-1"></div>
   </div>
   <div class="row mt-2">
-    <div class="col-1"></div>
-    <div class="col-3">
+    <div class="col-12 col-sm-6 col-md-4">
       <label class="textoDir"> Codigo de usuario </label>
       <input [(ngModel)]="codigo" #inputCodigo class="form-control" type="number" placeholder="Código persona">
     </div>
-    <div class="col-3">
+    <div class="col-12 col-sm-6 col-md-4">
       <label class="textoDir"> Fecha de registro desde </label>
       <input [(ngModel)]="FechaDesde" class="form-control" type="date" maxlength="50">
     </div>
-    <div class="col-3">
+    <div class="col-12 col-sm-6 col-md-4">
       <label class="textoDir"> Fecha de registro hasta </label>
       <input [(ngModel)]="FechaHasta" class="form-control" type="date">
     </div>
-    <div class="col-1"></div>
   </div>
-  <div class="row mt-2">
-    <div class="col-1"></div>
-    <div class="col-3">
+  <div class="row mt-3">
+    <div class="col-12 col-sm-6 col-md-3 mt-2">
+      <button class="btn btn-top w-100 btn btn-agro-prin " (click)="UpdateManyChatUsers()">
+        ActualizaManyChat
+      </button>
+    </div>
+    <div class=" col-12 col-sm-6 col-md-3 mt-2">
       <button class="btn btn-top w-100 btn btn-agro-prin " (click)="buscar()">
         Buscar
       </button>
     </div>
-    <div class="col-3">
+    <div class="col-12 col-sm-6 col-md-3 mt-2">
       <button class="btn btn-top w-100 btn btn-agro-prin" (click)="limpiarDatos()">
         Limpiar
       </button>
     </div>
-    <div class="col-3">
+    <div class="col-12 col-sm-6 col-md-3 mt-2">
       <button class="btn btn-top w-100 btn btn-agro-prin " (click)="descargar()">
         Descargar Excel
       </button>
     </div>
-    <div class="col-1"></div>
   </div>
 </div>
 
-<div class="row">
+<div class="row" [ngClass]="Loader == true ? 'Opacity' : '' ">
   <table class="col-sm-12 TableAgro">
-    <tr>
+    <tr class="Stiky">
       <th>Usucodig</th>
       <th (click)="organizarTP()">Tipo Persona</th>
       <th (click)="organizarN()">Nombre</th>
@@ -88,7 +87,7 @@
       <td>{{Usu.Direccion}}</td>
       <td>{{Usu.Observacion}}</td>
       <td (click)="AbrirModal(Usu, ModalRespuesta)">
-        <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/info.png" alt="">
+        <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/info.png" alt="" class="CursorPointer">
       </td>
     </tr>
   </table>
@@ -251,3 +250,65 @@
   </div>
   <br>
 </ng-template>
+
+
+<ng-template #templaUsersCtualizados let-modal>
+  <div class="p-2">
+    <div class="modal-header">
+      <img style="width: 40px; margin-right: 10px;" src="../../../../assets/ImagenesAgroApoya2Adm/ic_Agro.png">
+      <h5 class="modal-title TituloForm LblVerde">Usuarios a los cuales se les actualizo la informacion</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="mt-4 mb-4 text-center">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Usuario</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let res of ArrayUsersActualizados; let i = index">
+            <th scope="row">{{res.NombrePersona}}</th>
+            <td>{{FechaVer}}</td>
+            <td><img style="width: 20px;" src="../../../../assets/ImagenesAgroApoya2Adm/aprobar.png"></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-6 textcenter">
+        <button type="button" id="btnGuardarDirecccion" class="btn btn-top w-100 btn btn-agro-prin col-sm-12"
+          (click)="modal.dismiss('Cross click')"> Aceptar </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #templaMensaje let-modal>
+  <div class="p-2">
+    <div class="modal-header">
+      <img style="width: 40px; margin-right: 10px;" src="../../../../assets/ImagenesAgroApoya2Adm/ic_Agro.png">
+      <h5 class="modal-title TituloForm LblVerde">AgroApoya2Admin</h5>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="mt-4 mb-4 text-center">
+      <div class="row">
+        <h5 class="modal-title TituloForm LblVerde">En este momento no hay usuarios disponibles para actualizar!</h5>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-6 textcenter">
+        <button type="button" id="btnGuardarDirecccion" class="btn btn-top w-100 btn btn-agro-prin col-sm-12"
+          (click)="modal.dismiss('Cross click')"> Aceptar </button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<div class="divloader" *ngIf="Loader == true">
+  <img src="../../../../assets/animate/svg-loaders/circles.svg" />
+  <h3 style="color: #397c97;">Cargando....</h3>
+</div>

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReporteService } from 'src/app/core/reporte.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
+import { InteraccionMenyChat } from 'src/app/core/InteraccionMenyChat';
 
 @Component({
   selector: 'app-reporte',
@@ -10,10 +11,14 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class ReporteComponent implements OnInit {
 
+  @ViewChild('templaUsersCtualizados', { static: false }) templateUserAct: any;
+  @ViewChild('templaMensaje', { static: false }) templaMensaje: any;
+
   constructor(
     private ReporteService: ReporteService,
     private modalService: NgbModal,
-    public cookies: CookieService
+    public cookies: CookieService,
+    public InteraccionMenyChat: InteraccionMenyChat
   ) { }
 
   mail: string = '';
@@ -67,15 +72,20 @@ export class ReporteComponent implements OnInit {
 
   Siguiente: boolean = true;
 
-  ngOnInit() {
+  //William
+  ArrayUserManyChat: any = [];
+  ArrayUsersActualizados: any = [];
+  Loader = false;
+  Date: Date = new Date;
+  FechaVer: string = this.Date.getFullYear() + "/" + this.Date.getMonth() + "/" + this.Date.getDay();
 
+  ngOnInit() {
     this.cargarListas();
   }
 
   cargarListas() {
     this.ReporteService.ConsultaUsuario('1').subscribe(Resultado => {
       this.ArrayTipoUsuario = Resultado;
-      console.log(this.ArrayTipoUsuario[0]);
     })
 
   }
@@ -105,12 +115,11 @@ export class ReporteComponent implements OnInit {
       CorreoPersona: this.mail,
       NombrePersona: this.nombre
     }
-    console.log(bodyPost)
     this.ReporteService.ReporteUsuarios("1", this.FechaDesde, this.FechaHasta, bodyPost).subscribe(Resultado => {
+      console.log(Resultado)
       if (Resultado.length > 0) {
-        console.log(Resultado)
         this.ArrayUsuarios = Resultado;
-      }else{
+      } else {
         this.ArrayUsuarios = [];
       }
     })
@@ -322,4 +331,103 @@ export class ReporteComponent implements OnInit {
     this.ArrayUsuarios = []
   }
 
+
+  //William
+  //#region UpdateMenyChat
+  UpdateManyChatUsers() {
+    try {
+      this.ArrayUserManyChat = [];
+      this.ArrayUsersActualizados = [];
+      this.Loader = true;
+
+      const bodyPost = {
+        IdTipoPersona: '0',
+        Usucodig: '0',
+        CorreoPersona: '0',
+        NombrePersona: '0'
+      }
+      this.ReporteService.ReporteUsuarios("1", '0', '0', bodyPost).subscribe(Resultado => {
+        for (var i = 0; i < Resultado.length; i++) {
+          if (Resultado[i].Id_ManyChat == null || Resultado[i].Id_ManyChat == undefined || Resultado[i].Id_ManyChat == "" || Resultado[i].Id_ManyChat == "null") {
+            this.ArrayUserManyChat.push(Resultado[i]);
+          }
+        }
+        console.log(this.ArrayUserManyChat)
+        this.ConsultaUserMenyChat();
+      });
+    } catch {
+
+    }
+  }
+  async ConsultaUserMenyChat() {
+    for (var i = 0; i < this.ArrayUserManyChat.length; i++) {
+      await new Promise((resolve, reject) => {
+        const body = {
+          phone: this.ArrayUserManyChat[i].NumeroCelular
+        }
+        this.InteraccionMenyChat.infoUserManyChat(body).subscribe(Resultado => {
+          if (Resultado.data.length == 0) {
+            if (this.ArrayUserManyChat[i] != undefined) {
+              this.InsertUserInMenyChat(this.ArrayUserManyChat[i]);
+            } else {
+              resolve(false);
+            }
+          } else {
+            this.UpdateIdManyChatUser(Resultado.data.id, this.ArrayUserManyChat[i]);
+          }
+          resolve(true);
+        });
+      });
+    }
+    //Finaliza el recorido abre el modal con los users actualizados
+    if (this.ArrayUsersActualizados.length > 0) {
+      this.modalService.open(this.templateUserAct, { size: 'lg', centered: true, backdrop: 'static', keyboard: false });
+    } else {
+      this.modalService.open(this.templaMensaje);
+    }
+    this.Loader = false;
+  }
+  async InsertUserInMenyChat(Item: any) {
+    await new Promise((resolve, reject) => {
+      const body = {
+        first_name: Item.NombrePersona,
+        last_name: Item.ApellidoPersona,
+        phone: Item.NumeroCelular,
+        email: Item.CorreoPersona.toLowerCase().replace(' ', ''),
+        gender: "male",//Genero (male=masculino, female=femenino)
+        has_opt_in_sms: true,
+        has_opt_in_email: true,
+        consent_phrase: "string"
+      }
+      this.InteraccionMenyChat.modmanychatcreateuser(body).subscribe(Resultado => {
+        console.log(Resultado)
+        var IdMenyChat: string = "";
+        if (Resultado.status == "success" && Resultado.data.id != "") {
+          IdMenyChat = Resultado.data.id;
+          this.UpdateIdManyChatUser(IdMenyChat, Item);
+        }
+        resolve(true);
+      });
+    });
+  }
+  //Actualiza el id de menychat en la bd
+  async UpdateIdManyChatUser(IdMenyChat: string, item: any) {
+    await new Promise((resolve, reject) => {
+      const body = {
+        correo_persona: item.CorreoPersona.toLowerCase().replace(' ', ''),
+        ID_MANYCHAT: IdMenyChat
+      }
+      this.InteraccionMenyChat.ActualizaIdManyChat('3', body).subscribe(Resultado => {
+        var respu: string = Resultado.split("|");
+        if (respu[0].trim() == "1") {
+          this.UsersActualizadosManyChat(item);
+        }
+        resolve(true);
+      });
+    });
+  }
+  UsersActualizadosManyChat(item: any) {
+    this.ArrayUsersActualizados.push(item);
+  }
+  //#endregion UpdateMenyChat
 }

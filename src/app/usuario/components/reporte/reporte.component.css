@@ -39,3 +39,16 @@
   font-weight: bold;
   font-size: smaller;
 }
+.divloader{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.Opacity{
+  opacity: 0.1;
+}
+.Stiky{
+  position: sticky;
+  top: 0;
+}

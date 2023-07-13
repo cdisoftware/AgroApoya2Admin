@@ -914,21 +914,19 @@
                                     </div>
                                 </div>
 
-                                <!--Verificar correis y mensajes-->
-                                <div class="row CentrarText" *ngIf="MuestraGrupal == '1' || MuestraIndividual == '1'">
-                                    <div class="cil-sm-12 col-md-6 br">
-                                        <h5 class="SubTituloForm">Verificación envió de correos</h5>
-                                        <label class="Llave" *ngIf="EnvioEmal == true">Correos enviados</label>
-                                        <label class="Llave" *ngIf="EnvioEmal == false">Los correos aún no se han
-                                            enviado</label>
-
-                                    </div>
-                                    <div class="cil-sm-12 col-md-6 br">
-                                        <h5 class="SubTituloForm">Verificación envió de sms</h5>
-                                        <label class="Llave" *ngIf="EnvioSms == true">Sms enviados</label>
-                                        <label class="Llave" *ngIf="EnvioSms == false">Los sms aún no se han
-                                            enviado</label>
-
+                                <!--Volor compra dependiente de la unidad-->
+                                <div class="row justify-content-center br" *ngIf="DataValores.length > 0 && SelectSect == true">
+                                    <div class="table-responsive">
+                                        <table class="table col-sm-12 TableAgro">
+                                            <tr id="TablaValores">
+                                                <th>Valor</th>
+                                                <th>Orden</th>
+                                            </tr>
+                                            <tr *ngFor="let valores of DataValores">
+                                                <td>{{valores.ValorUnidad | currency}}</td>
+                                                <td>{{valores.OrdenMostrar}}</td>
+                                            </tr>
+                                        </table>
                                     </div>
                                 </div>
 
@@ -964,44 +962,45 @@
                                         </table>
                                     </div>
                                 </div>
+                                <hr *ngIf="VerTopping == '1'">
+
+                                <div class="row br" *ngIf="SelectSect == true">
+                                    <div class="col-sm-12">
+                                        <label class="col-sm-12 Llave">Link para acortar compartir participante</label>
+                                        <input type="text" class="col-sm-12 form-control mt-1 textBox" id="ResumenLinkCorto" disabled>
+                                        <input type="text" class="col-sm-12 form-control mt-1 textBox" id="ResumenLink" disabled>
+                                    </div>
+                                </div>
+                                <hr class="mt-4" *ngIf="SelectSect == true">
+
+                                <!--Verificar correis y mensajes-->
+                                <div class="row CentrarText" *ngIf="MuestraGrupal == '1' || MuestraIndividual == '1'">
+                                    <div class="cil-sm-12 col-md-6 br">
+                                        <h5 class="SubTituloForm">Verificación envió de correos</h5>
+                                        <label class="Llave" *ngIf="EnvioEmal == true">Correos enviados</label>
+                                        <label class="Llave" *ngIf="EnvioEmal == false">Los correos aún no se han
+                                            enviado</label>
+
+                                    </div>
+                                    <div class="cil-sm-12 col-md-6 br">
+                                        <h5 class="SubTituloForm">Verificación envió de sms</h5>
+                                        <label class="Llave" *ngIf="EnvioSms == true">Sms enviados</label>
+                                        <label class="Llave" *ngIf="EnvioSms == false">Los sms aún no se han
+                                            enviado</label>
+
+                                    </div>
+                                </div>
                             </div>
                             <!--Trazabilidad-->
                             <div class="br row justify-content-center"
                                 *ngIf="respu.codigo == '5' && respu.registro > 0">
 
-                                <div class="row CentrarText" *ngFor="let respu of Trazabilidad; let i = index">
-                                    <div class="col-sm-6" *ngIf="i == 0">
+                                <div class="row CentrarText">
+                                    <div class="col-sm-6" *ngFor="let respu of Trazabilidad; let i = index">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <label class="Llave">Fecha acepta oferta:&nbsp;</label><label
+                                                <label class="Llave">{{respu.estado}}&nbsp;</label><label
                                                     class="Valor">{{respu.fecha}}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6" *ngIf="i == 1">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Fecha Sectorizacion:&nbsp;</label><label
-                                                    class="Valor">{{Trazabilidad.estado}}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-sm-6" *ngIf="i == 2">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Fecha Asigna transportista:&nbsp;</label><label
-                                                    class="Valor">{{Trazabilidad.estado}}</label>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-6" *ngIf="i == 3">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label class="Llave">Fecha Valoración:&nbsp;</label><label
-                                                    class="Valor">{{Trazabilidad.estado}}</label>
                                             </div>
                                         </div>
                                     </div>
@@ -1503,9 +1502,9 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-sm-2" *ngIf="AccionEnvio == '1' && this.SessionSectorSel != ''"><button type="button"
-                class="btn btn-agro-sec w-100" (click)="modal.dismiss()">Cancelar</button></div>
+                    class="btn btn-agro-sec w-100" (click)="modal.dismiss()">Cancelar</button></div>
             <div class="col-sm-2" *ngIf="AccionEnvio == '1' && this.SessionSectorSel != ''">
-                    <input class="btn btn-agro-prin w-100" name="file-input3" id="file-input3" type="file"
+                <input class="btn btn-agro-prin w-100" name="file-input3" id="file-input3" type="file"
                     (change)="CargaImagenCorreo($event, ModalRespuesta)" title="Subir Imagen" />
             </div>
             <div class="col-sm-2" *ngIf="AccionEnvio == '1' && this.SessionSectorSel != ''"><button type="button"

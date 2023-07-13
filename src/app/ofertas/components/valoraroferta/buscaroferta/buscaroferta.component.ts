@@ -369,6 +369,7 @@ export class BuscarofertaComponent implements OnInit {
   //William
   ArrayResumenOferta: any = [];
   AbrirPopuPResumen(ModalResumen: any, respu: any) {
+    this.SelectSect = false;
     this.modalService.dismissAll();
     this.modalService.open(ModalResumen, { ariaLabelledBy: 'modal-basic-title', size: 'xl', centered: true, backdrop: 'static', keyboard: false });
     this.ConsultaSectores();
@@ -418,7 +419,9 @@ export class BuscarofertaComponent implements OnInit {
     })
   }
   cdConsSectorResumen: string = "";
+  SelectSect: boolean = false;
   selectSector(item: any) {
+    this.SelectSect = true;
     this.CodigoOferSector = item.COD_OFERTA_SECTOR;
     this.VlrFletSect = item.VLOR_FLTE_SGRDOForm;
     this.SessionSectorSel = item.ID_SCTOR_OFRTA;
@@ -428,6 +431,8 @@ export class BuscarofertaComponent implements OnInit {
     this.consultaToppingsOferta();
     this.ConsEnvioSmsEmail();
     this.ConsultaTextos();
+    this.consultaValoresUni();
+    this.ConsultaLink();
   }
 
   EnvioSms: boolean = false;
@@ -448,6 +453,7 @@ export class BuscarofertaComponent implements OnInit {
 
 
   LimpiaSector() {
+    this.SelectSect = false;
     this.CodigoOferSector = "";
     this.VlrFletSect = "";
     //Limpia valoracion
@@ -594,8 +600,35 @@ export class BuscarofertaComponent implements OnInit {
     })
   }
 
+  DataValores: any = [];
+  consultaValoresUni() {
+    this.DataValores = [];
+    this.ServiciosValorar.ConsultaValUnidades('1', this.IdOferta, this.SessionSectorSel).subscribe(Resultcons => {
+      if (Resultcons.length > 0) {
+        this.DataValores = Resultcons;
+      }
+      else {
+        this.DataValores = [];
+      }
+    })
+  }
+  ConsultaLink() {
+    this.ServiciosValorar.ConsultaLinks('1', this.IdOferta, this.SessionSectorSel).subscribe(Resultado => {
+      const inputLinkC: HTMLInputElement = document.getElementById('ResumenLinkCorto') as HTMLInputElement;
+      inputLinkC.value = Resultado[0].link_corto;
+      const inputLink: HTMLInputElement = document.getElementById('ResumenLink') as HTMLInputElement;
+      inputLink.value = Resultado[0].link_largo;
+    })
+  }
+
+
+
+
+
+
   ConsultaTrazabilidad() {
     this.ServiciosValorar.ConsultaTrazabilidad('1', this.IdOferta).subscribe(Resultcons => {
+      console.log(Resultcons)
       this.Trazabilidad = Resultcons;
     });
   }
@@ -622,8 +655,8 @@ export class BuscarofertaComponent implements OnInit {
       })
     }
   }
-  
-  PrevisualizaCorreo(){
+
+  PrevisualizaCorreo() {
     this.Previsucorreo = this.Plantilla.replace("[imgCorreoMasivo]", this.ImgCorreo.trim());
     this.Previsucorreo = this.Previsucorreo.replace("[ContenidoMasivo]", this.TextoNotificacion);
 
@@ -651,7 +684,7 @@ export class BuscarofertaComponent implements OnInit {
             if (response == 'Archivo Subido Correctamente') {
               this.ImgCorreo = this.RutaImagenTopping + event.target.files[0].name;
               console.log(this.ImgCorreo)
-              
+
               const Bodymod = {
                 idSector: this.SessionSectorSel,
                 cd_cnctivo: this.IdOferta,
@@ -691,9 +724,9 @@ export class BuscarofertaComponent implements OnInit {
       TextoSms: this.TextoNotificacion
     }
     //Bandera 3 actualiza solo correo y bandera 4 actualiza solo sms
-    if(this.AccionEnvio == '1'){
+    if (this.AccionEnvio == '1') {
       bandera = '3'
-    }else if(this.AccionEnvio == '2'){
+    } else if (this.AccionEnvio == '2') {
       bandera = '4'
     }
     this.ServiciosValorar.TextosOferta(bandera, Bodymod).subscribe(ResultCorreo => {
