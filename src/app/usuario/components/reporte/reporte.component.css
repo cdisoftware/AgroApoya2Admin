@@ -48,3 +48,7 @@
 .Opacity{
   opacity: 0.1;
 }
+.Stiky{
+  position: sticky;
+  top: 0;
+}
