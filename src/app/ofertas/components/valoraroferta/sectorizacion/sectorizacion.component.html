@@ -259,6 +259,10 @@
                     <button class="SinEstilo " (click)="EditarBodega(sector, ModalBodega)">
                         <img src="./../../../../../assets/ImagenesAgroApoya2Adm/almacen.png" title="Editar detalles">
                     </button>
+                    <button class="SinEstilo " (click)="EditarImgMapa(sector, ModalImgMapa)">
+                        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/mapaSec.png" style="width: 32px;"
+                            title="Editar Imagen Mapa">
+                    </button>
                 </td>
             </tr>
             <tr *ngIf="ValidaConsulta=='1' ">
@@ -472,6 +476,28 @@
 
     <div class="row justify-content-center ">
         <button type="button " class="btn btn-agro-prin col-sm-4 " (click)="AceptarEditaBodega() ">Guardar</button>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalImgMapa let-modal>
+    <div class="modal-header ">
+        <h1>Imagen Sector</h1>
+        <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-sm-11" style="width: 500px; height: 500px;">
+            <img src="{{ImgMapaSec}}" style="width: 90%; height:  500px; object-fit: cover;">
+        </div>
+    </div>
+    <hr>
+    <div class="row justify-content-center ">
+        <div class="col-sm-3">
+            <button type="button " class="btn btn-agro-prin w-100" (click)="GuardarImgMapa() ">Guardar</button>
+        </div>
+        <div class="col-sm-3">
+            <button type="button " class="btn btn-agro-prin w-100" (click)="SubirImgMapa() ">Subir Imagen</button>
+        </div>
     </div>
     <br>
 </ng-template>
