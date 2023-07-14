@@ -53,6 +53,12 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-12">
+                        <label class="Llave">Valor unidad campesino:&nbsp;</label><label
+                            class="Valor">{{oferta.valor_unidad_formato_PROD}}</label>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-sm-6">
                         <div class="row">
                             <div class="col-sm-12">
@@ -194,7 +200,7 @@
                 <td>{{transportista.PESO_KG}}</td>
                 <td class="Linktxt" title="Información transportista" (click)="DetalleTransportista(transportista, ModalDetalle)">{{transportista.NMBRE_CNDCTOR}}</td>
                 <td>{{transportista.VLOR_FLTE_SGRDO}}</td>
-                <td><input type="text" class="form-control form-control-sm" [(ngModel)]="transportista.VLOR_FLTE_PCTDO"></td>
+                <td (click)="ValorContraOferta(transportista, ModalValContraOfer)"><input type="text" class="form-control form-control-sm" [(ngModel)]="transportista.VLOR_FLTE_PCTDO"></td>
                 <td>{{transportista.NOM_ESTADO}}</td>
                 <td>
                     <button class="SinEstilo" title="Aprueba transportista" (click)="ApruebaTransportista(transportista, ModalRespuesta)">
@@ -303,6 +309,41 @@
     <br>
     <div class="row justify-content-center">
         <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
+
+<ng-template #ModalValContraOfer let-modal>
+    <div class="modal-header justify-content-center">
+        <h1>{{ContraOfer.NMBRE_CNDCTOR}}</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br justify-content-center">
+            <div class="col-sm-4">
+                <h2 class="TituloDetalle mt-2">La contraoferta del conductor es de: </h2>
+            </div>
+            <div class="col-sm-4">
+                <input mask="separator" thousandSeparator="." class="col-sm-12 form-control form-control-sm textBox mt-2" type="text" placeholder="Valor contra oferta" [(ngModel)]="ValorFinalTrans">
+            </div>
+            <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-6">
+                        <button type="button" class="btn btn-agro-prin w-100 mt-2" (click)="modal.close()">Guardar</button>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-6">
+                        <button type="button" class="btn btn-agro-sec w-100 mt-2" (click)="modal.close()">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle mt-2">Puedes aceptarla o modificar la misma</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">cerrar</button>
     </div>
     <br>
 </ng-template>

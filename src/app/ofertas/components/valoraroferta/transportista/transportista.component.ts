@@ -210,7 +210,7 @@ export class TransportistaComponent implements OnInit, OnDestroy {
                   Cd_cnctvo: this.SessionOferta,
                   id_conductor: ResultConsult[i].ID_CNDCTOR
                 }
-                this.sectoresservices.EnviarCorreoIndividual('1', '0', ResultConsult[i].ID_SCTOR_OFRTA,  BodyCorreoInd).subscribe(ResultCI => {
+                this.sectoresservices.EnviarCorreoIndividual('1', '0', ResultConsult[i].ID_SCTOR_OFRTA, BodyCorreoInd).subscribe(ResultCI => {
                   console.log(ResultCI)
                 })
                 this.sectoresservices.EnviarSms('6', ResultConsult[i].ID_CNDCTOR, this.SessionOferta, ResultConsult[i].ID_SCTOR_OFRTA, '0', '0', '0').subscribe(Resultado => {
@@ -223,7 +223,7 @@ export class TransportistaComponent implements OnInit, OnDestroy {
                   IdPlantilla: 7,
                   usucodig: ResultConsult[i].USUCODIG_TRANS,
                   Cd_cnctvo: this.SessionOferta,
-                  
+
                 }
                 this.sectoresservices.EnviarCorreoIndividual('1', '0', ResultConsult[i].ID_SCTOR_OFRTA, BodyCorreoInd).subscribe(ResultCI => {
                   console.log(ResultCI)
@@ -275,12 +275,18 @@ export class TransportistaComponent implements OnInit, OnDestroy {
   }
 
   RechazarTransportista(transportista: any, templateDetalle: any) {
+    var auxval: string = "";
+    if(this.ValorFinalTrans == ""){
+      auxval = transportista.VLOR_FLTE_PCTDO;
+    }else{
+      auxval =  this.ValorFinalTrans;
+    }
     const BodyUpdate = {
       CD_CNSCTVO: this.SessionOferta,
       ID_SCTOR_OFRTA: transportista.ID_SCTOR_OFRTA,
       ID_CNDCTOR: transportista.ID_CNDCTOR,
       USUCODIG_TRANS: transportista.USUCODIG_TRANS,
-      VLOR_FLTE_PCTDO: transportista.VLOR_FLTE_PCTDO,
+      VLOR_FLTE_PCTDO: auxval,
       ESTADO: 3
     }
     this.sectoresservices.OperacionConductor('2', BodyUpdate).subscribe(ResultadoUpdate => {
@@ -289,5 +295,13 @@ export class TransportistaComponent implements OnInit, OnDestroy {
       this.ConsultaCondOferta();
       this.modalService.open(templateDetalle, { ariaLabelledBy: 'modal-basic-title' })
     })
+  }
+
+  ContraOfer: any = [];
+  ValorFinalTrans: string = "";
+  ValorContraOferta(item: any, ModalValContraOfer: any) {
+    this.ContraOfer = item;
+    this.ValorFinalTrans = item.VLOR_FLTE_PCTDO;
+    this.modalService.open(ModalValContraOfer, { ariaLabelledBy: 'modal-basic-title', size: "lg"})
   }
 }
