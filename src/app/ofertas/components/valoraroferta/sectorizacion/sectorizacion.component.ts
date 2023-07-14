@@ -83,6 +83,7 @@ export class SectorizacionComponent implements OnInit {
   CoordenadasBodega: string;
   IdDepa: string = '';
   IdCiudad: string = '';
+  ImgMapaSec: string = './../../../../../../assets/ImagenesAgroApoya2Adm/SinImagen.png';
 
 
 
@@ -739,6 +740,25 @@ export class SectorizacionComponent implements OnInit {
       })
     }
 
+
+  }
+
+  EditarImgMapa(sector: any, Modalmapa: any){
+    console.log(sector)
+    if(sector.imagen_sctor != ''){
+      this.ImgMapaSec = sector.imagen_sctor;
+
+    }else{
+    this.ImgMapaSec = './../../../../../../assets/ImagenesAgroApoya2Adm/SinImagen.png';
+    }
+    this.modalService.open(Modalmapa, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+  }
+
+  GuardarImgMapa(){
+
+  }
+
+  SubirImgMapa(){
 
   }
 }
