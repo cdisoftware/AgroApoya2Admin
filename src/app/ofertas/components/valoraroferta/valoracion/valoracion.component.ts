@@ -427,6 +427,7 @@ export class ValoracionComponent implements OnInit {
       this.ValidaTipoTopp = false;
       this.IsEnables = false;
       this.imagenesAdicionales = '';
+      this.PesoTopping = '';
     }
 
   }
