@@ -200,10 +200,10 @@
                 <td>{{transportista.PESO_KG}}</td>
                 <td class="Linktxt" title="Información transportista" (click)="DetalleTransportista(transportista, ModalDetalle)">{{transportista.NMBRE_CNDCTOR}}</td>
                 <td>{{transportista.VLOR_FLTE_SGRDO}}</td>
-                <td (click)="ValorContraOferta(transportista, ModalValContraOfer)"><input type="text" class="form-control form-control-sm" [(ngModel)]="transportista.VLOR_FLTE_PCTDO"></td>
+                <td class="CursorPointer" (click)="ValorContraOferta(transportista, ModalValContraOfer)"><input type="text" class="form-control form-control-sm" [(ngModel)]="transportista.VLOR_FLTE_PCTDO"></td>
                 <td>{{transportista.NOM_ESTADO}}</td>
                 <td>
-                    <button class="SinEstilo" title="Aprueba transportista" (click)="ApruebaTransportista(transportista, ModalRespuesta)">
+                    <button class="SinEstilo" title="Aprueba transportista" (click)="ApruebaTransportista(transportista, ModalRespuesta,'1')">
                         <img src="./../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png">
                     </button>
                     <button class="SinEstilo" title="Eliminar transportista" (click)="EliminaTransportista(transportista, ModalRespuesta)">
@@ -330,7 +330,7 @@
             <div class="col-sm-4">
                 <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-6">
-                        <button type="button" class="btn btn-agro-prin w-100 mt-2" (click)="modal.close()">Guardar</button>
+                        <button type="button" class="btn btn-agro-prin w-100 mt-2" (click)="ApruebaTransportista(ContraOfer, ModalRespuesta,'2')">Guardar</button>
                     </div>
                     <div class="col-sm-12 col-md-12 col-lg-6">
                         <button type="button" class="btn btn-agro-sec w-100 mt-2" (click)="modal.close()">Cancelar</button>
@@ -343,7 +343,7 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">cerrar</button>
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Cerrar</button>
     </div>
     <br>
 </ng-template>

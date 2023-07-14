@@ -256,22 +256,41 @@ export class TransportistaComponent implements OnInit, OnDestroy {
 
   }
 
-  ApruebaTransportista(transportista: any, templateDetalle: any) {
-    const BodyUpdate = {
-      CD_CNSCTVO: this.SessionOferta,
-      ID_SCTOR_OFRTA: transportista.ID_SCTOR_OFRTA,
-      ID_CNDCTOR: transportista.ID_CNDCTOR,
-      USUCODIG_TRANS: transportista.USUCODIG_TRANS,
-      VLOR_FLTE_PCTDO: transportista.VLOR_FLTE_PCTDO,
-      ESTADO: 1
+  //Vandera 1 hacepta transporte, 2 modifica valor transporte
+  ApruebaTransportista(transportista: any, templateDetalle: any, bandera: string) {
+    console.log(bandera)
+    var BodyUpdate = {};
+    var auxbandera: string = ""; //bandera 3 para actualizar transporte, 2 acepta transporte
+    if(bandera == "1"){
+      auxbandera = "2";
+      BodyUpdate = {
+        CD_CNSCTVO: this.SessionOferta,
+        ID_SCTOR_OFRTA: transportista.ID_SCTOR_OFRTA,
+        ID_CNDCTOR: transportista.ID_CNDCTOR,
+        USUCODIG_TRANS: transportista.USUCODIG_TRANS,
+        VLOR_FLTE_PCTDO: transportista.VLOR_FLTE_PCTDO,
+        ESTADO: 1
+      }
+    }else{
+      auxbandera = "3";
+      BodyUpdate = {
+        CD_CNSCTVO: this.SessionOferta,
+        ID_SCTOR_OFRTA: transportista.ID_SCTOR_OFRTA,
+        ID_CNDCTOR: transportista.ID_CNDCTOR,
+        USUCODIG_TRANS: transportista.USUCODIG_TRANS,
+        VLOR_FLTE_PCTDO: this.ValorFinalTrans,
+        ESTADO: 1
+      }
     }
+    
     console.log(BodyUpdate)
-    this.sectoresservices.OperacionConductor('2', BodyUpdate).subscribe(ResultadoUpdate => {
+    this.sectoresservices.OperacionConductor(auxbandera, BodyUpdate).subscribe(ResultadoUpdate => {
+      this.modalService.dismissAll();
       const respuesta = ResultadoUpdate.split('|')
       this.Respuesta = respuesta[1];
       this.ConsultaCondOferta();
       this.modalService.open(templateDetalle, { ariaLabelledBy: 'modal-basic-title' })
-    })
+    });
   }
 
   RechazarTransportista(transportista: any, templateDetalle: any) {
