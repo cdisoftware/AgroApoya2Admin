@@ -555,7 +555,9 @@ export class ValoracionComponent implements OnInit {
 
   ConsultaDetalleOferta() {
     this.serviciosvaloracion.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
+      console.log(ResultConsu)
       this.DataOferta = ResultConsu;
+      this.VlReferencia = parseInt(this.DataOferta[0].VR_UNDAD_EMPQUE) + 5000;
       this.SessionFechaRecogida = this.DataOferta[0].fecha_recogida;
     })
   }
@@ -1403,6 +1405,7 @@ export class ValoracionComponent implements OnInit {
         this.ValidaToppings = '1';
         this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
           if (ResultUpdate.length > 0) {
+            console.log(ResultUpdate)
             this.ArrayTextoModifica = ResultUpdate;
             this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
           }
@@ -1510,26 +1513,26 @@ export class ValoracionComponent implements OnInit {
   PublicaOferta(templateMensaje: any) {
 
     const Body = {
-        usucodig: this.SessionIdUsuario,
-        cnctivoOferta: this.SessionOferta,
-        ObsEstado: this.PubliOferObser,
-        estado: 10,
-        parametro1: "",
-        parametro2: "",
-        parametro3: ""
+      usucodig: this.SessionIdUsuario,
+      cnctivoOferta: this.SessionOferta,
+      ObsEstado: this.PubliOferObser,
+      estado: 10,
+      parametro1: "",
+      parametro2: "",
+      parametro3: ""
+    }
+    this.serviciosvaloracion.ActualizaEstadoOferta('3', Body).subscribe(ResultUpda => {
+      this.Respuesta = '';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+      var respuesta = ResultUpda.split('|')
+      this.Respuesta = respuesta[1];
+      if (respuesta[0] != '-1') {
+        this.modalPublicar?.close();
+        this.rutas.navigateByUrl('/home/buscaroferta');
+        this.EnvioCorreoMaisivo();
+        this.EnvioSmsMasivo();
       }
-      this.serviciosvaloracion.ActualizaEstadoOferta('3', Body).subscribe(ResultUpda => {
-        this.Respuesta = '';
-        this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
-        var respuesta = ResultUpda.split('|')
-        this.Respuesta = respuesta[1];
-        if (respuesta[0] != '-1') {
-          this.modalPublicar?.close();
-          this.rutas.navigateByUrl('/home/buscaroferta');
-          this.EnvioCorreoMaisivo();
-          this.EnvioSmsMasivo();
-        }
-      });
+    });
 
   }
 
@@ -1723,11 +1726,12 @@ export class ValoracionComponent implements OnInit {
       cd_cnctivo: this.SessionOferta,
       TextoCorreo: this.ArrayTextoModifica[0].TextoCorreo,
       TextoWhat: this.ArrayTextoModifica[0].TextoWhat,
-      ImgCorreo: this.imagenesCorreo
+      ImgCorreo: this.imagenesCorreo,
+      TextoSms: this.ArrayTextoModifica[0].TextoSms
     }
 
     this.serviciosvaloracion.TextosOferta('1', Bodymod).subscribe(ResultCorreo => {
-
+      console.log(ResultCorreo)
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
       this.Respuesta = ResultCorreo;
 
