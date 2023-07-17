@@ -211,48 +211,56 @@ export class ValoracionComponent implements OnInit {
   }
 
   AgregaValorUni(templateMensaje: any) {
-    this.Respuesta = ''
-    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
-    if (this.ValorUni == '' || this.ValorUni == null || this.ValorUni == '0') {
-      this.ValidaCam = '1';
-      this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
-      this.ArrayCamposValida = [
-        {
-          campo: 'ValorUni',
-          campof: 'Valor',
-          class: '',
-          imagen: ''
-        }
-      ]
-      for (var i = 0; i < this.ArrayCamposValida.length; i++) {
-        if (this.ArrayCamposValida[i].campo == 'ValorUni') {
-          if (this.ValorUni == '' || this.ValorUni == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+    console.log(this.DataValores.length)
+    console.log(this.MaxUnidI)
+    console.log(this.DataValores.length >= parseInt(this.MaxUnidI))
+    if(this.DataValores.length < parseInt(this.MaxUnidI)){
+      this.Respuesta = ''
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
+      if (this.ValorUni == '' || this.ValorUni == null || this.ValorUni == '0') {
+        this.ValidaCam = '1';
+        this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
+        this.ArrayCamposValida = [
+          {
+            campo: 'ValorUni',
+            campof: 'Valor',
+            class: '',
+            imagen: ''
           }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+        ]
+        for (var i = 0; i < this.ArrayCamposValida.length; i++) {
+          if (this.ArrayCamposValida[i].campo == 'ValorUni') {
+            if (this.ValorUni == '' || this.ValorUni == null) {
+              this.ArrayCamposValida[i].class = 'TextAlert'
+              this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+            }
+            else {
+              this.ArrayCamposValida[i].class = 'TextFine'
+              this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+            }
           }
         }
       }
-    }
-    else {
-      this.ValidaCam = '0';
-      this.ArrayCamposValida = [];
-
-      const Body = {
-        Cd_cnsctvo: Number(this.SessionOferta),
-        IdSector: Number(this.SessionSectorSel),
-        IdValor: 0,
-        ValorUnd: this.ValorUni
+      else {
+        this.ValidaCam = '0';
+        this.ArrayCamposValida = [];
+  
+        const Body = {
+          Cd_cnsctvo: Number(this.SessionOferta),
+          IdSector: Number(this.SessionSectorSel),
+          IdValor: 0,
+          ValorUnd: this.ValorUni
+        }
+        this.serviciosvaloracion.ModValoresUnidades('2', Body).subscribe(ResultOper => {
+          this.Respuesta = ResultOper;
+          this.consultaValoresUni();
+        })
+        this.ValorUni = '';
+  
       }
-      this.serviciosvaloracion.ModValoresUnidades('2', Body).subscribe(ResultOper => {
-        this.Respuesta = ResultOper;
-        this.consultaValoresUni();
-      })
-      this.ValorUni = '';
-
+    }else{
+      this.Respuesta = "No es posible agregar una nueva referencia de compra, ya que has llegado al máximo permito por las unidades a comprar";
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
     }
   }
 
@@ -1511,29 +1519,36 @@ export class ValoracionComponent implements OnInit {
   }
 
   PublicaOferta(templateMensaje: any) {
-
-    const Body = {
-      usucodig: this.SessionIdUsuario,
-      cnctivoOferta: this.SessionOferta,
-      ObsEstado: this.PubliOferObser,
-      estado: 10,
-      parametro1: "",
-      parametro2: "",
-      parametro3: ""
-    }
-    this.serviciosvaloracion.ActualizaEstadoOferta('3', Body).subscribe(ResultUpda => {
+    console.log(this.DataValores.length)
+    console.log(this.DataValores.length > 0)
+    if (this.DataValores.length > 0 && this.ValidaTipoOfer=='1') {
+      const Body = {
+        usucodig: this.SessionIdUsuario,
+        cnctivoOferta: this.SessionOferta,
+        ObsEstado: this.PubliOferObser,
+        estado: 10,
+        parametro1: "",
+        parametro2: "",
+        parametro3: ""
+      }
+      this.serviciosvaloracion.ActualizaEstadoOferta('3', Body).subscribe(ResultUpda => {
+        this.Respuesta = '';
+        this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+        var respuesta = ResultUpda.split('|')
+        this.Respuesta = respuesta[1];
+        if (respuesta[0] != '-1') {
+          this.modalPublicar?.close();
+          this.rutas.navigateByUrl('/home/buscaroferta');
+          this.EnvioCorreoMaisivo();
+          this.EnvioSmsMasivo();
+        }
+      });
+    } else {
+      this.modalPublicar?.close();
       this.Respuesta = '';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
-      var respuesta = ResultUpda.split('|')
-      this.Respuesta = respuesta[1];
-      if (respuesta[0] != '-1') {
-        this.modalPublicar?.close();
-        this.rutas.navigateByUrl('/home/buscaroferta');
-        this.EnvioCorreoMaisivo();
-        this.EnvioSmsMasivo();
-      }
-    });
-
+      this.Respuesta = "Por favor ingresa los valores de referencia para la compra";;
+    }
   }
 
 
