@@ -4,7 +4,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router'
 import { CookieService } from 'ngx-cookie-service';
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
-
+import { CrearofertaService } from 'src/app/core/crearoferta.service'
 @Component({
   selector: 'app-adminsectores',
   templateUrl: './adminsectores.component.html',
@@ -20,8 +20,9 @@ export class AdminsectoresComponent implements OnInit {
   NombreCiudad: string = "";
   Respuesta: string = "";
 
-  constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService) { }
-
+  constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService, private ServiciosOferta: CrearofertaService) { }
+  public respuestaImagenEnviada: any;
+  public resultadoCarga: any;
   // #region Mapa
   map: google.maps.Map;
   geocoder = new google.maps.Geocoder();
@@ -69,6 +70,15 @@ export class AdminsectoresComponent implements OnInit {
 
   //Nombre Sector
   NombreSecInsert: string = "";
+
+  //Modificar Imagen Mapa
+  ImgMapaSec: string = './../../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+  file: FileList | undefined;
+  RutaImagenes: string = this.ServiciosGenerales.RecuperaRutaImagenes();
+  NomImagen1: string = '';
+  SectModif: string = '';
+  ValidaImgMapa: string ='0' ;
+  RespuestaImgMapa: any;
   // #endregion crear
 
   // #region region editar
@@ -644,4 +654,65 @@ export class AdminsectoresComponent implements OnInit {
     })
   }
   // #endregion Eliminar
+
+  
+  EditarImgMapa(sector: any, Modalmapa: any) {
+    //this.ValidaMapSector = '1'
+    this.ValidaImgMapa = '0'
+    console.log(sector)
+    this.SectModif = sector.ID_SCTOR_OFRTA
+    if (sector.imagen_sctor != '' && sector.imagen_sctor != null && sector.imagen_sctor != undefined) {
+      this.ImgMapaSec = this.RutaImagenes + sector.imagen_sctor;
+    } else {
+      this.ImgMapaSec = './../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+    }
+    this.modalService.open(Modalmapa, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+  }
+
+  SubirImgMapa(event: any, imagen: string) {
+    this.file = event.target.files[0];
+    console.log(event.target.files[0])
+    this.ServiciosOferta.postFileImagen(event.target.files[0]).subscribe(
+      response => {
+        this.respuestaImagenEnviada = response;
+        console.log(this.respuestaImagenEnviada);
+        if (this.respuestaImagenEnviada <= 1) {
+          console.log("Error en el servidor");
+        } else {
+          //console.log("Entra A Enviar");
+          if (this.respuestaImagenEnviada == 'Archivo Subido Correctamente') {
+            if (imagen == '1') {
+              this.ImgMapaSec = this.RutaImagenes + event.target.files[0].name;
+              this.NomImagen1 = event.target.files[0].name;
+            }
+          } else {
+            this.resultadoCarga = 2;
+            // console.log(this.resultadoCarga);
+          }
+
+        }
+      },
+      error => {
+
+      }
+    );
+  }
+
+  GuardarImgMapa() {
+    if (!this.ImgMapaSec.includes('SubirImagen')) {
+      const datos = {
+        ID_SECTOR: this.SectModif,
+        NOMBRE_IMG: this.NomImagen1
+      }
+      this.sectoresservices.ModificarImagenSector('3', datos).subscribe(Resultado => {
+        console.log(Resultado)
+        this.modalService.dismissAll();
+      })
+      this.ValidaImgMapa = '0';
+    }else{
+      this.ValidaImgMapa = '1';
+      this.RespuestaImgMapa = 'Debe seleccionar una imagen para guardar';
+    }
+
+  }
 }
