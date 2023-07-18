@@ -267,6 +267,7 @@ export class ValorarofertaService {
   }
 
   ConsPinsUltMilla(Bandera: string, CD_CNSCTVO: string, IdSector: string) {
+    console.log()
     return this.http.get<any>(this.url_servidor + 'conscpinultimailla/' + Bandera + '/' + CD_CNSCTVO + '/' + IdSector)
   }
 
@@ -331,5 +332,13 @@ export class ValorarofertaService {
 
   ModValoresUnidades(Bandera: string, body: any) {
     return this.http.post<any>(this.url_servidor + 'modcanadorvalor/' + Bandera, body)
+  }
+
+  ConsentregasConductor(IdGrupoMilla: string, ID_CNDCTOR: string, IdSector: string, conscutivo: string){
+    return this.http.get<any[]>(this.url_servidor + 'consentregasconductor/' + IdGrupoMilla + '/' + ID_CNDCTOR + '/' + IdSector + '/' + conscutivo + '/0');
+  }
+  
+  ConscGrupoMilla(bandera: string, IdSector: string, conscutivo: string){
+    return this.http.get<any[]>(this.url_servidor + 'conscGrupoMilla/' + bandera + '/' + IdSector + '/' + conscutivo);
   }
 }

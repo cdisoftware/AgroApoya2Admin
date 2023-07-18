@@ -1,0 +1,81 @@
+<div class="container">
+    <br>
+    <h1>Reporte entregas</h1>
+    <div class="row justify-content-center">
+        <div class="col-10 col-md-6 mt-3">
+            <ng-autocomplete [data]="DataOfertas" [searchKeyword]="keywordOferta" placeholder="Oferta"
+                (inputCleared)="LimpiaOferta('0')" (selected)='selectOferta($event)' [itemTemplate]="templateOferta"
+                [notFoundTemplate]="templateVacio">
+            </ng-autocomplete>
+            <ng-template #templateOferta let-item>
+                <a [innerHTML]="item.CD_CNSCTVO + ' - ' + item.Nombre_Producto"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+
+        <div class="col-10 col-md-6 mt-3">
+            <ng-autocomplete [disabled]="SelectOferta == '0'" [data]="DataSector" [searchKeyword]="keywordSector"
+                placeholder="Sector" (inputCleared)="LimpiaSector('0')" (selected)='selectSector($event)'
+                [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
+            </ng-autocomplete>
+            <ng-template #templateSec let-item>
+                <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+
+        <div class="row mt-5 justify-content-center">
+            <div class="col-10 row col-sm-3 boton mt-2 justify-content-center">
+                <button class="btn btn-agro-prin col-sm-12">
+                    Enviar gmail
+                </button>
+            </div>
+            <div class="col-10 row col-sm-3 boton mt-2">
+                <button class="btn btn-agro-sec col-sm-12">
+                    Limpiar
+                </button>
+            </div>
+        </div>
+
+        <div class="row mt-5" *ngFor="let grup of DataUsersGruposMilla; let i = index">
+            <table class="col-sm-12 TableAgro mt-1">
+                <thead>
+                    <tr>
+                        <th colspan="4">{{grup.NMBRE_CNDCTOR}}</th>
+                        <th>
+                            <div class="col-10 row boton justify-content-center sinmp">
+                                <button class="btn btn-agro-secGmail col-10">
+                                    Gmail
+                                </button>
+                            </div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Orden Entrega</th>
+                        <th>Dirección</th>
+                        <th>Teléfono</th>
+                        <th>Nombre cliente</th>
+                        <th>Compra</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr *ngFor="let respu of grup.Entregas; let j = index">
+                        <td>{{j+1}}</td>
+                        <td>{{respu.DRCCION}}</td>
+                        <td>{{respu.CELULAR_PERSONA}}</td>
+                        <td>{{respu.NOMBRES_PERSONA}}</td>
+                        <td>
+                            <div [innerHTML]="respu.producto_add2">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
