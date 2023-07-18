@@ -306,10 +306,6 @@
                             <input mask="separator" thousandSeparator="." type="text" [disabled]="MuestraGrupal == '1' "
                                 class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiI">
                         </div>
-                        <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Precio final (No incluye valor domicilio)</label>
-                            <input type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PreFinI">
-                        </div>
                     </div>
                     <div class="row justify-content-center br" *ngIf="MuestraBtnIndividual=='1'">
                         <div class="col-sm-3">
@@ -411,11 +407,12 @@
             </ngb-panel>
         </ngb-accordion>
     </div>
-    <div class="row br" *ngIf="ValidaToppings=='1'">
+    <div class="row br" *ngIf="ValidaToppings=='1' || ValidaTipoOfer=='1'">
         <h5 class="SubTituloForm">Definición valor de las unidades</h5>
     </div>
-    <div class="row br" *ngIf="ValidaToppings=='1'">
-        <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three" *ngIf="MuestraValUnidades=='1'">
+    <div class="row br" *ngIf="ValidaToppings=='1' || ValidaTipoOfer=='1'">
+        <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three"
+            *ngIf="MuestraValUnidades=='1' || ValidaTipoOfer=='1'">
             <ngb-panel title="Valor unidades" id="config-panel-three">
                 <ng-template ngbPanelContent>
                     <div class="row br">
@@ -627,6 +624,16 @@
                             </button>
                         </div>
                     </div>
+
+                    <h1 class="br">SMS</h1>
+                    <div class="row br justify-content-center">
+                        <div class="col-12">
+                            <label class="col-sm-12 Llave">Mensaje correo</label>
+                            <textarea class="col-sm-12 form-control mt-1 textArea" cols="30" rows="5"
+                                [(ngModel)]="arreglo.TextoSms"> </textarea>
+                        </div>
+                    </div>
+
                     <div class="row justify-content-center br">
                         <div class="col-sm-2 ">
                             <button class="btn btn-agro-prin col-sm-12"

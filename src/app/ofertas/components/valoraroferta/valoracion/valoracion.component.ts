@@ -211,48 +211,56 @@ export class ValoracionComponent implements OnInit {
   }
 
   AgregaValorUni(templateMensaje: any) {
-    this.Respuesta = ''
-    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
-    if (this.ValorUni == '' || this.ValorUni == null || this.ValorUni == '0') {
-      this.ValidaCam = '1';
-      this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
-      this.ArrayCamposValida = [
-        {
-          campo: 'ValorUni',
-          campof: 'Valor',
-          class: '',
-          imagen: ''
-        }
-      ]
-      for (var i = 0; i < this.ArrayCamposValida.length; i++) {
-        if (this.ArrayCamposValida[i].campo == 'ValorUni') {
-          if (this.ValorUni == '' || this.ValorUni == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+    console.log(this.DataValores.length)
+    console.log(this.MaxUnidI)
+    console.log(this.DataValores.length >= parseInt(this.MaxUnidI))
+    if(this.DataValores.length < parseInt(this.MaxUnidI)){
+      this.Respuesta = ''
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
+      if (this.ValorUni == '' || this.ValorUni == null || this.ValorUni == '0') {
+        this.ValidaCam = '1';
+        this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
+        this.ArrayCamposValida = [
+          {
+            campo: 'ValorUni',
+            campof: 'Valor',
+            class: '',
+            imagen: ''
           }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+        ]
+        for (var i = 0; i < this.ArrayCamposValida.length; i++) {
+          if (this.ArrayCamposValida[i].campo == 'ValorUni') {
+            if (this.ValorUni == '' || this.ValorUni == null) {
+              this.ArrayCamposValida[i].class = 'TextAlert'
+              this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+            }
+            else {
+              this.ArrayCamposValida[i].class = 'TextFine'
+              this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+            }
           }
         }
       }
-    }
-    else {
-      this.ValidaCam = '0';
-      this.ArrayCamposValida = [];
-
-      const Body = {
-        Cd_cnsctvo: Number(this.SessionOferta),
-        IdSector: Number(this.SessionSectorSel),
-        IdValor: 0,
-        ValorUnd: this.ValorUni
+      else {
+        this.ValidaCam = '0';
+        this.ArrayCamposValida = [];
+  
+        const Body = {
+          Cd_cnsctvo: Number(this.SessionOferta),
+          IdSector: Number(this.SessionSectorSel),
+          IdValor: 0,
+          ValorUnd: this.ValorUni
+        }
+        this.serviciosvaloracion.ModValoresUnidades('2', Body).subscribe(ResultOper => {
+          this.Respuesta = ResultOper;
+          this.consultaValoresUni();
+        })
+        this.ValorUni = '';
+  
       }
-      this.serviciosvaloracion.ModValoresUnidades('2', Body).subscribe(ResultOper => {
-        this.Respuesta = ResultOper;
-        this.consultaValoresUni();
-      })
-      this.ValorUni = '';
-
+    }else{
+      this.Respuesta = "No es posible agregar una nueva referencia de compra, ya que has llegado al máximo permito por las unidades a comprar";
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
     }
   }
 
@@ -555,7 +563,9 @@ export class ValoracionComponent implements OnInit {
 
   ConsultaDetalleOferta() {
     this.serviciosvaloracion.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
+      console.log(ResultConsu)
       this.DataOferta = ResultConsu;
+      this.VlReferencia = parseInt(this.DataOferta[0].VR_UNDAD_EMPQUE) + 5000;
       this.SessionFechaRecogida = this.DataOferta[0].fecha_recogida;
     })
   }
@@ -1403,6 +1413,7 @@ export class ValoracionComponent implements OnInit {
         this.ValidaToppings = '1';
         this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
           if (ResultUpdate.length > 0) {
+            console.log(ResultUpdate)
             this.ArrayTextoModifica = ResultUpdate;
             this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
           }
@@ -1508,8 +1519,10 @@ export class ValoracionComponent implements OnInit {
   }
 
   PublicaOferta(templateMensaje: any) {
-
-    const Body = {
+    console.log(this.DataValores.length)
+    console.log(this.DataValores.length > 0)
+    if (this.DataValores.length > 0 && this.ValidaTipoOfer=='1') {
+      const Body = {
         usucodig: this.SessionIdUsuario,
         cnctivoOferta: this.SessionOferta,
         ObsEstado: this.PubliOferObser,
@@ -1530,7 +1543,12 @@ export class ValoracionComponent implements OnInit {
           this.EnvioSmsMasivo();
         }
       });
-
+    } else {
+      this.modalPublicar?.close();
+      this.Respuesta = '';
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+      this.Respuesta = "Por favor ingresa los valores de referencia para la compra";;
+    }
   }
 
 
@@ -1723,11 +1741,12 @@ export class ValoracionComponent implements OnInit {
       cd_cnctivo: this.SessionOferta,
       TextoCorreo: this.ArrayTextoModifica[0].TextoCorreo,
       TextoWhat: this.ArrayTextoModifica[0].TextoWhat,
-      ImgCorreo: this.imagenesCorreo
+      ImgCorreo: this.imagenesCorreo,
+      TextoSms: this.ArrayTextoModifica[0].TextoSms
     }
 
     this.serviciosvaloracion.TextosOferta('1', Bodymod).subscribe(ResultCorreo => {
-
+      console.log(ResultCorreo)
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
       this.Respuesta = ResultCorreo;
 

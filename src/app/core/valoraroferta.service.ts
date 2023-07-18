@@ -125,6 +125,10 @@ export class ValorarofertaService {
     return this.http.get<any[]>(this.url_servidor + 'consctipocosteoferta/' + Bandera)
   }
 
+  conscTipoCosteoXOferta(Bandera: string, Cd_Consecutivo: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscTipoCosteoXOferta/' + Bandera+ '/' + Cd_Consecutivo)
+  }
+
   ConsultaDetalleCond(Bandera: string, idtransportista: string, idconductor: string) {
     return this.http.get<any[]>(this.url_servidor + 'conscdatostransportista/' + Bandera + '/' + idtransportista + '/' + idconductor)
   }

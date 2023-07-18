@@ -24,6 +24,7 @@ export class CosteoComponent implements OnInit {
   IdOferta: string = '';
   IdTipoConcepto: string = '0';
   ArrayConceptos: any = [];
+  ArrayConceptosOfer: any = [];
   ArrayOferta: any = [];
   IdConcepto: string = '';
   RutaImagen: string = this.SeriviciosGenerales.RecuperaRutaImagenes();
@@ -46,6 +47,7 @@ export class CosteoComponent implements OnInit {
     this.ConsultaOferta();
     this.ConsultaCosteo();
     this.ConsultaConceptos();
+    this.ConsultaConceptosGen();
   }
 
   ConsultaCosteo() {
@@ -61,20 +63,26 @@ export class CosteoComponent implements OnInit {
           }
         }
       }
-      console.log(Resultado)
     })
   }
 
   LimpiarFiltro() {
     this.IdConcepto = '0'
     this.lblConceptoAgregar = '';
-    this.ConceptoSel='';
+    this.ConceptoSel = '';
+  }
+
+  ConsultaConceptosGen() {
+    this.ServiciosValorar.ConsultaConceptos('1').subscribe(Resultado => {
+      console.log(Resultado)
+      this.ArrayConceptos = Resultado;
+    })
   }
 
   ConsultaConceptos() {
-    this.ServiciosValorar.ConsultaConceptos('1').subscribe(Resultado => {
-      this.ArrayConceptos = Resultado;
+    this.ServiciosValorar.conscTipoCosteoXOferta('1', this.IdOferta).subscribe(Resultado => {
       console.log(Resultado)
+      this.ArrayConceptosOfer = Resultado;
     })
   }
 
@@ -86,7 +94,6 @@ export class CosteoComponent implements OnInit {
       VLOR: this.VTotal
     }
     this.ServiciosValorar.AsociarCosteo('3', conceptos).subscribe(Resultado => {
-      console.log(Resultado)
       if (Resultado.toString().includes('-1')) {
         this.Respuesta = 'No se puede asociar el valor de costeo seleccionado, por favor valide sus datos';
         this.modalService.dismissAll();
@@ -102,8 +109,9 @@ export class CosteoComponent implements OnInit {
           this.ValorTotal = (Number(this.ValorTotal) + Number(this.VTotal)).toString()
         }
         this.ConsultaCosteo();
-        this.ConceptoSel='';
-        this.VTotal='';
+        this.ConsultaConceptos();
+        this.ConceptoSel = '';
+        this.VTotal = '';
         this.IdConcepto = '0'
       }
 
@@ -119,13 +127,13 @@ export class CosteoComponent implements OnInit {
     }
     this.ServiciosValorar.AsociarCosteo('4', conceptos).subscribe(Resultado => {
       this.ValorTotal = '0';
-      this.ConsultaCosteo()
+      this.ConsultaCosteo();
+      this.ConsultaConceptos();
     })
   }
 
   ConsultaOferta() {
     this.ServiciosValorar.ConsultaOferta('1', this.IdOferta).subscribe(Resultado => {
-      console.log(Resultado)
       this.ArrayOferta = Resultado;
       if (Resultado.length > 0) {
         this.Producto = Resultado[0].Nombre_Producto;
@@ -140,8 +148,8 @@ export class CosteoComponent implements OnInit {
     this.banderaAgregar = '1';
   }
 
-  NovedadConcepto(bandera:string, modalRespuesta:any){
-    if(bandera=='1'){
+  NovedadConcepto(bandera: string, modalRespuesta: any) {
+    if (bandera == '1') {
       const body = {
         Descripcion: this.lblConceptoAgregar,
         IdTipoCosteo: 0
@@ -160,7 +168,7 @@ export class CosteoComponent implements OnInit {
         })
       }
     }
-    else if(bandera=='2'){
+    else if (bandera == '2') {
       const body = {
         Descripcion: this.lblConceptoAgregar,
         IdTipoCosteo: this.auxIdConcepto
@@ -171,7 +179,8 @@ export class CosteoComponent implements OnInit {
         this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
       } else {
         this.ServiciosValorar.ModificaConcepto('2', body).subscribe(respu => {
-          this.Respuesta = respu;
+          var auxrespu: string = respu.split("|");
+          this.Respuesta = auxrespu[1];
           this.modalService.dismissAll();
           this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
           this.ConsultaConceptos();
@@ -179,26 +188,31 @@ export class CosteoComponent implements OnInit {
         })
       }
     }
-  }  
-  
+  }
+
   banderaAgregar: string = '1';
   auxIdConcepto: string = '';
 
-  SeleccionarEditarConcepto(arreglo: any){
-    console.log(arreglo)
+  SeleccionarEditarConcepto(arreglo: any) {
     this.lblConceptoAgregar = arreglo.nombre
     this.banderaAgregar = '2';
     this.auxIdConcepto = arreglo.codigo;
   }
-  
-  EliminaConcepto(modalRespuesta: any, arreglo: any) {
-    console.log(arreglo)
+
+  EliminaCosteo: any = [];
+  PopupEliminaConcepto(modalConfirmacion: any, item: any) {
+    this.modalService.open(modalConfirmacion, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    this.EliminaCosteo = item;
+  }
+
+  EliminaConcepto(modalRespuesta: any) {
     const body = {
       Descripcion: this.lblConceptoAgregar,
-      IdTipoCosteo: arreglo.codigo
+      IdTipoCosteo: this.EliminaCosteo.codigo
     }
     this.ServiciosValorar.ModificaConcepto('4', body).subscribe(respu => {
-      this.Respuesta = respu;
+      var auxrespu: string = respu.split("|");
+      this.Respuesta = auxrespu[1];
       this.modalService.dismissAll();
       this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
       this.ConsultaConceptos();
