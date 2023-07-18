@@ -136,7 +136,7 @@
     </div>
     <div class="row br">
         <div class="col-sm-4">
-            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keyword" [(ngModel)]="SectorSelec" placeholder="Sector" (selected)='selectSector($event)' [itemTemplate]="DataSectores.length>0 ? templateSec : templateVacio" [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
+            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keyword" [(ngModel)]="SectorSelec" placeholder="Sector" (selected)='selectSector($event)' [itemTemplate]="DataSectores.length>0 ? templateSec : templateVacio" [notFoundTemplate]="templateVacio" [(ngModel)]="Sector" (inputCleared)="LimpiaForm()">
             </ng-autocomplete>
             <ng-template #templateSec let-item>
                 <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
@@ -146,7 +146,7 @@
             </ng-template>
         </div>
         <div class="col-sm-4">
-            <ng-autocomplete [data]="DataTransportista" [searchKeyword]="keywordT" [(ngModel)]="TransSelec" placeholder="Transportista" (selected)='selectTrans($event)' [itemTemplate]="templateTran" [notFoundTemplate]="templateVacio" [(ngModel)]="Transpor">
+            <ng-autocomplete [data]="DataTransportista" [searchKeyword]="keywordT" [(ngModel)]="TransSelec" placeholder="Transportista" (selected)='selectTrans($event)'  [itemTemplate]="templateTran" [notFoundTemplate]="templateVacio" [(ngModel)]="Transpor">
             </ng-autocomplete>
             <ng-template #templateTran let-item>
                 <a [innerHTML]="item.nombre_conductor"></a>

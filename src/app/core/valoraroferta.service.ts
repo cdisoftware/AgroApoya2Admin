@@ -328,4 +328,8 @@ export class ValorarofertaService {
   ModValoresUnidades(Bandera: string, body: any) {
     return this.http.post<any>(this.url_servidor + 'modcanadorvalor/' + Bandera, body)
   }
+
+  ModificarImagenSector(Bandera: string, body: any){
+    return this.http.post<any>(this.url_servidor + 'ModActualizaImgSector/' + Bandera, body)
+  }
 }

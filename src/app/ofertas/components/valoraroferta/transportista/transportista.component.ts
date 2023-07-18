@@ -168,7 +168,9 @@ export class TransportistaComponent implements OnInit, OnDestroy {
   }
 
   selectSector(item: any) {
+    console.log(item)
     this.SectorSelec = item;
+    this.VlrFlete = item.VLOR_FLTE_SGRDO;
   }
 
   selectTrans(item: any) {
@@ -276,10 +278,10 @@ export class TransportistaComponent implements OnInit, OnDestroy {
 
   RechazarTransportista(transportista: any, templateDetalle: any) {
     var auxval: string = "";
-    if(this.ValorFinalTrans == ""){
+    if (this.ValorFinalTrans == "") {
       auxval = transportista.VLOR_FLTE_PCTDO;
-    }else{
-      auxval =  this.ValorFinalTrans;
+    } else {
+      auxval = this.ValorFinalTrans;
     }
     const BodyUpdate = {
       CD_CNSCTVO: this.SessionOferta,
@@ -297,11 +299,13 @@ export class TransportistaComponent implements OnInit, OnDestroy {
     })
   }
 
+
+
   ContraOfer: any = [];
   ValorFinalTrans: string = "";
   ValorContraOferta(item: any, ModalValContraOfer: any) {
     this.ContraOfer = item;
     this.ValorFinalTrans = item.VLOR_FLTE_PCTDO;
-    this.modalService.open(ModalValContraOfer, { ariaLabelledBy: 'modal-basic-title', size: "lg"})
+    this.modalService.open(ModalValContraOfer, { ariaLabelledBy: 'modal-basic-title', size: "lg" })
   }
 }
