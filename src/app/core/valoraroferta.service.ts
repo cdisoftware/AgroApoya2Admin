@@ -126,7 +126,7 @@ export class ValorarofertaService {
   }
 
   conscTipoCosteoXOferta(Bandera: string, Cd_Consecutivo: string) {
-    return this.http.get<any[]>(this.url_servidor + 'conscTipoCosteoXOferta/' + Bandera+ '/' + Cd_Consecutivo)
+    return this.http.get<any[]>(this.url_servidor + 'conscTipoCosteoXOferta/' + Bandera + '/' + Cd_Consecutivo)
   }
 
   ConsultaDetalleCond(Bandera: string, idtransportista: string, idconductor: string) {
@@ -205,6 +205,10 @@ export class ValorarofertaService {
 
   ConsultaSeguimiento(Bandera: string, IdOferta: string, IdSector: string) {
     return this.http.get<any[]>(this.url_servidor + 'conscentregaseg/' + Bandera + '/' + IdOferta + '/' + IdSector)
+  }
+
+  ConsultaSeguimientoEntregas(Bandera: string, IdConductor: string, IdSector: string, IdOferta: string, Datos: any) {
+    return this.http.post<any>(this.url_servidor + 'consSeguimientoEntregas/' + Bandera + '/' + IdConductor + '/' + IdSector + '/' + IdOferta, Datos)
   }
 
   ConsultaTrazabilidad(Bandera: string, cd_cnctivo: string) {
@@ -321,7 +325,7 @@ export class ValorarofertaService {
   }
 
   //modcultimmillainicial
-  ModUltimMillaIni(Bandera: string, Datos: any){
+  ModUltimMillaIni(Bandera: string, Datos: any) {
     return this.http.post<any>(this.url_servidor + 'modcultimmillainicial/' + Bandera, Datos)
   }
 
@@ -333,7 +337,11 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'modcanadorvalor/' + Bandera, body)
   }
 
-  ModificarImagenSector(Bandera: string, body: any){
+  ModificarImagenSector(Bandera: string, body: any) {
     return this.http.post<any>(this.url_servidor + 'ModActualizaImgSector/' + Bandera, body)
+  }
+
+  ConsultaDetalleEntregas(Bandera: string, IdGrupo: string, IdOferta: string, IdSector: string, IdCarro: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conscompragrupales/' + Bandera + '/' + IdGrupo + '/' + IdOferta + '/' + IdSector + '/' + IdCarro )
   }
 }
