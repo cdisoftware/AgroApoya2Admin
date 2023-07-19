@@ -1,9 +1,10 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router'
 import { CookieService } from 'ngx-cookie-service';
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
+import { CrearofertaService } from 'src/app/core/crearoferta.service'
 
 @Component({
   selector: 'app-sectorizacion',
@@ -11,6 +12,9 @@ import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
   styleUrls: ['./sectorizacion.component.css']
 })
 export class SectorizacionComponent implements OnInit {
+  @ViewChild('ModalRespuesta', { static: false }) ModalMensaje: any;
+  public respuestaImagenEnviada: any;
+  public resultadoCarga: any;
   DesSect: string = '';
   CoordeSect: string = '';
   Cant: string = '';
@@ -83,11 +87,17 @@ export class SectorizacionComponent implements OnInit {
   CoordenadasBodega: string;
   IdDepa: string = '';
   IdCiudad: string = '';
-  ImgMapaSec: string = './../../../../../../assets/ImagenesAgroApoya2Adm/SinImagen.png';
+  ImgMapaSec: string = './../../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
 
+  //Subir Imagenes
+  file: FileList | undefined;
+  RutaImagenes: string = this.ServiciosGenerales.RecuperaRutaImagenes();
+  NomImagen1: string = '';
+  SectModif: string = '';
+  ValidaImgMapa: string ='0' ;
+  RespuestaImgMapa: any;
 
-
-  constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService) {
+  constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService, private ServiciosOferta: CrearofertaService) {
   }
 
   ngOnInit(): void {
@@ -110,7 +120,7 @@ export class SectorizacionComponent implements OnInit {
     this.ConsultaCiudadOferta();
     this.ConsultaSectoresOferta();
     this.ConsultaDetalleOferta();
-    
+
 
 
   }
@@ -343,7 +353,7 @@ export class SectorizacionComponent implements OnInit {
     this.Coor1 = '';
     this.Coor2 = '';
     this.DataCoor = [];
-    this.ModalInsert = this.modalService.open(content, { size: 'xl', keyboard: false, backdrop: 'static' })
+    this.ModalInsert = this.modalService.open(content, { size: 'xl' })
     var element = document.getElementById('RadioPer') as HTMLInputElement
     element.focus();
     element.checked = true;
@@ -531,6 +541,7 @@ export class SectorizacionComponent implements OnInit {
 
   selectZona(item: any) {
     //this.Sessionzona = item.id;
+    this.seleczona = '1';
     this.ConsultaSectores(item.id);
     if (this.Cant != "" && this.Cant != "0") {
       this.seleczona = '1';
@@ -705,9 +716,9 @@ export class SectorizacionComponent implements OnInit {
   }
 
   EditarBodega(sector: any, modalbodega: any) {
-    this.AlertEditBodega  = ''
+    this.AlertEditBodega = ''
     this.SectorSelect = sector.ID_SCTOR_OFRTA;
-    
+
     this.sectoresservices.ConsultaCargaAsociada('1', sector.ID_SCTOR_OFRTA, sector.CD_CNSCTVO, sector.IdBodega).subscribe(Resultado => {
       console.log(Resultado)
       if (Resultado.length > 0) {
@@ -725,7 +736,7 @@ export class SectorizacionComponent implements OnInit {
 
   AceptarEditaBodega() {
 
-    if (this.CantMax == null || this.CargMax == null|| this.DistMax == null) {
+    if (this.CantMax == null || this.CargMax == null || this.DistMax == null) {
       this.AlertEditBodega = 'Todos los campos son obligatorios';
     } else {
       const DatosCarga = {
@@ -743,22 +754,64 @@ export class SectorizacionComponent implements OnInit {
 
   }
 
-  EditarImgMapa(sector: any, Modalmapa: any){
+  EditarImgMapa(sector: any, Modalmapa: any) {
+    //this.ValidaMapSector = '1'
+    this.ValidaImgMapa = '0'
     console.log(sector)
-    if(sector.imagen_sctor != ''){
+    this.SectModif = sector.ID_SCTOR_OFRTA
+    if (sector.imagen_sctor != '') {
       this.ImgMapaSec = sector.imagen_sctor;
 
-    }else{
-    this.ImgMapaSec = './../../../../../../assets/ImagenesAgroApoya2Adm/SinImagen.png';
+    } else {
+      this.ImgMapaSec = './../../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
     }
     this.modalService.open(Modalmapa, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
   }
 
-  GuardarImgMapa(){
+  GuardarImgMapa() {
+    if (!this.ImgMapaSec.includes('SubirImagen')) {
+      const datos = {
+        ID_SECTOR: this.SectModif,
+        NOMBRE_IMG: this.NomImagen1
+      }
+      this.sectoresservices.ModificarImagenSector('3', datos).subscribe(Resultado => {
+        console.log(Resultado)
+        this.modalService.dismissAll();
+      })
+      this.ValidaImgMapa = '0';
+    }else{
+      this.ValidaImgMapa = '1';
+      this.RespuestaImgMapa = 'Debe seleccionar una imagen para guardar';
+    }
 
   }
 
-  SubirImgMapa(){
+  SubirImgMapa(event: any, imagen: string) {
+    this.file = event.target.files[0];
+    console.log(event.target.files[0])
+    this.ServiciosOferta.postFileImagen(event.target.files[0]).subscribe(
+      response => {
+        this.respuestaImagenEnviada = response;
+        console.log(this.respuestaImagenEnviada);
+        if (this.respuestaImagenEnviada <= 1) {
+          console.log("Error en el servidor");
+        } else {
+          //console.log("Entra A Enviar");
+          if (this.respuestaImagenEnviada == 'Archivo Subido Correctamente') {
+            if (imagen == '1') {
+              this.ImgMapaSec = this.RutaImagenes + event.target.files[0].name;
+              this.NomImagen1 = event.target.files[0].name;
+            }
+          } else {
+            this.resultadoCarga = 2;
+            // console.log(this.resultadoCarga);
+          }
 
+        }
+      },
+      error => {
+
+      }
+    );
   }
 }

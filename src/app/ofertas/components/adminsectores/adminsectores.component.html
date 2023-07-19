@@ -63,6 +63,9 @@
                         <button class="SinEstilo" title="Elimina sector" (click)="EliminaSector(respu, ModalRespuesta)">
                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" class="ic_grilla">
                         </button>
+                        <button class="SinEstilo" title="Ver sector" (click)="EditarImgMapa(respu, ModalImgMapa)">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png" class="ic_grilla">
+                        </button>
                     </td>
                 </tr>
             </table>
@@ -233,6 +236,39 @@
     </div>
     <div class="row justify-content-center ">
         <button type="button " class="btn btn-agro-prin col-sm-6" (click)="modal.dismiss() ">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+<ng-template #ModalImgMapa let-modal>
+    <div class="modal-header ">
+        <h1>Imagen Sector</h1>
+        <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
+    </div>
+    <h1 >De click en la imagen para subir o modificar</h1>
+    <br>
+    <div class="row justify-content-center">
+        <div class="col-sm-12" style="width: 400px; height: 400px;">
+            <div class="image-upload">
+                <label for="file-input1">
+                    <img id="ImgSec" title="Selecciona una imagen" [src]="ImgMapaSec" style="width: 100%; height:  400px; object-fit: cover;">
+                </label>
+                <input name="file-input1" id="file-input1" type="file" (change)="SubirImgMapa($event, '1')" />
+            </div>
+        </div>
+        <div class="row justify-content-center" *ngIf="ValidaImgMapa == '1'">
+            <div class="col-sm-6">
+                <label style="color: crimson; font-weight: bold; ">{{RespuestaImgMapa}}</label>
+            </div>
+        </div>
+        <!-- <div class="col-sm-12 m-3">
+            <div id="mapCS" [ngClass]="ValidaMapSector=='1' ? 'ShowMap' : 'HideMap' "></div>
+        </div> -->
+    </div>
+    <hr>
+    <div class="row justify-content-center ">
+        <div class="col-sm-3">
+            <button type="button " class="btn btn-agro-prin w-100" (click)="GuardarImgMapa()">Guardar</button>
+        </div>
     </div>
     <br>
 </ng-template>
