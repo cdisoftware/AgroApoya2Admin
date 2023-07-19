@@ -186,7 +186,7 @@ MostrarDetalle(Entrega: any, TemplateDetalle: any){
   console.log(Entrega)
   var IdGrupo = Entrega.IdGrupoMilla
   var IdCarro = Entrega.ID_CARRO
-  this.ServiciosValorar.ConsultaDetalleEntregas('1', '0', this.SelectorOferta, this.SelectorSector, IdCarro).subscribe(Resultado => {
+  this.ServiciosValorar.ConsultaDetalleEntregas('1', IdCarro).subscribe(Resultado => {
     console.log(Resultado)
   })
   this.modalService.open(TemplateDetalle, { size: 'md', centered: true });
