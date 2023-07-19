@@ -350,7 +350,7 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'ModActualizaImgSector/' + Bandera, body)
   }
 
-  ConsultaDetalleEntregas(Bandera: string, IdGrupo: string, IdOferta: string, IdSector: string, IdCarro: string) {
-    return this.http.get<any[]>(this.url_servidor + 'conscompragrupales/' + Bandera + '/' + IdGrupo + '/' + IdOferta + '/' + IdSector + '/' + IdCarro )
+  ConsultaDetalleEntregas(Bandera: string, IdCarro: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consSeguimientoEntregaDell/' + Bandera + '/' + IdCarro)
   }
 }
