@@ -754,6 +754,7 @@ export class SectorizacionComponent implements OnInit {
       }
       this.sectoresservices.ModificarImagenSector('3', datos).subscribe(Resultado => {
         this.modalService.dismissAll();
+        this.ConsultaSectoresOferta();
       })
       this.ValidaImgMapa = '0';
     }else{
