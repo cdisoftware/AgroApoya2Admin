@@ -29,12 +29,12 @@
         </div>
 
         <div class="row mt-5 justify-content-center">
-            <div class="col-10 row col-sm-3 boton mt-2 justify-content-center">
+            <div class="col-10 row col-sm-3 boton m-2 justify-content-center">
                 <button class="btn btn-agro-prin col-sm-12">
                     Enviar gmail
                 </button>
             </div>
-            <div class="col-10 row col-sm-3 boton mt-2">
+            <div class="col-10 row col-sm-3 boton m-2">
                 <button class="btn btn-agro-sec col-sm-12">
                     Limpiar
                 </button>
@@ -42,15 +42,14 @@
         </div>
 
         <div class="row mt-5" *ngFor="let grup of DataUsersGruposMilla; let i = index">
-            <table class="col-sm-12 TableAgro mt-1">
+            <table class="col-12 TableAgro mt-2" id="TableTransp{{i}}">
                 <thead>
                     <tr>
-                        <th colspan="4">{{grup.NMBRE_CNDCTOR}}</th>
-                        <th>
-                            <div class="col-10 row boton justify-content-center sinmp">
-                                <button class="btn btn-agro-secGmail col-10">
-                                    Gmail
-                                </button>
+                        <th [attr.colspan]="NumberColspan">{{grup.NMBRE_CNDCTOR}}</th>
+                        <th *ngIf="IsVisibleRowGmail == true">
+                            <div class="col-10 row boton justify-content-center sinmp"
+                                (click)="EnvioPdfEmail('TableTransp'+i)">
+                                <img src="../../../../../assets/ImagenesAgroApoya2Adm/gmail.png" class="imgEmail" />
                             </div>
                         </th>
                     </tr>
@@ -79,3 +78,10 @@
         </div>
     </div>
 </div>
+
+<ng-template #ModalRespuesta let-modal>
+    <div class="modal-body text-center" id="Firma">
+        <label class="llave">Firma</label>
+        <hr>
+    </div>
+</ng-template>

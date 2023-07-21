@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-reporteentregas',
@@ -27,6 +29,11 @@ export class ReporteentregasComponent implements OnInit {
   //#region ConsGruposOferta
   DataUsersGruposMilla: any = [];
   //#endregion ConsGruposOferta
+
+  //#region VariablesTableDinac
+  NumberColspan: number = 4;
+  IsVisibleRowGmail: boolean = true;
+  //#endregion VariablesTableDinac
   ngOnInit(): void {
     this.DataOferta();
   }
@@ -89,12 +96,12 @@ export class ReporteentregasComponent implements OnInit {
         if (IdGruposMilla.includes(ResultCons[i].IdGrupoMilla)) {
           index = IdGruposMilla.indexOf(ResultCons[i].IdGrupoMilla);
 
-          ResultCons[i].producto_add2 = "<p>" + ResultCons[i].producto_add2.replace("|","<br><br>") + "</p>";
+          ResultCons[i].producto_add2 = "<p>" + ResultCons[i].producto_add2.replace("|", "<br><br>") + "</p>";
 
           this.DataUsersGruposMilla[index].Entregas.push(ResultCons[i]);
         } else {
           IdGruposMilla.push(ResultCons[i].IdGrupoMilla);
-          ResultCons[i].producto_add2 = "<p>" + ResultCons[i].producto_add2.replace("|","<br><br>") + "</p>";
+          ResultCons[i].producto_add2 = "<p>" + ResultCons[i].producto_add2.replace("|", "<br><br>") + "</p>";
           this.DataUsersGruposMilla.push({ NMBRE_CNDCTOR: ResultCons[i].NMBRE_CNDCTOR.trim(), Entregas: [ResultCons[i]] });
         }
       }
@@ -102,4 +109,48 @@ export class ReporteentregasComponent implements OnInit {
     });
   }
   //#endregion ConsGruposOferta
+
+  //#region EvioEmail
+  async EnvioEmail(id: string) {
+    await new Promise((resolve, reject) => {
+      this.IsVisibleRowGmail = false;
+      this.NumberColspan = 5;
+      this.EnvioPdfEmail(id);
+      resolve(true);
+    });
+
+
+  }
+  EnvioPdfEmail(id: string) {
+    const doc = new jsPDF('p', 'pt', 'a4');
+    const options = {
+      background: 'white',
+      scale: 3
+    };
+
+
+    var DATAg = document.getElementById(id);
+    var DATAFirma = document.getElementById("Firma");
+
+    var imgFirma: any ;
+    if (DATAg != null) {
+
+
+      html2canvas(DATAg, options).then((canvas) => {
+        var imgDos = canvas.toDataURL('image/PNG');
+        imgFirma = canvas.toDataURL('image/PNG');
+        var imgPropDso = (doc as any).getImageProperties(imgDos);
+
+        var pdfWidthDso = doc.internal.pageSize.getWidth() - 2 * 15;
+        var pdfHeightDso = (imgPropDso.height * pdfWidthDso) / imgPropDso.width;
+
+        doc.addImage(imgDos, 'PNG', 15, 15, pdfWidthDso, pdfHeightDso, undefined, 'FAST');
+        doc.addImage(imgFirma, 'PNG', 15, 15, pdfWidthDso, pdfHeightDso, undefined, 'FAST');
+        
+        console.log(imgFirma);
+        doc.save('Descargar.pdf');
+      })
+    }
+  }
+  //#endregion EvioEmail
 }
