@@ -302,6 +302,7 @@ export class BuscarofertaComponent implements OnInit {
   CargaInfoOferta() {
     this.ConsultaIconoEstado();
     this.ServiciosValorar.ConsultaOferta('1', this.IdOferta).subscribe(Resultado => {
+      console.log(Resultado)
       this.ArrayOferta = Resultado;
       this.NombreProductor = Resultado[0].Nombre_productor;
       this.DesProducto = Resultado[0].Nombre_Producto;
@@ -319,7 +320,7 @@ export class BuscarofertaComponent implements OnInit {
       //this.IdProducto = Resultado[0].Producto;
       this.NomEstado = Resultado[0].Nombre_estado;
       this.ImagenOferta = this.SeriviciosGenerales.RecuperaRutaImagenes() + Resultado[0].IMAGEN;
-
+      this.IdEstado = Resultado[0].Estado;
       //this.IdEstado = Resultado[0].Estado;
       this.ValidaEstados(Resultado[0].Estado);
       this.ListasResumen();
