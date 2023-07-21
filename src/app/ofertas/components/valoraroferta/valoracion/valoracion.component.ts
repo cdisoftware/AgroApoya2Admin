@@ -768,6 +768,7 @@ export class ValoracionComponent implements OnInit {
   }
 
   selectSector(item: any) {
+    console.log(item)
     this.ValidaVigencia = '1';
     this.CodigoOferSector = item.COD_OFERTA_SECTOR;
     this.VlrFletSect = item.VLOR_FLTE_SGRDOForm;
@@ -1060,10 +1061,8 @@ export class ValoracionComponent implements OnInit {
         this.ValidaToppings = '1';
         this.MuestraValUnidades = '1';
         this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
-          console.log(ResultUpdate)
           this.ArrayTextoModifica = ResultUpdate;
-          console.log(this.ArrayTextoModifica[0].TextoSms);
-          if(this.ArrayTextoModifica[0].TextoSms.toString() == ""){
+          if(this.ArrayTextoModifica[0].TextoSms == null || this.ArrayTextoModifica[0].TextoSms == undefined || this.ArrayTextoModifica[0].TextoSms == ""){
             this.ArrayTextoModifica[0].TextoSms = "@NombrePersona Tenemos una oferta de @NombreProducto para ti, adquiérela ingresando a " + this.UrlParticipanteC;
           }
           this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
