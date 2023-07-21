@@ -54,7 +54,9 @@
                     <td>{{Seguimiento.NOMBRES_PERSONA}}</td>
                     <td>{{Seguimiento.CELULAR_PERSONA}}</td>
                     <td>{{Seguimiento.DRCCION }}</td>
-                    <td style="color: forestgreen;font-weight: bold; text-transform: uppercase;" [ngStyle]="{'color': Seguimiento.ESTDO !='4' ? 'forestgreen' : 'rgb(255, 166, 0)'}"> {{Seguimiento.descEstado}}</td>
+                    <td style="color: forestgreen;font-weight: bold; text-transform: uppercase;"
+                        [ngStyle]="{'color': Seguimiento.ESTDO !='4' ? 'forestgreen' : 'rgb(255, 166, 0)'}">
+                        {{Seguimiento.descEstado}}</td>
                     <td>{{Seguimiento.VLOR_PGAR | currency}}</td>
                     <td>{{Seguimiento.descTipoPago}}</td>
                     <td>{{Seguimiento.NMBRE_CNDCTOR}}</td>
@@ -100,7 +102,7 @@
 
         </div>
         <br>-->
-        
+
         <br>
     </div>
 </div>
@@ -155,7 +157,7 @@
                 <div class="col-sm-12">
                     <div id="map" [ngClass]="ValidaInsertSec=='1' ? 'ShowMap' : 'HideMap' "></div>
                 </div>
-            </div> 
+            </div>
         </div>
         <div class="row justify-content-center">
             <button type="button" id="btnGuardarDirecccion" class="btn ColorAgro col-sm-3 col-3"
@@ -172,7 +174,18 @@
             <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
         </div>
         <div class="mt-4 mb-4 text-center">
-            
+            <table class="col-sm-12 TableAgro ">
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Valor</th>
+                </tr>
+                <tr *ngFor="let Detalle of ArrayDetalle ">
+                    <td>{{Detalle.Producto}}</td>
+                    <td>{{Detalle.Cantidad}}</td>
+                    <td>{{Detalle.valor}}</td>
+                </tr>
+            </table>
         </div>
         <div class="row justify-content-center">
             <button type="button" id="btnGuardarDirecccion" class="btn ColorAgro col-sm-3 col-3"
