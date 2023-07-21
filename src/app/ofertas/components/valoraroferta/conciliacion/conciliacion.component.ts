@@ -33,9 +33,7 @@ export class ConciliacionComponent implements OnInit {
   ImagenOferta: string = '';
   ArrayJornada: any = [];
   ValidaSiguiente: string = '0';
-  IdACiudad: string = '0';
   maObservacion: string = '';
-  ArrayCiudades: any = [];
   IdEJornada: string = '0';
   //Variables Editar Oferta
   ECaracteriza: string = '';
@@ -60,6 +58,13 @@ export class ConciliacionComponent implements OnInit {
   maPrecioFinal: string = '';
   IdProductor: string = '';
   Valor: string;
+
+  //#region AutoCompletCiudadOferta
+  ArrayCiudades: any = [];
+  keywordCiudadOferta: string = "DSCRPCION";
+  IdACiudad: string = '0';
+  IdDepartamento: string = "0";
+  //#endregion AutoCompletCiudadOferta
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -93,7 +98,6 @@ export class ConciliacionComponent implements OnInit {
     //consulta y asigna variables de la oferta seleccionada
     this.ServiciosValorar.ConsultaOferta('1', this.IdOferta).subscribe(Resultado => {
       this.ArrayOferta = Resultado;
-      console.log(Resultado)
       this.IdProducto = Resultado[0].Producto;
       this.IdProductor = Resultado[0].Productor;
       this.NombreProductor = Resultado[0].Nombre_productor;
@@ -129,11 +133,9 @@ export class ConciliacionComponent implements OnInit {
         CD_RGION: 0,
         CD_MNCPIO: 0
       }
-      console.log('1', '0', this.IdProducto, '0')
       this.ServiciosValorar.ConsultaUltimasOfertas('1', '0', this.IdProducto, '0', DatosOfertas).subscribe(Resultado => {
         this.ArrayUOfertas = Resultado;
 
-        console.log(this.ArrayUOfertas)
       })
     })
   }
@@ -172,7 +174,6 @@ export class ConciliacionComponent implements OnInit {
     this.EObservacion = ''
     this.ServiciosValorar.ConsultaJornada('1').subscribe(Resultado => {
       this.ArrayJornada = Resultado;
-      //console.log(Resultado)
     })
     this.ServiciosCreaOferta.ConsultaEmpaque(this.IdProducto).subscribe(Resultado => {
       this.ArrayEmpaque = Resultado;
@@ -239,7 +240,6 @@ export class ConciliacionComponent implements OnInit {
       CRCTRZCION: this.ECaracteriza,
       OBS_EDICION: this.EObservacion
     }
-    //console.log(datosUpdate)
     this.ServiciosValorar.EditarOfertaBusqueda('5', this.IdEEmpaque, datosUpdate).subscribe(Resultado => {
       var arrayrespuesta = Resultado.split('|');
       this.Respuesta = arrayrespuesta[1];
@@ -258,19 +258,7 @@ export class ConciliacionComponent implements OnInit {
   }
 
 
-  AprobarOferta(modalAprobar: any) {
-    //Abre popup de aprobar oferta y ejecuta servicio de consulta ciudades
-    if (this.ValorSugerido != '') {
-      this.maPrecioFinal = this.ValorSugerido.toString();
-    } else {
-      this.maPrecioFinal = this.ValorUnidad;
-    }
-    this.ServiciosValorar.ConsultaCiudades('6').subscribe(Resultado => {
-      this.ArrayCiudades = Resultado;
-    })
-    this.modalService.open(modalAprobar, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
 
-  }
 
   AceptarAprobar(ModalRespuesta: any) {
     //inserta oferta aprueba y actualiza o inserta ciudad aplica oferta
@@ -286,11 +274,10 @@ export class ConciliacionComponent implements OnInit {
     const datosciudad = {
       CD_CNSCTVO: this.IdOferta,
       CD_PAIS: "6",
-      CD_DPTO: "261",
+      CD_DPTO: this.IdDepartamento,
       CD_MNCPIO: this.IdACiudad
     }
-    //console.log(datosaprueba)
-    if (this.IdACiudad == '0' || this.maObservacion == '' || this.maPrecioFinal == '' || this.Caracterizacion == '') {
+    if (this.IdACiudad == '0' || this.IdDepartamento == '0' || this.maObservacion == '' || this.maPrecioFinal == '' || this.Caracterizacion == '') {
       this.Respuesta = 'Debes completar todos los datos para aprobar la oferta.'
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else {
@@ -308,10 +295,8 @@ export class ConciliacionComponent implements OnInit {
           this.EnviarSms('1');
         }
 
-
       })
       this.ServiciosValorar.InsertaCiudadOferta('3', datosciudad).subscribe(Resultado => {
-        //console.log(Resultado)
       })
 
       this.modalService.dismissAll();
@@ -320,15 +305,42 @@ export class ConciliacionComponent implements OnInit {
     }
   }
 
-  SelACiudad(ciudad: string) {
-    //Captura ciudad seleccionada
-    this.IdACiudad = ciudad;
+  //#region SelectCiudadDestino
+  AprobarOferta(modalAprobar: any) {
+    //Abre popup de aprobar oferta y ejecuta servicio de consulta ciudades
+    if (this.ValorSugerido != '') {
+      this.maPrecioFinal = this.ValorSugerido.toString();
+    } else {
+      this.maPrecioFinal = this.ValorUnidad;
+    }
+    this.ServiciosValorar.ConsultaCiudades('6').subscribe(Resultado => {
+      console.log(Resultado)
+      this.ArrayCiudades = Resultado;
+      console.log(this.ArrayCiudades)
+    })
+    this.modalService.open(modalAprobar, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+
   }
+
+  SelACiudadDestinoSelect(item: string){
+    var aux = item.split("|");
+  }
+
+  SelACiudadDestino(item: any) {
+    //Captura ciudad seleccionadadsbv
+    this.IdACiudad = item.CD_MNCPIO;
+    this.IdDepartamento = item.CD_RGION;
+  }
+  LimpiaCiudadDestino(value: string) {
+    this.IdACiudad = value;
+    this.IdDepartamento = value;
+  }
+  //#endregion SelectCiudadDestino
+
 
   Formatovalor() {
     let valor = Number(this.ValorSugerido)
     this.Valor = formatCurrency(valor, 'en-US', '');
-    //console.log(this.ValorSugerido)
   }
 
   EnviarPropuesta(ModalRespuesta: any) {
@@ -342,9 +354,7 @@ export class ConciliacionComponent implements OnInit {
       parametro2: "",
       parametro3: ""
     }
-    //console.log(DatosEditar);
     this.ServiciosValorar.ModificaEstadoOferta('3', DatosEditar).subscribe(Resultado => {
-      //console.log(Resultado)
       var arrayrespuesta = Resultado.split('|');
       this.Respuesta = arrayrespuesta[1];
       if (arrayrespuesta[0] != '-1') {
@@ -366,13 +376,11 @@ export class ConciliacionComponent implements OnInit {
 
   EnviarCorreo(datoscorreo: any, Id_Clnte: string, IdSctor: string) {
     this.ServiciosValorar.EnviarCorreoIndividual('1', Id_Clnte, IdSctor, datoscorreo).subscribe(Resultado => {
-      //console.log(Resultado)
     })
   }
 
   EnviarSms(bandera: string) {
     this.ServiciosValorar.EnviarSms(bandera, this.IdUsuario, this.IdOferta, '0', '0', '0', '0').subscribe(Resultado => {
-      //console.log(Resultado)
     })
   }
 

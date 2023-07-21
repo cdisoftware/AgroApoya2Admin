@@ -572,6 +572,7 @@ export class ValoracionComponent implements OnInit {
 
   ConsultaSectores() {
     this.serviciosvaloracion.ConsultaSectoresOferta('2', this.SessionOferta).subscribe(ResultConsulta => {
+      console.log(ResultConsulta)
       if (ResultConsulta.length > 0) {
         this.keywordSec = 'DSCRPCION_SCTOR';
         this.DataSectores = ResultConsulta;
@@ -701,15 +702,18 @@ export class ValoracionComponent implements OnInit {
     if (this.SessionTipoComI != '') {
       if (this.SessionTipoComI == '1') {
         this.serviciosvaloracion.CalculaPFIndividual('1', this.SessionOferta, this.SessionSectorSel, this.SessionTipoComI, this.VlrComFijaI).subscribe(ResultCons => {
+          console.log(ResultCons)
           this.PreFinI = ResultCons[0].PRECIO_FINAL;
         })
       }
       else if (this.SessionTipoComI == '2') {
         this.serviciosvaloracion.CalculaPFIndividual('1', this.SessionOferta, this.SessionSectorSel, this.SessionTipoComI, this.VlrComPorI).subscribe(ResultCons => {
+          console.log(ResultCons)
           this.PreFinI = ResultCons[0].PRECIO_FINAL;
         })
       }
     }
+    console.log(this.PreFinI)
   }
 
   CalculaPreoferGrupalM() {
@@ -1058,6 +1062,10 @@ export class ValoracionComponent implements OnInit {
         this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
           console.log(ResultUpdate)
           this.ArrayTextoModifica = ResultUpdate;
+          console.log(this.ArrayTextoModifica[0].TextoSms);
+          if(this.ArrayTextoModifica[0].TextoSms.toString() == ""){
+            this.ArrayTextoModifica[0].TextoSms = "@NombrePersona Tenemos una oferta de @NombreProducto para ti, adquiérela ingresando a " + this.UrlParticipanteC;
+          }
           this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
         })
       })
@@ -1417,7 +1425,6 @@ export class ValoracionComponent implements OnInit {
             this.ArrayTextoModifica = ResultUpdate;
             this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
           }
-
         })
       })
       this.MuestraValUnidades = '0';
@@ -1768,6 +1775,7 @@ export class ValoracionComponent implements OnInit {
       if (this.DataSectores.length > 0) {
         for (var i = 0; i < this.DataSectores.length; i++) {
           this.serviciosvaloracion.CorreoMasivo('1', '9', '2', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
+            console.log(ResultCorreo)
           })
         }
       }

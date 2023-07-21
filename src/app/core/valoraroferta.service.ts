@@ -38,6 +38,7 @@ export class ValorarofertaService {
   }
 
   ConsultaSectoresOferta(bandera: string, CD_CNSCTVO: string) {
+    console.log(this.url_servidor + 'conscsectoroferta/' + bandera + '/' + CD_CNSCTVO)
     return this.http.get<any[]>(this.url_servidor + 'conscsectoroferta/' + bandera + '/' + CD_CNSCTVO)
   }
 
@@ -167,6 +168,7 @@ export class ValorarofertaService {
 
 
   CorreoMasivo(bandera: string, IdPlantilla: string, IdTipoUsuario: string, cd_cnctvo: string, id_sector: string) {
+    console.log(this.url_servidor + 'correosmasivospanda/' + bandera + '/' + IdPlantilla + '/' + IdTipoUsuario + '/' + cd_cnctvo + '/' + id_sector)
     return this.http.get<any[]>(this.url_servidor + 'correosmasivospanda/' + bandera + '/' + IdPlantilla + '/' + IdTipoUsuario + '/' + cd_cnctvo + '/' + id_sector)
   }
 
@@ -179,6 +181,7 @@ export class ValorarofertaService {
   }
 
   EnviarSms(bandera: string, idusuario: string, idoferta: string, idsector: string, idcliente: string, telefono: string, codigo: string) {
+    console.log(this.url_servidor + 'enviosmsindividual/' + bandera + '/' + idusuario + '/' + idoferta + '/' + idsector + '/' + idcliente + '/' + telefono + '/' + codigo)
     return this.http.get<any[]>(this.url_servidor + 'enviosmsindividual/' + bandera + '/' + idusuario + '/' + idoferta + '/' + idsector + '/' + idcliente + '/' + telefono + '/' + codigo)
   }
 

@@ -133,7 +133,6 @@ export class SectorizacionComponent implements OnInit {
       return results;
     })
       .catch((e) => {
-        //console.log("Geocode was not successful for the following reason: " + e);
       });
   }
 
@@ -149,7 +148,6 @@ export class SectorizacionComponent implements OnInit {
     this.markers.push(marker);
   }
   ConsultaDetalleOferta() {
-    //console.log('1', this.SessionOferta)
     this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
       console.log(ResultConsu)
       this.DataOferta = ResultConsu;
@@ -193,10 +191,7 @@ export class SectorizacionComponent implements OnInit {
     this.IdBodega = '';
   }
   ConsultaCiudadOferta() {
-
-    //console.log('1', this.SessionOferta)
     this.sectoresservices.ConsultaCiudadOferta('1', this.SessionOferta).subscribe(ResultadoCons => {
-      console.log(ResultadoCons)
       this.SessionCiudad = ResultadoCons[0].Cuidad;
       this.SessionCDMunicipio = ResultadoCons[0].CD_MNCPIO;
       this.SessionCDRegion = ResultadoCons[0].CD_RGION;
@@ -207,7 +202,6 @@ export class SectorizacionComponent implements OnInit {
   ConsultaSectorPoligono(idsector: string) {
 
     this.sectoresservices.ModificaSectorPoligono('3', idsector).subscribe(ResultadoCons => {
-      // console.log(ResultadoCons);
       //{ID: 0, ID_SCTOR_OFRTA: 408, LTTUD: '4.729601477155', LNGTUD: '-74.0690865847988'}
       var aux = ResultadoCons.split('|');
       this.sectoresservices.ConsultaUsuarioSector('3', aux[0]).subscribe(ResultadoCons => {
@@ -261,7 +255,6 @@ export class SectorizacionComponent implements OnInit {
 
   ConsultaSectores(IdZona: string) {
     this.sectoresservices.ConsultaSectoresEtv('1', '0', IdZona, this.SessionOferta).subscribe(Result => {
-      console.log(Result)
       this.DataSectores = Result;
       this.keyword = 'DSCRPCION_SCTOR';
     })
@@ -321,10 +314,8 @@ export class SectorizacionComponent implements OnInit {
       IdSector: sector,
       Observacion: "Asociacion Bodega"
     }
-    console.log(DatosBodega)
     this.sectoresservices.AsociarBodega(bandera, DatosBodega).subscribe(Resultado => {
-      console.log('*-*-*-* Bodega *-*-*-*')
-      console.log(Resultado)
+
     })
   }
 
@@ -381,14 +372,12 @@ export class SectorizacionComponent implements OnInit {
       }
       this.sectoresservices.InsertarSector('3', BodyInsert).subscribe(ResultInsert => {
         const arrayRes = ResultInsert.split('|')
-        //console.log(arrayRes)
         this.SessionSecCreado = arrayRes[0];
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
         this.Respuesta = arrayRes[1];
         //this.ConsultaCiudadOferta();
         this.ValidaSelecZona = '2';
         if (this.SessionSecCreado != undefined) {
-          //console.log('Entra')
           this.ValidaInsertSec = '1';
           this.CreaMapa();
         }
@@ -457,7 +446,6 @@ export class SectorizacionComponent implements OnInit {
         LNGTUD: this.Coor2
       }
       this.sectoresservices.InsertarCoordenadas('3', BodyInsertCoo).subscribe(Resultado => {
-        console.log(BodyInsertCoo)
         const arrayRes = Resultado.split('|')
         this.Respuesta = arrayRes[1];
         this.Coor1 = '';
@@ -473,7 +461,6 @@ export class SectorizacionComponent implements OnInit {
   }
 
   EliminaCoordenada(coordenada: any) {
-    //console.log(coordenada)
     const BodyInsertCoo = {
       ID: coordenada.consecutivo,
       ID_SCTOR_OFRTA: Number(this.SessionSecCreado),
@@ -551,14 +538,12 @@ export class SectorizacionComponent implements OnInit {
   }
 
   selectBodega(item: any) {
-    console.log(item)
     this.NombreBodega = item.NombreBodega
     this.DireccionBodega = item.Direccion
     this.CoordenadasBodega = item.Coordenadas
     this.IdBodega = item.IdBodega
   }
   BlurCantidad(ModalRespuesta: any) {
-    console.log(this.UserSector)
     if (this.CantidadDispinible >= Number(this.Cant)) {
       if (this.ZonaAsignaSector != "" && this.ZonaAsignaSector != "0") {
         this.seleczona = '1';
@@ -586,7 +571,6 @@ export class SectorizacionComponent implements OnInit {
     this.geocoder.geocode({ address: this.SessionCiudad }).then((result) => {
       const { results } = result;
       var bounds = new google.maps.LatLngBounds;
-      console.log(this.Sessioncoordenada)
       var coords = this.Sessioncoordenada.split('|').map(function (data: string) {
         var info = data.split(','), // Separamos por coma
           coord = { // Creamos el obj de coordenada
@@ -659,7 +643,6 @@ export class SectorizacionComponent implements OnInit {
           this.ConsultaSectoresOferta();
           for (var i = 0; i < this.DataSectorOferta.length; i++) {
             this.sectoresservices.CorreoMasivo('1', '6', '3', this.SessionOferta, this.DataSectorOferta[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
-              //console.log(ResultCorreo)
             })
           }
           this.EnviarSms('4');
@@ -680,9 +663,7 @@ export class SectorizacionComponent implements OnInit {
       CD_CNSCTVO: this.SessionOferta,
       PRFJO_URL: this.ServiciosGenerales.RecuperarRutaAmbiente()
     }
-    console.log(DatosLink)
     this.sectoresservices.InsertaLinks('3', DatosLink).subscribe(Resultado => {
-      console.log(Resultado)
     })
   }
 
@@ -699,7 +680,6 @@ export class SectorizacionComponent implements OnInit {
 
   EnviarSms(bandera: string) {
     this.sectoresservices.EnviarSms(bandera, '0', this.SessionOferta, '0', '0', '0', '0').subscribe(Resultado => {
-      //console.log(Resultado)
     })
   }
 
@@ -720,7 +700,6 @@ export class SectorizacionComponent implements OnInit {
     this.SectorSelect = sector.ID_SCTOR_OFRTA;
 
     this.sectoresservices.ConsultaCargaAsociada('1', sector.ID_SCTOR_OFRTA, sector.CD_CNSCTVO, sector.IdBodega).subscribe(Resultado => {
-      console.log(Resultado)
       if (Resultado.length > 0) {
         this.CantMax = Resultado[0].CantidadMax;
         this.CargMax = Resultado[0].KilosMax;
@@ -757,7 +736,6 @@ export class SectorizacionComponent implements OnInit {
   EditarImgMapa(sector: any, Modalmapa: any) {
     //this.ValidaMapSector = '1'
     this.ValidaImgMapa = '0'
-    console.log(sector)
     this.SectModif = sector.ID_SCTOR_OFRTA
     if (sector.imagen_sctor != '') {
       this.ImgMapaSec = sector.imagen_sctor;
@@ -775,7 +753,6 @@ export class SectorizacionComponent implements OnInit {
         NOMBRE_IMG: this.NomImagen1
       }
       this.sectoresservices.ModificarImagenSector('3', datos).subscribe(Resultado => {
-        console.log(Resultado)
         this.modalService.dismissAll();
       })
       this.ValidaImgMapa = '0';
@@ -788,15 +765,12 @@ export class SectorizacionComponent implements OnInit {
 
   SubirImgMapa(event: any, imagen: string) {
     this.file = event.target.files[0];
-    console.log(event.target.files[0])
     this.ServiciosOferta.postFileImagen(event.target.files[0]).subscribe(
       response => {
         this.respuestaImagenEnviada = response;
-        console.log(this.respuestaImagenEnviada);
         if (this.respuestaImagenEnviada <= 1) {
           console.log("Error en el servidor");
         } else {
-          //console.log("Entra A Enviar");
           if (this.respuestaImagenEnviada == 'Archivo Subido Correctamente') {
             if (imagen == '1') {
               this.ImgMapaSec = this.RutaImagenes + event.target.files[0].name;
@@ -804,7 +778,6 @@ export class SectorizacionComponent implements OnInit {
             }
           } else {
             this.resultadoCarga = 2;
-            // console.log(this.resultadoCarga);
           }
 
         }
