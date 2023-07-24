@@ -55,7 +55,8 @@ export class SeguimientoComponent implements OnInit {
   //Tarjeta Transportista
   ArrayConductor: any = [];
   ArrayDetalle: any = [];
-
+  ArrayVentas: any = [];
+  ImgEvidencia: string = '';
   constructor(
     private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService) { }
@@ -63,6 +64,62 @@ export class SeguimientoComponent implements OnInit {
   ngOnInit(): void {
 
     this.ConsultaOferta();
+    this.ArrayVentas = [
+      {
+        "name": "Papa",
+        "series": [
+          {
+            "name": "Entregadas",
+            "value": 25
+          },
+          {
+            "name": "Pendientes",
+            "value": 10
+          },
+          {
+            "name": "Devueltos",
+            "value": 5
+          }
+        ]
+      },
+
+      {
+        "name": "Arroz",
+        "series": [
+          {
+            "name": "Entregadas",
+            "value": 10
+          },
+          {
+            "name": "Pendientes",
+            "value": 5
+          },
+          {
+            "name": "Devueltos",
+            "value": 2
+          }
+        ]
+      }
+      ,
+
+      {
+        "name": "Platano",
+        "series": [
+          {
+            "name": "Entregadas",
+            "value": 15
+          },
+          {
+            "name": "Pendientes",
+            "value": 5
+          },
+          {
+            "name": "Devueltos",
+            "value": 2
+          }
+        ]
+      }
+    ]
   }
 
   ConsultaTransportista(idconductor: string, idtransportista: string) {
@@ -136,6 +193,7 @@ export class SeguimientoComponent implements OnInit {
       }
       //this.ServiciosValorar.ConsultaSeguimiento('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
       this.ServiciosValorar.ConsultaSeguimientoEntregas('1', '0', this.SelectorSector, this.SelectorOferta, datos).subscribe(Resultado => {
+        console.log(Resultado)
         if (Resultado.length == 0) {
           this.Respuesta = 'No encontramos registros de compras para este sector.';
           this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
@@ -185,6 +243,7 @@ export class SeguimientoComponent implements OnInit {
 
   MostrarDetalle(Entrega: any, TemplateDetalle: any) {
     console.log(Entrega)
+    this.TituloModal = 'Detalle Entregas'
     var IdGrupo = Entrega.IdGrupoMilla
     var IdCarro = Entrega.ID_CARRO
     this.ServiciosValorar.ConsultaDetalleEntregas('1', IdCarro).subscribe(Resultado => {
@@ -192,6 +251,12 @@ export class SeguimientoComponent implements OnInit {
       this.ArrayDetalle = Resultado;
     })
     this.modalService.open(TemplateDetalle, { size: 'md', centered: true });
+  }
+
+  MostrarEvidencia(Entrega: any, TemplateImagen: any) {
+    this.TituloModal = 'Evidencia Entrega'
+    this.ImgEvidencia = Entrega.imagen_evidencia;
+    this.modalService.open(TemplateImagen, { size: 'md', centered: true });
   }
 
   AgregarSitios() {
@@ -263,6 +328,8 @@ export class SeguimientoComponent implements OnInit {
     this.modalService.dismissAll();
     this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
   }
+
+
 
 
   InfoWindow(i: any) {
@@ -431,5 +498,15 @@ export class SeguimientoComponent implements OnInit {
     }
 
     this.lastPanelId = $event.panelId;
+  }
+
+  Colores(){
+    let result: any[] = [];
+      for (let i = 0; i < this.ArrayVentas.length; i++) {
+         if (this.ArrayVentas[i].series.value < 10) {
+            result.push({"name": this.ArrayVentas[i].name,"value": "#000000"});
+         }
+      }
+      return result;
   }
 }

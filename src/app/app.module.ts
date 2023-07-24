@@ -41,7 +41,8 @@ import { AdminsectoresComponent } from './ofertas/components/adminsectores/admin
 import { AdminusuariosComponent } from './usuario/components/adminusuarios/adminusuarios.component';
 import { ReporteentregasComponent } from './ofertas/components/reportes/reporteentregas/reporteentregas.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-
+import { ScaleLinear, ScaleBand } from 'd3-scale';
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
   declarations: [
