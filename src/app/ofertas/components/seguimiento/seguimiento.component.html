@@ -47,8 +47,9 @@
                     <th>Valor</th>
                     <th>Tipo Pago</th>
                     <th>Conductor</th>
+                    <th>Orden Entrega</th>
+                    <th>Fecha</th>
                     <th>Acciones</th>
-
                 </tr>
                 <tr *ngFor="let Seguimiento of ArrayConsultaSeg ">
                     <td>{{Seguimiento.NOMBRES_PERSONA}}</td>
@@ -60,6 +61,8 @@
                     <td>{{Seguimiento.VLOR_PGAR | currency}}</td>
                     <td>{{Seguimiento.descTipoPago}}</td>
                     <td>{{Seguimiento.NMBRE_CNDCTOR}}</td>
+                    <td>{{Seguimiento.orden}}</td>
+                    <td>{{Seguimiento.fecha_entrega}} - {{Seguimiento.hora_entrega}}</td>
                     <td>
                         <button class="SinEstilo " (click)="MostrarMapa(Seguimiento, ModalMapa)">
                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/mapaSec.png" style="width: 32px;"
@@ -69,40 +72,23 @@
                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/visible.png" style="width: 32px;"
                                 title="Editar Imagen Mapa">
                         </button>
+                        <button class="SinEstilo " *ngIf="Seguimiento.imagen_evidencia != null"
+                            (click)="MostrarEvidencia(Seguimiento, ModalEvidencia)">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/visible.png" style="width: 32px;"
+                                title="Ver Evidencia Entrega">
+                        </button>
                     </td>
                 </tr>
             </table>
         </div>
-        <!-- <div class="row justify-content-center br tarjetadetalle" *ngFor="let conductor of ArrayConductor" >
-            <h2 class="br">Datos del conductor</h2>
-            <div class="row">
-                <div class="col-sm-2">
-                    <img src="./../../../../assets/ImagenesAgroApoya2Adm/user.png" class="ImgTConductor">
+
+        <div class="row justify-content-center">
+            <div class="col-sm-8">
+                <ngx-charts-bar-vertical-2d [results]="ArrayVentas"
+                    [legendTitle]="'Entregas'" [legend]="true" [animations]="true" [showDataLabel]="true" [xAxis]="true" [customColors]="Colores()" ></ngx-charts-bar-vertical-2d>
                 </div>
-                <div class="col-sm-5">
-                    <div class="row">
-                        <label class="Llave"><strong>Nombre:&nbsp;</strong>{{conductor.CONDUCTOR}}</label>
-                    </div>
-                    <div class="row">
-                        <label class="Llave"><strong>Ciudad:&nbsp;</strong>{{conductor.CIUDAD_COND}}</label>
-                    </div>
-                    <div class="row">
-                        <label class="Llave"><strong>Dirección:&nbsp;</strong>{{conductor.DIRECCION}}</label>
-                    </div>
-                </div>
-                <div class="col-sm-5">
-                    <div class="row">
-                        <label class="Llave"><strong>Telefono:&nbsp;</strong>{{conductor.TEL_CNDCTOR}}</label>
-                    </div>
-                    <div class="row">
-                        <label class="Llave"><strong>Correo:&nbsp;</strong>{{conductor.CORREO_PERSONA}}</label>
-                    </div>
-                </div>
-            </div>
 
         </div>
-        <br>-->
-
         <br>
     </div>
 </div>
@@ -186,6 +172,23 @@
                     <td>{{Detalle.valor}}</td>
                 </tr>
             </table>
+        </div>
+        <div class="row justify-content-center">
+            <button type="button" id="btnGuardarDirecccion" class="btn ColorAgro col-sm-3 col-3"
+                (click)="modal.dismiss('Cross click')">Aceptar</button>
+        </div>
+
+    </div>
+</ng-template>
+<ng-template #ModalEvidencia let-modal>
+    <div class="p-2">
+        <div class="modal-header">
+            <img style="width: 40px; margin-right: 10px;" src="../../../../assets/ImagenesAgroApoya2Adm/ic_Agro.png">
+            <h5 class="modal-title TituloForm">{{TituloModal}}</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="mt-4 mb-4 text-center">
+            <img src="{{ImgEvidencia}}">
         </div>
         <div class="row justify-content-center">
             <button type="button" id="btnGuardarDirecccion" class="btn ColorAgro col-sm-3 col-3"
