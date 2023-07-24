@@ -40,6 +40,7 @@ import { AsignaTransUltMillaComponent } from './ofertas/components/asigna-trans-
 import { AdminsectoresComponent } from './ofertas/components/adminsectores/adminsectores.component';
 import { AdminusuariosComponent } from './usuario/components/adminusuarios/adminusuarios.component';
 import { ReporteentregasComponent } from './ofertas/components/reportes/reporteentregas/reporteentregas.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
@@ -85,7 +86,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AutocompleteLibModule,
     SidebarModule.forRoot(),
     AngularEditorModule,
-    GoogleMapsModule
+    GoogleMapsModule,
+    NgxChartsModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

@@ -738,7 +738,7 @@ export class SectorizacionComponent implements OnInit {
     this.ValidaImgMapa = '0'
     this.SectModif = sector.ID_SCTOR_OFRTA
     if (sector.imagen_sctor != '') {
-      this.ImgMapaSec = sector.imagen_sctor;
+      this.ImgMapaSec = this.RutaImagenes + sector.imagen_sctor;
 
     } else {
       this.ImgMapaSec = './../../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
@@ -754,6 +754,7 @@ export class SectorizacionComponent implements OnInit {
       }
       this.sectoresservices.ModificarImagenSector('3', datos).subscribe(Resultado => {
         this.modalService.dismissAll();
+        this.ConsultaSectoresOferta();
       })
       this.ValidaImgMapa = '0';
     }else{
