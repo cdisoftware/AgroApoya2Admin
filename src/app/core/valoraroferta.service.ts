@@ -356,4 +356,9 @@ export class ValorarofertaService {
   ConsultaDetalleEntregas(Bandera: string, IdCarro: string) {
     return this.http.get<any[]>(this.url_servidor + 'consSeguimientoEntregaDell/' + Bandera + '/' + IdCarro)
   }
+  
+  ConsultaReporteEntregas(Bandera: string, IdReporte: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consRepEstEntrega/' + Bandera + '/' + IdReporte)
+  }
 }
+

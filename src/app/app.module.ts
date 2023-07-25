@@ -88,7 +88,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     SidebarModule.forRoot(),
     AngularEditorModule,
     GoogleMapsModule,
-    NgxChartsModule
+    NgxChartsModule,
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
