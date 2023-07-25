@@ -12,12 +12,15 @@ export class InteraccionMenyChat {
     url_servidor = this.metodosglobales.SeleccionAmbiente();
 
     infoUserManyChat(Body: any) {
-        return this.http.post<any>(this.url_servidor + 'infoUserManyChat', Body)
+        return this.http.post<any>(this.url_servidor + 'ConsultaUsucodigManychat', Body)
     }
     modmanychatcreateuser(Body: any) {
         return this.http.post<any>(this.url_servidor + 'modmanychatcreateuser', Body)
     }
     ActualizaIdManyChat(Bandera: string, Body: any) {
         return this.http.post<any>(this.url_servidor + 'ActualizaIdManyChat/' + Bandera, Body)
+    }
+    AsignarUsucodigUserManyChat(Body: any) {
+        return this.http.post<any>(this.url_servidor + 'AsignarUsucodigUserManyChat', Body)
     }
 }

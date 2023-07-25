@@ -356,11 +356,13 @@ export class ReporteComponent implements OnInit {
     }
   }
   async ConsultaUserMenyChat() {
+    console.log(this.ArrayUserManyChat.length)
     for (var i = 0; i < this.ArrayUserManyChat.length; i++) {
-      if(this.ArrayUserManyChat[i].NumeroCelular.length == 10){
+      if (this.ArrayUserManyChat[i].NumeroCelular.length == 10) {
         await new Promise((resolve, reject) => {
           const body = {
-            phone: this.ArrayUserManyChat[i].NumeroCelular
+            field_id: 9572495,
+            field_value: this.ArrayUserManyChat[i].Usucodig
           }
           this.InteraccionMenyChat.infoUserManyChat(body).subscribe(Resultado => {
             if (Resultado.data.length == 0) {
@@ -375,7 +377,7 @@ export class ReporteComponent implements OnInit {
             resolve(true);
           });
         });
-      }else{
+      } else {
         this.UsersActualizadosManyChat(this.ArrayUserManyChat[i], false);
       }
     }
@@ -387,14 +389,15 @@ export class ReporteComponent implements OnInit {
     }
     this.Loader = false;
   }
+
+
   async InsertUserInMenyChat(Item: any) {
+    console.log("Ingresa por no registrado")
     await new Promise((resolve, reject) => {
       const body = {
         first_name: Item.NombrePersona,
         last_name: Item.ApellidoPersona,
-        phone: Item.NumeroCelular,
-        email: Item.CorreoPersona.toLowerCase().replace(' ', ''),
-        gender: "male",//Genero (male=masculino, female=femenino)
+        whatsapp_phone: "57" + Item.NumeroCelular,
         has_opt_in_sms: true,
         has_opt_in_email: true,
         consent_phrase: "string"
@@ -403,8 +406,17 @@ export class ReporteComponent implements OnInit {
         var IdMenyChat: string = "";
         if (Resultado.status == "success" && Resultado.data.id != "") {
           IdMenyChat = Resultado.data.id;
+          console.log("El id menychat para el usuario es " + IdMenyChat)
+          const bodyUsuCod = {
+            subscriber_id: IdMenyChat,
+            field_id: 9572495,
+            field_value: Item.Usucodig
+          }
+          this.InteraccionMenyChat.AsignarUsucodigUserManyChat(bodyUsuCod).subscribe(Resultado => {
+            console.log("Resultado asigna UsuCod" + Resultado);
+          });
           this.UpdateIdManyChatUser(IdMenyChat, Item);
-        }else{
+        } else {
           this.UsersActualizadosManyChat(Item, false);
         }
         resolve(true);
@@ -413,7 +425,19 @@ export class ReporteComponent implements OnInit {
   }
   //Actualiza el id de menychat en la bd
   async UpdateIdManyChatUser(IdMenyChat: string, item: any) {
+    console.log("Ingresa por ya existe va a actualizar en bd")
     await new Promise((resolve, reject) => {
+      const bodyUsuCod = {
+        subscriber_id: IdMenyChat,
+        field_id: 9572495,
+        field_value: item.Usucodig
+      }
+      console.log(bodyUsuCod)
+      console.log(item)
+      this.InteraccionMenyChat.AsignarUsucodigUserManyChat(bodyUsuCod).subscribe(Resultado => {
+        console.log("Resultado asigna UsuCod" + Resultado);
+      });
+
       const body = {
         correo_persona: item.CorreoPersona.toLowerCase().replace(' ', ''),
         ID_MANYCHAT: IdMenyChat
@@ -429,9 +453,9 @@ export class ReporteComponent implements OnInit {
   }
   UsersActualizadosManyChat(item: any, Estado: boolean) {
     var AuxImg: string = "";
-    if(Estado == true){
+    if (Estado == true) {
       AuxImg = "../../../../assets/ImagenesAgroApoya2Adm/aprobar.png";
-    }else{
+    } else {
       AuxImg = "../../../../assets/ImagenesAgroApoya2Adm/Cerrar.png";
     }
 
