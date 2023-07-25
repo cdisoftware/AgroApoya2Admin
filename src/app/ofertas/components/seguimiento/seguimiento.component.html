@@ -29,6 +29,19 @@
                     <label for="">Sin registros</label>
                 </ng-template>
             </div>
+            <div class="col-sm-6">
+                <label class="Llave">Conductor</label>
+                <ng-autocomplete [data]="ArrayConductores" [searchKeyword]="keywordConductor" placeholder="Conductor"
+                    (inputCleared)="LimpiaSector('')" (selected)='SelectConductor($event)' [itemTemplate]="templateCond"
+                    [notFoundTemplate]="templateVacioCond" [disabled]="selectConductor == '0'" [(ngModel)]="Sector">
+                </ng-autocomplete>
+                <ng-template #templateCond let-item>
+                    <a [innerHTML]="item.NMBRE_CNDCTOR"></a>
+                </ng-template>
+                <ng-template #templateVacioCond let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
+            </div>
         </div>
         <br>
         <div class="row justify-content-center">
@@ -82,10 +95,10 @@
             </table>
         </div>
 
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" *ngIf="ArrayVentas.length > 0">
             <div class="col-sm-8">
                 <ngx-charts-bar-vertical-2d [results]="ArrayVentas"
-                    [legendTitle]="'Entregas'" [legend]="true" [animations]="true" [showDataLabel]="true" [xAxis]="true" [customColors]="Colores()" ></ngx-charts-bar-vertical-2d>
+                    [legendTitle]="'Entregas'" [legend]="true" [showDataLabel]="true" [xAxis]="true" [animations]="false" [scheme]="colorSchemeTort" ></ngx-charts-bar-vertical-2d>
                 </div>
 
         </div>

@@ -3,6 +3,7 @@ import { MetodosglobalesService } from './../../../core/metodosglobales.service'
 import { ValorarofertaService } from './../../../core/valoraroferta.service'
 import { NgbModal, NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-seguimiento',
@@ -13,7 +14,7 @@ export class SeguimientoComponent implements OnInit {
   @ViewChild('ModalMensaje', { static: false }) ModalMensaje: any;
 
   selecsector: string = '0'
-
+  selectConductor : string = '0'
   Respuesta: string = '';
 
   //mapas
@@ -56,70 +57,26 @@ export class SeguimientoComponent implements OnInit {
   ArrayConductor: any = [];
   ArrayDetalle: any = [];
   ArrayVentas: any = [];
+  ArrayConductores: any = [];
   ImgEvidencia: string = '';
+  keywordConductor: string = 'NMBRE_CNDCTOR'
+  ConductorSelect: string = '';
+  ArrayReporte: any = [];
+  CadenaGrafica: string = '';
+  colorSchemeTort: Color = {
+    name: 'cool',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ["#31C231", "#FAA432", "#F02C29", "#AAAAAA"]
+  };
+
+
   constructor(
     private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService) { }
 
   ngOnInit(): void {
-
     this.ConsultaOferta();
-    this.ArrayVentas = [
-      {
-        "name": "Papa",
-        "series": [
-          {
-            "name": "Entregadas",
-            "value": 25
-          },
-          {
-            "name": "Pendientes",
-            "value": 10
-          },
-          {
-            "name": "Devueltos",
-            "value": 5
-          }
-        ]
-      },
-
-      {
-        "name": "Arroz",
-        "series": [
-          {
-            "name": "Entregadas",
-            "value": 10
-          },
-          {
-            "name": "Pendientes",
-            "value": 5
-          },
-          {
-            "name": "Devueltos",
-            "value": 2
-          }
-        ]
-      }
-      ,
-
-      {
-        "name": "Platano",
-        "series": [
-          {
-            "name": "Entregadas",
-            "value": 15
-          },
-          {
-            "name": "Pendientes",
-            "value": 5
-          },
-          {
-            "name": "Devueltos",
-            "value": 2
-          }
-        ]
-      }
-    ]
   }
 
   ConsultaTransportista(idconductor: string, idtransportista: string) {
@@ -162,20 +119,30 @@ export class SeguimientoComponent implements OnInit {
     this.selecsector = '1'
     this.ConsultaSectores(item.cd_cnsctvo);
   }
+
   ConsultaSectores(cd_cnctivo: string) {
     this.ServiciosValorar.ConsultaSectoresOferta('2', cd_cnctivo).subscribe(Resultado => {
       this.ArraySector = Resultado;
       this.keywordSector = 'DSCRPCION_SCTOR';
     })
   }
+
   LimpiaSector(Valor: string) {
     this.Sector = Valor;
     this.SelectorSector = '';
     this.selecsector = '0';
   }
+
   SelectSector(item: any) {
     this.SelectorSector = item.ID_SCTOR_OFRTA.toString();
+    this.ConsultarConductores()
     this.selecsector = '1'
+    this.selectConductor = '1'
+  }
+
+  SelectConductor(item: any){
+    this.ConductorSelect = item.ID_CNDCTOR.toString();
+    
   }
 
 
@@ -200,6 +167,9 @@ export class SeguimientoComponent implements OnInit {
           this.ValidaInsertSec = '0';
         } else {
           this.ArrayConsultaSeg = Resultado;
+
+          this.ConsReporteEntregas()
+          
         }
       })
     }
@@ -500,13 +470,38 @@ export class SeguimientoComponent implements OnInit {
     this.lastPanelId = $event.panelId;
   }
 
-  Colores(){
-    let result: any[] = [];
-      for (let i = 0; i < this.ArrayVentas.length; i++) {
-         if (this.ArrayVentas[i].series.value < 10) {
-            result.push({"name": this.ArrayVentas[i].name,"value": "#000000"});
-         }
-      }
-      return result;
+  ConsultarConductores(){
+    this.ServiciosValorar.ConsultaConductores('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
+      this.ArrayConductores = Resultado
+      console.log(Resultado)
+    })
   }
+
+  ConsReporteEntregas(){
+    this.ServiciosValorar.ConsultaReporteEntregas('1','1').subscribe(Resultado => {
+      this.ArrayReporte = Resultado;
+      for(var i = 0; this.ArrayReporte.length > i ; i++){
+        const fila = {
+          "name": this.ArrayReporte[i].Producto, "series":
+          [
+            {
+              "name":"Entregado",
+              "value":this.ArrayReporte[i].Cant_Entregada 
+            },
+            {
+              "name":"Pendiente",
+              "value":this.ArrayReporte[i].Cant_Pendiente 
+            },
+            {
+              "name":"Devuelto",
+              "value":this.ArrayReporte[i].Cant_Devuelto 
+            }
+          ]
+        }
+        this.ArrayVentas.push(fila)
+      }
+      console.log(this.ArrayVentas)
+    })
+  }
+
 }
