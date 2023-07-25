@@ -207,6 +207,8 @@ export class ValoracionComponent implements OnInit {
         this.DataToppings = [];
         this.ValidaConsulta = '1';
       }
+
+      this.CargarTextoCorreoIndividual();
     })
   }
 
@@ -214,7 +216,7 @@ export class ValoracionComponent implements OnInit {
     console.log(this.DataValores.length)
     console.log(this.MaxUnidI)
     console.log(this.DataValores.length >= parseInt(this.MaxUnidI))
-    if(this.DataValores.length < parseInt(this.MaxUnidI)){
+    if (this.DataValores.length < parseInt(this.MaxUnidI)) {
       this.Respuesta = ''
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
       if (this.ValorUni == '' || this.ValorUni == null || this.ValorUni == '0') {
@@ -244,7 +246,7 @@ export class ValoracionComponent implements OnInit {
       else {
         this.ValidaCam = '0';
         this.ArrayCamposValida = [];
-  
+
         const Body = {
           Cd_cnsctvo: Number(this.SessionOferta),
           IdSector: Number(this.SessionSectorSel),
@@ -256,9 +258,9 @@ export class ValoracionComponent implements OnInit {
           this.consultaValoresUni();
         })
         this.ValorUni = '';
-  
+
       }
-    }else{
+    } else {
       this.Respuesta = "No es posible agregar una nueva referencia de compra, ya que has llegado al máximo permito por las unidades a comprar";
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
     }
@@ -1060,18 +1062,22 @@ export class ValoracionComponent implements OnInit {
         this.Respuesta = arreglores[1];
         this.ValidaToppings = '1';
         this.MuestraValUnidades = '1';
-        this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
-          this.ArrayTextoModifica = ResultUpdate;
-          if(this.ArrayTextoModifica[0].TextoSms == null || this.ArrayTextoModifica[0].TextoSms == undefined || this.ArrayTextoModifica[0].TextoSms == ""){
-            this.ArrayTextoModifica[0].TextoSms = "@NombrePersona Tenemos una oferta de @NombreProducto para ti, adquiérela ingresando a " + this.UrlParticipanteC;
-          }
-          this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
-        })
+        this.CargarTextoCorreoIndividual();
       })
       this.SumaPrecios = parseInt(this.VlrDomiI) + parseInt(this.PreFinI);
       this.ValorUni = this.SumaPrecios.toString();
       this.consultaValoresUni();
     }
+  }
+
+  CargarTextoCorreoIndividual() {
+    this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
+      this.ArrayTextoModifica = ResultUpdate;
+      if (this.ArrayTextoModifica[0].TextoSms == null || this.ArrayTextoModifica[0].TextoSms == undefined || this.ArrayTextoModifica[0].TextoSms == "") {
+        this.ArrayTextoModifica[0].TextoSms = "@NombrePersona Tenemos una oferta de @NombreProducto para ti, adquiérela ingresando a " + this.UrlParticipanteC;
+      }
+      this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
+    })
   }
 
   GuardarMixta(templateMensaje: any) {
@@ -1527,7 +1533,7 @@ export class ValoracionComponent implements OnInit {
   PublicaOferta(templateMensaje: any) {
     console.log(this.DataValores.length)
     console.log(this.DataValores.length > 0)
-    if (this.DataValores.length > 0 && this.ValidaTipoOfer=='1') {
+    if (this.DataValores.length > 0 && this.ValidaTipoOfer == '1') {
       const Body = {
         usucodig: this.SessionIdUsuario,
         cnctivoOferta: this.SessionOferta,
@@ -1574,14 +1580,10 @@ export class ValoracionComponent implements OnInit {
     } else {
       this.serviciosvaloracion.postImgToppings(event.target.files[0]).subscribe(
         response => {
-          if (response <= 1) {
-          } else {
-            if (response == 'Archivo Subido Correctamente') {
-              this.imagenesAdicionales = event.target.files[0].name;
-              this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-              this.Respuesta = "Imagen cargada correctamente.";
-            } else {
-            }
+          if (response == 'Archivo Subido Correctamente') {
+            this.imagenesAdicionales = event.target.files[0].name;
+            this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+            this.Respuesta = "Imagen cargada correctamente.";
           }
         },
         error => {
@@ -1709,26 +1711,22 @@ export class ValoracionComponent implements OnInit {
     } else {
       this.serviciosvaloracion.postImgToppings(event.target.files[0]).subscribe(
         response => {
-          if (response <= 1) {
-          } else {
-            if (response == 'Archivo Subido Correctamente') {
-              this.imagenesCorreo = this.RutaImagenTopping + event.target.files[0].name;
+          if (response == 'Archivo Subido Correctamente') {
+            this.imagenesCorreo = this.RutaImagenTopping + event.target.files[0].name;
 
-              const Bodymod = {
-                idSector: this.SessionSectorSel,
-                cd_cnctivo: this.SessionOferta,
-                TextoCorreo: "0",
-                TextoWhat: "0",
-                ImgCorreo: this.imagenesCorreo
-              }
-
-              this.serviciosvaloracion.TextosOferta('2', Bodymod).subscribe(ResultCorreo => {
-              })
-
-              this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-              this.Respuesta = "Imagen cargada correctamente.";
-            } else {
+            const Bodymod = {
+              idSector: this.SessionSectorSel,
+              cd_cnctivo: this.SessionOferta,
+              TextoCorreo: "0",
+              TextoWhat: "0",
+              ImgCorreo: this.imagenesCorreo
             }
+
+            this.serviciosvaloracion.TextosOferta('2', Bodymod).subscribe(ResultCorreo => {
+            })
+
+            this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+            this.Respuesta = "Imagen cargada correctamente.";
           }
         },
         error => {
