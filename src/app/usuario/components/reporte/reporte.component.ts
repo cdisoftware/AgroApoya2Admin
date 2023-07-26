@@ -356,7 +356,6 @@ export class ReporteComponent implements OnInit {
     }
   }
   async ConsultaUserMenyChat() {
-    console.log(this.ArrayUserManyChat.length)
     for (var i = 0; i < this.ArrayUserManyChat.length; i++) {
       if (this.ArrayUserManyChat[i].NumeroCelular.length == 10) {
         await new Promise((resolve, reject) => {
@@ -392,7 +391,6 @@ export class ReporteComponent implements OnInit {
 
 
   async InsertUserInMenyChat(Item: any) {
-    console.log("Ingresa por no registrado")
     await new Promise((resolve, reject) => {
       const body = {
         first_name: Item.NombrePersona,
@@ -406,14 +404,12 @@ export class ReporteComponent implements OnInit {
         var IdMenyChat: string = "";
         if (Resultado.status == "success" && Resultado.data.id != "") {
           IdMenyChat = Resultado.data.id;
-          console.log("El id menychat para el usuario es " + IdMenyChat)
           const bodyUsuCod = {
             subscriber_id: IdMenyChat,
             field_id: 9572495,
             field_value: Item.Usucodig
           }
           this.InteraccionMenyChat.AsignarUsucodigUserManyChat(bodyUsuCod).subscribe(Resultado => {
-            console.log("Resultado asigna UsuCod" + Resultado);
           });
           this.UpdateIdManyChatUser(IdMenyChat, Item);
         } else {
@@ -425,17 +421,13 @@ export class ReporteComponent implements OnInit {
   }
   //Actualiza el id de menychat en la bd
   async UpdateIdManyChatUser(IdMenyChat: string, item: any) {
-    console.log("Ingresa por ya existe va a actualizar en bd")
     await new Promise((resolve, reject) => {
       const bodyUsuCod = {
         subscriber_id: IdMenyChat,
         field_id: 9572495,
         field_value: item.Usucodig
       }
-      console.log(bodyUsuCod)
-      console.log(item)
       this.InteraccionMenyChat.AsignarUsucodigUserManyChat(bodyUsuCod).subscribe(Resultado => {
-        console.log("Resultado asigna UsuCod" + Resultado);
       });
 
       const body = {
