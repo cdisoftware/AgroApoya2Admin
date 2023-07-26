@@ -59,7 +59,7 @@ export class SeguimientoComponent implements OnInit {
   ArrayVentas: any = [];
   ArrayConductores: any = [];
   ImgEvidencia: string = '';
-  keywordConductor: string = 'NMBRE_CNDCTOR'
+  keywordConductor: string = 'NOMBRE'
   ConductorSelect: string = '0';
   ArrayReporte: any = [];
   CadenaGrafica: string = '';
@@ -71,6 +71,8 @@ export class SeguimientoComponent implements OnInit {
   };
   viewBar: [number, number] = [800, 200];
   ArrayValores: any = [];
+  Detalle: string = '';
+  Conductor: string = ''
 
 
   constructor(
@@ -134,17 +136,21 @@ export class SeguimientoComponent implements OnInit {
     this.SelectorSector = '';
     this.selecsector = '0';
   }
+  LimpiaConductor(){
+    this.Conductor = ''
+    this.ConductorSelect = '0'
+  }
 
   SelectSector(item: any) {
     this.SelectorSector = item.ID_SCTOR_OFRTA.toString();
-    this.ConsultarConductores()
+    
     this.selecsector = '1'
     this.selectConductor = '1'
+    this.ConsultarConductores()
   }
 
   SelectConductor(item: any){
-    this.ConductorSelect = item.ID_CNDCTOR.toString();
-    
+    this.ConductorSelect = item.CODIGO;
   }
 
 
@@ -161,13 +167,14 @@ export class SeguimientoComponent implements OnInit {
         coordernadas: "0"
       }
       //this.ServiciosValorar.ConsultaSeguimiento('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
-      this.ServiciosValorar.ConsultaSeguimientoEntregas('1', '0', this.SelectorSector, this.SelectorOferta, datos).subscribe(Resultado => {
+      this.ServiciosValorar.ConsultaSeguimientoEntregas('1', this.ConductorSelect, this.SelectorSector, this.SelectorOferta, datos).subscribe(Resultado => {
         console.log(Resultado)
         if (Resultado.length == 0) {
           this.Respuesta = 'No encontramos registros de compras para este sector.';
           this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
           this.ValidaInsertSec = '0';
         } else {
+          this.Detalle = '1';
           this.ArrayConsultaSeg = Resultado;
 
           this.ConsReporteEntregas()
@@ -473,7 +480,7 @@ export class SeguimientoComponent implements OnInit {
   }
 
   ConsultarConductores(){
-    this.ServiciosValorar.ConsultaConductores('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
+    this.ServiciosValorar.ConsultaConductoresAsociados('1', this.SelectorOferta, this.SelectorSector, '2').subscribe(Resultado => {
       this.ArrayConductores = Resultado
       console.log(Resultado)
     })
@@ -522,6 +529,10 @@ export class SeguimientoComponent implements OnInit {
         this.ArrayValores.push(fila2)
       }
     })
+  }
+
+  CambioDetalle(Bandera: string) {
+    this.Detalle = Bandera;
   }
 
 }
