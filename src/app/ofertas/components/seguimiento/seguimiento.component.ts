@@ -3,6 +3,7 @@ import { MetodosglobalesService } from './../../../core/metodosglobales.service'
 import { ValorarofertaService } from './../../../core/valoraroferta.service'
 import { NgbModal, NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-seguimiento',
@@ -13,7 +14,7 @@ export class SeguimientoComponent implements OnInit {
   @ViewChild('ModalMensaje', { static: false }) ModalMensaje: any;
 
   selecsector: string = '0'
-
+  selectConductor : string = '0'
   Respuesta: string = '';
 
   //mapas
@@ -55,13 +56,28 @@ export class SeguimientoComponent implements OnInit {
   //Tarjeta Transportista
   ArrayConductor: any = [];
   ArrayDetalle: any = [];
+  ArrayVentas: any = [];
+  ArrayConductores: any = [];
+  ImgEvidencia: string = '';
+  keywordConductor: string = 'NMBRE_CNDCTOR'
+  ConductorSelect: string = '0';
+  ArrayReporte: any = [];
+  CadenaGrafica: string = '';
+  colorSchemeTort: Color = {
+    name: 'cool',
+    selectable: true,
+    group: ScaleType.Ordinal,
+    domain: ["#31C231", "#FAA432", "#F02C29", "#AAAAAA"]
+  };
+  viewBar: [number, number] = [800, 200];
+  ArrayValores: any = [];
+
 
   constructor(
     private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService) { }
 
   ngOnInit(): void {
-
     this.ConsultaOferta();
   }
 
@@ -105,20 +121,30 @@ export class SeguimientoComponent implements OnInit {
     this.selecsector = '1'
     this.ConsultaSectores(item.cd_cnsctvo);
   }
+
   ConsultaSectores(cd_cnctivo: string) {
     this.ServiciosValorar.ConsultaSectoresOferta('2', cd_cnctivo).subscribe(Resultado => {
       this.ArraySector = Resultado;
       this.keywordSector = 'DSCRPCION_SCTOR';
     })
   }
+
   LimpiaSector(Valor: string) {
     this.Sector = Valor;
     this.SelectorSector = '';
     this.selecsector = '0';
   }
+
   SelectSector(item: any) {
     this.SelectorSector = item.ID_SCTOR_OFRTA.toString();
+    this.ConsultarConductores()
     this.selecsector = '1'
+    this.selectConductor = '1'
+  }
+
+  SelectConductor(item: any){
+    this.ConductorSelect = item.ID_CNDCTOR.toString();
+    
   }
 
 
@@ -136,12 +162,16 @@ export class SeguimientoComponent implements OnInit {
       }
       //this.ServiciosValorar.ConsultaSeguimiento('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
       this.ServiciosValorar.ConsultaSeguimientoEntregas('1', '0', this.SelectorSector, this.SelectorOferta, datos).subscribe(Resultado => {
+        console.log(Resultado)
         if (Resultado.length == 0) {
           this.Respuesta = 'No encontramos registros de compras para este sector.';
           this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
           this.ValidaInsertSec = '0';
         } else {
           this.ArrayConsultaSeg = Resultado;
+
+          this.ConsReporteEntregas()
+          
         }
       })
     }
@@ -185,6 +215,7 @@ export class SeguimientoComponent implements OnInit {
 
   MostrarDetalle(Entrega: any, TemplateDetalle: any) {
     console.log(Entrega)
+    this.TituloModal = 'Detalle Entregas'
     var IdGrupo = Entrega.IdGrupoMilla
     var IdCarro = Entrega.ID_CARRO
     this.ServiciosValorar.ConsultaDetalleEntregas('1', IdCarro).subscribe(Resultado => {
@@ -192,6 +223,12 @@ export class SeguimientoComponent implements OnInit {
       this.ArrayDetalle = Resultado;
     })
     this.modalService.open(TemplateDetalle, { size: 'md', centered: true });
+  }
+
+  MostrarEvidencia(Entrega: any, TemplateImagen: any) {
+    this.TituloModal = 'Evidencia Entrega'
+    this.ImgEvidencia = Entrega.imagen_evidencia;
+    this.modalService.open(TemplateImagen, { size: 'md', centered: true });
   }
 
   AgregarSitios() {
@@ -263,6 +300,8 @@ export class SeguimientoComponent implements OnInit {
     this.modalService.dismissAll();
     this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
   }
+
+
 
 
   InfoWindow(i: any) {
@@ -432,4 +471,57 @@ export class SeguimientoComponent implements OnInit {
 
     this.lastPanelId = $event.panelId;
   }
+
+  ConsultarConductores(){
+    this.ServiciosValorar.ConsultaConductores('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
+      this.ArrayConductores = Resultado
+      console.log(Resultado)
+    })
+  }
+
+  ConsReporteEntregas(){
+    this.ServiciosValorar.ConsultaReporteEntregas('1',this.SelectorOferta, this.SelectorSector, '58').subscribe(Resultado => {
+      this.ArrayReporte = Resultado;
+      console.log(Resultado)
+      for(var i = 0; this.ArrayReporte.length > i ; i++){
+        const fila = {
+          "name": this.ArrayReporte[i].PRODUCTO, "series":
+          [
+            {
+              "name":"Entregado",
+              "value":this.ArrayReporte[i].CANTIDAD_ENTREGADA 
+            },
+            {
+              "name":"Pendiente",
+              "value":this.ArrayReporte[i].CANTIDAD_PENDIENTE 
+            },
+            {
+              "name":"Devuelto",
+              "value":this.ArrayReporte[i].CANTIDAD_DEVUELTA 
+            }
+          ]
+        }
+        this.ArrayVentas.push(fila)
+        const fila2 = {
+          "name": this.ArrayReporte[i].PRODUCTO, "series":
+          [
+            {
+              "name":"Recaudado",
+              "value":this.ArrayReporte[i].VLR_RECAUDADO 
+            },
+            {
+              "name":"Pendiente",
+              "value":this.ArrayReporte[i].VLR_PENDIENTE_RECAUDO 
+            },
+            {
+              "name":"Devuelto",
+              "value":this.ArrayReporte[i].VLOR_DEVOLUCION 
+            }
+          ]
+        }
+        this.ArrayValores.push(fila2)
+      }
+    })
+  }
+
 }
