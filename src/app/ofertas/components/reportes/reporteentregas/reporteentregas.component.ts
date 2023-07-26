@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { CrearofertaService } from 'src/app/core/crearoferta.service';
 
 @Component({
   selector: 'app-reporteentregas',
@@ -10,7 +11,7 @@ import html2canvas from 'html2canvas';
 })
 export class ReporteentregasComponent implements OnInit {
 
-  constructor(private ServiciosValorar: ValorarofertaService) { }
+  constructor(private ServiciosValorar: ValorarofertaService, private ServiciosOferta: CrearofertaService,) { }
 
   //#region VariablesOferta
   DataOfertas: any = [];
@@ -31,8 +32,7 @@ export class ReporteentregasComponent implements OnInit {
   //#endregion ConsGruposOferta
 
   //#region VariablesTableDinac
-  NumberColspan: number = 4;
-  IsVisibleRowGmail: boolean = true;
+  NumberColspan: number = 5;
   //#endregion VariablesTableDinac
   ngOnInit(): void {
     this.DataOferta();
@@ -113,7 +113,6 @@ export class ReporteentregasComponent implements OnInit {
   //#region EvioEmail
   async EnvioEmail(id: string) {
     await new Promise((resolve, reject) => {
-      this.IsVisibleRowGmail = false;
       this.NumberColspan = 5;
       this.EnvioPdfEmail(id);
       resolve(true);
@@ -132,7 +131,7 @@ export class ReporteentregasComponent implements OnInit {
     var DATAg = document.getElementById(id);
     var DATAFirma = document.getElementById("Firma");
 
-    var imgFirma: any ;
+    var imgFirma: any;
     if (DATAg != null) {
 
 
@@ -146,11 +145,25 @@ export class ReporteentregasComponent implements OnInit {
 
         doc.addImage(imgDos, 'PNG', 15, 15, pdfWidthDso, pdfHeightDso, undefined, 'FAST');
         doc.addImage(imgFirma, 'PNG', 15, 15, pdfWidthDso, pdfHeightDso, undefined, 'FAST');
-        
-        console.log(imgFirma);
-        doc.save('Descargar.pdf');
+
+        const bytesPDF = doc.output('arraybuffer');
+        const blobPDF = new Blob([bytesPDF], { type: 'application/pdf' });
+        const archivoPDF = new File([blobPDF], 'documento.pdf', { type: 'application/pdf' });
+        this.CargaImagen('7143',archivoPDF);
       })
     }
   }
   //#endregion EvioEmail
+
+  //#region EnvioEmail
+  public CargaImagen(UsuCod: string, pdf: any) {
+    this.ServiciosValorar.postFilePdf('1', '0', '0', '246', UsuCod, '0', pdf).subscribe(response => {
+      console.log(response);
+    },
+      error => {
+
+      }
+    );
+  }
+  //#endregion EnvioEmail
 }

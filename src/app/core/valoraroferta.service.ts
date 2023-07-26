@@ -360,5 +360,13 @@ export class ValorarofertaService {
   ConsultaReporteEntregas(Bandera: string, IdOferta: string, IdSector: string, IdCondutor: string) {
     return this.http.get<any[]>(this.url_servidor + 'consRepEstEntrega/' + Bandera + '/' + IdOferta + '/' + IdSector + '/' + IdCondutor)
   }
+
+
+  public postFilePdf(bandera: String, Id_Clnte: String, IdSctor: String, IdPlantilla: String, usucodig: String, Cd_cnctvo: String, pdfFile: File) {
+    const formData: FormData = new FormData();
+    formData.append('file', pdfFile, pdfFile.name);
+
+    return this.http.post(this.url_servidor + 'EnvioPdfEmail/'+ bandera + '/' + Id_Clnte + '/' + IdSctor + '/' + IdPlantilla + '/' + usucodig + '/' + Cd_cnctvo, formData);
+  }
 }
 
