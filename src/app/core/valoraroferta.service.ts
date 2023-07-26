@@ -324,6 +324,9 @@ export class ValorarofertaService {
     return this.http.get<any>(this.url_servidor + 'consclistaconductor/' + Bandera + '/' + IdOferta + '/' + Sector)
   }
 
+  ConsultaConductoresAsociados(Bandera: string, IdOferta: string, Sector: string, TipoTrans: string) {
+    return this.http.get<any>(this.url_servidor + 'consCondAsociadosOferta/' + Bandera + '/' + IdOferta + '/' + Sector + '/' + TipoTrans)
+  }
   ModificaConductor(Bandera: string, Datos: any) {
     return this.http.post<any>(this.url_servidor + 'modctorultmilla/' + Bandera, Datos)
   }

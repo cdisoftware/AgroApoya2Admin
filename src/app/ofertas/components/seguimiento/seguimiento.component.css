@@ -75,3 +75,65 @@ span.diana {
     opacity: 1;
     transition: all 1s ease;
 }
+
+
+.btnUno{
+    cursor: pointer;
+    text-align: center;
+    color: #397c97;
+    font-size: 15px;
+    background-color: #fff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight:bold;
+    border: solid 1px #a7a7a7;
+  }
+
+  .btnUnoA{
+    cursor: pointer;
+    text-align: center;
+    color: #fff;
+    font-size: 15px;
+    background-color: #397c97;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight:bold;
+    border: solid 1px #a7a7a7;
+  }
+
+  .btnUnoA:hover{
+    background-color: #4e7d8f;
+  }
+
+  .btnDos{
+    cursor: pointer;
+    text-align: center;
+    color: #397c97;
+    font-size: 15px;
+    background-color: #fff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight:bold;
+    border: solid 1px #a7a7a7;
+  }
+
+  .btnDosA{
+    cursor: pointer;
+    text-align: center;
+    color: #fff;
+    font-size: 15px;
+    background-color: #397c97;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight:bold;
+    border: solid 1px #a7a7a7;
+  }
+
+  .btnDosA:hover{
+    background-color: #4e7d8f;
+  }
+
+  .MerginLefRig{
+    margin-left: 25px;
+    margin-right: 25px;
+  }
