@@ -50,58 +50,114 @@
             </div>
         </div>
         <hr>
-        <div class="br row justify-content-center ">
-            <table class="col-sm-10 TableAgro ">
-                <tr>
-                    <th>Cliente</th>
-                    <th>Celular</th>
-                    <th>Dirección</th>
-                    <th>Estado</th>
-                    <th>Valor</th>
-                    <th>Tipo Pago</th>
-                    <th>Conductor</th>
-                    <th>Orden Entrega</th>
-                    <th>Fecha</th>
-                    <th>Acciones</th>
-                </tr>
-                <tr *ngFor="let Seguimiento of ArrayConsultaSeg ">
-                    <td>{{Seguimiento.NOMBRES_PERSONA}}</td>
-                    <td>{{Seguimiento.CELULAR_PERSONA}}</td>
-                    <td>{{Seguimiento.DRCCION }}</td>
-                    <td style="color: forestgreen;font-weight: bold; text-transform: uppercase;"
-                        [ngStyle]="{'color': Seguimiento.ESTDO !='4' ? 'forestgreen' : 'rgb(255, 166, 0)'}">
-                        {{Seguimiento.descEstado}}</td>
-                    <td>{{Seguimiento.VLOR_PGAR | currency}}</td>
-                    <td>{{Seguimiento.descTipoPago}}</td>
-                    <td>{{Seguimiento.NMBRE_CNDCTOR}}</td>
-                    <td>{{Seguimiento.orden}}</td>
-                    <td>{{Seguimiento.fecha_entrega}} - {{Seguimiento.hora_entrega}}</td>
-                    <td>
-                        <button class="SinEstilo " (click)="MostrarMapa(Seguimiento, ModalMapa)">
-                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/mapaSec.png" style="width: 32px;"
-                                title="Editar Imagen Mapa">
-                        </button>
-                        <button class="SinEstilo " (click)="MostrarDetalle(Seguimiento, ModalDetalle)">
-                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/visible.png" style="width: 32px;"
-                                title="Editar Imagen Mapa">
-                        </button>
-                        <button class="SinEstilo " *ngIf="Seguimiento.imagen_evidencia != null"
-                            (click)="MostrarEvidencia(Seguimiento, ModalEvidencia)">
-                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/visible.png" style="width: 32px;"
-                                title="Ver Evidencia Entrega">
-                        </button>
-                    </td>
-                </tr>
-            </table>
+        <div class="row justify-content-center" *ngIf="ArrayConsultaSeg.length > 0">
+            <div class="col-sm-12">
+                <section id="main">
+                    <div id="tabs">
+                        <span class="diana" id="uno"></span>
+                        <a href="#uno" class="tab-e">Consolidado</a>
+                        <span class="diana" id="dos"></span>
+                        <a href="#dos" class="tab-e">Detalle</a>
+
+                        <div id="pnl_1">
+                            <div style="text-align: center;" *ngIf="ArrayVentas.length > 0">
+                                <!-- Consolidado ventas -->
+                                <ngx-charts-bar-vertical-2d [results]="ArrayVentas" [legendTitle]="'Entregas'"
+                                    [legend]="true" [showDataLabel]="true" [xAxis]="true" [animations]="false"
+                                    [scheme]="colorSchemeTort" [view]="viewBar"></ngx-charts-bar-vertical-2d>
+                                <!-- Tabla Ventas -->
+                                <br>
+                                <table class="col-sm-11 TableAgro ">
+                                    <tr>
+                                        <th colspan="2">Producto</th>
+                                        <th>Entregado</th>
+                                        <th>Pendiente</th>
+                                        <th>Devuelto</th>
+                                    </tr>
+                                    <tr *ngFor="let Ventas of ArrayReporte ">
+                                        <td colspan="2">{{Ventas.PRODUCTO}}</td>
+                                        <td>{{Ventas.CANTIDAD_ENTREGADA}}</td>
+                                        <td>{{Ventas.CANTIDAD_PENDIENTE }}</td>
+                                        <td>{{Ventas.CANTIDAD_DEVUELTA }}</td>
+                                    </tr>
+                                </table>
+                                <hr>
+                                <!-- Consolidado Dinero -->
+                                <ngx-charts-bar-vertical-2d [results]="ArrayValores" [legendTitle]="'Ventas'"
+                                    [legend]="true" [xAxis]="true" [animations]="false" [scheme]="colorSchemeTort"
+                                    [view]="viewBar"></ngx-charts-bar-vertical-2d>
+                                <!-- Tabla Dinero -->
+                                <br>
+                                <table class="col-sm-11 TableAgro ">
+                                    <tr>
+                                        <th colspan="2">Producto</th>
+                                        <th>Entregado</th>
+                                        <th>Pendiente</th>
+                                        <th>Devuelto</th>
+                                    </tr>
+                                    <tr *ngFor="let Valores of ArrayReporte">
+                                        <td colspan="2">{{Valores.PRODUCTO}}</td>
+                                        <td>{{Valores.VLR_RECAUDADO}}</td>
+                                        <td>{{Valores.VLR_PENDIENTE_RECAUDO }}</td>
+                                        <td>{{Valores.VLOR_DEVOLUCION }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="pnl_2">
+                            <div>
+                                <table class="col-sm-11 TableAgro ">
+                                    <tr>
+                                        <th>Cliente</th>
+                                        <th>Celular</th>
+                                        <th>Dirección</th>
+                                        <th>Estado</th>
+                                        <th>Valor</th>
+                                        <th>Tipo Pago</th>
+                                        <th>Conductor</th>
+                                        <th>Orden Entrega</th>
+                                        <th>Fecha</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    <tr *ngFor="let Seguimiento of ArrayConsultaSeg ">
+                                        <td>{{Seguimiento.NOMBRES_PERSONA}}</td>
+                                        <td>{{Seguimiento.CELULAR_PERSONA}}</td>
+                                        <td>{{Seguimiento.DRCCION }}</td>
+                                        <td style="color: forestgreen;font-weight: bold; text-transform: uppercase;"
+                                            [ngStyle]="{'color': Seguimiento.ESTDO !='4' ? 'forestgreen' : 'rgb(255, 166, 0)'}">
+                                            {{Seguimiento.descEstado}}</td>
+                                        <td>{{Seguimiento.VLOR_PGAR | currency}}</td>
+                                        <td>{{Seguimiento.descTipoPago}}</td>
+                                        <td>{{Seguimiento.NMBRE_CNDCTOR}}</td>
+                                        <td>{{Seguimiento.orden}}</td>
+                                        <td>{{Seguimiento.fecha_entrega}} - {{Seguimiento.hora_entrega}}</td>
+                                        <td>
+                                            <button class="SinEstilo " (click)="MostrarMapa(Seguimiento, ModalMapa)">
+                                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/mapaSec.png"
+                                                    style="width: 25px;" title="Editar Imagen Mapa">
+                                            </button>
+                                            <button class="SinEstilo "
+                                                (click)="MostrarDetalle(Seguimiento, ModalDetalle)">
+                                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/visible.png"
+                                                    style="width: 25px;" title="Editar Imagen Mapa">
+                                            </button>
+                                            <button class="SinEstilo " *ngIf="Seguimiento.imagen_evidencia != null"
+                                                (click)="MostrarEvidencia(Seguimiento, ModalEvidencia)">
+                                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png"
+                                                    style="width: 25px;" title="Ver Evidencia Entrega">
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </div>
 
-        <div class="row justify-content-center" *ngIf="ArrayVentas.length > 0">
-            <div class="col-sm-8">
-                <ngx-charts-bar-vertical-2d [results]="ArrayVentas"
-                    [legendTitle]="'Entregas'" [legend]="true" [showDataLabel]="true" [xAxis]="true" [animations]="false" [scheme]="colorSchemeTort" ></ngx-charts-bar-vertical-2d>
-                </div>
 
-        </div>
+
         <br>
     </div>
 </div>

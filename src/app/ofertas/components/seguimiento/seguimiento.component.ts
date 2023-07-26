@@ -60,7 +60,7 @@ export class SeguimientoComponent implements OnInit {
   ArrayConductores: any = [];
   ImgEvidencia: string = '';
   keywordConductor: string = 'NMBRE_CNDCTOR'
-  ConductorSelect: string = '';
+  ConductorSelect: string = '0';
   ArrayReporte: any = [];
   CadenaGrafica: string = '';
   colorSchemeTort: Color = {
@@ -69,6 +69,8 @@ export class SeguimientoComponent implements OnInit {
     group: ScaleType.Ordinal,
     domain: ["#31C231", "#FAA432", "#F02C29", "#AAAAAA"]
   };
+  viewBar: [number, number] = [800, 200];
+  ArrayValores: any = [];
 
 
   constructor(
@@ -478,29 +480,47 @@ export class SeguimientoComponent implements OnInit {
   }
 
   ConsReporteEntregas(){
-    this.ServiciosValorar.ConsultaReporteEntregas('1','1').subscribe(Resultado => {
+    this.ServiciosValorar.ConsultaReporteEntregas('1',this.SelectorOferta, this.SelectorSector, '58').subscribe(Resultado => {
       this.ArrayReporte = Resultado;
+      console.log(Resultado)
       for(var i = 0; this.ArrayReporte.length > i ; i++){
         const fila = {
-          "name": this.ArrayReporte[i].Producto, "series":
+          "name": this.ArrayReporte[i].PRODUCTO, "series":
           [
             {
               "name":"Entregado",
-              "value":this.ArrayReporte[i].Cant_Entregada 
+              "value":this.ArrayReporte[i].CANTIDAD_ENTREGADA 
             },
             {
               "name":"Pendiente",
-              "value":this.ArrayReporte[i].Cant_Pendiente 
+              "value":this.ArrayReporte[i].CANTIDAD_PENDIENTE 
             },
             {
               "name":"Devuelto",
-              "value":this.ArrayReporte[i].Cant_Devuelto 
+              "value":this.ArrayReporte[i].CANTIDAD_DEVUELTA 
             }
           ]
         }
         this.ArrayVentas.push(fila)
+        const fila2 = {
+          "name": this.ArrayReporte[i].PRODUCTO, "series":
+          [
+            {
+              "name":"Recaudado",
+              "value":this.ArrayReporte[i].VLR_RECAUDADO 
+            },
+            {
+              "name":"Pendiente",
+              "value":this.ArrayReporte[i].VLR_PENDIENTE_RECAUDO 
+            },
+            {
+              "name":"Devuelto",
+              "value":this.ArrayReporte[i].VLOR_DEVOLUCION 
+            }
+          ]
+        }
+        this.ArrayValores.push(fila2)
       }
-      console.log(this.ArrayVentas)
     })
   }
 

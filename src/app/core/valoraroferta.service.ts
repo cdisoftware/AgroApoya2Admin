@@ -342,11 +342,11 @@ export class ValorarofertaService {
   }
 
 
-  ConsentregasConductor(IdGrupoMilla: string, ID_CNDCTOR: string, IdSector: string, conscutivo: string){
+  ConsentregasConductor(IdGrupoMilla: string, ID_CNDCTOR: string, IdSector: string, conscutivo: string) {
     return this.http.get<any[]>(this.url_servidor + 'consentregasconductor/' + IdGrupoMilla + '/' + ID_CNDCTOR + '/' + IdSector + '/' + conscutivo + '/0');
   }
-  
-  ConscGrupoMilla(bandera: string, IdSector: string, conscutivo: string){
+
+  ConscGrupoMilla(bandera: string, IdSector: string, conscutivo: string) {
     return this.http.get<any[]>(this.url_servidor + 'conscGrupoMilla/' + bandera + '/' + IdSector + '/' + conscutivo);
   }
   ModificarImagenSector(Bandera: string, body: any) {
@@ -356,9 +356,9 @@ export class ValorarofertaService {
   ConsultaDetalleEntregas(Bandera: string, IdCarro: string) {
     return this.http.get<any[]>(this.url_servidor + 'consSeguimientoEntregaDell/' + Bandera + '/' + IdCarro)
   }
-  
-  ConsultaReporteEntregas(Bandera: string, IdReporte: string) {
-    return this.http.get<any[]>(this.url_servidor + 'consRepEstEntrega/' + Bandera + '/' + IdReporte)
+
+  ConsultaReporteEntregas(Bandera: string, IdOferta: string, IdSector: string, IdCondutor: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consRepEstEntrega/' + Bandera + '/' + IdOferta + '/' + IdSector + '/' + IdCondutor)
   }
 }
 
