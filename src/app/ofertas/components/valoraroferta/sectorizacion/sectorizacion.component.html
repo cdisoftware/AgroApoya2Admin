@@ -206,7 +206,7 @@
 
         <div class="col-sm-1 simpading">
             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/bodega.png" class="CursorPointer"
-                style="width: 40%;" (click)="ConsultaListas(ModalBodegaSector)" />
+                style="width: 38%; margin-top: 5px;" (click)="ConsultaListas(ModalBodegaSector)" />
         </div>
 
 
@@ -274,7 +274,7 @@
                     <button class="SinEstilo " (click)="EditarBodega(sector, ModalBodega)">
                         <img src="./../../../../../assets/ImagenesAgroApoya2Adm/almacen.png" title="Editar detalles">
                     </button>
-                    <button class="SinEstilo " (click)="EditarImgMapa(sector, ModalImgMapa)">
+                    <button class="SinEstilo" (click)="EditarImgMapa(sector, ModalImgMapa)">
                         <img src="./../../../../../assets/ImagenesAgroApoya2Adm/mapaSec.png" style="width: 32px;"
                             title="Editar Imagen Mapa">
                     </button>
@@ -553,7 +553,7 @@
                 <ng-autocomplete [data]="ArrayDepa" [searchKeyword]="keywordDepartamento" placeholder="Departamento"
                     (selected)='selectDepartamento($event)' [itemTemplate]="templateResDepartamento"
                     [notFoundTemplate]="templateVacio" [(ngModel)]="Departamento"
-                    (inputCleared)="LimpiaDepartamento('')">
+                    (inputCleared)="LimpiaDepartamento('')" [initialValue]="ArrayDepa[IndexDepartamentoInsert]">
                 </ng-autocomplete>
                 <ng-template #templateResDepartamento let-item>
                     <a [innerHTML]="item.DSCRPCION"></a>
@@ -566,7 +566,7 @@
                 <label class="col-sm-12 Llave">Ciudad</label>
                 <ng-autocomplete [disabled]="IdDepartamento == '0'" [data]="ArrayCiud" [searchKeyword]="keywordCiudad"
                     placeholder="Ciudad" (selected)='SelectCiudad($event)' [itemTemplate]="templateResCiudad"
-                    [notFoundTemplate]="templateVacio" [(ngModel)]="Ciudad" (inputCleared)="LimpiaCiudad('')">
+                    [notFoundTemplate]="templateVacio" [(ngModel)]="Ciudad" (inputCleared)="LimpiaCiudad('')" [initialValue]="ArrayCiud[IndexCiudadInsert]">
                 </ng-autocomplete>
                 <ng-template #templateResCiudad let-item>
                     <a [innerHTML]="item.DSCRPCION"></a>
@@ -601,6 +601,13 @@
                 <ng-template #templateVacio let-SinRegistro>
                     <label for="">Sin registros</label>
                 </ng-template>
+            </div>
+
+
+            <div class="col-sm-6 mt-2">
+                <label class="col-sm-12 Llave">Coordenadas</label>
+                <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Dirección Bodega"
+                    [(ngModel)]="CoordenadasInsert">
             </div>
 
             <div class="col-sm-12 mt-2">

@@ -365,7 +365,7 @@ export class ValorarofertaService {
     const formData: FormData = new FormData();
     formData.append('file', pdfFile, pdfFile.name);
 
-    return this.http.post(this.url_servidor + 'EnvioPdfEmail/'+ bandera + '/' + Id_Clnte + '/' + IdSctor + '/' + IdPlantilla + '/' + usucodig + '/' + Cd_cnctvo, formData);
+    return this.http.post(this.url_servidor + 'EnvioPdfEmail/' + bandera + '/' + Id_Clnte + '/' + IdSctor + '/' + IdPlantilla + '/' + usucodig + '/' + Cd_cnctvo, formData);
   }
 
   ModCBodega(Bandera: string, body: any) {
@@ -374,7 +374,7 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'ModCBodega/' + Bandera, body)
   }
 
-  conSectorBodega(bandera: string, IdBodega: string){
+  conSectorBodega(bandera: string, IdBodega: string) {
     return this.http.get<any[]>(this.url_servidor + 'conSectorBodega/' + bandera + '/' + IdBodega)
   }
 }

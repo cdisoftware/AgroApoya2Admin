@@ -72,6 +72,10 @@ export class SectorizacionComponent implements OnInit {
   IdSectorSelect: string = "0";
   TiempoSector: string = '1';
   DataBodegas: any = [];
+  IdDepartamentoEntrega: string = "0";
+  IdCiudadEntrega: string = "0";
+
+
   //Cantidades totales
   CantidadDispinible: number = 0;
   IdBodega: any;
@@ -108,17 +112,22 @@ export class SectorizacionComponent implements OnInit {
   keywordDepartamento: string = "";
   IdDepartamento: string = "0";
   Departamento: string = "";
+  IndexDepartamentoInsert: number = 0;
   //#endregion Departamento
   //#region Ciudad
   ArrayCiud: any;
   keywordCiudad: string = '';
   IdCiudadBodega: string = "0";
   Ciudad: string;
+  IndexCiudadInsert: number = 0;
   //#endregion Ciudad
   //#region Sector
   IdSectorBodega: string = "0";
   SectorBodega: string = "";
   //#endregion Sector
+  //#region Coordenadas
+  CoordenadasInsert: string = "";
+  //#endregion Coordenadas
   //#region Nombre
   NombreBodegaInsert: string = "";
   //#endregion Nombre
@@ -210,12 +219,16 @@ export class SectorizacionComponent implements OnInit {
   }
   ConsultaDetalleOferta() {
     this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
+      console.log(ResultConsu)
       this.DataOferta = ResultConsu;
       this.CantidadDispinible = ResultConsu[0].Unidades_disponibles;
       this.SessionNomOferta = ResultConsu[0].Nombre_Producto + ' - ' + ResultConsu[0].Descripcion_empaque + ' - ' + ResultConsu[0].Nombre_productor;
       this.SessionCantSecOferta = ResultConsu[0].Unidades_disponibles;
       this.IdDepa = ResultConsu[0].MunicipioEntrega;
       this.IdCiudad = ResultConsu[0].deptoEntrega;
+
+      this.IdDepartamentoEntrega = ResultConsu[0].deptoEntrega;
+      this.IdCiudadEntrega = ResultConsu[0].MunicipioEntrega;
     })
   }
 
@@ -852,6 +865,7 @@ export class SectorizacionComponent implements OnInit {
 
   //#region InsertarBodega
   ConsultaListas(ModalBodega: any) {
+
     this.modalService.dismissAll();
     this.modalService.open(ModalBodega, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
 
@@ -868,6 +882,14 @@ export class SectorizacionComponent implements OnInit {
     this.ServiciosOferta.ConsultaDepartamento('4').subscribe(Resultado => {
       this.ArrayDepa = Resultado;
       this.keywordDepartamento = "DSCRPCION";
+      console.log(this.ArrayDepa)
+      for (var i = 0; i < this.ArrayDepa.length; i++) {
+        if (this.ArrayDepa[i].CD_RGION == this.IdDepartamentoEntrega) {
+          break;
+        } else {
+          this.IndexDepartamentoInsert++;
+        }
+      }
     })
   }
   selectDepartamento(item: any) {
@@ -877,6 +899,7 @@ export class SectorizacionComponent implements OnInit {
   LimpiaDepartamento(value: string) {
     this.IdDepartamento = "0";
     this.Departamento = value;
+    this.LimpiaCiudad('');
   }
   //#endregion Departamento
   //#region Ciudad
@@ -885,6 +908,16 @@ export class SectorizacionComponent implements OnInit {
     this.ServiciosOferta.ConsultaCiudad(this.IdDepartamento).subscribe(Resultado => {
       this.ArrayCiud = Resultado;
       this.keywordCiudad = "DSCRPCION";
+      console.log(this.ArrayCiud)
+      for (var i = 0; i < this.ArrayCiud.length; i++) {
+        console.log(this.ArrayCiud[i].CD_MNCPIO)
+        console.log(this.IdCiudad)
+        if (this.ArrayCiud[i].CD_MNCPIO.ToString() == this.IdCiudadEntrega.toString()) {
+          break;
+        } else {
+          this.IndexCiudadInsert++;
+        }
+      }
     })
   }
   SelectCiudad(item: any) {
@@ -897,7 +930,7 @@ export class SectorizacionComponent implements OnInit {
   //#endregion Ciudad
   //#region Sector
   ConsultaSelectSectores() {
-    this.sectoresservices.ConsultaSectoresEtv('1', '0', '0', this.SessionOferta).subscribe(Result => {
+    this.sectoresservices.ConsultaSectores('1', '0', '0', this.IdDepartamentoEntrega, this.IdCiudadEntrega).subscribe(Result => {
       this.DataSectores = Result;
       this.keyword = 'DSCRPCION_SCTOR';
     })
@@ -960,39 +993,44 @@ export class SectorizacionComponent implements OnInit {
   ModBodega(ModalRespuesta: any) {
     var auxbandera: string = "0";
     let body = {};
-
-    if (this.OpcionBodega == "1" && this.IdSectorBodega == "0") {
-      auxbandera = "1";
-      body = {
-        IdBodega: 0,
-        IdDepto: this.IdDepartamento,
-        IdCiudad: this.IdCiudadBodega,
-        NombreBodega: this.NombreBodegaInsert,
-        Descripcion: this.DescripcionBodega,
-        Direccion: this.DireccionBodegaInsert,
-        Coordenadas: "4.704658, -74.040170",
-        IdSector: 0
-      }
-    } else if (this.OpcionBodega == "1" && this.IdSectorBodega != "0") {
-      auxbandera = "2";
-      body = {
-        IdBodega: 0,
-        IdDepto: this.IdDepartamento,
-        IdCiudad: this.IdCiudadBodega,
-        NombreBodega: this.NombreBodegaInsert,
-        Descripcion: this.DescripcionBodega,
-        Direccion: this.DireccionBodegaInsert,
-        Coordenadas: "4.704658, -74.040170",
-        IdSector: this.IdSectorBodega
-      }
-    }
-    this.sectoresservices.ModCBodega(auxbandera, body).subscribe(Resultado => {
-      var auxrespu: string = Resultado.split("|");
-      this.Respuesta = auxrespu[1];
-      this.modalService.dismissAll();
+    if (this.IdDepartamento == "0" || this.IdCiudadBodega == "0" || this.NombreBodegaInsert == ""
+      || this.DescripcionBodega == "" || this.DireccionBodegaInsert == "" || this.CoordenadasInsert == "") {
+      this.Respuesta = "No es posible editar, válida, que todos los campos estén completados";
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-      this.ConsultaBodegas('2');
-    });
+    } else {
+      if (this.OpcionBodega == "1" && this.IdSectorBodega == "0") {
+        auxbandera = "1";
+        body = {
+          IdBodega: 0,
+          IdDepto: this.IdDepartamento,
+          IdCiudad: this.IdCiudadBodega,
+          NombreBodega: this.NombreBodegaInsert,
+          Descripcion: this.DescripcionBodega,
+          Direccion: this.DireccionBodegaInsert,
+          Coordenadas: this.CoordenadasInsert,
+          IdSector: 0
+        }
+      } else if (this.OpcionBodega == "1" && this.IdSectorBodega != "0") {
+        auxbandera = "2";
+        body = {
+          IdBodega: 0,
+          IdDepto: this.IdDepartamento,
+          IdCiudad: this.IdCiudadBodega,
+          NombreBodega: this.NombreBodegaInsert,
+          Descripcion: this.DescripcionBodega,
+          Direccion: this.DireccionBodegaInsert,
+          Coordenadas: this.CoordenadasInsert,
+          IdSector: this.IdSectorBodega
+        }
+      }
+      this.sectoresservices.ModCBodega(auxbandera, body).subscribe(Resultado => {
+        var auxrespu: string = Resultado.split("|");
+        this.Respuesta = auxrespu[1];
+        this.modalService.dismissAll();
+        this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        this.ConsultaBodegas('2');
+      });
+    }
   }
   AsociarBodegaAsector(ModalRespuesta: any) {
     let body = {
@@ -1055,10 +1093,10 @@ export class SectorizacionComponent implements OnInit {
     });
   }
   EditInfoBodega(ModalRespuesta: any) {
-    if(this.NombreBodegaEdit == "" || this.DescripcionEdit == "" || this.DireccionBodegaEdit == ""){
+    if (this.NombreBodegaEdit == "" || this.DescripcionEdit == "" || this.DireccionBodegaEdit == "") {
       this.Respuesta = "No es posible editar, válida, que todos los campos estén completados";
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-    }else{
+    } else {
       let body = {
         IdBodega: this.IdAsignaBodega,
         IdDepto: '0',
@@ -1087,6 +1125,7 @@ export class SectorizacionComponent implements OnInit {
     this.DireccionBodegaInsert = "";
     this.LimpiaSectorBodega('');
     this.DescripcionBodega = "";
+    this.CoordenadasInsert = "";
   }
   //#endregion ModBodega
   //#endregion William
