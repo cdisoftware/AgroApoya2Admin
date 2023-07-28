@@ -102,6 +102,7 @@ export class TransportistaComponent implements OnInit, OnDestroy {
 
   ConsultaSectores() {
     this.sectoresservices.ConsultaSectoresOferta('1', this.SessionOferta).subscribe(ResultConsulta => {
+      console.log(ResultConsulta)
       if (ResultConsulta.length > 0) {
         this.keyword = '';
         this.keyword = 'DSCRPCION_SCTOR';

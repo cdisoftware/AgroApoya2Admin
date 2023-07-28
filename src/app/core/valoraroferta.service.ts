@@ -38,6 +38,7 @@ export class ValorarofertaService {
   }
 
   ConsultaSectoresOferta(bandera: string, CD_CNSCTVO: string) {
+    console.log(this.url_servidor + 'conscsectoroferta/' + bandera + '/' + CD_CNSCTVO)
     return this.http.get<any[]>(this.url_servidor + 'conscsectoroferta/' + bandera + '/' + CD_CNSCTVO)
   }
 

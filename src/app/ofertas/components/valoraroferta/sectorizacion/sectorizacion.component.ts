@@ -157,6 +157,10 @@ export class SectorizacionComponent implements OnInit {
   IdAsignaBodega: string = "0";
   //#endregion Bodega
 
+  //#region Direccio
+  CoordenadasEditar: string = "";
+  //#endregion Direccion
+
   //#region Sector
   SectorAsignacion: string = "";
   IdSectorAsignacion: string = "";
@@ -166,6 +170,7 @@ export class SectorizacionComponent implements OnInit {
   //#endregion EditarBodega
 
   //#endregion William
+  
   constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService, private ServiciosOferta: CrearofertaService) {
   }
 
@@ -219,7 +224,6 @@ export class SectorizacionComponent implements OnInit {
   }
   ConsultaDetalleOferta() {
     this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
-      console.log(ResultConsu)
       this.DataOferta = ResultConsu;
       this.CantidadDispinible = ResultConsu[0].Unidades_disponibles;
       this.SessionNomOferta = ResultConsu[0].Nombre_Producto + ' - ' + ResultConsu[0].Descripcion_empaque + ' - ' + ResultConsu[0].Nombre_productor;
@@ -257,8 +261,9 @@ export class SectorizacionComponent implements OnInit {
     this.Cant = '';
   }
 
-  LimpiaBodega() {
+  LimpiaBodega(value: string) {
     this.IdBodega = '';
+    this.Bodega = value;
   }
   ConsultaCiudadOferta() {
     this.sectoresservices.ConsultaCiudadOferta('1', this.SessionOferta).subscribe(ResultadoCons => {
@@ -300,9 +305,10 @@ export class SectorizacionComponent implements OnInit {
   }
   LimpiaSector(result: string) {
     this.Sector = result;
-    this.SectSelec = '0';
+    this.SectSelec = '';
     this.ValidaCoord = "";
     this.UserSector = "";
+    this.LimpiaBodega('');
   }
 
   ConsultaSectoresOferta() {
@@ -637,6 +643,8 @@ export class SectorizacionComponent implements OnInit {
     this.Sessioncoordenada = item.coordenadas;
     this.ConsultaMapaSector();
     this.ValidaCoord = '3';
+
+    this.ConsultaBodegas('1');
   }
 
   ConsultaMapaSector() {
@@ -882,7 +890,6 @@ export class SectorizacionComponent implements OnInit {
     this.ServiciosOferta.ConsultaDepartamento('4').subscribe(Resultado => {
       this.ArrayDepa = Resultado;
       this.keywordDepartamento = "DSCRPCION";
-      console.log(this.ArrayDepa)
       for (var i = 0; i < this.ArrayDepa.length; i++) {
         if (this.ArrayDepa[i].CD_RGION == this.IdDepartamentoEntrega) {
           break;
@@ -908,10 +915,7 @@ export class SectorizacionComponent implements OnInit {
     this.ServiciosOferta.ConsultaCiudad(this.IdDepartamento).subscribe(Resultado => {
       this.ArrayCiud = Resultado;
       this.keywordCiudad = "DSCRPCION";
-      console.log(this.ArrayCiud)
       for (var i = 0; i < this.ArrayCiud.length; i++) {
-        console.log(this.ArrayCiud[i].CD_MNCPIO)
-        console.log(this.IdCiudad)
         if (this.ArrayCiud[i].CD_MNCPIO.ToString() == this.IdCiudadEntrega.toString()) {
           break;
         } else {
@@ -959,6 +963,7 @@ export class SectorizacionComponent implements OnInit {
     this.DepartamentoEdit = item.Depto;
     this.CiudadEditar = item.Ciudad;
     this.DescripcionEdit = item.Descripcion;
+    this.CoordenadasEditar = item.Coordenadas
     this.modalService.dismissAll();
     this.modalService.open(ModalEditarBodega, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
   }
@@ -1073,9 +1078,9 @@ export class SectorizacionComponent implements OnInit {
     });
 
   }
-  EliminaBodega(ModalRespuesta: any) {
+  EliminaBodega(ModalRespuesta: any, IdBodega: string) {
     let body = {
-      IdBodega: this.IdAsignaBodega,
+      IdBodega: IdBodega,
       IdDepto: '0',
       IdCiudad: '0',
       NombreBodega: '0',
@@ -1093,7 +1098,7 @@ export class SectorizacionComponent implements OnInit {
     });
   }
   EditInfoBodega(ModalRespuesta: any) {
-    if (this.NombreBodegaEdit == "" || this.DescripcionEdit == "" || this.DireccionBodegaEdit == "") {
+    if (this.NombreBodegaEdit == "" || this.DescripcionEdit == "" || this.DireccionBodegaEdit == "" || this.CoordenadasEditar == "") {
       this.Respuesta = "No es posible editar, válida, que todos los campos estén completados";
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
     } else {
@@ -1104,11 +1109,10 @@ export class SectorizacionComponent implements OnInit {
         NombreBodega: this.NombreBodegaEdit,
         Descripcion: this.DescripcionEdit,
         Direccion: this.DireccionBodegaEdit,
-        Coordenadas: '4.699173117086789, -74.0318918706249',
+        Coordenadas: this.CoordenadasEditar,
         IdSector: '0'
       };
       this.sectoresservices.ModCBodega('6', body).subscribe(Resultado => {
-        console.log(Resultado)
         var auxrespu: string = Resultado.split("|");
         this.Respuesta = auxrespu[1];
         this.modalService.dismissAll();
@@ -1129,4 +1133,5 @@ export class SectorizacionComponent implements OnInit {
   }
   //#endregion ModBodega
   //#endregion William
+
 }
