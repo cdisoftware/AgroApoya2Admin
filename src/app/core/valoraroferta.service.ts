@@ -168,6 +168,7 @@ export class ValorarofertaService {
 
 
   CorreoMasivo(bandera: string, IdPlantilla: string, IdTipoUsuario: string, cd_cnctvo: string, id_sector: string) {
+    console.log(this.url_servidor + 'correosmasivospanda/' + bandera + '/' + IdPlantilla + '/' + IdTipoUsuario + '/' + cd_cnctvo + '/' + id_sector)
     return this.http.get<any[]>(this.url_servidor + 'correosmasivospanda/' + bandera + '/' + IdPlantilla + '/' + IdTipoUsuario + '/' + cd_cnctvo + '/' + id_sector)
   }
 
@@ -180,6 +181,7 @@ export class ValorarofertaService {
   }
 
   EnviarSms(bandera: string, idusuario: string, idoferta: string, idsector: string, idcliente: string, telefono: string, codigo: string) {
+    console.log(this.url_servidor + 'enviosmsindividual/' + bandera + '/' + idusuario + '/' + idoferta + '/' + idsector + '/' + idcliente + '/' + telefono + '/' + codigo)
     return this.http.get<any[]>(this.url_servidor + 'enviosmsindividual/' + bandera + '/' + idusuario + '/' + idoferta + '/' + idsector + '/' + idcliente + '/' + telefono + '/' + codigo)
   }
 
@@ -236,6 +238,7 @@ export class ValorarofertaService {
   }
 
   constextosoferta(Bandera: string, idSector: string, cd_cnctivo: string) {
+    console.log(this.url_servidor + 'constextosoferta/' + Bandera + '/' + cd_cnctivo + '/' + idSector)
     return this.http.get<any>(this.url_servidor + 'constextosoferta/' + Bandera + '/' + cd_cnctivo + '/' + idSector)
   }
 
@@ -271,12 +274,12 @@ export class ValorarofertaService {
   }
 
   ConsPinsUltMilla(Bandera: string, CD_CNSCTVO: string, IdSector: string) {
+    console.log()
     return this.http.get<any>(this.url_servidor + 'conscpinultimailla/' + Bandera + '/' + CD_CNSCTVO + '/' + IdSector)
   }
 
-  ConsultaBodegas(Bandera: string, Departamento: string, Ciudad: string, IdSector: string) {
-    console.log(this.url_servidor + 'constbodegas/' + Bandera + '/' + Departamento + '/' + Ciudad + '/' + IdSector)
-    return this.http.get<any>(this.url_servidor + 'constbodegas/' + Bandera + '/' + Departamento + '/' + Ciudad + '/' + IdSector);
+  ConsultaBodegas(Bandera: string, Departamento: string, Ciudad: string, idSector: string) {
+    return this.http.get<any>(this.url_servidor + 'constbodegas/' + Bandera + '/' + Departamento + '/' + Ciudad + '/' + idSector);
   }
 
   AsociarBodega(Bandera: string, DatosBodega: any) {
@@ -359,27 +362,6 @@ export class ValorarofertaService {
 
   ConsultaReporteEntregas(Bandera: string, IdOferta: string, IdSector: string, IdCondutor: string) {
     return this.http.get<any[]>(this.url_servidor + 'consRepEstEntrega/' + Bandera + '/' + IdOferta + '/' + IdSector + '/' + IdCondutor)
-  }
-
-
-  public postFilePdf(bandera: String, Id_Clnte: String, IdSctor: String, IdPlantilla: String, usucodig: String, Cd_cnctvo: String, pdfFile: File) {
-    const formData: FormData = new FormData();
-    formData.append('file', pdfFile, pdfFile.name);
-
-    return this.http.post(this.url_servidor + 'EnvioPdfEmail/' + bandera + '/' + Id_Clnte + '/' + IdSctor + '/' + IdPlantilla + '/' + usucodig + '/' + Cd_cnctvo, formData);
-  }
-
-  ModCBodega(Bandera: string, body: any) {
-    console.log(this.url_servidor + 'ModCBodega/' + Bandera)
-    console.log(body)
-    return this.http.post<any>(this.url_servidor + 'ModCBodega/' + Bandera, body)
-  }
-
-  ConsCupon(Bandera: string) {
-    return this.http.get<any[]>(this.url_servidor + 'consTipoCupon/' + Bandera)
-  }
-  conSectorBodega(bandera: string, IdBodega: string) {
-    return this.http.get<any[]>(this.url_servidor + 'conSectorBodega/' + bandera + '/' + IdBodega)
   }
 }
 

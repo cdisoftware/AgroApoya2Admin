@@ -22,6 +22,7 @@ export class SeguimientoComponent implements OnInit {
   Coor1: string = '';
   Coor2: string = '';
   ValidaInsertSec: string = '1';
+  ValidaInsertSecs: string = '1';
   CoordenadasParcela: string = ''
   geocoder = new google.maps.Geocoder();
   map: google.maps.Map;
@@ -162,6 +163,7 @@ export class SeguimientoComponent implements OnInit {
       this.Respuesta = 'Es necesario que selecciones una oferta y un sector.';
       this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
       this.ValidaInsertSec = '0';
+      this.ValidaInsertSecs = '0';
     } else {
       const datos = {
         coordernadas: "0"
@@ -173,18 +175,21 @@ export class SeguimientoComponent implements OnInit {
           this.Respuesta = 'No encontramos registros de compras para este sector.';
           this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
           this.ValidaInsertSec = '0';
+          this.ValidaInsertSecs = '0';
         } else {
           this.Detalle = '1';
           this.ArrayConsultaSeg = Resultado;
-
           this.ConsReporteEntregas()
+          this.ValidaInsertSec = '1';
+          this.ValidaInsertSecs = '1';
+          this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
           
         }
       })
     }
   }
 
-  Centramapa(request: google.maps.GeocoderRequest): void {
+  Centramapa2(request: google.maps.GeocoderRequest): void {
     this.geocoder.geocode(request).then((result) => {
       const { results } = result;
       this.map = new google.maps.Map(
@@ -195,6 +200,31 @@ export class SeguimientoComponent implements OnInit {
       );
       this.AgregarMarcador(results[0].geometry.location, this.map);
       this.map.setCenter(results[0].geometry.location);
+      return results;
+    })
+      .catch((e) => {
+        console.log("Geocode was not successful for the following reason: " + e);
+      });
+  }
+
+  Centramapa(request: google.maps.GeocoderRequest): void {
+    var lat: number;
+    var long: number;
+    this.geocoder.geocode(request).then((result) => {
+      const { results } = result;
+      this.AgregarSitios();
+      var auxcoor = this.ArrayConsultaSeg[0].COORDENADAS_ENTR.split(",");
+      lat = parseFloat(auxcoor[0]);
+      long = parseFloat(auxcoor[1]);
+      this.map = new google.maps.Map(
+        document.getElementById("map") as HTMLElement,
+        {
+          center: { lat: lat, lng: long },
+          zoom: 11,
+        }
+      );
+      this.AgregarSitios();
+
       return results;
     })
       .catch((e) => {
@@ -216,7 +246,7 @@ export class SeguimientoComponent implements OnInit {
 
   MostrarMapa(Entrega: any, TemplateMapa: any) {
     this.ValidaInsertSec = '1';
-    this.Centramapa({ address: Entrega.COORDENADAS_ENTR })
+    this.Centramapa2({ address: Entrega.COORDENADAS_ENTR })
     this.modalService.open(TemplateMapa, { size: 'md', centered: true });
   }
 
@@ -246,10 +276,10 @@ export class SeguimientoComponent implements OnInit {
     var long: number;
 
     for (var i = 0; i < this.ArrayConsultaSeg.length; i++) {
-      var auxcoor = this.ArrayConsultaSeg[i].COORDENADAS_MAPA.split(",");
+      var auxcoor = this.ArrayConsultaSeg[i].COORDENADAS_ENTR.split(",");
       lat = parseFloat(auxcoor[0]);
       long = parseFloat(auxcoor[1]);
-      features.push({ position: new google.maps.LatLng(lat, long), Estado: this.ArrayConsultaSeg[i].COD_ESTADO_COMPRA, NomCli: this.ArrayConsultaSeg[i].NOMBRE_CLIENTE + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_CLIENTE, IdCompra: this.ArrayConsultaSeg[i].ID_COMPRA });
+      features.push({ position: new google.maps.LatLng(lat, long), Estado: this.ArrayConsultaSeg[i].ESTDO, NomCli: this.ArrayConsultaSeg[i].NOMBRES_PERSONA + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_PERSONA, IdCompra: this.ArrayConsultaSeg[i].ID_CARRO });
       Polylines.push({ lat: lat, lng: long });
     }
 
@@ -308,7 +338,11 @@ export class SeguimientoComponent implements OnInit {
     this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
   }
 
-
+  ConsultaSeguimiento(){
+    this.ServiciosValorar.ConsultaSeguimiento('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
+      console.log(Resultado)
+    })
+  }
 
 
   InfoWindow(i: any) {

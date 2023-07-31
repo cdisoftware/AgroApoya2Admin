@@ -170,7 +170,7 @@ export class SectorizacionComponent implements OnInit {
   //#endregion EditarBodega
 
   //#endregion William
-  
+
   constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService, private ServiciosOferta: CrearofertaService) {
   }
 
@@ -238,6 +238,7 @@ export class SectorizacionComponent implements OnInit {
 
   ConsultaBodegas(bandera: string) {
     this.sectoresservices.ConsultaBodegas(bandera, this.IdCiudad, this.IdDepa, this.IdSectorSelect).subscribe(Resultado => {
+
       if (Resultado.length > 0) {
         this.DataBodegas = Resultado
       }
