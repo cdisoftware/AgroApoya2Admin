@@ -38,6 +38,7 @@ export class ValorarofertaService {
   }
 
   ConsultaSectoresOferta(bandera: string, CD_CNSCTVO: string) {
+    console.log(this.url_servidor + 'conscsectoroferta/' + bandera + '/' + CD_CNSCTVO)
     return this.http.get<any[]>(this.url_servidor + 'conscsectoroferta/' + bandera + '/' + CD_CNSCTVO)
   }
 
@@ -274,6 +275,7 @@ export class ValorarofertaService {
   }
 
   ConsultaBodegas(Bandera: string, Departamento: string, Ciudad: string, IdSector: string) {
+    console.log(this.url_servidor + 'constbodegas/' + Bandera + '/' + Departamento + '/' + Ciudad + '/' + IdSector)
     return this.http.get<any>(this.url_servidor + 'constbodegas/' + Bandera + '/' + Departamento + '/' + Ciudad + '/' + IdSector);
   }
 
@@ -364,15 +366,20 @@ export class ValorarofertaService {
     const formData: FormData = new FormData();
     formData.append('file', pdfFile, pdfFile.name);
 
-    return this.http.post(this.url_servidor + 'EnvioPdfEmail/'+ bandera + '/' + Id_Clnte + '/' + IdSctor + '/' + IdPlantilla + '/' + usucodig + '/' + Cd_cnctvo, formData);
+    return this.http.post(this.url_servidor + 'EnvioPdfEmail/' + bandera + '/' + Id_Clnte + '/' + IdSctor + '/' + IdPlantilla + '/' + usucodig + '/' + Cd_cnctvo, formData);
   }
 
   ModCBodega(Bandera: string, body: any) {
+    console.log(this.url_servidor + 'ModCBodega/' + Bandera)
+    console.log(body)
     return this.http.post<any>(this.url_servidor + 'ModCBodega/' + Bandera, body)
   }
 
-  ConsCupon(Bandera: string){
+  ConsCupon(Bandera: string) {
     return this.http.get<any[]>(this.url_servidor + 'consTipoCupon/' + Bandera)
+  }
+  conSectorBodega(bandera: string, IdBodega: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conSectorBodega/' + bandera + '/' + IdBodega)
   }
 }
 
