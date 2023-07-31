@@ -348,7 +348,7 @@
                         </div>
                     </div>
                     <div class="row br">
-                        <div class="col-sm-12">
+                        <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Tipo de descuento</label>
                             <ng-autocomplete [data]="DataTipoDescuento" [searchKeyword]="keyword"
                                 placeholder="Registro / Unidades" [itemTemplate]="templateSec"
@@ -362,8 +362,29 @@
                                 <label for="">Sin registros</label>
                             </ng-template>
                         </div>
+
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Tipo de cupon</label>
+                            <ng-autocomplete [data]="ArrayDataCupon" [searchKeyword]="keywordCupon"
+                                placeholder="Tipo Cupon" [itemTemplate]="templateCupon"
+                                [notFoundTemplate]="templateVacio" (selected)='selectTipoCupon($event)'
+                                (inputCleared)='LimpiaTipoCupon("")' [(ngModel)]="TipoCupon">
+                            </ng-autocomplete>
+                            <ng-template #templateCupon let-item>
+                                <a [innerHTML]="item.NombreCupon"></a>
+                            </ng-template>
+                            <ng-template #templateVacio let-SinRegistro>
+                                <label for="">Sin registros</label>
+                            </ng-template>
+                        </div>
                     </div>
-                    <div class="row br">
+                    
+                    
+                    
+                    
+                    
+                    
+                    <div class="row br mb-1" *ngIf="IdTipoCupon == '2'">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Porcentaje de descuento por unidad / registro</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox"
@@ -377,20 +398,38 @@
                                 onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                     </div>
+                    <div class="row" *ngIf="IdTipoCupon == '1'">
+                        <div class="col-sm-10">
+                            <label class="col-sm-12 Llave">Descripción</label>
+                            <input type="text" class="col-sm-12 form-control mt-1 textBox" placeholder="Descripción (Obligatorio)" [(ngModel)]="DescripcionRegalo"/>
+                        </div>
+                        <div class="col-sm-2 centraimagen" style="text-align: center;">
+                            <div class="image-upload">
+                                <label for="file-input5">
+                                    <img id="Imagen5" title="Selecciona una imagen" [src]="ImagenRegalo" style="border-radius: 10px;" class="mt-2">
+                                </label>
+                                <input name="file-input5" id="file-input5" type="file" (change)="CargaImagen($event, ModalRespuestaImg)" />
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
                     <div class="row br">
                         <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Unidades mínimo mixta</label>
+                            <label class="col-sm-12 Llave">Unidades mínimo</label>
                             <input type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MinUnidLider">
                         </div>
                         <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Unidades máximo mixta</label>
+                            <label class="col-sm-12 Llave">Unidades máximo</label>
                             <input type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxUnidLider">
                         </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Precio arranque líder</label>
-                            <input type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PrecioFinLider">
+                            <label class="col-sm-12 Llave">Valor domicilio</label>
+                            <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiI">
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Precio final participante</label>

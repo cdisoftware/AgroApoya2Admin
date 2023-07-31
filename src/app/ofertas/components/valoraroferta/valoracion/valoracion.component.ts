@@ -5,6 +5,7 @@ import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 import { Router } from '@angular/router'
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 import { DatePipe } from '@angular/common';
+import { CrearofertaService } from 'src/app/core/crearoferta.service';
 //import { BitlyClient } from 'bitly';
 //const bitly = new BitlyClient('07d0baa590598f6b9a8d9963c05d2b1a37f2e824', {});
 
@@ -117,15 +118,25 @@ export class ValoracionComponent implements OnInit {
   UrlParticipanteC: any;
   UrlPubliC: any;
   PesoTopping: string = '';
+  RutaImagenes: string = "";
+
+  //#region Cupon
+  ArrayDataCupon: any = [];
+  keywordCupon: string = "NombreCupon";
+  IdTipoCupon: string = "0";
+  TipoCupon: string = "";
+  DescripcionRegalo: string = "";
+  //#endregion Cupon
 
 
-  constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
+  constructor(private ServiciosOferta: CrearofertaService, private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
     ConfigAcord.closeOthers = true;
   }
 
   ngOnInit(): void {
     this.keyword = 'name';
     this.keywordSec = 'name';
+    this.RutaImagenes = this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.DataTipoOferta = [
       {
         id: 1,
@@ -802,6 +813,9 @@ export class ValoracionComponent implements OnInit {
   }
 
   selectTipOferta(item: any) {
+
+    this.consultaValoresUni();
+    this.CargaInfoCupon();
     this.SessionTipoOferta = item.id;
     this.MuestraVigencial = '1';
     if (item.id == 1) {
@@ -827,9 +841,9 @@ export class ValoracionComponent implements OnInit {
       this.MaxUnidI = '1';
       this.VlrDomiI = '0';
       this.MuestraValoReferencia = '1';
-      this.MuestraIndividual = '1';
+      this.MuestraIndividual = '0';
       this.MuestraGrupal = '1';
-      this.MuestraCantIndiv = '1';
+      this.MuestraCantIndiv = '0';
       this.MuestraBtnIndividual = '0';
       this.MuestraBtnGrupal = '0';
       this.MuestraBtnMixta = '1';
@@ -1091,6 +1105,7 @@ export class ValoracionComponent implements OnInit {
     else {
       validacomision = this.VlrComPorI
     }
+
     if (this.SessionTipoComG == '1') {
       validacomisionG = this.VlrComFijaG
     }
@@ -1101,13 +1116,39 @@ export class ValoracionComponent implements OnInit {
     if (this.VlrDomiI == '' || this.VlrDomiI == undefined || this.VlrDomiI == null) {
       this.VlrDomiI = '0'
     }
-    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
 
-    if ((this.VlReferencia == null || this.VlReferencia == '' || this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
-      || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null) || (this.SessionTipoComG == null || this.SessionTipoComG == '') || (validacomisionG == '' || validacomisionG == null) ||
-      (this.PrecioFinLider == '' || this.PrecioFinLider == null) || (this.PrecioFinPart == '' || this.PrecioFinPart == null)
-      || (this.UnidXGrupos == '' || this.UnidXGrupos == null) || (this.PorcDescLider == '' || this.PorcDescLider == null)
-      || (this.SessionTipoDescuento == '' || this.SessionTipoDescuento == null)) {
+    var auxres: boolean = false;
+    if (this.IdTipoCupon != "" && this.IdTipoCupon != "0") {
+      if (this.IdTipoCupon == "1") {
+        if ((this.DescripcionRegalo == '' || this.DescripcionRegalo == null) || (this.ImagenRegalo == "../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png")) {
+          auxres = false;
+        } else {
+          auxres = true;
+        }
+      } else {
+        if ((this.PorcDescLider == '' || this.PorcDescLider == null) || (this.UnidXGrupos == "" || this.UnidXGrupos == null)) {
+          auxres = false;
+        } else {
+          auxres = true;
+        }
+      }
+
+    } else {
+      auxres = false;
+    }
+
+    if (
+      (this.VlReferencia == '' || this.VlReferencia == null) ||
+      (this.SessionTipoComG == '' || this.SessionTipoComG == null) ||
+      (validacomisionG == '' || validacomisionG == null) ||
+      (this.SessionTipoDescuento == '0' || this.SessionTipoDescuento == null || this.SessionTipoDescuento == '') ||
+      (this.IdTipoCupon == '0' || this.IdTipoCupon == null) ||
+      (auxres == false) ||
+      (this.MinUnidLider == '' || this.MinUnidLider == null) ||
+      (this.MaxUnidLider == '' || this.MaxUnidLider == null) ||
+      (this.VlrDomiI == '' || this.VlrDomiI == null) ||
+      (this.PrecioFinPart == '' || this.PrecioFinPart == null)
+    ) {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
@@ -1118,91 +1159,61 @@ export class ValoracionComponent implements OnInit {
           imagen: ''
         },
         {
-          campo: 'SessionTipoComI',
-          campof: 'Tipo comisión individual',
+          campo: 'TipoCom',
+          campof: 'Tipo comisión',
           class: '',
           imagen: ''
         },
         {
-          campo: 'validacomision',
-          campof: 'Valor comisión',
+          campo: 'ValorComicion',
+          campof: 'Valor comisión fija',
           class: '',
           imagen: ''
         },
         {
-          campo: 'MinUnidI',
-          campof: 'Minimo unidades',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'MaxUnidI',
-          campof: 'Maximo unidades',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'PreFinI',
-          campof: 'Precio final',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'SessionTipoComG',
-          campof: 'Tipo comisión grupal',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'validacomisionG',
-          campof: 'Valor comisión grupal',
-          class: '',
-          imagen: ''
-        },
-        {
-          campo: 'SessionTipoDescuento',
+          campo: 'TipoDesc',
           campof: 'Tipo de descuento',
           class: '',
           imagen: ''
         },
         {
-          campo: 'PorcDescLider',
-          campof: 'Porcentaje de descuento por unidad / registro',
+          campo: 'TipoCupon',
+          campof: 'Tipo de cupon',
           class: '',
           imagen: ''
         },
         {
-          campo: 'UnidXGrupos',
-          campof: 'Numero maximo de unidades / registros para descuento',
+          campo: 'DescTipoCupon',
+          campof: '',
           class: '',
           imagen: ''
         },
         {
-          campo: 'PrecioFinLider',
-          campof: 'Precio arranque lider',
+          campo: 'UndMin',
+          campof: 'Unidades mínimo',
           class: '',
           imagen: ''
         },
         {
-          campo: 'PrecioFinPart',
+          campo: 'UndMax',
+          campof: 'Unidades máximo',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'ValDomicilio',
+          campof: 'Valor domicilio',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'ValFinalParticipante',
           campof: 'Precio final participante',
           class: '',
           imagen: ''
-        },
-        {
-          campo: 'MinUnidLider',
-          campof: 'Unidades mímina mixta',
-          class: '',
-          imagen: ''
         }
-        ,
-        {
-          campo: 'MaxUnidLider',
-          campof: 'Unidades máximas mixta',
-          class: '',
-          imagen: ''
-        }
-      ]
+      ];
+
       for (var i = 0; i < this.ArrayCamposValida.length; i++) {
         if (this.ArrayCamposValida[i].campo == 'VlReferencia') {
           if (this.VlReferencia == '' || this.VlReferencia == null) {
@@ -1214,68 +1225,44 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
-        else if (this.ArrayCamposValida[i].campo == 'SessionTipoComI') {
-          if (this.SessionTipoComI == '' || this.SessionTipoComI == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'validacomision') {
-          if (validacomision == '' || validacomision == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'MinUnidI') {
-          if (this.MinUnidI == '' || this.MinUnidI == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'MaxUnidI') {
-          if (this.MaxUnidI == '' || this.MaxUnidI == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'PreFinI') {
-          if (this.PreFinI == '' || this.PreFinI == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'SessionTipoComG') {
+        else if (this.ArrayCamposValida[i].campo == 'TipoCom') {
+          console.log(this.SessionTipoComG == '' || this.SessionTipoComG == null)
           if (this.SessionTipoComG == '' || this.SessionTipoComG == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
           else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+            this.ArrayCamposValida[i].class = 'TextFine';
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
           }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'validacomisionG') {
-          if (validacomisionG == '' || validacomisionG == null) {
+        } else if (this.ArrayCamposValida[i].campo == 'ValorComicion') {
+          if (this.SessionTipoComG == '1') {
+            console.log(this.VlrComFijaG == '' || this.VlrComFijaG == null)
+            if (this.VlrComFijaG == '' || this.VlrComFijaG == null) {
+              this.ArrayCamposValida[i].campof = 'Valor comisión fija';
+              this.ArrayCamposValida[i].class = 'TextAlert';
+              this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png';
+            } else {
+              this.ArrayCamposValida[i].campof = 'Valor comisión fija';
+              this.ArrayCamposValida[i].class = 'TextFine';
+              this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
+            }
+          } else if (this.SessionTipoComG == '2') {
+            console.log(this.VlrComPorG == '' || this.VlrComPorG == null)
+            if (this.VlrComPorG == '' || this.VlrComPorG == null) {
+              this.ArrayCamposValida[i].campof = 'Valor comisión porcentaje';
+              this.ArrayCamposValida[i].class = 'TextAlert';
+              this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png';
+            } else {
+              this.ArrayCamposValida[i].campof = 'Valor comisión porcentaje';
+              this.ArrayCamposValida[i].class = 'TextFine';
+              this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
+            }
+          }
+
+        } else if (this.ArrayCamposValida[i].campo == 'TipoDesc') {
+          console.log(this.SessionTipoDescuento == '0' || this.SessionTipoDescuento == null || this.SessionTipoDescuento == '')
+          if (this.SessionTipoDescuento == '0' || this.SessionTipoDescuento == null || this.SessionTipoDescuento == '') {
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
@@ -1283,9 +1270,9 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].class = 'TextFine'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'SessionTipoDescuento') {
-          if (this.SessionTipoDescuento == '' || this.SessionTipoDescuento == null) {
+        } else if (this.ArrayCamposValida[i].campo == 'TipoCupon') {
+          console.log(this.IdTipoCupon == '0' || this.IdTipoCupon == null)
+          if (this.IdTipoCupon == '0' || this.IdTipoCupon == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
@@ -1293,98 +1280,75 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].class = 'TextFine'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'MinUnidLider') {
-          if (this.MinUnidLider == '' || this.MinUnidLider == null) {
+        } else if (this.ArrayCamposValida[i].campo == 'DescTipoCupon') {
+          if (this.IdTipoCupon == '1') {
+            if ((this.DescripcionRegalo == '' || this.DescripcionRegalo == null) || (this.ImagenRegalo == "../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png")) {
+              this.ArrayCamposValida[i].campof = 'Campos regalo'
+              this.ArrayCamposValida[i].class = 'TextAlert'
+              this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+            }
+            else {
+              this.ArrayCamposValida[i].campof = 'Campos regalo'
+              this.ArrayCamposValida[i].class = 'TextFine'
+              this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+            }
+          } else if (this.IdTipoCupon == '2') {
+            console.log((this.PorcDescLider == '' || this.PorcDescLider == null) || (this.UnidXGrupos == "" || this.UnidXGrupos == null))
+            if ((this.PorcDescLider == '' || this.PorcDescLider == null) || (this.UnidXGrupos == "" || this.UnidXGrupos == null)) {
+              this.ArrayCamposValida[i].campof = 'Campos descuento'
+              this.ArrayCamposValida[i].class = 'TextAlert'
+              this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+            }
+            else {
+              this.ArrayCamposValida[i].campof = 'Campos descuento'
+              this.ArrayCamposValida[i].class = 'TextFine'
+              this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+            }
+            console.log(Number(this.IdTipoCupon) < 1)
+          } else if (Number(this.IdTipoCupon) < 1) {
+            this.ArrayCamposValida[i].campof = 'Descripcion tipo regalo'
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+        } else if (this.ArrayCamposValida[i].campo == 'UndMin') {
+          console.log((this.MinUnidLider == '' || this.MinUnidLider == null))
+          if ((this.MinUnidLider == '' || this.MinUnidLider == null)) {
+            this.ArrayCamposValida[i].class = 'TextAlert';
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png';
+          } else {
+            this.ArrayCamposValida[i].class = 'TextFine';
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
           }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'MaxUnidLider') {
-          if (this.MaxUnidLider == '' || this.MaxUnidLider == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+        } else if (this.ArrayCamposValida[i].campo == 'UndMax') {
+          console.log((this.MaxUnidLider == '' || this.MaxUnidLider == null))
+          if ((this.MaxUnidLider == '' || this.MaxUnidLider == null)) {
+            this.ArrayCamposValida[i].class = 'TextAlert';
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png';
+          } else {
+            this.ArrayCamposValida[i].class = 'TextFine';
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
           }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+        } else if (this.ArrayCamposValida[i].campo == 'ValDomicilio') {
+          console.log((this.VlrDomiI == '' || this.VlrDomiI == null))
+          if ((this.VlrDomiI == '' || this.VlrDomiI == null)) {
+            this.ArrayCamposValida[i].class = 'TextAlert';
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png';
+          } else {
+            this.ArrayCamposValida[i].class = 'TextFine';
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
           }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'PorcDescLider') {
-          if (this.PorcDescLider == '' || this.PorcDescLider == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'CantGrupos') {
-          if (this.CantGrupos == '' || this.CantGrupos == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'UnidXGrupos') {
-          if (this.UnidXGrupos == '' || this.UnidXGrupos == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'MinUnidPart') {
-          if (this.MinUnidPart == '' || this.MinUnidPart == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'MaxUnidPart') {
-          if (this.MaxUnidPart == '' || this.MaxUnidPart == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'PrecioFinLider') {
-          if (this.PrecioFinLider == '' || this.PrecioFinLider == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'PrecioFinPart') {
-          if (this.PrecioFinPart == '' || this.PrecioFinPart == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+        } else if (this.ArrayCamposValida[i].campo == 'ValFinalParticipante') {
+          console.log((this.PrecioFinPart == '' || this.PrecioFinPart == null))
+          if ((this.PrecioFinPart == '' || this.PrecioFinPart == null)) {
+            this.ArrayCamposValida[i].class = 'TextAlert';
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png';
+          } else {
+            this.ArrayCamposValida[i].class = 'TextFine';
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
           }
         }
       }
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     }
     else {
       this.ValidaCam = '0';
@@ -1406,7 +1370,7 @@ export class ValoracionComponent implements OnInit {
         MNMO_UNDDES_LIDER: this.MinUnidLider,
         MXMO_UNDDES_LIDER: this.MaxUnidLider,
         PRCNTJE_DCTO_LIDER: this.PorcDescLider,
-        VLOR_DMNCLIO_GRPAL: 0,
+        VLOR_DMNCLIO_GRPAL: Number(this.VlrDomiI),
         CNTDAD_GRPOS: 0,
         MNMO_PRSNAS_XGRUPO: this.UnidXGrupos,
         MNMO_UNDDES_PRCPNTE: this.MinUnidLider,
@@ -1417,9 +1381,15 @@ export class ValoracionComponent implements OnInit {
         ID_SCTOR_OFRTA: this.SessionSectorSel,
         LINKLANDIGN: this.LinkSms,
         TPO_DESCUENTO: Number(this.SessionTipoDescuento),
-        VALOR_REFERENCIA: this.VlReferencia
+        VALOR_REFERENCIA: this.VlReferencia,
+
+        TIPO_CUPON: Number(this.IdTipoCupon),
+        DES_CUPONREGALO: this.DescripcionRegalo,
+        IMG_CUPONREGALO: this.ImagenRegalo
       }
+      console.log(Body)
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
+        console.log(ResultUpdate)
         this.Respuesta = '';
         var arreglores = ResultUpdate.split('|')
         this.Respuesta = arreglores[1];
@@ -1433,7 +1403,7 @@ export class ValoracionComponent implements OnInit {
         })
       })
       this.MuestraValUnidades = '0';
-
+      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     }
   }
 
@@ -1790,4 +1760,59 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
+
+  //#region Cupon
+  ImagenRegalo: string = "../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png";
+  CargaInfoCupon() {
+    this.serviciosvaloracion.ConsCupon('1').subscribe(ResultCorreo => {
+      this.ArrayDataCupon = ResultCorreo;
+    });
+  }
+
+  selectTipoCupon(item: any) {
+    this.IdTipoCupon = item.IdCupon;
+  }
+  LimpiaTipoCupon(value: string) {
+    this.IdTipoCupon = "0";
+    this.TipoCupon = value;
+  }
+  //#endregion Cupon
+
+  public CargaImagen(event: any, modalmensaje: any) {
+    if (!(/\.(jpg|png|jpeg)$/i).test(event.target.files[0].name)) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El archivo no pudo ser cargado, valide la extención, las permitidas son .jpg .png .jpeg";
+    }
+    else if (event.target.files[0].name.includes(" ")) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El archivo no pudo ser cargado, el nombre no debe contener espacios";
+    }
+    else if (event.target.files[0].size > 1300000) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El peso del archivo no puede exceder 1.3 megabyte";
+    } else {
+      this.serviciosvaloracion.postImgToppings(event.target.files[0]).subscribe(response => {
+        console.log(response);
+        if (response != 'Archivo Subido Correctamente') {
+          console.log("Error en el servidor");
+        } else {
+          //console.log("Entra A Enviar");
+          if (response == 'Archivo Subido Correctamente') {
+
+            this.ImagenRegalo = this.RutaImagenes + event.target.files[0].name;
+            console.log(this.RutaImagenes + event.target.files[0].name)
+          } else {
+            //this.resultadoCarga = 2;
+            // console.log(this.resultadoCarga);
+          }
+
+        }
+      },
+        error => {
+
+        }
+      );
+    }
+
+  }
 }

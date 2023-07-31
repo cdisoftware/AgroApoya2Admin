@@ -370,5 +370,9 @@ export class ValorarofertaService {
   ModCBodega(Bandera: string, body: any) {
     return this.http.post<any>(this.url_servidor + 'ModCBodega/' + Bandera, body)
   }
+
+  ConsCupon(Bandera: string){
+    return this.http.get<any[]>(this.url_servidor + 'consTipoCupon/' + Bandera)
+  }
 }
 
