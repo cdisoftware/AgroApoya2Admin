@@ -278,8 +278,8 @@ export class ValorarofertaService {
     return this.http.get<any>(this.url_servidor + 'conscpinultimailla/' + Bandera + '/' + CD_CNSCTVO + '/' + IdSector)
   }
 
-  ConsultaBodegas(Bandera: string, Departamento: string, Ciudad: string) {
-    return this.http.get<any>(this.url_servidor + 'constbodegas/' + Bandera + '/' + Departamento + '/' + Ciudad);
+  ConsultaBodegas(Bandera: string, Departamento: string, Ciudad: string, idSector: string) {
+    return this.http.get<any>(this.url_servidor + 'constbodegas/' + Bandera + '/' + Departamento + '/' + Ciudad + '/' + idSector);
   }
 
   AsociarBodega(Bandera: string, DatosBodega: any) {

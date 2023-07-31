@@ -162,7 +162,7 @@ export class SectorizacionComponent implements OnInit {
 
   ConsultaBodegas() {
 
-    this.sectoresservices.ConsultaBodegas('1', this.IdCiudad, this.IdDepa).subscribe(Resultado => {
+    this.sectoresservices.ConsultaBodegas('1', this.IdCiudad, this.IdDepa, '0').subscribe(Resultado => {
       console.log(Resultado)
       if (Resultado.length > 0) {
         this.DataBodegas = Resultado
