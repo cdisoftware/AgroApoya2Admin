@@ -1,0 +1,149 @@
+.simpading{
+    padding: 0;
+}
+.textcenter{
+    text-align: center;
+}
+body {
+    background-color: #ddd;
+    margin: 0;
+}
+
+
+#main {
+    background-color: #fff;
+    width: 100%;
+
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 30px 40px;
+    overflow: hidden;
+}
+
+
+#tabs {
+    position: relative;
+}
+
+span.diana {
+    position: fixed;
+    display: none;
+}
+
+.diana+a {
+    display: block;
+    float: left;
+    height: 32px;
+    line-height: 32px;
+    padding: 0 10px;
+    border: 1px solid #ddd;
+    background-color: #397c97;
+    margin-bottom: -1px;
+    border-radius: 8px 8px 0 0;
+    margin-right: 10px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+.diana:target+a {
+    background-color: #fff;
+    border-bottom-color: #fff;
+    color: black;
+    font-weight: bold;
+}
+
+#pnl_1,
+#pnl_2{
+    position: absolute;
+    top: 31px;
+    left: 0;
+    border: none;
+    clear: both;
+
+}
+
+#pnl_1>div,
+#pnl_2>div {
+    opacity: 0;
+    transition: all 0.1s ease;
+    padding: 30px;
+}
+
+#uno:target~#pnl_1,
+#dos:target~#pnl_2 {
+    position: static;
+    border: 1px solid #ddd;
+}
+
+#uno:target~#pnl_1>div,
+#dos:target~#pnl_2>div{
+    opacity: 1;
+    transition: all 1s ease;
+}
+
+
+.btnUno{
+    cursor: pointer;
+    text-align: center;
+    color: #397c97;
+    font-size: 15px;
+    background-color: #fff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight:bold;
+    border: solid 1px #a7a7a7;
+  }
+
+  .btnUnoA{
+    cursor: pointer;
+    text-align: center;
+    color: #fff;
+    font-size: 15px;
+    background-color: #397c97;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight:bold;
+    border: solid 1px #a7a7a7;
+  }
+
+  .btnUnoA:hover{
+    background-color: #4e7d8f;
+  }
+
+  .btnDos{
+    cursor: pointer;
+    text-align: center;
+    color: #397c97;
+    font-size: 15px;
+    background-color: #fff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight:bold;
+    border: solid 1px #a7a7a7;
+  }
+
+  .btnDosA{
+    cursor: pointer;
+    text-align: center;
+    color: #fff;
+    font-size: 15px;
+    background-color: #397c97;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight:bold;
+    border: solid 1px #a7a7a7;
+  }
+
+  .btnDosA:hover{
+    background-color: #4e7d8f;
+  }
+
+  .MerginLefRig{
+    margin-left: 25px;
+    margin-right: 25px;
+  }
+  .TextSectoresAsociados{
+    font-size: 20px;
+    font-weight: bold;
+  }

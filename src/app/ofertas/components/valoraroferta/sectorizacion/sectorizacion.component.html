@@ -167,7 +167,7 @@
         </div>
     </div>
     <div class="br row">
-        <div class="col-sm-3">
+        <div class="col-sm-3 simpading">
             <ng-autocomplete [data]="DataZonas" [searchKeyword]="keywordZonasAsignaSector" placeholder="Zona"
                 (selected)='selectZona($event)' [itemTemplate]="templateResZona" [notFoundTemplate]="templateVacio"
                 [(ngModel)]="ZonaAsignaSector" (inputCleared)="LimpiaZona('')">
@@ -179,7 +179,7 @@
                 <label for="">Sin registros</label>
             </ng-template>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-2 simpading">
             <ng-autocomplete [disabled]="seleczona == '0'" [data]="DataSectores" [searchKeyword]="keyword"
                 placeholder="Sector" (selected)='selectSector($event, ModalMapa)' [itemTemplate]="templateResSector"
                 [notFoundTemplate]="templateVacio" [(ngModel)]="Sector" (inputCleared)="LimpiaSector('')">
@@ -191,25 +191,36 @@
                 <label for="">Sin registros</label>
             </ng-template>
         </div>
-        <div class="col-sm-2">
-            <ng-autocomplete [data]="DataBodegas" [searchKeyword]="keywordBodega" placeholder="Bodega"
-                (selected)='selectBodega($event)' [itemTemplate]="templateResBodega" [notFoundTemplate]="templateVacio"
-                [(ngModel)]="Bodega" (inputCleared)="LimpiaBodega()">
-            </ng-autocomplete>
-            <ng-template #templateResBodega let-item>
-                <a [innerHTML]="item.NombreBodega"></a>
-            </ng-template>
-            <ng-template #templateVacio let-SinRegistro>
-                <label for="">Sin registros</label>
-            </ng-template>
+        <div class="col-sm-3 row simpading">
+            <div class="col-sm-10">
+                <ng-autocomplete [disabled]="SectSelec == ''" [data]="DataBodegas" [searchKeyword]="keywordBodega"
+                    placeholder="Bodega" (selected)='selectBodega($event)' [itemTemplate]="templateResBodega"
+                    [notFoundTemplate]="templateVacio" [(ngModel)]="Bodega" (inputCleared)="LimpiaBodega('')">
+                </ng-autocomplete>
+                <ng-template #templateResBodega let-item>
+                    <a [innerHTML]="item.NombreBodega"></a>
+                </ng-template>
+                <ng-template #templateVacio let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
+            </div>
+            <div class="col-sm-2" style="margin: 0; padding: 0;">
+                <img  src="./../../../../../assets/ImagenesAgroApoya2Adm/bodega.png" class="CursorPointer"
+                    style="width: 28px; margin-top: 5px;" (click)="ConsultaListas(ModalBodegaSector)" />
+            </div>
         </div>
-        <div class="col-sm-2">
+
+
+
+
+
+        <div class="col-sm-2 simpading">
             <input class="col-sm-12 form-control form-control-sm textBox" type="number" placeholder="Cantidad"
                 (blur)="BlurCantidad(ModalRespuesta)" [(ngModel)]="Cant">
         </div>
 
-        
-        <div class="col-sm-2">
+
+        <div class="col-sm-2 simpading">
             <input mask="separator" thousandSeparator="." class="col-sm-12 form-control form-control-sm textBox"
                 type="text" placeholder="Valor estimado flete" [(ngModel)]="VlrFle">
         </div>
@@ -266,11 +277,11 @@
                     <button class="SinEstilo " (click)="EditarBodega(sector, ModalBodega)">
                         <img src="./../../../../../assets/ImagenesAgroApoya2Adm/almacen.png" title="Editar detalles">
                     </button>
-                    <button class="SinEstilo " (click)="EditarImgMapa(sector, ModalImgMapa)">
+                    <button class="SinEstilo" (click)="EditarImgMapa(sector, ModalImgMapa)">
                         <img src="./../../../../../assets/ImagenesAgroApoya2Adm/mapaSec.png" style="width: 32px;"
                             title="Editar Imagen Mapa">
                     </button>
-                    
+
                 </td>
             </tr>
             <tr *ngIf="ValidaConsulta=='1' ">
@@ -494,13 +505,14 @@
         <h1>Imagen Sector</h1>
         <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
     </div>
-    <h1 >De click en la imagen para subir o modificar</h1>
+    <h1>De click en la imagen para subir o modificar</h1>
     <br>
     <div class="row justify-content-center">
         <div class="col-sm-12" style="width: 400px; height: 400px;">
             <div class="image-upload">
                 <label for="file-input1">
-                    <img id="ImgSec" title="Selecciona una imagen" [src]="ImgMapaSec" style="width: 100%; height:  400px; object-fit: cover;">
+                    <img id="ImgSec" title="Selecciona una imagen" [src]="ImgMapaSec"
+                        style="width: 100%; height:  400px; object-fit: cover;">
                 </label>
                 <input name="file-input1" id="file-input1" type="file" (change)="SubirImgMapa($event, '1')" />
             </div>
@@ -521,4 +533,224 @@
         </div>
     </div>
     <br>
+</ng-template>
+
+<ng-template #ModalBodegaSector let-modal>
+    <div class="modal-header">
+        <h1>Bodega</h1>
+        <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
+    </div>
+    <div class="row justify-content-center p-2">
+        <div class="row col-12 justify-content-center">
+            <div [ngClass]="OpcionBodega == '1' ? 'btnDosA col-7' : 'btnUno col-3' " (click)="CambioOpcionBodega('1')">
+                Agregar Bodega
+            </div>
+            <div [ngClass]="OpcionBodega == '2' ? 'btnDosA col-7' : 'btnUno col-3' " (click)="CambioOpcionBodega('2')">
+                Actualizar Bodega
+            </div>
+        </div>
+        <br>
+        <div class="row" *ngIf="OpcionBodega == '1'">
+            <div class="col-sm-6 mt-2">
+                <label class="col-sm-12 Llave">Departamento</label>
+                <ng-autocomplete [disabled]="true" [data]="ArrayDepa" [searchKeyword]="keywordDepartamento"
+                    placeholder="Departamento" (selected)='selectDepartamento($event)'
+                    [itemTemplate]="templateResDepartamento" [notFoundTemplate]="templateVacio"
+                    [(ngModel)]="Departamento" (inputCleared)="LimpiaDepartamento('')"
+                    [initialValue]="ArrayDepa[IndexDepartamentoInsert]">
+                </ng-autocomplete>
+                <ng-template #templateResDepartamento let-item>
+                    <a [innerHTML]="item.DSCRPCION"></a>
+                </ng-template>
+                <ng-template #templateVacio let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
+            </div>
+            <div class="col-sm-6 mt-2">
+                <label class="col-sm-12 Llave">Ciudad</label>
+                <ng-autocomplete [disabled]="true" [data]="ArrayCiud" [searchKeyword]="keywordCiudad"
+                    placeholder="Ciudad" (selected)='SelectCiudad($event)' [itemTemplate]="templateResCiudad"
+                    [notFoundTemplate]="templateVacio" [(ngModel)]="Ciudad" (inputCleared)="LimpiaCiudad('')"
+                    [initialValue]="ArrayCiud[IndexCiudadInsert]">
+                </ng-autocomplete>
+                <ng-template #templateResCiudad let-item>
+                    <a [innerHTML]="item.DSCRPCION"></a>
+                </ng-template>
+                <ng-template #templateVacio let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
+            </div>
+
+            <div class="col-sm-6 mt-2">
+                <label class="col-sm-12 Llave">Nombre</label>
+                <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Nombre Bodega"
+                    [(ngModel)]="NombreBodegaInsert">
+            </div>
+            <div class="col-sm-6 mt-2">
+                <label class="col-sm-12 Llave">Dirección</label>
+                <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Dirección Bodega"
+                    [(ngModel)]="DireccionBodegaInsert">
+            </div>
+
+
+            <div class="col-sm-6 mt-2">
+                <label class="col-sm-12 Llave">Sector (Opcional)</label>
+                <ng-autocomplete [data]="DataSectores" [searchKeyword]="keyword" placeholder="Sector"
+                    (selected)='selectSectorBodega($event)' [itemTemplate]="templateResSectorBodega"
+                    [notFoundTemplate]="templateVacio" [(ngModel)]="SectorBodega"
+                    (inputCleared)="LimpiaSectorBodega('')">
+                </ng-autocomplete>
+                <ng-template #templateResSectorBodega let-item>
+                    <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+                </ng-template>
+                <ng-template #templateVacio let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
+            </div>
+
+
+            <div class="col-sm-6 mt-2">
+                <label class="col-sm-12 Llave">Coordenadas</label>
+                <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Dirección Bodega"
+                    [(ngModel)]="CoordenadasInsert">
+            </div>
+
+            <div class="col-sm-12 mt-2">
+                <label class="col-sm-12 Llave">Descripción</label>
+                <textarea class="form-control form-control-sm textArea" cols="30" rows="3"
+                    placeholder="Descripcion de la bodega (Obligatorio)" [(ngModel)]="DescripcionBodega"></textarea>
+            </div>
+        </div>
+        <div class="row justify-content-center" *ngIf="OpcionBodega == '2'">
+            <table class="col-sm-12 TableAgro mt-3">
+                <tr>
+                    <th>Nombre Bodega</th>
+                    <th>Descripción</th>
+                    <th>Dirección</th>
+                    <th>Sector</th>
+                    <th>Acciones</th>
+
+                </tr>
+                <tr *ngFor="let respu of DataBodegas">
+                    <td>{{respu.NombreBodega}}</td>
+                    <td>{{respu.Descripcion}}</td>
+                    <td>{{respu.Direccion}}</td>
+                    <td>{{respu.DSCRPCION_SCTOR}}</td>
+                    <td>
+                        <button class="SinEstilo" (click)="EliminaBodega(ModalRespuesta, respu.IdBodega)">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" style="width: 24px;"
+                                title="Eliminar Bodega">
+                        </button>
+                        <button class="SinEstilo" (click)="AbreModalEditarBodega(ModalEditarBodega, respu)">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png" style="width: 24px;"
+                                title="Editar información bodega">
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row justify-content-center" *ngIf="OpcionBodega == '1'">
+        <div class="col-sm-3">
+            <button type="button " class="btn btn-agro-prin w-100" (click)="ModBodega(ModalRespuesta)">Guardar</button>
+        </div>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalEditarBodega prueba let-modal>
+    <div class="modal-header">
+        <h1>Editar Bodega</h1>
+        <button type="button " class="btn-close " aria-label="Close "
+            (click)="ConsultaListas(ModalBodegaSector)"></button>
+    </div>
+    <div class="row p-2">
+        <div class="col-sm-6 mt-2">
+            <label class="col-sm-12 Llave">Nombre</label>
+            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Nombre Bodega (Obligatorio)"
+                [(ngModel)]="NombreBodegaEdit">
+        </div>
+        <div class="col-sm-6 mt-2">
+            <label class="col-sm-12 Llave">Dirección</label>
+            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Dirección Bodega (Obligatorio)"
+                [(ngModel)]="DireccionBodegaEdit">
+        </div>
+
+        <div class="col-sm-6 mt-2">
+            <label class="col-sm-12 Llave">Departamento</label>
+            <input [disabled]="true" class="col-sm-12 form-control form-control-sm textBox" type="text"
+                placeholder="Departamento" [(ngModel)]="DepartamentoEdit">
+        </div>
+        <div class="col-sm-6 mt-2">
+            <label class="col-sm-12 Llave">Ciudad</label>
+            <input [disabled]="true" class="col-sm-12 form-control form-control-sm textBox" type="text"
+                placeholder="Ciudad" [(ngModel)]="CiudadEditar">
+        </div>
+
+        <div class="col-sm-6 mt-2">
+            <label class="col-sm-12 Llave">Descripción</label>
+            <input class="col-sm-12 form-control form-control-sm textBox" type="text"
+                placeholder="Descripcion de la bodega (Obligatorio)" [(ngModel)]="DescripcionEdit">
+        </div>
+
+        <div class="col-sm-6 mt-2">
+            <label class="col-sm-12 Llave">Coordenadas</label>
+            <input class="col-sm-12 form-control form-control-sm textBox" type="text" placeholder="Coordenadas (Obligatorio)"
+                [(ngModel)]="CoordenadasEditar">
+        </div>
+
+        <div class="row justify-content-center mt-3">
+            <div class="col-sm-3">
+                <button type="button " class="btn btn-agro-prin w-100"
+                    (click)="EditInfoBodega(ModalRespuesta)">Guardar</button>
+            </div>
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-agro-sec w-100"
+                    (click)="ConsultaListas(ModalBodegaSector)">Cancelar</button>
+            </div>
+        </div>
+
+        <hr class="mt-2">
+        <div class="col-sm-6 mt-2 row" style="margin: 0; padding-left: 0;">
+            <label class="col-sm-12 Llave">Sector (Opcional)</label>
+            <div class="col-sm-11">
+                <ng-autocomplete [data]="DataSectores" [searchKeyword]="keyword" placeholder="Sector"
+                    (selected)='selectSeleccionaSector($event)' [itemTemplate]="templateResSector"
+                    [notFoundTemplate]="templateVacio" [(ngModel)]="SectorAsignacion"
+                    (inputCleared)="LimpiaSeleccionaSector('')">
+                </ng-autocomplete>
+                <ng-template #templateResSector let-item>
+                    <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+                </ng-template>
+                <ng-template #templateVacio let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
+            </div>
+            <button class="SinEstilo col-sm-1 mt-1" (click)="AsociarBodegaAsector(ModalRespuesta)">
+                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/ic_guardar.png" style="width: 24px;"
+                    title="Guardar asociación">
+            </button>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-sm-12">
+                <label class="Llave TextSectoresAsociados">Sectores Asociados</label>
+                <div class="row" *ngFor="let respu of ArraySectoresAsociados">
+                    <div class="col-sm-10 m-1">
+                        <input [disabled]="true" class="form-control form-control-sm textBox" type="text"
+                            placeholder="Sector asociado" [(ngModel)]="respu.NombreSector">
+                    </div>
+                    <div class="col-sm-1 m-1">
+                        <button class="SinEstilo  mt-2"
+                            (click)="EliminaAsociacionAsector(ModalRespuesta, respu.IdSector)">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/ic_equis.png" style="width: 24px;"
+                                title="Eliminar asociación">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="mt-2">
+        <br>
+    </div>
 </ng-template>

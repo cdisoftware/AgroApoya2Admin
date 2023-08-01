@@ -45,13 +45,7 @@
             <table class="col-12 TableAgro mt-2" id="TableTransp{{i}}">
                 <thead>
                     <tr>
-                        <th [attr.colspan]="NumberColspan">{{grup.NMBRE_CNDCTOR}}</th>
-                        <th *ngIf="IsVisibleRowGmail == true">
-                            <div class="col-10 row boton justify-content-center sinmp"
-                                (click)="EnvioPdfEmail('TableTransp'+i)">
-                                <img src="../../../../../assets/ImagenesAgroApoya2Adm/gmail.png" class="imgEmail" />
-                            </div>
-                        </th>
+                        <th [attr.colspan]="NumberColspan" (click)="EnvioPdfEmail('TableTransp'+i)">{{grup.NMBRE_CNDCTOR}}</th>
                     </tr>
                     <tr>
                         <th>Orden Entrega</th>
