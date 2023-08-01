@@ -1356,37 +1356,66 @@ export class ValoracionComponent implements OnInit {
 
       // bitly.shorten(this.RutaLanding +this.SessionSectorSel+'/'+this.SessionOferta+'/0/0').then(result => {  }catch{ }
       this.LinkSms = 'https://bit.ly/3HbpHIJ';
+
+      let item = {
+        TPO_CMSION_INDVDUAL: "0",
+        VLOR_CMSION_INDVDUAL: "0",
+        MNMO_UNDDES_INDVDUAL: "0",
+        MXMO_UNDDES_INDVDUAL: "0",
+        VLOR_DMNCLIO_INDVDUAL: "0",
+        VLOR_FNAL_INDVDUAL: "0"
+      };
+      if (this.SessionTipoOferta == "3") {
+        item = {
+          TPO_CMSION_INDVDUAL: "0",
+        VLOR_CMSION_INDVDUAL: "0",
+        MNMO_UNDDES_INDVDUAL: "0",
+        MXMO_UNDDES_INDVDUAL: "0",
+        VLOR_DMNCLIO_INDVDUAL: "0",
+        VLOR_FNAL_INDVDUAL: "0"
+        }
+      } else {
+        item = {
+          TPO_CMSION_INDVDUAL: this.SessionTipoComI,
+          VLOR_CMSION_INDVDUAL: validacomision,
+          MNMO_UNDDES_INDVDUAL: this.MinUnidLider,
+          MXMO_UNDDES_INDVDUAL: this.MaxUnidLider,
+          VLOR_DMNCLIO_INDVDUAL: this.VlrDomiI,
+          VLOR_FNAL_INDVDUAL: this.PreFinI
+        }
+      }
+
       const Body = {
         CD_CNSCTVO: this.SessionOferta,
         TPO_OFRTA: this.SessionTipoOferta,
-        TPO_CMSION_INDVDUAL: Number(this.SessionTipoComI),
-        VLOR_CMSION_INDVDUAL: validacomision,
-        MNMO_UNDDES_INDVDUAL: this.MinUnidLider,
-        MXMO_UNDDES_INDVDUAL: this.MaxUnidLider,
-        VLOR_DMNCLIO_INDVDUAL: this.VlrDomiI,
-        VLOR_FNAL_INDVDUAL: this.PreFinI,
-        TPO_CMSION_GRPAL: Number(this.SessionTipoComG),
-        VLOR_CMSION_GRPAL: validacomisionG,
-        MNMO_UNDDES_LIDER: this.MinUnidLider,
-        MXMO_UNDDES_LIDER: this.MaxUnidLider,
-        PRCNTJE_DCTO_LIDER: this.PorcDescLider,
-        VLOR_DMNCLIO_GRPAL: Number(this.VlrDomiI),
-        CNTDAD_GRPOS: 0,
-        MNMO_PRSNAS_XGRUPO: this.UnidXGrupos,
-        MNMO_UNDDES_PRCPNTE: this.MinUnidLider,
-        MXMO_UNDDES_PRCPNTE: this.MaxUnidLider,
-        CNTDAD_CMPRAS_INDVDLES: 0,
-        VLOR_ARRNQUE_LIDER: this.PrecioFinLider,
-        VLOR_FNAL_PRTCPNTE: this.PrecioFinPart,
+        TPO_CMSION_INDVDUAL: item.TPO_CMSION_INDVDUAL,
+        VLOR_CMSION_INDVDUAL: item.VLOR_CMSION_INDVDUAL,
+        MNMO_UNDDES_INDVDUAL: item.MNMO_UNDDES_INDVDUAL,
+        MXMO_UNDDES_INDVDUAL: item.MXMO_UNDDES_INDVDUAL,
+        VLOR_DMNCLIO_INDVDUAL: item.VLOR_DMNCLIO_INDVDUAL,
+        VLOR_FNAL_INDVDUAL: item.VLOR_FNAL_INDVDUAL,
+        TPO_CMSION_GRPAL: 0,
+        VLOR_CMSION_GRPAL: "0",
+        MNMO_UNDDES_LIDER: "0",
+        MXMO_UNDDES_LIDER: "0",
+        PRCNTJE_DCTO_LIDER: "0",
+        VLOR_DMNCLIO_GRPAL: "0",
+        CNTDAD_GRPOS: "0",
+        MNMO_PRSNAS_XGRUPO: "0",
+        MNMO_UNDDES_PRCPNTE: "0",
+        MXMO_UNDDES_PRCPNTE: "0",
+        CNTDAD_CMPRAS_INDVDLES: "0",
+        VLOR_ARRNQUE_LIDER: "0",
+        VLOR_FNAL_PRTCPNTE: "0",
         ID_SCTOR_OFRTA: this.SessionSectorSel,
         LINKLANDIGN: this.LinkSms,
-        TPO_DESCUENTO: Number(this.SessionTipoDescuento),
         VALOR_REFERENCIA: this.VlReferencia,
 
         TIPO_CUPON: Number(this.IdTipoCupon),
         DES_CUPONREGALO: this.DescripcionRegalo,
         IMG_CUPONREGALO: this.ImagenRegalo
       }
+
       console.log(Body)
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         console.log(ResultUpdate)
