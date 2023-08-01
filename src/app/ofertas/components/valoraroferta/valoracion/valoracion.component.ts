@@ -35,7 +35,7 @@ export class ValoracionComponent implements OnInit {
   MinUnidI: any;
   MaxUnidI: any;
   PreFinI: any;
-  VlrDomiI: any;
+  VlrDomiI: string;
   Respuesta: string = '';
   modalRespuesta: NgbModalRef | undefined;
   modalPublicar: NgbModalRef | undefined;
@@ -127,6 +127,8 @@ export class ValoracionComponent implements OnInit {
   TipoCupon: string = "";
   DescripcionRegalo: string = "";
   //#endregion Cupon
+  IndexTipoDescuento: number = -1;
+  IndexTipoCupon: number = -1;
 
 
   constructor(private ServiciosOferta: CrearofertaService, private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
@@ -134,6 +136,7 @@ export class ValoracionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.CargaInfoCupon();
     this.keyword = 'name';
     this.keywordSec = 'name';
     this.RutaImagenes = this.SeriviciosGenerales.RecuperaRutaImagenes();
@@ -209,7 +212,7 @@ export class ValoracionComponent implements OnInit {
     this.Consultatoppings();
   }
   consultaToppingsOferta() {
-    this.serviciosvaloracion.ConsultaToppingOfer('1', this.SessionSectorSel, this.SessionOferta, '0').subscribe(Resultcons => {
+    this.serviciosvaloracion.ConsultaToppingOfer('5', this.SessionSectorSel, this.SessionOferta, '0').subscribe(Resultcons => {
       if (Resultcons.length > 0) {
         this.DataToppings = Resultcons;
         this.ValidaConsulta = '0';
@@ -613,6 +616,10 @@ export class ValoracionComponent implements OnInit {
           name: ResultCons[0].Nom_tpo_cmsion_grpal
         }
       ]
+
+
+
+
       if (ResultCons[0].TPO_OFRTA == '1') {
         this.MuestraValoReferencia = '1';
         this.MuestraIndividual = '1';
@@ -656,6 +663,23 @@ export class ValoracionComponent implements OnInit {
         this.VlReferencia = ResultCons[0].valorReferenciaProd
       }
       else if (ResultCons[0].TPO_OFRTA == 3) {
+        if (ResultCons[0].tpo_descuento != null || ResultCons[0].tpo_descuento != 0 || ResultCons[0].tpo_descuento != '') {
+          this.PreCargaLIstasTipoDes(Number(ResultCons[0].tpo_descuento));
+        }
+        if (ResultCons[0].tipo_cupon != null || ResultCons[0].tipo_cupon != 0 || ResultCons[0].tipo_cupon != '') {
+          this.PreCargaListaTipoCupon(ResultCons[0].tipo_cupon);
+        }
+        if (ResultCons[0].img_cupon != null || ResultCons[0].img_cupon != '') {
+          this.ImagenRegalo = this.RutaImagenes + ResultCons[0].img_cupon;
+          this.RutaImagenes = ResultCons[0].img_cupon;
+        }
+        if (ResultCons[0].desc_cupon != null || ResultCons[0].desc_cupon != '') {
+          this.DescripcionRegalo = ResultCons[0].desc_cupon;
+        }
+        console.log(ResultCons[0].vlor_dmnclio_grpal)
+        this.VlrDomiI = ResultCons[0].vlor_dmnclio_grpal;
+        console.log(this.VlrDomiI)
+
         this.MuestraValoReferencia = '1';
         this.MuestraIndividual = '1';
         this.MuestraGrupal = '1';
@@ -668,7 +692,7 @@ export class ValoracionComponent implements OnInit {
         }
         this.MinUnidI = ResultCons[0].mnmo_unddes_indvdual;
         this.MaxUnidI = ResultCons[0].mxmo_unddes_indvdual;
-        this.VlrDomiI = ResultCons[0].vlor_dmnclio_indvdual;
+        //this.VlrDomiI = ResultCons[0].vlor_dmnclio_indvdual;
         this.PreFinI = ResultCons[0].vlor_fnal_indvdual;
         if (ResultCons[0].tpo_cmsion_grpal == '1') {
           this.VlrComFijaG = ResultCons[0].vlor_cmsion_grpal;
@@ -815,7 +839,6 @@ export class ValoracionComponent implements OnInit {
   selectTipOferta(item: any) {
 
     this.consultaValoresUni();
-    this.CargaInfoCupon();
     this.SessionTipoOferta = item.id;
     this.MuestraVigencial = '1';
     if (item.id == 1) {
@@ -839,7 +862,7 @@ export class ValoracionComponent implements OnInit {
     else if (item.id == 3) {
       this.MinUnidI = '1';
       this.MaxUnidI = '1';
-      this.VlrDomiI = '0';
+      //this.VlrDomiI = '0';
       this.MuestraValoReferencia = '1';
       this.MuestraIndividual = '0';
       this.MuestraGrupal = '1';
@@ -1365,14 +1388,14 @@ export class ValoracionComponent implements OnInit {
         VLOR_DMNCLIO_INDVDUAL: "0",
         VLOR_FNAL_INDVDUAL: "0"
       };
-      if (this.SessionTipoOferta == "3") {
+      if (this.SessionTipoOferta == 3) {
         item = {
           TPO_CMSION_INDVDUAL: "0",
-        VLOR_CMSION_INDVDUAL: "0",
-        MNMO_UNDDES_INDVDUAL: "0",
-        MXMO_UNDDES_INDVDUAL: "0",
-        VLOR_DMNCLIO_INDVDUAL: "0",
-        VLOR_FNAL_INDVDUAL: "0"
+          VLOR_CMSION_INDVDUAL: "0",
+          MNMO_UNDDES_INDVDUAL: "0",
+          MXMO_UNDDES_INDVDUAL: "0",
+          VLOR_DMNCLIO_INDVDUAL: "0",
+          VLOR_FNAL_INDVDUAL: "0"
         }
       } else {
         item = {
@@ -1385,6 +1408,30 @@ export class ValoracionComponent implements OnInit {
         }
       }
 
+      let SelectTipoCupon = {
+        PRCNTJE_DCTO_LIDER: "0",
+        MNMO_PRSNAS_XGRUPO: "0",
+
+        DES_CUPONREGALO: "0",
+        IMG_CUPONREGALO: "0"
+      }
+      if (Number(this.IdTipoCupon) == 1) {
+        SelectTipoCupon = {
+          PRCNTJE_DCTO_LIDER: "0",
+          MNMO_PRSNAS_XGRUPO: "0",
+
+          DES_CUPONREGALO: this.DescripcionRegalo,
+          IMG_CUPONREGALO: this.RutaImagenes
+        }
+      }else{
+        SelectTipoCupon = {
+          PRCNTJE_DCTO_LIDER: this.PorcDescLider,
+          MNMO_PRSNAS_XGRUPO: this.UnidXGrupos,
+
+          DES_CUPONREGALO: "0",
+          IMG_CUPONREGALO: "0"
+        }
+      }
       const Body = {
         CD_CNSCTVO: this.SessionOferta,
         TPO_OFRTA: this.SessionTipoOferta,
@@ -1394,26 +1441,26 @@ export class ValoracionComponent implements OnInit {
         MXMO_UNDDES_INDVDUAL: item.MXMO_UNDDES_INDVDUAL,
         VLOR_DMNCLIO_INDVDUAL: item.VLOR_DMNCLIO_INDVDUAL,
         VLOR_FNAL_INDVDUAL: item.VLOR_FNAL_INDVDUAL,
-        TPO_CMSION_GRPAL: 0,
-        VLOR_CMSION_GRPAL: "0",
-        MNMO_UNDDES_LIDER: "0",
-        MXMO_UNDDES_LIDER: "0",
-        PRCNTJE_DCTO_LIDER: "0",
-        VLOR_DMNCLIO_GRPAL: "0",
-        CNTDAD_GRPOS: "0",
-        MNMO_PRSNAS_XGRUPO: "0",
-        MNMO_UNDDES_PRCPNTE: "0",
-        MXMO_UNDDES_PRCPNTE: "0",
-        CNTDAD_CMPRAS_INDVDLES: "0",
-        VLOR_ARRNQUE_LIDER: "0",
-        VLOR_FNAL_PRTCPNTE: "0",
+        TPO_CMSION_GRPAL: Number(this.SessionTipoComG),
+        VLOR_CMSION_GRPAL: validacomisionG,
+        MNMO_UNDDES_LIDER: this.MinUnidLider,
+        MXMO_UNDDES_LIDER: this.MaxUnidLider,
+        PRCNTJE_DCTO_LIDER: SelectTipoCupon.PRCNTJE_DCTO_LIDER,
+        VLOR_DMNCLIO_GRPAL: this.VlrDomiI,
+        CNTDAD_GRPOS: 0,
+        MNMO_PRSNAS_XGRUPO: SelectTipoCupon.MNMO_PRSNAS_XGRUPO,
+        MNMO_UNDDES_PRCPNTE: this.MinUnidLider,
+        MXMO_UNDDES_PRCPNTE: this.MaxUnidLider,
+        CNTDAD_CMPRAS_INDVDLES: 0,
+        VLOR_ARRNQUE_LIDER: this.PrecioFinLider,
+        VLOR_FNAL_PRTCPNTE: this.PrecioFinPart,
         ID_SCTOR_OFRTA: this.SessionSectorSel,
         LINKLANDIGN: this.LinkSms,
+        TPO_DESCUENTO: Number(this.SessionTipoDescuento),
         VALOR_REFERENCIA: this.VlReferencia,
-
         TIPO_CUPON: Number(this.IdTipoCupon),
-        DES_CUPONREGALO: this.DescripcionRegalo,
-        IMG_CUPONREGALO: this.ImagenRegalo
+        DES_CUPONREGALO: SelectTipoCupon.DES_CUPONREGALO,
+        IMG_CUPONREGALO: SelectTipoCupon.IMG_CUPONREGALO
       }
 
       console.log(Body)
@@ -1422,14 +1469,17 @@ export class ValoracionComponent implements OnInit {
         this.Respuesta = '';
         var arreglores = ResultUpdate.split('|')
         this.Respuesta = arreglores[1];
-        this.ValidaToppings = '1';
-        this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
-          if (ResultUpdate.length > 0) {
-            console.log(ResultUpdate)
-            this.ArrayTextoModifica = ResultUpdate;
-            this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
-          }
-        })
+        if (Number(arreglores[0]) > 0) {
+          this.ValidaToppings = '1';
+          this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
+            if (ResultUpdate.length > 0) {
+              console.log(ResultUpdate)
+              this.ArrayTextoModifica = ResultUpdate;
+              this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
+            }
+          })
+        }
+
       })
       this.MuestraValUnidades = '0';
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
@@ -1792,6 +1842,7 @@ export class ValoracionComponent implements OnInit {
 
   //#region Cupon
   ImagenRegalo: string = "../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png";
+  NomImgRegalo: "";
   CargaInfoCupon() {
     this.serviciosvaloracion.ConsCupon('1').subscribe(ResultCorreo => {
       this.ArrayDataCupon = ResultCorreo;
@@ -1829,7 +1880,7 @@ export class ValoracionComponent implements OnInit {
           if (response == 'Archivo Subido Correctamente') {
 
             this.ImagenRegalo = this.RutaImagenes + event.target.files[0].name;
-            console.log(this.RutaImagenes + event.target.files[0].name)
+            this.NomImgRegalo =  event.target.files[0].name;
           } else {
             //this.resultadoCarga = 2;
             // console.log(this.resultadoCarga);
@@ -1843,5 +1894,27 @@ export class ValoracionComponent implements OnInit {
       );
     }
 
+  }
+
+
+  PreCargaLIstasTipoDes(IdTipoDes: number) {
+    for (var i = 0; i < this.DataTipoDescuento.length; i++) {
+      if (IdTipoDes == this.DataTipoDescuento[i].id) {
+        console.log('El valor a precargar es ' + i)
+        this.IndexTipoDescuento = i;
+        console.log(this.IndexTipoDescuento)
+        break;
+      }
+    }
+  }
+  PreCargaListaTipoCupon(IdTipoCupon: number) {
+    for (var j = 0; j < this.ArrayDataCupon.length; j++) {
+      if (IdTipoCupon == this.ArrayDataCupon[j].IdCupon) {
+        console.log(this.ArrayDataCupon[j])
+        this.IndexTipoCupon = j;
+        console.log(this.IndexTipoCupon)
+        break;
+      }
+    }
   }
 }
