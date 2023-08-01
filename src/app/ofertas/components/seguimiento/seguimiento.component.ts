@@ -14,7 +14,7 @@ export class SeguimientoComponent implements OnInit {
   @ViewChild('ModalMensaje', { static: false }) ModalMensaje: any;
 
   selecsector: string = '0'
-  selectConductor : string = '0'
+  selectConductor: string = '0'
   Respuesta: string = '';
 
   //mapas
@@ -137,20 +137,20 @@ export class SeguimientoComponent implements OnInit {
     this.SelectorSector = '';
     this.selecsector = '0';
   }
-  LimpiaConductor(){
+  LimpiaConductor() {
     this.Conductor = ''
     this.ConductorSelect = '0'
   }
 
   SelectSector(item: any) {
     this.SelectorSector = item.ID_SCTOR_OFRTA.toString();
-    
+
     this.selecsector = '1'
     this.selectConductor = '1'
     this.ConsultarConductores()
   }
 
-  SelectConductor(item: any){
+  SelectConductor(item: any) {
     this.ConductorSelect = item.CODIGO;
   }
 
@@ -183,7 +183,7 @@ export class SeguimientoComponent implements OnInit {
           this.ValidaInsertSec = '1';
           this.ValidaInsertSecs = '1';
           this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
-          
+
         }
       })
     }
@@ -338,7 +338,7 @@ export class SeguimientoComponent implements OnInit {
     this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
   }
 
-  ConsultaSeguimiento(){
+  ConsultaSeguimiento() {
     this.ServiciosValorar.ConsultaSeguimiento('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
       console.log(Resultado)
     })
@@ -348,18 +348,18 @@ export class SeguimientoComponent implements OnInit {
   InfoWindow(i: any) {
 
     this.infoWindow.close();
-    var NomCliente: string = '' + this.ArrayConsultaSeg[i].NOMBRE_CLIENTE + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_CLIENTE;
-    var FechaEntrega: string = '' + this.ArrayConsultaSeg[i].FECHA_ENTREGA;
-    var CodigoOferta: string = '' + this.ArrayConsultaSeg[i].COD_OFERTA;
-    var Direccion: string = '' + this.ArrayConsultaSeg[i].DIRECCION_CLIENTE;
-    var Producto: string = '' + this.ArrayConsultaSeg[i].PRODUCTO;
-    var Img: string = '' + this.ArrayConsultaSeg[i].IMAGEN_EVIDENCIA;
-    var Pago: string = this.ArrayConsultaSeg[i].DES_TIPOPAGO
-    var Telefono: string = '' + this.ArrayConsultaSeg[i].CELULAR_CLIENTE;
-    var ComplementoDir: string = '' + this.ArrayConsultaSeg[i].COMPLEMENTO_DIRECCION;
-    var Estado: string = '' + this.ArrayConsultaSeg[i].ESTADO_COMPRA;
-    var Observaciones: string = '' + this.ArrayConsultaSeg[i].OBSERVACION;
-    var Cantidad: string = '' + this.ArrayConsultaSeg[i].UNIDADES_PRODUCTO;
+    var NomCliente: string = '' + this.ArrayConsultaSeg[i].NOMBRES_PERSONA + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_PERSONA;
+    var FechaEntrega: string = '' + this.ArrayConsultaSeg[i].fecha_entrega;
+    var CodigoOferta: string = '' + this.ArrayConsultaSeg[i].CD_CNSCTVO;
+    var Direccion: string = '' + this.ArrayConsultaSeg[i].DRCCION;
+    var Producto: string = '' + this.ArrayConsultaSeg[i].Producto_ppal + this.ArrayConsultaSeg[i].producto_add;
+    var Img: string = '' + this.ArrayConsultaSeg[i].imagen_evidencia;
+    var Pago: string = this.ArrayConsultaSeg[i].descTipoPago
+    var Telefono: string = '' + this.ArrayConsultaSeg[i].CELULAR_PERSONA;
+    var ValorAPagar: string = '' + this.ArrayConsultaSeg[i].Vlor_PagarForm;
+    var Estado: string = '' + this.ArrayConsultaSeg[i].descEstado;
+    var Observaciones: string = '' + this.ArrayConsultaSeg[i].observacionesCliente;
+    var Cantidad: string = '' + this.ArrayConsultaSeg[i].unidadesEntregar;
 
     const Html =
       //Estilos
@@ -440,7 +440,7 @@ export class SeguimientoComponent implements OnInit {
       '<p style="font-size: 14px;">' +
       '<b>Dirección: </b> ' + Direccion + '' +
       '<br>' +
-      '<b>Complemento dirección: </b>' + ComplementoDir + '' +
+      '<b>Valor A Pagar: </b>' + ValorAPagar + '' +
       '<br>' +
       '<b>Fecha Entrega: </b>' + FechaEntrega + '' +
       '<br>' +
@@ -513,52 +513,52 @@ export class SeguimientoComponent implements OnInit {
     this.lastPanelId = $event.panelId;
   }
 
-  ConsultarConductores(){
+  ConsultarConductores() {
     this.ServiciosValorar.ConsultaConductoresAsociados('1', this.SelectorOferta, this.SelectorSector, '2').subscribe(Resultado => {
       this.ArrayConductores = Resultado
       console.log(Resultado)
     })
   }
 
-  ConsReporteEntregas(){
-    this.ServiciosValorar.ConsultaReporteEntregas('1',this.SelectorOferta, this.SelectorSector, '58').subscribe(Resultado => {
+  ConsReporteEntregas() {
+    this.ServiciosValorar.ConsultaReporteEntregas('1', this.SelectorOferta, this.SelectorSector, '58').subscribe(Resultado => {
       this.ArrayReporte = Resultado;
       console.log(Resultado)
-      for(var i = 0; this.ArrayReporte.length > i ; i++){
+      for (var i = 0; this.ArrayReporte.length > i; i++) {
         const fila = {
           "name": this.ArrayReporte[i].PRODUCTO, "series":
-          [
-            {
-              "name":"Entregado",
-              "value":this.ArrayReporte[i].CANTIDAD_ENTREGADA 
-            },
-            {
-              "name":"Pendiente",
-              "value":this.ArrayReporte[i].CANTIDAD_PENDIENTE 
-            },
-            {
-              "name":"Devuelto",
-              "value":this.ArrayReporte[i].CANTIDAD_DEVUELTA 
-            }
-          ]
+            [
+              {
+                "name": "Entregado",
+                "value": this.ArrayReporte[i].CANTIDAD_ENTREGADA
+              },
+              {
+                "name": "Pendiente",
+                "value": this.ArrayReporte[i].CANTIDAD_PENDIENTE
+              },
+              {
+                "name": "Devuelto",
+                "value": this.ArrayReporte[i].CANTIDAD_DEVUELTA
+              }
+            ]
         }
         this.ArrayVentas.push(fila)
         const fila2 = {
           "name": this.ArrayReporte[i].PRODUCTO, "series":
-          [
-            {
-              "name":"Recaudado",
-              "value":this.ArrayReporte[i].VLR_RECAUDADO 
-            },
-            {
-              "name":"Pendiente",
-              "value":this.ArrayReporte[i].VLR_PENDIENTE_RECAUDO 
-            },
-            {
-              "name":"Devuelto",
-              "value":this.ArrayReporte[i].VLOR_DEVOLUCION 
-            }
-          ]
+            [
+              {
+                "name": "Recaudado",
+                "value": this.ArrayReporte[i].VLR_RECAUDADO
+              },
+              {
+                "name": "Pendiente",
+                "value": this.ArrayReporte[i].VLR_PENDIENTE_RECAUDO
+              },
+              {
+                "name": "Devuelto",
+                "value": this.ArrayReporte[i].VLOR_DEVOLUCION
+              }
+            ]
         }
         this.ArrayValores.push(fila2)
       }
@@ -567,6 +567,8 @@ export class SeguimientoComponent implements OnInit {
 
   CambioDetalle(Bandera: string) {
     this.Detalle = Bandera;
+    this.ValidaInsertSecs == '1'
+    this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
   }
 
 }
