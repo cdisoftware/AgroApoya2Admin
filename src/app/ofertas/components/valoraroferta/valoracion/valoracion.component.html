@@ -353,7 +353,8 @@
                             <ng-autocomplete [data]="DataTipoDescuento" [searchKeyword]="keyword"
                                 placeholder="Registro / Unidades" [itemTemplate]="templateSec"
                                 [notFoundTemplate]="templateVacio" (selected)='selectTipDescuento($event)'
-                                (inputCleared)='LimpiaTipoDescuento($event)'>
+                                (inputCleared)='LimpiaTipoDescuento($event)'
+                                [initialValue]="DataTipoDescuento[IndexTipoDescuento]">
                             </ng-autocomplete>
                             <ng-template #templateSec let-item>
                                 <a [innerHTML]="item.name"></a>
@@ -365,10 +366,13 @@
 
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Tipo de cupon</label>
+
+                            <!--[(ngModel)]="TipoCupon"-->
                             <ng-autocomplete [data]="ArrayDataCupon" [searchKeyword]="keywordCupon"
                                 placeholder="Tipo Cupon" [itemTemplate]="templateCupon"
                                 [notFoundTemplate]="templateVacio" (selected)='selectTipoCupon($event)'
-                                (inputCleared)='LimpiaTipoCupon("")' [(ngModel)]="TipoCupon">
+                                (inputCleared)='LimpiaTipoCupon("")' 
+                                [initialValue]="ArrayDataCupon[IndexTipoCupon]">
                             </ng-autocomplete>
                             <ng-template #templateCupon let-item>
                                 <a [innerHTML]="item.NombreCupon"></a>
@@ -433,7 +437,7 @@
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Precio final participante</label>
-                            <input type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PrecioFinPart">
+                            <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PrecioFinPart">
                         </div>
                     </div>
                     <div class="row justify-content-center br" *ngIf="MuestraBtnMixta=='1'">
@@ -477,7 +481,7 @@
                                     <th>Acciones</th>
                                 </tr>
                                 <tr *ngFor="let valores of DataValores">
-                                    <td>{{valores.ValorUnidad}}</td>
+                                    <td>{{valores.ValorUnidad | currency}}</td>
                                     <td>{{valores.OrdenMostrar}}</td>
                                     <td>
                                         <button class="SinEstilo" title="Eliminar amparado"
