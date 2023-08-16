@@ -227,9 +227,6 @@ export class ValoracionComponent implements OnInit {
   }
 
   AgregaValorUni(templateMensaje: any) {
-    console.log(this.DataValores.length)
-    console.log(this.MaxUnidI)
-    console.log(this.DataValores.length >= parseInt(this.MaxUnidI))
     if (this.DataValores.length < parseInt(this.MaxUnidI)) {
       this.Respuesta = ''
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
@@ -579,7 +576,6 @@ export class ValoracionComponent implements OnInit {
 
   ConsultaDetalleOferta() {
     this.serviciosvaloracion.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
-      console.log(ResultConsu)
       this.DataOferta = ResultConsu;
       this.VlReferencia = parseInt(this.DataOferta[0].VR_UNDAD_EMPQUE) + 5000;
       this.SessionFechaRecogida = this.DataOferta[0].fecha_recogida;
@@ -588,7 +584,6 @@ export class ValoracionComponent implements OnInit {
 
   ConsultaSectores() {
     this.serviciosvaloracion.ConsultaSectoresOferta('2', this.SessionOferta).subscribe(ResultConsulta => {
-      console.log(ResultConsulta)
       if (ResultConsulta.length > 0) {
         this.keywordSec = 'DSCRPCION_SCTOR';
         this.DataSectores = ResultConsulta;
@@ -676,9 +671,7 @@ export class ValoracionComponent implements OnInit {
         if (ResultCons[0].desc_cupon != null || ResultCons[0].desc_cupon != '') {
           this.DescripcionRegalo = ResultCons[0].desc_cupon;
         }
-        console.log(ResultCons[0].vlor_dmnclio_grpal)
         this.VlrDomiI = ResultCons[0].vlor_dmnclio_grpal;
-        console.log(this.VlrDomiI)
 
         this.MuestraValoReferencia = '1';
         this.MuestraIndividual = '1';
@@ -739,18 +732,15 @@ export class ValoracionComponent implements OnInit {
     if (this.SessionTipoComI != '') {
       if (this.SessionTipoComI == '1') {
         this.serviciosvaloracion.CalculaPFIndividual('1', this.SessionOferta, this.SessionSectorSel, this.SessionTipoComI, this.VlrComFijaI).subscribe(ResultCons => {
-          console.log(ResultCons)
           this.PreFinI = ResultCons[0].PRECIO_FINAL;
         })
       }
       else if (this.SessionTipoComI == '2') {
         this.serviciosvaloracion.CalculaPFIndividual('1', this.SessionOferta, this.SessionSectorSel, this.SessionTipoComI, this.VlrComPorI).subscribe(ResultCons => {
-          console.log(ResultCons)
           this.PreFinI = ResultCons[0].PRECIO_FINAL;
         })
       }
     }
-    console.log(this.PreFinI)
   }
 
   CalculaPreoferGrupalM() {
@@ -805,7 +795,6 @@ export class ValoracionComponent implements OnInit {
   }
 
   selectSector(item: any) {
-    console.log(item)
     this.ValidaVigencia = '1';
     this.CodigoOferSector = item.COD_OFERTA_SECTOR;
     this.VlrFletSect = item.VLOR_FLTE_SGRDOForm;
@@ -1249,7 +1238,6 @@ export class ValoracionComponent implements OnInit {
           }
         }
         else if (this.ArrayCamposValida[i].campo == 'TipoCom') {
-          console.log(this.SessionTipoComG == '' || this.SessionTipoComG == null)
           if (this.SessionTipoComG == '' || this.SessionTipoComG == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
@@ -1260,7 +1248,6 @@ export class ValoracionComponent implements OnInit {
           }
         } else if (this.ArrayCamposValida[i].campo == 'ValorComicion') {
           if (this.SessionTipoComG == '1') {
-            console.log(this.VlrComFijaG == '' || this.VlrComFijaG == null)
             if (this.VlrComFijaG == '' || this.VlrComFijaG == null) {
               this.ArrayCamposValida[i].campof = 'Valor comisión fija';
               this.ArrayCamposValida[i].class = 'TextAlert';
@@ -1271,7 +1258,6 @@ export class ValoracionComponent implements OnInit {
               this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
             }
           } else if (this.SessionTipoComG == '2') {
-            console.log(this.VlrComPorG == '' || this.VlrComPorG == null)
             if (this.VlrComPorG == '' || this.VlrComPorG == null) {
               this.ArrayCamposValida[i].campof = 'Valor comisión porcentaje';
               this.ArrayCamposValida[i].class = 'TextAlert';
@@ -1284,7 +1270,6 @@ export class ValoracionComponent implements OnInit {
           }
 
         } else if (this.ArrayCamposValida[i].campo == 'TipoDesc') {
-          console.log(this.SessionTipoDescuento == '0' || this.SessionTipoDescuento == null || this.SessionTipoDescuento == '')
           if (this.SessionTipoDescuento == '0' || this.SessionTipoDescuento == null || this.SessionTipoDescuento == '') {
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
@@ -1294,7 +1279,6 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         } else if (this.ArrayCamposValida[i].campo == 'TipoCupon') {
-          console.log(this.IdTipoCupon == '0' || this.IdTipoCupon == null)
           if (this.IdTipoCupon == '0' || this.IdTipoCupon == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
@@ -1316,7 +1300,6 @@ export class ValoracionComponent implements OnInit {
               this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
             }
           } else if (this.IdTipoCupon == '2') {
-            console.log((this.PorcDescLider == '' || this.PorcDescLider == null) || (this.UnidXGrupos == "" || this.UnidXGrupos == null))
             if ((this.PorcDescLider == '' || this.PorcDescLider == null) || (this.UnidXGrupos == "" || this.UnidXGrupos == null)) {
               this.ArrayCamposValida[i].campof = 'Campos descuento'
               this.ArrayCamposValida[i].class = 'TextAlert'
@@ -1327,14 +1310,12 @@ export class ValoracionComponent implements OnInit {
               this.ArrayCamposValida[i].class = 'TextFine'
               this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
             }
-            console.log(Number(this.IdTipoCupon) < 1)
           } else if (Number(this.IdTipoCupon) < 1) {
             this.ArrayCamposValida[i].campof = 'Descripcion tipo regalo'
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
         } else if (this.ArrayCamposValida[i].campo == 'UndMin') {
-          console.log((this.MinUnidLider == '' || this.MinUnidLider == null))
           if ((this.MinUnidLider == '' || this.MinUnidLider == null)) {
             this.ArrayCamposValida[i].class = 'TextAlert';
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png';
@@ -1343,7 +1324,6 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
           }
         } else if (this.ArrayCamposValida[i].campo == 'UndMax') {
-          console.log((this.MaxUnidLider == '' || this.MaxUnidLider == null))
           if ((this.MaxUnidLider == '' || this.MaxUnidLider == null)) {
             this.ArrayCamposValida[i].class = 'TextAlert';
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png';
@@ -1352,7 +1332,6 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
           }
         } else if (this.ArrayCamposValida[i].campo == 'ValDomicilio') {
-          console.log((this.VlrDomiI == '' || this.VlrDomiI == null))
           if ((this.VlrDomiI == '' || this.VlrDomiI == null)) {
             this.ArrayCamposValida[i].class = 'TextAlert';
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png';
@@ -1361,7 +1340,6 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
           }
         } else if (this.ArrayCamposValida[i].campo == 'ValFinalParticipante') {
-          console.log((this.PrecioFinPart == '' || this.PrecioFinPart == null))
           if ((this.PrecioFinPart == '' || this.PrecioFinPart == null)) {
             this.ArrayCamposValida[i].class = 'TextAlert';
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png';
@@ -1423,7 +1401,7 @@ export class ValoracionComponent implements OnInit {
           DES_CUPONREGALO: this.DescripcionRegalo,
           IMG_CUPONREGALO: this.RutaImagenes
         }
-      }else{
+      } else {
         SelectTipoCupon = {
           PRCNTJE_DCTO_LIDER: this.PorcDescLider,
           MNMO_PRSNAS_XGRUPO: this.UnidXGrupos,
@@ -1462,10 +1440,7 @@ export class ValoracionComponent implements OnInit {
         DES_CUPONREGALO: SelectTipoCupon.DES_CUPONREGALO,
         IMG_CUPONREGALO: SelectTipoCupon.IMG_CUPONREGALO
       }
-
-      console.log(Body)
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
-        console.log(ResultUpdate)
         this.Respuesta = '';
         var arreglores = ResultUpdate.split('|')
         this.Respuesta = arreglores[1];
@@ -1473,8 +1448,10 @@ export class ValoracionComponent implements OnInit {
           this.ValidaToppings = '1';
           this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
             if (ResultUpdate.length > 0) {
-              console.log(ResultUpdate)
               this.ArrayTextoModifica = ResultUpdate;
+              if (this.ArrayTextoModifica[0].TextoSms == null || this.ArrayTextoModifica[0].TextoSms == undefined || this.ArrayTextoModifica[0].TextoSms == "") {
+                this.ArrayTextoModifica[0].TextoSms = "@NombrePersona Tenemos una oferta de @NombreProducto para ti, adquiérela ingresando a " + this.UrlParticipanteC;
+              }
               this.imagenesCorreo = ResultUpdate[0].ImgCorreo;
             }
           })
@@ -1580,8 +1557,6 @@ export class ValoracionComponent implements OnInit {
   }
 
   PublicaOferta(templateMensaje: any) {
-    console.log(this.DataValores.length)
-    console.log(this.DataValores.length > 0)
     if (this.DataValores.length > 0 && this.ValidaTipoOfer == '1') {
       const Body = {
         usucodig: this.SessionIdUsuario,
@@ -1872,18 +1847,14 @@ export class ValoracionComponent implements OnInit {
       this.Respuesta = "El peso del archivo no puede exceder 1.3 megabyte";
     } else {
       this.serviciosvaloracion.postImgToppings(event.target.files[0]).subscribe(response => {
-        console.log(response);
         if (response != 'Archivo Subido Correctamente') {
-          console.log("Error en el servidor");
         } else {
-          //console.log("Entra A Enviar");
           if (response == 'Archivo Subido Correctamente') {
 
             this.ImagenRegalo = this.RutaImagenes + event.target.files[0].name;
-            this.NomImgRegalo =  event.target.files[0].name;
+            this.NomImgRegalo = event.target.files[0].name;
           } else {
             //this.resultadoCarga = 2;
-            // console.log(this.resultadoCarga);
           }
 
         }
@@ -1900,9 +1871,7 @@ export class ValoracionComponent implements OnInit {
   PreCargaLIstasTipoDes(IdTipoDes: number) {
     for (var i = 0; i < this.DataTipoDescuento.length; i++) {
       if (IdTipoDes == this.DataTipoDescuento[i].id) {
-        console.log('El valor a precargar es ' + i)
         this.IndexTipoDescuento = i;
-        console.log(this.IndexTipoDescuento)
         break;
       }
     }
@@ -1910,9 +1879,7 @@ export class ValoracionComponent implements OnInit {
   PreCargaListaTipoCupon(IdTipoCupon: number) {
     for (var j = 0; j < this.ArrayDataCupon.length; j++) {
       if (IdTipoCupon == this.ArrayDataCupon[j].IdCupon) {
-        console.log(this.ArrayDataCupon[j])
         this.IndexTipoCupon = j;
-        console.log(this.IndexTipoCupon)
         break;
       }
     }

@@ -135,6 +135,7 @@ export class TransportistaComponent implements OnInit, OnDestroy {
       }
       console.log(BodyInsert)
       this.sectoresservices.OperacionTransportista('3', BodyInsert).subscribe(ResultInsert => {
+        console.log(ResultInsert)
         this.ConsultaCondOferta();
         this.SectorSelec = '';
         this.TransSelec = '';
