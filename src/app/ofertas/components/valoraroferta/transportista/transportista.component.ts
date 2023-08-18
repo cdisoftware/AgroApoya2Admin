@@ -172,7 +172,7 @@ export class TransportistaComponent implements OnInit, OnDestroy {
   selectSector(item: any) {
     console.log(item)
     this.SectorSelec = item;
-    this.VlrFlete = item.VLOR_FLTE_SGRDO;
+    //this.VlrFlete = item.VLOR_FLTE_SGRDO;
   }
 
   selectTrans(item: any) {
