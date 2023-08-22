@@ -227,7 +227,17 @@ export class ValoracionComponent implements OnInit {
   }
 
   AgregaValorUni(templateMensaje: any) {
-    if (this.DataValores.length < parseInt(this.MaxUnidI)) {
+    var auxmaxunidades: number = 0 ;
+
+    if (this.MuestraGrupal == '1') {
+      auxmaxunidades =  parseInt(this.MaxUnidLider);
+    }else if (this.MuestraIndividual == '1'){
+      auxmaxunidades = parseInt(this.MaxUnidI)
+    }
+
+
+
+    if (this.DataValores.length < auxmaxunidades) {
       this.Respuesta = ''
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
       if (this.ValorUni == '' || this.ValorUni == null || this.ValorUni == '0') {
@@ -520,7 +530,7 @@ export class ValoracionComponent implements OnInit {
         this.VigenHasta = '';
         this.modalService.open(templateMensaje);
         this.Respuesta = 'La fecha fin de la vigencia no puede ser menor a la fecha actual, favor valida tu información.';
-      }else if (fechaHF > fechaEF) {
+      } else if (fechaHF > fechaEF) {
         this.VigenHasta = '';
         this.modalService.open(templateMensaje);
         this.Respuesta = 'La fecha fin de la vigencia no puede ser mayor a la fecha de entrega, favor valida tu información.';
@@ -1403,7 +1413,7 @@ export class ValoracionComponent implements OnInit {
           MNMO_PRSNAS_XGRUPO: "0",
 
           DES_CUPONREGALO: this.DescripcionRegalo,
-          IMG_CUPONREGALO: this.RutaImagenes
+          IMG_CUPONREGALO: this.NomImgRegalo
         }
       } else {
         SelectTipoCupon = {
@@ -1778,7 +1788,6 @@ export class ValoracionComponent implements OnInit {
     }
 
     this.serviciosvaloracion.TextosOferta('1', Bodymod).subscribe(ResultCorreo => {
-      console.log(ResultCorreo)
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
       this.Respuesta = ResultCorreo;
 
@@ -1800,7 +1809,6 @@ export class ValoracionComponent implements OnInit {
       if (this.DataSectores.length > 0) {
         for (var i = 0; i < this.DataSectores.length; i++) {
           this.serviciosvaloracion.CorreoMasivo('1', '9', '2', this.SessionOferta, this.DataSectores[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
-            console.log(ResultCorreo)
           })
         }
       }
@@ -1851,7 +1859,6 @@ export class ValoracionComponent implements OnInit {
       this.Respuesta = "El peso del archivo no puede exceder 1.3 megabyte";
     } else {
       this.serviciosvaloracion.postImgToppings(event.target.files[0]).subscribe(response => {
-        console.log(response)
         if (response != 'Archivo Subido Correctamente') {
         } else {
           if (response == 'Archivo Subido Correctamente') {

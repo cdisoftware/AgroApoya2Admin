@@ -680,7 +680,7 @@
                                 </div>
 
                                 <!--Compras individuales-->
-                                <div class="row" *ngIf="MuestraIndividual == '1'">
+                                <div class="row" *ngIf="MuestraIndividual == '1' && MuestraGrupal == '0'">
                                     <hr class="mb-3">
                                     <div class="row br">
                                         <h5 class="SubTituloForm">Definicion Oferta</h5>
@@ -944,6 +944,7 @@
                                                 <th>Tipo</th>
                                                 <th>Unidades para oferta</th>
                                                 <th>Maximo unidades por compra</th>
+                                                <th>Tipo topping</th>
                                                 <th>Acciones</th>
                                             </tr>
                                             <tr *ngFor="let topping of DataToppings">
@@ -952,6 +953,11 @@
                                                 <td>{{topping.descTipotopping}}</td>
                                                 <td>{{topping.cantidadReserva}}</td>
                                                 <td>{{topping.MaxCantidad}}</td>
+
+                                                <td *ngIf="topping.Tipo_ToppingVenta == '1'">Venta cruzada</td>
+                                                <td *ngIf="topping.Tipo_ToppingVenta == '2'">Regalo registro</td>
+                                                <td *ngIf="topping.Tipo_ToppingVenta == '3'">Regalo por bono grupal</td>
+
                                                 <td>
                                                     <button class="SinEstilo" title="Imagen amparado">
                                                         <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png"
@@ -969,6 +975,10 @@
                                         <label class="col-sm-12 Llave">Link para acortar compartir participante</label>
                                         <input type="text" class="col-sm-12 form-control mt-1 textBox" id="ResumenLinkCorto" disabled>
                                         <input type="text" class="col-sm-12 form-control mt-1 textBox" id="ResumenLink" disabled>
+                                    </div>
+                                    <div class="col-sm-12 mt-2" *ngIf="MuestraGrupal == '1'">
+                                        <label class="col-sm-12 Llave">Mensaje compartir líder WhatsApp</label>
+                                        <input type="text" class="col-sm-12 form-control mt-1 textBox" id="MsmWhatsap" disabled>
                                     </div>
                                 </div>
                                 <hr class="mt-4" *ngIf="SelectSect == true">
@@ -1458,9 +1468,11 @@
             <h1 class="modal-title" id="modal-basic-title">Imagen adicionales</h1>
             <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
         </div>
-        <div class="modal-body" *ngFor="let oferta of DataOferta">
-            <div class="row br">
-                <img src="{{consultaimagen}}" class="col-sm-12">
+        <div class="modal-body">
+            <div class="row justify-content-center br">
+                <div class="col-sm-6">
+                    <img src="{{consultaimagen}}" class="w-100"/>
+                </div>
             </div>
         </div>
         <div class="row justify-content-center">
