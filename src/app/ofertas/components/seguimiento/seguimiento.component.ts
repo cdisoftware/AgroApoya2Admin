@@ -28,7 +28,7 @@ export class SeguimientoComponent implements OnInit {
   map: google.maps.Map;
   objCiudad: any = '0';
   objDepartamento: any = '0';
-  NomCiudad: string = '';
+  NomCiudad: string = 'Bogotá';
   NomDepa: string = 'Bogotá';
   infoWindow = new google.maps.InfoWindow();
 
@@ -80,7 +80,12 @@ export class SeguimientoComponent implements OnInit {
     private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService) { }
 
+  ngAfterViewInit() {
+    console.log(document.getElementById("mapaS") as HTMLElement)
+  }
+
   ngOnInit(): void {
+
     this.ConsultaOferta();
   }
 
@@ -179,11 +184,11 @@ export class SeguimientoComponent implements OnInit {
         } else {
           this.Detalle = '1';
           this.ArrayConsultaSeg = Resultado;
-          this.ConsReporteEntregas()
           this.ValidaInsertSec = '1';
           this.ValidaInsertSecs = '1';
-          this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
-
+          this.ConsReporteEntregas()
+          
+          
         }
       })
     }
@@ -212,17 +217,21 @@ export class SeguimientoComponent implements OnInit {
     var long: number;
     this.geocoder.geocode(request).then((result) => {
       const { results } = result;
-      this.AgregarSitios();
+      //this.AgregarSitios();
       var auxcoor = this.ArrayConsultaSeg[0].COORDENADAS_ENTR.split(",");
-      lat = parseFloat(auxcoor[0]);
-      long = parseFloat(auxcoor[1]);
+      console.log(auxcoor)
+      lat = parseFloat(auxcoor[0].trim());
+      long = parseFloat(auxcoor[1].trim());
+      console.log(document.getElementById("mapaS") as HTMLElement)
       this.map = new google.maps.Map(
-        document.getElementById("map") as HTMLElement,
+        document.getElementById("mapaS") as HTMLElement,
         {
           center: { lat: lat, lng: long },
           zoom: 11,
         }
       );
+
+
       this.AgregarSitios();
 
       return results;
@@ -521,7 +530,7 @@ export class SeguimientoComponent implements OnInit {
   }
 
   ConsReporteEntregas() {
-    this.ServiciosValorar.ConsultaReporteEntregas('1', this.SelectorOferta, this.SelectorSector, '58').subscribe(Resultado => {
+    this.ServiciosValorar.ConsultaReporteEntregas('1', this.SelectorOferta, this.SelectorSector, '0').subscribe(Resultado => {
       this.ArrayReporte = Resultado;
       console.log(Resultado)
       for (var i = 0; this.ArrayReporte.length > i; i++) {
@@ -562,6 +571,7 @@ export class SeguimientoComponent implements OnInit {
         }
         this.ArrayValores.push(fila2)
       }
+      this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
     })
   }
 
