@@ -364,8 +364,8 @@ export class ValorarofertaService {
   ModCBodega(Bandera: string, body: any) {
     return this.http.post<any>(this.url_servidor + 'ModCBodega/' + Bandera, body)
   }
-  conSectorBodega(Bandera: string, body: any){
-    return this.http.post<any>(this.url_servidor + 'conSectorBodega/' + Bandera, body)
+  conSectorBodega(Bandera: string, idBodega: string){
+    return this.http.get<any>(this.url_servidor + 'conSectorBodega/' + Bandera + '/'+idBodega)
   }
   public postFilePdf(bandera: String, Id_Clnte: String, IdSctor: String, IdPlantilla: String, usucodig: String, Cd_cnctvo: String, pdfFile: File) {
     const formData: FormData = new FormData();

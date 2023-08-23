@@ -72,6 +72,7 @@ export class SectorizacionComponent implements OnInit {
   IdSectorSelect: string = "0";
   TiempoSector: string = '1';
   DataBodegas: any = [];
+  DataBodegasModalBodegas: any = [];
   IdDepartamentoEntrega: string = "0";
   IdCiudadEntrega: string = "0";
 
@@ -200,7 +201,6 @@ export class SectorizacionComponent implements OnInit {
 
   }
 
-
   Centramapa(request: google.maps.GeocoderRequest): void {
     this.geocoder.geocode(request).then((result) => {
       const { results } = result;
@@ -236,14 +236,14 @@ export class SectorizacionComponent implements OnInit {
     })
   }
 
-  ConsultaBodegas(bandera: string) {
-    this.sectoresservices.ConsultaBodegas(bandera, this.IdCiudad, this.IdDepa, this.IdSectorSelect).subscribe(Resultado => {
-
+  ConsultaBodegas() {
+    this.sectoresservices.ConsultaBodegas("1", this.IdCiudad, this.IdDepa, this.IdSectorSelect).subscribe(Resultado => {
       if (Resultado.length > 0) {
         this.DataBodegas = Resultado
       }
     })
   }
+
   ConsultaZonas(idCiudad: string, IdDepartamento: string) {
     const descripcion = {
       "Descripcion": ""
@@ -255,6 +255,7 @@ export class SectorizacionComponent implements OnInit {
 
     })
   }
+
   LimpiaZona(result: string) {
     this.ZonaAsignaSector = result;
     this.seleczona = '0';
@@ -299,11 +300,11 @@ export class SectorizacionComponent implements OnInit {
   ConsultaUserSector(sector: any) {
     var selectSector = sector.SCTOR_OFRTA;
     this.IdSectorSelect = sector.SCTOR_OFRTA;
-    this.ConsultaBodegas('1');
     this.sectoresservices.ConsultaNumUsuariosSector('3', selectSector).subscribe(ResultadoCons => {
       this.UserSector = ResultadoCons.toString();
     })
   }
+
   LimpiaSector(result: string) {
     this.Sector = result;
     this.SectSelec = '';
@@ -338,6 +339,7 @@ export class SectorizacionComponent implements OnInit {
       this.keyword = 'DSCRPCION_SCTOR';
     })
   }
+
   AsociaSector(templateRespuesta: any) {
     this.sectoresservices.ConsultaSectoresOferta('1', this.SessionOferta).subscribe(ResultConsulta => {
       this.CantidadSectores = 0
@@ -634,6 +636,9 @@ export class SectorizacionComponent implements OnInit {
     }
   }
 
+  ID_SCTOR_OFRTAAUX: string;
+  imagen_sctorAux: string;
+
   selectSector(item: any, modalmapa: any) {
     this.ConsultaUserSector(item);
     this.modalService.open(modalmapa, { size: 'lg' });
@@ -644,8 +649,13 @@ export class SectorizacionComponent implements OnInit {
     this.Sessioncoordenada = item.coordenadas;
     this.ConsultaMapaSector();
     this.ValidaCoord = '3';
+    this.ConsultaBodegas();
 
-    this.ConsultaBodegas('1');
+    console.log('SELECCIONAR SECOTR');
+    console.log(item);
+
+    this.ID_SCTOR_OFRTAAUX = item.SCTOR_OFRTA;
+    this.imagen_sctorAux = item.imagen_sctor;
   }
 
   ConsultaMapaSector() {
@@ -814,13 +824,17 @@ export class SectorizacionComponent implements OnInit {
 
   }
 
-  EditarImgMapa(sector: any, Modalmapa: any) {
+  EditarImgMapa(Modalmapa: any, ID_SCTOR_OFRTA: string, imagen_sctor: string) {
     //this.ValidaMapSector = '1'
-    this.ValidaImgMapa = '0'
-    this.SectModif = sector.ID_SCTOR_OFRTA
-    if (sector.imagen_sctor != '') {
-      this.ImgMapaSec = this.RutaImagenes + sector.imagen_sctor;
+    if (ID_SCTOR_OFRTA == '') {
+      ID_SCTOR_OFRTA = this.ID_SCTOR_OFRTAAUX;
+      imagen_sctor = this.imagen_sctorAux;
+    }
 
+    this.ValidaImgMapa = '0'
+    this.SectModif = ID_SCTOR_OFRTA
+    if (imagen_sctor != '') {
+      this.ImgMapaSec = this.RutaImagenes + imagen_sctor;
     } else {
       this.ImgMapaSec = './../../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
     }
@@ -868,26 +882,50 @@ export class SectorizacionComponent implements OnInit {
       }
     );
   }
+
+  AbrirMensaje(ModalRespuesta: any) {
+    this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title' });
+    this.Respuesta = 'Debe seleccionar un sector primero, para poder modificar su imagen';
+  }
+
   //#endregion Anterior
 
-  //#region William
+  //*********************** INICIO MODAL BODEGAS ***********************
 
-  //#region InsertarBodega
-  ConsultaListas(ModalBodega: any) {
+  DataSectoresBodega: any;
+  DataSectoresAsociacion: any;
 
+  AbrirModalBodega(ModalBodega: any) {
     this.modalService.dismissAll();
     this.modalService.open(ModalBodega, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
-
-    //LimpiaVamposinsertbodega
-    this.LimpiarCamposModalBodega();
-
     this.ConsultaDepartamentos();
-    this.ConsultaSelectSectores();
-    this.ConsultaBodegas('2');
+    this.ConsultaSelectSectoresBodega();
+    this.LimpiarCamposModalBodega();
   }
+
+  CambioOpcionBodega(opcion: string) {
+    this.OpcionBodega = opcion;
+    if (this.OpcionBodega == '1') {
+      this.ConsultaDepartamentos();
+      this.ConsultaSelectSectoresBodega();
+      this.LimpiarCamposModalBodega();
+    } else {
+      this.ConsultaBodegasModalBodegas();
+    }
+  }
+
+  LimpiarCamposModalBodega() {
+    this.NombreBodegaInsert = "";
+    this.DireccionBodegaInsert = "";
+    this.DescripcionBodega = "";
+    this.CoordenadasInsert = "";
+    this.LimpiaSectorBodega('');
+  }
+
   //#region  Departamento
   ConsultaDepartamentos() {
     this.ArrayDepa = [];
+    this.IndexDepartamentoInsert = 0;
     this.ServiciosOferta.ConsultaDepartamento('4').subscribe(Resultado => {
       this.ArrayDepa = Resultado;
       this.keywordDepartamento = "DSCRPCION";
@@ -909,10 +947,11 @@ export class SectorizacionComponent implements OnInit {
     this.Departamento = value;
     this.LimpiaCiudad('');
   }
-  //#endregion Departamento
+
   //#region Ciudad
   ConsultaCiudad() {
     this.ArrayCiud = [];
+    this.IndexCiudadInsert = 0;
     this.ServiciosOferta.ConsultaCiudad(this.IdDepartamento).subscribe(Resultado => {
       this.ArrayCiud = Resultado;
       this.keywordCiudad = "DSCRPCION";
@@ -932,153 +971,67 @@ export class SectorizacionComponent implements OnInit {
     this.IdCiudadBodega = "0";
     this.Ciudad = value;
   }
-  //#endregion Ciudad
-  //#region Sector
-  ConsultaSelectSectores() {
+
+  //#region sector bodega
+  ConsultaSelectSectoresBodega() {
     this.sectoresservices.ConsultaSectores('1', '0', '0', this.IdDepartamentoEntrega, this.IdCiudadEntrega).subscribe(Result => {
-      this.DataSectores = Result;
+      this.DataSectoresBodega = Result;
       this.keyword = 'DSCRPCION_SCTOR';
     })
   }
+
   selectSectorBodega(item: any) {
     this.IdSectorBodega = item.SCTOR_OFRTA;
   }
+
   LimpiaSectorBodega(value: string) {
     this.IdSectorBodega = "0";
     this.SectorBodega = value;
   }
-  //#endregion Sector
-  //#region CambioVista
-  CambioOpcionBodega(opcion: string) {
-    this.OpcionBodega = opcion;
-  }
-  //#endregion CambioVista
-  //#endregion InsertarBodega
 
-  //#region EditarBodega
-  AbreModalEditarBodega(ModalEditarBodega: any, item: any) {
-    this.IdAsignaBodega = item.IdBodega;
-    this.ConsultaSectoresBodega();
-    this.NombreBodegaEdit = item.NombreBodega;
-    this.DireccionBodegaEdit = item.Direccion;
-    this.DepartamentoEdit = item.Depto;
-    this.CiudadEditar = item.Ciudad;
-    this.DescripcionEdit = item.Descripcion;
-    this.CoordenadasEditar = item.Coordenadas
-    this.modalService.dismissAll();
-    this.modalService.open(ModalEditarBodega, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
-  }
-  ConsultaSectoresBodega() {
-    this.ArraySectoresAsociados = [];
-    this.sectoresservices.conSectorBodega('4', this.IdAsignaBodega).subscribe(Resultado => {
-      this.ArraySectoresAsociados = Resultado;
-    });
-  }
-  //#region Bodega
-  selectAsignaBodega(item: any) {
-    this.IdAsignaBodega = item.IdBodega;
-  }
-  LimpiaAsignaBodega() {
-    this.IdAsignaBodega = "0";
-    this.LimpiaSeleccionaSector('');
-  }
-  //#endregion Bodega
-  //#region Sector
-  selectSeleccionaSector(item: any) {
-    this.IdSectorAsignacion = item.SCTOR_OFRTA;
-  }
-  LimpiaSeleccionaSector(value: string) {
-    this.SectorAsignacion = value;
-    this.IdSectorAsignacion = "0";;
-  }
-  //#endregion Sector
-  //#endregion EditarBodega
-
-
-  //#region ModBodega
-  ModBodega(ModalRespuesta: any) {
-    var auxbandera: string = "0";
+  InsertarBodega(ModalRespuesta: any) {
     let body = {};
     if (this.IdDepartamento == "0" || this.IdCiudadBodega == "0" || this.NombreBodegaInsert == ""
       || this.DescripcionBodega == "" || this.DireccionBodegaInsert == "" || this.CoordenadasInsert == "") {
       this.Respuesta = "No es posible editar, válida, que todos los campos estén completados";
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
     } else {
-      if (this.OpcionBodega == "1" && this.IdSectorBodega == "0") {
+      var auxbandera: string = "0";
+      if (this.IdSectorBodega == "0") {
         auxbandera = "1";
-        body = {
-          IdBodega: 0,
-          IdDepto: this.IdDepartamento,
-          IdCiudad: this.IdCiudadBodega,
-          NombreBodega: this.NombreBodegaInsert,
-          Descripcion: this.DescripcionBodega,
-          Direccion: this.DireccionBodegaInsert,
-          Coordenadas: this.CoordenadasInsert,
-          IdSector: 0
-        }
-      } else if (this.OpcionBodega == "1" && this.IdSectorBodega != "0") {
+      } else {
         auxbandera = "2";
-        body = {
-          IdBodega: 0,
-          IdDepto: this.IdDepartamento,
-          IdCiudad: this.IdCiudadBodega,
-          NombreBodega: this.NombreBodegaInsert,
-          Descripcion: this.DescripcionBodega,
-          Direccion: this.DireccionBodegaInsert,
-          Coordenadas: this.CoordenadasInsert,
-          IdSector: this.IdSectorBodega
-        }
       }
+
+      body = {
+        IdBodega: 0,
+        IdDepto: this.IdDepartamento,
+        IdCiudad: this.IdCiudadBodega,
+        NombreBodega: this.NombreBodegaInsert,
+        Descripcion: this.DescripcionBodega,
+        Direccion: this.DireccionBodegaInsert,
+        Coordenadas: this.CoordenadasInsert,
+        IdSector: this.IdSectorBodega
+      }
+
       this.sectoresservices.ModCBodega(auxbandera, body).subscribe(Resultado => {
         var auxrespu: string = Resultado.split("|");
         this.Respuesta = auxrespu[1];
         this.modalService.dismissAll();
         this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-        this.ConsultaBodegas('2');
+        this.ConsultaBodegas();
       });
     }
   }
-  AsociarBodegaAsector(ModalRespuesta: any) {
-    let body = {
-      IdBodega: this.IdAsignaBodega,
-      IdDepto: '0',
-      IdCiudad: '0',
-      NombreBodega: '0',
-      Descripcion: '0',
-      Direccion: '0',
-      Coordenadas: '0',
-      IdSector: this.IdSectorAsignacion
-    };
-    this.sectoresservices.ModCBodega('3', body).subscribe(Resultado => {
-      var auxrespu: string = Resultado.split("|");
-      this.Respuesta = auxrespu[1];
-      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-      this.ConsultaBodegas('2');
-      this.ConsultaSectoresBodega();
-      this.LimpiaSeleccionaSector('');
-    });
-  }
-  EliminaAsociacionAsector(ModalRespuesta: any, IdSector: string) {
-    let body = {
-      IdBodega: this.IdAsignaBodega,
-      IdDepto: '0',
-      IdCiudad: '0',
-      NombreBodega: '0',
-      Descripcion: '0',
-      Direccion: '0',
-      Coordenadas: '0',
-      IdSector: IdSector
-    };
-    this.sectoresservices.ModCBodega('5', body).subscribe(Resultado => {
-      var auxrespu: string = Resultado.split("|");
-      this.Respuesta = auxrespu[1];
-      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-      this.ConsultaBodegas('2');
 
-      this.ConsultaSectoresBodega();
-    });
-
+  ConsultaBodegasModalBodegas() {
+    this.sectoresservices.ConsultaBodegas("2", this.IdCiudadEntrega.trim(), this.IdDepartamentoEntrega, "0").subscribe(Resultado => {
+      if (Resultado.length > 0) {
+        this.DataBodegasModalBodegas = Resultado
+      }
+    })
   }
+
   EliminaBodega(ModalRespuesta: any, IdBodega: string) {
     let body = {
       IdBodega: IdBodega,
@@ -1090,14 +1043,45 @@ export class SectorizacionComponent implements OnInit {
       Coordenadas: '0',
       IdSector: '0'
     };
+
     this.sectoresservices.ModCBodega('4', body).subscribe(Resultado => {
       var auxrespu: string = Resultado.split("|");
       this.Respuesta = auxrespu[1];
-      this.modalService.dismissAll();
       this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-      this.ConsultaBodegas('2');
+      this.ConsultaBodegasModalBodegas();
+      this.ConsultaBodegas();
     });
   }
+
+  AbreModalEditarBodega(ModalEditarBodega: any, item: any) {
+    this.modalService.dismissAll();
+    this.modalService.open(ModalEditarBodega, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
+
+    this.IdAsignaBodega = item.IdBodega;
+    this.NombreBodegaEdit = item.NombreBodega;
+    this.DireccionBodegaEdit = item.Direccion;
+    this.DepartamentoEdit = item.Depto;
+    this.CiudadEditar = item.Ciudad;
+    this.DescripcionEdit = item.Descripcion;
+    this.CoordenadasEditar = item.Coordenadas
+    this.ConsultaSectoresBodega();
+    this.ConsultaSectoresListaAgregar();
+  }
+
+  ConsultaSectoresBodega() {
+    this.ArraySectoresAsociados = [];
+    this.sectoresservices.conSectorBodega('4', this.IdAsignaBodega).subscribe(Resultado => {
+      this.ArraySectoresAsociados = Resultado;
+    });
+  }
+
+  ConsultaSectoresListaAgregar() {
+    this.sectoresservices.ConsultaSectoresEtv('1', '0', "0", "0").subscribe(Result => {
+      this.DataSectoresAsociacion = Result;
+      this.keyword = 'DSCRPCION_SCTOR';
+    })
+  }
+
   EditInfoBodega(ModalRespuesta: any) {
     if (this.NombreBodegaEdit == "" || this.DescripcionEdit == "" || this.DireccionBodegaEdit == "" || this.CoordenadasEditar == "") {
       this.Respuesta = "No es posible editar, válida, que todos los campos estén completados";
@@ -1118,21 +1102,63 @@ export class SectorizacionComponent implements OnInit {
         this.Respuesta = auxrespu[1];
         this.modalService.dismissAll();
         this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-        this.ConsultaBodegas('2');
+        this.ConsultaBodegasModalBodegas();
+        this.ConsultaBodegas();
       });
     }
   }
 
-  LimpiarCamposModalBodega() {
-    this.LimpiaDepartamento('');
-    this.LimpiaCiudad('');
-    this.NombreBodegaInsert = "";
-    this.DireccionBodegaInsert = "";
-    this.LimpiaSectorBodega('');
-    this.DescripcionBodega = "";
-    this.CoordenadasInsert = "";
+  AsociarBodegaAsector(ModalRespuesta: any) {
+    let body = {
+      IdBodega: this.IdAsignaBodega,
+      IdDepto: '0',
+      IdCiudad: '0',
+      NombreBodega: '0',
+      Descripcion: '0',
+      Direccion: '0',
+      Coordenadas: '0',
+      IdSector: this.IdSectorAsignacion
+    };
+    this.sectoresservices.ModCBodega('3', body).subscribe(Resultado => {
+      var auxrespu: string = Resultado.split("|");
+      this.Respuesta = auxrespu[1];
+      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+      this.ConsultaSectoresBodega();
+      this.LimpiaSeleccionaSector('');
+      this.ConsultaBodegas();
+    });
   }
-  //#endregion ModBodega
-  //#endregion William
 
+  EliminaAsociacionAsector(ModalRespuesta: any, IdSector: string) {
+    let body = {
+      IdBodega: this.IdAsignaBodega,
+      IdDepto: '0',
+      IdCiudad: '0',
+      NombreBodega: '0',
+      Descripcion: '0',
+      Direccion: '0',
+      Coordenadas: '0',
+      IdSector: IdSector
+    };
+    this.sectoresservices.ModCBodega('5', body).subscribe(Resultado => {
+      var auxrespu: string = Resultado.split("|");
+      this.Respuesta = auxrespu[1];
+      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+
+      this.ConsultaSectoresBodega();
+      this.ConsultaBodegas();
+    });
+
+  }
+
+  selectSeleccionaSector(item: any) {
+    this.IdSectorAsignacion = item.SCTOR_OFRTA;
+  }
+
+  LimpiaSeleccionaSector(value: string) {
+    this.SectorAsignacion = value;
+    this.IdSectorAsignacion = "0";;
+  }
+
+  //*********************** FIN MODAL BODEGAS ***********************
 }
