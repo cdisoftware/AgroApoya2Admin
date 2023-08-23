@@ -28,6 +28,7 @@ import { AsignaTransUltMillaComponent } from './ofertas/components/asigna-trans-
 import { AdminsectoresComponent } from './ofertas/components/adminsectores/adminsectores.component';
 import { AdminusuariosComponent } from './usuario/components/adminusuarios/adminusuarios.component';
 import { ReporteentregasComponent } from './ofertas/components/reportes/reporteentregas/reporteentregas.component';
+import { ManychatComponent } from './usuario/components/manychat/manychat.component';
 import { AdminCodigosComponent } from './ofertas/components/admin-codigos/admin-codigos.component';
 const routes: Routes = [
   {
@@ -148,6 +149,10 @@ const routes: Routes = [
       {
         path: 'RepCompras',
         component: ReporteentregasComponent
+      },
+      {
+        path: 'modulomanychat',
+        component: ManychatComponent
       }
     ]
   },
