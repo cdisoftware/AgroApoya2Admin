@@ -29,6 +29,7 @@ import { AdminsectoresComponent } from './ofertas/components/adminsectores/admin
 import { AdminusuariosComponent } from './usuario/components/adminusuarios/adminusuarios.component';
 import { ReporteentregasComponent } from './ofertas/components/reportes/reporteentregas/reporteentregas.component';
 import { ManychatComponent } from './usuario/components/manychat/manychat.component';
+import { AdminCodigosComponent } from './ofertas/components/admin-codigos/admin-codigos.component';
 const routes: Routes = [
   {
     path: '',
@@ -155,6 +156,11 @@ const routes: Routes = [
       }
     ]
   },
+
+  {
+    path: 'admincod',
+    component: AdminCodigosComponent
+  }
 ];
 
 @NgModule({
