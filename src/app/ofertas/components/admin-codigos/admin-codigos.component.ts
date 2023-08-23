@@ -40,7 +40,7 @@ export class AdminCodigosComponent implements OnInit {
       this.ArrayAplica = Resultado;
     })
 
-    
+
   }
 
   SelDesc(iddesc: any) {
@@ -53,6 +53,10 @@ export class AdminCodigosComponent implements OnInit {
 
   SelEstado(idestado: any) {
     this.IdEstado = idestado;
+  }
+
+  Buscar() {
+    
   }
 
 }
