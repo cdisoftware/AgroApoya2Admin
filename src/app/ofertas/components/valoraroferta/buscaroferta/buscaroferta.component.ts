@@ -585,12 +585,15 @@ export class BuscarofertaComponent implements OnInit {
     })
   }
   visualizaImagenTopping(ModalImagen: any, imagenesAdicional: string) {
-    this.modalService.open(ModalImagen, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     this.consultaimagen = this.RutaImagenTopping + imagenesAdicional;
+    console.log( this.consultaimagen)
+    this.modalService.open(ModalImagen, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
   }
   consultaToppingsOferta() {
+    console.log('1', this.SessionSectorSel, this.IdOferta, '0')
     this.ServiciosValorar.ConsultaToppingOfer('1', this.SessionSectorSel, this.IdOferta, '0').subscribe(Resultcons => {
       if (Resultcons.length > 0) {
+        console.log(Resultcons)
         this.DataToppings = Resultcons;
         this.VerTopping = '1';
       }
@@ -614,12 +617,18 @@ export class BuscarofertaComponent implements OnInit {
     })
   }
   ConsultaLink() {
-    this.ServiciosValorar.ConsultaLinks('1', this.IdOferta, this.SessionSectorSel).subscribe(Resultado => {
-      const inputLinkC: HTMLInputElement = document.getElementById('ResumenLinkCorto') as HTMLInputElement;
-      inputLinkC.value = Resultado[0].link_corto;
-      const inputLink: HTMLInputElement = document.getElementById('ResumenLink') as HTMLInputElement;
-      inputLink.value = Resultado[0].link_largo;
-    })
+    this.ServiciosValorar.constextosoferta('1', this.IdOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
+      this.ServiciosValorar.ConsultaLinks('1', this.IdOferta, this.SessionSectorSel).subscribe(Resultado => {
+        console.log(ResultUpdate)
+        const inputLinkC: HTMLInputElement = document.getElementById('ResumenLinkCorto') as HTMLInputElement;
+        inputLinkC.value = Resultado[0].link_corto;
+        const inputLink: HTMLInputElement = document.getElementById('ResumenLink') as HTMLInputElement;
+        inputLink.value = Resultado[0].link_largo;
+  
+        const inputWhatsapp: HTMLInputElement = document.getElementById('MsmWhatsap') as HTMLInputElement;
+        inputWhatsapp.value = ResultUpdate[0].TextoWhat;
+      });
+    });
   }
 
 
