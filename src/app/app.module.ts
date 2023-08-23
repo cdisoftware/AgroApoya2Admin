@@ -43,6 +43,7 @@ import { ReporteentregasComponent } from './ofertas/components/reportes/reportee
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ScaleLinear, ScaleBand } from 'd3-scale';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { AdminCodigosComponent } from './ofertas/components/admin-codigos/admin-codigos.component';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AsignaTransUltMillaComponent,
     AdminsectoresComponent,
     AdminusuariosComponent,
-    ReporteentregasComponent
+    ReporteentregasComponent,
+    AdminCodigosComponent
   ],
   imports: [
     NgxMaskModule.forRoot(options),
