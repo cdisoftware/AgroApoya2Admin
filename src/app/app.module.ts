@@ -43,7 +43,11 @@ import { ReporteentregasComponent } from './ofertas/components/reportes/reportee
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ScaleLinear, ScaleBand } from 'd3-scale';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+<<<<<<< HEAD
 import { ManychatComponent } from './usuario/components/manychat/manychat.component';
+=======
+import { AdminCodigosComponent } from './ofertas/components/admin-codigos/admin-codigos.component';
+>>>>>>> 270b20c38d957ba3ac8efe8292a65ac19622faa9
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
   declarations: [
@@ -73,7 +77,11 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AdminsectoresComponent,
     AdminusuariosComponent,
     ReporteentregasComponent,
+<<<<<<< HEAD
     ManychatComponent
+=======
+    AdminCodigosComponent
+>>>>>>> 270b20c38d957ba3ac8efe8292a65ac19622faa9
   ],
   imports: [
     NgxMaskModule.forRoot(options),
