@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MetodosglobalesService } from './../../../core/metodosglobales.service'
 import { ValorarofertaService } from './../../../core/valoraroferta.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -10,14 +10,16 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AdminCodigosComponent implements OnInit {
 
-  IdDescuento: string = '';
+  @ViewChild('ModalEditar', { static: false }) ModalEditar: any;
+  IdDescuento: string = '0';
   ArrayTDescuento: any = [];
-  IdAplica: string = '';
+  IdAplica: string = '0';
   ArrayAplica: any = [];
-  FechaCreacion: string = '';
+  FechaCreacion: string = '0';
   IdOferta: string = '';
-  IdEstado: string = '';
+  IdEstado: string = '0';
   ArrayEstados: any = [];
+  ArrayConsulta: any = [];
 
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
@@ -56,7 +58,22 @@ export class AdminCodigosComponent implements OnInit {
   }
 
   Buscar() {
-    
+    var oferta = '0'
+    if (this.IdOferta != '') {
+      oferta = this.IdOferta
+    }
+    const datos = {
+      FechaCreacion: this.FechaCreacion
+    }
+    console.log(this.IdDescuento + this.IdAplica + oferta)
+    this.ServiciosValorar.ConsultaCupones('1', this.IdDescuento, this.IdAplica, oferta, this.IdEstado, datos).subscribe(Resultado => {
+      this.ArrayConsulta = Resultado
+      console.log(Resultado)
+    })
+  }
+
+  AbrirEditar(Registro: any) {
+    this.modalService.open(this.ModalEditar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
   }
 
 }
