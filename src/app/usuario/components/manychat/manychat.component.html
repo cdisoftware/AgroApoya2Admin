@@ -21,7 +21,7 @@
             <input type="text" title="Nombre usuario" class="form-control form-control-sm textBox">
         </div>
         <div class="col-sm-6 mb-3">
-            <label class="Llave">Oferta</label>
+            <label class="Llave">Número oferta</label>
             <input type="text" title="Oferta" class="form-control form-control-sm textBox">
         </div>
     </div>
@@ -29,18 +29,36 @@
     <div class="row">
         <div class="col-sm-6 mb-3">
             <label class="Llave">Sector</label>
-            <input type="text" title="Sector" class="form-control form-control-sm textBox">
+            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" placeholder="Sector"
+                (inputCleared)="LimpiaSector('')" (selected)='selectSector($event)' [itemTemplate]="templateSec"
+                [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
+            </ng-autocomplete>
+            <ng-template #templateSec let-item>
+                <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
         </div>
         <div class="col-sm-6 mb-3">
             <label class="Llave">Estado pago</label>
-            <input type="text" title="Estado pago" class="form-control form-control-sm textBox">
+            <ng-autocomplete [data]="DataEstadoPago" [searchKeyword]="keywordEsPago" placeholder="Estado pago"
+                (inputCleared)="LimpiaEstadoPago('')" (selected)='selectEstadoPago($event)'
+                [itemTemplate]="templateEstadoPag" [notFoundTemplate]="templateVacio" [(ngModel)]="EstadoPago">
+            </ng-autocomplete>
+            <ng-template #templateEstadoPag let-item>
+                <a [innerHTML]="item.descripcion"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
         </div>
     </div>
 
     <div class="row">
         <div class="col-sm-6 mb-3">
-            <label class="Llave">Fecha compra</label>
-            <input type="date" title="Fecha compra" class="form-control form-control-sm textBox">
+            <label class="Llave">Estado usuario</label>
+            <input type="text" title="Estado usuario" class="form-control form-control-sm textBox">
         </div>
         <div class="col-sm-6 mb-3">
             <label class="Llave">Estado entrega</label>
@@ -49,12 +67,12 @@
     </div>
     <div class="row">
         <div class="col-sm-6 mb-3">
-            <label class="Llave">Estado usuario</label>
-            <input type="text" title="Estado usuario" class="form-control form-control-sm textBox">
-        </div>
-        <div class="col-sm-6 mb-3">
             <label class="Llave">Fecha compra</label>
             <input type="date" title="Fecha compra" class="form-control form-control-sm textBox">
+        </div>
+        <div class="col-sm-6 mb-3">
+            <label class="Llave">Fecha entrega</label>
+            <input type="date" title="Fecha entrega" class="form-control form-control-sm textBox">
         </div>
     </div>
 
