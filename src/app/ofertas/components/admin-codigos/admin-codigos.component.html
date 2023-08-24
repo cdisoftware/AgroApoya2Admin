@@ -6,7 +6,8 @@
         <div class="row">
             <div class="col-sm-4">
                 <label class="col-sm-12 Llave">Tipo Descuento</label>
-                <select class="form-control form-control-sm textBox" #SelectDesc id="SelectDesc" (change)='SelDesc(SelectDesc.value)'>
+                <select class="form-control form-control-sm textBox" #SelectDesc id="SelectDesc"
+                    (change)='SelDesc(SelectDesc.value)'>
                     <option value="0">Tipo Descuento</option>
                     <option *ngFor="let Descuento of ArrayTDescuento;" [value]="Descuento.IdTipoCuponGenral"
                         [selected]="Descuento.IdTipoCuponGenral == IdDescuento">
@@ -16,7 +17,8 @@
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 Llave">Aplicable</label>
-                <select class="form-control form-control-sm textBox" #SelectAplica id="SelectAplica" (change)='SelAplica(SelectAplica.value)'>
+                <select class="form-control form-control-sm textBox" #SelectAplica id="SelectAplica"
+                    (change)='SelAplica(SelectAplica.value)'>
                     <option value="0">Aplicable</option>
                     <option *ngFor="let Aplica of ArrayAplica;" [value]="Aplica.IdTipoAplicable"
                         [selected]="Aplica.IdTipoAplicable == IdAplica">
@@ -26,18 +28,21 @@
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 Llave">Fecha Creación</label>
-                <input type="date" name="FechaCreacion" id="FechaCreacion" class="form-control form-control-sm textBox" [(ngModel)]="FechaCreacion">
+                <input type="date" name="FechaCreacion" id="FechaCreacion" class="form-control form-control-sm textBox"
+                    [(ngModel)]="FechaCreacion">
             </div>
         </div>
         <br>
         <div class="row">
             <div class="col-sm-4">
                 <label class="col-sm-12 Llave">Código Oferta</label>
-                <input type="text" name="CodigoOferta" id="CodigoOferta" class="form-control form-control-sm textBox" [(ngModel)]="IdOferta">
+                <input type="text" name="CodigoOferta" id="CodigoOferta" class="form-control form-control-sm textBox"
+                    [(ngModel)]="IdOferta">
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 Llave">Estado</label>
-                <select class="form-control form-control-sm textBox" #SelectEstado id="SelectEstado" (change)='SelEstado(SelectEstado.value)'>
+                <select class="form-control form-control-sm textBox" #SelectEstado id="SelectEstado"
+                    (change)='SelEstado(SelectEstado.value)'>
                     <option value="0">Estado</option>
                     <option value="1">Activo</option>
                     <option value="2">Inactivo</option>
@@ -56,5 +61,106 @@
                 <button class="btn btn-agro-prin w-100">Cancelar</button>
             </div>
         </div>
+        <hr>
+        <div class="row justify-content-center">
+            <table class="col-sm-10 TableAgro">
+                <tr>
+                    <th>Oferta</th>
+                    <th>Aplicable</th>
+                    <th>Estado</th>
+                    <th>Fecha Creación</th>
+                    <th>Fecha Fin</th>
+                    <th>Fecha Inicio</th>
+                    <th>Código Mostrar</th>
+                    <th>Código Grupo</th>
+                    <th>Descripción</th>
+                    <th>Editar</th>
+                </tr>
+                <tr *ngFor="let registro of ArrayConsulta ">
+                    <td>{{registro.Cd_cnsctvo}}</td>
+                    <td>{{registro.DescuentoAplicable}}</td>
+                    <td>{{registro.Estado}}</td>
+                    <td>{{registro.FechaCreacion}}</td>
+                    <td>{{registro.FechaFin}}</td>
+                    <td>{{registro.FechaInicio}}</td>
+                    <td>{{registro.codigo_Mostrar}}</td>
+                    <td>{{registro.codigo_grupo}}</td>
+                    <td>{{registro.descripcion}}</td>
+                    <td>
+                        <button class="SinEstilo" (click)="AbrirEditar(registro)">
+                            <img src="./../../../../assets/ImagenesAgroApoya2Adm/Editar.png" width="32px">
+                        </button>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+
     </div>
 </div>
+<ng-template #ModalEditar let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title">Editar Cupon</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row  br">
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Tipo Descuento</label>
+                <select class="form-control form-control-sm textBox" #SelectDesc id="SelectDesc"
+                    (change)='SelDesc(SelectDesc.value)'>
+                    <option value="0">Tipo Descuento</option>
+                    <option *ngFor="let Descuento of ArrayTDescuento;" [value]="Descuento.IdTipoCuponGenral"
+                        [selected]="Descuento.IdTipoCuponGenral == IdDescuento">
+                        {{Descuento.NombreCupon}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Valor aplica desde</label>
+                <input type="number" placeholder="Aplicable desde" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Aplicable</label>
+                <select class="form-control form-control-sm textBox" #SelectAplica id="SelectAplica"
+                    (change)='SelAplica(SelectAplica.value)'>
+                    <option value="0">Aplicable</option>
+                    <option *ngFor="let Aplica of ArrayAplica;" [value]="Aplica.IdTipoAplicable"
+                        [selected]="Aplica.IdTipoAplicable == IdAplica">
+                        {{Aplica.NombreAplicable}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="row br">
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Fecha inicio</label>
+                <input type="date" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Fecha Fin</label>
+                <input type="date" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Oferta</label>
+                <input type="text" class="form-control form-control-sm textBox" placeholder="Oferta">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Mascara</label>
+                <input type="text" class="form-control form-control-sm textBox" placeholder="Mascara Código">
+            </div>
+        </div>
+        <div class="row br">
+            <div class="col-sm-12">
+                <label class="col-sm-12 Llave">Descripción</label>
+                <textarea name="Descripcion" id="Descripcion" cols="30" rows="10" class="form-control form-control-sm "></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-sec col-sm-2" (click)="modal.dismiss()">Cancelar</button>
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.dismiss()">Guardar</button>
+        
+    </div>
+    <br>
+</ng-template>

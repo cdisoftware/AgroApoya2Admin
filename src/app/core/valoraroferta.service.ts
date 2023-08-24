@@ -384,5 +384,9 @@ export class ValorarofertaService {
   ConsultaAplicable(Bandera: string) {
     return this.http.get<any[]>(this.url_servidor + 'consCTipoCuponCodigoAplicableGen/' + Bandera);
   }
+
+  ConsultaCupones(Bandera: string, TCupon: string, CuponAplica: string, IdOferta: string, Estado: string, datos: any){
+    return this.http.post<any>(this.url_servidor + 'consCodigosDescuentos/' + Bandera + '/' + TCupon + '/' + CuponAplica + '/' + IdOferta + '/' + Estado, datos);
+  }
 }
 
