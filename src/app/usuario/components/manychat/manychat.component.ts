@@ -10,47 +10,37 @@ export class ManychatComponent implements OnInit {
   constructor(private serviciosoferta: ValorarofertaService,
   ) { }
 
-  //variales Estado pago
-  DataEstadoPago: any = [];
-  keywordEsPago: string = '';
-  SelectorEstPago: string = '';
-  EstadoPago: string = '';
-  //variables sectores
-  DataSectores: any = [];
-  keywordSec: string = '';
-  SectorSelec: string = '';
-  Sector: string = '';
+  //variables grilla
+  DataQuery: any[];
+  newQueryMC: string = '';
+
+  VerOcultarCampos: string = '';
 
   ngOnInit(): void {
-    this.ConsultaEstadoPago();
-    this.ConsultaSectores();
+    this.DataQuery = [];
+    this.VerOcultarCampos = "1"
   }
 
-  ConsultaEstadoPago() {
-    this.serviciosoferta.ConsultaCompraPagos('2').subscribe(ResultCons => {
-      console.log(ResultCons);
-      this.DataEstadoPago = ResultCons
-      this.keywordEsPago = 'descripcion';
+  consultaToppingsOferta() {
+    const Body = {
+      MSJ_AGROAMIGO: this.newQueryMC
+    }
+    this.serviciosoferta.EjecutaQueryManyChat('1', Body).subscribe(Resultcons => {
+      
+      if (Resultcons.length > 0) {
+        this.DataQuery = Resultcons;
+        this.VerOcultarCampos = "2"
+      }
+      else {  
+        this.DataQuery = [];
+      }
     })
   }
-  selectEstadoPago(sector: any) {
-    this.SelectorEstPago = sector.codigo.toString();
-  }
-  LimpiaEstadoPago(EsPago: String) {
-    this.SelectorEstPago = "" + EsPago;
+  Limpiar(){
+    this.newQueryMC = '';
+    this.DataQuery = [];
+    this.VerOcultarCampos = "1"
   }
 
-  ConsultaSectores() {
-    this.serviciosoferta.ConsultaSectores('1', '0', '0', '0', '0').subscribe(ResultCons => {
-      this.DataSectores = ResultCons
-      this.keywordSec = 'DSCRPCION_SCTOR';
-    })
-  }
-  selectSector(sector: any) {
-    this.SectorSelec = sector.SCTOR_OFRTA;
-  }
-  LimpiaSector(Sector: String) {
-    this.SectorSelec = "" + Sector;
-  }
 
 }
