@@ -35,7 +35,11 @@ export class AdminCodigosComponent implements OnInit {
   ValorCuponE: string = '0';
   ScriptE: string = '0';
   Respuesta: string = '';
-
+  ArrayOferta: any = [];
+  keywordOferta: string = 'Producto';
+  Oferta: string = '';
+  CodigoAux: string = '0'
+  OfertaE: string = '';
   constructor(
     private SeriviciosGenerales: MetodosglobalesService,
     private ServiciosValorar: ValorarofertaService,
@@ -56,7 +60,27 @@ export class AdminCodigosComponent implements OnInit {
     this.ServiciosValorar.ConsultaAplicable('2').subscribe(Resultado => {
       this.ArrayAplica = Resultado;
     })
+
+    const datosbusqueda = {
+      UsuCodig: 0,
+      Producto: 0,
+      NombreCompletoProductor: 0,
+      DescripcionProducto: 0,
+      Cd_cndcion: 0,
+      Cd_tmno: 0,
+      ID_EMPAQUE: 0,
+      VigenciaDesde: 0,
+      VigenciaHasta: 0,
+      IdEstado_Oferta: 0,
+      CD_RGION: 0,
+      CD_MNCPIO: 0
+    }
+    this.ServiciosValorar.BusquedaOferta('2', '0', '0', '0', datosbusqueda).subscribe(Resultado => {
+      this.ArrayOferta = Resultado;
+      console.log(Resultado)
+    })
   }
+
 
   LimpiarFiltros() {
     this.IdDescuento = '0';
@@ -102,8 +126,13 @@ export class AdminCodigosComponent implements OnInit {
     }
     console.log(this.IdDescuento + this.IdAplica + oferta)
     this.ServiciosValorar.ConsultaCupones('1', this.IdDescuento, this.IdAplica, oferta, this.IdEstado, datos).subscribe(Resultado => {
-      this.ArrayConsulta = Resultado
       console.log(Resultado)
+      if (Resultado.length > 0) {
+        this.ArrayConsulta = Resultado
+      } else {
+        this.Respuesta = 'No se encuentran registros asociados'
+        this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+      }
     })
   }
 
@@ -128,13 +157,13 @@ export class AdminCodigosComponent implements OnInit {
       this.LimpiarEditar()
       this.TituloModal = 'Crear Cupon';
       this.modalService.open(this.ModalEditar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
-      
+
     } else {
       this.AccionGuardar = '2'
       this.TituloModal = 'Editar Cupon';
       this.modalService.open(this.ModalEditar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
       this.IdDescuentoE = Registro.IdTipoCuponCodigoAplicableGeneral
-      this.IdAplicaE = Registro.IdTipoAplicable;
+      this.IdAplicaE = Registro.IdTipoCuponGeneral;
       this.FechaInicioE = Registro.FechaInicio;
       this.FechaFinE = Registro.FechaFin;
       this.IdOfertaE = Registro.Cd_cnsctvo;
@@ -143,14 +172,15 @@ export class AdminCodigosComponent implements OnInit {
       this.AplicaDesdeE = Registro.ApartirValor;
       this.ValorCuponE = Registro.DescuentoAplicable;
       this.EstadoE = Registro.Estado;
-      this.ScriptE = Registro.scriptAdicional
+      this.ScriptE = Registro.scriptAdicional;
+      this.CodigoAux = Registro.codigo_grupo;
     }
 
   }
 
   GuardarCupon() {
     const DatosInsert = {
-      IdGrupoAux: 0,
+      IdGrupoAux: this.CodigoAux,
       codigo_Mostrar: this.MascaraE,
       descripcion: this.DescripcionE,
       IdTipoCuponGeneral: this.IdDescuentoE,
@@ -173,11 +203,48 @@ export class AdminCodigosComponent implements OnInit {
         this.modalService.dismissAll();
         this.Respuesta = arrayrespuesta[1]
         this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        this.Buscar();
       }
 
     })
   }
 
+  LimpiaOferta(Valor: string) {
+    this.Oferta = Valor;
+    this.IdOferta = '0';
+  }
 
+  selectOfertaFiltro(item: any) {
+    this.IdOferta = item.cd_cnsctvo.toString();
+  }
+
+  selectOfertaFiltroE(item: any) {
+    this.IdOfertaE = item.cd_cnsctvo.toString();
+  }
+
+  Eliminar(registro: any) {
+    console.log(registro)
+    const DatosInsert = {
+      IdGrupoAux: registro.codigo_grupo,
+      codigo_Mostrar: registro.codigo_Mostrar,
+      descripcion: registro.descripcion,
+      IdTipoCuponGeneral: registro.IdTipoCuponGeneral,
+      IdTipoCuponCodigoAplicableGeneral: registro.IdTipoCuponCodigoAplicableGeneral,
+      FechaInicio: registro.FechaInicio,
+      FechaFin: registro.FechaFin,
+      DescuentoAplicable: registro.DescuentoAplicable,
+      Estado: registro.Estado,
+      ApartirValor: registro.ApartirValor,
+      scriptAdicional: registro.scriptAdicional
+    }
+    console.log(DatosInsert)
+
+    this.ServiciosValorar.ModificaCupones('4', DatosInsert).subscribe(Resultado => {
+      console.log(Resultado)
+      this.Buscar()
+    })
+
+
+  }
 
 }
