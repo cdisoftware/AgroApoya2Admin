@@ -43,7 +43,7 @@
                 <label class="col-sm-12 Llave">Estado</label>
                 <select class="form-control form-control-sm textBox" #SelectEstado id="SelectEstado"
                     (change)='SelEstado(SelectEstado.value)'>
-                    <option value="0">Estado</option>
+                    <option value="0" [selected]="IdEstado">Estado</option>
                     <option value="1">Activo</option>
                     <option value="2">Inactivo</option>
                 </select>
@@ -55,14 +55,14 @@
                 <button class="btn btn-agro-prin w-100" (click)="Buscar()">Buscar</button>
             </div>
             <div class="col-sm-3">
-                <button class="btn btn-agro-prin w-100">Guardar</button>
+                <button class="btn btn-agro-prin w-100" (click)="AbrirEditar('Nuevo')">Crear</button>
             </div>
             <div class="col-sm-3">
-                <button class="btn btn-agro-prin w-100">Cancelar</button>
+                <button class="btn btn-agro-sec w-100" (click)="LimpiarFiltros()">Limpiar</button>
             </div>
         </div>
         <hr>
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" *ngIf="ArrayConsulta.length > 0">
             <table class="col-sm-10 TableAgro">
                 <tr>
                     <th>Oferta</th>
@@ -100,67 +100,116 @@
 </div>
 <ng-template #ModalEditar let-modal>
     <div class="modal-header">
-        <h1 class="modal-title" id="modal-basic-title">Editar Cupon</h1>
+        <h1 class="modal-title" id="modal-basic-title">{{TituloModal}}</h1>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
         <div class="row  br">
             <div class="col-sm-4">
                 <label class="col-sm-12 Llave">Tipo Descuento</label>
-                <select class="form-control form-control-sm textBox" #SelectDesc id="SelectDesc"
-                    (change)='SelDesc(SelectDesc.value)'>
+                <select class="form-control form-control-sm textBox" #SelectDescE id="SelectDescE"
+                    (change)='SelDescE(SelectDescE.value)'>
                     <option value="0">Tipo Descuento</option>
                     <option *ngFor="let Descuento of ArrayTDescuento;" [value]="Descuento.IdTipoCuponGenral"
-                        [selected]="Descuento.IdTipoCuponGenral == IdDescuento">
+                        [selected]="Descuento.IdTipoCuponGenral == IdDescuentoE">
                         {{Descuento.NombreCupon}}
                     </option>
                 </select>
             </div>
             <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Valor Cupon</label>
+                <input type="number"  placeholder="Aplicable desde"
+                    class="form-control form-control-sm textBox" [(ngModel)]="ValorCuponE">
+            </div>
+            <div class="col-sm-4">
                 <label class="col-sm-12 Llave">Valor aplica desde</label>
-                <input type="number" placeholder="Aplicable desde" class="form-control form-control-sm textBox">
+                <input type="number"  placeholder="Aplicable desde"
+                    class="form-control form-control-sm textBox" [(ngModel)]="AplicaDesdeE">
+            </div>
+
+        </div>
+        <div class="row br">
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Mascara</label>
+                <input type="text" class="form-control form-control-sm textBox" placeholder="Mascara Código"
+                    [(ngModel)]="MascaraE">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Estado</label>
+                <select class="form-control form-control-sm textBox" #SelectEstadoE id="SelectEstadoE"
+                    (change)='SelEstadoE(SelectEstadoE.value)' >
+                    <option value="0" >Estado</option>
+                    <option value="1" [selected]="EstadoE">Activo</option>
+                    <option value="2">Inactivo</option>
+                </select>
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 Llave">Aplicable</label>
-                <select class="form-control form-control-sm textBox" #SelectAplica id="SelectAplica"
-                    (change)='SelAplica(SelectAplica.value)'>
+                <select class="form-control form-control-sm textBox" #SelectAplicaE id="SelectAplicaE"
+                    (change)='SelAplicaE(SelectAplicaE.value)'>
                     <option value="0">Aplicable</option>
                     <option *ngFor="let Aplica of ArrayAplica;" [value]="Aplica.IdTipoAplicable"
-                        [selected]="Aplica.IdTipoAplicable == IdAplica">
+                        [selected]="Aplica.IdTipoAplicable == IdAplicaE">
                         {{Aplica.NombreAplicable}}
                     </option>
                 </select>
             </div>
         </div>
         <div class="row br">
-            <div class="col-sm-4">
+            
+            <div class="col-sm-4" *ngIf="IdAplicaE == '2'">
                 <label class="col-sm-12 Llave">Fecha inicio</label>
-                <input type="date" class="form-control form-control-sm textBox">
+                <input type="date" class="form-control form-control-sm textBox" [(ngModel)]="FechaInicioE">
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4" *ngIf="IdAplicaE == '2'">
                 <label class="col-sm-12 Llave">Fecha Fin</label>
-                <input type="date" class="form-control form-control-sm textBox">
+                <input type="date" class="form-control form-control-sm textBox" [(ngModel)]="FechaFinE">
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4" *ngIf="IdAplicaE == '1'">
                 <label class="col-sm-12 Llave">Oferta</label>
-                <input type="text" class="form-control form-control-sm textBox" placeholder="Oferta">
+                <input type="text" class="form-control form-control-sm textBox" placeholder="Oferta"
+                    [(ngModel)]="IdOfertaE">
             </div>
-            <div class="col-sm-4">
-                <label class="col-sm-12 Llave">Mascara</label>
-                <input type="text" class="form-control form-control-sm textBox" placeholder="Mascara Código">
-            </div>
+
         </div>
+
         <div class="row br">
-            <div class="col-sm-12">
+            <div class="col-sm-6">
                 <label class="col-sm-12 Llave">Descripción</label>
-                <textarea name="Descripcion" id="Descripcion" cols="30" rows="10" class="form-control form-control-sm "></textarea>
+                <textarea name="Descripcion" id="Descripcion" cols="30" rows="10" class="form-control form-control-sm "
+                    [(ngModel)]="DescripcionE"></textarea>
+            </div>
+            <div class="col-sm-6">
+                <label class="col-sm-12 Llave">Script</label>
+                <textarea name="Script" id="Script" cols="30" rows="10" class="form-control form-control-sm "
+                    [(ngModel)]="ScriptE"></textarea>
             </div>
         </div>
     </div>
     <div class="row justify-content-center">
-        <button type="button" class="btn btn-agro-sec col-sm-2" (click)="modal.dismiss()">Cancelar</button>
-        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.dismiss()">Guardar</button>
-        
+        <div class="col-sm-3">
+            <button type="button" class="btn btn-agro-prin w-100" (click)="GuardarCupon()">Guardar</button>
+        </div>
+        <div class="col-sm-3">
+            <button type="button" class="btn btn-agro-sec w-100" (click)="modal.dismiss()">Cancelar</button>
+        </div>
+    </div>
+    <br>
+</ng-template>
+<ng-template #ModalRespuesta let-modal>
+    <div class="modal-header">
+        <h1>Respuesta</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">{{Respuesta}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-4" (click)="modal.close()">Aceptar</button>
     </div>
     <br>
 </ng-template>
