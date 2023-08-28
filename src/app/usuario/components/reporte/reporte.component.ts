@@ -401,6 +401,7 @@ export class ReporteComponent implements OnInit {
         consent_phrase: "string"
       }
       this.InteraccionMenyChat.modmanychatcreateuser(body).subscribe(Resultado => {
+        this.GuardaLogManyChat(Resultado, Item);
         var IdMenyChat: string = "";
         if (Resultado.status == "success" && Resultado.data.id != "") {
           IdMenyChat = Resultado.data.id;
@@ -458,6 +459,18 @@ export class ReporteComponent implements OnInit {
       img: AuxImg
     }
     this.ArrayUsersActualizados.push(ite);
+  }
+
+  GuardaLogManyChat(Respuesta: string, item: any) {
+    console.log(Respuesta)
+    const body = {
+      usucodig: item.Usucodig,
+      celular: item.NumeroCelular,
+      rta_manychat: Respuesta,
+      origen: 2
+    }
+    this.InteraccionMenyChat.modLogsRegManychat('3', body).subscribe(Resultado => {
+    });
   }
   //#endregion UpdateMenyChat
 }
