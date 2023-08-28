@@ -53,7 +53,7 @@ export class AdminCodigosComponent implements OnInit {
       this.ArrayTDescuento = Resultado
     })
 
-    this.ServiciosValorar.ConsultaAplicable('1').subscribe(Resultado => {
+    this.ServiciosValorar.ConsultaAplicable('2').subscribe(Resultado => {
       this.ArrayAplica = Resultado;
     })
   }
@@ -122,6 +122,7 @@ export class AdminCodigosComponent implements OnInit {
 
   AbrirEditar(Registro: any) {
     console.log(Registro)
+    
     if (Registro == 'Nuevo') {
       this.AccionGuardar = '3'
       this.LimpiarEditar()

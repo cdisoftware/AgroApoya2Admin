@@ -153,6 +153,10 @@ const routes: Routes = [
       {
         path: 'modulomanychat',
         component: ManychatComponent
+      },
+      {
+        path: 'admincode',
+        component: AdminCodigosComponent
       }
     ]
   },
