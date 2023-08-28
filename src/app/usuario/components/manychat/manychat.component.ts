@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 import { PublicidadService } from 'src/app/core/publicidad.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-manychat',
@@ -11,8 +12,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class ManychatComponent implements OnInit {
   @ViewChild('ModalRespuestaImg', { static: false }) ModalRespuestaImg: any;
 
-  constructor(private serviciosoferta: ValorarofertaService, private publicidadService: PublicidadService, private ModalService: NgbModal
+  constructor(private serviciosoferta: ValorarofertaService, private publicidadService: PublicidadService, private ModalService: NgbModal,public cookies: CookieService
   ) { }
+
+  IdUsuario: string = "";
 
   //variables grilla
   DataQuery: any[];
@@ -30,6 +33,7 @@ export class ManychatComponent implements OnInit {
   IdProceso: string = "0";
 
   ngOnInit(): void {
+    this.IdUsuario = this.cookies.get('IDU');
     this.DataQuery = [];
     this.VerOcultarCampos = "1"
   }
@@ -43,7 +47,6 @@ export class ManychatComponent implements OnInit {
         MSJ_AGROAMIGO: this.newQueryMC
       }
       this.serviciosoferta.EjecutaQueryManyChat('1', Body).subscribe(Resultcons => {
-        console.log(Resultcons)
         if (Resultcons.length > 0) {
           this.DataQuery = Resultcons;
           this.VerOcultarCampos = "2"
@@ -75,7 +78,7 @@ export class ManychatComponent implements OnInit {
         const result3 = await this.EnviaPlantilla(this.DataQuery[i].ID_MANYCHAT);
         await new Promise(resolve => setTimeout(resolve, 5000));//Hace esperar 5 segundos para ejecutar el siguiente servicio
 
-        /*if (this.IdProceso == "0") {
+        if (this.IdProceso == "0") {
           //Registra Log En bdUno
           const result4 = await this.GuardaLogBDUno(this.DataQuery[i]);
           await new Promise(resolve => setTimeout(resolve, 5000));//Hace esperar 5 segundos para ejecutar el siguiente servicio
@@ -83,7 +86,7 @@ export class ManychatComponent implements OnInit {
           //Registra Log En bdDos
           const result4 = await this.GuardaLogBDDos(this.DataQuery[i]);
           await new Promise(resolve => setTimeout(resolve, 5000));//Hace esperar 5 segundos para ejecutar el siguiente servicio
-        }*/
+        }
       }
       this.IdProceso = "0";
       this.Loader = false;
@@ -104,7 +107,6 @@ export class ManychatComponent implements OnInit {
       }
       this.publicidadService.AsignarCampoUserManyChat(body).subscribe(async ResultadoDesc => {
         this.RespuDescripcion = JSON.stringify(ResultadoDesc);
-        console.log(this.RespuDescripcion);
         resolve(true);
       });
     });
@@ -118,7 +120,6 @@ export class ManychatComponent implements OnInit {
       }
       this.publicidadService.CManyChatFlows(body).subscribe(async Respu => {
         this.RespuePlantilla = JSON.stringify(Respu);
-        console.log(this.RespuePlantilla)
         resolve(true);
         return true;
       });
@@ -126,47 +127,44 @@ export class ManychatComponent implements OnInit {
   }
 
   async GuardaLogBDUno(Item: any) {
+    console.log("-----------------------------------")
+    console.log("IdProceso Uno")
     await new Promise((resolve, reject) => {
       const body = {
-        "id_proceso": 0,
-        "sql_proceso": this.newQueryMC,
-        "usucodig": 7139,
-        "usucodig_msj": Item.USUCODIG,
-        "celular": Item.CELULAR,
-        "id_manychat": Item.ID_MANYCHAT,
-        "mensaje": Item.MSJ_AGROAMIGO
+        id_proceso: 0,
+        sql_proceso: this.newQueryMC,
+        usucodig: this.IdUsuario,
+        usucodig_msj: Item.USUCODIG,
+        celular: Item.CELULAR,
+        id_manychat: Item.ID_MANYCHAT,
+        mensaje: Item.MSJ_AGROAMIGO
       }
       this.publicidadService.modProcesoEnvioManychat('3', body).subscribe(async Respu => {
-        this.IdProceso = "" + Respu; 
-        const bodyDos = {
-          "id_proceso": this.IdProceso,
-          "sql_proceso": this.newQueryMC,
-          "usucodig": 7139,
-          "usucodig_msj": Item.USUCODIG,
-          "celular": Item.CELULAR,
-          "id_manychat": Item.ID_MANYCHAT,
-          "mensaje": Item.MSJ_AGROAMIGO
-        }
-        this.publicidadService.modProcesoEnvioManychat('3', bodyDos).subscribe(async Respu => {
-          resolve(true);
-          return true;
-        });
+        console.log(Respu)
+        this.IdProceso = "" + Respu;
+        console.log("-----------------------------------")
+        resolve(true);
+        return true;
       });
     });
   }
 
   async GuardaLogBDDos(Item: any) {
     await new Promise((resolve, reject) => {
+      console.log("-----------------------------------")
+      console.log("IdProceso Dos")
       const bodyDos = {
-        "id_proceso": this.IdProceso,
-        "sql_proceso": this.newQueryMC,
-        "usucodig": 7139,
-        "usucodig_msj": Item.USUCODIG,
-        "celular": Item.CELULAR,
-        "id_manychat": Item.ID_MANYCHAT,
-        "mensaje": Item.MSJ_AGROAMIGO
+        id_proceso: this.IdProceso,
+        sql_proceso: this.newQueryMC,
+        usucodig: this.IdUsuario,
+        usucodig_msj: Item.USUCODIG,
+        celular: Item.CELULAR,
+        id_manychat: Item.ID_MANYCHAT,
+        mensaje: Item.MSJ_AGROAMIGO
       }
       this.publicidadService.modProcesoEnvioManychat('3', bodyDos).subscribe(async Respu => {
+        console.log(Respu)
+        console.log("-----------------------------------")
         resolve(true);
         return true;
       });
