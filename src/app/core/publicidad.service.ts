@@ -43,4 +43,13 @@ export class PublicidadService {
     return this.http.post(this.url_servidor + 'uploadImgPublicidad', formData);
   }
 
+  AsignarCampoUserManyChat(Body: any) {
+    return this.http.post<any>(this.url_servidor + 'AsignarCampoUserManyChat', Body)
+  }
+  CManyChatFlows(Body: any) {
+    return this.http.post<any>(this.url_servidor + 'CManyChatFlows', Body)
+  }
+  modProcesoEnvioManychat(Bandera: string, Body: any){
+    return this.http.post<any>(this.url_servidor + 'modProcesoEnvioManychat/' + Bandera, Body)
+  }
 }

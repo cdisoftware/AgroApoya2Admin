@@ -1,8 +1,10 @@
-<div class="container bg-white">
+<div class="container bg-white" [ngClass]="Loader == true ? 'Opacity' : '' ">
     <br>
     <h1 class="br">Envio Mensajes Whatsapp (ManyChat)</h1>
     <div class="row br justify-content-center">
         <div class="col-12">
+            <p class="textblue">Recuerda por favor que las columnas que tiene que retornar el Query son (USUCODIG, USUARIO, CELULAR, ID_MANYCHAT, MSJ_AGROAMIGO) Estos campos se tienen que "llamar de la misma manera"</p>
+            <br>
             <p class="textblue"><strong>EJEMPLO: </strong>SELECT USUCODIG AS ID, USUCODIG AS USUCODIG, NOMBRES_PERSONA AS USUARIO, CELULAR_PERSONA AS CELULAR, id_manychat AS ID_MANYCHAT, ''amigo'' + APELLIDOS_PERSONA + '' gracias por comprar''  AS MSJ_AGROAMIGO from agro_personas where id_manychat is not null</p>
         </div>
     </div>
@@ -22,7 +24,7 @@
             <button class="col-sm-12 btn btn-agro-prin" title="Buscar plantilla" (click)="consultaToppingsOferta()">Buscar</button>
         </div>
         <div class="col-sm-3 col-12">
-            <button class="col-sm-12 btn btn-agro-prin" title="Agregar plantilla">Enviar mensaje</button>
+            <button class="col-sm-12 btn btn-agro-prin" title="Agregar plantilla" (click)="EvioMennychat()">Enviar mensaje</button>
         </div>
     </div>
     <br>
@@ -48,3 +50,30 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+<ng-template #ModalRespuestaImg let-modal>
+    <div class="modal-header">
+        <h1>Respuesta</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">{{Respuesta}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
+<div class="divloader" *ngIf="Loader == true">
+    <img src="../../../../assets/animate/svg-loaders/circles.svg" />
+    <h3 style="color: #397c97;">Enviando mensajes...</h3>
+  </div>
