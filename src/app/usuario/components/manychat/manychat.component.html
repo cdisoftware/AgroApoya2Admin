@@ -1,114 +1,50 @@
 <div class="container bg-white">
     <br>
-    <h1>Envio Mensajes Whatsapp (ManyChat)</h1>
-
-    <div class="row">
-        <div class="col-sm-12 br">
-            <label class="col-sm-12 Llave">Mensaje</label>
-            <textarea required="required" name="caracteristicas" id="caracteristicas"
-                class="form-control form-control-sm textArea" cols="30" rows="3"
-                placeholder="Mensaje de Whatsapp vía ManyChat(Obligatorio)"></textarea>
-        </div>
-    </div>
+    <h1 class="br">Envio Mensajes Whatsapp (ManyChat)</h1>
     <div class="row br justify-content-center">
         <div class="col-12">
-            <h5 class="textblue">Buscar Usuarios</h5>
-        </div>
-    </div>
-    <div class="row br">
-        <div class="col-sm-6 mb-3">
-            <label class="Llave">Nombre</label>
-            <input type="text" title="Nombre usuario" class="form-control form-control-sm textBox">
-        </div>
-        <div class="col-sm-6 mb-3">
-            <label class="Llave">Número oferta</label>
-            <input type="text" title="Oferta" class="form-control form-control-sm textBox">
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-6 mb-3">
-            <label class="Llave">Sector</label>
-            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" placeholder="Sector"
-                (inputCleared)="LimpiaSector('')" (selected)='selectSector($event)' [itemTemplate]="templateSec"
-                [notFoundTemplate]="templateVacio" [(ngModel)]="Sector">
-            </ng-autocomplete>
-            <ng-template #templateSec let-item>
-                <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
-            </ng-template>
-            <ng-template #templateVacio let-SinRegistro>
-                <label for="">Sin registros</label>
-            </ng-template>
-        </div>
-        <div class="col-sm-6 mb-3">
-            <label class="Llave">Estado pago</label>
-            <ng-autocomplete [data]="DataEstadoPago" [searchKeyword]="keywordEsPago" placeholder="Estado pago"
-                (inputCleared)="LimpiaEstadoPago('')" (selected)='selectEstadoPago($event)'
-                [itemTemplate]="templateEstadoPag" [notFoundTemplate]="templateVacio" [(ngModel)]="EstadoPago">
-            </ng-autocomplete>
-            <ng-template #templateEstadoPag let-item>
-                <a [innerHTML]="item.descripcion"></a>
-            </ng-template>
-            <ng-template #templateVacio let-SinRegistro>
-                <label for="">Sin registros</label>
-            </ng-template>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm-6 mb-3">
-            <label class="Llave">Estado usuario</label>
-            <input type="text" title="Estado usuario" class="form-control form-control-sm textBox">
-        </div>
-        <div class="col-sm-6 mb-3">
-            <label class="Llave">Estado entrega</label>
-            <input type="text" title="Estado entrega" class="form-control form-control-sm textBox">
+            <p class="textblue"><strong>EJEMPLO: </strong>SELECT USUCODIG AS ID, USUCODIG AS USUCODIG, NOMBRES_PERSONA AS USUARIO, CELULAR_PERSONA AS CELULAR, id_manychat AS ID_MANYCHAT, ''amigo'' + APELLIDOS_PERSONA + '' gracias por comprar''  AS MSJ_AGROAMIGO from agro_personas where id_manychat is not null</p>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-6 mb-3">
-            <label class="Llave">Fecha compra</label>
-            <input type="date" title="Fecha compra" class="form-control form-control-sm textBox">
-        </div>
-        <div class="col-sm-6 mb-3">
-            <label class="Llave">Fecha entrega</label>
-            <input type="date" title="Fecha entrega" class="form-control form-control-sm textBox">
+        <div class="col-sm-12">
+            <label class="col-sm-12 Llave">New Query</label>
+            <textarea required="required" name="newQuery" id="newQuery"
+                class="form-control form-control-sm textArea" cols="30" rows="5"
+                placeholder="Query consulta usuarios ManyChat (Obligatorio)" [(ngModel)]="newQueryMC"></textarea>
         </div>
     </div>
-
     <div class="row br justify-content-center">
         <div class="col-sm-3 col-12">
-            <button class="col-sm-12 btn btn-agro-prin" title="Buscar plantilla">Buscar</button>
+            <button class="col-sm-12 btn btn-agro-sec" title="Agregar plantilla" (click)="Limpiar()">Limpiar</button>
+        </div>
+        <div class="col-sm-3 col-12">
+            <button class="col-sm-12 btn btn-agro-prin" title="Buscar plantilla" (click)="consultaToppingsOferta()">Buscar</button>
         </div>
         <div class="col-sm-3 col-12">
             <button class="col-sm-12 btn btn-agro-prin" title="Agregar plantilla">Enviar mensaje</button>
         </div>
     </div>
     <br>
-    <div class="row justify-content-center">
-        <table class="col-sm-12 ">
-            <thead>
-                <tr class="TableAgro">
+    <div class="row justify-content-center" *ngIf="VerOcultarCampos != '1'">
+        <hr>
+        <div class="table-responsive">
+            <table class="table col-sm-12 TableAgro">
+                <tr>
                     <th>Nombre</th>
-                    <th>Id</th>
+                    <th>Usucodig</th>
                     <th>Celular</th>
                     <th>IdManyChat</th>
-                    <th>Enviar</th>
+                    <th colspan="5">Mensaje</th>
                 </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>xxx</th>
-                    <th>xxx</th>
-                    <th>xxx</th>
-                    <th>xxx</th>
-                    <th>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                        </div>
-                    </th>
+                <tr *ngFor="let user of DataQuery">
+                    <td>{{user.USUARIO}}</td>
+                    <td>{{user.USUCODIG}}</td>
+                    <td>{{user.CELULAR}}</td>
+                    <td>{{user.ID_MANYCHAT}}</td>                   
+                    <td colspan="5">{{user.MSJ_AGROAMIGO}}</td>
                 </tr>
-            </tbody>
-        </table>
+            </table>
+        </div>
     </div>
 </div>

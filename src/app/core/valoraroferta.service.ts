@@ -389,6 +389,10 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'consCodigosDescuentos/' + Bandera + '/' + TCupon + '/' + CuponAplica + '/' + IdOferta + '/' + Estado, datos);
   }
 
+  EjecutaQueryManyChat(bandera: string, datos: any){
+    return this.http.post<any>(this.url_servidor + 'ConsEjecutaSentenciaSQL/' + bandera, datos);
+  }
+  
   ModificaCupones(Bandera: string, Datos: any){
     return this.http.post<any>(this.url_servidor + 'ModCodigoCupon/' + Bandera, Datos);
   }
