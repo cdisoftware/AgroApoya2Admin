@@ -365,8 +365,8 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'ModCBodega/' + Bandera, body)
   }
 
-  conSectorBodega(Bandera: string, idBodega: string){
-    return this.http.get<any>(this.url_servidor + 'conSectorBodega/' + Bandera + '/'+idBodega)
+  conSectorBodega(Bandera: string, idBodega: string) {
+    return this.http.get<any>(this.url_servidor + 'conSectorBodega/' + Bandera + '/' + idBodega)
 
   }
 
@@ -385,16 +385,24 @@ export class ValorarofertaService {
     return this.http.get<any[]>(this.url_servidor + 'consCTipoCuponCodigoAplicableGen/' + Bandera);
   }
 
-  ConsultaCupones(Bandera: string, TCupon: string, CuponAplica: string, IdOferta: string, Estado: string, datos: any){
+  ConsultaCupones(Bandera: string, TCupon: string, CuponAplica: string, IdOferta: string, Estado: string, datos: any) {
     return this.http.post<any>(this.url_servidor + 'consCodigosDescuentos/' + Bandera + '/' + TCupon + '/' + CuponAplica + '/' + IdOferta + '/' + Estado, datos);
   }
 
-  EjecutaQueryManyChat(bandera: string, datos: any){
+  EjecutaQueryManyChat(bandera: string, datos: any) {
     return this.http.post<any>(this.url_servidor + 'ConsEjecutaSentenciaSQL/' + bandera, datos);
   }
-  
-  ModificaCupones(Bandera: string, Datos: any){
+
+  ModificaCupones(Bandera: string, Datos: any) {
     return this.http.post<any>(this.url_servidor + 'ModCodigoCupon/' + Bandera, Datos);
+  }
+
+  ConsultaCuponesOferta(Bandera: string, IdOferta: string, Codigo: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consRelacionCuponOferta/' + Bandera + '/' + IdOferta + '/' + Codigo);
+  }
+
+  ModificarCupon(Bandera: string, Datos: any) {
+    return this.http.post<any>(this.url_servidor + 'ModRelaCuponOferta/' + Bandera, Datos);
   }
 }
 

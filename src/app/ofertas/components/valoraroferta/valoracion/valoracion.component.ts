@@ -131,11 +131,21 @@ export class ValoracionComponent implements OnInit {
   IndexTipoCupon: number = -1;
 
 
+  //Cupones
+  ArrayCupones: any = [];
+  IdCupon: string = '';
+  DescCupon: string = '';
+  keywordCuponOfer: string = 'codigo_Mostrar';
+  ArrayCuponesOferta: any = [];
+
+
   constructor(private ServiciosOferta: CrearofertaService, private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
     ConfigAcord.closeOthers = true;
   }
 
   ngOnInit(): void {
+    this.ConsultaCupones();
+    
     this.CargaInfoCupon();
     this.keyword = 'name';
     this.keywordSec = 'name';
@@ -227,11 +237,11 @@ export class ValoracionComponent implements OnInit {
   }
 
   AgregaValorUni(templateMensaje: any) {
-    var auxmaxunidades: number = 0 ;
+    var auxmaxunidades: number = 0;
 
     if (this.MuestraGrupal == '1') {
-      auxmaxunidades =  parseInt(this.MaxUnidLider);
-    }else if (this.MuestraIndividual == '1'){
+      auxmaxunidades = parseInt(this.MaxUnidLider);
+    } else if (this.MuestraIndividual == '1') {
       auxmaxunidades = parseInt(this.MaxUnidI)
     }
 
@@ -1478,6 +1488,7 @@ export class ValoracionComponent implements OnInit {
   }
 
   GuardaVigencia(templateMensaje: any) {
+    this.ConsultaCuponesOferta();
     this.Respuesta = '';
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     if (this.VigenDesde == '' || this.VigenHasta == '' || this.FechaEntrega == '') {
@@ -1884,6 +1895,7 @@ export class ValoracionComponent implements OnInit {
       }
     }
   }
+
   PreCargaListaTipoCupon(IdTipoCupon: number) {
     for (var j = 0; j < this.ArrayDataCupon.length; j++) {
       if (IdTipoCupon == this.ArrayDataCupon[j].IdCupon) {
@@ -1891,5 +1903,60 @@ export class ValoracionComponent implements OnInit {
         break;
       }
     }
+  }
+
+  LimpiaOferta(campo: string) {
+
+  }
+
+  selectCuponOferta(item: any) {
+    this.IdCupon = item.codigo_grupo.toString();
+  }
+
+  ConsultaCupones() {
+    var oferta = '0'
+    if (this.IdOferta != '') {
+      oferta = this.IdOferta
+    }
+    const datos = {
+      FechaCreacion: '0'
+    }
+    this.serviciosvaloracion.ConsultaCupones('1', '0', '1', '0', '1', datos).subscribe(Resultado => {
+      console.log(Resultado)
+      if (Resultado.length > 0) {
+        this.ArrayCupones = Resultado
+      }
+    })
+  }
+
+  ConsultaCuponesOferta() {
+    this.serviciosvaloracion.ConsultaCuponesOferta('1', this.IdOferta, '0').subscribe(Resultado => {
+      this.ArrayCuponesOferta = Resultado;
+      console.log(Resultado)
+    })
+  }
+
+  Eliminar(registro: any) {
+    const DatosInsert = {
+      cd_cnsctivo: registro.Cd_cnsctvo,
+      Id_cuponCodigo: registro.codigo_grupo
+    }
+    this.serviciosvaloracion.ModificarCupon('4', DatosInsert).subscribe(Resultado => {
+      console.log(Resultado)
+      this.ConsultaCuponesOferta();
+    })
+
+  }
+
+  AsociarCupon() {
+    const DatosInsert = {
+      cd_cnsctivo: this.IdOferta,
+      Id_cuponCodigo: this.IdCupon
+    }
+    this.serviciosvaloracion.ModificarCupon('3', DatosInsert).subscribe(Resultado => {
+      console.log(Resultado)
+      this.ConsultaCuponesOferta();
+    })
+
   }
 }
