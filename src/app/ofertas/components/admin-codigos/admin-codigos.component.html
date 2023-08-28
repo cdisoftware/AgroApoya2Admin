@@ -35,15 +35,23 @@
         <br>
         <div class="row">
             <div class="col-sm-4">
-                <label class="col-sm-12 Llave">Código Oferta</label>
-                <input type="text" name="CodigoOferta" id="CodigoOferta" class="form-control form-control-sm textBox"
-                    [(ngModel)]="IdOferta">
+                <label class="Llave">Oferta</label>
+                <ng-autocomplete [data]="ArrayOferta" [searchKeyword]="keywordOferta" placeholder="Oferta"
+                    (inputCleared)="LimpiaOferta('')" (selected)='selectOfertaFiltro($event)'
+                    [itemTemplate]="templateOferta" [notFoundTemplate]="templateVacio" [(ngModel)]="Oferta">
+                </ng-autocomplete>
+                <ng-template #templateOferta let-item>
+                    <a [innerHTML]="item.cd_cnsctvo + ' - ' + item.Producto"></a>
+                </ng-template>
+                <ng-template #templateVacio let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 Llave">Estado</label>
                 <select class="form-control form-control-sm textBox" #SelectEstado id="SelectEstado"
                     (change)='SelEstado(SelectEstado.value)'>
-                    <option value="0" [selected]="IdEstado">Estado</option>
+                    <option value="0" >Estado</option>
                     <option value="1">Activo</option>
                     <option value="2">Inactivo</option>
                 </select>
@@ -67,6 +75,7 @@
                 <tr>
                     <th>Oferta</th>
                     <th>Aplicable</th>
+                    <th>Tipo Descuento</th>
                     <th>Estado</th>
                     <th>Fecha Creación</th>
                     <th>Fecha Fin</th>
@@ -78,8 +87,9 @@
                 </tr>
                 <tr *ngFor="let registro of ArrayConsulta ">
                     <td>{{registro.Cd_cnsctvo}}</td>
-                    <td>{{registro.DescuentoAplicable}}</td>
-                    <td>{{registro.Estado}}</td>
+                    <td>{{registro.DesCodigoAplicable}}</td>
+                    <td>{{registro.DesTipoCuponGeneral}}</td>
+                    <td>{{registro.DesEstado}}</td>
                     <td>{{registro.FechaCreacion}}</td>
                     <td>{{registro.FechaFin}}</td>
                     <td>{{registro.FechaInicio}}</td>
@@ -90,7 +100,9 @@
                         <button class="SinEstilo" (click)="AbrirEditar(registro)">
                             <img src="./../../../../assets/ImagenesAgroApoya2Adm/Editar.png" width="32px">
                         </button>
-
+                        <button class="SinEstilo" (click)="Eliminar(registro)">
+                            <img src="./../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" width="32px">
+                        </button>
                     </td>
                 </tr>
             </table>
@@ -165,10 +177,23 @@
                 <label class="col-sm-12 Llave">Fecha Fin</label>
                 <input type="date" class="form-control form-control-sm textBox" [(ngModel)]="FechaFinE">
             </div>
-            <div class="col-sm-4" *ngIf="IdAplicaE == '1'">
+            <!-- <div class="col-sm-4" *ngIf="IdAplicaE == '1'">
                 <label class="col-sm-12 Llave">Oferta</label>
                 <input type="text" class="form-control form-control-sm textBox" placeholder="Oferta"
                     [(ngModel)]="IdOfertaE">
+            </div> -->
+            <div class="col-sm-4" *ngIf="IdAplicaE == '1'">
+                <label class="Llave">Oferta</label>
+                <ng-autocomplete [data]="ArrayOferta" [searchKeyword]="keywordOferta" placeholder="Oferta"
+                    (inputCleared)="LimpiaOferta('')" (selected)='selectOfertaFiltroE($event)'
+                    [itemTemplate]="templateOferta" [notFoundTemplate]="templateVacio" [(ngModel)]="OfertaE">
+                </ng-autocomplete>
+                <ng-template #templateOferta let-item>
+                    <a [innerHTML]="item.cd_cnsctvo + ' - ' + item.Producto"></a>
+                </ng-template>
+                <ng-template #templateVacio let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
             </div>
 
         </div>
