@@ -192,7 +192,7 @@ export class AdminCodigosComponent implements OnInit {
       ApartirValor: this.AplicaDesdeE,
       scriptAdicional: this.ScriptE
     }
-
+    console.log(DatosInsert)
     this.ServiciosValorar.ModificaCupones(this.AccionGuardar, DatosInsert).subscribe(Resultado => {
       console.log(Resultado)
       var arrayrespuesta = Resultado.split('|');
@@ -200,7 +200,7 @@ export class AdminCodigosComponent implements OnInit {
         this.Respuesta = arrayrespuesta[1]
         this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
       } else {
-        this.modalService.dismissAll();
+        //this.modalService.dismissAll();
         this.Respuesta = arrayrespuesta[1]
         this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
         this.Buscar();
