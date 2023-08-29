@@ -3,6 +3,7 @@ import { ReporteService } from 'src/app/core/reporte.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 import { InteraccionMenyChat } from 'src/app/core/InteraccionMenyChat';
+import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 
 @Component({
   selector: 'app-reporte',
@@ -18,7 +19,8 @@ export class ReporteComponent implements OnInit {
     private ReporteService: ReporteService,
     private modalService: NgbModal,
     public cookies: CookieService,
-    public InteraccionMenyChat: InteraccionMenyChat
+    public InteraccionMenyChat: InteraccionMenyChat,
+    public metodosglobalesService: MetodosglobalesService
   ) { }
 
   mail: string = '';
@@ -335,22 +337,29 @@ export class ReporteComponent implements OnInit {
     try {
       this.ArrayUserManyChat = [];
       this.ArrayUsersActualizados = [];
-      this.Loader = true;
+      var AmbienteTrabajo = this.metodosglobalesService.ambientedetrabajo;
+      console.log(AmbienteTrabajo)
+      if (AmbienteTrabajo == '2') {
+        this.Loader = true;
 
-      const bodyPost = {
-        IdTipoPersona: '0',
-        Usucodig: '0',
-        CorreoPersona: '0',
-        NombrePersona: '0'
-      }
-      this.ReporteService.ReporteUsuarios("1", '0', '0', bodyPost).subscribe(Resultado => {
-        for (var i = 0; i < Resultado.length; i++) {
-          if (Resultado[i].Id_ManyChat == null || Resultado[i].Id_ManyChat == undefined || Resultado[i].Id_ManyChat == "" || Resultado[i].Id_ManyChat == "null") {
-            this.ArrayUserManyChat.push(Resultado[i]);
-          }
+        const bodyPost = {
+          IdTipoPersona: '0',
+          Usucodig: '0',
+          CorreoPersona: '0',
+          NombrePersona: '0'
         }
-        this.ConsultaUserMenyChat();
-      });
+        this.ReporteService.ReporteUsuarios("1", '0', '0', bodyPost).subscribe(Resultado => {
+          for (var i = 0; i < Resultado.length; i++) {
+            if (Resultado[i].Id_ManyChat == null || Resultado[i].Id_ManyChat == undefined || Resultado[i].Id_ManyChat == "" || Resultado[i].Id_ManyChat == "null") {
+              this.ArrayUserManyChat.push(Resultado[i]);
+            }
+          }
+          this.ConsultaUserMenyChat();
+        });
+      }else{
+        
+        this.modalService.open(this.templaMensaje);
+      }
     } catch {
 
     }
@@ -363,21 +372,21 @@ export class ReporteComponent implements OnInit {
             field_id: 9572495,
             field_value: this.ArrayUserManyChat[i].Usucodig
           }
-          this.InteraccionMenyChat.infoUserManyChat(body).subscribe(Resultado => {
+          this.InteraccionMenyChat.infoUserManyChat(body).subscribe(async Resultado => {
             if (Resultado.data.length == 0) {
               if (this.ArrayUserManyChat[i] != undefined) {
-                this.InsertUserInMenyChat(this.ArrayUserManyChat[i]);
+                await this.InsertUserInMenyChat(this.ArrayUserManyChat[i]);
               } else {
                 resolve(false);
               }
             } else {
-              this.UpdateIdManyChatUser(Resultado.data.id, this.ArrayUserManyChat[i]);
+              await this.UpdateIdManyChatUser(Resultado.data.id, this.ArrayUserManyChat[i]);
             }
             resolve(true);
           });
         });
       } else {
-        this.UsersActualizadosManyChat(this.ArrayUserManyChat[i], false);
+        await this.UsersActualizadosManyChat(this.ArrayUserManyChat[i], false);
       }
     }
     //Finaliza el recorido abre el modal con los users actualizados
@@ -400,7 +409,7 @@ export class ReporteComponent implements OnInit {
         has_opt_in_email: true,
         consent_phrase: "string"
       }
-      this.InteraccionMenyChat.modmanychatcreateuser(body).subscribe(Resultado => {
+      this.InteraccionMenyChat.modmanychatcreateuser(body).subscribe(async Resultado => {
         var IdMenyChat: string = "";
         if (Resultado.status == "success" && Resultado.data.id != "") {
           IdMenyChat = Resultado.data.id;
@@ -410,10 +419,11 @@ export class ReporteComponent implements OnInit {
             field_value: Item.Usucodig
           }
           this.InteraccionMenyChat.AsignarUsucodigUserManyChat(bodyUsuCod).subscribe(Resultado => {
+            resolve(true);
           });
-          this.UpdateIdManyChatUser(IdMenyChat, Item);
+          await this.UpdateIdManyChatUser(IdMenyChat, Item);
         } else {
-          this.UsersActualizadosManyChat(Item, false);
+          await this.UsersActualizadosManyChat(Item, false);
         }
         resolve(true);
       });
