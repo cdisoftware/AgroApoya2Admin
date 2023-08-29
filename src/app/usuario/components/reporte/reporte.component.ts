@@ -3,7 +3,6 @@ import { ReporteService } from 'src/app/core/reporte.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 import { InteraccionMenyChat } from 'src/app/core/InteraccionMenyChat';
-import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 
 @Component({
   selector: 'app-reporte',
@@ -19,8 +18,7 @@ export class ReporteComponent implements OnInit {
     private ReporteService: ReporteService,
     private modalService: NgbModal,
     public cookies: CookieService,
-    public InteraccionMenyChat: InteraccionMenyChat,
-    public metodosglobalesService: MetodosglobalesService
+    public InteraccionMenyChat: InteraccionMenyChat
   ) { }
 
   mail: string = '';
@@ -337,29 +335,22 @@ export class ReporteComponent implements OnInit {
     try {
       this.ArrayUserManyChat = [];
       this.ArrayUsersActualizados = [];
-      var AmbienteTrabajo = this.metodosglobalesService.ambientedetrabajo;
-      console.log(AmbienteTrabajo)
-      if (AmbienteTrabajo == '2') {
-        this.Loader = true;
+      this.Loader = true;
 
-        const bodyPost = {
-          IdTipoPersona: '0',
-          Usucodig: '0',
-          CorreoPersona: '0',
-          NombrePersona: '0'
-        }
-        this.ReporteService.ReporteUsuarios("1", '0', '0', bodyPost).subscribe(Resultado => {
-          for (var i = 0; i < Resultado.length; i++) {
-            if (Resultado[i].Id_ManyChat == null || Resultado[i].Id_ManyChat == undefined || Resultado[i].Id_ManyChat == "" || Resultado[i].Id_ManyChat == "null") {
-              this.ArrayUserManyChat.push(Resultado[i]);
-            }
-          }
-          this.ConsultaUserMenyChat();
-        });
-      }else{
-        
-        this.modalService.open(this.templaMensaje);
+      const bodyPost = {
+        IdTipoPersona: '0',
+        Usucodig: '0',
+        CorreoPersona: '0',
+        NombrePersona: '0'
       }
+      this.ReporteService.ReporteUsuarios("1", '0', '0', bodyPost).subscribe(Resultado => {
+        for (var i = 0; i < Resultado.length; i++) {
+          if (Resultado[i].Id_ManyChat == null || Resultado[i].Id_ManyChat == undefined || Resultado[i].Id_ManyChat == "" || Resultado[i].Id_ManyChat == "null") {
+            this.ArrayUserManyChat.push(Resultado[i]);
+          }
+        }
+        this.ConsultaUserMenyChat();
+      });
     } catch {
 
     }
@@ -372,21 +363,21 @@ export class ReporteComponent implements OnInit {
             field_id: 9572495,
             field_value: this.ArrayUserManyChat[i].Usucodig
           }
-          this.InteraccionMenyChat.infoUserManyChat(body).subscribe(async Resultado => {
+          this.InteraccionMenyChat.infoUserManyChat(body).subscribe(Resultado => {
             if (Resultado.data.length == 0) {
               if (this.ArrayUserManyChat[i] != undefined) {
-                await this.InsertUserInMenyChat(this.ArrayUserManyChat[i]);
+                this.InsertUserInMenyChat(this.ArrayUserManyChat[i]);
               } else {
                 resolve(false);
               }
             } else {
-              await this.UpdateIdManyChatUser(Resultado.data.id, this.ArrayUserManyChat[i]);
+              this.UpdateIdManyChatUser(Resultado.data.id, this.ArrayUserManyChat[i]);
             }
             resolve(true);
           });
         });
       } else {
-        await this.UsersActualizadosManyChat(this.ArrayUserManyChat[i], false);
+        this.UsersActualizadosManyChat(this.ArrayUserManyChat[i], false);
       }
     }
     //Finaliza el recorido abre el modal con los users actualizados
@@ -409,7 +400,8 @@ export class ReporteComponent implements OnInit {
         has_opt_in_email: true,
         consent_phrase: "string"
       }
-      this.InteraccionMenyChat.modmanychatcreateuser(body).subscribe(async Resultado => {
+      this.InteraccionMenyChat.modmanychatcreateuser(body).subscribe(Resultado => {
+        this.GuardaLogManyChat(Resultado, Item);
         var IdMenyChat: string = "";
         if (Resultado.status == "success" && Resultado.data.id != "") {
           IdMenyChat = Resultado.data.id;
@@ -419,11 +411,10 @@ export class ReporteComponent implements OnInit {
             field_value: Item.Usucodig
           }
           this.InteraccionMenyChat.AsignarUsucodigUserManyChat(bodyUsuCod).subscribe(Resultado => {
-            resolve(true);
           });
-          await this.UpdateIdManyChatUser(IdMenyChat, Item);
+          this.UpdateIdManyChatUser(IdMenyChat, Item);
         } else {
-          await this.UsersActualizadosManyChat(Item, false);
+          this.UsersActualizadosManyChat(Item, false);
         }
         resolve(true);
       });
@@ -468,6 +459,18 @@ export class ReporteComponent implements OnInit {
       img: AuxImg
     }
     this.ArrayUsersActualizados.push(ite);
+  }
+
+  GuardaLogManyChat(Respuesta: string, item: any) {
+    console.log(Respuesta)
+    const body = {
+      usucodig: item.Usucodig,
+      celular: item.NumeroCelular,
+      rta_manychat: Respuesta,
+      origen: 2
+    }
+    this.InteraccionMenyChat.modLogsRegManychat('3', body).subscribe(Resultado => {
+    });
   }
   //#endregion UpdateMenyChat
 }

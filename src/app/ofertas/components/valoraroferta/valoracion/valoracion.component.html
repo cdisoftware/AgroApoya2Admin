@@ -307,6 +307,53 @@
                                 class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiI">
                         </div>
                     </div>
+                    <br>
+                    <h2>Asociar Cupon</h2>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="Llave">Cupon</label>
+                            <ng-autocomplete [data]="ArrayCupones" [searchKeyword]="keywordCuponOfer" placeholder="Cupon"
+                                (inputCleared)="LimpiaOferta('')" (selected)='selectCuponOferta($event)'
+                                [itemTemplate]="templateOferta" [notFoundTemplate]="templateVacio" [(ngModel)]="DescCupon">
+                            </ng-autocomplete>
+                            <ng-template #templateOferta let-item>
+                                <a [innerHTML]="item.codigo_Mostrar"></a>
+                            </ng-template>
+                            <ng-template #templateVacio let-SinRegistro>
+                                <label for="">Sin registros</label>
+                            </ng-template>
+                        </div>
+                        <div class="col-sm-1 position-relative">
+                            <button class="SinEstilo position-absolute bottom-0 start-0" title="Asociar Cupon"
+                                (click)="AsociarCupon()">
+                                <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/mas.png" width="30px"
+                                    height="30px">
+                            </button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row justify-content-center" *ngIf="ArrayCuponesOferta.length > 0">
+                        <table class="col-sm-10 TableAgro">
+                            <tr>
+                                <th>Oferta</th>
+                                <th>Descripción</th>
+                                <th>Código Mostrar</th>
+                                <th>Código Grupo</th>
+                                <th>Eliminar</th>
+                            </tr>
+                            <tr *ngFor="let registro of ArrayCuponesOferta ">
+                                <td>{{registro.Cd_cnsctvo}}</td>
+                                <td>{{registro.descripcionCupon}}</td>
+                                <td>{{registro.codigo_Mostrar}}</td>
+                                <td>{{registro.codigo_grupo}}</td>
+                                <td>
+                                    <button class="SinEstilo" (click)="Eliminar(registro)">
+                                        <img src="./../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" width="32px">
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                     <div class="row justify-content-center br" *ngIf="MuestraBtnIndividual=='1'">
                         <div class="col-sm-3">
                             <button class="btn btn-agro-prin col-sm-12"
