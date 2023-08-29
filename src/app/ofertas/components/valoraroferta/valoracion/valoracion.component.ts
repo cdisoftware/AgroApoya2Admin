@@ -1921,7 +1921,7 @@ export class ValoracionComponent implements OnInit {
     const datos = {
       FechaCreacion: '0'
     }
-    this.serviciosvaloracion.ConsultaCupones('1', '0', '1', '0', '1', datos).subscribe(Resultado => {
+    this.serviciosvaloracion.ConsultaCupones('1', '0', '0', '0', '1', datos).subscribe(Resultado => {
       console.log(Resultado)
       if (Resultado.length > 0) {
         this.ArrayCupones = Resultado
