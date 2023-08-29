@@ -23,4 +23,7 @@ export class InteraccionMenyChat {
     AsignarUsucodigUserManyChat(Body: any) {
         return this.http.post<any>(this.url_servidor + 'AsignarUsucodigUserManyChat', Body)
     }
+    modLogsRegManychat(Bandera: string, Body: any) {
+        return this.http.post<any>(this.url_servidor + 'modLogsRegManychat/' + Bandera, Body)
+    }
 }
