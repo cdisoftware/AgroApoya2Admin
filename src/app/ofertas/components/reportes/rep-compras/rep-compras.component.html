@@ -100,6 +100,7 @@
 
             <th *ngIf="Siguiente == true">Estado Compra</th>
             <th *ngIf="Siguiente == true">Tipo Comprador</th>
+            <th *ngIf="Siguiente == true">Código Promo</th>
             <th *ngIf="Siguiente == true">Codigo participante</th>
             <th *ngIf="Siguiente == true">Codigo Lider</th>
             <th *ngIf="Siguiente == true">Medio de pago</th>
@@ -136,6 +137,7 @@
                 '1.0-0'}}</td>
             <td *ngIf="Siguiente == true">{{oferta.ESTADO_CARRO}}</td>
             <td *ngIf="Siguiente == true">{{oferta.TIPO_USUARIO_COMPRA}}</td>
+            <td *ngIf="Siguiente == true">{{oferta.CodigoDescuentoGeneral}}</td>
             <td *ngIf="Siguiente == true">{{oferta.CODIGO_COMPARTIR}}</td>
             <td *ngIf="Siguiente == true">{{oferta.CODIGO_LIDER}}</td>
             <td *ngIf="Siguiente == true">{{oferta.MEDIO_PAGO}}</td>
@@ -205,7 +207,8 @@
         <div class="row">
             <div class="col-sm-6">
                 <label class="Llave">Valor:&nbsp;</label>
-                <label class="Valor">{{Filacompra.VALOR_PAGO}}</label>
+                <label class="Valor">{{Filacompra.VALOR_PAGO | currency : 'USD' : 'symbol' :
+                    '1.0-0'}}</label>
             </div>
             <div class="col-sm-6">
                 <label class="Llave">Tipo de pago:&nbsp;</label>
@@ -262,7 +265,7 @@
         <div class="row">
             <div class="col-12">
                 <label class="Llave">Adicionales:&nbsp;</label>
-                <label class="Valor">{{Filacompra.ADICIONALES}}</label>
+                <div  [innerHTML]="Filacompra.ADICIONALES"></div>
             </div>
         </div>
     </div>
