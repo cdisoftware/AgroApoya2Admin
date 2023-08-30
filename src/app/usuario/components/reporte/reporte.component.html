@@ -103,82 +103,111 @@
   <div class="modal-body text-start mb-0">
     <div class="row justify-content-start ">
       <div class="col-12 text-center mb-2">
-        <p class="textoConductor m-0 p-0 "> Nombre: </p> <span style="font-weight: bold;"> {{nombreM}} </span>
+        <p class="textoConductor m-0 p-0 "> Nombre: <span class="textoConductorTit" style="font-weight: bold;"> {{nombreM}} </span></p>
       </div>
     </div>
     <div class="row justify-content-start text-s">
       <div class="col-6">
-        <p class="textoConductorS m-0 p-0 "> Fecha de creación: </p> <span> {{FechaDesdeM}} </span>
+        <p class="textoConductorS m-0 p-0 "> Fecha de creación: <span class="textoConductorTit"> {{FechaDesdeM}} </span></p>
       </div>
       <div class="col-6">
-        <p class="textoConductorS m-0 p-0 "> Tipo de usuario: </p> <span> {{tipoUsuarioM}} </span>
+        <p class="textoConductorS m-0 p-0 "> Tipo de usuario: <span class="textoConductorTit"> {{tipoUsuarioM}} </span></p>
       </div>
       <div class="col-6">
-        <p class="textoConductorS m-0 p-0 "> Código: </p> <span> {{codigoM}} </span>
+        <p class="textoConductorS m-0 p-0 "> Código: <span class="textoConductorTit"> {{codigoM}} </span></p>
       </div>
     </div>
     <label></label>
     <div class="row">
       <div class="col-6">
-        <p class="textoConductorS m-0 p-0 "> Nombre: </p> <span> {{nombreM}} </span>
+        <p class="textoConductorS m-0 p-0 "> Nombre: <span class="textoConductorTit"> {{nombreM}} </span></p>
       </div>
       <div class="col-6">
-        <p class="textoConductorS m-0 p-0 "> Correo electrónico: </p> <span> {{mailM}} </span>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-6">
-        <p class="textoConductorS m-0 p-0 "> Tipo de documento: </p> <span> {{tipoDocumento}} </span>
-      </div>
-      <div class="col-6">
-        <p class="textoConductorS m-0 p-0 "> Número de documento: </p> <span> {{numDoc}} </span>
+        <p class="textoConductorS m-0 p-0 "> Correo electrónico: <span class="textoConductorTit"> {{mailM}} </span></p>
       </div>
     </div>
     <div class="row">
       <div class="col-6">
-        <p class="textoConductorS m-0 p-0 "> Número de celular: </p> <span> {{celular}} </span>
+        <p class="textoConductorS m-0 p-0 "> Tipo de documento: <span class="textoConductorTit"> {{tipoDocumento}} </span></p>
       </div>
       <div class="col-6">
-        <p class="textoConductorS m-0 p-0 "> Dirección: </p> <span> {{direccion}} </span>
+        <p class="textoConductorS m-0 p-0 "> Número de documento: <span class="textoConductorTit"> {{numDoc}} </span></p>
       </div>
     </div>
     <div class="row">
       <div class="col-6">
-        <p class="textoConductorS m-0 p-0 "> Derpartamento: </p> <span> {{dpto}} </span>
+        <p class="textoConductorS m-0 p-0 "> Número de celular: <span class="textoConductorTit"> {{celular}} </span></p> 
       </div>
       <div class="col-6">
-        <p class="textoConductorS m-0 p-0 "> Ciudad: </p> <span> {{ciudad}} </span>
+        <p class="textoConductorS m-0 p-0 "> Dirección: <span class="textoConductorTit"> {{direccion}} </span></p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <p class="textoConductorS m-0 p-0 "> Derpartamento: <span class="textoConductorTit"> {{dpto}} </span></p>
+      </div>
+      <div class="col-6">
+        <p class="textoConductorS m-0 p-0 "> Ciudad: <span class="textoConductorTit"> {{ciudad}} </span></p>
       </div>
     </div>
     <div class="row">
       <div class="col-12">
-        <p class="textoConductorS m-0 p-0"> Observaciones: </p> <span> {{observaciones}} </span>
+        <p class="textoConductorS m-0 p-0"> Observaciones: <span class="textoConductorTit"> {{observaciones}} </span></p>
       </div>
     </div>
     <hr>
+
+
+    <div class="row" *ngIf="referidor != null && referidor != ''">
+      <h2>Referidor</h2>
+      <div class="row">
+        <div class="col-sm-4">
+          <p class="textoConductorTit m-0 p-0 "> Nombre </p>
+        </div>
+        <div class="col-sm-6">
+          <p class="textoConductorTit m-0 p-0 "> Email </p>
+        </div>
+        <div class="col-sm-2">
+          <p class="textoConductorTit m-0 p-0 "> Codigo </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <p class="textoConductorS textcenter m-0 p-0 "> {{referidor}} </p>
+        </div>
+        <div class="col-sm-6">
+          <p class="textoConductorS textcenter m-0 p-0 "> {{emailreferidor}} </p>
+        </div>
+        <div class="col-sm-2">
+          <p class="textoConductorS textcenter m-0 p-0 "> {{CodIngresado}} </p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="mt-2 mb-2"  *ngIf="referidor != null && referidor != ''">
   </div>
   <div class="m-0 pt-0 text-start modal-body" *ngIf="cliente">
-    <div class="row">
+    <!--<div class="row">
       <div class="col-6">
         {{razonS}}
       </div>
       <div class="col-6">
         {{NIT}}
       </div>
+    </div>-->
+    <div class="row">
+      <div class="col-6">
+        <p class="textoConductorS m-0 p-0"> Descripción: <span class="textoConductorTit"> {{descripcion}} </span></p>
+      </div>
+      <div class="col-6">
+      </div>
     </div>
     <div class="row">
       <div class="col-6">
-        <p class="textoConductorS m-0 p-0"> Descripción: </p> <span> {{descripcion}} </span>
+        <p class="textoConductorS m-0 p-0"> Tipo cliente: <span class="textoConductorTit"> {{tipoC}} </span></p> 
       </div>
       <div class="col-6">
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-6">
-        <p class="textoConductorS m-0 p-0"> Tipo cliente: </p> <span> {{tipoC}} </span>
-      </div>
-      <div class="col-6">
-        <p class="textoConductorS m-0 p-0"> Coordenadas: </p> <span> {{coordenadas}} </span>
+        <p class="textoConductorS m-0 p-0"> Coordenadas: <span class="textoConductorTit"> {{coordenadas}} </span></p>
       </div>
     </div>
   </div>
@@ -188,57 +217,57 @@
       <div *ngFor="let con of arrayConductores" class="conductores mb-1 ">
         <div class="row">
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Descripción: </p> <span> {{con.IdConductor}} </span>
+            <p class="textoConductorS m-0 p-0"> Descripción: <span class="textoConductorTit"> {{con.IdConductor}} </span></p> 
           </div>
           <div class="col-6">
           </div>
         </div>
         <div class="row">
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Nombre: </p> <span> {{con.NombreConductor}} </span>
+            <p class="textoConductorS m-0 p-0"> Nombre: <span class="textoConductorTit"> {{con.NombreConductor}} </span></p> 
           </div>
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Correo electrónico: </p> <span> {{con.CorreoPersona}} </span>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Tipo de documento: </p> <span> {{con.DescTipoDocumento}} </span>
-          </div>
-          <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Número: </p> <span> {{con.NumeroDocumento}} </span>
+            <p class="textoConductorS m-0 p-0"> Correo electrónico: <span class="textoConductorTit"> {{con.CorreoPersona}} </span></p> 
           </div>
         </div>
         <div class="row">
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Teléfono: </p> <span> {{con.Telefono}} </span>
+            <p class="textoConductorS m-0 p-0"> Tipo de documento: <span class="textoConductorTit"> {{con.DescTipoDocumento}} </span></p> 
           </div>
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Dirección: </p> <span> {{con.Direccion}} </span>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Departamento: </p> <span> {{con.DescDepa}} </span>
-          </div>
-          <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Ciudad: </p> <span> {{con.DesCiudad}} </span>
+            <p class="textoConductorS m-0 p-0"> Número: <span class="textoConductorTit"> {{con.NumeroDocumento}} </span></p> 
           </div>
         </div>
         <div class="row">
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Coordinadas: </p> <span> {{con.Coordenadas}} </span>
+            <p class="textoConductorS m-0 p-0"> Teléfono: <span class="textoConductorTit"> {{con.Telefono}} </span></p> 
           </div>
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Placa del vehículo: </p> <span> {{con.Placa}} </span>
+            <p class="textoConductorS m-0 p-0"> Dirección: <span class="textoConductorTit"> {{con.Direccion}} </span></p> 
           </div>
         </div>
         <div class="row">
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Carrocería: </p> <span> {{con.DesCarroceria}} </span>
+            <p class="textoConductorS m-0 p-0"> Departamento: <span class="textoConductorTit"> {{con.DescDepa}} </span></p> 
           </div>
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Peso: </p> <span> {{con.DesPesoCarro}} </span>
+            <p class="textoConductorS m-0 p-0"> Ciudad: <span class="textoConductorTit"> {{con.DesCiudad}} </span></p> 
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <p class="textoConductorS m-0 p-0"> Coordinadas: <span class="textoConductorTit"> {{con.Coordenadas}} </span></p>
+          </div>
+          <div class="col-6">
+            <p class="textoConductorS m-0 p-0"> Placa del vehículo: <span class="textoConductorTit"> {{con.Placa}} </span></p> 
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <p class="textoConductorS m-0 p-0"> Carrocería: <span class="textoConductorTit"> {{con.DesCarroceria}} </span></p> 
+          </div>
+          <div class="col-6">
+            <p class="textoConductorS m-0 p-0"> Peso: <span class="textoConductorTit"> {{con.DesPesoCarro}} </span></p>
           </div>
         </div>
       </div>
