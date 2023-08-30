@@ -95,7 +95,7 @@
             <th *ngIf="Siguiente == false">Producto Ancla</th>
             <th *ngIf="Siguiente == false">Adicionales</th>
             <th *ngIf="Siguiente == false">Valor Domicilio</th>
-            <th *ngIf="Siguiente == false">Valor Total</th>
+            <th *ngIf="Siguiente == false">Total Compra</th>
 
 
             <th *ngIf="Siguiente == true">Estado Compra</th>
@@ -206,13 +206,19 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
-                <label class="Llave">Valor:&nbsp;</label>
-                <label class="Valor">{{Filacompra.VALOR_PAGO | currency : 'USD' : 'symbol' :
+                <label class="Llave">Valor Producto Ancla:&nbsp;</label>
+                <label class="Valor">{{Filacompra.ValorProdcuto  | currency : 'USD' : 'symbol' :
                     '1.0-0'}}</label>
             </div>
             <div class="col-sm-6">
                 <label class="Llave">Tipo de pago:&nbsp;</label>
                 <label class="Valor">{{Filacompra.MEDIO_PAGO}}</label>
+            </div>
+        </div>
+        <div class="row" *ngIf="Filacompra.CodigoDescuentoGeneral != '0'">
+            <div class="col-sm-6">
+                <label class="Llave">Código Promo:&nbsp;</label>
+                <label class="Valor">{{Filacompra.CodigoDescuentoGeneral}}</label>
             </div>
         </div>
         <!-- <div class="row">
@@ -256,7 +262,7 @@
         </div>
 
 
-
+        
         <div class="row br">
             <div class="col-sm-6">
                 <h6 class="textblue"><strong>Producto</strong></h6>
@@ -267,6 +273,14 @@
                 <label class="Llave">Adicionales:&nbsp;</label>
                 <div  [innerHTML]="Filacompra.ADICIONALES"></div>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                 <h6 ><strong class="textblue">Total Compra: </strong><label class="Valor">{{Filacompra.VALOR_PAGO | currency : 'USD' : 'symbol' :
+                    '1.0-0'}}</label></h6>
+                 
+            </div>
+           
         </div>
     </div>
     <hr class="hrSinEstilo">
