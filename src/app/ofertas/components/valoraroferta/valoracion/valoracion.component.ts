@@ -145,7 +145,7 @@ export class ValoracionComponent implements OnInit {
 
   ngOnInit(): void {
     this.ConsultaCupones();
-    
+
     this.CargaInfoCupon();
     this.keyword = 'name';
     this.keywordSec = 'name';
@@ -314,6 +314,7 @@ export class ValoracionComponent implements OnInit {
     this.serviciosvaloracion.ConsultaValUnidades('1', this.SessionOferta, this.SessionSectorSel).subscribe(Resultcons => {
       if (Resultcons.length > 0) {
         this.DataValores = Resultcons;
+        this.PrecioFinPart = this.DataValores[0].ValorUnidad;
       }
       else {
         this.DataValores = [];
@@ -802,7 +803,11 @@ export class ValoracionComponent implements OnInit {
     else if (this.SessionTipoComG == '2') {
       this.serviciosvaloracion.CalculaPreOferGrupal('1', this.SessionOferta, this.SessionSectorSel, this.SessionTipoComG, validaVlrComP, validadomi, validaunixgru).subscribe(ResultCons => {
         this.PrecioFinLider = ResultCons[0].PRECIO_ARRANQUE_LIDER;
-        this.PrecioFinPart = ResultCons[0].PRECIO_FINAL_PARTICIPANTE;
+        if (this.DataValores.length > 0) {
+          this.PrecioFinPart = this.DataValores[0].ValorUnidad;
+        } else {
+          this.PrecioFinPart = ResultCons[0].PRECIO_ARRANQUE_LIDER;
+        }
       })
     }
   }
