@@ -77,6 +77,10 @@ export class ReporteComponent implements OnInit {
   ArrayUsersActualizados: any = [];
   Loader = false;
 
+  referidor: string = "";
+  emailreferidor: string = "";
+  CodIngresado: string = "";
+
   ngOnInit() {
     this.cargarListas();
   }
@@ -114,6 +118,7 @@ export class ReporteComponent implements OnInit {
       NombrePersona: this.nombre
     }
     this.ReporteService.ReporteUsuarios("1", this.FechaDesde, this.FechaHasta, bodyPost).subscribe(Resultado => {
+      console.log(Resultado)
       if (Resultado.length > 0) {
         this.ArrayUsuarios = Resultado;
       } else {
@@ -134,7 +139,9 @@ export class ReporteComponent implements OnInit {
     }
   }
 
+
   AbrirModal(Usuario: any, templateMensaje: any) {
+    console.log(Usuario.razon_social)
     this.nombreM = Usuario.NombrePersona + ' ' + Usuario.ApellidoPersona;
     this.tipoUsuarioM = Usuario.DesTipoPersona;
     this.codigoM = Usuario.Usucodig;
@@ -149,19 +156,24 @@ export class ReporteComponent implements OnInit {
     this.FechaDesdeM = Usuario.FechaCreacion
     this.FechaDesdeM = this.FechaDesdeM.slice(0, 10);
 
+    //Datos ingreso como participante
+    this.referidor = Usuario.NombreLider;
+    this.emailreferidor = Usuario.CorreoLider;
+    this.CodIngresado = Usuario.razon_social;
+
     if (Usuario.IdTipoPersona == 2) {
       this.ReporteService.ConsultaTipoCliente('1', this.codigoM.toString()).subscribe(Resultado => {
         this.arrayC = Resultado;
+        this.conductores = false
+        this.transportista = false;
+        this.cliente = true;
+        this.razonS = this.arrayC[0].RAZON_SOCIAL;
+        this.NIT = this.arrayC[0].NIT;
+        this.coordenadas = this.arrayC[0].COORDENADAS_ENTR;
+        this.descripcion = this.arrayC[0].DescTipoCliente;
+        this.tipoC = this.arrayC[0].CD_TIPO_CLIENTE;
+        this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
       })
-      this.conductores = false
-      this.transportista = false;
-      this.cliente = true;
-      this.razonS = this.arrayC[0].RAZON_SOCIAL;
-      this.NIT = this.arrayC[0].NIT;
-      this.coordenadas = this.arrayC[0].COORDENADAS_ENTR;
-      this.descripcion = this.arrayC[0].DescTipoCliente;
-      this.tipoC = this.arrayC[0].CD_TIPO_CLIENTE;
-      this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
     }
     else if (Usuario.IdTipoPersona == 3) {
       this.transportista = true;

@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
       }
 
       this.servicioslogin.ConsultaUsuario('1', DatosLogin).subscribe(Resultado => {
+        console.log(Resultado)
         if (Resultado == null || Resultado == undefined) {
           this.Respuesta = 'Usuario no existe.';
           this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })

@@ -52,3 +52,11 @@
   position: sticky;
   top: 0;
 }
+
+.textoConductorTit{
+  color: #000;
+  font-weight: bold;
+  font-size: smaller;
+  text-align: center;
+  font-size: 13px;
+}
