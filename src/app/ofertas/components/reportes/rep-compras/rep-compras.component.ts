@@ -167,6 +167,7 @@ export class RepComprasComponent implements OnInit {
     }
 
     this.serviciosreportes.ConsultaComprasXOfer('1', validaofer, validasec, validaCompra, validaPago, body).subscribe(Resultcons => {
+      console.log(Resultcons)
       if (Resultcons.length > 0) {
 
         this.ValidaConsulta = '0';

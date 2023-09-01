@@ -147,6 +147,8 @@ export class AdminCodigosComponent implements OnInit {
     this.MascaraE = '';
     this.ScriptE = '';
     this.DescripcionE = ''
+    this.IdOfertaE = '0'
+    this.OfertaE = ''
   }
 
   AbrirEditar(Registro: any) {
@@ -192,7 +194,7 @@ export class AdminCodigosComponent implements OnInit {
       ApartirValor: this.AplicaDesdeE,
       scriptAdicional: this.ScriptE
     }
-
+    console.log(DatosInsert)
     this.ServiciosValorar.ModificaCupones(this.AccionGuardar, DatosInsert).subscribe(Resultado => {
       console.log(Resultado)
       var arrayrespuesta = Resultado.split('|');
@@ -203,9 +205,23 @@ export class AdminCodigosComponent implements OnInit {
         this.modalService.dismissAll();
         this.Respuesta = arrayrespuesta[1]
         this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        if(this.IdOfertaE != '0' && arrayrespuesta[0].length > 1){
+          this.AsociaCuponOferta(this.IdOfertaE, arrayrespuesta[0])
+        }
         this.Buscar();
       }
 
+    })
+  }
+
+  AsociaCuponOferta(idoferta: string, idcupon: string){
+    const DatosInsert = {
+      cd_cnsctivo: idoferta,
+      Id_cuponCodigo: idcupon
+    }
+    console.log(DatosInsert)
+    this.ServiciosValorar.ModificarCupon('3', DatosInsert).subscribe(Resultado => {
+      console.log(Resultado)
     })
   }
 
