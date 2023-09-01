@@ -138,12 +138,26 @@ export class ValoracionComponent implements OnInit {
   keywordCuponOfer: string = 'codigo_Mostrar';
   ArrayCuponesOferta: any = [];
 
+  //#region Domicilio
+  ArrayDomicilio: any = [];
+  keywordDomicilio: string = "";
+  Domicilio: string = "";
+  IdDomicilio: string = "0";
+
+  VlrDomiIValormenora: string = "";
+
+  ValorDomicilioGrup: string = "";
+  ValorDomcilioGrupValorMenora: string = "";
+
+  indexTipoDomicilio: number = 0;
+  //#endregion Domicilio
 
   constructor(private ServiciosOferta: CrearofertaService, private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
     ConfigAcord.closeOthers = true;
   }
-
+  //#region Anterior
   ngOnInit(): void {
+    this.ListaTipoDomicilio();
     this.ConsultaCupones();
 
     this.CargaInfoCupon();
@@ -618,6 +632,17 @@ export class ValoracionComponent implements OnInit {
 
   ConsultaValoracionOferta() {
     this.serviciosvaloracion.ConsultaValoracionOferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultCons => {
+      console.log(this.ArrayDomicilio.length)
+      if (ResultCons[0].IDTIPODOMICILIO != null && ResultCons[0].IDTIPODOMICILIO != '') {
+        for (var i = 0; i < this.ArrayDomicilio.length; i++) {
+          if (this.ArrayDomicilio[i].IdDomicilio == ResultCons[0].IDTIPODOMICILIO) {
+            this.Domicilio= this.ArrayDomicilio[i].Descripcion;
+            this.indexTipoDomicilio = i;
+            console.log(this.indexTipoDomicilio);
+            break;
+          }
+        }
+      }
       this.ArrayTipoOferCon = [
         {
           id: ResultCons[0].TPO_OFRTA,
@@ -960,6 +985,34 @@ export class ValoracionComponent implements OnInit {
   }
 
   GuardaIndividual(templateMensaje: any) {
+
+    var valorDomicilio: boolean = false;
+    var AuxValDomicilio: string = "";
+
+    if (this.IdDomicilio == '1') {
+      if (this.VlrDomiI == "") {
+        valorDomicilio = false;
+      } else {
+        AuxValDomicilio = this.VlrDomiI;
+        valorDomicilio = true;
+      }
+    } else if (this.IdDomicilio == '2') {
+      if (this.VlrDomiIValormenora == "") {
+        valorDomicilio = false;
+      } else {
+        AuxValDomicilio = this.VlrDomiIValormenora;
+        valorDomicilio = true;
+      }
+    } else if (this.IdDomicilio == '0') {
+      valorDomicilio = false;
+    } else {
+      AuxValDomicilio = "0";
+      valorDomicilio = true;
+    }
+
+    //console.log(valorDomicilio)
+
+
     this.Respuesta = '';
     var validacomision = '';
     if (this.SessionTipoComI == '1') {
@@ -975,7 +1028,7 @@ export class ValoracionComponent implements OnInit {
 
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     if ((this.VlReferencia == null || this.VlReferencia == '' || this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
-      || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null)) {
+      || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null) || valorDomicilio == false) {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
@@ -1012,6 +1065,12 @@ export class ValoracionComponent implements OnInit {
         {
           campo: 'PreFinI',
           campof: 'Precio final',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'ValDomicilio',
+          campof: 'Valor domicilió',
           class: '',
           imagen: ''
         }
@@ -1076,6 +1135,15 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].class = 'TextFine'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
+        } else if (this.ArrayCamposValida[i].campo == 'ValDomicilio') {
+          if (valorDomicilio == false) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
         }
       }
     }
@@ -1110,7 +1178,12 @@ export class ValoracionComponent implements OnInit {
         VLOR_FNAL_PRTCPNTE: "0",
         ID_SCTOR_OFRTA: this.SessionSectorSel,
         LINKLANDIGN: this.LinkSms,
-        VALOR_REFERENCIA: this.VlReferencia
+        VALOR_REFERENCIA: this.VlReferencia,
+        TIPO_CUPON: 0,
+        DES_CUPONREGALO: "0",
+        IMG_CUPONREGALO: "0",
+        IDTIPODOMICILIO: this.IdDomicilio,
+        VLORAPRTRDMCLIO: AuxValDomicilio
       }
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         var arreglores = ResultUpdate.split('|')
@@ -1136,6 +1209,33 @@ export class ValoracionComponent implements OnInit {
   }
 
   GuardarMixta(templateMensaje: any) {
+    var valorDomicilio: boolean = false;
+    var AuxValDomicilio: string = "";
+
+    if (this.IdDomicilio == '1') {
+      if (this.ValorDomicilioGrup == "") {
+        valorDomicilio = false;
+      } else {
+        AuxValDomicilio = this.ValorDomicilioGrup;
+        valorDomicilio = true;
+      }
+    } else if (this.IdDomicilio == '2') {
+      if (this.ValorDomcilioGrupValorMenora == "") {
+        valorDomicilio = false;
+      } else {
+        AuxValDomicilio = this.ValorDomcilioGrupValorMenora;
+        valorDomicilio = true;
+      }
+    } else if (this.IdDomicilio == '0') {
+      valorDomicilio = false;
+    } else {
+      AuxValDomicilio = "0";
+      valorDomicilio = true;
+    }
+
+    //console.log(valorDomicilio)
+
+
     this.Respuesta = '';
     var validacomision = '';
     var validacomisionG = '';
@@ -1187,7 +1287,7 @@ export class ValoracionComponent implements OnInit {
       (auxres == false) ||
       (this.MinUnidLider == '' || this.MinUnidLider == null) ||
       (this.MaxUnidLider == '' || this.MaxUnidLider == null) ||
-      (this.VlrDomiI == '' || this.VlrDomiI == null) ||
+      (valorDomicilio == false) ||
       (this.PrecioFinPart == '' || this.PrecioFinPart == null)
     ) {
       this.ValidaCam = '1';
@@ -1361,7 +1461,7 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
           }
         } else if (this.ArrayCamposValida[i].campo == 'ValDomicilio') {
-          if ((this.VlrDomiI == '' || this.VlrDomiI == null)) {
+          if (valorDomicilio == false) {
             this.ArrayCamposValida[i].class = 'TextAlert';
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png';
           } else {
@@ -1467,7 +1567,9 @@ export class ValoracionComponent implements OnInit {
         VALOR_REFERENCIA: this.VlReferencia,
         TIPO_CUPON: Number(this.IdTipoCupon),
         DES_CUPONREGALO: SelectTipoCupon.DES_CUPONREGALO,
-        IMG_CUPONREGALO: SelectTipoCupon.IMG_CUPONREGALO
+        IMG_CUPONREGALO: SelectTipoCupon.IMG_CUPONREGALO,
+        IDTIPODOMICILIO: this.IdDomicilio,
+        VLORAPRTRDMCLIO: AuxValDomicilio
       }
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         this.Respuesta = '';
@@ -1926,8 +2028,8 @@ export class ValoracionComponent implements OnInit {
     const datos = {
       FechaCreacion: '0'
     }
-    this.serviciosvaloracion.ConsultaCupones('1', '0', '1', '0', '1', datos).subscribe(Resultado => {
-      console.log(Resultado)
+    this.serviciosvaloracion.ConsultaCupones('1', '0', '0', '0', '1', datos).subscribe(Resultado => {
+      //console.log(Resultado)
       if (Resultado.length > 0) {
         this.ArrayCupones = Resultado
       }
@@ -1937,7 +2039,7 @@ export class ValoracionComponent implements OnInit {
   ConsultaCuponesOferta() {
     this.serviciosvaloracion.ConsultaCuponesOferta('1', this.IdOferta, '0').subscribe(Resultado => {
       this.ArrayCuponesOferta = Resultado;
-      console.log(Resultado)
+      //console.log(Resultado)
     })
   }
 
@@ -1947,7 +2049,7 @@ export class ValoracionComponent implements OnInit {
       Id_cuponCodigo: registro.codigo_grupo
     }
     this.serviciosvaloracion.ModificarCupon('4', DatosInsert).subscribe(Resultado => {
-      console.log(Resultado)
+      //console.log(Resultado)
       this.ConsultaCuponesOferta();
     })
 
@@ -1963,5 +2065,21 @@ export class ValoracionComponent implements OnInit {
       this.ConsultaCuponesOferta();
     })
 
+  }
+  //#endregion Anterior
+
+  ListaTipoDomicilio() {
+    this.serviciosvaloracion.consTipoDomicilio('1').subscribe(Resultcons => {
+      console.log(Resultcons)
+      this.ArrayDomicilio = Resultcons;
+      this.keywordDomicilio = "Descripcion";
+    });
+  }
+  LimpiaTipoDomicilio(item: any) {
+    this.Domicilio = "";
+    this.IdDomicilio = "0";
+  }
+  selectDomicilio(item: any) {
+    this.IdDomicilio = item.IdDomicilio;
   }
 }

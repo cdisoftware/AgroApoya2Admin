@@ -404,5 +404,8 @@ export class ValorarofertaService {
   ModificarCupon(Bandera: string, Datos: any) {
     return this.http.post<any>(this.url_servidor + 'ModRelaCuponOferta/' + Bandera, Datos);
   }
+  consTipoDomicilio(Bandera: string){
+    return this.http.get<any[]>(this.url_servidor + 'consTipoDomicilio/' + Bandera);
+  }
 }
 
