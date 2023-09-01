@@ -70,6 +70,10 @@ export class ManychatComponent implements OnInit {
     if (this.DataQuery.length > 0) {
       for (var i = 0; i < this.DataQuery.length; i++) {
         this.Loader = true;
+        //Asigna url
+        const resulturl = await this.Asignaurl(this.DataQuery[i].MSJ_AGROAMIGO, this.DataQuery[i].ID_MANYCHAT, this.DataQuery[i].ComplementoLink);
+        await new Promise(resolve => setTimeout(resolve, 5000));//Hace esperar 5 segundos para ejecutar el siguiente servicio
+
         //Envio descripcion
         const result1 = await this.AsignaMsmWhatsap(this.DataQuery[i].MSJ_AGROAMIGO, this.DataQuery[i].ID_MANYCHAT);
         await new Promise(resolve => setTimeout(resolve, 5000));//Hace esperar 5 segundos para ejecutar el siguiente servicio
@@ -97,15 +101,32 @@ export class ManychatComponent implements OnInit {
   }
 
 
-
+  async Asignaurl(Descripcion: string, IdMenyChat: string, ComplementoLink: string) {
+    await new Promise((resolve, reject) => {
+      const body = {
+        subscriber_id: 20658301,
+        field_id: 9748949,
+        field_value: ComplementoLink
+      }
+      this.publicidadService.AsignarCampoUserManyChat(body).subscribe(async ResultadoDesc => {
+        console.log('URL')
+        console.log(ResultadoDesc)
+        this.RespuDescripcion = JSON.stringify(ResultadoDesc);
+        resolve(true);
+      });
+    });
+  }
+  
   async AsignaMsmWhatsap(Descripcion: string, IdMenyChat: string) {
     await new Promise((resolve, reject) => {
       const body = {
-        subscriber_id: IdMenyChat,
+        subscriber_id: 20658301,
         field_id: 9712873,
         field_value: Descripcion
       }
       this.publicidadService.AsignarCampoUserManyChat(body).subscribe(async ResultadoDesc => {
+        console.log('Asigna sms')
+        console.log(ResultadoDesc)
         this.RespuDescripcion = JSON.stringify(ResultadoDesc);
         resolve(true);
       });
@@ -115,10 +136,12 @@ export class ManychatComponent implements OnInit {
   async EnviaPlantilla(IdMenyChat: string) {
     await new Promise((resolve, reject) => {
       const body = {
-        subscriber_id: IdMenyChat,
+        subscriber_id: 20658301,
         flow_ns: "content20230823141219_050777"
       }
       this.publicidadService.CManyChatFlows(body).subscribe(async Respu => {
+        console.log('Plantilla')
+        console.log(Respu)
         this.RespuePlantilla = JSON.stringify(Respu);
         resolve(true);
         return true;
@@ -127,8 +150,6 @@ export class ManychatComponent implements OnInit {
   }
 
   async GuardaLogBDUno(Item: any) {
-    console.log("-----------------------------------")
-    console.log("IdProceso Uno")
     await new Promise((resolve, reject) => {
       const body = {
         id_proceso: 0,
@@ -140,9 +161,7 @@ export class ManychatComponent implements OnInit {
         mensaje: Item.MSJ_AGROAMIGO
       }
       this.publicidadService.modProcesoEnvioManychat('3', body).subscribe(async Respu => {
-        console.log(Respu)
         this.IdProceso = "" + Respu;
-        console.log("-----------------------------------")
         resolve(true);
         return true;
       });
@@ -151,8 +170,6 @@ export class ManychatComponent implements OnInit {
 
   async GuardaLogBDDos(Item: any) {
     await new Promise((resolve, reject) => {
-      console.log("-----------------------------------")
-      console.log("IdProceso Dos")
       const bodyDos = {
         id_proceso: this.IdProceso,
         sql_proceso: this.newQueryMC,
@@ -163,8 +180,6 @@ export class ManychatComponent implements OnInit {
         mensaje: Item.MSJ_AGROAMIGO
       }
       this.publicidadService.modProcesoEnvioManychat('3', bodyDos).subscribe(async Respu => {
-        console.log(Respu)
-        console.log("-----------------------------------")
         resolve(true);
         return true;
       });

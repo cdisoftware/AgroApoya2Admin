@@ -300,13 +300,7 @@
                                 [disabled]="MuestraGrupal == '1' ">
                         </div>
                     </div>
-                    <div class="row br">
-                        <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Valor domicilio</label>
-                            <input mask="separator" thousandSeparator="." type="text" [disabled]="MuestraGrupal == '1' "
-                                class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiI">
-                        </div>
-                    </div>
+                    
                     <br>
                     <h2>Asociar Cupon</h2>
                     <div class="row">
@@ -354,6 +348,36 @@
                             </tr>
                         </table>
                     </div>
+
+
+                    <div class="row br">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave mb-1">Tipo Domicilio</label>
+                            <ng-autocomplete [data]="ArrayDomicilio" [searchKeyword]="keywordDomicilio"
+                                (inputCleared)='LimpiaTipoDomicilio($event)'
+                                [initialValue]="ArrayDomicilio[indexTipoDomicilio]" (selected)='selectDomicilio($event)' placeholder="Tipo de domicilio"
+                                [itemTemplate]="templateDomicilio" [notFoundTemplate]="templateVacio" [(ngModel)]="Domicilio">
+                            </ng-autocomplete>
+                            <ng-template #templateDomicilio let-item>
+                                <a [innerHTML]="item.Descripcion"></a>
+                            </ng-template>
+                            <ng-template #templateVacio let-SinRegistro>
+                                <label for="">Sin registros</label>
+                            </ng-template>
+                        </div>
+
+                        <div class="col-sm-6" *ngIf="IdDomicilio == '1'">
+                            <label class="col-sm-12 Llave">Valor domicilio</label>
+                            <input mask="separator" thousandSeparator="." type="text" [disabled]="MuestraGrupal == '1' "
+                                class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiI">
+                        </div>
+                        <div class="col-sm-6" *ngIf="IdDomicilio == '2'">
+                            <label class="col-sm-12 Llave">Valor domicilio</label>
+                            <input mask="separator" thousandSeparator="." type="text" [disabled]="MuestraGrupal == '1' "
+                                class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiIValormenora">
+                        </div>
+                    </div>
+
                     <div class="row justify-content-center br" *ngIf="MuestraBtnIndividual=='1'">
                         <div class="col-sm-3">
                             <button class="btn btn-agro-prin col-sm-12"
@@ -479,12 +503,34 @@
                     </div>
                     <div class="row br">
                         <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Valor domicilio</label>
-                            <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiI">
-                        </div>
-                        <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Precio final participante</label>
                             <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox" disabled [(ngModel)]="PrecioFinPart">
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave mb-1">Tipo Domicilio</label>
+                            <ng-autocomplete [data]="ArrayDomicilio" [searchKeyword]="keywordDomicilio"
+                                (inputCleared)='LimpiaTipoDomicilio($event)'
+                                [initialValue]="ArrayDomicilio[indexTipoDomicilio]" (selected)='selectDomicilio($event)' placeholder="Tipo de domicilio"
+                                [itemTemplate]="templateDomicilio" [notFoundTemplate]="templateVacio" [(ngModel)]="Domicilio">
+                            </ng-autocomplete>
+                            <ng-template #templateDomicilio let-item>
+                                <a [innerHTML]="item.Descripcion"></a>
+                            </ng-template>
+                            <ng-template #templateVacio let-SinRegistro>
+                                <label for="">Sin registros</label>
+                            </ng-template>
+                        </div>
+
+
+                        <div class="col-sm-6" *ngIf="IdDomicilio == '1'">
+                            <label class="col-sm-12 Llave">Valor domicilio</label>
+                            <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="ValorDomicilioGrup">
+                        </div>
+                        <div class="col-sm-6" *ngIf="IdDomicilio == '2'">
+                            <label class="col-sm-12 Llave">Valor domicilio</label>
+                            <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="ValorDomcilioGrupValorMenora">
                         </div>
                     </div>
                     <div class="row justify-content-center br" *ngIf="MuestraBtnMixta=='1'">
