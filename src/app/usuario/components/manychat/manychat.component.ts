@@ -16,7 +16,7 @@ export class ManychatComponent implements OnInit {
   ) { }
 
   IdUsuario: string = "";
-
+//
   //variables grilla
   DataQuery: any[];
   newQueryMC: string = "";
