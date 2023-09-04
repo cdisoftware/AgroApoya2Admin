@@ -481,8 +481,8 @@ export class ValoracionComponent implements OnInit {
         cantidadReserva: Number(this.UnidOferta),
         imagen: this.NomImagen1,
         PesoKiloUnd: Number(this.PesoTopping),
-        CrctrzcionCrta: this.DescLargaAdd,
-        CrctrzcionLrga: "B",
+        CrctrzcionCrta: this.DescCortaAdd,
+        CrctrzcionLrga: this.DescLargaAdd,
         ImgDos: this.NomImagen2,
         ImgTres: this.NomImagen3,
         VlorRefencia: this.ValorRefAdd

@@ -719,6 +719,7 @@
                                 <tr id="TablaValoracion">
                                     <th>Descripción</th>
                                     <th>Valor unitario</th>
+                                    <th>Valor referencia</th>
                                     <th>Tipo</th>
                                     <th>Unidades para oferta</th>
                                     <th>Máximo unidades por compra</th>
@@ -728,6 +729,7 @@
                                 <tr *ngFor="let topping of DataToppings">
                                     <td>{{topping.Descripcion}}</td>
                                     <td>{{topping.ValorUnitario | currency}}</td>
+                                    <td>{{topping.VlorRefencia | currency}}</td>
                                     <td>{{topping.descTipotopping}}</td>
                                     <td>{{topping.cantidadReserva}}</td>
                                     <td>{{topping.MaxCantidad}}</td>
