@@ -59,6 +59,8 @@ export class RepComprasComponent implements OnInit {
   DataLider: any = [];
   idTipoFactura: string = "";// 1 lider, 2 participante o individual
 
+  NumeroRegistros: string = '0 registros';
+
   ngOnInit(): void {
     this.IdUsuario = this.cookies.get('IDU');
     this.ValidaConsulta = '1';
@@ -167,6 +169,7 @@ export class RepComprasComponent implements OnInit {
     }
 
     this.serviciosreportes.ConsultaComprasXOfer('1', validaofer, validasec, validaCompra, validaPago, body).subscribe(Resultcons => {
+      this.NumeroRegistros = Resultcons.length.toString() +  ' Registros' ;
       console.log(Resultcons)
       if (Resultcons.length > 0) {
 
