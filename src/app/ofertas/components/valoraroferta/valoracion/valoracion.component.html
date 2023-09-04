@@ -598,7 +598,6 @@
             <ngb-panel title="Adicionales" id="config-panel-three">
                 <ng-template ngbPanelContent>
                     <div class="row br">
-
                         <div class="col-sm-4">
                             <label class="col-sm-12 Llave">Descripción</label>
                             <input type="text" title="Descripción máximo 150 caracteres"
@@ -643,6 +642,50 @@
                         </div>
                     </div>
                     <div class="row br">
+                        <div class="col-sm-4">
+                            <label class="col-sm-12 Llave">Valor referencia</label>
+                            <input mask="separator" thousandSeparator="." type="text"
+                                class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="ValorRefAdd">
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="col-sm-12 Llave">Descripción corta</label>
+                            <textarea name="DescCortaAdd" id="DescCortaAdd" cols="30" rows="5" class="form-control textBox" placeholder="Descripcion corta" [(ngModel)]="DescCortaAdd"></textarea>
+                        </div>
+                        <div class="col-sm-4">
+                            <label class="col-sm-12 Llave">Descripción larga</label>
+                            <textarea name="DescLargaAdd" id="DescLargaAdd" cols="30" rows="5" class="form-control textBox" placeholder="Descripcion larga" [(ngModel)]="DescLargaAdd"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row br justify-content-center">
+                        <h5 class="SubTituloForm">Selecciona las imagenes del producto adicional</h5>
+                        <br><br>
+                        <div class="col-sm-2 centraimagen">
+                            <div class="image-upload">
+                                <label for="file-input1">
+                                    <img id="Imagen1" title="Selecciona una imagen" [src]="Add1" style="border-radius: 10px;">
+                                </label>
+                                <input name="file-input1" id="file-input1" type="file" (change)="CargaImagenAdicionales($event, '1', ModalRespuestaImg)" />
+                            </div>
+                        </div>
+                        <div class="col-sm-2 centraimagen">
+                            <div class="image-upload">
+                                <label for="file-input2">
+                                    <img id="Imagen2" title="Selecciona una imagen" [src]="Add2" style="border-radius: 10px;">
+                                </label>
+                                <input name="file-input2" id="file-input2" type="file" (change)="CargaImagenAdicionales($event,'2', ModalRespuestaImg)" />
+                            </div>
+                        </div>
+                        <div class="col-sm-2 centraimagen">
+                            <div class="image-upload">
+                                <label for="file-input3">
+                                    <img id="Imagen3" title="Selecciona una imagen" [src]="Add3" style="border-radius: 10px;">
+                                </label>
+                                <input name="file-input3" id="file-input3" type="file" (change)="CargaImagenAdicionales($event, '3', ModalRespuestaImg)" />
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="row br">
                         <div class="col-sm-4" *ngIf="IsEnables == false ">
                             <button type="button" class="btn-warning col-sm-12">
                                 <i class="fa fa-upload marginleft"></i> Subir Imagen
@@ -650,7 +693,7 @@
                                     (change)="CargaImagenAdicionales($event, ModalRespuestaImg)" title="" />
                             </button>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="row justify-content-center br">
                         <div class="col-sm-3">

@@ -85,7 +85,7 @@ export class ValoracionComponent implements OnInit {
   SumaPrecios: number;
   DataValores: any[];
   ValorUni: string = '';
-  ValidaToppings: string;
+  ValidaToppings: string ;
   DataTipotopping: { id: number; name: string; }[];
   DataToppings: any[];
   ValidaConsulta: string = '0';
@@ -118,8 +118,18 @@ export class ValoracionComponent implements OnInit {
   UrlParticipanteC: any;
   UrlPubliC: any;
   PesoTopping: string = '';
-  RutaImagenes: string = "";
+  RutaImagenes: string = '';
 
+  //Adicionales
+  DescLargaAdd: string = '';
+  DescCortaAdd: string = '';
+  Add1: string = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+  Add2: string = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+  Add3: string = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+  NomImagen1: string = '';
+  NomImagen2: string = '';
+  NomImagen3: string = '';
+  ValorRefAdd: string = '';
   //#region Cupon
   ArrayDataCupon: any = [];
   keywordCupon: string = "NombreCupon";
@@ -238,6 +248,7 @@ export class ValoracionComponent implements OnInit {
   consultaToppingsOferta() {
     this.serviciosvaloracion.ConsultaToppingOfer('5', this.SessionSectorSel, this.SessionOferta, '0').subscribe(Resultcons => {
       if (Resultcons.length > 0) {
+       
         this.DataToppings = Resultcons;
         this.ValidaConsulta = '0';
       }
@@ -339,7 +350,7 @@ export class ValoracionComponent implements OnInit {
   GuardaTopping(templateMensaje: any) {
     this.Respuesta = ''
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
-    if (this.DesTopp == '' || this.VlrUniTopp == null || this.UnidMaxTopp == '' || this.SessionTipoTopp == '0' || this.UnidOferta == '' || this.imagenesAdicionales == '' || this.PesoTopping == '') {
+    if (this.DesTopp == '' || this.VlrUniTopp == null || this.UnidMaxTopp == '' || this.SessionTipoTopp == '0' || this.UnidOferta == '' || this.NomImagen1 == '' || this.PesoTopping == '') {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
@@ -467,8 +478,13 @@ export class ValoracionComponent implements OnInit {
         IdTipoTopping: Number(this.SessionTipoTopp),
         ValorUnitario: Number(this.VlrUniTopp),
         cantidadReserva: Number(this.UnidOferta),
-        imagen: validaImagen,
-        PesoKiloUnd: Number(this.PesoTopping)
+        imagen: this.NomImagen1,
+        PesoKiloUnd: Number(this.PesoTopping),
+        CrctrzcionCrta:this.DescLargaAdd,
+        CrctrzcionLrga:"B",
+        ImgDos: this.NomImagen2,
+        ImgTres:this.NomImagen3,
+        VlorRefencia:this.ValorRefAdd
       }
       this.serviciosvaloracion.ModificaTopping('2', Body).subscribe(ResultOper => {
         this.Respuesta = ResultOper;
@@ -484,6 +500,15 @@ export class ValoracionComponent implements OnInit {
       this.IsEnables = false;
       this.imagenesAdicionales = '';
       this.PesoTopping = '';
+      this.DescCortaAdd = '';
+      this.DescLargaAdd = '';
+      this.ValorRefAdd = '';
+      this.NomImagen1 = '';
+      this.NomImagen2 = '';
+      this.NomImagen3 = '';
+      this.Add1 = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+      this.Add2 = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+      this.Add3 = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
     }
 
   }
@@ -1720,7 +1745,7 @@ export class ValoracionComponent implements OnInit {
   }
 
 
-  public CargaImagenAdicionales(event: any, modalmensaje: any) {
+  public CargaImagenAdicionales(event: any, imagen: string, modalmensaje: any) {
 
     if (!(/\.(jpg|png|jpeg)$/i).test(event.target.files[0].name)) {
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -1737,7 +1762,21 @@ export class ValoracionComponent implements OnInit {
       this.serviciosvaloracion.postImgToppings(event.target.files[0]).subscribe(
         response => {
           if (response == 'Archivo Subido Correctamente') {
-            this.imagenesAdicionales = event.target.files[0].name;
+
+            if (imagen == '1') {
+              this.Add1 = this.RutaImagenes + event.target.files[0].name;
+              this.NomImagen1 = event.target.files[0].name;
+            }
+            if (imagen== '2') {
+              this.Add2 = this.RutaImagenes + event.target.files[0].name;
+              this.NomImagen2 = event.target.files[0].name;
+            }
+            if (imagen== '3') {
+              this.Add3 = this.RutaImagenes + event.target.files[0].name;
+              this.NomImagen3 = event.target.files[0].name;
+            }
+
+            //this.imagenesAdicionales = event.target.files[0].name;
             this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
             this.Respuesta = "Imagen cargada correctamente.";
           }
