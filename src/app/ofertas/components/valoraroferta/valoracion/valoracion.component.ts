@@ -85,7 +85,7 @@ export class ValoracionComponent implements OnInit {
   SumaPrecios: number;
   DataValores: any[];
   ValorUni: string = '';
-  ValidaToppings: string ;
+  ValidaToppings: string;
   DataTipotopping: { id: number; name: string; }[];
   DataToppings: any[];
   ValidaConsulta: string = '0';
@@ -158,6 +158,7 @@ export class ValoracionComponent implements OnInit {
 
   ValorDomicilioGrup: string = "";
   ValorDomcilioGrupValorMenora: string = "";
+  Valorapartirde: string = "";
 
   indexTipoDomicilio: number = 0;
   //#endregion Domicilio
@@ -248,7 +249,7 @@ export class ValoracionComponent implements OnInit {
   consultaToppingsOferta() {
     this.serviciosvaloracion.ConsultaToppingOfer('5', this.SessionSectorSel, this.SessionOferta, '0').subscribe(Resultcons => {
       if (Resultcons.length > 0) {
-       
+
         this.DataToppings = Resultcons;
         this.ValidaConsulta = '0';
       }
@@ -480,11 +481,11 @@ export class ValoracionComponent implements OnInit {
         cantidadReserva: Number(this.UnidOferta),
         imagen: this.NomImagen1,
         PesoKiloUnd: Number(this.PesoTopping),
-        CrctrzcionCrta:this.DescLargaAdd,
-        CrctrzcionLrga:"B",
+        CrctrzcionCrta: this.DescLargaAdd,
+        CrctrzcionLrga: "B",
         ImgDos: this.NomImagen2,
-        ImgTres:this.NomImagen3,
-        VlorRefencia:this.ValorRefAdd
+        ImgTres: this.NomImagen3,
+        VlorRefencia: this.ValorRefAdd
       }
       this.serviciosvaloracion.ModificaTopping('2', Body).subscribe(ResultOper => {
         this.Respuesta = ResultOper;
@@ -661,7 +662,7 @@ export class ValoracionComponent implements OnInit {
       if (ResultCons[0].IDTIPODOMICILIO != null && ResultCons[0].IDTIPODOMICILIO != '') {
         for (var i = 0; i < this.ArrayDomicilio.length; i++) {
           if (this.ArrayDomicilio[i].IdDomicilio == ResultCons[0].IDTIPODOMICILIO) {
-            this.Domicilio= this.ArrayDomicilio[i].Descripcion;
+            this.Domicilio = this.ArrayDomicilio[i].Descripcion;
             this.indexTipoDomicilio = i;
             console.log(this.indexTipoDomicilio);
             break;
@@ -1012,7 +1013,8 @@ export class ValoracionComponent implements OnInit {
   GuardaIndividual(templateMensaje: any) {
 
     var valorDomicilio: boolean = false;
-    var AuxValDomicilio: string = "";
+    var AuxValDomicilio: string = "0";
+    var AuxValorApartirde: string = "0";
 
     if (this.IdDomicilio == '1') {
       if (this.VlrDomiI == "") {
@@ -1022,9 +1024,10 @@ export class ValoracionComponent implements OnInit {
         valorDomicilio = true;
       }
     } else if (this.IdDomicilio == '2') {
-      if (this.VlrDomiIValormenora == "") {
+      if (this.VlrDomiIValormenora == "" || this.Valorapartirde == "") {
         valorDomicilio = false;
       } else {
+        AuxValorApartirde = this.Valorapartirde
         AuxValDomicilio = this.VlrDomiIValormenora;
         valorDomicilio = true;
       }
@@ -1186,7 +1189,7 @@ export class ValoracionComponent implements OnInit {
         VLOR_CMSION_INDVDUAL: validacomision,
         MNMO_UNDDES_INDVDUAL: this.MinUnidI,
         MXMO_UNDDES_INDVDUAL: this.MaxUnidI,
-        VLOR_DMNCLIO_INDVDUAL: this.VlrDomiI,
+        VLOR_DMNCLIO_INDVDUAL: AuxValDomicilio,
         VLOR_FNAL_INDVDUAL: this.PreFinI,
         TPO_CMSION_GRPAL: 0,
         VLOR_CMSION_GRPAL: "0",
@@ -1208,7 +1211,7 @@ export class ValoracionComponent implements OnInit {
         DES_CUPONREGALO: "0",
         IMG_CUPONREGALO: "0",
         IDTIPODOMICILIO: this.IdDomicilio,
-        VLORAPRTRDMCLIO: AuxValDomicilio
+        VLORAPRTRDMCLIO: AuxValorApartirde
       }
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         var arreglores = ResultUpdate.split('|')
@@ -1235,19 +1238,21 @@ export class ValoracionComponent implements OnInit {
 
   GuardarMixta(templateMensaje: any) {
     var valorDomicilio: boolean = false;
-    var AuxValDomicilio: string = "";
+    var AuxValDomicilio: string = "0";
+    var AuxValorApartirde: string = "0";
 
     if (this.IdDomicilio == '1') {
-      if (this.ValorDomicilioGrup == "") {
+      if (this.VlrDomiI == "") {
         valorDomicilio = false;
       } else {
-        AuxValDomicilio = this.ValorDomicilioGrup;
+        AuxValDomicilio = this.VlrDomiI;
         valorDomicilio = true;
       }
     } else if (this.IdDomicilio == '2') {
-      if (this.ValorDomcilioGrupValorMenora == "") {
+      if (this.ValorDomcilioGrupValorMenora == "" || this.Valorapartirde == "") {
         valorDomicilio = false;
       } else {
+        AuxValorApartirde = this.Valorapartirde
         AuxValDomicilio = this.ValorDomcilioGrupValorMenora;
         valorDomicilio = true;
       }
@@ -1578,7 +1583,7 @@ export class ValoracionComponent implements OnInit {
         MNMO_UNDDES_LIDER: this.MinUnidLider,
         MXMO_UNDDES_LIDER: this.MaxUnidLider,
         PRCNTJE_DCTO_LIDER: SelectTipoCupon.PRCNTJE_DCTO_LIDER,
-        VLOR_DMNCLIO_GRPAL: this.VlrDomiI,
+        VLOR_DMNCLIO_GRPAL: AuxValDomicilio,
         CNTDAD_GRPOS: 0,
         MNMO_PRSNAS_XGRUPO: SelectTipoCupon.MNMO_PRSNAS_XGRUPO,
         MNMO_UNDDES_PRCPNTE: this.MinUnidLider,
@@ -1594,7 +1599,7 @@ export class ValoracionComponent implements OnInit {
         DES_CUPONREGALO: SelectTipoCupon.DES_CUPONREGALO,
         IMG_CUPONREGALO: SelectTipoCupon.IMG_CUPONREGALO,
         IDTIPODOMICILIO: this.IdDomicilio,
-        VLORAPRTRDMCLIO: AuxValDomicilio
+        VLORAPRTRDMCLIO: AuxValorApartirde
       }
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         this.Respuesta = '';
@@ -1767,11 +1772,11 @@ export class ValoracionComponent implements OnInit {
               this.Add1 = this.RutaImagenes + event.target.files[0].name;
               this.NomImagen1 = event.target.files[0].name;
             }
-            if (imagen== '2') {
+            if (imagen == '2') {
               this.Add2 = this.RutaImagenes + event.target.files[0].name;
               this.NomImagen2 = event.target.files[0].name;
             }
-            if (imagen== '3') {
+            if (imagen == '3') {
               this.Add3 = this.RutaImagenes + event.target.files[0].name;
               this.NomImagen3 = event.target.files[0].name;
             }

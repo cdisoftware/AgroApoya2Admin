@@ -371,7 +371,12 @@
                             <input mask="separator" thousandSeparator="." type="text" [disabled]="MuestraGrupal == '1' "
                                 class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiI">
                         </div>
-                        <div class="col-sm-6" *ngIf="IdDomicilio == '2'">
+                        <div class="col-sm-3" *ngIf="IdDomicilio == '2'">
+                            <label class="col-sm-12 Llave">Valor a partir de</label>
+                            <input mask="separator" thousandSeparator="." type="text" [disabled]="MuestraGrupal == '1' "
+                                class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="Valorapartirde">
+                        </div>
+                        <div class="col-sm-3" *ngIf="IdDomicilio == '2'">
                             <label class="col-sm-12 Llave">Valor domicilio</label>
                             <input mask="separator" thousandSeparator="." type="text" [disabled]="MuestraGrupal == '1' "
                                 class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiIValormenora">
@@ -528,7 +533,12 @@
                             <label class="col-sm-12 Llave">Valor domicilio</label>
                             <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="ValorDomicilioGrup">
                         </div>
-                        <div class="col-sm-6" *ngIf="IdDomicilio == '2'">
+                        <div class="col-sm-3" *ngIf="IdDomicilio == '2'">
+                            <label class="col-sm-12 Llave">Valor a partir de</label>
+                            <input mask="separator" thousandSeparator="." type="text"
+                                class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="Valorapartirde">
+                        </div>
+                        <div class="col-sm-3" *ngIf="IdDomicilio == '2'">
                             <label class="col-sm-12 Llave">Valor domicilio</label>
                             <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="ValorDomcilioGrupValorMenora">
                         </div>
