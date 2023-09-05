@@ -1769,15 +1769,15 @@ export class ValoracionComponent implements OnInit {
           if (response == 'Archivo Subido Correctamente') {
 
             if (imagen == '1') {
-              this.Add1 = this.RutaImagenes + event.target.files[0].name;
+              this.Add1 = this.RutaImagenTopping + event.target.files[0].name;
               this.NomImagen1 = event.target.files[0].name;
             }
             if (imagen == '2') {
-              this.Add2 = this.RutaImagenes + event.target.files[0].name;
+              this.Add2 = this.RutaImagenTopping + event.target.files[0].name;
               this.NomImagen2 = event.target.files[0].name;
             }
             if (imagen == '3') {
-              this.Add3 = this.RutaImagenes + event.target.files[0].name;
+              this.Add3 = this.RutaImagenTopping + event.target.files[0].name;
               this.NomImagen3 = event.target.files[0].name;
             }
 
