@@ -241,17 +241,6 @@
         </div>
     </div>
     <div class="row br">
-        <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-one" *ngIf="MuestraValoReferencia=='1'">
-            <ngb-panel title="Valor de referencia" id="config-panel-one">
-                <ng-template ngbPanelContent>
-                    <div class="col-sm-6">
-                        <label class="col-sm-12 Llave">Valor referencia</label>
-                        <input mask="separator" thousandSeparator="." type="text"
-                            class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlReferencia">
-                    </div>
-                </ng-template>
-            </ngb-panel>
-        </ngb-accordion>
         <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-one" *ngIf="MuestraIndividual=='1'">
             <ngb-panel title="Compra individual" id="config-panel-one">
                 <ng-template ngbPanelContent>
@@ -300,15 +289,16 @@
                                 [disabled]="MuestraGrupal == '1' ">
                         </div>
                     </div>
-                    
+
                     <br>
                     <h2>Asociar Cupon</h2>
                     <div class="row">
                         <div class="col-sm-6">
                             <label class="Llave">Cupon</label>
-                            <ng-autocomplete [data]="ArrayCupones" [searchKeyword]="keywordCuponOfer" placeholder="Cupon"
-                                (inputCleared)="LimpiaOferta('')" (selected)='selectCuponOferta($event)'
-                                [itemTemplate]="templateOferta" [notFoundTemplate]="templateVacio" [(ngModel)]="DescCupon">
+                            <ng-autocomplete [data]="ArrayCupones" [searchKeyword]="keywordCuponOfer"
+                                placeholder="Cupon" (inputCleared)="LimpiaOferta('')"
+                                (selected)='selectCuponOferta($event)' [itemTemplate]="templateOferta"
+                                [notFoundTemplate]="templateVacio" [(ngModel)]="DescCupon">
                             </ng-autocomplete>
                             <ng-template #templateOferta let-item>
                                 <a [innerHTML]="item.codigo_Mostrar"></a>
@@ -342,7 +332,8 @@
                                 <td>{{registro.codigo_grupo}}</td>
                                 <td>
                                     <button class="SinEstilo" (click)="Eliminar(registro)">
-                                        <img src="./../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" width="32px">
+                                        <img src="./../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png"
+                                            width="32px">
                                     </button>
                                 </td>
                             </tr>
@@ -355,8 +346,9 @@
                             <label class="col-sm-12 Llave mb-1">Tipo Domicilio</label>
                             <ng-autocomplete [data]="ArrayDomicilio" [searchKeyword]="keywordDomicilio"
                                 (inputCleared)='LimpiaTipoDomicilio($event)'
-                                [initialValue]="ArrayDomicilio[indexTipoDomicilio]" (selected)='selectDomicilio($event)' placeholder="Tipo de domicilio"
-                                [itemTemplate]="templateDomicilio" [notFoundTemplate]="templateVacio" [(ngModel)]="Domicilio">
+                                [initialValue]="ArrayDomicilio[indexTipoDomicilio]" (selected)='selectDomicilio($event)'
+                                placeholder="Tipo de domicilio" [itemTemplate]="templateDomicilio"
+                                [notFoundTemplate]="templateVacio" [(ngModel)]="Domicilio">
                             </ng-autocomplete>
                             <ng-template #templateDomicilio let-item>
                                 <a [innerHTML]="item.Descripcion"></a>
@@ -372,7 +364,7 @@
                                 class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiI">
                         </div>
                         <div class="col-sm-3" *ngIf="IdDomicilio == '2'">
-                            <label class="col-sm-12 Llave">Valor a partir de</label>
+                            <label class="col-sm-12 Llave">Por compras menores a</label>
                             <input mask="separator" thousandSeparator="." type="text" [disabled]="MuestraGrupal == '1' "
                                 class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="Valorapartirde">
                         </div>
@@ -447,8 +439,7 @@
                             <ng-autocomplete [data]="ArrayDataCupon" [searchKeyword]="keywordCupon"
                                 placeholder="Tipo Cupon" [itemTemplate]="templateCupon"
                                 [notFoundTemplate]="templateVacio" (selected)='selectTipoCupon($event)'
-                                (inputCleared)='LimpiaTipoCupon("")' 
-                                [initialValue]="ArrayDataCupon[IndexTipoCupon]">
+                                (inputCleared)='LimpiaTipoCupon("")' [initialValue]="ArrayDataCupon[IndexTipoCupon]">
                             </ng-autocomplete>
                             <ng-template #templateCupon let-item>
                                 <a [innerHTML]="item.NombreCupon"></a>
@@ -458,12 +449,12 @@
                             </ng-template>
                         </div>
                     </div>
-                    
-                    
-                    
-                    
-                    
-                    
+
+
+
+
+
+
                     <div class="row br mb-1" *ngIf="IdTipoCupon == '2'">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Porcentaje de descuento por unidad / registro</label>
@@ -479,16 +470,27 @@
                         </div>
                     </div>
                     <div class="row" *ngIf="IdTipoCupon == '1'">
-                        <div class="col-sm-10">
+                        <div class="col-sm-8">
                             <label class="col-sm-12 Llave">Descripción</label>
-                            <input type="text" class="col-sm-12 form-control mt-1 textBox" placeholder="Descripción (Obligatorio)" [(ngModel)]="DescripcionRegalo"/>
+                            <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                placeholder="Descripción (Obligatorio)" [(ngModel)]="DescripcionRegalo" />
                         </div>
+
+                        <div class="col-6 col-sm-2">
+                            <label class="col-sm-12 Llave">Numero de usuario por cupon</label>
+                            <input type="number" class="col-12 form-control mt-1 textBox"
+                                onkeyup="if(parseInt(this.value)>100){ this.value=100; return false; }"
+                                [(ngModel)]="NumeroUsuariosCupon">
+                        </div>
+
                         <div class="col-sm-2 centraimagen" style="text-align: center;">
                             <div class="image-upload">
                                 <label for="file-input5">
-                                    <img id="Imagen5" title="Selecciona una imagen" [src]="ImagenRegalo" style="border-radius: 10px;" class="mt-2">
+                                    <img id="Imagen5" title="Selecciona una imagen" [src]="ImagenRegalo"
+                                        style="border-radius: 10px;" class="mt-2">
                                 </label>
-                                <input name="file-input5" id="file-input5" type="file" (change)="CargaImagen($event, ModalRespuestaImg)" />
+                                <input name="file-input5" id="file-input5" type="file"
+                                    (change)="CargaImagen($event, ModalRespuestaImg)" />
                             </div>
                         </div>
                     </div>
@@ -509,7 +511,8 @@
                     <div class="row br">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Precio final participante</label>
-                            <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox" disabled [(ngModel)]="PrecioFinPart">
+                            <input mask="separator" thousandSeparator="." type="text"
+                                class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PrecioFinPart">
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -517,8 +520,9 @@
                             <label class="col-sm-12 Llave mb-1">Tipo Domicilio</label>
                             <ng-autocomplete [data]="ArrayDomicilio" [searchKeyword]="keywordDomicilio"
                                 (inputCleared)='LimpiaTipoDomicilio($event)'
-                                [initialValue]="ArrayDomicilio[indexTipoDomicilio]" (selected)='selectDomicilio($event)' placeholder="Tipo de domicilio"
-                                [itemTemplate]="templateDomicilio" [notFoundTemplate]="templateVacio" [(ngModel)]="Domicilio">
+                                [initialValue]="ArrayDomicilio[indexTipoDomicilio]" (selected)='selectDomicilio($event)'
+                                placeholder="Tipo de domicilio" [itemTemplate]="templateDomicilio"
+                                [notFoundTemplate]="templateVacio" [(ngModel)]="Domicilio">
                             </ng-autocomplete>
                             <ng-template #templateDomicilio let-item>
                                 <a [innerHTML]="item.Descripcion"></a>
@@ -531,16 +535,18 @@
 
                         <div class="col-sm-6" *ngIf="IdDomicilio == '1'">
                             <label class="col-sm-12 Llave">Valor domicilio</label>
-                            <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="ValorDomicilioGrup">
+                            <input mask="separator" thousandSeparator="." type="text"
+                                class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="ValorDomicilioGrup">
                         </div>
                         <div class="col-sm-3" *ngIf="IdDomicilio == '2'">
-                            <label class="col-sm-12 Llave">Valor a partir de</label>
+                            <label class="col-sm-12 Llave">Por compras menores a</label>
                             <input mask="separator" thousandSeparator="." type="text"
                                 class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="Valorapartirde">
                         </div>
                         <div class="col-sm-3" *ngIf="IdDomicilio == '2'">
                             <label class="col-sm-12 Llave">Valor domicilio</label>
-                            <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="ValorDomcilioGrupValorMenora">
+                            <input mask="separator" thousandSeparator="." type="text"
+                                class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="ValorDomcilioGrupValorMenora">
                         </div>
                     </div>
                     <div class="row justify-content-center br" *ngIf="MuestraBtnMixta=='1'">
@@ -600,6 +606,30 @@
             </ngb-panel>
         </ngb-accordion>
     </div>
+    <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-one" *ngIf="MuestraValoReferencia=='1'">
+        <ngb-panel title="Valor de referencia" id="config-panel-one">
+            <ng-template ngbPanelContent>
+                <div class="row">
+                    <div class="col-12">
+                        <label class="col-sm-12 Llave">Valor referencia</label>
+                    </div>
+                    <div class="col-sm-6 mt-2">
+                        <input mask="separator" thousandSeparator="." type="text"
+                            class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlReferencia">
+                    </div>
+                    <div class="col-6 col-sm-4 mt-2">
+                        <button class="btn btn-agro-prin col-12"
+                            (click)="ActualizaValorReferencia(VlReferencia,ModalRespuesta)">Guardar</button>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-panel>
+    </ngb-accordion>
+
+
+
+
+
     <div class="row br" *ngIf="ValidaToppings=='1'">
         <h5 class="SubTituloForm">Definición conceptos adicionales</h5>
     </div>
@@ -659,11 +689,15 @@
                         </div>
                         <div class="col-sm-4">
                             <label class="col-sm-12 Llave">Descripción corta</label>
-                            <textarea name="DescCortaAdd" id="DescCortaAdd" cols="30" rows="5" class="form-control textBox" placeholder="Descripcion corta" [(ngModel)]="DescCortaAdd"></textarea>
+                            <textarea name="DescCortaAdd" id="DescCortaAdd" cols="30" rows="5"
+                                class="form-control textBox" placeholder="Descripcion corta"
+                                [(ngModel)]="DescCortaAdd"></textarea>
                         </div>
                         <div class="col-sm-4">
                             <label class="col-sm-12 Llave">Descripción larga</label>
-                            <textarea name="DescLargaAdd" id="DescLargaAdd" cols="30" rows="5" class="form-control textBox" placeholder="Descripcion larga" [(ngModel)]="DescLargaAdd"></textarea>
+                            <textarea name="DescLargaAdd" id="DescLargaAdd" cols="30" rows="5"
+                                class="form-control textBox" placeholder="Descripcion larga"
+                                [(ngModel)]="DescLargaAdd"></textarea>
                         </div>
                     </div>
 
@@ -673,25 +707,31 @@
                         <div class="col-sm-2 centraimagen">
                             <div class="image-upload">
                                 <label for="file-input1">
-                                    <img id="Imagen1" title="Selecciona una imagen" [src]="Add1" style="border-radius: 10px;">
+                                    <img id="Imagen1" title="Selecciona una imagen" [src]="Add1"
+                                        style="border-radius: 10px;">
                                 </label>
-                                <input name="file-input1" id="file-input1" type="file" (change)="CargaImagenAdicionales($event, '1', ModalRespuestaImg)" />
+                                <input name="file-input1" id="file-input1" type="file"
+                                    (change)="CargaImagenAdicionales($event, '1', ModalRespuestaImg)" />
                             </div>
                         </div>
                         <div class="col-sm-2 centraimagen">
                             <div class="image-upload">
                                 <label for="file-input2">
-                                    <img id="Imagen2" title="Selecciona una imagen" [src]="Add2" style="border-radius: 10px;">
+                                    <img id="Imagen2" title="Selecciona una imagen" [src]="Add2"
+                                        style="border-radius: 10px;">
                                 </label>
-                                <input name="file-input2" id="file-input2" type="file" (change)="CargaImagenAdicionales($event,'2', ModalRespuestaImg)" />
+                                <input name="file-input2" id="file-input2" type="file"
+                                    (change)="CargaImagenAdicionales($event,'2', ModalRespuestaImg)" />
                             </div>
                         </div>
                         <div class="col-sm-2 centraimagen">
                             <div class="image-upload">
                                 <label for="file-input3">
-                                    <img id="Imagen3" title="Selecciona una imagen" [src]="Add3" style="border-radius: 10px;">
+                                    <img id="Imagen3" title="Selecciona una imagen" [src]="Add3"
+                                        style="border-radius: 10px;">
                                 </label>
-                                <input name="file-input3" id="file-input3" type="file" (change)="CargaImagenAdicionales($event, '3', ModalRespuestaImg)" />
+                                <input name="file-input3" id="file-input3" type="file"
+                                    (change)="CargaImagenAdicionales($event, '3', ModalRespuestaImg)" />
                             </div>
                         </div>
                     </div>
@@ -718,6 +758,8 @@
                             <table class="table col-sm-12 TableAgro">
                                 <tr id="TablaValoracion">
                                     <th>Descripción</th>
+                                    <th>Descripción corta</th>
+                                    <th>Descripción larga</th>
                                     <th>Valor unitario</th>
                                     <th>Valor referencia</th>
                                     <th>Tipo</th>
@@ -728,6 +770,13 @@
                                 </tr>
                                 <tr *ngFor="let topping of DataToppings">
                                     <td>{{topping.Descripcion}}</td>
+                                    <td>
+                                        <div class="descripcionlarga">{{topping.CrctrzcionCrta}}</div>
+                                    </td>
+                                    <td>
+                                        <div class="descripcionlarga">{{topping.CrctrzcionLrga}}</div>
+
+                                    </td>
                                     <td>{{topping.ValorUnitario | currency}}</td>
                                     <td>{{topping.VlorRefencia | currency}}</td>
                                     <td>{{topping.descTipotopping}}</td>
@@ -750,7 +799,7 @@
                                         <button *ngIf="topping.IdTipoTopping == '1'" class="SinEstilo"
                                             title="Imagen amparado">
                                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png"
-                                                (click)="visualizaImagenTopping(ModalImagen, topping.imagen)">
+                                                (click)="visualizaImagenTopping(ModalImagen, topping)">
                                         </button>
                                     </td>
                                 </tr>
@@ -918,9 +967,9 @@
         <h1 class="modal-title" id="modal-basic-title">Imagen adicionales</h1>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
-    <div class="modal-body" *ngFor="let oferta of DataOferta">
+    <div class="modal-body" *ngFor="let oferta of ArrayToppingSeleccionado">
         <div class="row br">
-            <img src="{{consultaimagen}}" class="col-sm-12">
+            <img src="{{RutaImagenTopping}}{{oferta.imagen}}" class="col-sm-12">
         </div>
     </div>
     <div class="row justify-content-center">
