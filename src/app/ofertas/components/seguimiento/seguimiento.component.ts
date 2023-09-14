@@ -1,16 +1,23 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MetodosglobalesService } from './../../../core/metodosglobales.service'
-import { ValorarofertaService } from './../../../core/valoraroferta.service'
+import {
+  Component, OnInit, ViewChild, HostListener,
+  OnChanges,
+  DoCheck,
+  AfterContentInit,
+  AfterContentChecked,
+  AfterViewInit,
+  AfterViewChecked,
+  OnDestroy,
+} from '@angular/core';
+import { ValorarofertaService } from './../../../core/valoraroferta.service';
 import { NgbModal, NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router';
-import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
+import { Color, ScaleType } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-seguimiento',
   templateUrl: './seguimiento.component.html',
   styleUrls: ['./seguimiento.component.css']
 })
-export class SeguimientoComponent implements OnInit {
+export class SeguimientoComponent implements AfterContentInit, OnInit {
   @ViewChild('ModalMensaje', { static: false }) ModalMensaje: any;
 
   selecsector: string = '0'
@@ -70,21 +77,35 @@ export class SeguimientoComponent implements OnInit {
     group: ScaleType.Ordinal,
     domain: ["#31C231", "#FAA432", "#F02C29", "#AAAAAA"]
   };
-  viewBar: [number, number] = [800, 200];
+  viewBar: [number, number] = [1000, 200];
   ArrayValores: any = [];
   Detalle: string = '';
-  Conductor: string = ''
+  Conductor: string = '';
+  screenWidth: number = 0;
 
 
   constructor(
     private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService) { }
 
-  ngAfterViewInit() {
+  ngAfterContentInit(): void {
+    var div = document.getElementById("rowGraficas");
+    if (div) {
+      this.RezizePantalla(div?.clientWidth);
+    }
   }
 
-  ngOnInit(): void {
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    var div = document.getElementById("rowGraficas");
+    if (div) {
+      this.screenWidth = div?.clientWidth;
+      this.RezizePantalla(div?.clientWidth);
+    }
+  }
 
+
+  ngOnInit(): void {
     this.ConsultaOferta();
   }
 
@@ -183,9 +204,7 @@ export class SeguimientoComponent implements OnInit {
           this.ArrayConsultaSeg = Resultado;
           this.ValidaInsertSec = '1';
           this.ValidaInsertSecs = '1';
-          this.ConsReporteEntregas()
-
-
+          this.ConsReporteEntregas();
         }
       })
     }
@@ -302,21 +321,21 @@ export class SeguimientoComponent implements OnInit {
       } else {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png';
       }
-      
-        var marker = new google.maps.Marker({
-          title: features[i].NomCli,
-          animation: google.maps.Animation.DROP,
-          position: features[i].position,
-          map: this.map,
-          icon: icon,
-          zIndex: i,
-          label: LabelOption
-        });
-        this.markers.push(marker);
-        const infoWindow = new google.maps.InfoWindow();
-        this.markers[i].addListener("click", () => {
-          this.InfoWindow(this.markers[i].getZIndex());
-        });
+
+      var marker = new google.maps.Marker({
+        title: features[i].NomCli,
+        animation: google.maps.Animation.DROP,
+        position: features[i].position,
+        map: this.map,
+        icon: icon,
+        zIndex: i,
+        label: LabelOption
+      });
+      this.markers.push(marker);
+      const infoWindow = new google.maps.InfoWindow();
+      this.markers[i].addListener("click", () => {
+        this.InfoWindow(this.markers[i].getZIndex());
+      });
     }
 
     const flightPath = new google.maps.Polyline({
@@ -516,7 +535,7 @@ export class SeguimientoComponent implements OnInit {
   }
 
   ConsReporteEntregas() {
-    this.ServiciosValorar.ConsultaReporteEntregas('1', this.SelectorOferta, this.SelectorSector, '0').subscribe(Resultado => {
+    this.ServiciosValorar.ConsultaReporteEntregas('1', this.SelectorOferta, this.SelectorSector, this.ConductorSelect).subscribe(Resultado => {
       this.ArrayReporte = Resultado;
       for (var i = 0; this.ArrayReporte.length > i; i++) {
         const fila = {
@@ -563,7 +582,10 @@ export class SeguimientoComponent implements OnInit {
   CambioDetalle(Bandera: string) {
     this.Detalle = Bandera;
     this.ValidaInsertSecs == '1'
-    this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
+    this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad });
   }
+  RezizePantalla(Tamanio: number) {
 
+    this.viewBar = [Tamanio, 200];
+  }
 }

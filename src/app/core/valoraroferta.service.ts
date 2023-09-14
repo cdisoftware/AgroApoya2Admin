@@ -208,6 +208,7 @@ export class ValorarofertaService {
   }
 
   ConsultaSeguimientoEntregas(Bandera: string, IdConductor: string, IdSector: string, IdOferta: string, Datos: any) {
+    console.log(this.url_servidor + 'consSeguimientoEntregas/' + Bandera + '/' + IdConductor + '/' + IdSector + '/' + IdOferta, Datos)
     return this.http.post<any>(this.url_servidor + 'consSeguimientoEntregas/' + Bandera + '/' + IdConductor + '/' + IdSector + '/' + IdOferta, Datos)
   }
 
