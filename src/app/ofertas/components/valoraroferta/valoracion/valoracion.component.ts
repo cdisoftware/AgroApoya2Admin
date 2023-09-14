@@ -1204,7 +1204,8 @@ export class ValoracionComponent implements OnInit {
         DES_CUPONREGALO: "0",
         IMG_CUPONREGALO: "0",
         IDTIPODOMICILIO: this.IdDomicilio,
-        VLORAPRTRDMCLIO: AuxValorApartirde
+        VLORAPRTRDMCLIO: AuxValorApartirde,
+        NumUsuaCupo:0
       }
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         var arreglores = ResultUpdate.split('|')
@@ -1585,8 +1586,10 @@ export class ValoracionComponent implements OnInit {
         DES_CUPONREGALO: SelectTipoCupon.DES_CUPONREGALO,
         IMG_CUPONREGALO: SelectTipoCupon.IMG_CUPONREGALO,
         IDTIPODOMICILIO: this.IdDomicilio,
-        VLORAPRTRDMCLIO: AuxValorApartirde
+        VLORAPRTRDMCLIO: AuxValorApartirde,
+        NumUsuaCupo:this.NumeroUsuariosCupon
       }
+      console.log(Body)
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         this.Respuesta = '';
         var arreglores = ResultUpdate.split('|')
@@ -2148,7 +2151,8 @@ export class ValoracionComponent implements OnInit {
         DES_CUPONREGALO: "0",
         IMG_CUPONREGALO: "0",
         IDTIPODOMICILIO: "0",
-        VLORAPRTRDMCLIO: "0"
+        VLORAPRTRDMCLIO: "0",
+        NumUsuaCupo:0
       }
       this.serviciosvaloracion.ActualizarOfertaValoracion('6', Body).subscribe(ResultUpdate => {
         var arreglores = ResultUpdate.split('|');
