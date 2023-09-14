@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <br>
-                    <div class="row justify-content-center " id="rowGraficas" *ngIf="Detalle == '1'" [ngClass]="Detalle == '1' ? 'visibletrue' : 'visiblefalse'">
+                    <div class="row justify-content-center " id="rowGraficas" *ngIf="Detalle == '1'">
                         <div class="col-sm-12">
                             <!-- Consolidado ventas -->
                             <ngx-charts-bar-vertical-2d [results]="ArrayVentas" [legendTitle]="'Entregas'"
@@ -81,12 +81,14 @@
                                 <th>Entregado</th>
                                 <th>Pendiente</th>
                                 <th>Devuelto</th>
+                                <th>Total Producto</th>
                             </tr>
                             <tr *ngFor="let Ventas of ArrayReporte ">
                                 <td colspan="2">{{Ventas.PRODUCTO}}</td>
                                 <td>{{Ventas.CANTIDAD_ENTREGADA}}</td>
                                 <td>{{Ventas.CANTIDAD_PENDIENTE }}</td>
                                 <td>{{Ventas.CANTIDAD_DEVUELTA }}</td>
+                                <td>{{Ventas.CANTIDAD_TOTAL }}</td>
                             </tr>
                         </table>
 
@@ -159,6 +161,9 @@
                             </tr>
                         </table>
                     </div>
+                </div>
+                <div class="col-sm-3 mt-2" *ngIf="VerBtnMapSugerido == true">
+                    <button class="btn btn-agro-prin w-100" (click)="CargarRutaSugerida()">Ruta sugerida</button>
                 </div>
                 <div class="row mt-2 justify-content-center">
                     <div class="col-sm-12">
@@ -279,6 +284,26 @@
         <div class="row justify-content-center">
             <button type="button" id="btnGuardarDirecccion" class="btn ColorAgro col-sm-3 col-3"
                 (click)="modal.dismiss('Cross click')">Aceptar</button>
+        </div>
+
+    </div>
+</ng-template>
+
+
+
+
+<ng-template #ModalMapaSugerido let-modal>
+    <div class="p-2">
+        <div class="mt-4 mb-4 text-center">
+            <div class="row mt-2 justify-content-center">
+                <div class="col-sm-12">
+                    <div id="mapaRutaSugerida" class="ShowMap"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <button type="button" id="btnGuardarDirecccion" class="btn ColorAgro col-sm-6 mt-4 bn-2 col-3"
+                (click)="modal.dismiss('Cross click')">Aceptar </button>
         </div>
 
     </div>

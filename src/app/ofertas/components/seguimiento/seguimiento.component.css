@@ -156,3 +156,8 @@ span.diana {
 .visibletrue{
   visibility: visible;
 }
+.textPin{
+  margin-top: -20px;
+  font-family: var(--bs-body-font-family);
+  color: #fff !important;
+}
