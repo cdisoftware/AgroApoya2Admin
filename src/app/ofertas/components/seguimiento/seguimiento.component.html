@@ -10,7 +10,7 @@
                     [itemTemplate]="templateOferta" [notFoundTemplate]="templateVacio" [(ngModel)]="Oferta">
                 </ng-autocomplete>
                 <ng-template #templateOferta let-item>
-                    <a [innerHTML]="item.cd_cnsctvo + ' - ' + item.Producto"></a>
+                    <a [innerHTML]="item.Producto"></a>
                 </ng-template>
                 <ng-template #templateVacio let-SinRegistro>
                     <label for="">Sin registros</label>

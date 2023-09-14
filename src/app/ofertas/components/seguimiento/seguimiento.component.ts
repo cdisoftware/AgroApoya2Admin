@@ -81,7 +81,6 @@ export class SeguimientoComponent implements OnInit {
     private ServiciosValorar: ValorarofertaService) { }
 
   ngAfterViewInit() {
-    console.log(document.getElementById("mapaS") as HTMLElement)
   }
 
   ngOnInit(): void {
@@ -92,7 +91,6 @@ export class SeguimientoComponent implements OnInit {
   ConsultaTransportista(idconductor: string, idtransportista: string) {
     this.ServiciosValorar.ConsultaDetalleCond('1', idconductor, idtransportista).subscribe(Resultado => {
       this.ArrayConductor = Resultado
-      console.log(Resultado)
     })
   }
 
@@ -175,7 +173,6 @@ export class SeguimientoComponent implements OnInit {
       }
       //this.ServiciosValorar.ConsultaSeguimiento('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
       this.ServiciosValorar.ConsultaSeguimientoEntregas('1', this.ConductorSelect, this.SelectorSector, this.SelectorOferta, datos).subscribe(Resultado => {
-        console.log(Resultado)
         if (Resultado.length == 0) {
           this.Respuesta = 'No encontramos registros de compras para este sector.';
           this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
@@ -187,8 +184,8 @@ export class SeguimientoComponent implements OnInit {
           this.ValidaInsertSec = '1';
           this.ValidaInsertSecs = '1';
           this.ConsReporteEntregas()
-          
-          
+
+
         }
       })
     }
@@ -208,7 +205,6 @@ export class SeguimientoComponent implements OnInit {
       return results;
     })
       .catch((e) => {
-        console.log("Geocode was not successful for the following reason: " + e);
       });
   }
 
@@ -219,10 +215,8 @@ export class SeguimientoComponent implements OnInit {
       const { results } = result;
       //this.AgregarSitios();
       var auxcoor = this.ArrayConsultaSeg[0].COORDENADAS_ENTR.split(",");
-      console.log(auxcoor)
       lat = parseFloat(auxcoor[0].trim());
       long = parseFloat(auxcoor[1].trim());
-      console.log(document.getElementById("mapaS") as HTMLElement)
       this.map = new google.maps.Map(
         document.getElementById("mapaS") as HTMLElement,
         {
@@ -237,7 +231,6 @@ export class SeguimientoComponent implements OnInit {
       return results;
     })
       .catch((e) => {
-        console.log("Geocode was not successful for the following reason: " + e);
       });
   }
 
@@ -260,12 +253,10 @@ export class SeguimientoComponent implements OnInit {
   }
 
   MostrarDetalle(Entrega: any, TemplateDetalle: any) {
-    console.log(Entrega)
     this.TituloModal = 'Detalle Entregas'
     var IdGrupo = Entrega.IdGrupoMilla
     var IdCarro = Entrega.ID_CARRO
     this.ServiciosValorar.ConsultaDetalleEntregas('1', IdCarro).subscribe(Resultado => {
-      console.log(Resultado)
       this.ArrayDetalle = Resultado;
     })
     this.modalService.open(TemplateDetalle, { size: 'md', centered: true });
@@ -283,15 +274,15 @@ export class SeguimientoComponent implements OnInit {
     this.markers = [];
     var lat: number;
     var long: number;
-
     for (var i = 0; i < this.ArrayConsultaSeg.length; i++) {
       var auxcoor = this.ArrayConsultaSeg[i].COORDENADAS_ENTR.split(",");
       lat = parseFloat(auxcoor[0]);
       long = parseFloat(auxcoor[1]);
       features.push({ position: new google.maps.LatLng(lat, long), Estado: this.ArrayConsultaSeg[i].ESTDO, NomCli: this.ArrayConsultaSeg[i].NOMBRES_PERSONA + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_PERSONA, IdCompra: this.ArrayConsultaSeg[i].ID_CARRO });
-      Polylines.push({ lat: lat, lng: long });
+      if (this.ArrayConsultaSeg[i].ESTDO != "4") {
+        Polylines.push({ lat: lat, lng: long });
+      }
     }
-
     for (let i = 0; i < features.length; i++) {
       var icon;
       var LabelOption;
@@ -311,23 +302,21 @@ export class SeguimientoComponent implements OnInit {
       } else {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png';
       }
-
-      var marker = new google.maps.Marker({
-        title: features[i].NomCli,
-        animation: google.maps.Animation.DROP,
-        position: features[i].position,
-        map: this.map,
-        icon: icon,
-        zIndex: i,
-        label: LabelOption
-      });
-      this.markers.push(marker);
-
-
-      const infoWindow = new google.maps.InfoWindow();
-      this.markers[i].addListener("click", () => {
-        this.InfoWindow(this.markers[i].getZIndex());
-      });
+      
+        var marker = new google.maps.Marker({
+          title: features[i].NomCli,
+          animation: google.maps.Animation.DROP,
+          position: features[i].position,
+          map: this.map,
+          icon: icon,
+          zIndex: i,
+          label: LabelOption
+        });
+        this.markers.push(marker);
+        const infoWindow = new google.maps.InfoWindow();
+        this.markers[i].addListener("click", () => {
+          this.InfoWindow(this.markers[i].getZIndex());
+        });
     }
 
     const flightPath = new google.maps.Polyline({
@@ -349,7 +338,6 @@ export class SeguimientoComponent implements OnInit {
 
   ConsultaSeguimiento() {
     this.ServiciosValorar.ConsultaSeguimiento('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
-      console.log(Resultado)
     })
   }
 
@@ -495,7 +483,6 @@ export class SeguimientoComponent implements OnInit {
   lastPanelId: string = '';
   defaultPanelId: string = "panel2";
   panelShadow($event: NgbPanelChangeEvent, shadow: any) {
-    console.log($event);
 
     const { nextState } = $event;
 
@@ -525,14 +512,12 @@ export class SeguimientoComponent implements OnInit {
   ConsultarConductores() {
     this.ServiciosValorar.ConsultaConductoresAsociados('1', this.SelectorOferta, this.SelectorSector, '2').subscribe(Resultado => {
       this.ArrayConductores = Resultado
-      console.log(Resultado)
     })
   }
 
   ConsReporteEntregas() {
     this.ServiciosValorar.ConsultaReporteEntregas('1', this.SelectorOferta, this.SelectorSector, '0').subscribe(Resultado => {
       this.ArrayReporte = Resultado;
-      console.log(Resultado)
       for (var i = 0; this.ArrayReporte.length > i; i++) {
         const fila = {
           "name": this.ArrayReporte[i].PRODUCTO, "series":
