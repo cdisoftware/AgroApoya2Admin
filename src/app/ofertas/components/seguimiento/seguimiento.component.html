@@ -78,7 +78,7 @@
                         <table class="col-sm-11 TableAgro br">
                             <tr>
                                 <th colspan="2">Producto</th>
-                                <th>Entregado</th>
+                                <th>Recibido</th>
                                 <th>Pendiente</th>
                                 <th>Devuelto</th>
                                 <th>Total Producto</th>
@@ -89,6 +89,13 @@
                                 <td>{{Ventas.CANTIDAD_PENDIENTE }}</td>
                                 <td>{{Ventas.CANTIDAD_DEVUELTA }}</td>
                                 <td>{{Ventas.CANTIDAD_TOTAL }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><strong>Total</strong></td>
+                                <td>{{ObjetEntrega[0].TotalRecibido}}</td>
+                                <td>{{ObjetEntrega[0].TotalPendiente}}</td>
+                                <td>{{ObjetEntrega[0].TotalDevuelto}}</td>
+                                <td>{{ObjetEntrega[0].TotalProducto}}</td>
                             </tr>
                         </table>
 
@@ -113,6 +120,15 @@
                                 <td>{{Valores.VLR_PENDIENTE_RECAUDO | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                                 <td>{{Valores.VLOR_DEVOLUCION | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                                 <td style="color: forestgreen;">{{Valores.VLOR_TTL_RECAUDAR | currency :'USD' : 'symbol'
+                                    : '1.0-0'}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><strong>Total</strong></td>
+                                <td>{{ObjetEntrega[1].ValTotalEntregado | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                                <td>{{ObjetEntrega[1].ValTotalPendiente | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                                <td>{{ObjetEntrega[1].ValTotalDevuelto | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                                <td style="color: forestgreen;">{{ObjetEntrega[1].ValTotalRecaudo | currency :'USD' :
+                                    'symbol'
                                     : '1.0-0'}}</td>
                             </tr>
 
@@ -143,7 +159,7 @@
                                 <td>{{Seguimiento.orden}}</td>
                                 <td>{{Seguimiento.fecha_entrega}} - {{Seguimiento.hora_entrega}}</td>
                                 <td>{{Seguimiento.VLOR_PGARSINDOMICILIO | currency}}</td>
-                                <td>{{Seguimiento.VLOR_DOMICILIO  | currency}}</td>
+                                <td>{{Seguimiento.VLOR_DOMICILIO | currency}}</td>
                                 <td>{{Seguimiento.VLOR_PGAR | currency}}</td>
                                 <td colspan="2">
                                     <button class="SinEstilo " (click)="MostrarMapa(Seguimiento, ModalMapa)">
@@ -171,6 +187,25 @@
                     <div class="col-sm-12">
                         <div id="mapaS" class="ShowMap"></div>
                     </div>
+                </div>
+
+                <div class="row mt-2 justify-content-center" *ngIf="VerBtnMapSugerido == true">
+                    <table class="col-sm-8 TableAgro br ">
+                        <tr>
+                            <th colspan="2"><strong>Total recaudado</strong></th>
+                        </tr>
+                        <tr>
+                            <th>Total venta</th>
+                            <th>Total domicilio</th>
+                        </tr>
+                        <tr>
+                            <td>{{ObjetEntrega[1].ValTotalEntregado | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                            <td style="color: forestgreen;">{{100000 | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="color: forestgreen;"><strong>{{TotalCosolidado | currency :'USD' : 'symbol' : '1.0-0'}}</strong></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
@@ -258,6 +293,10 @@
                     <td>{{Detalle.Producto}}</td>
                     <td>{{Detalle.Cantidad}}</td>
                     <td>{{Detalle.valor}}</td>
+                </tr>
+                <tr><td><strong>Total</strong></td>
+                    <td>{{NumProductos}}</td>
+                    <td style="color: forestgreen;">{{ValorTotalCompra | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                 </tr>
             </table>
         </div>
