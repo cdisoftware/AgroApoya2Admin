@@ -10,7 +10,7 @@
                     [itemTemplate]="templateOferta" [notFoundTemplate]="templateVacio" [(ngModel)]="Oferta">
                 </ng-autocomplete>
                 <ng-template #templateOferta let-item>
-                    <a [innerHTML]="item.cd_cnsctvo + ' - ' + item.Producto"></a>
+                    <a [innerHTML]="item.Producto"></a>
                 </ng-template>
                 <ng-template #templateVacio let-SinRegistro>
                     <label for="">Sin registros</label>
@@ -32,8 +32,9 @@
             <div class="col-sm-6">
                 <label class="Llave">Conductor</label>
                 <ng-autocomplete [data]="ArrayConductores" [searchKeyword]="keywordConductor" placeholder="Conductor"
-                    (inputCleared)="LimpiaConductor()" (selected)='SelectConductor($event)' [itemTemplate]="templateCond"
-                    [notFoundTemplate]="templateVacioCond" [disabled]="selectConductor == '0'" [(ngModel)]="Conductor">
+                    (inputCleared)="LimpiaConductor()" (selected)='SelectConductor($event)'
+                    [itemTemplate]="templateCond" [notFoundTemplate]="templateVacioCond"
+                    [disabled]="selectConductor == '0'" [(ngModel)]="Conductor">
                 </ng-autocomplete>
                 <ng-template #templateCond let-item>
                     <a [innerHTML]="item.NOMBRE"></a>
@@ -65,12 +66,14 @@
                         </div>
                     </div>
                     <br>
-                    <div class="row justify-content-center " *ngIf="Detalle == '1'">
-                        <!-- Consolidado ventas -->
-                        <ngx-charts-bar-vertical-2d [results]="ArrayVentas" [legendTitle]="'Entregas'" [legend]="true"
-                            [showDataLabel]="true" [xAxis]="true" [animations]="false" [scheme]="colorSchemeTort"
-                            [view]="viewBar"></ngx-charts-bar-vertical-2d>
-                        <!-- Tabla Ventas -->
+                    <div class="row justify-content-center " id="rowGraficas" *ngIf="Detalle == '1'" [ngClass]="Detalle == '1' ? 'visibletrue' : 'visiblefalse'">
+                        <div class="col-sm-12">
+                            <!-- Consolidado ventas -->
+                            <ngx-charts-bar-vertical-2d [results]="ArrayVentas" [legendTitle]="'Entregas'"
+                                [legend]="true" [showDataLabel]="true" [xAxis]="true" [animations]="false"
+                                [scheme]="colorSchemeTort" [view]="viewBar"></ngx-charts-bar-vertical-2d>
+                            <!-- Tabla Ventas -->
+                        </div>
                         <br>
                         <table class="col-sm-11 TableAgro br">
                             <tr>
@@ -107,7 +110,8 @@
                                 <td>{{Valores.VLR_RECAUDADO | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                                 <td>{{Valores.VLR_PENDIENTE_RECAUDO | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                                 <td>{{Valores.VLOR_DEVOLUCION | currency :'USD' : 'symbol' : '1.0-0'}}</td>
-                                <td style="color: forestgreen;">{{Valores.VLOR_TTL_RECAUDAR | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                                <td style="color: forestgreen;">{{Valores.VLOR_TTL_RECAUDAR | currency :'USD' : 'symbol'
+                                    : '1.0-0'}}</td>
                             </tr>
 
                         </table>
@@ -130,15 +134,14 @@
                                 <td>{{Seguimiento.NOMBRES_PERSONA}}</td>
                                 <td>{{Seguimiento.CELULAR_PERSONA}}</td>
                                 <td>{{Seguimiento.DRCCION }}</td>
-                                <td style="color: forestgreen;font-weight: bold; text-transform: uppercase;"
-                                    [ngStyle]="{'color': Seguimiento.ESTDO !='4' ? 'forestgreen' : 'rgb(255, 166, 0)'}">
+                                <td [ngClass]="Seguimiento.ESTDO !='4' ? 'ColorTextEntregado' : 'ColorTextDevuelto' ">
                                     {{Seguimiento.descEstado}}</td>
                                 <td>{{Seguimiento.VLOR_PGAR | currency}}</td>
                                 <td>{{Seguimiento.descTipoPago}}</td>
                                 <td>{{Seguimiento.NMBRE_CNDCTOR}}</td>
                                 <td>{{Seguimiento.orden}}</td>
                                 <td>{{Seguimiento.fecha_entrega}} - {{Seguimiento.hora_entrega}}</td>
-                                <td  colspan="2">
+                                <td colspan="2">
                                     <button class="SinEstilo " (click)="MostrarMapa(Seguimiento, ModalMapa)">
                                         <img src="./../../../../../assets/ImagenesAgroApoya2Adm/mapaSec.png"
                                             style="width: 25px;" title="Editar Imagen Mapa">
@@ -268,9 +271,9 @@
         <br>
         <div class="row m-0 p-0" style="display: flex; justify-content: center; align-items: center;">
             <div class="col-8">
-                    <img src="{{ImgEvidencia}}" style="width: 90%; height:  100%; object-fit: cover;">
+                <img src="{{ImgEvidencia}}" style="width: 90%; height:  100%; object-fit: cover;">
             </div>
-            
+
         </div>
         <hr>
         <div class="row justify-content-center">

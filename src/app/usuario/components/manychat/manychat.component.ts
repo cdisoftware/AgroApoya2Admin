@@ -32,6 +32,8 @@ export class ManychatComponent implements OnInit {
   RespuePlantilla: string = "";
   IdProceso: string = "0";
 
+  NunMensajesEnviados: number = 0;
+
   ngOnInit(): void {
     this.IdUsuario = this.cookies.get('IDU');
     this.DataQuery = [];
@@ -69,29 +71,31 @@ export class ManychatComponent implements OnInit {
   async EvioMennychat() {
     if (this.DataQuery.length > 0) {
       for (var i = 0; i < this.DataQuery.length; i++) {
+        this.NunMensajesEnviados = i+1;
         this.Loader = true;
         //Asigna url
-        const resulturl = await this.Asignaurl(this.DataQuery[i].MSJ_AGROAMIGO, this.DataQuery[i].ID_MANYCHAT, this.DataQuery[i].ComplementoLink);
-        await new Promise(resolve => setTimeout(resolve, 5000));//Hace esperar 5 segundos para ejecutar el siguiente servicio
+        //const resulturl = await this.Asignaurl(this.DataQuery[i].MSJ_AGROAMIGO, this.DataQuery[i].ID_MANYCHAT, this.DataQuery[i].ComplementoLink);
+        //await new Promise(resolve => setTimeout(resolve, 1000));//Hace esperar 1 segundos para ejecutar el siguiente servicio
 
         //Envio descripcion
-        const result1 = await this.AsignaMsmWhatsap(this.DataQuery[i].MSJ_AGROAMIGO, this.DataQuery[i].ID_MANYCHAT);
-        await new Promise(resolve => setTimeout(resolve, 5000));//Hace esperar 5 segundos para ejecutar el siguiente servicio
+        const result1 = await this.AsignaMsmWhatsap(this.DataQuery[i].USUARIO, this.DataQuery[i].ID_MANYCHAT);
+        await new Promise(resolve => setTimeout(resolve, 500));//Hace esperar 1 segundos para ejecutar el siguiente servicio
 
         //Envio plantilla
         const result3 = await this.EnviaPlantilla(this.DataQuery[i].ID_MANYCHAT);
-        await new Promise(resolve => setTimeout(resolve, 5000));//Hace esperar 5 segundos para ejecutar el siguiente servicio
+        await new Promise(resolve => setTimeout(resolve, 500));//Hace esperar 1 segundos para ejecutar el siguiente servicio
 
-        if (this.IdProceso == "0") {
+        /*if (this.IdProceso == "0") {
           //Registra Log En bdUno
           const result4 = await this.GuardaLogBDUno(this.DataQuery[i]);
-          await new Promise(resolve => setTimeout(resolve, 5000));//Hace esperar 5 segundos para ejecutar el siguiente servicio
+          await new Promise(resolve => setTimeout(resolve, 1000));//Hace esperar 1 segundos para ejecutar el siguiente servicio
         } else {
           //Registra Log En bdDos
           const result4 = await this.GuardaLogBDDos(this.DataQuery[i]);
-          await new Promise(resolve => setTimeout(resolve, 5000));//Hace esperar 5 segundos para ejecutar el siguiente servicio
-        }
+          await new Promise(resolve => setTimeout(resolve, 1000));//Hace esperar 1 segundos para ejecutar el siguiente servicio
+        }*/
       }
+      this.NunMensajesEnviados = 0;
       this.IdProceso = "0";
       this.Loader = false;
     } else {
@@ -120,12 +124,12 @@ export class ManychatComponent implements OnInit {
   async AsignaMsmWhatsap(Descripcion: string, IdMenyChat: string) {
     await new Promise((resolve, reject) => {
       const body = {
-        subscriber_id: 20658301,
-        field_id: 9712873,
+        subscriber_id: IdMenyChat,
+        field_id: 9808606,
         field_value: Descripcion
       }
       this.publicidadService.AsignarCampoUserManyChat(body).subscribe(async ResultadoDesc => {
-        console.log('Asigna sms')
+        console.log('Asigna nombre')
         console.log(ResultadoDesc)
         this.RespuDescripcion = JSON.stringify(ResultadoDesc);
         resolve(true);
@@ -136,8 +140,8 @@ export class ManychatComponent implements OnInit {
   async EnviaPlantilla(IdMenyChat: string) {
     await new Promise((resolve, reject) => {
       const body = {
-        subscriber_id: 20658301,
-        flow_ns: "content20230823141219_050777"
+        subscriber_id: IdMenyChat,
+        flow_ns: "content20230913214703_095731"
       }
       this.publicidadService.CManyChatFlows(body).subscribe(async Respu => {
         console.log('Plantilla')

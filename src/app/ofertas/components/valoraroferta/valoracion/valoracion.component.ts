@@ -147,6 +147,7 @@ export class ValoracionComponent implements OnInit {
   DescCupon: string = '';
   keywordCuponOfer: string = 'codigo_Mostrar';
   ArrayCuponesOferta: any = [];
+  NumeroUsuariosCupon: string = "";
 
   //#region Domicilio
   ArrayDomicilio: any = [];
@@ -248,6 +249,7 @@ export class ValoracionComponent implements OnInit {
   }
   consultaToppingsOferta() {
     this.serviciosvaloracion.ConsultaToppingOfer('5', this.SessionSectorSel, this.SessionOferta, '0').subscribe(Resultcons => {
+      console.log(Resultcons)
       if (Resultcons.length > 0) {
 
         this.DataToppings = Resultcons;
@@ -340,7 +342,6 @@ export class ValoracionComponent implements OnInit {
     this.serviciosvaloracion.ConsultaValUnidades('1', this.SessionOferta, this.SessionSectorSel).subscribe(Resultcons => {
       if (Resultcons.length > 0) {
         this.DataValores = Resultcons;
-        this.PrecioFinPart = this.DataValores[0].ValorUnidad;
       }
       else {
         this.DataValores = [];
@@ -642,7 +643,6 @@ export class ValoracionComponent implements OnInit {
   ConsultaDetalleOferta() {
     this.serviciosvaloracion.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
       this.DataOferta = ResultConsu;
-      this.VlReferencia = parseInt(this.DataOferta[0].VR_UNDAD_EMPQUE) + 5000;
       this.SessionFechaRecogida = this.DataOferta[0].fecha_recogida;
     })
   }
@@ -658,17 +658,24 @@ export class ValoracionComponent implements OnInit {
 
   ConsultaValoracionOferta() {
     this.serviciosvaloracion.ConsultaValoracionOferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultCons => {
-      console.log(this.ArrayDomicilio.length)
       if (ResultCons[0].IDTIPODOMICILIO != null && ResultCons[0].IDTIPODOMICILIO != '') {
         for (var i = 0; i < this.ArrayDomicilio.length; i++) {
           if (this.ArrayDomicilio[i].IdDomicilio == ResultCons[0].IDTIPODOMICILIO) {
             this.Domicilio = this.ArrayDomicilio[i].Descripcion;
             this.indexTipoDomicilio = i;
-            console.log(this.indexTipoDomicilio);
             break;
           }
         }
       }
+      this.Valorapartirde = ResultCons[0].VLORAPRTRDMCLIO.toString();
+      if (ResultCons[0].TPO_OFRTA.toString() == "1") {
+        this.ValorDomcilioGrupValorMenora = ResultCons[0].vlor_dmnclio_indvdual.toString();
+      } else if (ResultCons[0].TPO_OFRTA.toString() == "3") {
+        this.ValorDomcilioGrupValorMenora = ResultCons[0].vlor_dmnclio_grpal.toString();
+      }
+
+
+
       this.ArrayTipoOferCon = [
         {
           id: ResultCons[0].TPO_OFRTA,
@@ -706,7 +713,7 @@ export class ValoracionComponent implements OnInit {
         this.MaxUnidI = ResultCons[0].mxmo_unddes_indvdual;
         this.VlrDomiI = ResultCons[0].vlor_dmnclio_indvdual;
         this.PreFinI = ResultCons[0].vlor_fnal_indvdual;
-        this.VlReferencia = ResultCons[0].valorReferenciaProd
+        this.VlReferencia = ResultCons[0].valorReferenciaProd;
       }
 
       else if (ResultCons[0].TPO_OFRTA == '2') {
@@ -731,7 +738,7 @@ export class ValoracionComponent implements OnInit {
         this.CantComprI = ResultCons[0].cntdad_cmpras_indvdles;
         this.PrecioFinLider = ResultCons[0].vlor_arrnque_lider;
         this.PrecioFinPart = ResultCons[0].vlor_fnal_prtcpnte;
-        this.VlReferencia = ResultCons[0].valorReferenciaProd
+        this.VlReferencia = ResultCons[0].valorReferenciaProd;
       }
       else if (ResultCons[0].TPO_OFRTA == 3) {
         if (ResultCons[0].tpo_descuento != null || ResultCons[0].tpo_descuento != 0 || ResultCons[0].tpo_descuento != '') {
@@ -746,6 +753,10 @@ export class ValoracionComponent implements OnInit {
         }
         if (ResultCons[0].desc_cupon != null || ResultCons[0].desc_cupon != '') {
           this.DescripcionRegalo = ResultCons[0].desc_cupon;
+        }
+        console.log(ResultCons[0])
+        if (ResultCons[0].NumUsuaCupo != null || ResultCons[0].NumUsuaCupo != '') {
+          this.NumeroUsuariosCupon = ResultCons[0].NumUsuaCupo;
         }
         this.VlrDomiI = ResultCons[0].vlor_dmnclio_grpal;
 
@@ -780,7 +791,7 @@ export class ValoracionComponent implements OnInit {
         this.CantComprI = ResultCons[0].cntdad_cmpras_indvdles;
         this.PrecioFinLider = ResultCons[0].vlor_arrnque_lider;
         this.PrecioFinPart = ResultCons[0].vlor_fnal_prtcpnte;
-        this.VlReferencia = ResultCons[0].valorReferenciaProd
+        this.VlReferencia = ResultCons[0].valorReferenciaProd;
       }
     })
   }
@@ -1038,8 +1049,6 @@ export class ValoracionComponent implements OnInit {
       valorDomicilio = true;
     }
 
-    //console.log(valorDomicilio)
-
 
     this.Respuesta = '';
     var validacomision = '';
@@ -1055,17 +1064,11 @@ export class ValoracionComponent implements OnInit {
     }
 
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
-    if ((this.VlReferencia == null || this.VlReferencia == '' || this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
+    if ((this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
       || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null) || valorDomicilio == false) {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
-        {
-          campo: 'VlReferencia',
-          campof: 'Valor referencia',
-          class: '',
-          imagen: ''
-        },
         {
           campo: 'SessionTipoComI',
           campof: 'Tipo comisión',
@@ -1104,17 +1107,7 @@ export class ValoracionComponent implements OnInit {
         }
       ]
       for (var i = 0; i < this.ArrayCamposValida.length; i++) {
-        if (this.ArrayCamposValida[i].campo == 'VlReferencia') {
-          if (this.VlReferencia == '' || this.VlReferencia == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'SessionTipoComI') {
+        if (this.ArrayCamposValida[i].campo == 'SessionTipoComI') {
           if (this.SessionTipoComI == '' || this.SessionTipoComI == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
@@ -1196,7 +1189,7 @@ export class ValoracionComponent implements OnInit {
         MNMO_UNDDES_LIDER: "0",
         MXMO_UNDDES_LIDER: "0",
         PRCNTJE_DCTO_LIDER: "0",
-        VLOR_DMNCLIO_GRPAL: "0",
+        VLOR_DMNCLIO_GRPAL: AuxValDomicilio,
         CNTDAD_GRPOS: "0",
         MNMO_PRSNAS_XGRUPO: "0",
         MNMO_UNDDES_PRCPNTE: "0",
@@ -1206,19 +1199,17 @@ export class ValoracionComponent implements OnInit {
         VLOR_FNAL_PRTCPNTE: "0",
         ID_SCTOR_OFRTA: this.SessionSectorSel,
         LINKLANDIGN: this.LinkSms,
-        VALOR_REFERENCIA: this.VlReferencia,
+        VALOR_REFERENCIA: "0",
         TIPO_CUPON: 0,
         DES_CUPONREGALO: "0",
         IMG_CUPONREGALO: "0",
         IDTIPODOMICILIO: this.IdDomicilio,
-        VLORAPRTRDMCLIO: AuxValorApartirde
+        VLORAPRTRDMCLIO: AuxValorApartirde,
+        NumUsuaCupo:0
       }
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         var arreglores = ResultUpdate.split('|')
         this.Respuesta = arreglores[1];
-        this.ValidaToppings = '1';
-        this.MuestraValUnidades = '1';
-        this.CargarTextoCorreoIndividual();
       })
       this.SumaPrecios = parseInt(this.VlrDomiI) + parseInt(this.PreFinI);
       this.ValorUni = this.SumaPrecios.toString();
@@ -1262,8 +1253,6 @@ export class ValoracionComponent implements OnInit {
       AuxValDomicilio = "0";
       valorDomicilio = true;
     }
-
-    //console.log(valorDomicilio)
 
 
     this.Respuesta = '';
@@ -1309,7 +1298,6 @@ export class ValoracionComponent implements OnInit {
     }
 
     if (
-      (this.VlReferencia == '' || this.VlReferencia == null) ||
       (this.SessionTipoComG == '' || this.SessionTipoComG == null) ||
       (validacomisionG == '' || validacomisionG == null) ||
       (this.SessionTipoDescuento == '0' || this.SessionTipoDescuento == null || this.SessionTipoDescuento == '') ||
@@ -1318,17 +1306,12 @@ export class ValoracionComponent implements OnInit {
       (this.MinUnidLider == '' || this.MinUnidLider == null) ||
       (this.MaxUnidLider == '' || this.MaxUnidLider == null) ||
       (valorDomicilio == false) ||
-      (this.PrecioFinPart == '' || this.PrecioFinPart == null)
+      (this.PrecioFinPart == '' || this.PrecioFinPart == null) ||
+      (this.NumeroUsuariosCupon == '' || this.NumeroUsuariosCupon == null)
     ) {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
-        {
-          campo: 'VlReferencia',
-          campof: 'Valor referencia',
-          class: '',
-          imagen: ''
-        },
         {
           campo: 'TipoCom',
           campof: 'Tipo comisión',
@@ -1360,6 +1343,12 @@ export class ValoracionComponent implements OnInit {
           imagen: ''
         },
         {
+          campo: 'NumUsuariosCupon',
+          campof: 'Numero de usuario por cupon',
+          class: '',
+          imagen: ''
+        },
+        {
           campo: 'UndMin',
           campof: 'Unidades mínimo',
           class: '',
@@ -1386,17 +1375,7 @@ export class ValoracionComponent implements OnInit {
       ];
 
       for (var i = 0; i < this.ArrayCamposValida.length; i++) {
-        if (this.ArrayCamposValida[i].campo == 'VlReferencia') {
-          if (this.VlReferencia == '' || this.VlReferencia == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-          else {
-            this.ArrayCamposValida[i].class = 'TextFine'
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
-          }
-        }
-        else if (this.ArrayCamposValida[i].campo == 'TipoCom') {
+        if (this.ArrayCamposValida[i].campo == 'TipoCom') {
           if (this.SessionTipoComG == '' || this.SessionTipoComG == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
@@ -1473,6 +1452,14 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].campof = 'Descripcion tipo regalo'
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+        } else if (this.ArrayCamposValida[i].campo == 'NumUsuariosCupon') {
+          if (this.NumeroUsuariosCupon == '' || this.NumeroUsuariosCupon == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert';
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png';
+          } else {
+            this.ArrayCamposValida[i].class = 'TextFine';
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
           }
         } else if (this.ArrayCamposValida[i].campo == 'UndMin') {
           if ((this.MinUnidLider == '' || this.MinUnidLider == null)) {
@@ -1576,7 +1563,7 @@ export class ValoracionComponent implements OnInit {
         VLOR_CMSION_INDVDUAL: item.VLOR_CMSION_INDVDUAL,
         MNMO_UNDDES_INDVDUAL: item.MNMO_UNDDES_INDVDUAL,
         MXMO_UNDDES_INDVDUAL: item.MXMO_UNDDES_INDVDUAL,
-        VLOR_DMNCLIO_INDVDUAL: item.VLOR_DMNCLIO_INDVDUAL,
+        VLOR_DMNCLIO_INDVDUAL: AuxValDomicilio,
         VLOR_FNAL_INDVDUAL: item.VLOR_FNAL_INDVDUAL,
         TPO_CMSION_GRPAL: Number(this.SessionTipoComG),
         VLOR_CMSION_GRPAL: validacomisionG,
@@ -1594,19 +1581,20 @@ export class ValoracionComponent implements OnInit {
         ID_SCTOR_OFRTA: this.SessionSectorSel,
         LINKLANDIGN: this.LinkSms,
         TPO_DESCUENTO: Number(this.SessionTipoDescuento),
-        VALOR_REFERENCIA: this.VlReferencia,
+        VALOR_REFERENCIA: "0",
         TIPO_CUPON: Number(this.IdTipoCupon),
         DES_CUPONREGALO: SelectTipoCupon.DES_CUPONREGALO,
         IMG_CUPONREGALO: SelectTipoCupon.IMG_CUPONREGALO,
         IDTIPODOMICILIO: this.IdDomicilio,
-        VLORAPRTRDMCLIO: AuxValorApartirde
+        VLORAPRTRDMCLIO: AuxValorApartirde,
+        NumUsuaCupo:this.NumeroUsuariosCupon
       }
+      console.log(Body)
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         this.Respuesta = '';
         var arreglores = ResultUpdate.split('|')
         this.Respuesta = arreglores[1];
         if (Number(arreglores[0]) > 0) {
-          this.ValidaToppings = '1';
           this.serviciosvaloracion.constextosoferta('1', this.SessionOferta, this.SessionSectorSel).subscribe(ResultUpdate => {
             if (ResultUpdate.length > 0) {
               this.ArrayTextoModifica = ResultUpdate;
@@ -1794,9 +1782,19 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
-  visualizaImagenTopping(ModalImagen: any, imagenesAdicional: string) {
+  ArrayToppingSeleccionado: any = [];
+  visualizaImagenTopping(ModalImagen: any, topping: any) {
+    if (topping.imagen != null && topping.imagen != undefined) {
+      this.ArrayToppingSeleccionado.push({ imagen: topping.imagen });
+    }
+    if (topping.ImgDos != null && topping.ImgDos != undefined) {
+      this.ArrayToppingSeleccionado.push({ imagen: topping.ImgDos });
+    }
+    if (topping.ImgTres != null && topping.ImgTres != undefined) {
+      this.ArrayToppingSeleccionado.push({ imagen: topping.ImgTres });
+    }
+    console.log(this.ArrayToppingSeleccionado)
     this.modalService.open(ModalImagen, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    this.consultaimagen = this.RutaImagenTopping + imagenesAdicional;
   }
 
 
@@ -2082,7 +2080,6 @@ export class ValoracionComponent implements OnInit {
   ConsultaCuponesOferta() {
     this.serviciosvaloracion.ConsultaCuponesOferta('1', this.IdOferta, '0').subscribe(Resultado => {
       this.ArrayCuponesOferta = Resultado;
-      //console.log(Resultado)
     })
   }
 
@@ -2092,7 +2089,6 @@ export class ValoracionComponent implements OnInit {
       Id_cuponCodigo: registro.codigo_grupo
     }
     this.serviciosvaloracion.ModificarCupon('4', DatosInsert).subscribe(Resultado => {
-      //console.log(Resultado)
       this.ConsultaCuponesOferta();
     })
 
@@ -2104,7 +2100,6 @@ export class ValoracionComponent implements OnInit {
       Id_cuponCodigo: this.IdCupon
     }
     this.serviciosvaloracion.ModificarCupon('3', DatosInsert).subscribe(Resultado => {
-      console.log(Resultado)
       this.ConsultaCuponesOferta();
     })
 
@@ -2113,7 +2108,6 @@ export class ValoracionComponent implements OnInit {
 
   ListaTipoDomicilio() {
     this.serviciosvaloracion.consTipoDomicilio('1').subscribe(Resultcons => {
-      console.log(Resultcons)
       this.ArrayDomicilio = Resultcons;
       this.keywordDomicilio = "Descripcion";
     });
@@ -2124,5 +2118,52 @@ export class ValoracionComponent implements OnInit {
   }
   selectDomicilio(item: any) {
     this.IdDomicilio = item.IdDomicilio;
+  }
+
+  ActualizaValorReferencia(ValorReferencia: string, templateMensaje: any) {
+    if (ValorReferencia != "" && ValorReferencia != "0" && ValorReferencia != null && ValorReferencia != undefined) {
+      const Body = {
+        CD_CNSCTVO: this.SessionOferta,
+        TPO_OFRTA: this.SessionTipoOferta,
+        TPO_CMSION_INDVDUAL: "0",
+        VLOR_CMSION_INDVDUAL: "0",
+        MNMO_UNDDES_INDVDUAL: "0",
+        MXMO_UNDDES_INDVDUAL: "0",
+        VLOR_DMNCLIO_INDVDUAL: "0",
+        VLOR_FNAL_INDVDUAL: "0",
+        TPO_CMSION_GRPAL: 0,
+        VLOR_CMSION_GRPAL: "0",
+        MNMO_UNDDES_LIDER: "0",
+        MXMO_UNDDES_LIDER: "0",
+        PRCNTJE_DCTO_LIDER: "0",
+        VLOR_DMNCLIO_GRPAL: "0",
+        CNTDAD_GRPOS: "0",
+        MNMO_PRSNAS_XGRUPO: "0",
+        MNMO_UNDDES_PRCPNTE: "0",
+        MXMO_UNDDES_PRCPNTE: "0",
+        CNTDAD_CMPRAS_INDVDLES: "0",
+        VLOR_ARRNQUE_LIDER: "0",
+        VLOR_FNAL_PRTCPNTE: "0",
+        ID_SCTOR_OFRTA: this.SessionSectorSel,
+        LINKLANDIGN: "0",
+        VALOR_REFERENCIA: ValorReferencia,
+        TIPO_CUPON: 0,
+        DES_CUPONREGALO: "0",
+        IMG_CUPONREGALO: "0",
+        IDTIPODOMICILIO: "0",
+        VLORAPRTRDMCLIO: "0",
+        NumUsuaCupo:0
+      }
+      this.serviciosvaloracion.ActualizarOfertaValoracion('6', Body).subscribe(ResultUpdate => {
+        var arreglores = ResultUpdate.split('|');
+        if (arreglores[0].toString() != "-1") {
+          this.ValidaToppings = '1';
+          this.MuestraValUnidades = '1';
+          this.CargarTextoCorreoIndividual();
+        }
+        this.Respuesta = arreglores[1];
+        this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
+      });
+    }
   }
 }

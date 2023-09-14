@@ -651,9 +651,6 @@ export class SectorizacionComponent implements OnInit {
     this.ValidaCoord = '3';
     this.ConsultaBodegas();
 
-    console.log('SELECCIONAR SECOTR');
-    console.log(item);
-
     this.ID_SCTOR_OFRTAAUX = item.SCTOR_OFRTA;
     this.imagen_sctorAux = item.imagen_sctor;
   }
@@ -847,7 +844,9 @@ export class SectorizacionComponent implements OnInit {
         ID_SECTOR: this.SectModif,
         NOMBRE_IMG: this.NomImagen1
       }
+      console.log(datos)
       this.sectoresservices.ModificarImagenSector('3', datos).subscribe(Resultado => {
+        console.log(Resultado)
         this.modalService.dismissAll();
         this.ConsultaSectoresOferta();
       })

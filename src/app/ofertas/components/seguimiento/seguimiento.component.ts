@@ -1,16 +1,23 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { MetodosglobalesService } from './../../../core/metodosglobales.service'
-import { ValorarofertaService } from './../../../core/valoraroferta.service'
+import {
+  Component, OnInit, ViewChild, HostListener,
+  OnChanges,
+  DoCheck,
+  AfterContentInit,
+  AfterContentChecked,
+  AfterViewInit,
+  AfterViewChecked,
+  OnDestroy,
+} from '@angular/core';
+import { ValorarofertaService } from './../../../core/valoraroferta.service';
 import { NgbModal, NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router';
-import { Color, LegendPosition, ScaleType } from '@swimlane/ngx-charts';
+import { Color, ScaleType } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-seguimiento',
   templateUrl: './seguimiento.component.html',
   styleUrls: ['./seguimiento.component.css']
 })
-export class SeguimientoComponent implements OnInit {
+export class SeguimientoComponent implements AfterContentInit, OnInit {
   @ViewChild('ModalMensaje', { static: false }) ModalMensaje: any;
 
   selecsector: string = '0'
@@ -70,29 +77,41 @@ export class SeguimientoComponent implements OnInit {
     group: ScaleType.Ordinal,
     domain: ["#31C231", "#FAA432", "#F02C29", "#AAAAAA"]
   };
-  viewBar: [number, number] = [800, 200];
+  viewBar: [number, number] = [1000, 200];
   ArrayValores: any = [];
   Detalle: string = '';
-  Conductor: string = ''
+  Conductor: string = '';
+  screenWidth: number = 0;
 
 
   constructor(
     private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService) { }
 
-  ngAfterViewInit() {
-    console.log(document.getElementById("mapaS") as HTMLElement)
+  ngAfterContentInit(): void {
+    var div = document.getElementById("rowGraficas");
+    if (div) {
+      this.RezizePantalla(div?.clientWidth);
+    }
   }
 
-  ngOnInit(): void {
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    var div = document.getElementById("rowGraficas");
+    if (div) {
+      this.screenWidth = div?.clientWidth;
+      this.RezizePantalla(div?.clientWidth);
+    }
+  }
 
+
+  ngOnInit(): void {
     this.ConsultaOferta();
   }
 
   ConsultaTransportista(idconductor: string, idtransportista: string) {
     this.ServiciosValorar.ConsultaDetalleCond('1', idconductor, idtransportista).subscribe(Resultado => {
       this.ArrayConductor = Resultado
-      console.log(Resultado)
     })
   }
 
@@ -175,7 +194,6 @@ export class SeguimientoComponent implements OnInit {
       }
       //this.ServiciosValorar.ConsultaSeguimiento('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
       this.ServiciosValorar.ConsultaSeguimientoEntregas('1', this.ConductorSelect, this.SelectorSector, this.SelectorOferta, datos).subscribe(Resultado => {
-        console.log(Resultado)
         if (Resultado.length == 0) {
           this.Respuesta = 'No encontramos registros de compras para este sector.';
           this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
@@ -186,9 +204,7 @@ export class SeguimientoComponent implements OnInit {
           this.ArrayConsultaSeg = Resultado;
           this.ValidaInsertSec = '1';
           this.ValidaInsertSecs = '1';
-          this.ConsReporteEntregas()
-          
-          
+          this.ConsReporteEntregas();
         }
       })
     }
@@ -208,7 +224,6 @@ export class SeguimientoComponent implements OnInit {
       return results;
     })
       .catch((e) => {
-        console.log("Geocode was not successful for the following reason: " + e);
       });
   }
 
@@ -219,10 +234,8 @@ export class SeguimientoComponent implements OnInit {
       const { results } = result;
       //this.AgregarSitios();
       var auxcoor = this.ArrayConsultaSeg[0].COORDENADAS_ENTR.split(",");
-      console.log(auxcoor)
       lat = parseFloat(auxcoor[0].trim());
       long = parseFloat(auxcoor[1].trim());
-      console.log(document.getElementById("mapaS") as HTMLElement)
       this.map = new google.maps.Map(
         document.getElementById("mapaS") as HTMLElement,
         {
@@ -237,7 +250,6 @@ export class SeguimientoComponent implements OnInit {
       return results;
     })
       .catch((e) => {
-        console.log("Geocode was not successful for the following reason: " + e);
       });
   }
 
@@ -260,12 +272,10 @@ export class SeguimientoComponent implements OnInit {
   }
 
   MostrarDetalle(Entrega: any, TemplateDetalle: any) {
-    console.log(Entrega)
     this.TituloModal = 'Detalle Entregas'
     var IdGrupo = Entrega.IdGrupoMilla
     var IdCarro = Entrega.ID_CARRO
     this.ServiciosValorar.ConsultaDetalleEntregas('1', IdCarro).subscribe(Resultado => {
-      console.log(Resultado)
       this.ArrayDetalle = Resultado;
     })
     this.modalService.open(TemplateDetalle, { size: 'md', centered: true });
@@ -283,15 +293,15 @@ export class SeguimientoComponent implements OnInit {
     this.markers = [];
     var lat: number;
     var long: number;
-
     for (var i = 0; i < this.ArrayConsultaSeg.length; i++) {
       var auxcoor = this.ArrayConsultaSeg[i].COORDENADAS_ENTR.split(",");
       lat = parseFloat(auxcoor[0]);
       long = parseFloat(auxcoor[1]);
       features.push({ position: new google.maps.LatLng(lat, long), Estado: this.ArrayConsultaSeg[i].ESTDO, NomCli: this.ArrayConsultaSeg[i].NOMBRES_PERSONA + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_PERSONA, IdCompra: this.ArrayConsultaSeg[i].ID_CARRO });
-      Polylines.push({ lat: lat, lng: long });
+      if (this.ArrayConsultaSeg[i].ESTDO != "4") {
+        Polylines.push({ lat: lat, lng: long });
+      }
     }
-
     for (let i = 0; i < features.length; i++) {
       var icon;
       var LabelOption;
@@ -322,8 +332,6 @@ export class SeguimientoComponent implements OnInit {
         label: LabelOption
       });
       this.markers.push(marker);
-
-
       const infoWindow = new google.maps.InfoWindow();
       this.markers[i].addListener("click", () => {
         this.InfoWindow(this.markers[i].getZIndex());
@@ -349,7 +357,6 @@ export class SeguimientoComponent implements OnInit {
 
   ConsultaSeguimiento() {
     this.ServiciosValorar.ConsultaSeguimiento('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
-      console.log(Resultado)
     })
   }
 
@@ -495,7 +502,6 @@ export class SeguimientoComponent implements OnInit {
   lastPanelId: string = '';
   defaultPanelId: string = "panel2";
   panelShadow($event: NgbPanelChangeEvent, shadow: any) {
-    console.log($event);
 
     const { nextState } = $event;
 
@@ -525,14 +531,12 @@ export class SeguimientoComponent implements OnInit {
   ConsultarConductores() {
     this.ServiciosValorar.ConsultaConductoresAsociados('1', this.SelectorOferta, this.SelectorSector, '2').subscribe(Resultado => {
       this.ArrayConductores = Resultado
-      console.log(Resultado)
     })
   }
 
   ConsReporteEntregas() {
-    this.ServiciosValorar.ConsultaReporteEntregas('1', this.SelectorOferta, this.SelectorSector, '0').subscribe(Resultado => {
+    this.ServiciosValorar.ConsultaReporteEntregas('1', this.SelectorOferta, this.SelectorSector, this.ConductorSelect).subscribe(Resultado => {
       this.ArrayReporte = Resultado;
-      console.log(Resultado)
       for (var i = 0; this.ArrayReporte.length > i; i++) {
         const fila = {
           "name": this.ArrayReporte[i].PRODUCTO, "series":
@@ -578,7 +582,10 @@ export class SeguimientoComponent implements OnInit {
   CambioDetalle(Bandera: string) {
     this.Detalle = Bandera;
     this.ValidaInsertSecs == '1'
-    this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
+    this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad });
   }
+  RezizePantalla(Tamanio: number) {
 
+    this.viewBar = [Tamanio, 200];
+  }
 }

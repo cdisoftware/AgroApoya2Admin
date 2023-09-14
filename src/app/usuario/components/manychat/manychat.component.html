@@ -75,5 +75,5 @@
 
 <div class="divloader" *ngIf="Loader == true">
     <img src="../../../../assets/animate/svg-loaders/circles.svg" />
-    <h3 style="color: #397c97;">Enviando mensajes...</h3>
+    <h3 style="color: #397c97;">Enviando mensajes...    {{NunMensajesEnviados}} de {{this.DataQuery.length}}</h3>
   </div>
