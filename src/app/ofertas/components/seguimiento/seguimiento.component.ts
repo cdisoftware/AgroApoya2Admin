@@ -19,6 +19,7 @@ import { Color, ScaleType } from '@swimlane/ngx-charts';
 })
 export class SeguimientoComponent implements AfterContentInit, OnInit {
   @ViewChild('ModalMensaje', { static: false }) ModalMensaje: any;
+  @ViewChild('ModalMapaSugerido', { static: false }) ModalMapaSugerido: any;
 
   selecsector: string = '0'
   selectConductor: string = '0'
@@ -38,6 +39,9 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   NomCiudad: string = 'Bogotá';
   NomDepa: string = 'Bogotá';
   infoWindow = new google.maps.InfoWindow();
+
+  ArrayDataRutaSugerida: any = [];
+  VerBtnMapSugerido: boolean = false;
 
   //Buscar
   ArrayConsultaSeg: any = [];
@@ -200,6 +204,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
           this.ValidaInsertSec = '0';
           this.ValidaInsertSecs = '0';
         } else {
+          this.VerBtnMapSugerido = true;
           this.Detalle = '1';
           this.ArrayConsultaSeg = Resultado;
           this.ValidaInsertSec = '1';
@@ -585,7 +590,101 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad });
   }
   RezizePantalla(Tamanio: number) {
-
     this.viewBar = [Tamanio, 200];
   }
+
+
+
+
+
+
+
+
+
+  //#region MapaRutaSugerida
+  CargarRutaSugerida() {
+    const datos = {
+      coordernadas: "0"
+    }
+    this.ServiciosValorar.ConsultaSeguimientoEntregas('2', this.ConductorSelect, this.SelectorSector, this.SelectorOferta, datos).subscribe(Resultado => {
+      this.modalService.open(this.ModalMapaSugerido, { size: 'xl', centered: true });
+      this.ArrayDataRutaSugerida = Resultado;
+      if (this.ArrayDataRutaSugerida.length > 0) {
+        this.CentramapaRutAsugerida({ address: this.NomDepa + ',' + this.NomCiudad });
+      }
+    });
+  }
+  CentramapaRutAsugerida(request: google.maps.GeocoderRequest): void {
+    var lat: number;
+    var long: number;
+    this.geocoder.geocode(request).then((result) => {
+      const { results } = result;
+      //this.AgregarSitios();
+      var auxcoor = this.ArrayDataRutaSugerida[0].COORDENADAS_ENTR.split(",");
+      lat = parseFloat(auxcoor[0].trim());
+      long = parseFloat(auxcoor[1].trim());
+      this.map = new google.maps.Map(
+        document.getElementById("mapaRutaSugerida") as HTMLElement,
+        {
+          center: { lat: lat, lng: long },
+          zoom: 11,
+        }
+      );
+
+
+      this.AgregarSitiosMapSugerido();
+      return results;
+    })
+      .catch((e) => {
+      });
+  }
+  AgregarSitiosMapSugerido() {
+    const features = [];
+    const Polylines = [];
+    this.markers = [];
+    var lat: number;
+    var long: number;
+    for (var i = 0; i < this.ArrayDataRutaSugerida.length; i++) {
+      var auxcoor = this.ArrayDataRutaSugerida[i].COORDENADAS_ENTR.split(",");
+      lat = parseFloat(auxcoor[0]);
+      long = parseFloat(auxcoor[1]);
+      features.push({ position: new google.maps.LatLng(lat, long), Estado: this.ArrayDataRutaSugerida[i].ESTDO, NomCli: this.ArrayDataRutaSugerida[i].NOMBRES_PERSONA + ' ' + this.ArrayDataRutaSugerida[i].APELLIDOS_PERSONA, IdCompra: this.ArrayDataRutaSugerida[i].ID_CARRO });
+      Polylines.push({ lat: lat, lng: long });
+    }
+    for (let i = 0; i < features.length; i++) {
+      var icon = "../../../../assets/ImagenesAgroApoya2Adm/pinSugerido.png";
+
+      const labelOptions: google.maps.MarkerLabel = {
+        text: ''+(i+1), // texto del label
+        color: '#fff', // Color del texto
+        fontWeight: 'bold', // Peso de la fuente
+        fontSize: '12px', // Tamaño de la fuente
+        fontFamily: 'Arial', // Familia de la fuente
+        className: 'textPin' // Clase CSS personalizada
+      };
+
+      var marker = new google.maps.Marker({
+        title: features[i].NomCli,
+        animation: google.maps.Animation.DROP,
+        position: features[i].position,
+        map: this.map,
+        icon: icon,
+        zIndex: i,
+        label: labelOptions
+      });
+      this.markers.push(marker);
+    }
+
+    const flightPath = new google.maps.Polyline({
+      path: Polylines,
+      geodesic: true,
+      strokeColor: "#397c97",
+      strokeOpacity: 1.0,
+      strokeWeight: 3,
+    });
+
+    flightPath.setMap(this.map);
+  }
+  //#endregion MapaRutaSugerida
+
 }
