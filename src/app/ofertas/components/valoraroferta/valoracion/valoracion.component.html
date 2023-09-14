@@ -470,13 +470,13 @@
                         </div>
                     </div>
                     <div class="row" *ngIf="IdTipoCupon == '1'">
-                        <div class="col-sm-8">
+                        <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Descripción</label>
                             <input type="text" class="col-sm-12 form-control mt-1 textBox"
                                 placeholder="Descripción (Obligatorio)" [(ngModel)]="DescripcionRegalo" />
                         </div>
 
-                        <div class="col-6 col-sm-2">
+                        <div class="col-6 col-sm-4">
                             <label class="col-sm-12 Llave">Numero de usuario por cupon</label>
                             <input type="number" class="col-12 form-control mt-1 textBox"
                                 onkeyup="if(parseInt(this.value)>100){ this.value=100; return false; }"

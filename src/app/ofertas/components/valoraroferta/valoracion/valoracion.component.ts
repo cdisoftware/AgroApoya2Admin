@@ -754,6 +754,10 @@ export class ValoracionComponent implements OnInit {
         if (ResultCons[0].desc_cupon != null || ResultCons[0].desc_cupon != '') {
           this.DescripcionRegalo = ResultCons[0].desc_cupon;
         }
+        console.log(ResultCons[0])
+        if (ResultCons[0].NumUsuaCupo != null || ResultCons[0].NumUsuaCupo != '') {
+          this.NumeroUsuariosCupon = ResultCons[0].NumUsuaCupo;
+        }
         this.VlrDomiI = ResultCons[0].vlor_dmnclio_grpal;
 
         this.MuestraValoReferencia = '1';
@@ -1301,7 +1305,8 @@ export class ValoracionComponent implements OnInit {
       (this.MinUnidLider == '' || this.MinUnidLider == null) ||
       (this.MaxUnidLider == '' || this.MaxUnidLider == null) ||
       (valorDomicilio == false) ||
-      (this.PrecioFinPart == '' || this.PrecioFinPart == null)
+      (this.PrecioFinPart == '' || this.PrecioFinPart == null) ||
+      (this.NumeroUsuariosCupon == '' || this.NumeroUsuariosCupon == null)
     ) {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
@@ -1333,6 +1338,12 @@ export class ValoracionComponent implements OnInit {
         {
           campo: 'DescTipoCupon',
           campof: '',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'NumUsuariosCupon',
+          campof: 'Numero de usuario por cupon',
           class: '',
           imagen: ''
         },
@@ -1440,6 +1451,14 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].campof = 'Descripcion tipo regalo'
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+        } else if (this.ArrayCamposValida[i].campo == 'NumUsuariosCupon') {
+          if (this.NumeroUsuariosCupon == '' || this.NumeroUsuariosCupon == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert';
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png';
+          } else {
+            this.ArrayCamposValida[i].class = 'TextFine';
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
           }
         } else if (this.ArrayCamposValida[i].campo == 'UndMin') {
           if ((this.MinUnidLider == '' || this.MinUnidLider == null)) {
@@ -1764,10 +1783,10 @@ export class ValoracionComponent implements OnInit {
   visualizaImagenTopping(ModalImagen: any, topping: any) {
     if (topping.imagen != null && topping.imagen != undefined) {
       this.ArrayToppingSeleccionado.push({ imagen: topping.imagen });
-    } 
+    }
     if (topping.ImgDos != null && topping.ImgDos != undefined) {
       this.ArrayToppingSeleccionado.push({ imagen: topping.ImgDos });
-    } 
+    }
     if (topping.ImgTres != null && topping.ImgTres != undefined) {
       this.ArrayToppingSeleccionado.push({ imagen: topping.ImgTres });
     }
