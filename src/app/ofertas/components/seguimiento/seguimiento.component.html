@@ -125,11 +125,12 @@
                                 <th>Celular</th>
                                 <th>Dirección</th>
                                 <th>Estado</th>
-                                <th>Valor</th>
                                 <th>Tipo Pago</th>
-                                <th>Conductor</th>
                                 <th>Orden Entrega</th>
                                 <th>Fecha</th>
+                                <th>Valor productos</th>
+                                <th>Domicilio</th>
+                                <th>Valor Total</th>
                                 <th colspan="2">Acciones</th>
                             </tr>
                             <tr *ngFor="let Seguimiento of ArrayConsultaSeg ">
@@ -138,11 +139,12 @@
                                 <td>{{Seguimiento.DRCCION }}</td>
                                 <td [ngClass]="Seguimiento.ESTDO !='4' ? 'ColorTextEntregado' : 'ColorTextDevuelto' ">
                                     {{Seguimiento.descEstado}}</td>
-                                <td>{{Seguimiento.VLOR_PGAR | currency}}</td>
                                 <td>{{Seguimiento.descTipoPago}}</td>
-                                <td>{{Seguimiento.NMBRE_CNDCTOR}}</td>
                                 <td>{{Seguimiento.orden}}</td>
                                 <td>{{Seguimiento.fecha_entrega}} - {{Seguimiento.hora_entrega}}</td>
+                                <td>{{Seguimiento.VLOR_PGARSINDOMICILIO | currency}}</td>
+                                <td>{{Seguimiento.VLOR_DOMICILIO  | currency}}</td>
+                                <td>{{Seguimiento.VLOR_PGAR | currency}}</td>
                                 <td colspan="2">
                                     <button class="SinEstilo " (click)="MostrarMapa(Seguimiento, ModalMapa)">
                                         <img src="./../../../../../assets/ImagenesAgroApoya2Adm/mapaSec.png"

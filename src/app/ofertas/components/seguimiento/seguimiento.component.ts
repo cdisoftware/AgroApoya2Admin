@@ -198,6 +198,8 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       }
       //this.ServiciosValorar.ConsultaSeguimiento('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
       this.ServiciosValorar.ConsultaSeguimientoEntregas('1', this.ConductorSelect, this.SelectorSector, this.SelectorOferta, datos).subscribe(Resultado => {
+        console.log('Resultado********')
+        console.log(Resultado)
         if (Resultado.length == 0) {
           this.Respuesta = 'No encontramos registros de compras para este sector.';
           this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
