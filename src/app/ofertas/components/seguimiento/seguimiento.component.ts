@@ -87,6 +87,9 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   Conductor: string = '';
   screenWidth: number = 0;
 
+  //Valor Domicilio General
+  ValorDomicilio: number = 0;
+
 
   constructor(
     private modalService: NgbModal,
@@ -204,6 +207,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
           this.ValidaInsertSec = '0';
           this.ValidaInsertSecs = '0';
         } else {
+          this.ValorDomicilio = Resultado[0].VlorTotalDomicilio;
           this.VerBtnMapSugerido = true;
           this.Detalle = '1';
           this.ArrayConsultaSeg = Resultado;
