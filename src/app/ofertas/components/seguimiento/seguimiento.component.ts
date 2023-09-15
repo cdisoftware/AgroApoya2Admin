@@ -87,6 +87,9 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   Conductor: string = '';
   screenWidth: number = 0;
 
+  //Valor Domicilio General
+  ValorDomicilio: number = 0;
+
 
   constructor(
     private modalService: NgbModal,
@@ -198,14 +201,13 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       }
       //this.ServiciosValorar.ConsultaSeguimiento('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
       this.ServiciosValorar.ConsultaSeguimientoEntregas('1', this.ConductorSelect, this.SelectorSector, this.SelectorOferta, datos).subscribe(Resultado => {
-        console.log('Resultado********')
-        console.log(Resultado)
         if (Resultado.length == 0) {
           this.Respuesta = 'No encontramos registros de compras para este sector.';
           this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
           this.ValidaInsertSec = '0';
           this.ValidaInsertSecs = '0';
         } else {
+          this.ValorDomicilio = Resultado[0].VlorTotalDomicilio;
           this.VerBtnMapSugerido = true;
           this.Detalle = '1';
           this.ArrayConsultaSeg = Resultado;
@@ -278,12 +280,20 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     this.modalService.open(TemplateMapa, { size: 'md', centered: true });
   }
 
+  NumProductos: number = 0;
+  ValorTotalCompra: string = "";
   MostrarDetalle(Entrega: any, TemplateDetalle: any) {
+    this.ValorTotalCompra = Entrega.VLOR_PGAR;
+    this.NumProductos = 0;
     this.TituloModal = 'Detalle Entregas'
     var IdGrupo = Entrega.IdGrupoMilla
     var IdCarro = Entrega.ID_CARRO
     this.ServiciosValorar.ConsultaDetalleEntregas('1', IdCarro).subscribe(Resultado => {
       this.ArrayDetalle = Resultado;
+      console.log(this.ArrayDetalle)
+      for (var i = 0; i < this.ArrayDetalle.length; i++) {
+        this.NumProductos = this.NumProductos + this.ArrayDetalle[i].Cantidad
+      }
     })
     this.modalService.open(TemplateDetalle, { size: 'md', centered: true });
   }
@@ -540,11 +550,37 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       this.ArrayConductores = Resultado
     })
   }
-
+  ObjetEntrega: any;
+  TotalCosolidado: number = 0;
   ConsReporteEntregas() {
     this.ServiciosValorar.ConsultaReporteEntregas('1', this.SelectorOferta, this.SelectorSector, this.ConductorSelect).subscribe(Resultado => {
       this.ArrayReporte = Resultado;
+      console.log(this.ArrayReporte)
+
+      var NumRecibidos: number = 0;
+      var NumPendientes: number = 0;
+      var NumDevuelto: number = 0;
+      var NumTotal: number = 0;
+
+      var ValEntregado: number = 0;
+      var ValPendiente: number = 0;
+      var ValDevuelto: number = 0;
+      var ValTotalRecaudo: number = 0;
+
       for (var i = 0; this.ArrayReporte.length > i; i++) {
+        NumRecibidos = NumRecibidos + parseInt(this.ArrayReporte[i].CANTIDAD_ENTREGADA.toString());
+        NumPendientes = NumPendientes + parseInt(this.ArrayReporte[i].CANTIDAD_PENDIENTE.toString());
+        NumDevuelto = NumDevuelto + parseInt(this.ArrayReporte[i].CANTIDAD_DEVUELTA.toString());
+        NumTotal = NumTotal + parseInt(this.ArrayReporte[i].CANTIDAD_TOTAL.toString());
+
+        ValEntregado = ValEntregado + parseInt(this.ArrayReporte[i].VLR_RECAUDADO.toString());
+        ValPendiente = ValPendiente + parseInt(this.ArrayReporte[i].VLR_PENDIENTE_RECAUDO.toString());
+        ValDevuelto = ValDevuelto + parseInt(this.ArrayReporte[i].VLOR_DEVOLUCION.toString());
+        ValTotalRecaudo = ValTotalRecaudo + parseInt(this.ArrayReporte[i].VLOR_TTL_RECAUDAR.toString());
+
+
+
+
         const fila = {
           "name": this.ArrayReporte[i].PRODUCTO, "series":
             [
@@ -582,6 +618,21 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         }
         this.ArrayValores.push(fila2)
       }
+      this.ObjetEntrega = [
+        {
+          TotalRecibido: NumRecibidos,
+          TotalPendiente: NumPendientes,
+          TotalDevuelto: NumDevuelto,
+          TotalProducto: NumTotal
+        },
+        {
+          ValTotalEntregado: ValEntregado,
+          ValTotalPendiente: ValPendiente,
+          ValTotalDevuelto: ValDevuelto,
+          ValTotalRecaudo: ValTotalRecaudo
+        }
+      ];
+      this.TotalCosolidado = ValTotalRecaudo + 100000;
       this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
     })
   }
@@ -657,7 +708,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       var icon = "../../../../assets/ImagenesAgroApoya2Adm/pinSugerido.png";
 
       const labelOptions: google.maps.MarkerLabel = {
-        text: ''+(i+1), // texto del label
+        text: '' + (i + 1), // texto del label
         color: '#fff', // Color del texto
         fontWeight: 'bold', // Peso de la fuente
         fontSize: '12px', // Tamaño de la fuente
