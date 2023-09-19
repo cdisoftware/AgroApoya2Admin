@@ -170,6 +170,9 @@ export class SectorizacionComponent implements OnInit {
 
   //#endregion EditarBodega
 
+
+  ImagenSector: string = "";
+
   //#endregion William
 
   constructor(private modalService: NgbModal, public sectoresservices: ValorarofertaService, public rutas: Router, private cookies: CookieService, private ServiciosGenerales: MetodosglobalesService, private ServiciosOferta: CrearofertaService) {
@@ -224,6 +227,7 @@ export class SectorizacionComponent implements OnInit {
   }
   ConsultaDetalleOferta() {
     this.sectoresservices.ConsultaOferta('1', this.SessionOferta).subscribe(ResultConsu => {
+      console.log(ResultConsu)
       this.DataOferta = ResultConsu;
       this.CantidadDispinible = ResultConsu[0].Unidades_disponibles;
       this.SessionNomOferta = ResultConsu[0].Nombre_Producto + ' - ' + ResultConsu[0].Descripcion_empaque + ' - ' + ResultConsu[0].Nombre_productor;
@@ -315,7 +319,9 @@ export class SectorizacionComponent implements OnInit {
 
   ConsultaSectoresOferta() {
     this.sectoresservices.ConsultaSectoresOferta('1', this.SessionOferta).subscribe(ResultConsulta => {
+      console.log(ResultConsulta)
       if (ResultConsulta.length > 0) {
+        this.ImagenSector = ResultConsulta[0].imagen_sctor;
         this.ValidaConsulta = '0';
         this.DataSectorOferta = ResultConsulta;
         this.CantidadSectores = 0
@@ -712,37 +718,41 @@ export class SectorizacionComponent implements OnInit {
   }
 
   Enviar(templateRespuesta: any) {
-    this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-    if (this.CantidadSectores == this.SessionCantSecOferta) {
-      const Body = {
-        usucodig: this.SessionIdUsuario,
-        cnctivoOferta: this.SessionOferta,
-        ObsEstado: "",
-        estado: 13,
-        parametro1: "",
-        parametro2: "",
-        parametro3: ""
-      }
-      this.sectoresservices.ActualizaEstadoOferta('3', Body).subscribe(ResultUpda => {
-        var respuesta = ResultUpda.split('|')
-        this.Respuesta = respuesta[1];
-        if (respuesta[0] != '-1') {
-          this.rutas.navigateByUrl('/home/transportista');
-          this.ConsultaSectoresOferta();
-          for (var i = 0; i < this.DataSectorOferta.length; i++) {
-            this.sectoresservices.CorreoMasivo('1', '6', '3', this.SessionOferta, this.DataSectorOferta[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
-            })
-          }
-          this.EnviarSms('4');
-          this.InsertaLinks();
+    this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
+    if(this.ImagenSector != ""){
+      if (this.CantidadSectores == this.SessionCantSecOferta) {
+        const Body = {
+          usucodig: this.SessionIdUsuario,
+          cnctivoOferta: this.SessionOferta,
+          ObsEstado: "",
+          estado: 13,
+          parametro1: "",
+          parametro2: "",
+          parametro3: ""
         }
-      })
-
-
-
-    }
-    else {
-      this.Respuesta = 'Las cantidades totales de la oferta aun no han sido asignadas, favor valida tu información.';
+        this.sectoresservices.ActualizaEstadoOferta('3', Body).subscribe(ResultUpda => {
+          var respuesta = ResultUpda.split('|')
+          this.Respuesta = respuesta[1];
+          if (respuesta[0] != '-1') {
+            this.rutas.navigateByUrl('/home/transportista');
+            this.ConsultaSectoresOferta();
+            for (var i = 0; i < this.DataSectorOferta.length; i++) {
+              this.sectoresservices.CorreoMasivo('1', '6', '3', this.SessionOferta, this.DataSectorOferta[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
+              })
+            }
+            this.EnviarSms('4');
+            this.InsertaLinks();
+          }
+        })
+  
+  
+  
+      }
+      else {
+        this.Respuesta = 'Las cantidades totales de la oferta aun no han sido asignadas, favor valida tu información.';
+      }
+    }else{
+      this.Respuesta = 'Debes seleccionar una imagen al sector asociado.';
     }
   }
 
@@ -860,26 +870,32 @@ export class SectorizacionComponent implements OnInit {
 
   SubirImgMapa(event: any, imagen: string) {
     this.file = event.target.files[0];
-    this.ServiciosOferta.postFileImagen(event.target.files[0]).subscribe(
-      response => {
-        this.respuestaImagenEnviada = response;
-        if (this.respuestaImagenEnviada <= 1) {
-        } else {
-          if (this.respuestaImagenEnviada == 'Archivo Subido Correctamente') {
-            if (imagen == '1') {
-              this.ImgMapaSec = this.RutaImagenes + event.target.files[0].name;
-              this.NomImagen1 = event.target.files[0].name;
-            }
+    if (event.target.files[0] != "" && event.target.files[0] != undefined && event.target.files[0] != null) {
+      this.ImagenSector = event.target.files[0];
+      this.ServiciosOferta.postFileImagen(event.target.files[0]).subscribe(
+        response => {
+          this.respuestaImagenEnviada = response;
+          if (this.respuestaImagenEnviada <= 1) {
           } else {
-            this.resultadoCarga = 2;
+            if (this.respuestaImagenEnviada == 'Archivo Subido Correctamente') {
+              if (imagen == '1') {
+                this.ImgMapaSec = this.RutaImagenes + event.target.files[0].name;
+                this.NomImagen1 = event.target.files[0].name;
+              }
+            } else {
+              this.resultadoCarga = 2;
+            }
+
           }
+        },
+        error => {
 
         }
-      },
-      error => {
-
-      }
-    );
+      );
+    }else{
+      this.ImagenSector = "";
+      alert("Fallando (Asignación imagen)");
+    }
   }
 
   AbrirMensaje(ModalRespuesta: any) {
