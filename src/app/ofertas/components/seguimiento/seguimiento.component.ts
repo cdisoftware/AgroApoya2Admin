@@ -290,7 +290,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     var IdCarro = Entrega.ID_CARRO
     this.ServiciosValorar.ConsultaDetalleEntregas('1', IdCarro).subscribe(Resultado => {
       this.ArrayDetalle = Resultado;
-      console.log(this.ArrayDetalle)
       for (var i = 0; i < this.ArrayDetalle.length; i++) {
         this.NumProductos = this.NumProductos + this.ArrayDetalle[i].Cantidad
       }
@@ -382,85 +381,44 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
 
     this.infoWindow.close();
     var NomCliente: string = '' + this.ArrayConsultaSeg[i].NOMBRES_PERSONA + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_PERSONA;
-    var FechaEntrega: string = '' + this.ArrayConsultaSeg[i].fecha_entrega;
-    var CodigoOferta: string = '' + this.ArrayConsultaSeg[i].CD_CNSCTVO;
+    var FechaEntrega: string = '' + this.ArrayConsultaSeg[i].fecha_entrega + ' : ' + this.ArrayConsultaSeg[i].hora_entrega;
     var Direccion: string = '' + this.ArrayConsultaSeg[i].DRCCION;
-    var Producto: string = '' + this.ArrayConsultaSeg[i].Producto_ppal + this.ArrayConsultaSeg[i].producto_add;
-    var Img: string = '' + this.ArrayConsultaSeg[i].imagen_evidencia;
+
+    var Producto: string = '';
+    if (this.ArrayConsultaSeg[i].unidadesEntregar > 0) {
+      Producto = '' + this.ArrayConsultaSeg[i].Producto_ppal + ': ' + this.ArrayConsultaSeg[i].unidadesEntregar + ' und x ' + this.ArrayConsultaSeg[i].VlorProductoPrincipal;
+    }
+
+    var toppings: string = "";
+    if (this.ArrayConsultaSeg[i].producto_add != '' && this.ArrayConsultaSeg[i].producto_add != null && this.ArrayConsultaSeg[i].producto_add != undefined) {
+      toppings = '' + this.ArrayConsultaSeg[i].producto_addBr.replaceAll("|","<br>");
+    }
+
+    var Img: string = '';
+    if (this.ArrayConsultaSeg[i].imagen_evidencia != null && this.ArrayConsultaSeg[i].imagen_evidencia != '' && this.ArrayConsultaSeg[i].imagen_evidencia != undefined) {
+      Img = this.ArrayConsultaSeg[i].imagen_evidencia;
+    } else {
+      Img = '../../../../assets/ImagenesAgroApoya2Adm/PendienteEntrega.jpg';
+    }
+
+    var TotalPagar: string = this.ArrayConsultaSeg[i].Vlor_PagarForm;
+
+
     var Pago: string = this.ArrayConsultaSeg[i].descTipoPago
     var Telefono: string = '' + this.ArrayConsultaSeg[i].CELULAR_PERSONA;
     var ValorAPagar: string = '' + this.ArrayConsultaSeg[i].Vlor_PagarForm;
     var Estado: string = '' + this.ArrayConsultaSeg[i].descEstado;
-    var Observaciones: string = '' + this.ArrayConsultaSeg[i].observacionesCliente;
-    var Cantidad: string = '' + this.ArrayConsultaSeg[i].unidadesEntregar;
 
-    const Html =
-      //Estilos
-      '<style>' +
-      '#show{' +
-      'display: none;' +
-      '}' +
+    var Observaciones: string = '';
 
-      'div#VerOcultar {' +
-      ' display:none;' +
-      ' padding:0px;' +
-      ' width:630px;' +
-      ' height:300px;' +
-      ' cursor:pointer;' +
-      '}' +
+    if (this.ArrayConsultaSeg[i].observacionesCliente != null && this.ArrayConsultaSeg[i].observacionesCliente != '' && this.ArrayConsultaSeg[i].observacionesCliente != undefined) {
+      Observaciones = this.ArrayConsultaSeg[i].observacionesCliente;
+    } else {
+      Observaciones = 'Pendiente';
+    }
 
-
-
-
-      'input#show:checked ~ div#VerOcultar {' +
-      ' display:block;' +
-      '}' +
-      'input#show:checked ~ div#Ocultar {' +
-      'display:none;' +
-      '}' +
-      'input#show:checked ~ div#VerMas {' +
-      'display:none;' +
-      '}' +
-      '</style>' +
-
-
-
-
-
-
-
-      '<input type="radio" id="show" name="group">' +
-
-
-      //DivSensillo
-      '<div id="Ocultar" class="gm-style-iw-d" style="max-height: 287px; max-width: 630px;">' +
-      '<div id="content">' +
-      '<h1 id="firstHeading" class="firstHeading">' + NomCliente + '</h1>' +
-      '<h2 id="firstHeading" class="firstHeading">' + Estado + '</h2>' +
-      '<div id="bodyContent">' +
-      '<p>' +
-      '<b>Fecha Entrega: </b>' + FechaEntrega + '' +
-      '<br>' +
-      '<b>Codigo Oferta: </b>' + CodigoOferta + '' +
-      '<br>' +
-      '<b>Metodo de pago: </b>' + Pago + '' +
-      '<br>' +
-      '<b>Dirección: </b>' + Direccion + '' +
-      '<br>' +
-      '<b>Producto: </b>' + Producto + '' +
-      '<br>' +
-      '<b>Cantidad: </b>' + Cantidad + ' Unidad(es)' +
-      '</p>' +
-      '</div>' +
-      '</div>' +
-      '</div>' +
-
-      '<label id="VerMas" style="cursor: pointer; color: #397c97;" for="show">' +
-      ' 	<span>Ver mas</span>' +
-      '</label>' +
-
-      '<div id="VerOcultar">' +
-      //Div mas detalles
+    let Html =
+      '<div>' +
       '<div class="row col-12" style="overflow: auto; max-height: 320px; width: 630px;">' +
       '<div class="col-sm-12">' +
       '<h1 id="firstHeading" class="firstHeading">' + NomCliente + '</h1>' +
@@ -477,28 +435,34 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       '<br>' +
       '<b>Fecha Entrega: </b>' + FechaEntrega + '' +
       '<br>' +
-      '<b>Metodo de pago: </b>' + Pago + '' +
+      '<b>Metodo de pago: </b>' + Pago + ''+
       '<br>' +
-      '<b>Codigo Oferta: </b>' + CodigoOferta + '' +
+      '<b>Productos: </b>';
+      if(this.ArrayConsultaSeg[i].unidadesEntregar > 0){
+        Html = Html +  '<br>' + Producto + '';
+      }
+      if(this.ArrayConsultaSeg[i].producto_add != '' && this.ArrayConsultaSeg[i].producto_add != null && this.ArrayConsultaSeg[i].producto_add != undefined){
+        Html = Html + '<br>' + toppings + '';
+      }
+      
+      Html = Html + 
+      '<br>'+
+      '<b style="font-weight: bold; font-size: 15px;">Total pago: </b> <span style="color: forestgreen; font-weight: bold; font-size: 15px;">' + TotalPagar + '</span>'+
       '<br>' +
-      '<b>Producto: </b>' + Producto + '' +
-      '<br>' +
+      '<b>Numero de telefono: </b>' + Telefono + '' ;
 
-      '<b>Cantidad: </b>' + Cantidad + '' +
-      '<br>' +
+    if (this.ArrayConsultaSeg[i].observacionesCliente != null && this.ArrayConsultaSeg[i].observacionesCliente != '' && this.ArrayConsultaSeg[i].observacionesCliente != undefined) {
+      Html = Html + '<b>Observación: </b>' + Observaciones + '' +
+        '<br>';
+    }
 
-      '<b>Numero de telefono: </b>' + Telefono + '' +
-      '<br>' +
-      '<b>Estado: </b>' + Estado + '' +
-      '<br>' +
-      '<b>Observación: </b>' + Observaciones + '' +
-      '<br>' +
-      '</p>' +
+
+    Html = Html + '</p>' +
       '</div>' +
       '</div>' +
       '</div>' +
       '<div class="col-sm-6" style="height: 50%;">' +
-      '<img src="' + Img + '" style="width: 100%; height:200px; object-fit: cover;">' +
+      '<img src="' + Img + '" style="width: 70%; height:200px; object-fit: cover;">' +
       '</div>' +
       '</div>' +
       '</div>';
@@ -555,7 +519,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   ConsReporteEntregas() {
     this.ServiciosValorar.ConsultaReporteEntregas('1', this.SelectorOferta, this.SelectorSector, this.ConductorSelect).subscribe(Resultado => {
       this.ArrayReporte = Resultado;
-      console.log(this.ArrayReporte)
 
       var NumRecibidos: number = 0;
       var NumPendientes: number = 0;
