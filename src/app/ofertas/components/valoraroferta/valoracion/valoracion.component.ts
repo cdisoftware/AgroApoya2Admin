@@ -341,7 +341,7 @@ export class ValoracionComponent implements OnInit {
   consultaValoresUni() {
     this.serviciosvaloracion.ConsultaValUnidades('1', this.SessionOferta, this.SessionSectorSel).subscribe(Resultcons => {
       if (Resultcons.length > 0) {
-        this.DataValores = Resultcons;
+        this.DataValores = Resultcons;        
       }
       else {
         this.DataValores = [];
@@ -669,7 +669,7 @@ export class ValoracionComponent implements OnInit {
       }
       this.Valorapartirde = ResultCons[0].VLORAPRTRDMCLIO.toString();
       if (ResultCons[0].TPO_OFRTA.toString() == "1") {
-        this.ValorDomcilioGrupValorMenora = ResultCons[0].vlor_dmnclio_indvdual.toString();
+        this.VlrDomiIValormenora = ResultCons[0].vlor_dmnclio_indvdual.toString();
       } else if (ResultCons[0].TPO_OFRTA.toString() == "3") {
         this.ValorDomcilioGrupValorMenora = ResultCons[0].vlor_dmnclio_grpal.toString();
       }
@@ -1280,7 +1280,7 @@ export class ValoracionComponent implements OnInit {
     var auxres: boolean = false;
     if (this.IdTipoCupon != "" && this.IdTipoCupon != "0") {
       if (this.IdTipoCupon == "1") {
-        if ((this.DescripcionRegalo == '' || this.DescripcionRegalo == null) || (this.ImagenRegalo == "../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png")) {
+        if ((this.DescripcionRegalo == '' || this.DescripcionRegalo == null) || (this.NumeroUsuariosCupon == '' || this.NumeroUsuariosCupon == null) ||(this.ImagenRegalo == "../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png")) {
           auxres = false;
         } else {
           auxres = true;
@@ -1306,8 +1306,7 @@ export class ValoracionComponent implements OnInit {
       (this.MinUnidLider == '' || this.MinUnidLider == null) ||
       (this.MaxUnidLider == '' || this.MaxUnidLider == null) ||
       (valorDomicilio == false) ||
-      (this.PrecioFinPart == '' || this.PrecioFinPart == null) ||
-      (this.NumeroUsuariosCupon == '' || this.NumeroUsuariosCupon == null)
+      (this.PrecioFinPart == '' || this.PrecioFinPart == null) 
     ) {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
@@ -1341,13 +1340,7 @@ export class ValoracionComponent implements OnInit {
           campof: '',
           class: '',
           imagen: ''
-        },
-        {
-          campo: 'NumUsuariosCupon',
-          campof: 'Numero de usuario por cupon',
-          class: '',
-          imagen: ''
-        },
+        },      
         {
           campo: 'UndMin',
           campof: 'Unidades mínimo',
@@ -1427,7 +1420,7 @@ export class ValoracionComponent implements OnInit {
           }
         } else if (this.ArrayCamposValida[i].campo == 'DescTipoCupon') {
           if (this.IdTipoCupon == '1') {
-            if ((this.DescripcionRegalo == '' || this.DescripcionRegalo == null) || (this.ImagenRegalo == "../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png")) {
+            if ((this.DescripcionRegalo == '' || this.DescripcionRegalo == null) || (this.NumeroUsuariosCupon == '' || this.NumeroUsuariosCupon == null) || (this.ImagenRegalo == "../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png")) {
               this.ArrayCamposValida[i].campof = 'Campos regalo'
               this.ArrayCamposValida[i].class = 'TextAlert'
               this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
@@ -1452,15 +1445,7 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].campof = 'Descripcion tipo regalo'
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
-          }
-        } else if (this.ArrayCamposValida[i].campo == 'NumUsuariosCupon') {
-          if (this.NumeroUsuariosCupon == '' || this.NumeroUsuariosCupon == null) {
-            this.ArrayCamposValida[i].class = 'TextAlert';
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png';
-          } else {
-            this.ArrayCamposValida[i].class = 'TextFine';
-            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
-          }
+          }        
         } else if (this.ArrayCamposValida[i].campo == 'UndMin') {
           if ((this.MinUnidLider == '' || this.MinUnidLider == null)) {
             this.ArrayCamposValida[i].class = 'TextAlert';
