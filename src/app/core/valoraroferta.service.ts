@@ -352,7 +352,6 @@ export class ValorarofertaService {
   }
 
   ConsultaDetalleEntregas(Bandera: string, IdCarro: string) {
-    console.log(this.url_servidor + 'consSeguimientoEntregaDell/' + Bandera + '/' + IdCarro)
     return this.http.get<any[]>(this.url_servidor + 'consSeguimientoEntregaDell/' + Bandera + '/' + IdCarro)
   }
 
