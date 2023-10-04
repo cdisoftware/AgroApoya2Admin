@@ -358,7 +358,6 @@ export class ValoracionComponent implements OnInit {
   GuardaTopping(templateMensaje: any) {
     this.Respuesta = ''
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
-    alert(this.SessionTipoTopp)
     if (this.DesTopp == '' || this.VlrUniTopp == null || this.UnidMaxTopp == '' || this.SessionTipoTopp == '0' || 
     this.UnidOferta == '' || (this.NomImagen1 == '' && this.imagenesAdicionales == '') || this.PesoTopping == '' || this.SessionTipoToppVenta == '0') {
       this.ValidaCam = '1';
