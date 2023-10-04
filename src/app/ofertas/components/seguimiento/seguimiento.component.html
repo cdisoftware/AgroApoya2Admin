@@ -180,9 +180,17 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-sm-3 mt-2" *ngIf="VerBtnMapSugerido == true">
-                    <button class="btn btn-agro-prin w-100" (click)="CargarRutaSugerida()">Ruta sugerida</button>
+
+                <div class="row br mt-3">
+                    <div class="col-sm-3 mt-2" *ngIf="VerBtnMapSugerido == true">
+                        <button class="btn btn-agro-prin w-100" (click)="CargarRutaSugerida()">Ruta sugerida</button>
+                    </div>
+                    <div class="col-sm-3 mt-2" *ngIf="VerBtnDescargarPdf">
+                        <button class="btn btn-agro-prin w-100" (click)="DescargarDatosPdf()">Descargar PDF</button>
+                    </div>
                 </div>
+
+
                 <div class="row mt-2 justify-content-center">
                     <div class="col-sm-12">
                         <div id="mapaS" class="ShowMap"></div>
@@ -200,10 +208,12 @@
                         </tr>
                         <tr>
                             <td>{{ObjetEntrega[1].ValTotalEntregado | currency :'USD' : 'symbol' : '1.0-0'}}</td>
-                            <td style="color: forestgreen;">{{ValorDomicilio | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                            <td style="color: forestgreen;">{{ValorDomicilio | currency :'USD' : 'symbol' : '1.0-0'}}
+                            </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="color: forestgreen;"><strong>{{TotalCosolidado | currency :'USD' : 'symbol' : '1.0-0'}}</strong></td>
+                            <td colspan="2" style="color: forestgreen;"><strong>{{TotalCosolidado | currency :'USD' :
+                                    'symbol' : '1.0-0'}}</strong></td>
                         </tr>
                     </table>
                 </div>
@@ -293,7 +303,8 @@
                     <td>{{Detalle.Cantidad}}</td>
                     <td>{{Detalle.valor}}</td>
                 </tr>
-                <tr><td><strong>Total</strong></td>
+                <tr>
+                    <td><strong>Total</strong></td>
                     <td>{{NumProductos}}</td>
                     <td style="color: forestgreen;">{{ValorTotalCompra | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                 </tr>

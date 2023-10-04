@@ -11,6 +11,8 @@ import {
 import { ValorarofertaService } from './../../../core/valoraroferta.service';
 import { NgbModal, NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
+import autoTable from 'jspdf-autotable'
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-seguimiento',
@@ -42,7 +44,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
 
   ArrayDataRutaSugerida: any = [];
   VerBtnMapSugerido: boolean = false;
-
+  VerBtnDescargarPdf: boolean = false;
   //Buscar
   ArrayConsultaSeg: any = [];
 
@@ -50,13 +52,11 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   Mensaje: string = '';
   TituloModal: string = "AgroApoya2";
 
-
-
-
   //VariablesFiltro Oferta
   ArrayOferta: any = [];
   keywordOferta: string = '';
   SelectorOferta: string = '0';
+  OfertaSelect: string = '';
   Oferta: string = '';
 
   //VariablesFiltro Oferta
@@ -90,6 +90,12 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   //Valor Domicilio General
   ValorDomicilio: number = 0;
 
+  //Variables Fecha
+  Dia = new Date().getDate();
+  Mes = new Date().getMonth() + 1;
+  Año = new Date().getFullYear();
+
+  Fecha: string = this.Año + '-' + this.Mes + '-' + this.Dia;
 
   constructor(
     private modalService: NgbModal,
@@ -114,6 +120,90 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
 
   ngOnInit(): void {
     this.ConsultaOferta();
+  }
+
+
+  DescargarDatosPdf() {
+    const doc = new jsPDF('l', 'px', 'a3');
+
+    autoTable(doc, {
+      styles: { fillColor: [37, 150, 190], fontSize: 13 },
+      columnStyles: {
+        1: { cellWidth: 432 },
+        2: { cellWidth: 432 }
+      },
+      didParseCell: function (data) {
+        var rows = data.table.body;
+        if (data.row.index === 0) {
+          data.cell.styles.fillColor = [37, 150, 190];
+          data.cell.styles.textColor = [255, 255, 255];
+        }
+      },
+      margin: { top: 10 },
+      body: [
+        ["Producto", "Total Producto"],
+      ]
+    })
+    this.ArrayReporte.forEach(function (respuesta: any) {
+
+      var Res =
+        [respuesta.PRODUCTO, respuesta.CANTIDAD_TOTAL];
+
+      autoTable(doc, {
+        margin: { top: 0, bottom: 0 },
+        columnStyles: {
+          1: { cellWidth: 432 },
+          2: { cellWidth: 432 }
+        },
+        body:
+          [
+            Res
+          ]
+      })
+    });
+    const cellWidth = 240;
+    autoTable(doc, {
+      styles: { fillColor: [37, 150, 190], fontSize: 13 },
+      columnStyles: {
+        1: { cellWidth: cellWidth },
+        2: { cellWidth: cellWidth },
+        3: { cellWidth: cellWidth },
+        4: { cellWidth: cellWidth }
+      },
+      didParseCell: function (data) {
+        var rows = data.table.body;
+        if (data.row.index === 0) {
+          data.cell.styles.fillColor = [37, 150, 190];
+          data.cell.styles.textColor = [255, 255, 255];
+        }
+      },
+      margin: { top: 1 },
+      body: [
+        ["Cliente", "Celular", "Dirección", "Producto"],
+      ]
+    })
+    const mergedArray = [...this.ArrayConsultaSeg, ...this.ArrayDetalle];
+    mergedArray.forEach(function (respuesta: any) {
+      console.log(respuesta)
+      const productoFormatted = respuesta.producto_addBr.replace(/\|/g, '\n');
+      var Res =
+        [respuesta.NOMBRES_PERSONA, respuesta.CELULAR_PERSONA, respuesta.DRCCION, productoFormatted];
+
+      autoTable(doc, {
+        margin: { top: 0, bottom: 0 },
+        columnStyles: {
+          1: { cellWidth: cellWidth },
+          2: { cellWidth: cellWidth },
+          3: { cellWidth: cellWidth },
+          4: { cellWidth: cellWidth }
+        },
+        body:
+          [
+            Res
+          ]
+      })
+    });
+    doc.save('Seguimiento - ' + this.OfertaSelect + "_" +  this.Fecha + '.pdf')
   }
 
   ConsultaTransportista(idconductor: string, idtransportista: string) {
@@ -152,6 +242,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   }
   selectOfertaFiltro(item: any) {
     this.SelectorOferta = item.cd_cnsctvo.toString();
+    this.OfertaSelect = item.Producto;
     this.selecsector = '1'
     this.ConsultaSectores(item.cd_cnsctvo);
   }
@@ -185,10 +276,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     this.ConductorSelect = item.CODIGO;
   }
 
-
-
-
-
   Buscar(templateRespuesta: any) {
     if (this.SelectorSector == '' && this.SelectorOferta == '0' || this.SelectorSector != '' && this.SelectorOferta == '0' || this.SelectorSector == '' && this.SelectorOferta != '0') {
       this.Respuesta = 'Es necesario que selecciones una oferta y un sector.';
@@ -201,6 +288,8 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       }
       //this.ServiciosValorar.ConsultaSeguimiento('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
       this.ServiciosValorar.ConsultaSeguimientoEntregas('1', this.ConductorSelect, this.SelectorSector, this.SelectorOferta, datos).subscribe(Resultado => {
+        console.log(this.ConductorSelect)
+
         if (Resultado.length == 0) {
           this.Respuesta = 'No encontramos registros de compras para este sector.';
           this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
@@ -209,12 +298,14 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         } else {
           this.ValorDomicilio = Resultado[0].VlorTotalDomicilio;
           this.VerBtnMapSugerido = true;
+          this.VerBtnDescargarPdf = this.ConductorSelect !== '0';
           this.Detalle = '1';
           this.ArrayConsultaSeg = Resultado;
           this.ValidaInsertSec = '1';
           this.ValidaInsertSecs = '1';
           this.ConsReporteEntregas();
         }
+
       })
     }
   }
@@ -391,7 +482,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
 
     var toppings: string = "";
     if (this.ArrayConsultaSeg[i].producto_add != '' && this.ArrayConsultaSeg[i].producto_add != null && this.ArrayConsultaSeg[i].producto_add != undefined) {
-      toppings = '' + this.ArrayConsultaSeg[i].producto_addBr.replaceAll("|","<br>");
+      toppings = '' + this.ArrayConsultaSeg[i].producto_addBr.replaceAll("|", "<br>");
     }
 
     var Img: string = '';
@@ -435,21 +526,21 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       '<br>' +
       '<b>Fecha Entrega: </b>' + FechaEntrega + '' +
       '<br>' +
-      '<b>Metodo de pago: </b>' + Pago + ''+
+      '<b>Metodo de pago: </b>' + Pago + '' +
       '<br>' +
       '<b>Productos: </b>';
-      if(this.ArrayConsultaSeg[i].unidadesEntregar > 0){
-        Html = Html +  '<br>' + Producto + '';
-      }
-      if(this.ArrayConsultaSeg[i].producto_add != '' && this.ArrayConsultaSeg[i].producto_add != null && this.ArrayConsultaSeg[i].producto_add != undefined){
-        Html = Html + '<br>' + toppings + '';
-      }
-      
-      Html = Html + 
-      '<br>'+
-      '<b style="font-weight: bold; font-size: 15px;">Total pago: </b> <span style="color: forestgreen; font-weight: bold; font-size: 15px;">' + TotalPagar + '</span>'+
+    if (this.ArrayConsultaSeg[i].unidadesEntregar > 0) {
+      Html = Html + '<br>' + Producto + '';
+    }
+    if (this.ArrayConsultaSeg[i].producto_add != '' && this.ArrayConsultaSeg[i].producto_add != null && this.ArrayConsultaSeg[i].producto_add != undefined) {
+      Html = Html + '<br>' + toppings + '';
+    }
+
+    Html = Html +
       '<br>' +
-      '<b>Numero de telefono: </b>' + Telefono + '' ;
+      '<b style="font-weight: bold; font-size: 15px;">Total pago: </b> <span style="color: forestgreen; font-weight: bold; font-size: 15px;">' + TotalPagar + '</span>' +
+      '<br>' +
+      '<b>Numero de telefono: </b>' + Telefono + '';
 
     if (this.ArrayConsultaSeg[i].observacionesCliente != null && this.ArrayConsultaSeg[i].observacionesCliente != '' && this.ArrayConsultaSeg[i].observacionesCliente != undefined) {
       Html = Html + '<b>Observación: </b>' + Observaciones + '' +
