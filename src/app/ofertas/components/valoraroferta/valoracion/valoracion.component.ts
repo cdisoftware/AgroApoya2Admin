@@ -6,8 +6,6 @@ import { Router } from '@angular/router'
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 import { DatePipe } from '@angular/common';
 import { CrearofertaService } from 'src/app/core/crearoferta.service';
-//import { BitlyClient } from 'bitly';
-//const bitly = new BitlyClient('07d0baa590598f6b9a8d9963c05d2b1a37f2e824', {});
 
 @Component({
   selector: 'app-valoracion',
@@ -87,6 +85,7 @@ export class ValoracionComponent implements OnInit {
   ValorUni: string = '';
   ValidaToppings: string;
   DataTipotopping: { id: number; name: string; }[];
+  DataTipotoppingVenta: { id: number; name: string; }[];
   DataToppings: any[];
   ValidaConsulta: string = '0';
   txtValidaCons: string = 'No se encuentran adicionales asociados a la oferta';
@@ -94,9 +93,12 @@ export class ValoracionComponent implements OnInit {
   VlrUniTopp: string;
   UnidMaxTopp: string;
   SessionTipoTopp: string = '';
+  SessionTipoToppVenta: string = '';
   ValidaTipoTopp: boolean;
   keywordTipTopp: string;
+  keywordTipToppVenta: string;
   TipoTopp: string;
+  TipoToppVenta: string;
   SessionFechaRecogida: any;
   UnidOferta: string;
   imagenesAdicionales: string = '';
@@ -130,6 +132,7 @@ export class ValoracionComponent implements OnInit {
   NomImagen2: string = '';
   NomImagen3: string = '';
   ValorRefAdd: string = '';
+  DescripTipoVenta:string = '';
   //#region Cupon
   ArrayDataCupon: any = [];
   keywordCupon: string = "NombreCupon";
@@ -207,7 +210,9 @@ export class ValoracionComponent implements OnInit {
       }
     ]
     this.DataTipotopping = []
+    this.DataTipotoppingVenta = [];
     this.SessionTipoTopp = '0';
+    this.SessionTipoToppVenta = '0';
     this.MuestraVigencial = '0';
     this.MuestraGrupal = '0';
     this.MuestraValoReferencia = '0';
@@ -352,7 +357,9 @@ export class ValoracionComponent implements OnInit {
   GuardaTopping(templateMensaje: any) {
     this.Respuesta = ''
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
-    if (this.DesTopp == '' || this.VlrUniTopp == null || this.UnidMaxTopp == '' || this.SessionTipoTopp == '0' || this.UnidOferta == '' || this.NomImagen1 == '' || this.PesoTopping == '') {
+    alert(this.SessionTipoTopp)
+    if (this.DesTopp == '' || this.VlrUniTopp == null || this.UnidMaxTopp == '' || this.SessionTipoTopp == '0' || 
+    this.UnidOferta == '' || (this.NomImagen1 == '' && this.imagenesAdicionales == '') || this.PesoTopping == '' || this.SessionTipoToppVenta == '0') {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
@@ -375,6 +382,12 @@ export class ValoracionComponent implements OnInit {
           imagen: ''
         },
         {
+          campo: 'SessionTipoToppVenta',
+          campof: 'Tipo venta topping',
+          class: '',
+          imagen: ''
+        },
+        {
           campo: 'UnidOferta',
           campof: 'Unidades para la oferta',
           class: '',
@@ -393,7 +406,7 @@ export class ValoracionComponent implements OnInit {
           imagen: ''
         },
         {
-          campo: 'imagenesAdicionales',
+          campo: 'NomImagen1',
           campof: 'Imagen',
           class: '',
           imagen: ''
@@ -430,6 +443,16 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
+        else if (this.ArrayCamposValida[i].campo == 'SessionTipoToppVenta') {
+          if (this.SessionTipoToppVenta == '0' || this.SessionTipoToppVenta == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
+        }
         else if (this.ArrayCamposValida[i].campo == 'UnidMaxTopp') {
           if (this.UnidMaxTopp == '' || this.UnidMaxTopp == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
@@ -450,8 +473,8 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         }
-        else if (this.ArrayCamposValida[i].campo == 'imagenesAdicionales') {
-          if (this.imagenesAdicionales == '' || this.imagenesAdicionales == null) {
+        else if (this.ArrayCamposValida[i].campo == 'NomImagen1') {
+          if ((this.NomImagen1 == '' || this.NomImagen1 == null) && this.imagenesAdicionales == '') {
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
@@ -465,12 +488,7 @@ export class ValoracionComponent implements OnInit {
     else {
       this.ValidaCam = '0';
       this.ArrayCamposValida = [];
-      var validaImagen = '';
-      if (this.imagenesAdicionales == '1') {
-        validaImagen = '';
-      } else {
-        validaImagen = this.imagenesAdicionales;
-      }
+
       const Body = {
         IdTopping: 0,
         Id_Sector: Number(this.SessionSectorSel),
@@ -486,36 +504,43 @@ export class ValoracionComponent implements OnInit {
         CrctrzcionLrga: this.DescLargaAdd,
         ImgDos: this.NomImagen2,
         ImgTres: this.NomImagen3,
-        VlorRefencia: this.ValorRefAdd
+        VlorRefencia: this.ValorRefAdd,
+        IdTipoTopingVenta: this.SessionTipoToppVenta
       }
+
       this.serviciosvaloracion.ModificaTopping('2', Body).subscribe(ResultOper => {
         this.Respuesta = ResultOper;
         this.consultaToppingsOferta();
+
+        this.DesTopp = '';
+        this.VlrUniTopp = '';
+        this.SessionTipoTopp = '0';
+        this.SessionTipoToppVenta = '0';
+        this.TipoTopp = '';
+        this.TipoToppVenta = '';
+        this.DescripTipoVenta = '';
+        this.UnidMaxTopp = '';
+        this.UnidOferta = '';
+        this.ValidaTipoTopp = false;
+        this.IsEnables = false;
+        this.imagenesAdicionales = '';
+        this.PesoTopping = '';
+        this.DescCortaAdd = '';
+        this.DescLargaAdd = '';
+        this.ValorRefAdd = '';
+        this.NomImagen1 = '';
+        this.NomImagen2 = '';
+        this.NomImagen3 = '';
+        this.Add1 = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+        this.Add2 = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+        this.Add3 = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+
       })
-      this.DesTopp = '';
-      this.VlrUniTopp = '';
-      this.SessionTipoTopp = '0';
-      this.UnidMaxTopp = '';
-      this.TipoTopp = '';
-      this.UnidOferta = '';
-      this.ValidaTipoTopp = false;
-      this.IsEnables = false;
-      this.imagenesAdicionales = '';
-      this.PesoTopping = '';
-      this.DescCortaAdd = '';
-      this.DescLargaAdd = '';
-      this.ValorRefAdd = '';
-      this.NomImagen1 = '';
-      this.NomImagen2 = '';
-      this.NomImagen3 = '';
-      this.Add1 = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
-      this.Add2 = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
-      this.Add3 = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
     }
 
   }
 
-  ModificaTopping(bandera: string, topping: any) {
+  ModificaTopping(bandera: string, topping: any,templateMensaje: any ) {
     const Body = {
       IdTopping: topping.IdTopping,
       Id_Sector: Number(this.SessionSectorSel),
@@ -541,6 +566,8 @@ export class ValoracionComponent implements OnInit {
     else {
       this.serviciosvaloracion.ModificaTopping('3', Body).subscribe(ResultOper => {
         this.consultaToppingsOferta();
+        this.Respuesta = ResultOper
+        this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
       })
     }
   }
@@ -596,9 +623,7 @@ export class ValoracionComponent implements OnInit {
         this.Respuesta = 'La fecha entrega no puede ser menor a la fecha fin de la vigencia, favor valida tu información.';
       }
     }
-
   }
-
 
   selectTipTopp(item: any) {
     this.SessionTipoTopp = item.id;
@@ -618,11 +643,18 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
-  LimpiaTipoTopp() {
-    this.UnidMaxTopp = ''
-    this.ValidaTipoTopp = false;
+  selectTipToppVenta(item: any) {
+    this.SessionTipoToppVenta = item.IdTipo;
+    this.DescripTipoVenta = item.Observacion;
+  }
+
+  LimpiaTipoToppVenta() {
     this.SessionTipoTopp = '0';
-    this.UnidOferta = '';
+  }
+
+  LimpiaTipoTopp() {    
+    this.SessionTipoTopp = '0';
+    this.ValidaTipoTopp = false;
     this.IsEnables = false;
   }
 
@@ -1685,6 +1717,14 @@ export class ValoracionComponent implements OnInit {
       this.DataTipotopping = Resultcons;
       this.keywordTipTopp = 'Descripcion';
     })
+
+    this.serviciosvaloracion.consCTipoTpingVenta('1').subscribe(Resultcons => {
+      console.log(Resultcons)
+      this.DataTipotoppingVenta = Resultcons;
+      this.keywordTipToppVenta = 'Descripcion';
+      //IdTipo
+    })
+    
   }
 
   AbrePublica(templatePublicar: any) {
