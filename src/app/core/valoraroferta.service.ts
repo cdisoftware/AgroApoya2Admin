@@ -191,6 +191,8 @@ export class ValorarofertaService {
   }
 
   ModificaTopping(Bandera: string, Bodymod: any) {
+    console.log(this.url_servidor + 'modctopping/' + Bandera)
+    console.log(Bodymod)
     return this.http.post<any>(this.url_servidor + 'modctopping/' + Bandera, Bodymod)
   }
   ConsultaCompraPagos(Bandera: string) {
@@ -406,6 +408,10 @@ export class ValorarofertaService {
   }
   consTipoDomicilio(Bandera: string){
     return this.http.get<any[]>(this.url_servidor + 'consTipoDomicilio/' + Bandera);
+  }
+
+  consCTipoTpingVenta(Bandera: string){
+    return this.http.get<any[]>(this.url_servidor + 'consCTipoTpingVenta/' + Bandera);
   }
 }
 
