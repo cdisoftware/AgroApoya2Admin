@@ -106,6 +106,7 @@ export class ValoracionComponent implements OnInit {
   consultaimagen: string = '';
   RutaImagenTopping: string = '';
   IsEnables: boolean = false;
+  IsEnablesValor: boolean = false;
   LinkSms: string = '';
   RutaLanding: string = '';
   DataTipoDescuento: { id: number; name: string; }[];
@@ -643,9 +644,17 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
+
   selectTipToppVenta(item: any) {
     this.SessionTipoToppVenta = item.IdTipo;
     this.DescripTipoVenta = item.Observacion;
+    if(item.IdTipo == '1'){
+      this.IsEnablesValor = false;
+    }else{
+      this.IsEnablesValor = true;
+      this.VlrUniTopp = '0';
+      this.ValorRefAdd = '0';
+    }
   }
 
   LimpiaTipoToppVenta() {

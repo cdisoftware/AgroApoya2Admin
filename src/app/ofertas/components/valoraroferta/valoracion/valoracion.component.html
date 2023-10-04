@@ -675,12 +675,12 @@
                         </div>
                         <div class="col-sm-4 mt-2">
                             <label class="col-sm-12 Llave">Valor unitario</label>
-                            <input mask="separator" thousandSeparator="." type="text"
+                            <input mask="separator" thousandSeparator="." type="text"  disabled="{{IsEnablesValor == true}}"
                                 class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrUniTopp">
                         </div>
                         <div class="col-sm-4 mt-2">
                             <label class="col-sm-12 Llave">Valor referencia</label>
-                            <input mask="separator" thousandSeparator="." type="text"
+                            <input mask="separator" thousandSeparator="." type="text"  disabled="{{IsEnablesValor == true}}"
                                 class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="ValorRefAdd">
                         </div>
                         <div class="col-sm-4 mt-2">
@@ -704,7 +704,7 @@
                         <div class="col-sm-4 mt-2">
                             <label class="col-sm-12 Llave">Unidades para la oferta</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidOferta"
-                                disabled="{{IsEnables}}">
+                                disabled="{{IsEnables == true}}"> 
                         </div>
                         <div class="col-sm-4 mt-2">
                             <label class="col-sm-12 Llave">Máximo unidades por cada compra</label>
@@ -808,7 +808,7 @@
                                                 src="./../../../../../assets/ImagenesAgroApoya2Adm/notvisible.png">
 
                                         </button>
-                                        <button class="SinEstilo" title="Eliminar amparado">
+                                        <button class="SinEstilo" title="Eliminar amparado" *ngIf="topping.IdTipoToppingVenta != '3'" >
                                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png"
                                                 (click)="ModificaTopping('2', topping,ModalRespuesta)">
                                         </button>
