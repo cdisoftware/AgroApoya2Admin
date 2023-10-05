@@ -182,10 +182,9 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         ["Cliente", "Celular", "Dirección", "Producto"],
       ]
     })
-    const mergedArray = [...this.ArrayConsultaSeg, ...this.ArrayDetalle];
-    mergedArray.forEach(function (respuesta: any) {
-      console.log(respuesta)
-      const productoFormatted = respuesta.producto_addBr.replace(/\|/g, '\n');
+   
+    this.ArrayConsultaSeg.forEach(function (respuesta: any) { 
+      const productoFormatted = respuesta.producto_addTodos.replace(/\|/g, '\n');
       var Res =
         [respuesta.NOMBRES_PERSONA, respuesta.CELULAR_PERSONA, respuesta.DRCCION, productoFormatted];
 
@@ -288,9 +287,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       }
       //this.ServiciosValorar.ConsultaSeguimiento('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
       this.ServiciosValorar.ConsultaSeguimientoEntregas('1', this.ConductorSelect, this.SelectorSector, this.SelectorOferta, datos).subscribe(Resultado => {
-        console.log(this.ConductorSelect)
-
-        if (Resultado.length == 0) {
+         if (Resultado.length == 0) {
           this.Respuesta = 'No encontramos registros de compras para este sector.';
           this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
           this.ValidaInsertSec = '0';
