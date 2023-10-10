@@ -192,6 +192,8 @@ export class ValoracionComponent implements OnInit {
 
   //GrillaRelacionTopping
   ArrayProdTopping: any = [];
+  IdToppingSelect: string = "";
+
   //#endregion AgregarTopping
 
   constructor(private ServiciosOferta: CrearofertaService, private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
@@ -2295,11 +2297,11 @@ export class ValoracionComponent implements OnInit {
 
     //Precarga imagenes con lo que trae el servicio
     this.Add1 = this.RutaImagenTopping + item.imagen;
-    this.NomImagen1 =item.imagen; 
+    this.NomImagen1 = item.imagen;
     this.Add2 = this.RutaImagenTopping + item.imagenDos;
-    this.NomImagen2 =item.imagenDos; 
+    this.NomImagen2 = item.imagenDos;
     this.Add3 = this.RutaImagenTopping + item.imagenTres;
-    this.NomImagen3 =item.imagenTres; 
+    this.NomImagen3 = item.imagenTres;
 
     //Pecarga las caracterizaciones
     this.DescCortaAdd = item.crctzcionCrta;
@@ -2330,7 +2332,7 @@ export class ValoracionComponent implements OnInit {
 
   AbreAdminPresentaciones(Presentaciones: any, topping: any) {
     this.modalService.open(Presentaciones, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
-
+    this.IdToppingSelect = topping.IdTopping;
     this.ListaPresentacionesTopping(topping.IdTopping);
   }
   CierraModalPresentacion() {
@@ -2342,13 +2344,14 @@ export class ValoracionComponent implements OnInit {
     this.PesoKl = "";
     this.ValorReal = "";
     this.ValorReferencia = "";
+    this.IdToppingSelect = "";
   }
 
-ListaPresentacionesTopping(IdTopping: string){
-  this.serviciosvaloracion.consCRelacionProducTopping('1', IdTopping).subscribe(ResultUpdate => {
-    this.ArrayProdTopping = ResultUpdate;
-  });
-}
+  ListaPresentacionesTopping(IdTopping: string) {
+    this.serviciosvaloracion.consCRelacionProducTopping('1', IdTopping).subscribe(ResultUpdate => {
+      this.ArrayProdTopping = ResultUpdate;
+    });
+  }
 
 
 
@@ -2366,6 +2369,7 @@ ListaPresentacionesTopping(IdTopping: string){
     this.PesoKl = "";
     this.ValorReal = "";
     this.ValorReferencia = "";
+    this.IdToppingSelect = "";
   }
 
 
@@ -2390,6 +2394,25 @@ ListaPresentacionesTopping(IdTopping: string){
     } else {
       this.SmsError = "";
       //Agrega la presentacion
+      const body = {
+        IdTopping: this.IdToppingSelect,
+        IdRelacion: 0,
+        Presentacion: this.PresentacionModal,
+        ValorReal: this.ValorReal,
+        ValorReferencia: this.ValorReferencia,
+        UnidadesOferta: this.UnidadesOferta,
+        MximoUnidades: this.MaximoUnidades,
+        PesoUnidad: this.PesoKl
+      }
+      this.serviciosvaloracion.modCRelacionProductoTopping('2', body).subscribe(Respu => {
+        var split = Respu.toString().split("|");
+        if (split[0] == "1") {
+          this.ListaPresentacionesTopping(this.IdToppingSelect);
+          this.LimpiarCamposModalPresentacion();
+        } else {
+          this.SmsError = split[1].toString();
+        }
+      });
     }
   }
 
