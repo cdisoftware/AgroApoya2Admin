@@ -665,7 +665,7 @@
                                 <label for="">Sin registros</label>
                             </ng-template>
                         </div>
-                        <div class="col-sm-4 mt-2" >
+                        <div class="col-sm-4 mt-2">
                             <label>{{DescripTipoVenta}}</label>
                         </div>
                         <div class="col-sm-4 mt-2" *ngIf="IsEnables == false ">
@@ -675,13 +675,15 @@
                         </div>
                         <div class="col-sm-4 mt-2">
                             <label class="col-sm-12 Llave">Valor unitario</label>
-                            <input mask="separator" thousandSeparator="." type="text"  disabled="{{IsEnablesValor == true}}"
-                                class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrUniTopp">
+                            <input mask="separator" thousandSeparator="." type="text"
+                                disabled="{{IsEnablesValor == true}}" class="col-sm-12 form-control mt-1 textBox"
+                                [(ngModel)]="VlrUniTopp">
                         </div>
                         <div class="col-sm-4 mt-2">
                             <label class="col-sm-12 Llave">Valor referencia</label>
-                            <input mask="separator" thousandSeparator="." type="text"  disabled="{{IsEnablesValor == true}}"
-                                class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="ValorRefAdd">
+                            <input mask="separator" thousandSeparator="." type="text"
+                                disabled="{{IsEnablesValor == true}}" class="col-sm-12 form-control mt-1 textBox"
+                                [(ngModel)]="ValorRefAdd">
                         </div>
                         <div class="col-sm-4 mt-2">
                             <label class="col-sm-12 Llave">Descripción</label>
@@ -704,14 +706,14 @@
                         <div class="col-sm-4 mt-2">
                             <label class="col-sm-12 Llave">Unidades para la oferta</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidOferta"
-                                disabled="{{IsEnables == true}}"> 
+                                disabled="{{IsEnables == true}}">
                         </div>
                         <div class="col-sm-4 mt-2">
                             <label class="col-sm-12 Llave">Máximo unidades por cada compra</label>
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidMaxTopp"
                                 [disabled]="ValidaTipoTopp">
                         </div>
-                    
+
                     </div>
 
                     <div class="row br justify-content-center">
@@ -808,7 +810,8 @@
                                                 src="./../../../../../assets/ImagenesAgroApoya2Adm/notvisible.png">
 
                                         </button>
-                                        <button class="SinEstilo" title="Eliminar amparado" *ngIf="topping.IdTipoToppingVenta != '3'" >
+                                        <button class="SinEstilo" title="Eliminar amparado"
+                                            *ngIf="topping.IdTipoToppingVenta != '3'">
                                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png"
                                                 (click)="ModificaTopping('2', topping,ModalRespuesta)">
                                         </button>
@@ -1027,3 +1030,178 @@
     </div>
     <br>
 </ng-template>
+
+<!-- INICIO AÑADEPRODUCTOS -->
+
+<div class="col-sm-2 col-12 br">
+    <button type="button" class="btn btn-agro-prin col-sm-12" (click)="CrearEditarproduct(templateEditar)">
+        Crear/Editar Producto</button>
+</div>
+
+
+<ng-template #templateEditar let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title">Creación/Edición producto</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-6 mt-2">
+                <label class="col-sm-12 Llave">Descripción</label>
+                <input type="text" title="Descripción máximo 150 caracteres" class="col-sm-12 form-control mt-1 textBox"
+                    maxlength="150" [(ngModel)]="DesProduct" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="col-sm-6 mt-2">
+                <label class="col-sm-12 Llave">Prefijo</label>
+                <input type="text" title="Prefijo máximo 3 caracteres" class="col-sm-12 form-control mt-1 textBox"
+                    maxlength="3" [(ngModel)]="PrfjoProduct" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="col-sm-6 mt-2">
+                <label class="col-sm-12 Llave">Caracterización corta</label>
+                <textarea name="DescCortaAdd" id="DescCortaAdd" cols="30" rows="5" class="form-control textBox"
+                    title="Caracterización corta" [(ngModel)]="CaractCorta"></textarea>
+            </div>
+            <div class="col-sm-6 mt-2">
+                <label class="col-sm-12 Llave">Caracterización larga</label>
+                <textarea name="DescLargaAdd" id="DescLargaAdd" cols="30" rows="5" class="form-control textBox"
+                    title="Caracterización larga" [(ngModel)]="CaractLarga"></textarea>
+            </div>
+
+            <div class="row br justify-content-center">
+                <h5 class="SubTituloForm">Agrega las imagenes del producto</h5>
+                <br><br>
+                <div class="col-sm-2 centraimagen">
+                    <div class="image-upload">
+                        <label for="file-input1">
+                            <img id="Imagen1" title="Selecciona una imagen" [src]="AddProducto1"
+                                style="border-radius: 10px;">
+                        </label>
+                        <input name="file-input1" id="file-input1" type="file"
+                            (change)="CargarImagenProducto($event, '1', ModalRespuestaImg)" />
+                    </div>
+                </div>
+                <div class="col-sm-2 centraimagen">
+                    <div class="image-upload">
+                        <label for="file-input2">
+                            <img id="Imagen2" title="Selecciona una imagen" [src]="AddProducto2"
+                                style="border-radius: 10px;">
+                        </label>
+                        <input name="file-input2" id="file-input2" type="file"
+                            (change)="CargarImagenProducto($event,'2', ModalRespuestaImg)" />
+                    </div>
+                </div>
+                <div class="col-sm-2 centraimagen">
+                    <div class="image-upload">
+                        <label for="file-input3">
+                            <img id="Imagen3" title="Selecciona una imagen" [src]="AddProducto3"
+                                style="border-radius: 10px;">
+                        </label>
+                        <input name="file-input3" id="file-input3" type="file"
+                            (change)="CargarImagenProducto($event, '3', ModalRespuestaImg)" />
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row justify-content-center br">
+                <div class="col-sm-3">
+
+                    <button class="btn btn-agro-prin col-sm-12" (click)="GuardarProducto('2', ModalRespuesta)"
+                        *ngIf="banderaAgregar=='1'">Guardar</button>
+
+
+                    <button class="btn btn-agro-prin col-sm-12" (click)="GuardarProducto('3', ModalRespuesta)" *ngIf="banderaAgregar=='2'">Actualizar</button>
+                </div>
+                <div class="col-sm-3">
+
+                    <button class="btn btn-agro-sec col-sm-12" (click)="LimpiarADDProduct()">Limpiar</button>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row justify-content-center">
+            <div class="table-responsive">
+                <table class="table col-sm-12 TableAgro">
+                    <tr id="TablaValoracion">
+                        <th>Descripción</th>
+                        <th>Prefijo</th>
+                        <th>Caracterización corta</th>
+                        <th>Caracterización larga</th>
+                        <th>Acciones</th>
+                    </tr>
+                    <tr *ngFor="let producto of DataProducts">
+                        <td>{{producto.DSCRPCION}}</td>
+                        <td>{{producto.PRFJO}}</td>
+                        <td>
+                            <div class="descripcionlarga">{{producto.crctzcionCrta}}</div>
+                        </td>
+                        <td>
+                            <div class="descripcionlarga">{{producto.crctzcionLrga}}</div>
+                        </td>
+                        <td>
+                            <button class="SinEstilo" title="Editar producto" (click)="EditarProducto(producto)">
+                                <img src="../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
+                                    class="BtnimgTamanoPeque" />
+                            </button>
+                            <button class="SinEstilo" title="Eliminar producto"
+                                (click)="EliminarProd(producto, templateConfirmacion)">
+                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
+                            </button>
+                            <button class="SinEstilo" title="Imagenes producto"
+                                (click)="visualizaImagenProducto(ModalImagenProduct, producto)">
+                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png">
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #templateConfirmacion let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title">Eliminar Producto</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="mt-4 mb-1 text-center">
+        <div class="row justify-content-center">
+
+            <div class="col-12 mb-3">
+                ¿Estás seguro de eliminar el producto?
+            </div>
+
+            <div class="col-sm-4">
+                <button type="button" id="btnGuardarDirecccion" class="btn btn-agro-prin w-100"
+                    (click)="AceptEliminarProd()">
+                    Aceptar
+                </button>
+            </div>
+            <div class="col-sm-4">
+                <button type="button" id="btnGuardarDirecccion" class="btn btn-agro-sec w-100"
+                    (click)="modal.dismiss('Cross click')">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalImagenProduct let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title">Imagenes producto</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body" *ngFor="let producto of DataProducts">
+        <div class="row br">
+            <img src="{{RutaImagenTopping}}{{producto.imagen}}" class="col-sm-12">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.dismiss()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
+<!-- FIN AÑADEPRODUCTOS -->
