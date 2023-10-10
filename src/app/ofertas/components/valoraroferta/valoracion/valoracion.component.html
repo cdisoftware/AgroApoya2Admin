@@ -1063,7 +1063,7 @@
 <!--Añade o quita presentaciones-->
 <ng-template #Presentaciones let-modal>
     <div class="modal-header">
-        <h1>Presentaciones</h1>
+        <h1>Presentaciones: {{DescripcionProductoTopping}}</h1>
         <button type="button" class="btn-close" aria-label="Close" (click)="CierraModalPresentacion()"></button>
     </div>
     <div class="modal-body">
@@ -1131,7 +1131,7 @@
                         <td>{{prodTop.VlorRefencia | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                         <td>
                             <button class="SinEstilo" title="Eliminar presentación">
-                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basura.png" class="imgpresentacion">
+                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basura.png" class="imgpresentacion" (click)="ConfirmacionEliminar(prodTop, ModalConfirmacion)">
                             </button>
                         </td>
                     </tr>
@@ -1142,6 +1142,26 @@
     <div class="row justify-content-center">
         <button type="button" class="btn btn-agro-prin col-sm-2" (click)="CierraModalPresentacion()">Aceptar</button>
     </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalConfirmacion let-modal>
+    <div class="modal-header">
+        <h1>¿Estás seguro de eliminar esta presentación?</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br justify-content-center">
+                <label style="text-align: center; font-size: 15px;"><strong>{{DescripcionProductoTopping}}</strong></label>
+        </div>
+    </div>
+    <div class="row mt-3 justify-content-center">
+
+        <button type="button" class="btn btn-agro-prin col-sm-2" style="margin-right: 5px;" (click)="modal.close()" (click)="EliminaPresentacion()">Eliminar</button>
+        <button type="button" class="btn btn-agro-sec col-sm-2" style="margin-left: 5px;" (click)="modal.close()">Cancelar</button>
+    </div>
+
+
     <br>
 </ng-template>
 <!--Fin Añade o quita presentaciones-->

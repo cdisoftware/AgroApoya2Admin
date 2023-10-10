@@ -192,7 +192,10 @@ export class ValoracionComponent implements OnInit {
 
   //GrillaRelacionTopping
   ArrayProdTopping: any = [];
+  itemEliminar: any;
   IdToppingSelect: string = "";
+
+  DescripcionProductoTopping: string = "";
 
   //#endregion AgregarTopping
 
@@ -2333,6 +2336,7 @@ export class ValoracionComponent implements OnInit {
   AbreAdminPresentaciones(Presentaciones: any, topping: any) {
     this.modalService.open(Presentaciones, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
     this.IdToppingSelect = topping.IdTopping;
+    this.DescripcionProductoTopping = topping.Descripcion;
     this.ListaPresentacionesTopping(topping.IdTopping);
   }
   CierraModalPresentacion() {
@@ -2348,7 +2352,7 @@ export class ValoracionComponent implements OnInit {
   }
 
   ListaPresentacionesTopping(IdTopping: string) {
-    this.serviciosvaloracion.consCRelacionProducTopping('1', IdTopping).subscribe(ResultUpdate => {
+    this.serviciosvaloracion.consCRelacionProducTopping('1', IdTopping, this.SessionSectorSel).subscribe(ResultUpdate => {
       this.ArrayProdTopping = ResultUpdate;
     });
   }
@@ -2369,7 +2373,6 @@ export class ValoracionComponent implements OnInit {
     this.PesoKl = "";
     this.ValorReal = "";
     this.ValorReferencia = "";
-    this.IdToppingSelect = "";
   }
 
 
@@ -2414,6 +2417,35 @@ export class ValoracionComponent implements OnInit {
         }
       });
     }
+  }
+
+  ConfirmacionEliminar(item: any, ModalConfirmacion: any){
+    this.SmsError = "";
+    this.itemEliminar = item;
+    this.DescripcionProductoTopping = item.Presentacion;
+    this.modalService.open(ModalConfirmacion, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+  }
+
+  EliminaPresentacion() {
+    const body = {
+      IdTopping: '0',
+      IdRelacion: this.itemEliminar.IdRelacion,
+      Presentacion: this.itemEliminar.Presentacion,
+      ValorReal: this.itemEliminar.ValorUnitario,
+      ValorReferencia: this.itemEliminar.VlorRefencia,
+      UnidadesOferta: this.itemEliminar.cantidadReserva,
+      MximoUnidades: this.itemEliminar.MaxCantidad,
+      PesoUnidad: this.itemEliminar.PesoKilos
+    }
+    this.serviciosvaloracion.modCRelacionProductoTopping('4', body).subscribe(Respu => {
+      var split = Respu.toString().split("|");
+      if (split[0] == "1") {
+        this.ListaPresentacionesTopping(this.IdToppingSelect);
+        this.LimpiarCamposModalPresentacion();
+      } else {
+        this.SmsError = split[1].toString();
+      }
+    });
   }
 
 
