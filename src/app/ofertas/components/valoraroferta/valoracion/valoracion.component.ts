@@ -2207,7 +2207,9 @@ export class ValoracionComponent implements OnInit {
   //#region AÑADEPRODUCTOS
   banderaAgregar: string = '1';
   DataProducts: any[];
-
+  cerrarModal: NgbModalRef;
+  ArregloEliminaProduct: any;
+  
   DesProduct: string = '';
   PrfjoProduct: string = '';
   CaractCorta: string = '';
@@ -2368,9 +2370,9 @@ export class ValoracionComponent implements OnInit {
       }
     }
   }
-  ArregloEliminaProduct: any;
+
   EliminarProd(producto: any, modalmensaje: any) {
-    this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title' })
+    this.cerrarModal = this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title' })
     this.ArregloEliminaProduct = {
       DSCRPCION: producto.DSCRPCION,
       imagen: producto.imagen,
@@ -2384,9 +2386,12 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
-  AceptEliminarProd() {
+  AceptEliminarProd(templateMensaje: any) {
     // this.modalService.dismissAll(ModalMensaje)
     // this.modalService.dismiss();
+    this.cerrarModal?.close();
+    this.Respuesta = ''
+    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
     this.serviciosvaloracion.ModificaCTipoProducto('4', this.ArregloEliminaProduct).subscribe(ResultOper => {
       this.Respuesta = ResultOper;
       this.consultaProductos();
@@ -2450,7 +2455,7 @@ export class ValoracionComponent implements OnInit {
             if (imagen == '3') {
               this.AddProducto3 = this.RutaImagenTopping + event.target.files[0].name;
               this.NomProductImagen3 = event.target.files[0].name;
-            }      
+            }
           }
         },
         error => {
