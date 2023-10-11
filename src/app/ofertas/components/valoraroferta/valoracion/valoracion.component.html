@@ -631,12 +631,18 @@
 
     <div class="row br" *ngIf="ValidaToppings=='1'">
         <h5 class="SubTituloForm">Definición conceptos adicionales</h5>
+      
     </div>
+   
     <div class="row br" *ngIf="ValidaToppings=='1'">
         <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
             <ngb-panel title="Adicionales" id="config-panel-three">
-                <ng-template ngbPanelContent>
-                    <div class="row br">
+                <ng-template ngbPanelContent>     
+                    <div class="col-sm-2 col-12 br">
+                        <button type="button" class="btn btn-agro-prin col-sm-12" (click)="CrearEditarproduct(templateEditar)">
+                            Crear/Editar Producto</button>
+                    </div>             
+                    <div class="row br">                        
                         <div class="col-sm-4 mt-2 mb-2">
                             <label class="col-sm-12 Llave mt-1">Tipo</label>
                             <ng-autocomplete [data]="DataTipotopping" [searchKeyword]="keywordTipTopp"
@@ -1061,12 +1067,6 @@
 
 <!-- INICIO AÑADEPRODUCTOS -->
 
-<div class="col-sm-2 col-12 br">
-    <button type="button" class="btn btn-agro-prin col-sm-12" (click)="CrearEditarproduct(templateEditar)">
-        Crear/Editar Producto</button>
-</div>
-
-
 <ng-template #templateEditar let-modal>
     <div class="modal-header">
         <h1 class="modal-title" id="modal-basic-title">Creación/Edición producto</h1>
@@ -1100,31 +1100,31 @@
                 <br><br>
                 <div class="col-sm-2 centraimagen">
                     <div class="image-upload">
-                        <label for="file-input1">
-                            <img id="Imagen1" title="Selecciona una imagen" [src]="AddProducto1"
+                        <label for="file-inputp1">
+                            <img id="Imagenp1" title="Selecciona una imagen" [src]="AddProducto1"
                                 style="border-radius: 10px;">
                         </label>
-                        <input name="file-input1" id="file-input1" type="file"
+                        <input name="file-inputp1" id="file-inputp1" type="file"
                             (change)="CargarImagenProducto($event, '1', ModalRespuestaImg)" />
                     </div>
                 </div>
                 <div class="col-sm-2 centraimagen">
                     <div class="image-upload">
-                        <label for="file-input2">
-                            <img id="Imagen2" title="Selecciona una imagen" [src]="AddProducto2"
+                        <label for="file-inputp2">
+                            <img id="Imagenp2" title="Selecciona una imagen" [src]="AddProducto2"
                                 style="border-radius: 10px;">
                         </label>
-                        <input name="file-input2" id="file-input2" type="file"
+                        <input name="file-inputp2" id="file-inputp2" type="file"
                             (change)="CargarImagenProducto($event,'2', ModalRespuestaImg)" />
                     </div>
                 </div>
                 <div class="col-sm-2 centraimagen">
                     <div class="image-upload">
-                        <label for="file-input3">
-                            <img id="Imagen3" title="Selecciona una imagen" [src]="AddProducto3"
+                        <label for="file-inputp3">
+                            <img id="Imagenp3" title="Selecciona una imagen" [src]="AddProducto3"
                                 style="border-radius: 10px;">
                         </label>
-                        <input name="file-input3" id="file-input3" type="file"
+                        <input name="file-inputp3" id="file-inputp3" type="file"
                             (change)="CargarImagenProducto($event, '3', ModalRespuestaImg)" />
                     </div>
                 </div>
@@ -1291,7 +1291,7 @@
 
             <div class="col-sm-4">
                 <button type="button" id="btnGuardarDirecccion" class="btn btn-agro-prin w-100"
-                    (click)="AceptEliminarProd()">
+                    (click)="AceptEliminarProd(ModalRespuesta)">
                     Aceptar
                 </button>
             </div>
@@ -1311,6 +1311,9 @@
     <div class="modal-header">
         <h1 class="modal-title" id="modal-basic-title">Imagenes producto</h1>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="row br">
+        <h2 class="TituloDetalle">{{Respuesta}}</h2>
     </div>
     <div class="modal-body" *ngFor="let producto of ArrayProductoSeleccionado">
         <div class="row br">

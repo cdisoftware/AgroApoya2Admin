@@ -2449,7 +2449,7 @@ export class ValoracionComponent implements OnInit {
           CD_PRDCTO: this.auxCD_PRDCTO,
           PREFIJO: this.PrfjoProduct
         }
-
+        console.log(Body);
         this.serviciosvaloracion.ModificaCTipoProducto('3', Body).subscribe(ResultOper => {
           this.Respuesta = ResultOper;
           const partesRespuesta = this.Respuesta.split('|');
@@ -2478,10 +2478,16 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
-  AceptEliminarProd() {
+  AceptEliminarProd(modalmensaje: any) {
+    this.Respuesta = '';
+    this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title' })
     this.cerrarModal?.close();
     this.serviciosvaloracion.ModificaCTipoProducto('4', this.ArregloEliminaProduct).subscribe(ResultOper => {
       this.Respuesta = ResultOper;
+      const partesRespuesta = this.Respuesta.split('|');
+      if (partesRespuesta.length > 1) {
+        this.Respuesta = partesRespuesta.slice(1).join('|');
+      }
       this.consultaProductos();
     })
   }
@@ -2492,18 +2498,24 @@ export class ValoracionComponent implements OnInit {
     this.PrfjoProduct = producto.PRFJO;
     this.CaractCorta = producto.crctzcionCrta;
     this.CaractLarga = producto.crctzcionLrga;
-    this.AddProducto1 = this.RutaImagenTopping + producto.imagen;
-    if (producto.imagenDos != '' || producto.imagenDos != null) {
+    if (producto.imagen == '' || producto.imagen == null) {
+      this.AddProducto1 = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+    } else {
+      this.AddProducto1 = this.RutaImagenTopping + producto.imagen;
+      this.NomProductImagen1 = producto.imagen;
+    }
+    if (producto.imagenDos == '' || producto.imagenDos == null) {
+      this.AddProducto2 = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+    } else {
       this.AddProducto2 = this.RutaImagenTopping + producto.imagenDos;
       this.NomProductImagen2 = producto.imagenDos;
     }
-    if (producto.imagenTres != '' || producto.imagenTres != null) {
+    if (producto.imagenTres == '' || producto.imagenTres == null) {
+      this.AddProducto3 = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+    } else {
       this.AddProducto3 = this.RutaImagenTopping + producto.imagenTres;
       this.NomProductImagen3 = producto.imagenTres;
     }
-    this.NomProductImagen1 = producto.imagen;
-
-
     this.banderaAgregar = '2';
   }
 
@@ -2521,6 +2533,9 @@ export class ValoracionComponent implements OnInit {
     this.AddProducto2 = "./../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png";
     this.AddProducto3 = "./../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png";
     this.banderaAgregar = '1';
+    this.NomProductImagen1 = "";
+    this.NomProductImagen2 = "";
+    this.NomProductImagen3 = "";
   }
 
   public CargarImagenProducto(event: any, imagen: string, modalmensaje: any) {
@@ -2540,7 +2555,6 @@ export class ValoracionComponent implements OnInit {
       this.serviciosvaloracion.postImgToppings(event.target.files[0]).subscribe(
         response => {
           if (response == 'Archivo Subido Correctamente') {
-
             if (imagen == '1') {
               this.AddProducto1 = this.RutaImagenTopping + event.target.files[0].name;
               this.NomProductImagen1 = event.target.files[0].name;
@@ -2563,22 +2577,46 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
-  ArrayProductoSeleccionado: any = [];
+  ArrayProductoSeleccionado: any[] = [];
   visualizaImagenProducto(ModalImagen: any, producto: any) {
+    this.Respuesta = '';
     this.ArrayProductoSeleccionado = [];
-    if (producto.imagen != null && producto.imagen != undefined) {
-      this.ArrayProductoSeleccionado.push({ imagen: producto.imagen });
-    }
-    if (producto.imagenDos != null && producto.imagenDos != undefined) {
-      this.ArrayProductoSeleccionado.push({ imagen: producto.imagenDos });
-    }
-    if (producto.imagenTres != null && producto.imagenTres != undefined) {
-      this.ArrayProductoSeleccionado.push({ imagen: producto.imagenTres });
+    const propiedadesImagenes = ['imagen', 'imagenDos', 'imagenTres'];
+
+    // Verifica y agrega las imágenes al ArrayProductoSeleccionado
+    for (const propiedad of propiedadesImagenes) {
+      if (producto[propiedad] !== null && producto[propiedad] !== undefined) {
+        this.ArrayProductoSeleccionado.push({ imagen: producto[propiedad] });
+      }
     }
 
-    this.modalService.open(ModalImagen, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+    // Si no hay imágenes, muestra un mensaje
+    if (this.ArrayProductoSeleccionado.length === 0) {
+      this.Respuesta = 'No hay imágenes';
+    } else {
+      // Si hay imágenes, verifica si imagenDos e imagenTres están presentes
+      const tieneImagenDos = this.ArrayProductoSeleccionado.some(item => item.imagenDos);
+      const tieneImagenTres = this.ArrayProductoSeleccionado.some(item => item.imagenTres);
 
+      // Filtra las imágenes para mostrar solo imagen, imagenDos o imagenTres según corresponda
+      this.ArrayProductoSeleccionado = this.ArrayProductoSeleccionado.filter(item => {
+        if (tieneImagenDos && tieneImagenTres) {
+          return item.imagen || item.imagenDos || item.imagenTres;
+        } else if (tieneImagenDos) {
+          return item.imagen || item.imagenDos;
+        } else if (tieneImagenTres) {
+          return item.imagen || item.imagenTres;
+        } else {
+          return item.imagen;
+        }
+      });
+    }
+    // Abre el modal
+    this.modalService.open(ModalImagen, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
   }
+
+
+
 
 
   //#endregion AÑADEPRODUCTOS
@@ -2598,15 +2636,15 @@ export class ValoracionComponent implements OnInit {
 
 
     //Precarga imagenes con lo que trae el servicio
-    if(item.imagen != null && item.imagen != '' && item.imagen != 'null'){
+    if (item.imagen != null && item.imagen != '' && item.imagen != 'null') {
       this.Add1 = this.RutaImagenTopping + item.imagen;
       this.NomImagen1 = item.imagen;
     }
-    if(item.imagenDos != null && item.imagenDos != '' && item.imagenDos != 'null'){
+    if (item.imagenDos != null && item.imagenDos != '' && item.imagenDos != 'null') {
       this.Add2 = this.RutaImagenTopping + item.imagenDos;
       this.NomImagen2 = item.imagenDos;
     }
-    if(item.imagenTres != null && item.imagenTres != '' && item.imagenTres != 'null'){
+    if (item.imagenTres != null && item.imagenTres != '' && item.imagenTres != 'null') {
       this.Add3 = this.RutaImagenTopping + item.imagenTres;
       this.NomImagen3 = item.imagenTres;
     }
@@ -2661,16 +2699,6 @@ export class ValoracionComponent implements OnInit {
       this.ArrayProdTopping = ResultUpdate;
     });
   }
-
-
-
-
-
-
-
-
-
-
   LimpiarCamposModalPresentacion() {
     this.UnidadesOferta = "";
     this.MaximoUnidades = "";
@@ -2679,9 +2707,6 @@ export class ValoracionComponent implements OnInit {
     this.ValorReal = "";
     this.ValorReferencia = "";
   }
-
-
-
   AgregarPresentacion() {
     this.SmsError = "";
 
@@ -2724,7 +2749,7 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
-  ConfirmacionEliminar(item: any, ModalConfirmacion: any){
+  ConfirmacionEliminar(item: any, ModalConfirmacion: any) {
     this.SmsError = "";
     this.itemEliminar = item;
     this.DescripcionPresentacion = item.Presentacion;
