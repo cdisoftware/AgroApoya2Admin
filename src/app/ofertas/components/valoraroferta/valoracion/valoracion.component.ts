@@ -203,6 +203,19 @@ export class ValoracionComponent implements OnInit {
 
   //#endregion AgregarTopping
 
+  //#region AgregaPresentacionesProdAncla
+  UnidadesProdAncla: string = "";
+  MaxinoProdAncla: string = "";
+  PresentacionProdAncla: string = "";
+  PesoProdAncla: string = "";
+  ValorProdAncla: string = "";
+  ValorReferenciaProdAncla: string = "";
+
+  //Grilla
+  ArrayPresentacionesProdAncla: any = [];
+  //#endregion AgregaPresentacionesProdAncla
+
+
   constructor(private ServiciosOferta: CrearofertaService, private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
     ConfigAcord.closeOthers = true;
   }
@@ -293,7 +306,7 @@ export class ValoracionComponent implements OnInit {
   consultaToppingsOferta() {
     this.serviciosvaloracion.ConsultaToppingOfer('5', this.SessionSectorSel, this.SessionOferta, '0').subscribe(Resultcons => {
       if (Resultcons.length > 0) {
-
+        console.log(Resultcons)
         this.DataToppings = Resultcons;
         this.ValidaConsulta = '0';
       }
@@ -2598,15 +2611,15 @@ export class ValoracionComponent implements OnInit {
 
 
     //Precarga imagenes con lo que trae el servicio
-    if(item.imagen != null && item.imagen != '' && item.imagen != 'null'){
+    if (item.imagen != null && item.imagen != '' && item.imagen != 'null') {
       this.Add1 = this.RutaImagenTopping + item.imagen;
       this.NomImagen1 = item.imagen;
     }
-    if(item.imagenDos != null && item.imagenDos != '' && item.imagenDos != 'null'){
+    if (item.imagenDos != null && item.imagenDos != '' && item.imagenDos != 'null') {
       this.Add2 = this.RutaImagenTopping + item.imagenDos;
       this.NomImagen2 = item.imagenDos;
     }
-    if(item.imagenTres != null && item.imagenTres != '' && item.imagenTres != 'null'){
+    if (item.imagenTres != null && item.imagenTres != '' && item.imagenTres != 'null') {
       this.Add3 = this.RutaImagenTopping + item.imagenTres;
       this.NomImagen3 = item.imagenTres;
     }
@@ -2710,6 +2723,7 @@ export class ValoracionComponent implements OnInit {
         ValorReferencia: this.ValorReferencia,
         UnidadesOferta: this.UnidadesOferta,
         MximoUnidades: this.MaximoUnidades,
+        Id_Sector: this.SessionSectorSel,
         PesoUnidad: this.PesoKl
       }
       this.serviciosvaloracion.modCRelacionProductoTopping('2', body).subscribe(Respu => {
@@ -2724,7 +2738,7 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
-  ConfirmacionEliminar(item: any, ModalConfirmacion: any){
+  ConfirmacionEliminar(item: any, ModalConfirmacion: any) {
     this.SmsError = "";
     this.itemEliminar = item;
     this.DescripcionPresentacion = item.Presentacion;
@@ -2740,6 +2754,7 @@ export class ValoracionComponent implements OnInit {
       ValorReferencia: this.itemEliminar.VlorRefencia,
       UnidadesOferta: this.itemEliminar.cantidadReserva,
       MximoUnidades: this.itemEliminar.MaxCantidad,
+      Id_Sector: this.SessionSectorSel,
       PesoUnidad: this.itemEliminar.PesoKilos
     }
     this.serviciosvaloracion.modCRelacionProductoTopping('4', body).subscribe(Respu => {
@@ -2759,4 +2774,102 @@ export class ValoracionComponent implements OnInit {
     this.SmsError = "";
   }
   //#endregion AgregaTopping
+
+  //#region AgregaPresentacionesProdAncla
+  AbreModalPresentacioProdAncla(PresentacionesProdAncla: any) {
+    this.LimpiaCamposPresentacioProdAncla();
+    this.ListaPresentacionesProdAncla();
+    this.modalService.open(PresentacionesProdAncla, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
+  }
+  ListaPresentacionesProdAncla() {
+    this.serviciosvaloracion.consCRelacionProducTopping('4', this.SessionOferta, this.SessionSectorSel).subscribe(Respu => {
+      this.ArrayPresentacionesProdAncla = Respu;
+    });
+  }
+  AgregarPresentacionProdPrin() {
+    this.SmsError = "";
+
+    if (this.UnidadesProdAncla == '' || this.UnidadesProdAncla == '0' || Number(this.UnidadesProdAncla) < 1) {
+      this.SmsError = "Define agregar unidades para la oferta";
+    } else if (this.MaxinoProdAncla == '' || this.MaxinoProdAncla == '0' || Number(this.MaxinoProdAncla) < 1) {
+      this.SmsError = "Define la cantidad máxima por compra";
+    } else if (this.PresentacionProdAncla == '') {
+      this.SmsError = "Define la presentación";
+    } else if (this.PesoProdAncla == '' || this.PesoProdAncla == '0' || Number(this.PesoProdAncla) < 1) {
+      this.SmsError = "Define el peso del producto";
+    } else if (this.ValorProdAncla == '' || this.ValorProdAncla == '0' || Number(this.ValorProdAncla) < 1) {
+      this.SmsError = "Define el Valor del producto en esta presentación";
+    } else if (this.ValorReferenciaProdAncla == '' || this.ValorReferenciaProdAncla == '0' || Number(this.ValorReferenciaProdAncla) < 1) {
+      this.SmsError = "Define su valor referencia";
+    } else if (Number(this.ValorProdAncla) > Number(this.ValorReferenciaProdAncla)) {
+      this.SmsError = "El valor real no puede ser mayor que el valor referencia";
+    } else {
+      this.SmsError = "";
+      //Agrega la presentacion
+      const body = {
+        IdTopping: this.SessionOferta,
+        IdRelacion: 0,
+        Presentacion: this.PresentacionProdAncla,
+        ValorReal: this.ValorProdAncla,
+        ValorReferencia: this.ValorReferenciaProdAncla,
+        UnidadesOferta: this.UnidadesProdAncla,
+        MximoUnidades: this.MaxinoProdAncla,
+        Id_Sector: this.SessionSectorSel,
+        PesoUnidad: this.PesoProdAncla
+      }
+      this.serviciosvaloracion.modCRelacionProductoTopping('5', body).subscribe(Respu => {
+        var split = Respu.toString().split("|");
+        if (split[0] == "1") {
+          this.ListaPresentacionesProdAncla();
+          this.LimpiaCamposPresentacioProdAncla();
+        } else {
+          if (split.length > 0) {
+            this.SmsError = split[1];
+          } else {
+            this.SmsError = split[0];
+          }
+        }
+      });
+    }
+  }
+  ConfirmacionEliminarProdPrincipal(item: any, ModalConfirmacion: any) {
+    this.SmsError = "";
+    this.itemEliminar = item;
+    this.DescripcionPresentacion = item.Presentacion;
+    this.modalService.open(ModalConfirmacion, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+  }
+
+  EliminaPresentacionProdPinsipal() {
+    const body = {
+      IdTopping: this.SessionOferta,
+      IdRelacion: this.itemEliminar.IdRelacion,
+      Presentacion: this.itemEliminar.Presentacion,
+      ValorReal: this.itemEliminar.ValorUnitario,
+      ValorReferencia: this.itemEliminar.VlorRefencia,
+      UnidadesOferta: this.itemEliminar.cantidadReserva,
+      MximoUnidades: this.itemEliminar.MaxCantidad,
+      Id_Sector: this.SessionSectorSel,
+      PesoUnidad: this.itemEliminar.PesoKilos
+    }
+    this.serviciosvaloracion.modCRelacionProductoTopping('6', body).subscribe(Respu => {
+      var split = Respu.toString().split("|");
+      if (split[0] == "1") {
+        this.ListaPresentacionesProdAncla();
+        this.LimpiarCamposModalPresentacion();
+      } else {
+        this.SmsError = split[1].toString();
+      }
+    });
+  }
+
+
+  LimpiaCamposPresentacioProdAncla() {
+    this.UnidadesProdAncla = "";
+    this.MaxinoProdAncla = "";
+    this.PresentacionProdAncla = "";
+    this.PesoProdAncla = "";
+    this.ValorProdAncla = "";
+    this.ValorReferenciaProdAncla = "";
+  }
+  //#endregion AgregaPresentacionesProdAncla
 }
