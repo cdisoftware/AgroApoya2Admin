@@ -2229,9 +2229,7 @@ export class ValoracionComponent implements OnInit {
     })
 
   }
-  //#endregion Anterior
 
-  //#region Anterior
   ListaTipoDomicilio() {
     this.serviciosvaloracion.consTipoDomicilio('1').subscribe(Resultcons => {
       this.ArrayDomicilio = Resultcons;
@@ -2594,7 +2592,7 @@ export class ValoracionComponent implements OnInit {
 
   //#region AgregaTopping
   ListaProductos() {
-    this.serviciosvaloracion.consCTipoProducto('1').subscribe(ResultUpdate => {
+    this.serviciosvaloracion.consultaCTipoProducto('1').subscribe(ResultUpdate => {
       this.ArrayProductos = ResultUpdate;
       this.keywordProductos = 'DSCRPCION';
     });
@@ -2603,13 +2601,20 @@ export class ValoracionComponent implements OnInit {
     this.ProdTipoTpp = item.DSCRPCION;
     this.IdProdTipoTopping = item.CD_PRDCTO;
 
+
     //Precarga imagenes con lo que trae el servicio
-    this.Add1 = this.RutaImagenTopping + item.imagen;
-    this.NomImagen1 = item.imagen;
-    this.Add2 = this.RutaImagenTopping + item.imagenDos;
-    this.NomImagen2 = item.imagenDos;
-    this.Add3 = this.RutaImagenTopping + item.imagenTres;
-    this.NomImagen3 = item.imagenTres;
+    if(item.imagen != null && item.imagen != '' && item.imagen != 'null'){
+      this.Add1 = this.RutaImagenTopping + item.imagen;
+      this.NomImagen1 = item.imagen;
+    }
+    if(item.imagenDos != null && item.imagenDos != '' && item.imagenDos != 'null'){
+      this.Add2 = this.RutaImagenTopping + item.imagenDos;
+      this.NomImagen2 = item.imagenDos;
+    }
+    if(item.imagenTres != null && item.imagenTres != '' && item.imagenTres != 'null'){
+      this.Add3 = this.RutaImagenTopping + item.imagenTres;
+      this.NomImagen3 = item.imagenTres;
+    }
 
     //Pecarga las caracterizaciones
     this.DescCortaAdd = item.crctzcionCrta;
