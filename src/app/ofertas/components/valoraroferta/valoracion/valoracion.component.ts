@@ -2345,11 +2345,16 @@ export class ValoracionComponent implements OnInit {
         }
         this.serviciosvaloracion.ModificaCTipoProducto('2', Body).subscribe(ResultOper => {
           this.Respuesta = ResultOper;
+          const partesRespuesta = this.Respuesta.split('|');
+          if (partesRespuesta.length > 1) {
+            this.Respuesta = partesRespuesta.slice(1).join('|');
+          }
           this.consultaProductos();
           this.LimpiarADDProduct();
         })
       }
       else if (bandera == '3') {
+        var aux: string = "0";
         const Body = {
           DSCRPCION: this.DesProduct,
           imagen: this.NomProductImagen1,
@@ -2364,6 +2369,10 @@ export class ValoracionComponent implements OnInit {
 
         this.serviciosvaloracion.ModificaCTipoProducto('3', Body).subscribe(ResultOper => {
           this.Respuesta = ResultOper;
+          const partesRespuesta = this.Respuesta.split('|');
+          if (partesRespuesta.length > 1) {
+            this.Respuesta = partesRespuesta.slice(1).join('|');
+          }
           this.consultaProductos();
           this.LimpiarADDProduct();
         })
@@ -2386,12 +2395,8 @@ export class ValoracionComponent implements OnInit {
     }
   }
 
-  AceptEliminarProd(templateMensaje: any) {
-    // this.modalService.dismissAll(ModalMensaje)
-    // this.modalService.dismiss();
+  AceptEliminarProd() {
     this.cerrarModal?.close();
-    //this.Respuesta = ''
-    //this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
     this.serviciosvaloracion.ModificaCTipoProducto('4', this.ArregloEliminaProduct).subscribe(ResultOper => {
       console.log(ResultOper)
       this.Respuesta = ResultOper;
@@ -2405,9 +2410,18 @@ export class ValoracionComponent implements OnInit {
     this.PrfjoProduct = producto.PRFJO;
     this.CaractCorta = producto.crctzcionCrta;
     this.CaractLarga = producto.crctzcionLrga;
-    this.AddProducto1 = producto.imagen;
-    this.AddProducto2 = producto.imagenDos;
-    this.AddProducto3 = producto.imagenTres;
+    this.AddProducto1 = this.RutaImagenTopping + producto.imagen;
+    if (producto.imagenDos != '' || producto.imagenDos != null) {
+      this.AddProducto2 = this.RutaImagenTopping + producto.imagenDos;
+      this.NomProductImagen2 = producto.imagenDos;
+    }
+    if (producto.imagenTres != '' || producto.imagenTres != null) {
+      this.AddProducto3 = this.RutaImagenTopping + producto.imagenTres;
+      this.NomProductImagen3 = producto.imagenTres;
+    }
+    this.NomProductImagen1 = producto.imagen;
+
+
     this.banderaAgregar = '2';
   }
 
@@ -2469,6 +2483,7 @@ export class ValoracionComponent implements OnInit {
 
   ArrayProductoSeleccionado: any = [];
   visualizaImagenProducto(ModalImagen: any, producto: any) {
+    this.ArrayProductoSeleccionado = [];
     if (producto.imagen != null && producto.imagen != undefined) {
       this.ArrayProductoSeleccionado.push({ imagen: producto.imagen });
     }
@@ -2478,8 +2493,9 @@ export class ValoracionComponent implements OnInit {
     if (producto.imagenTres != null && producto.imagenTres != undefined) {
       this.ArrayProductoSeleccionado.push({ imagen: producto.imagenTres });
     }
-    console.log(this.ArrayProductoSeleccionado)
+
     this.modalService.open(ModalImagen, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+
   }
 
 

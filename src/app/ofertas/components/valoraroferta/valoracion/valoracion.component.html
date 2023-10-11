@@ -1173,7 +1173,7 @@
 
             <div class="col-sm-4">
                 <button type="button" id="btnGuardarDirecccion" class="btn btn-agro-prin w-100"
-                    (click)="AceptEliminarProd(ModalRespuesta)">
+                    (click)="AceptEliminarProd()">
                     Aceptar
                 </button>
             </div>
@@ -1193,7 +1193,7 @@
         <h1 class="modal-title" id="modal-basic-title">Imagenes producto</h1>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
-    <div class="modal-body" *ngFor="let producto of DataProducts">
+    <div class="modal-body" *ngFor="let producto of ArrayProductoSeleccionado">
         <div class="row br">
             <img src="{{RutaImagenTopping}}{{producto.imagen}}" class="col-sm-12">
         </div>
