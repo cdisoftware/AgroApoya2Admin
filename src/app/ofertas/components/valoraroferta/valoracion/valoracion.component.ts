@@ -826,11 +826,11 @@ export class ValoracionComponent implements OnInit {
           }
         }
       }
-      if (ResultCons[0].dirregistroventas != null && ResultCons[0].dirregistroventas != '') {
-        this.IndexOfertaDirigidaA = ResultCons[0].dirregistroventas;
-        if(ResultCons[0].dirregistroventas == "1"){
+      if (ResultCons[0].DirRegistroVentas != null && ResultCons[0].DirRegistroVentas != '') {
+        this.IndexOfertaDirigidaA = ResultCons[0].DirRegistroVentas;
+        if(ResultCons[0].DirRegistroVentas == "1"){
           this.OfertaDirigidaA = "Registros";
-        }else if (ResultCons[0].dirregistroventas == "2"){
+        }else if (ResultCons[0].DirRegistroVentas == "2"){
           this.OfertaDirigidaA = "Ventas";
         }
       }
