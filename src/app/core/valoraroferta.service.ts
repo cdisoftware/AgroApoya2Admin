@@ -406,14 +406,13 @@ export class ValorarofertaService {
   ModificarCupon(Bandera: string, Datos: any) {
     return this.http.post<any>(this.url_servidor + 'ModRelaCuponOferta/' + Bandera, Datos);
   }
-  consTipoDomicilio(Bandera: string){
+  consTipoDomicilio(Bandera: string) {
     return this.http.get<any[]>(this.url_servidor + 'consTipoDomicilio/' + Bandera);
   }
 
-  consCTipoTpingVenta(Bandera: string){
+  consCTipoTpingVenta(Bandera: string) {
     return this.http.get<any[]>(this.url_servidor + 'consCTipoTpingVenta/' + Bandera);
   }
-
   consultaCTipoProducto(bandera: string){
     return this.http.get<any[]>(this.url_servidor + 'consCTipoProducto/' + bandera);
   }
@@ -421,5 +420,11 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'modCTipoProducto/' + bandera, Datos);
   }
 
+  consCRelacionProducTopping(Bandera: string, IdTopping: string, IdSector: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consCRelacionProducTopping/' + Bandera + '/' + IdTopping + '/' + IdSector);
+  }
+  modCRelacionProductoTopping(Bandera: string, Datos: any){
+    return this.http.post<any>(this.url_servidor + 'modCRelacionProductoTopping/' + Bandera, Datos);
+  }
 }
 
