@@ -2209,7 +2209,7 @@ export class ValoracionComponent implements OnInit {
   DataProducts: any[];
   cerrarModal: NgbModalRef;
   ArregloEliminaProduct: any;
-  
+
   DesProduct: string = '';
   PrfjoProduct: string = '';
   CaractCorta: string = '';
@@ -2390,9 +2390,10 @@ export class ValoracionComponent implements OnInit {
     // this.modalService.dismissAll(ModalMensaje)
     // this.modalService.dismiss();
     this.cerrarModal?.close();
-    this.Respuesta = ''
-    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
+    //this.Respuesta = ''
+    //this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
     this.serviciosvaloracion.ModificaCTipoProducto('4', this.ArregloEliminaProduct).subscribe(ResultOper => {
+      console.log(ResultOper)
       this.Respuesta = ResultOper;
       this.consultaProductos();
     })
