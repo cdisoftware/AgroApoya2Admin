@@ -199,6 +199,7 @@ export class ValoracionComponent implements OnInit {
   IdToppingSelect: string = "";
 
   DescripcionProductoTopping: string = "";
+  DescripcionPresentacion: string = "";
 
   //#endregion AgregarTopping
 
@@ -1909,13 +1910,13 @@ export class ValoracionComponent implements OnInit {
 
   ArrayToppingSeleccionado: any = [];
   visualizaImagenTopping(ModalImagen: any, topping: any) {
-    if (topping.imagen != null && topping.imagen != undefined) {
+    if (topping.imagen != null && topping.imagen != undefined && topping.imagen != '' && topping.imagen != 'null') {
       this.ArrayToppingSeleccionado.push({ imagen: topping.imagen });
     }
-    if (topping.ImgDos != null && topping.ImgDos != undefined) {
+    if (topping.ImgDos != null && topping.ImgDos != undefined && topping.ImgDos != '' && topping.ImgDos != 'null') {
       this.ArrayToppingSeleccionado.push({ imagen: topping.ImgDos });
     }
-    if (topping.ImgTres != null && topping.ImgTres != undefined) {
+    if (topping.ImgTres != null && topping.ImgTres != undefined && topping.ImgTres != '' && topping.ImgTres != 'null') {
       this.ArrayToppingSeleccionado.push({ imagen: topping.ImgTres });
     }
     console.log(this.ArrayToppingSeleccionado)
@@ -2723,7 +2724,7 @@ export class ValoracionComponent implements OnInit {
           this.ListaPresentacionesTopping(this.IdToppingSelect);
           this.LimpiarCamposModalPresentacion();
         } else {
-          this.SmsError = split[1].toString();
+          this.SmsError = split[1];
         }
       });
     }
@@ -2732,7 +2733,7 @@ export class ValoracionComponent implements OnInit {
   ConfirmacionEliminar(item: any, ModalConfirmacion: any){
     this.SmsError = "";
     this.itemEliminar = item;
-    this.DescripcionProductoTopping = item.Presentacion;
+    this.DescripcionPresentacion = item.Presentacion;
     this.modalService.open(ModalConfirmacion, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
   }
 
