@@ -292,7 +292,6 @@ export class ValoracionComponent implements OnInit {
   }
   consultaToppingsOferta() {
     this.serviciosvaloracion.ConsultaToppingOfer('5', this.SessionSectorSel, this.SessionOferta, '0').subscribe(Resultcons => {
-      console.log(Resultcons)
       if (Resultcons.length > 0) {
 
         this.DataToppings = Resultcons;
@@ -887,7 +886,6 @@ export class ValoracionComponent implements OnInit {
         if (ResultCons[0].desc_cupon != null || ResultCons[0].desc_cupon != '') {
           this.DescripcionRegalo = ResultCons[0].desc_cupon;
         }
-        console.log(ResultCons[0])
         if (ResultCons[0].NumUsuaCupo != null || ResultCons[0].NumUsuaCupo != '') {
           this.NumeroUsuariosCupon = ResultCons[0].NumUsuaCupo;
         }
@@ -1707,7 +1705,6 @@ export class ValoracionComponent implements OnInit {
         VLORAPRTRDMCLIO: AuxValorApartirde,
         NumUsuaCupo: this.NumeroUsuariosCupon
       }
-      console.log(Body)
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         this.Respuesta = '';
         var arreglores = ResultUpdate.split('|')
@@ -1820,7 +1817,6 @@ export class ValoracionComponent implements OnInit {
     })
 
     this.serviciosvaloracion.consCTipoTpingVenta('1').subscribe(Resultcons => {
-      console.log(Resultcons)
       this.DataTipotoppingVenta = Resultcons;
       this.keywordTipToppVenta = 'Descripcion';
       //IdTipo
@@ -1919,7 +1915,6 @@ export class ValoracionComponent implements OnInit {
     if (topping.ImgTres != null && topping.ImgTres != undefined && topping.ImgTres != '' && topping.ImgTres != 'null') {
       this.ArrayToppingSeleccionado.push({ imagen: topping.ImgTres });
     }
-    console.log(this.ArrayToppingSeleccionado)
     this.modalService.open(ModalImagen, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
   }
 
@@ -2486,7 +2481,6 @@ export class ValoracionComponent implements OnInit {
   AceptEliminarProd() {
     this.cerrarModal?.close();
     this.serviciosvaloracion.ModificaCTipoProducto('4', this.ArregloEliminaProduct).subscribe(ResultOper => {
-      console.log(ResultOper)
       this.Respuesta = ResultOper;
       this.consultaProductos();
     })
