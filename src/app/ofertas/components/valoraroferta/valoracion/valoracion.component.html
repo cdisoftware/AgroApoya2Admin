@@ -324,6 +324,27 @@
                             <input mask="separator" thousandSeparator="." type="text" [disabled]="MuestraGrupal == '1' "
                                 class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrDomiIValormenora">
                         </div>
+
+
+
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave mb-1">Oferta dirigida a</label>
+                            <ng-autocomplete [data]="ArrayOfertaDirigida" [searchKeyword]="'Descripcion'"
+                                (inputCleared)='LimpiaOfertaDirigidaA($event)'
+                                [initialValue]="ArrayOfertaDirigida[IndexOfertaDirigidaA]" (selected)='selectOfertaDirigidaA($event)'
+                                placeholder="Oferta dirigida a" [itemTemplate]="templateOfertaDirigidaA"
+                                [notFoundTemplate]="templateVacio" [(ngModel)]="OfertaDirigidaA">
+                            </ng-autocomplete>
+                            <ng-template #templateOfertaDirigidaA let-item>
+                                <a [innerHTML]="item.Descripcion"></a>
+                            </ng-template>
+                            <ng-template #templateVacio let-SinRegistro>
+                                <label for="">Sin registros</label>
+                            </ng-template>
+                        </div>
+
+
+
                     </div>
                     <br><br><br>
                     <h2>Asociar Cupon</h2>
@@ -548,6 +569,24 @@
                             <label class="col-sm-12 Llave">Valor domicilio</label>
                             <input mask="separator" thousandSeparator="." type="text"
                                 class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="ValorDomcilioGrupValorMenora">
+                        </div>
+
+
+
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave mb-1">Oferta dirigida a</label>
+                            <ng-autocomplete [data]="ArrayOfertaDirigida" [searchKeyword]="'Descripcion'"
+                                (inputCleared)='LimpiaOfertaDirigidaA($event)'
+                                [initialValue]="ArrayOfertaDirigida[IndexOfertaDirigidaA]" (selected)='selectOfertaDirigidaA($event)'
+                                placeholder="Oferta dirigida a" [itemTemplate]="templateOfertaDirigidaA"
+                                [notFoundTemplate]="templateVacio" [(ngModel)]="OfertaDirigidaA">
+                            </ng-autocomplete>
+                            <ng-template #templateOfertaDirigidaA let-item>
+                                <a [innerHTML]="item.Descripcion"></a>
+                            </ng-template>
+                            <ng-template #templateVacio let-SinRegistro>
+                                <label for="">Sin registros</label>
+                            </ng-template>
                         </div>
                     </div>
                     <div class="row justify-content-center br" *ngIf="MuestraBtnMixta=='1'">

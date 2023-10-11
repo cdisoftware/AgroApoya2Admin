@@ -215,6 +215,21 @@ export class ValoracionComponent implements OnInit {
   ArrayPresentacionesProdAncla: any = [];
   //#endregion AgregaPresentacionesProdAncla
 
+  //#region OfertaDirigidaA
+  ArrayOfertaDirigida: any = [
+    {
+      Id: 1,
+      Descripcion: "Registros"
+    },
+    {
+      Id: 2,
+      Descripcion: "Ventas"
+    }
+  ];
+  OfertaDirigidaA: any;
+  IdOfertaDirigidaA: string = "";
+  IndexOfertaDirigidaA: number = 0;
+  //#endregion OfertaDirigidaA
 
   constructor(private ServiciosOferta: CrearofertaService, private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
     ConfigAcord.closeOthers = true;
@@ -306,7 +321,6 @@ export class ValoracionComponent implements OnInit {
   consultaToppingsOferta() {
     this.serviciosvaloracion.ConsultaToppingOfer('5', this.SessionSectorSel, this.SessionOferta, '0').subscribe(Resultcons => {
       if (Resultcons.length > 0) {
-        console.log(Resultcons)
         this.DataToppings = Resultcons;
         this.ValidaConsulta = '0';
       }
@@ -812,6 +826,15 @@ export class ValoracionComponent implements OnInit {
           }
         }
       }
+      if (ResultCons[0].dirregistroventas != null && ResultCons[0].dirregistroventas != '') {
+        this.IndexOfertaDirigidaA = ResultCons[0].dirregistroventas;
+        if(ResultCons[0].dirregistroventas == "1"){
+          this.OfertaDirigidaA = "Registros";
+        }else if (ResultCons[0].dirregistroventas == "2"){
+          this.OfertaDirigidaA = "Ventas";
+        }
+      }
+
       this.Valorapartirde = ResultCons[0].VLORAPRTRDMCLIO.toString();
       if (ResultCons[0].TPO_OFRTA.toString() == "1") {
         this.VlrDomiIValormenora = ResultCons[0].vlor_dmnclio_indvdual.toString();
@@ -1209,7 +1232,7 @@ export class ValoracionComponent implements OnInit {
 
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     if ((this.SessionTipoComI == null || this.SessionTipoComI == '') || (this.MinUnidI == '' || this.MinUnidI == null) || (this.MaxUnidI == '' || this.MaxUnidI == null)
-      || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null) || valorDomicilio == false) {
+      || (this.PreFinI == '' || this.PreFinI == null) || (validacomision == '' || validacomision == null) || valorDomicilio == false || (this.IdOfertaDirigidaA == '' || this.IdOfertaDirigidaA == null)) {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
       this.ArrayCamposValida = [
@@ -1246,6 +1269,12 @@ export class ValoracionComponent implements OnInit {
         {
           campo: 'ValDomicilio',
           campof: 'Valor domicilió',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'OfertaDirigidaa',
+          campof: 'Oferta dirigida a',
           class: '',
           imagen: ''
         }
@@ -1309,6 +1338,15 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].class = 'TextFine'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
+        } else if (this.ArrayCamposValida[i].campo == 'OfertaDirigidaa') {
+          if (this.IdOfertaDirigidaA == '' || this.IdOfertaDirigidaA == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
         }
       }
     }
@@ -1349,7 +1387,8 @@ export class ValoracionComponent implements OnInit {
         IMG_CUPONREGALO: "0",
         IDTIPODOMICILIO: this.IdDomicilio,
         VLORAPRTRDMCLIO: AuxValorApartirde,
-        NumUsuaCupo: 0
+        NumUsuaCupo: 0,
+        DirigidaRegiVent: this.IdOfertaDirigidaA
       }
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         var arreglores = ResultUpdate.split('|')
@@ -1450,7 +1489,8 @@ export class ValoracionComponent implements OnInit {
       (this.MinUnidLider == '' || this.MinUnidLider == null) ||
       (this.MaxUnidLider == '' || this.MaxUnidLider == null) ||
       (valorDomicilio == false) ||
-      (this.PrecioFinPart == '' || this.PrecioFinPart == null)
+      (this.PrecioFinPart == '' || this.PrecioFinPart == null) ||
+      (this.IdOfertaDirigidaA == '' || this.IdOfertaDirigidaA == null)
     ) {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
@@ -1506,6 +1546,12 @@ export class ValoracionComponent implements OnInit {
         {
           campo: 'ValFinalParticipante',
           campof: 'Precio final participante',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'OfertaDirigidaa',
+          campof: 'Oferta dirigida a',
           class: '',
           imagen: ''
         }
@@ -1622,6 +1668,15 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].class = 'TextFine';
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
           }
+        } else if (this.ArrayCamposValida[i].campo == 'OfertaDirigidaa') {
+          if (this.IdOfertaDirigidaA == '' || this.IdOfertaDirigidaA == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
         }
       }
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
@@ -1716,7 +1771,8 @@ export class ValoracionComponent implements OnInit {
         IMG_CUPONREGALO: SelectTipoCupon.IMG_CUPONREGALO,
         IDTIPODOMICILIO: this.IdDomicilio,
         VLORAPRTRDMCLIO: AuxValorApartirde,
-        NumUsuaCupo: this.NumeroUsuariosCupon
+        NumUsuaCupo: this.NumeroUsuariosCupon,
+        DirigidaRegiVent: this.IdOfertaDirigidaA
       }
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         this.Respuesta = '';
@@ -2872,4 +2928,14 @@ export class ValoracionComponent implements OnInit {
     this.ValorReferenciaProdAncla = "";
   }
   //#endregion AgregaPresentacionesProdAncla
+
+  //#region OfertaDirigidaA
+  LimpiaOfertaDirigidaA(item: any) {
+    this.OfertaDirigidaA = "";
+    this.IdOfertaDirigidaA = "";
+  }
+  selectOfertaDirigidaA(item: any) {
+    this.IdOfertaDirigidaA = item.Id;
+  }
+  //#endregion OfertaDirigidaA
 }
