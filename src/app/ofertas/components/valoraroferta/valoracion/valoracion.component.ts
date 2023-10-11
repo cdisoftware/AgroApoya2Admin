@@ -7,12 +7,15 @@ import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 import { DatePipe } from '@angular/common';
 import { CrearofertaService } from 'src/app/core/crearoferta.service';
 
+
+
 @Component({
   selector: 'app-valoracion',
   templateUrl: './valoracion.component.html',
   styleUrls: ['./valoracion.component.css']
 })
 export class ValoracionComponent implements OnInit {
+
   SessionOferta: any;
   DataOferta: any[] = [];
   keyword: string = '';
@@ -280,9 +283,11 @@ export class ValoracionComponent implements OnInit {
     this.RutaImagenTopping = this.SeriviciosGenerales.RecuperarRutasOtrasImagenes('4');
     this.SessionOferta = this.cookies.get('IDO');
     this.SessionIdUsuario = this.cookies.get('IDU');
+    this.DataProducts = [];
     this.ConsultaDetalleOferta();
     this.ConsultaSectores();
     this.Consultatoppings();
+    this.consultaProductos();
   }
   consultaToppingsOferta() {
     this.serviciosvaloracion.ConsultaToppingOfer('5', this.SessionSectorSel, this.SessionOferta, '0').subscribe(Resultcons => {
@@ -390,6 +395,7 @@ export class ValoracionComponent implements OnInit {
     this.ArrayCamposValida = [];
     this.Respuesta = ''
     this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
+
 
     var auxPresentacion: boolean = false;
     if (this.VerTipoDescripcion == "2" && (this.Presentacion == "" || this.Presentacion == null)) {
@@ -744,6 +750,7 @@ export class ValoracionComponent implements OnInit {
   }
 
   LimpiaTipoTopp() {
+
     this.VerTipoDescripcion = "0";
     this.SessionTipoTopp = '0';
     this.ValidaTipoTopp = false;
@@ -2285,6 +2292,304 @@ export class ValoracionComponent implements OnInit {
       });
     }
   }
+
+  //#region AÑADEPRODUCTOS
+  banderaAgregar: string = '1';
+  DataProducts: any[];
+  cerrarModal: NgbModalRef;
+  ArregloEliminaProduct: any;
+
+  DesProduct: string = '';
+  PrfjoProduct: string = '';
+  CaractCorta: string = '';
+  CaractLarga: string = '';
+  auxCD_PRDCTO: string = '';
+  AddProducto1: string = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+  AddProducto2: string = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+  AddProducto3: string = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+  NomProductImagen1: string = '';
+  NomProductImagen2: string = '';
+  NomProductImagen3: string = '';
+
+  consultaProductos() {
+    this.serviciosvaloracion.consultaCTipoProducto('1').subscribe(Resultcons => {
+      if (Resultcons.length > 0) {
+        this.DataProducts = Resultcons;
+      }
+      else {
+        this.DataProducts = [];
+      }
+    })
+  }
+
+  GuardarProducto(bandera: string, templateMensaje: any) {
+    this.Respuesta = ''
+    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
+
+    if (this.DesProduct == '' || this.DesProduct == null || this.PrfjoProduct == null || this.PrfjoProduct == '' || this.CaractCorta == '' ||
+      this.CaractCorta == null || this.CaractLarga == '' || this.CaractLarga == null || (this.NomProductImagen1 == '' && this.imagenesAdicionales == '')) {
+
+      this.ValidaCam = '1';
+      this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
+      this.ArrayCamposValida = [
+        {
+          campo: 'DesProduct',
+          campof: 'Descripción',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'PrfjoProduct',
+          campof: 'Prefijo',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'CaractCorta',
+          campof: 'Caracterización corta',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'CaractLarga',
+          campof: 'Caracterización larga',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'NomProductImagen1',
+          campof: 'Imagen',
+          class: '',
+          imagen: ''
+        }
+      ]
+      for (var i = 0; i < this.ArrayCamposValida.length; i++) {
+        if (this.ArrayCamposValida[i].campo == 'DesProduct') {
+          if (this.DesProduct == '' || this.DesProduct == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'PrfjoProduct') {
+          if (this.PrfjoProduct == '' || this.PrfjoProduct == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'CaractCorta') {
+          if (this.CaractCorta == '' || this.CaractCorta == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'CaractLarga') {
+          if (this.CaractLarga == '' || this.CaractLarga == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
+        }
+
+        else if (this.ArrayCamposValida[i].campo == 'NomProductImagen1') {
+          if ((this.NomProductImagen1 == '' || this.NomProductImagen1 == null) && this.imagenesAdicionales == '') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
+        }
+      }
+    }
+    else {
+      this.ValidaCam = '0';
+      this.ArrayCamposValida = [];
+      if (bandera == '2') {
+        const Body = {
+          DSCRPCION: this.DesProduct,
+          imagen: this.NomProductImagen1,
+          imagenDos: this.NomProductImagen2,
+          imagenTres: this.NomProductImagen3,
+          crctzcionCrta: this.CaractCorta,
+          crctzcionLrga: this.CaractLarga,
+          ESTADO: 1,
+          CD_PRDCTO: 0,
+          PREFIJO: this.PrfjoProduct
+        }
+        this.serviciosvaloracion.ModificaCTipoProducto('2', Body).subscribe(ResultOper => {
+          this.Respuesta = ResultOper;
+          const partesRespuesta = this.Respuesta.split('|');
+          if (partesRespuesta.length > 1) {
+            this.Respuesta = partesRespuesta.slice(1).join('|');
+          }
+          this.consultaProductos();
+          this.LimpiarADDProduct();
+        })
+      }
+      else if (bandera == '3') {
+        var aux: string = "0";
+        const Body = {
+          DSCRPCION: this.DesProduct,
+          imagen: this.NomProductImagen1,
+          imagenDos: this.NomProductImagen2,
+          imagenTres: this.NomProductImagen3,
+          crctzcionCrta: this.CaractCorta,
+          crctzcionLrga: this.CaractLarga,
+          ESTADO: 1,
+          CD_PRDCTO: this.auxCD_PRDCTO,
+          PREFIJO: this.PrfjoProduct
+        }
+
+        this.serviciosvaloracion.ModificaCTipoProducto('3', Body).subscribe(ResultOper => {
+          this.Respuesta = ResultOper;
+          const partesRespuesta = this.Respuesta.split('|');
+          if (partesRespuesta.length > 1) {
+            this.Respuesta = partesRespuesta.slice(1).join('|');
+          }
+          this.consultaProductos();
+          this.LimpiarADDProduct();
+        })
+      }
+    }
+  }
+
+  EliminarProd(producto: any, modalmensaje: any) {
+    this.cerrarModal = this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title' })
+    this.ArregloEliminaProduct = {
+      DSCRPCION: producto.DSCRPCION,
+      imagen: producto.imagen,
+      imagenDos: producto.imagenDos,
+      imagenTres: producto.imagenTres,
+      crctzcionCrta: producto.crctzcionCrta,
+      crctzcionLrga: producto.crctzcionLrga,
+      ESTADO: producto.CD_ESTADO,
+      CD_PRDCTO: producto.CD_PRDCTO,
+      PREFIJO: producto.PRFJO
+    }
+  }
+
+  AceptEliminarProd() {
+    this.cerrarModal?.close();
+    this.serviciosvaloracion.ModificaCTipoProducto('4', this.ArregloEliminaProduct).subscribe(ResultOper => {
+      console.log(ResultOper)
+      this.Respuesta = ResultOper;
+      this.consultaProductos();
+    })
+  }
+
+  EditarProducto(producto: any) {
+    this.auxCD_PRDCTO = producto.CD_PRDCTO;
+    this.DesProduct = producto.DSCRPCION;
+    this.PrfjoProduct = producto.PRFJO;
+    this.CaractCorta = producto.crctzcionCrta;
+    this.CaractLarga = producto.crctzcionLrga;
+    this.AddProducto1 = this.RutaImagenTopping + producto.imagen;
+    if (producto.imagenDos != '' || producto.imagenDos != null) {
+      this.AddProducto2 = this.RutaImagenTopping + producto.imagenDos;
+      this.NomProductImagen2 = producto.imagenDos;
+    }
+    if (producto.imagenTres != '' || producto.imagenTres != null) {
+      this.AddProducto3 = this.RutaImagenTopping + producto.imagenTres;
+      this.NomProductImagen3 = producto.imagenTres;
+    }
+    this.NomProductImagen1 = producto.imagen;
+
+
+    this.banderaAgregar = '2';
+  }
+
+  CrearEditarproduct(modalmensaje: any) {
+    this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
+    this.banderaAgregar = '1';
+  }
+
+  LimpiarADDProduct() {
+    this.DesProduct = "";
+    this.PrfjoProduct = "";
+    this.CaractCorta = "";
+    this.CaractLarga = "";
+    this.AddProducto1 = "./../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png";
+    this.AddProducto2 = "./../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png";
+    this.AddProducto3 = "./../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png";
+    this.banderaAgregar = '1';
+  }
+
+  public CargarImagenProducto(event: any, imagen: string, modalmensaje: any) {
+
+    if (!(/\.(jpg|png|jpeg)$/i).test(event.target.files[0].name)) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El archivo no pudo ser cargado, valide la extención, las permitidas son .jpg .png .jpeg";
+    }
+    else if (event.target.files[0].name.includes(" ")) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El archivo no pudo ser cargado, el nombre no debe contener espacios";
+    }
+    else if (event.target.files[0].size > 1300000) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El peso del archivo no puede exceder 1.3 megabyte";
+    } else {
+      this.serviciosvaloracion.postImgToppings(event.target.files[0]).subscribe(
+        response => {
+          if (response == 'Archivo Subido Correctamente') {
+
+            if (imagen == '1') {
+              this.AddProducto1 = this.RutaImagenTopping + event.target.files[0].name;
+              this.NomProductImagen1 = event.target.files[0].name;
+            }
+            if (imagen == '2') {
+              this.AddProducto2 = this.RutaImagenTopping + event.target.files[0].name;
+              this.NomProductImagen2 = event.target.files[0].name;
+            }
+            if (imagen == '3') {
+              this.AddProducto3 = this.RutaImagenTopping + event.target.files[0].name;
+              this.NomProductImagen3 = event.target.files[0].name;
+            }
+          }
+        },
+        error => {
+          this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+          this.Respuesta = "No hemos podido subir el archivo, intente nuevamente.";
+        }
+      );
+    }
+  }
+
+  ArrayProductoSeleccionado: any = [];
+  visualizaImagenProducto(ModalImagen: any, producto: any) {
+    this.ArrayProductoSeleccionado = [];
+    if (producto.imagen != null && producto.imagen != undefined) {
+      this.ArrayProductoSeleccionado.push({ imagen: producto.imagen });
+    }
+    if (producto.imagenDos != null && producto.imagenDos != undefined) {
+      this.ArrayProductoSeleccionado.push({ imagen: producto.imagenDos });
+    }
+    if (producto.imagenTres != null && producto.imagenTres != undefined) {
+      this.ArrayProductoSeleccionado.push({ imagen: producto.imagenTres });
+    }
+
+    this.modalService.open(ModalImagen, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+
+  }
+
+
+  //#endregion AÑADEPRODUCTOS
+
   //#endregion Anterior
 
   //#region AgregaTopping

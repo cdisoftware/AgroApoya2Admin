@@ -413,10 +413,13 @@ export class ValorarofertaService {
   consCTipoTpingVenta(Bandera: string) {
     return this.http.get<any[]>(this.url_servidor + 'consCTipoTpingVenta/' + Bandera);
   }
-
-  consCTipoProducto(Bandera: string) {
-    return this.http.get<any[]>(this.url_servidor + 'consCTipoProducto/' + Bandera);
+  consultaCTipoProducto(bandera: string){
+    return this.http.get<any[]>(this.url_servidor + 'consCTipoProducto/' + bandera);
   }
+  ModificaCTipoProducto(bandera: string, Datos: any) {
+    return this.http.post<any>(this.url_servidor + 'modCTipoProducto/' + bandera, Datos);
+  }
+
   consCRelacionProducTopping(Bandera: string, IdTopping: string, IdSector: string) {
     return this.http.get<any[]>(this.url_servidor + 'consCRelacionProducTopping/' + Bandera + '/' + IdTopping + '/' + IdSector);
   }
