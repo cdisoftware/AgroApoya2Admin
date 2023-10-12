@@ -164,16 +164,13 @@
                 <label for="">Sin registros</label>
             </ng-template>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-4">
             <label class="col-sm-12 Llave mb-1">Código sector</label>
             <input type="text" name="" id="" class="form-control textBox" disabled [(ngModel)]="CodigoOferSector">
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <label class="col-sm-12 Llave mb-1">Flete negociado</label>
             <input type="text" name="" id="" class="form-control textBox" disabled [(ngModel)]="VlrFletSect">
-        </div>
-        <div class="col-sm-3" *ngIf="ValidaVigencia=='1'">
-            <button type="button" class="btn btn-agro-prin col-12 mt-4" (click)="AbreModalPresentacioProdAncla(PresentacionesProdAncla)">Presentaciones</button>
         </div>
     </div>
     <div class="row br" *ngIf="ValidaVigencia=='1'">
@@ -331,9 +328,10 @@
                             <label class="col-sm-12 Llave mb-1">Oferta dirigida a</label>
                             <ng-autocomplete [data]="ArrayOfertaDirigida" [searchKeyword]="'Descripcion'"
                                 (inputCleared)='LimpiaOfertaDirigidaA($event)'
-                                [initialValue]="ArrayOfertaDirigida[IndexOfertaDirigidaA]" (selected)='selectOfertaDirigidaA($event)'
-                                placeholder="Oferta dirigida a" [itemTemplate]="templateOfertaDirigidaA"
-                                [notFoundTemplate]="templateVacio" [(ngModel)]="OfertaDirigidaA">
+                                [initialValue]="ArrayOfertaDirigida[IndexOfertaDirigidaA]"
+                                (selected)='selectOfertaDirigidaA($event)' placeholder="Oferta dirigida a"
+                                [itemTemplate]="templateOfertaDirigidaA" [notFoundTemplate]="templateVacio"
+                                [(ngModel)]="OfertaDirigidaA">
                             </ng-autocomplete>
                             <ng-template #templateOfertaDirigidaA let-item>
                                 <a [innerHTML]="item.Descripcion"></a>
@@ -577,9 +575,10 @@
                             <label class="col-sm-12 Llave mb-1">Oferta dirigida a</label>
                             <ng-autocomplete [data]="ArrayOfertaDirigida" [searchKeyword]="'Descripcion'"
                                 (inputCleared)='LimpiaOfertaDirigidaA($event)'
-                                [initialValue]="ArrayOfertaDirigida[IndexOfertaDirigidaA]" (selected)='selectOfertaDirigidaA($event)'
-                                placeholder="Oferta dirigida a" [itemTemplate]="templateOfertaDirigidaA"
-                                [notFoundTemplate]="templateVacio" [(ngModel)]="OfertaDirigidaA">
+                                [initialValue]="ArrayOfertaDirigida[IndexOfertaDirigidaA]"
+                                (selected)='selectOfertaDirigidaA($event)' placeholder="Oferta dirigida a"
+                                [itemTemplate]="templateOfertaDirigidaA" [notFoundTemplate]="templateVacio"
+                                [(ngModel)]="OfertaDirigidaA">
                             </ng-autocomplete>
                             <ng-template #templateOfertaDirigidaA let-item>
                                 <a [innerHTML]="item.Descripcion"></a>
@@ -658,9 +657,13 @@
                         <input mask="separator" thousandSeparator="." type="text"
                             class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlReferencia">
                     </div>
-                    <div class="col-6 col-sm-4 mt-2">
+                    <div class="col-4 col-sm-4 mt-2">
                         <button class="btn btn-agro-prin col-12"
                             (click)="ActualizaValorReferencia(VlReferencia,ModalRespuesta)">Guardar</button>
+                    </div>
+                    <div class="col-4 col-sm-2 mt-2" *ngIf="ValidaVigencia=='1'">
+                        <button type="button" class="btn btn-agro-prin col-12"
+                            (click)="AbreModalPresentacioProdAncla(PresentacionesProdAncla)">Presentaciones</button>
                     </div>
                 </div>
             </ng-template>
@@ -673,18 +676,19 @@
 
     <div class="row br" *ngIf="ValidaToppings=='1'">
         <h5 class="SubTituloForm">Definición conceptos adicionales</h5>
-      
+
     </div>
-   
+
     <div class="row br" *ngIf="ValidaToppings=='1'">
         <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
             <ngb-panel title="Adicionales" id="config-panel-three">
-                <ng-template ngbPanelContent>     
+                <ng-template ngbPanelContent>
                     <div class="col-sm-2 col-12 br">
-                        <button type="button" class="btn btn-agro-prin col-sm-12" (click)="CrearEditarproduct(templateEditar)">
+                        <button type="button" class="btn btn-agro-prin col-sm-12"
+                            (click)="CrearEditarproduct(templateEditar)">
                             Crear/Editar Producto</button>
-                    </div>             
-                    <div class="row br">                        
+                    </div>
+                    <div class="row br">
                         <div class="col-sm-4 mt-2 mb-2">
                             <label class="col-sm-12 Llave mt-1">Tipo</label>
                             <ng-autocomplete [data]="DataTipotopping" [searchKeyword]="keywordTipTopp"
@@ -1418,13 +1422,14 @@
             <div class="col-sm-4 mt-2">
                 <label class="col-sm-12 Llave">Presentación</label>
                 <textarea name="DescCortaAdd" id="DescCortaAdd" cols="30" rows="5" class="form-control textBox"
-                    placeholder="Presentación" [(ngModel)]="PresentacionProdAncla" (keypress)="LimpiSmsError()"></textarea>
+                    placeholder="Presentación" [(ngModel)]="PresentacionProdAncla"
+                    (keypress)="LimpiSmsError()"></textarea>
             </div>
 
             <div class="col-sm-4 mt-2">
                 <label class="col-sm-12 Llave">Peso (KL)</label>
-                <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PesoProdAncla" placeholder="Peso"
-                    (keypress)="LimpiSmsError()">
+                <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PesoProdAncla"
+                    placeholder="Peso" (keypress)="LimpiSmsError()">
             </div>
 
             <div class="col-sm-4 mt-2">
@@ -1443,8 +1448,10 @@
         <div class="row mt-3 justify-content-center">
             <label class="p-0 m-0 smsError mt-2 mb-2 CentrarText">{{SmsError}}</label>
 
-            <button type="button" class="btn btn-agro-prin col-sm-2" style="margin-right: 5px;" (click)="AgregarPresentacionProdPrin()">Agregar</button>
-            <button type="button" class="btn btn-agro-sec col-sm-2" style="margin-left: 5px;" (click)="LimpiaCamposPresentacioProdAncla()">Limpiar</button>
+            <button type="button" class="btn btn-agro-prin col-sm-2" style="margin-right: 5px;"
+                (click)="AgregarPresentacionProdPrin()">Agregar</button>
+            <button type="button" class="btn btn-agro-sec col-sm-2" style="margin-left: 5px;"
+                (click)="LimpiaCamposPresentacioProdAncla()">Limpiar</button>
         </div>
 
 
@@ -1470,7 +1477,8 @@
                         <td>{{Presprod.ValorUnitario | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                         <td>{{Presprod.VlorRefencia | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                         <td>
-                            <button  *ngIf="Presprod.Ancla != 2" class="SinEstilo" title="Eliminar presentación" (click)="ConfirmacionEliminarProdPrincipal(Presprod, ModalConfirmacionProdAncla)">
+                            <button *ngIf="Presprod.Ancla != 2" class="SinEstilo" title="Eliminar presentación"
+                                (click)="ConfirmacionEliminarProdPrincipal(Presprod, ModalConfirmacionProdAncla)">
                                 <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basura.png"
                                     class="imgpresentacion">
                             </button>
