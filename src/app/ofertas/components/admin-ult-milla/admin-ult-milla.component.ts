@@ -84,6 +84,18 @@ export class AdminUltMillaComponent implements OnInit {
   longbodega: number;
   ArrayColors: any = [];
 
+  //#region CerrarViajeUltimaMilla
+  //Ofertas
+  ArrayOfertasPorCerrar: any = [];
+  IdOfertaCerrarViaje: string = "0";
+  OfertaCerrarViaje: string = "";
+
+  //Secor
+  ArraySectorCierraOferta: any = [];
+  IdSecorCerrarOferta: string = "0";
+  SectorCerrarOferta: string = "";
+  //#endregion CerrarViajeUltimaMilla
+
 
   constructor(private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService,
@@ -96,7 +108,10 @@ export class AdminUltMillaComponent implements OnInit {
     this.UsuCod = this.cookies.get('IDU');
     this.UrlImagenes = this.metodosglobales.RecuperaRutaImagenes();
     this.ConsCdOfer();
+    this.ListaOfertasPorCerrar();
   }
+
+  //#region Anterior
 
   //Reinicia la data de la ruta arreglos etc...
   ReiniciaDataRuta() {
@@ -132,7 +147,7 @@ export class AdminUltMillaComponent implements OnInit {
     this.ServiciosValorar.ConsOferEst('1').subscribe(ResultCons => {
       this.DataOfertas = ResultCons;
       this.KeywordOferta = 'CD_CNSCTVO';
-    })
+    });
   }
   selectOfer(ofer: any) {
     this.SelectOferta = ofer.CD_CNSCTVO;
@@ -629,4 +644,62 @@ export class AdminUltMillaComponent implements OnInit {
   ColorRandom() {
 
   }
+  //#endregion Anterior
+
+
+  //#region CerrarViajeUltimaMilla
+  //Lista ofertas cerradas
+  ListaOfertasPorCerrar() {
+    this.ServiciosValorar.ConsOferEst('3').subscribe(ResultCons => {
+      this.ArrayOfertasPorCerrar = ResultCons;
+    });
+  }
+  LimpiaOfertCerrarViaje(clear: string) {
+    this.IdOfertaCerrarViaje = "0";
+    this.OfertaCerrarViaje = "";
+
+    this.selectSectorCerrarViaje('0');
+  }
+  selectOferCerrarViaje(item: any) {
+    this.IdOfertaCerrarViaje = item.CD_CNSCTVO;
+    this.OfertaCerrarViaje = item.CD_CNSCTVO;
+
+    this.ListaSectoresCerraViaje();
+  }
+
+
+  //Secores
+  ListaSectoresCerraViaje() {
+    this.ServiciosValorar.ConsultaSectoresOferta('1', this.IdOfertaCerrarViaje).subscribe(ResultCons => {
+      this.ArraySectorCierraOferta = ResultCons;
+    })
+  }
+  LimpiaSectorCerrarViaje(clear: string) {
+    this.IdSecorCerrarOferta = "0";
+    this.SectorCerrarOferta = "";
+  }
+  selectSectorCerrarViaje(item: any) {
+    this.IdSecorCerrarOferta = item.ID_SCTOR_OFRTA;
+    this.SectorCerrarOferta = item.DSCRPCION_SCTOR;
+  }
+
+
+
+  CerrarTransporte(ModalMensaje: any) {
+    const body = {
+      Estado: "2",
+      Cd_cnctivo: this.IdOfertaCerrarViaje,
+      Id_Sector: this.IdSecorCerrarOferta,
+      Observacion: "0"
+    }
+    this.ServiciosValorar.modcentregacargabodega('3', body).subscribe(ResultCons => {
+      this.MesajeModal = ResultCons;
+      this.modalService.open(ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+
+      this.LimpiaOfertCerrarViaje('0');
+      this.ListaOfertasPorCerrar();
+    });
+  }
+  //#endregion CerrarViajeUltimaMilla
+
 }
