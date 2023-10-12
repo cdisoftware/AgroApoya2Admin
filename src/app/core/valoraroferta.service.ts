@@ -413,7 +413,7 @@ export class ValorarofertaService {
   consCTipoTpingVenta(Bandera: string) {
     return this.http.get<any[]>(this.url_servidor + 'consCTipoTpingVenta/' + Bandera);
   }
-  consultaCTipoProducto(bandera: string){
+  consultaCTipoProducto(bandera: string) {
     return this.http.get<any[]>(this.url_servidor + 'consCTipoProducto/' + bandera);
   }
   ModificaCTipoProducto(bandera: string, Datos: any) {
@@ -423,8 +423,11 @@ export class ValorarofertaService {
   consCRelacionProducTopping(Bandera: string, IdTopping: string, IdSector: string) {
     return this.http.get<any[]>(this.url_servidor + 'consCRelacionProducTopping/' + Bandera + '/' + IdTopping + '/' + IdSector);
   }
-  modCRelacionProductoTopping(Bandera: string, Datos: any){
+  modCRelacionProductoTopping(Bandera: string, Datos: any) {
     return this.http.post<any>(this.url_servidor + 'modCRelacionProductoTopping/' + Bandera, Datos);
+  }
+  modcentregacargabodega(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modcentregacargabodega/' + Bandera, Body);
   }
 }
 
