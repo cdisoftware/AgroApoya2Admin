@@ -5,6 +5,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { GrupoMillaServices } from 'src/app/core/GrupoMillaServices';
 
 @Component({
   selector: 'app-admin-ult-milla',
@@ -97,12 +98,17 @@ export class AdminUltMillaComponent implements OnInit {
   //#endregion CerrarViajeUltimaMilla
 
 
+  //#region VariablesGrupoMilla
+  ArrayGruposMilla: any = [];
+  //#endregion VariablesGrupoMilla
+
   constructor(private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService,
     private serviciosreportes: ReporteService,
     private metodosglobales: MetodosglobalesService,
     public cookies: CookieService,
-    public rutas: Router) { }
+    public rutas: Router,
+    public sevicesmilla: GrupoMillaServices) { }
 
   ngOnInit(): void {
     this.UsuCod = this.cookies.get('IDU');
@@ -117,6 +123,7 @@ export class AdminUltMillaComponent implements OnInit {
   ReiniciaDataRuta() {
 
     this.ConsultaGrupos();
+    this.ListaGruposMilla();
     this.ConsPartGrupoMilla('0');
   }
 
@@ -133,7 +140,10 @@ export class AdminUltMillaComponent implements OnInit {
     this.SectorSelec = sector.ID_SCTOR_OFRTA;
     this.ConsultaInfoOfer();
     this.ConsPins();
-    this.ReiniciaDataRuta();
+    //this.ReiniciaDataRuta();
+
+
+    this.ListaGruposMilla();
 
   }
   LimpiaSector(Sector: String) {
@@ -335,7 +345,7 @@ export class AdminUltMillaComponent implements OnInit {
 
 
   //Agregar a entrega o transport
-  PesoRuta(IdGrupo: string) {
+  PesoRuta() {
     this.AcumPeso = 0;
     for (var i = 0; i < this.ArrayPartGrupos.length; i++) {
 
@@ -368,35 +378,7 @@ export class AdminUltMillaComponent implements OnInit {
     })
   }
 
-  ConsPartGrupoMilla(IdGrupo: string) {
-    this.ServiciosValorar.ConsParadasRutaUltMilla('1', '0', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
-      const IdRuta: string | any[] = [];
-      const RutaPeso: string | any[] = [];
-      for (var f = 0; f < Resultado.length; f++) {
-        if (IdRuta.includes(Resultado[f].GrupoMilla) == true) {
-          for (var i = 0; i < IdRuta.length; i++) {
-            if (IdRuta[i] == Resultado[f].GrupoMilla) {
-              RutaPeso[i].PesoKg = parseInt(RutaPeso[i].PesoKg) + parseInt(Resultado[f].PesoTotalCarga);
-            }
-          }
-        } else {
-          IdRuta.push(Resultado[f].GrupoMilla)
-          RutaPeso.push({ IdRuta: Resultado[f].GrupoMilla, PesoKg: Resultado[f].PesoTotalCarga })
-        }
-      }
-      for (var k = 0; k < this.ArrayGrupos.length; k++) {
-        for (var t = 0; t < RutaPeso.length; t++) {
-          if (RutaPeso[t].IdRuta == this.ArrayGrupos[k].IdGrupo) {
-            this.ArrayGrupos[k].PesoRuta = RutaPeso[t].PesoKg;
-          }
-        }
-      }
-      this.ArrayPartGrupos = Resultado;
-      this.PesoRuta(IdGrupo);
-    })
 
-
-  }
 
 
 
@@ -477,7 +459,7 @@ export class AdminUltMillaComponent implements OnInit {
     this.ServiciosValorar.ModPinMilla('3', agregar).subscribe(Resultado => {
       this.modalService.dismissAll();
       this.ConsPins();
-      this.PesoRuta(respugrupo.IdGrupo);
+      this.PesoRuta();
       this.ReiniciaDataRuta();
     })
   }
@@ -702,4 +684,70 @@ export class AdminUltMillaComponent implements OnInit {
   }
   //#endregion CerrarViajeUltimaMilla
 
+
+  //#region GrupoMilla
+  //ListaGrupos
+  ListaGruposMilla() {
+    this.sevicesmilla.ConsultaGruposMilla(this.SectorSelec, this.SelectOferta).subscribe(Respu => {
+      for (var i = 0; i < Respu.length; i++) {
+        this.ArrayGruposMilla.push({
+          IdUltimaMilla: Respu[i].IdUltimaMilla,
+          IdGrupo: Respu[i].IdGrupo,
+          NombreGrupo: Respu[i].NombreGrupo,
+          cd_cnctvo: Respu[i].cd_cnctvo,
+          id_sector: Respu[i].id_sector,
+          IdConductor: Respu[i].IdConductor,
+          Estado: Respu[i].Estado,
+          Participantes: []
+        });
+      }
+      //this.ArrayGruposMilla = Respu;
+    });
+  }
+  //ListaGrupoParticipantesgrupo
+  ConsPartGrupoMilla(IdGrupo: string) {
+    this.ServiciosValorar.ConsParadasRutaUltMilla('1', '0', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
+      for (var y = 0; y < Resultado.length; y++) {
+
+        const existe = this.ArrayGruposMilla.findIndex((obj: any) => obj.IdGrupo === Resultado[y].GrupoMilla);
+
+        if (existe !== -1) {
+          this.ArrayGruposMilla[existe].Participantes.push(Resultado[y]);;
+        } else {
+          alert("No existe");
+        }
+      }
+
+
+      this.ArrayPartGrupos = Resultado;
+      this.PesoRuta();
+    })
+
+
+  }
+
+
+  //Agrega grupo
+  CreaGrupoMilla() {
+    const body = {
+      IdGrupo: 0,
+      cd_csctvo: this.SelectOferta,
+      IdSector: this.SectorSelec
+    }
+    this.sevicesmilla.modgrupoMilla('3', body).subscribe(RespuMod => {
+      var auxrespu = RespuMod.split("|");
+      if (auxrespu.length > 1) {
+        this.ListaGruposMilla();
+
+        this.MesajeModal = auxrespu[1].toString();
+        this.modalService.open(this.ModalMensaje, { size: 'sm', centered: true, backdrop: 'static', keyboard: false });
+      } else {
+        this.MesajeModal = auxrespu[0].toString();
+        this.modalService.open(this.ModalMensaje, { size: 'sm', centered: true, backdrop: 'static', keyboard: false });
+      }
+    });
+  }
+
+
+  //#endregion GrupoMilla
 }
