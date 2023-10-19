@@ -324,7 +324,7 @@
 
 
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 br">
                             <label class="col-sm-12 Llave mb-1">Oferta dirigida a</label>
                             <ng-autocomplete [data]="ArrayOfertaDirigida" [searchKeyword]="'Descripcion'"
                                 (inputCleared)='LimpiaOfertaDirigidaA($event)'
@@ -344,7 +344,7 @@
 
 
                     </div>
-                    <br><br><br>
+                    <br>
                     <h2>Asociar Cupon</h2>
                     <div class="row">
                         <div class="col-sm-6">
@@ -400,7 +400,7 @@
                                 (click)="GuardaIndividual(ModalRespuesta)">Guardar individual</button>
                         </div>
                     </div>
-                    <br><br>
+                    
                 </ng-template>
             </ngb-panel>
         </ngb-accordion>
@@ -469,12 +469,6 @@
                             </ng-template>
                         </div>
                     </div>
-
-
-
-
-
-
                     <div class="row br mb-1" *ngIf="IdTipoCupon == '2'">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Porcentaje de descuento por unidad / registro</label>
@@ -489,7 +483,8 @@
                                 onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
                         </div>
                     </div>
-                    <div class="row" *ngIf="IdTipoCupon == '1'">
+
+                    <div class="row br" *ngIf="IdTipoCupon == '1'">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Descripción</label>
                             <input type="text" class="col-sm-12 form-control mt-1 textBox"
@@ -571,7 +566,7 @@
 
 
 
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 br">
                             <label class="col-sm-12 Llave mb-1">Oferta dirigida a</label>
                             <ng-autocomplete [data]="ArrayOfertaDirigida" [searchKeyword]="'Descripcion'"
                                 (inputCleared)='LimpiaOfertaDirigidaA($event)'
@@ -1260,13 +1255,13 @@
             </div>
 
             <div class="col-sm-4 mt-2">
-                <label class="col-sm-12 Llave">Peso (KL)</label>
+                <label class="col-sm-12 Llave">Peso (Kg)</label>
                 <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PesoKl" placeholder="Peso"
                     (keypress)="LimpiSmsError()">
             </div>
 
             <div class="col-sm-4 mt-2">
-                <label class="col-sm-12 Llave">Valor</label>
+                <label class="col-sm-12 Llave">Valor real</label>
                 <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox"
                     [(ngModel)]="ValorReal" placeholder="Valor Real" (keypress)="LimpiSmsError()">
             </div>
