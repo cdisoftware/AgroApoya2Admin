@@ -293,7 +293,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
           this.ValidaInsertSec = '0';
           this.ValidaInsertSecs = '0';
         } else {
-          this.ValorDomicilio = Resultado[0].VlorTotalDomicilio;
           this.VerBtnMapSugerido = true;
           this.VerBtnDescargarPdf = this.ConductorSelect !== '0';
           this.Detalle = '1';
@@ -394,6 +393,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   AgregarSitios() {
     const features = [];
     const Polylines = [];
+    this.ValorDomicilio = 0;
     this.markers = [];
     var lat: number;
     var long: number;
@@ -405,7 +405,10 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       if (this.ArrayConsultaSeg[i].ESTDO != "4") {
         Polylines.push({ lat: lat, lng: long });
       }
+
+      this.ValorDomicilio += Number(this.ArrayConsultaSeg[i].VLOR_DOMICILIO);
     }
+    this.TotalCosolidado = this.TotalCosolidado + this.ValorDomicilio;
     for (let i = 0; i < features.length; i++) {
       var icon;
       var LabelOption;
@@ -683,7 +686,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
           ValTotalRecaudo: ValTotalRecaudo
         }
       ];
-      this.TotalCosolidado = ValTotalRecaudo + 100000;
+      this.TotalCosolidado = ValTotalRecaudo;
       this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
     })
   }

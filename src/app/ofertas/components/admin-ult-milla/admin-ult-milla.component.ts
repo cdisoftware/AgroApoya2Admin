@@ -112,16 +112,31 @@ export class AdminUltMillaComponent implements OnInit {
   ArrayGruposMilla: any = [];
   //#endregion VariablesGrupoMilla
 
-    //#region MapaRutaEspecifica
-    geocoderRuta = new google.maps.Geocoder();
-    mapRuta: google.maps.Map;
-    markersRuta: google.maps.Marker[] = [];
-    markerBodegaRuta: google.maps.Marker[] = [];
-    PoliLynesRuta: google.maps.Polyline[] = [];
-  
-    ArrayRuta: any = [];
-    //#endregion MapaRutaEspecifica
+  //#region MapaRutaEspecifica
+  geocoderRuta = new google.maps.Geocoder();
+  mapRuta: google.maps.Map;
+  markersRuta: google.maps.Marker[] = [];
+  markerBodegaRuta: google.maps.Marker[] = [];
+  PoliLynesRuta: google.maps.Polyline[] = [];
 
+  ArrayRuta: any = [];
+  //#endregion MapaRutaEspecifica
+
+  //#region CambioFechEntrega
+  //Ofertas
+  ArrayCOfertaCambioFecha: any = [];
+  IdOfertaCambioFecha: string = "0";
+  OfertaCambioFecha: string = "";
+
+  //Sector
+  ArraySectorCambioFecha: any = [];
+  IdSecorCambioFecha: string = '0';
+  SectorCambioFecha: string = "";
+
+
+  //Fechas
+  ArrayFechas: any = [];
+  //#endregion CambioFechEntrega
 
   constructor(private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService,
@@ -136,6 +151,8 @@ export class AdminUltMillaComponent implements OnInit {
     this.UrlImagenes = this.metodosglobales.RecuperaRutaImagenes();
     this.ConsCdOfer();
     this.ListaOfertasPorCerrar();
+
+    this.CargarListasCmbioFecha();
   }
 
   //#region Anterior
@@ -514,13 +531,13 @@ export class AdminUltMillaComponent implements OnInit {
 
     for (var i = 0; i < this.ArrayGruposMilla.length; i++) {
 
-      if(this.ArrayGruposMilla[i].ValorTransporte != null && this.ArrayGruposMilla[i].ValorTransporte != undefined){
-        if(Number(this.ArrayGruposMilla[i].ValorTransporte) > 0){
+      if (this.ArrayGruposMilla[i].ValorTransporte != null && this.ArrayGruposMilla[i].ValorTransporte != undefined) {
+        if (Number(this.ArrayGruposMilla[i].ValorTransporte) > 0) {
 
-        }else{
+        } else {
           coun += 1;
         }
-      }else{
+      } else {
         coun += 1;
       }
 
@@ -960,7 +977,7 @@ export class AdminUltMillaComponent implements OnInit {
     this.AgregaPolilineasRuta();
   }
 
-  AgregaPolilineasRuta(){
+  AgregaPolilineasRuta() {
     var lat: number;
     var long: number;
     const Polylines = [];
@@ -968,8 +985,8 @@ export class AdminUltMillaComponent implements OnInit {
     Polylines.push({ lat: this.latbodega, lng: this.longbodega });
     for (var j = 0; j < this.ArrayRuta.length; j++) {
       var auxcoor = this.ArrayRuta[j].CoordenadasEntrega.split(",");
-        lat = parseFloat(auxcoor[0]);
-        long = parseFloat(auxcoor[1]);
+      lat = parseFloat(auxcoor[0]);
+      long = parseFloat(auxcoor[1]);
       Polylines.push({ lat: lat, lng: long });
     }
     const flightPath = new google.maps.Polyline({
@@ -983,4 +1000,73 @@ export class AdminUltMillaComponent implements OnInit {
     flightPath.setMap(this.mapRuta);
   }
   //#endregion MapaRutaEspecifica
+
+
+  //#region CambioFechEntrega
+
+  CargarListasCmbioFecha() {
+    this.ListaOfertasCambioFecha();
+  }
+
+  //Lista ofertas cerradas
+  ListaOfertasCambioFecha() {
+    this.ServiciosValorar.ConsOferEst('1').subscribe(ResultCons => {
+      this.ArrayCOfertaCambioFecha = ResultCons;
+    });
+  }
+  LimpiaOfertCambioFecha(clear: string) {
+    this.IdOfertaCambioFecha = "0";
+    this.OfertaCambioFecha = "";
+
+    this.LimpiaSectorCambioFecha('0');
+  }
+  selectOferCambioFecha(item: any) {
+    this.IdOfertaCambioFecha = item.CD_CNSCTVO;
+    this.OfertaCambioFecha = item.CD_CNSCTVO;
+
+    this.ListaSectoresCambioFecha();
+  }
+
+
+  //Secores
+  ListaSectoresCambioFecha() {
+    this.ServiciosValorar.ConsultaSectoresOferta('1', this.IdOfertaCambioFecha).subscribe(ResultCons => {
+      this.ArraySectorCambioFecha = ResultCons;
+    })
+  }
+  LimpiaSectorCambioFecha(clear: string) {
+    this.IdSecorCambioFecha = "0";
+    this.SectorCambioFecha = "";
+  }
+  selectSectorCambioFecha(item: any) {
+    this.IdSecorCambioFecha = item.ID_SCTOR_OFRTA;
+    this.SectorCambioFecha = item.DSCRPCION_SCTOR;
+
+    this.CargarListaFechas();
+  }
+
+
+  CargarListaFechas() {
+    this.ArrayFechas.push({ IdTipoEntrega: '1', TipoEntrega: 'Campo a la bodega', IdSector: '508', Sector: 'Toda Bogota', FechaActual: '2023-10-19' });
+    this.ArrayFechas.push({ IdTipoEntrega: '2', TipoEntrega: 'Dentro de la ciudad', IdSector: '508', Sector: 'Toda Bogota', FechaActual: '2023-10-19' });
+    this.ArrayFechas.push({
+      IdTipoEntrega: '2', TipoEntrega: 'Dentro de la ciudad', IdSector: '508', Sector: 'Toda Bogota', FechaActual: '2023-10-19'
+    });
+  }
+
+
+  ActualizaFecha(item: any) {
+    const body = {
+      Cd_cnsctivo: this.IdOfertaCambioFecha,
+      IdSecotor: this.IdSecorCambioFecha,
+      IdGrupo: item.IdGrupo,
+      FechaActualizar: item.FechaActual
+    }
+
+    this.sevicesmilla.ModificaFechaEntrega('1', body).subscribe(ResultCons => {
+      this.CargarListaFechas();
+    });
+  }
+  //#endregion CambioFechEntrega
+
 }

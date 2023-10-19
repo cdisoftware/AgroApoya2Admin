@@ -23,4 +23,7 @@ export class GrupoMillaServices {
     ModificaOrdenEntregas(bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'modCOrdenUltimaMilla/' + bandera, body);
     }
+    ModificaFechaEntrega(bandera: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'ModCFechaTrans/' + bandera, body);
+    }
 }

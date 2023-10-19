@@ -47,7 +47,6 @@
                     </ng-template>
                 </ngb-panel>
 
-
                 <ngb-panel title="Administración UltimaMilla" id="config-panel-two">
                     <ng-template ngbPanelContent>
                         <div class="row justify-content-center">
@@ -279,7 +278,8 @@
                                         <div class="row" cdkDropList [cdkDropListData]="grup.Participantes"
                                             (cdkDropListDropped)="drop($event, grup.Participantes, grup.IdGrupo)">
 
-                                            <div cdkDrag class="row justify-content-center Parada sinmp mt-3 CursorPointer"
+                                            <div cdkDrag
+                                                class="row justify-content-center Parada sinmp mt-3 CursorPointer"
                                                 *ngFor="let part of grup.Participantes; let y = index">
                                                 <div class="col-12 bagroundTituloTargSelect CentrarText"
                                                     style="padding: 0;">
@@ -308,7 +308,8 @@
                                                             <img
                                                                 src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ver.png">
                                                         </button>
-                                                        <button class="SinEstilo" title="Eliminar" (click)="EliminaParticipanteGrupoMilla(part)">
+                                                        <button class="SinEstilo" title="Eliminar"
+                                                            (click)="EliminaParticipanteGrupoMilla(part)">
                                                             <img
                                                                 src=".../../../../../../../assets/ImagenesAgroApoya2Adm/basura.png">
                                                         </button>
@@ -329,6 +330,88 @@
                                             (click)="PublicarRuta()">Publicar</button>
                                     </div>
 
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </ngb-panel>
+
+                <ngb-panel title="Cambio fecha entrega" id="config-panel-one">
+                    <ng-template ngbPanelContent>
+                        <div class="row justify-content-center">
+                            <div class="col-sm-6 mt-3">
+                                <ng-autocomplete [data]="ArrayCOfertaCambioFecha" [searchKeyword]="'CD_CNSCTVO'"
+                                    placeholder="Codigo oferta" (inputCleared)="LimpiaOfertCambioFecha('0')"
+                                    (selected)='selectOferCambioFecha($event)'
+                                    [itemTemplate]="templateOfertaCambioFecha" [notFoundTemplate]="templateVacioOferta"
+                                    [(ngModel)]="OfertaCambioFecha">
+                                </ng-autocomplete>
+                                <ng-template #templateOfertaCambioFecha let-item>
+                                    <a [innerHTML]="item.CD_CNSCTVO + ' - ' + item.Nombre_Producto"></a>
+                                </ng-template>
+                                <ng-template #templateVacioOferta let-SinRegistro>
+                                    <label for="">Sin registros</label>
+                                </ng-template>
+                            </div>
+
+
+                            <div class="col-sm-6 mt-3">
+                                <ng-autocomplete [disabled]="IdOfertaCambioFecha == '0'" [data]="ArraySectorCambioFecha"
+                                    [searchKeyword]="'DSCRPCION_SCTOR'" placeholder="Sector"
+                                    (inputCleared)="LimpiaSectorCambioFecha('0')"
+                                    (selected)='selectSectorCambioFecha($event)' [itemTemplate]="templateSecCambioFecha"
+                                    [notFoundTemplate]="templateVacio" [(ngModel)]="SectorCambioFecha">
+                                </ng-autocomplete>
+                                <ng-template #templateSecCambioFecha let-item>
+                                    <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+                                </ng-template>
+                                <ng-template #templateVacio let-SinRegistro>
+                                    <label for="">Sin registros</label>
+                                </ng-template>
+                            </div>
+
+                            <div class="col-sm-5 mt-3" *ngIf="IdSecorCerrarOferta != '0'">
+                                <button type="button" class="btn btn-agro-prin w-100"
+                                    (click)="CerrarTransporte(ModalMensaje)">Cerrar</button>
+                            </div>
+                        </div>
+
+                        <div class="row br justify-content-center">
+                            <h6 class="CentrarText" *ngIf="ArrayFechas.length > 0">Estos son las rutas a las cuales
+                                le puedes cambiar la fecha</h6>
+
+                            <div class="RutasUltimMilla row mt-2" *ngFor="let fecha of ArrayFechas; let i = index">
+                                <div class="row bagroundTituloTargSelect sinmp" *ngIf="i == 0">
+                                    <div class="col-sm-4">
+                                        <label class="Llave lblSmall textcolor">Tipo transporte</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label class="Llave lblSmall textcolor">Sector</label>
+                                    </div>
+                                    <div class="col-sm-4 sinmp">
+                                        <label class="Llave lblSmall textcolor">Fecha</label>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <label class="Llave lblSmall textcolor" style="font-size: 14px;">Cambiar?</label>
+                                    </div>
+                                </div>
+
+                                <div class="row sinmp mt-2 mb-2">
+                                    <div class="col-sm-4">
+                                        <label class="Llave lblSmall">{{fecha.TipoEntrega}}</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <label class="Llave lblSmall">{{fecha.Sector}}</label>
+                                    </div>
+                                    <div class="col-sm-4 p-0">
+                                        <input type="date" class="form-control" [(ngModel)]="fecha.FechaActual"/>
+                                    </div>
+                                    <div class="col-sm-1" style="text-align: center;">
+                                        <button class="SinEstilo" title="Actualizar precio" (click)="ActualizaFecha(fecha)">
+                                            <img
+                                                src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_guardar.png" class="mt-1">
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
