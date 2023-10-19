@@ -17,4 +17,10 @@ export class GrupoMillaServices {
     modgrupoMilla(bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'modcgrupomilla/' + bandera, body);
     }
+    modpinmilla(bandera: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'modcpinmilla/' + bandera, body);
+    }
+    ModificaOrdenEntregas(bandera: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'modCOrdenUltimaMilla/' + bandera, body);
+    }
 }
