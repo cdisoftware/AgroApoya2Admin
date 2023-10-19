@@ -1047,10 +1047,9 @@ export class AdminUltMillaComponent implements OnInit {
 
 
   CargarListaFechas() {
-    this.ArrayFechas.push({ IdTipoEntrega: '1', TipoEntrega: 'Campo a la bodega', IdSector: '508', Sector: 'Toda Bogota', FechaActual: '2023-10-19' });
-    this.ArrayFechas.push({ IdTipoEntrega: '2', TipoEntrega: 'Dentro de la ciudad', IdSector: '508', Sector: 'Toda Bogota', FechaActual: '2023-10-19' });
-    this.ArrayFechas.push({
-      IdTipoEntrega: '2', TipoEntrega: 'Dentro de la ciudad', IdSector: '508', Sector: 'Toda Bogota', FechaActual: '2023-10-19'
+    this.sevicesmilla.ConsultaTransportes(this.IdOfertaCambioFecha, this.IdSecorCambioFecha).subscribe(ResultCons => {
+      this.ArrayFechas = ResultCons;
+      alert(ResultCons.length)
     });
   }
 
