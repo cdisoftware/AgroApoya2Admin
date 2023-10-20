@@ -1049,7 +1049,6 @@ export class AdminUltMillaComponent implements OnInit {
   CargarListaFechas() {
     this.sevicesmilla.ConsultaTransportes(this.IdOfertaCambioFecha, this.IdSecorCambioFecha).subscribe(ResultCons => {
       this.ArrayFechas = ResultCons;
-      alert(ResultCons.length)
     });
   }
 
@@ -1061,9 +1060,10 @@ export class AdminUltMillaComponent implements OnInit {
       IdGrupo: item.IdGrupo,
       FechaActualizar: item.FechaActual
     }
-
     this.sevicesmilla.ModificaFechaEntrega('1', body).subscribe(ResultCons => {
       this.CargarListaFechas();
+      this.MesajeModal = ResultCons.toString();
+      this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
     });
   }
   //#endregion CambioFechEntrega
