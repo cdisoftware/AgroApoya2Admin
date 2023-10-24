@@ -45,6 +45,7 @@ import { ScaleLinear, ScaleBand } from 'd3-scale';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ManychatComponent } from './usuario/components/manychat/manychat.component';
 import { AdminCodigosComponent } from './ofertas/components/admin-codigos/admin-codigos.component';
+import { EnviosmanychatComponent } from './usuario/components/enviosmanychat/enviosmanychat.component';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AdminusuariosComponent,
     ReporteentregasComponent,
     ManychatComponent,
-    AdminCodigosComponent
+    AdminCodigosComponent,
+    EnviosmanychatComponent
   ],
   imports: [
     NgxMaskModule.forRoot(options),
