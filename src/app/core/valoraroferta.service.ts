@@ -429,5 +429,22 @@ export class ValorarofertaService {
   modcentregacargabodega(Bandera: string, Body: any) {
     return this.http.post<any>(this.url_servidor + 'modcentregacargabodega/' + Bandera, Body);
   }
+  // Servicios manychat
+  SelectPreQuery(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consAdminPreQuery/' + Bandera);
+  }
+
+  ConsultaQueryAdminMaychat(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'QueryAdminManychatPre/' + Bandera, Body);
+  }
+
+  AuditoriAdminManychat(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'AuditoriaAdminManychat/' + Bandera, Body);
+  }
+
+  ConsultaUsersAdminManychat(Bandera: string, Body: any) {
+    return this.http.post<any[]>(this.url_servidor + 'AdminUsuariosQuery/' + Bandera, Body);
+  }
+
 }
 
