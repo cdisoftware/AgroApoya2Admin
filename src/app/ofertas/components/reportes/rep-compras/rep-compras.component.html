@@ -1,7 +1,8 @@
 <br>
 <div class="container bg-white">
     <br>
-    <h1>Reporte compras</h1>
+    <h1>Reporte ventas</h1>
+    <!--FILTROS-->
     <div class="row">
         <div class="col-sm-6">
             <input class="col-sm-12 form-control textBox" type="number" placeholder="Consecutivo oferta"
@@ -19,11 +20,6 @@
                 <label for="">Sin registros</label>
             </ng-template>
         </div>
-
-
-
-
-
         <div class="col-sm-6 mt-3">
             <ng-autocomplete [data]="DataEstadoPago" [searchKeyword]="keywordEsPago" placeholder="Estado pago"
                 (inputCleared)="LimpiaEstadoPago('')" (selected)='selectEstadoPago($event)'
@@ -36,8 +32,6 @@
                 <label for="">Sin registros</label>
             </ng-template>
         </div>
-
-
         <div class="col-sm-6 mt-3">
             <ng-autocomplete [data]="DataEstadoCompra" [searchKeyword]="keywordEsCompra" placeholder="Estado de compra"
                 (inputCleared)="LimpiaEstadoCompra('')" (selected)='selectEstadoCompra($event)'
@@ -52,9 +46,11 @@
         </div>
 
         <div class="col-sm-6 mt-3">
+            <label><small>Fecha inicio</small></label>
             <input [(ngModel)]="FechaIniCom" class="form-control" type="date" maxlength="50">
         </div>
         <div class="col-sm-6 mt-3">
+            <label><small>Fecha fin</small></label>
             <input [(ngModel)]="FechaFinCom" class="form-control" type="date" maxlength="50">
         </div>
     </div>
@@ -94,10 +90,8 @@
         <tr>
             <th *ngIf="Siguiente == false">Fecha / Oferta / Sector</th>
             <th *ngIf="Siguiente == false">Nombre</th>
-            <th *ngIf="Siguiente == false">Direccion entrega</th>
-            <th *ngIf="Siguiente == false">Telefono</th>
-            <th *ngIf="Siguiente == false">Producto Ancla</th>
-            <th *ngIf="Siguiente == false">Adicionales</th>
+            <th *ngIf="Siguiente == false">Teléfono / Direccion entrega</th>
+            <th *ngIf="Siguiente == false">Productos</th>
             <th *ngIf="Siguiente == false">Valor Domicilio</th>
             <th *ngIf="Siguiente == false">Total Compra</th>
 
@@ -120,19 +114,13 @@
                 <br> {{oferta.SECTOR}}
             </td>
             <td *ngIf="Siguiente == false">{{oferta.NOMBRES_PERSONA}} {{oferta.APELLIDOS_PERSONA}}</td>
-            <td *ngIf="Siguiente == false">{{oferta.DIRECCION_ENTREGA}}</td>
-            <td *ngIf="Siguiente == false">{{oferta.CELULAR_PERSONA}}</td>
+            <td *ngIf="Siguiente == false">{{oferta.CELULAR_PERSONA}} <br> {{oferta.DIRECCION_ENTREGA}}</td>
             <td *ngIf="Siguiente == false ">
                 <div class="m-0 p-0" *ngIf="oferta.Unidades != 0 ">
-                    <strong>{{oferta.Unidades}} Und</strong> <br> {{oferta.PRODUCTO}} <br>
-                    {{oferta.ValorProdcuto | currency : 'USD' : 'symbol' :
-                    '1.0-0'}}
+                    <label>{{oferta.PRODUCTO}}: {{oferta.Unidades}} Und x 
+                        {{oferta.ValorProdcuto | currency : 'USD' : 'symbol' :'1.0-0'}} </label>
+                        <br/><br/>
                 </div>
-                <div class="m-0 p-0" *ngIf="oferta.Unidades == 0 ">
-                    <label>N/A</label>
-                </div>
-            </td>
-            <td *ngIf="Siguiente == false">
                 <div [innerHTML]="oferta.ADICIONALES"></div>
             </td>
             <td *ngIf="Siguiente == false">{{oferta.ValorDomicilio | currency : 'USD' : 'symbol' :
@@ -159,10 +147,6 @@
                 </button>
                 -->
             </td>
-        </tr>
-        <tr *ngIf="ValidaConsulta=='1'">
-            <td colspan="12" *ngIf="Siguiente == false">{{txtValidaCons}}</td>
-            <td colspan="9" *ngIf="Siguiente == true">{{txtValidaCons}}</td>
         </tr>
     </table>
 </div>
@@ -211,7 +195,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <label class="Llave">Valor Producto Ancla:&nbsp;</label>
-                <label class="Valor">{{Filacompra.ValorProdcuto  | currency : 'USD' : 'symbol' :
+                <label class="Valor">{{Filacompra.ValorProdcuto | currency : 'USD' : 'symbol' :
                     '1.0-0'}}</label>
             </div>
             <div class="col-sm-6">
@@ -266,7 +250,7 @@
         </div>
 
 
-        
+
         <div class="row br">
             <div class="col-sm-6">
                 <h6 class="textblue"><strong>Producto</strong></h6>
@@ -275,16 +259,17 @@
         <div class="row">
             <div class="col-12">
                 <label class="Llave">Adicionales:&nbsp;</label>
-                <div  [innerHTML]="Filacompra.ADICIONALES"></div>
+                <div [innerHTML]="Filacompra.ADICIONALES"></div>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-12">
-                 <h6 ><strong class="textblue">Total Compra: </strong><label class="Valor">{{Filacompra.VALOR_PAGO | currency : 'USD' : 'symbol' :
-                    '1.0-0'}}</label></h6>
-                 
+                <h6><strong class="textblue">Total Compra: </strong><label class="Valor">{{Filacompra.VALOR_PAGO |
+                        currency : 'USD' : 'symbol' :
+                        '1.0-0'}}</label></h6>
+
             </div>
-           
+
         </div>
     </div>
     <hr class="hrSinEstilo">
