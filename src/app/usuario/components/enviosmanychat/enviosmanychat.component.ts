@@ -1,53 +1,53 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ValorarofertaService } from './../../../core/valoraroferta.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { PublicidadService } from 'src/app/core/publicidad.service';
 @Component({
   selector: 'app-enviosmanychat',
   templateUrl: './enviosmanychat.component.html',
   styleUrls: ['./enviosmanychat.component.css']
 })
 export class EnviosmanychatComponent implements OnInit {
+  @ViewChild('ModalRespuesta', { static: false }) ModalRespuesta: any;
 
   ArrayConsectvo: any = [];
   IdCnsctvo: string = '';
   keywordConSec: string = 'CD_CNSCTVO';
   CdCnsctvo: any;
-
   DataSectores: any = [];
   IdSector: any = [];
   keywordSec: string = 'DSCRPCION_SCTOR';
   Sector: any;
   ConsecutivoSector: string = '';
-
   Respuesta: string = '';
-  isDisabled: boolean = false;
-
   VerOcultarCampos: string = '1';
   IdPlantll: string = '';
   CondicionalExtra: string = '';
   QueryFinal: string = '';
-
   Loader = false;
   NunMensajesEnviados: number = 0;
   DataQuery: any[];
   IdManychatUser: string = '';
-
   IdCampo: string = '';
   arregloCampos: any;
+  RespuePlantilla: string = '';
 
   constructor(private ServiciosValorar: ValorarofertaService,
-    private modalService: NgbModal,) { }
+    private modalService: NgbModal,
+    private publicidadService: PublicidadService,) { }
 
   ngOnInit(): void {
     this.CargarConsecutivo();
+    this.CargaSectores();
     this.DataQuery = [];
     this.SelectCamposQuerys();
   }
 
   LimpiarTodo() {
-    this.isDisabled = false;
-    this.IdPlantll = '';
     this.CondicionalExtra = '';
+    this.IdCampo = '';
+    this.IdPlantll = '';
+    this.IdManychatUser = '';
     this.LimpiaConsecutvo('');
     this.LimpiaSector('');
   }
@@ -62,29 +62,24 @@ export class EnviosmanychatComponent implements OnInit {
   selectConsecutvo(item: any) {
     this.IdCnsctvo = item.Id;
     this.ConsecutivoSector = item.CD_CNSCTVO;
-
-    this.CargaSectores(this.ConsecutivoSector)
   }
 
   LimpiaConsecutvo(campo: string) {
     this.IdCnsctvo = '';
     this.CdCnsctvo = campo;
     this.VerOcultarCampos = '1';
-    this.isDisabled = false;
     this.LimpiaSector('');
   }
 
-  CargaSectores(consecutivo: string) {
-    if (consecutivo != '0' || consecutivo != null || consecutivo != undefined) {
-      this.isDisabled = true;
-      this.ServiciosValorar.ConsultaSectoresOferta('1', consecutivo).subscribe(Resultado => {
-        this.DataSectores = Resultado;
-      })
-    }
+  CargaSectores() {
+    this.ServiciosValorar.ListaSectores('1', '0', '0').subscribe(Resultado => {
+      this.DataSectores = Resultado;
+    })
+
   }
 
   selectSector(item: any) {
-    this.IdSector = item.ID_SCTOR_OFRTA;
+    this.IdSector = item.ID;
   }
 
   LimpiaSector(campo: string) {
@@ -92,25 +87,23 @@ export class EnviosmanychatComponent implements OnInit {
     this.Sector = campo;
   }
 
-  VerQuery(ModalRespuesta: any) {
-    this.Respuesta = '';
-    if (this.IdCnsctvo == null || this.IdCnsctvo == undefined || this.IdCnsctvo == '') {
-      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-      this.Respuesta = "Selecciona el consecutivo.";
-    } else if (this.IdSector == null || this.IdSector == undefined || this.IdSector == '') {
-      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-      this.Respuesta = "Selecciona el sector.";
-    } else {
-      const Body = {
-        id_sector: this.IdSector,
-        Cd_cnsctivo: this.ConsecutivoSector,
-        QueryAdicional: this.CondicionalExtra
-      }
-      this.ServiciosValorar.ConsultaQueryAdminMaychat('1', Body).subscribe(Resultado => {
-        this.QueryFinal = Resultado;
-      })
-      this.VerOcultarCampos = '2';
+  VerQuery() {
+    if (this.IdSector == '' || this.IdSector == null) {
+      this.IdSector = '0';
     }
+    if (this.ConsecutivoSector == '' || this.ConsecutivoSector == null) {
+      this.ConsecutivoSector = '0';
+    }
+    const Body = {
+      id_sector: this.IdSector,
+      Cd_cnsctivo: this.ConsecutivoSector,
+      QueryAdicional: this.CondicionalExtra
+    }
+    this.ServiciosValorar.ConsultaQueryAdminMaychat('1', Body).subscribe(Resultado => {
+      this.QueryFinal = Resultado;
+    })
+    this.VerOcultarCampos = '2';
+
   }
 
   SelectCamposQuerys() {
@@ -119,10 +112,10 @@ export class EnviosmanychatComponent implements OnInit {
     })
   }
 
-  Buscar(ModalRespuesta: any) {
+  Buscar() {
     this.Respuesta = '';
     if (this.QueryFinal == null || this.QueryFinal == undefined || this.QueryFinal == '') {
-      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
       this.Respuesta = "Query vacio.";
     } else {
       const Body = {
@@ -131,20 +124,21 @@ export class EnviosmanychatComponent implements OnInit {
       }
       this.ServiciosValorar.ConsultaUsersAdminManychat('1', Body).subscribe(Resultado => {
         this.DataQuery = Resultado;
+        this.IdManychatUser = '';
       })
 
       this.VerOcultarCampos = '3';
     }
   }
 
-  enviarPrueba(ModalRespuesta: any) {
+  enviarPrueba() {
     this.DataQuery = [];
     this.Respuesta = '';
     if (this.IdManychatUser == null || this.IdManychatUser == undefined || this.IdManychatUser == '') {
-      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
       this.Respuesta = "Digita el IdManychat.";
     } else if (this.QueryFinal == null || this.QueryFinal == undefined || this.QueryFinal == '') {
-      this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
       this.Respuesta = "Query vacio.";
     } else {
       const Body = {
@@ -153,6 +147,7 @@ export class EnviosmanychatComponent implements OnInit {
       }
       this.ServiciosValorar.ConsultaUsersAdminManychat('1', Body).subscribe(Resultado => {
         this.DataQuery = Resultado;
+
       })
     }
   }
@@ -163,14 +158,49 @@ export class EnviosmanychatComponent implements OnInit {
       QueryPre: this.QueryFinal
     }
     this.ServiciosValorar.AuditoriAdminManychat('1', Body).subscribe(Resultado => {
-      console.log(Resultado)
       RespuAuditoria = Resultado;
     })
   }
 
-  EnviarFlujo() {
+  async EvioMennychat() {
+    if (this.IdPlantll == null || this.IdPlantll == undefined || this.IdPlantll == '') {
+      this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+      this.Respuesta = "IdPlantilla obligatorio.";
+    } else {
+      if (this.DataQuery.length > 0) {
+        for (var i = 0; i < this.DataQuery.length; i++) {
+          this.NunMensajesEnviados = i + 1;
+          this.Loader = true;
+          //Envio plantilla
+          const result3 = await this.EnviaPlantilla(this.DataQuery[i].ID_MANYCHAT);
+          await new Promise(resolve => setTimeout(resolve, 500));//Hace esperar 1 segundos para ejecutar el siguiente servicio
+        }
+        this.AuditoriaManychat();
+        this.IdPlantll = '';
+        this.NunMensajesEnviados = 0;
+        this.Loader = false;
+      } else {
+        this.Respuesta = "Sin resultados.";
+        this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+      }
+    }
+  }
 
-    this.AuditoriaManychat();
+  async EnviaPlantilla(IdMenyChat: string) {
+
+    await new Promise((resolve, reject) => {
+      const body = {
+        subscriber_id: IdMenyChat,
+        flow_ns: this.IdPlantll
+      }
+      this.publicidadService.CManyChatFlows(body).subscribe(async Respu => {
+        console.log(Respu)
+        this.RespuePlantilla = JSON.stringify(Respu);
+        resolve(true);
+        return true;
+      });
+    });
+
   }
 
 

@@ -203,6 +203,16 @@ export class ValoracionComponent implements OnInit {
 
   //#endregion AgregarTopping
 
+
+  //Modulo Textosparaoferta  ############################################################################
+  TextMod1: string = '';
+  TextMod2: string = '';
+  TextMod3: string = '';
+  ImgModal: string = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+
+  //#endregion Textosparaoferta
+
+
   //#region AgregaPresentacionesProdAncla
   UnidadesProdAncla: string = "";
   MaxinoProdAncla: string = "";
@@ -241,7 +251,7 @@ export class ValoracionComponent implements OnInit {
     this.ListaProductos();
     this.LimpiaProductoTopp();
     this.CargaInfoCupon();
-  
+
     this.keyword = 'name';
     this.keywordSec = 'name';
     this.RutaImagenes = this.SeriviciosGenerales.RecuperaRutaImagenes();
@@ -1995,7 +2005,7 @@ export class ValoracionComponent implements OnInit {
 
 
   public CargaImagenAdicionales(event: any, imagen: string, modalmensaje: any) {
-     if (!(/\.(jpg|png|jpeg)$/i).test(event.target.files[0].name)) {
+    if (!(/\.(jpg|png|jpeg)$/i).test(event.target.files[0].name)) {
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
       this.Respuesta = "El archivo no pudo ser cargado, valide la extención, las permitidas son .jpg .png .jpeg";
     }
@@ -2298,7 +2308,7 @@ export class ValoracionComponent implements OnInit {
           }
 
         }
-        
+
       });
     }
 
@@ -3049,4 +3059,18 @@ export class ValoracionComponent implements OnInit {
     this.IdOfertaDirigidaA = item.Id;
   }
   //#endregion OfertaDirigidaA
+
+
+  //#region Textosparaoferta
+
+  LimpiarTextosModals() {
+    this.TextMod1 = '';
+    this.TextMod2 = '';
+    this.TextMod3 = '';
+    this.ImgModal = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+  }
+
+  
+
+  //#endregion Textosparaoferta
 }

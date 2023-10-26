@@ -400,7 +400,7 @@
                                 (click)="GuardaIndividual(ModalRespuesta)">Guardar individual</button>
                         </div>
                     </div>
-                    
+
                 </ng-template>
             </ngb-panel>
         </ngb-accordion>
@@ -665,10 +665,6 @@
         </ngb-panel>
     </ngb-accordion>
 
-
-
-
-
     <div class="row br" *ngIf="ValidaToppings=='1'">
         <h5 class="SubTituloForm">Definición conceptos adicionales</h5>
 
@@ -907,6 +903,102 @@
         </ngb-accordion>
     </div>
     <!--  -->
+
+
+
+    <div class="row br">
+        <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+            <ngb-panel title="Textos para la oferta" id="config-panel-three">
+                <ng-template ngbPanelContent>
+                    <div class="row">
+                        <div class="col-sm-6 mt-2">
+                            <label class="col-sm-12 Llave">Texto modal uno</label>
+                            <input type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="TextMod1">
+                        </div>
+
+                        <div class="col-sm-6 mt-2">
+                            <label class="col-sm-12 Llave">Texto modal dos</label>
+                            <input type="text" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="TextMod2">
+                        </div>
+
+                        <div class="col-sm-10 mt-2">
+                            <label class="col-sm-12 Llave">Texto modal tres</label>
+                            <textarea class="form-control form-control-sm textArea" cols="30" rows="3" [(ngModel)]="TextMod3"></textarea>
+                        </div>
+                        <div class="col-sm-2 text-center">
+
+                            <div class="image-upload p-3">
+                                <label for="file-input1">
+                                    <img id="Imagen1" title="Selecciona una imagen" [src]="ImgModal"
+                                        style="border-radius: 10px;">
+                                </label>
+                                <input name="file-inputModal" id="file-inputModal" type="file"
+                                    (change)="CargaImagenAdicionales($event, '1', ModalRespuestaImg)" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="col-sm-3">
+                            <label class="col-sm-12 Llave"></label>
+                            <button class="btn btn-agro-prin col-sm-12">Precargar Información</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-sm-12 Llave"></label>
+                            <button class="btn btn-agro-sec col-sm-12" (click)="LimpiarTextosModals()">Limpiar</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <label class="col-sm-12 Llave"></label>
+                            <button class="btn btn-agro-prin col-sm-12">Guardar</button>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center br">
+                        <div class="table-responsive">
+                            <table class="table col-sm-12 TableAgro">
+                                <tr>
+                                    <th>Texto Modal Uno</th>
+                                    <th>Texto Modal Dos</th>
+                                    <th colspan="3">Texto Modal Tres</th>
+                                    <th>Imagen</th>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="descripcionlarga">Malla campesina</div>
+                                    </td>
+                                    <td>
+                                        <div class="descripcionlarga">(4 libras de productos agrícolas)</div>
+
+                                    </td>
+                                    <td colspan="3">
+                                        <div class="descripcionlarga">Regístrate en Agroapoya2 y recibirás totalmente
+                                            GRATIS en tu domicilio una Malla campesina: 4 libras de productos agrícolas
+                                            frescos.<br> En Agroapoya2, los campesinos ofertan directamente sus cosechas
+                                            para obtener un valor justo por sus productos y los consumidores compran
+                                            alimentos frescos y de calidad al mejor precio.Ingresa tu correo para
+                                            recibir este increíble obsequio</div>
+
+                                    </td>
+                                    <td>
+                                        <button class="SinEstilo" title="Imagen amparado">
+                                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png">
+                                        </button>
+
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+    </div>
+    <!--  -->
+
+
+
+
     <div class="row br" *ngIf="ValidaToppings == '1'">
         <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
             <ngb-panel title="Definición correos / sms / Publicidad" id="config-panel-three">
