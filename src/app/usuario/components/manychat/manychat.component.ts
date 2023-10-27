@@ -141,7 +141,7 @@ export class ManychatComponent implements OnInit {
     await new Promise((resolve, reject) => {
       const body = {
         subscriber_id: IdMenyChat,
-        flow_ns: "content20230913214703_095731"
+        flow_ns: "content20231013173736_045615"
       }
       this.publicidadService.CManyChatFlows(body).subscribe(async Respu => {
         console.log('Plantilla')

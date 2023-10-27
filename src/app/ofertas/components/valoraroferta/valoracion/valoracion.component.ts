@@ -203,6 +203,10 @@ export class ValoracionComponent implements OnInit {
 
   //#endregion AgregarTopping
 
+
+  //#endregion Textosparaoferta
+
+
   //#region AgregaPresentacionesProdAncla
   UnidadesProdAncla: string = "";
   MaxinoProdAncla: string = "";
@@ -241,7 +245,7 @@ export class ValoracionComponent implements OnInit {
     this.ListaProductos();
     this.LimpiaProductoTopp();
     this.CargaInfoCupon();
-  
+
     this.keyword = 'name';
     this.keywordSec = 'name';
     this.RutaImagenes = this.SeriviciosGenerales.RecuperaRutaImagenes();
@@ -1127,7 +1131,7 @@ export class ValoracionComponent implements OnInit {
     this.ConsultaVigenciaOferta();
     this.consultaToppingsOferta();
     this.ConsultaLinks();
-
+    this.GrillaTextoModal();
 
     //this.UrlPubli = this.SeriviciosGenerales.RecuperarRutaAmbiente() + 'home/compras?ido=' + this.SessionOferta + '&idu=0&tu=2&ids=' + this.SessionSectorSel + '&idc=1&itc=1&or=1';
     //this.UrlParticipante = this.SeriviciosGenerales.RecuperarRutaAmbiente() + 'home/compras?ido=' + this.SessionOferta + '&idu=0&tu=2&ids=' + this.SessionSectorSel + '&idc=1&itc=1';
@@ -1995,7 +1999,7 @@ export class ValoracionComponent implements OnInit {
 
 
   public CargaImagenAdicionales(event: any, imagen: string, modalmensaje: any) {
-     if (!(/\.(jpg|png|jpeg)$/i).test(event.target.files[0].name)) {
+    if (!(/\.(jpg|png|jpeg)$/i).test(event.target.files[0].name)) {
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
       this.Respuesta = "El archivo no pudo ser cargado, valide la extención, las permitidas son .jpg .png .jpeg";
     }
@@ -2035,8 +2039,6 @@ export class ValoracionComponent implements OnInit {
         }
       );
     }
-
-
   }
 
   ArrayToppingSeleccionado: any[] = [];
@@ -2298,7 +2300,7 @@ export class ValoracionComponent implements OnInit {
           }
 
         }
-        
+
       });
     }
 
@@ -2949,6 +2951,7 @@ export class ValoracionComponent implements OnInit {
     this.modalService.open(PresentacionesProdAncla, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
   }
   ListaPresentacionesProdAncla() {
+    alert(this.SessionSectorSel)
     this.serviciosvaloracion.consCRelacionProducTopping('4', this.SessionOferta, this.SessionSectorSel).subscribe(Respu => {
       this.ArrayPresentacionesProdAncla = Respu;
     });
@@ -3049,4 +3052,197 @@ export class ValoracionComponent implements OnInit {
     this.IdOfertaDirigidaA = item.Id;
   }
   //#endregion OfertaDirigidaA
+
+
+  //#region Textosparaoferta
+  //Modulo Textosparaoferta 
+  TextMod1: string = '';
+  TextMod2: string = '';
+  TextMod3: string = '';
+  AddModal: string = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+  DataTxtModal: any = [];
+  NomImagenTxt: string = '';
+
+  LimpiarTextosModals() {
+    this.TextMod1 = '';
+    this.TextMod2 = '';
+    this.TextMod3 = '';
+    this.AddModal = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+  }
+
+  GrillaTextoModal() {
+    this.serviciosvaloracion.ConsultaTextosModal('4', this.SessionOferta, this.SessionSectorSel).subscribe(Respu => {
+      this.DataTxtModal = Respu;
+    });
+  }
+  PrecargarInfo() {
+    this.serviciosvaloracion.ConsultaTextosModal('4', '0', '0').subscribe(Respu => {
+      this.TextMod1 = Respu[0].TextoUno;
+      this.TextMod2 = Respu[0].TextoDos;
+      this.TextMod3 = Respu[0].TextoTres;
+      this.AddModal = Respu[0].ImagenUno;
+      // Obtén el nombre del archivo de la URL
+      const url = Respu[0].ImagenUno;
+      const nombreArchivo = this.obtenerNombreArchivo(url);
+      this.NomImagenTxt = nombreArchivo;
+    });
+  }
+
+  obtenerNombreArchivo(url: string): string {    
+    const partesURL = url.split('/');    
+    const nombreArchivo = partesURL[partesURL.length - 1];
+    return nombreArchivo;
+  }
+
+  GuardarTxtModal(templateMensaje: any) {
+    this.ArrayCamposValida = [];
+    this.Respuesta = ''
+    this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
+    if (this.TextMod1 == '' || this.TextMod1 == null || this.TextMod2 == null || this.TextMod2 == '' || this.TextMod3 == null ||
+      this.TextMod3 == '' || (this.NomImagenTxt == '' || this.NomImagenTxt == null)) {
+      this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
+      this.ArrayCamposValida = [
+
+        {
+          campo: 'TextMod1',
+          campof: 'Texto modal uno',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'TextMod2',
+          campof: 'Texto modal dos',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'TextMod3',
+          campof: 'Texto modal tres',
+          class: '',
+          imagen: ''
+        },
+        {
+          campo: 'NomImagenTxt',
+          campof: 'Imagen modal',
+          class: '',
+          imagen: ''
+        }
+      ]
+      for (var i = 0; i < this.ArrayCamposValida.length; i++) {
+        if (this.ArrayCamposValida[i].campo == 'TextMod1') {
+          if (this.TextMod1 == '' || this.TextMod1 == null) {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'TextMod2') {
+          if (this.TextMod2 == null || this.TextMod2 == '') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
+        }
+        else if (this.ArrayCamposValida[i].campo == 'TextMod3') {
+          if (this.TextMod3 == null || this.TextMod3 == '') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          }
+          else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
+        }
+
+        else if (this.ArrayCamposValida[i].campo == 'NomImagenTxt') {
+          if (this.NomImagenTxt == '' || this.NomImagenTxt == null || this.NomImagenTxt == './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png') {
+            this.ArrayCamposValida[i].class = 'TextAlert'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
+          } else {
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
+          }
+        }
+      }
+    }
+    else {
+      this.ArrayCamposValida = [];
+      const Body = {
+        cd_cnsctivo: this.IdOferta,
+        idsector: this.SessionSectorSel,
+        ModalRegistroTextoUno: this.TextMod1,
+        ModalRegistroTextoDos: this.TextMod2,
+        ModalRegistroTextoTres: this.TextMod3,
+        ModalRegistroImagenUno: this.NomImagenTxt
+      }
+      console.log(Body)
+      this.serviciosvaloracion.GuardarTextosModal('4', Body).subscribe(Respu => {
+        this.Respuesta = Respu;
+        this.GrillaTextoModal();
+        this.LimpiarTextosModals();
+      });
+    }
+  }
+
+  public CargaImagenTxtModal(event: any, modalmensaje: any) {
+    if (!(/\.(jpg|png|jpeg)$/i).test(event.target.files[0].name)) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El archivo no pudo ser cargado, valide la extención, las permitidas son .jpg .png .jpeg";
+    }
+    else if (event.target.files[0].name.includes(" ")) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El archivo no pudo ser cargado, el nombre no debe contener espacios";
+    }
+    else if (event.target.files[0].size > 1300000) {
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = "El peso del archivo no puede exceder 1.3 megabyte";
+    } else {
+      this.serviciosvaloracion.postImgToppings(event.target.files[0]).subscribe(
+        response => {
+          if (response == 'Archivo Subido Correctamente') {
+
+            this.AddModal = this.RutaImagenTopping + event.target.files[0].name;
+            this.NomImagenTxt = event.target.files[0].name;
+
+            //this.imagenesAdicionales = event.target.files[0].name;
+            this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+            this.Respuesta = "Imagen cargada correctamente.";
+            event.target.value = '';
+          }
+        },
+        error => {
+          this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+          this.Respuesta = "No hemos podido subir el archivo, intente nuevamente.";
+        }
+      );
+    }
+  }
+  ArrayModalSelec: any[] = [];
+  visualizaImagenModal(ModalImagen: any, imagen: any) {
+    this.ArrayModalSelec = [];
+    const propiedadesImagenes = ['ImagenUno'];
+    // Verifica y agrega las imágenes al ArrayToppingSeleccionado
+    for (const propiedad of propiedadesImagenes) {
+      if (imagen[propiedad] !== null && imagen[propiedad] !== undefined) {
+        this.ArrayModalSelec.push({ imagen: imagen[propiedad] });
+      }
+    }
+    const ImagenM = this.ArrayModalSelec.some(item => item.ImagenUno);
+
+    this.ArrayModalSelec = this.ArrayModalSelec.filter(item => {
+      if (ImagenM) {
+        return item.ImagenUno
+      }
+    });
+    this.modalService.open(ModalImagen, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+  }
+
+
+  //#endregion Textosparaoferta
 }

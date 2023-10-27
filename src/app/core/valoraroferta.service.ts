@@ -429,5 +429,34 @@ export class ValorarofertaService {
   modcentregacargabodega(Bandera: string, Body: any) {
     return this.http.post<any>(this.url_servidor + 'modcentregacargabodega/' + Bandera, Body);
   }
+
+  SelectPreQuery(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consAdminPreQuery/' + Bandera);
+  }
+
+  ConsultaQueryAdminMaychat(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'QueryAdminManychatPre/' + Bandera, Body);
+  }
+
+  AuditoriAdminManychat(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'AuditoriaAdminManychat/' + Bandera, Body);
+  }
+
+  ConsultaUsersAdminManychat(Bandera: string, Body: any) {
+    return this.http.post<any[]>(this.url_servidor + 'AdminUsuariosQuery/' + Bandera, Body);
+  }
+
+  ListaSectores(Bandera: string, CD_CNSCTVO: string, IdSector: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conSectores/' + Bandera + '/' + CD_CNSCTVO + '/' + IdSector);
+  }
+
+  ConsultaTextosModal(Bandera: string, cd_cnsctivo: string, idsector: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consClienteTextosOferta/' + Bandera + '/' + cd_cnsctivo + '/' + idsector);
+  }
+
+  GuardarTextosModal(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modAdminTextOferta/' + Bandera, Body);
+  }
+
 }
 

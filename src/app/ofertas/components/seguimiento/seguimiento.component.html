@@ -158,9 +158,9 @@
                                 <td>{{Seguimiento.descTipoPago}}</td>
                                 <td>{{Seguimiento.orden}}</td>
                                 <td>{{Seguimiento.fecha_entrega}} - {{Seguimiento.hora_entrega}}</td>
-                                <td>{{Seguimiento.VLOR_PGARSINDOMICILIO | currency}}</td>
-                                <td>{{Seguimiento.VLOR_DOMICILIO | currency}}</td>
-                                <td>{{Seguimiento.VLOR_PGAR | currency}}</td>
+                                <td>{{Seguimiento.VLOR_PGARSINDOMICILIO | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                                <td>{{Seguimiento.VLOR_DOMICILIO | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                                <td>{{Seguimiento.VLOR_PGAR | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                                 <td colspan="2">
                                     <button class="SinEstilo " (click)="MostrarMapa(Seguimiento, ModalMapa)">
                                         <img src="./../../../../../assets/ImagenesAgroApoya2Adm/mapaSec.png"
@@ -206,10 +206,9 @@
                             <th>Total venta</th>
                             <th>Total domicilio</th>
                         </tr>
-                        <tr>
+                        <tr *ngIf="ObjetEntrega != undefined && ObjetEntrega != null">
                             <td>{{ObjetEntrega[1].ValTotalEntregado | currency :'USD' : 'symbol' : '1.0-0'}}</td>
-                            <td style="color: forestgreen;">{{ValorDomicilio | currency :'USD' : 'symbol' : '1.0-0'}}
-                            </td>
+                            <td style="color: forestgreen;">{{ValorDomicilio | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                         </tr>
                         <tr>
                             <td colspan="2" style="color: forestgreen;"><strong>{{TotalCosolidado | currency :'USD' :
@@ -296,17 +295,19 @@
                 <tr>
                     <th>Producto</th>
                     <th>Cantidad</th>
+                    <th>Estado</th>
                     <th>Valor</th>
                 </tr>
                 <tr *ngFor="let Detalle of ArrayDetalle ">
                     <td>{{Detalle.Producto}}</td>
                     <td>{{Detalle.Cantidad}}</td>
-                    <td>{{Detalle.valor}}</td>
+                    <td [ngClass]="Detalle.DescDevuelto !='Devuelto' ? 'ColorTextEntregado' : 'ColorTextDevuelto' ">{{Detalle.DescDevuelto}}</td>
+                 <td>{{Detalle.valor}}</td>
                 </tr>
                 <tr>
                     <td><strong>Total</strong></td>
                     <td>{{NumProductos}}</td>
-                    <td style="color: forestgreen;">{{ValorTotalCompra | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                    <td colspan="2" style="color: forestgreen;">{{ValorTotalCompra | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                 </tr>
             </table>
         </div>
