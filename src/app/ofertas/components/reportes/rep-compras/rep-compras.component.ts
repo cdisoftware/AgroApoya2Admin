@@ -30,7 +30,6 @@ export class RepComprasComponent implements OnInit {
   Filacompra: any = [];
   DataConsulta: any = [];
   ArregloAdicionales: any = [];
-  Siguiente: boolean = false;
   ValidaDescarga: boolean = true;
   NumeroRegistros: string = '0 registros';
 
@@ -185,7 +184,6 @@ export class RepComprasComponent implements OnInit {
             for (var o = 0; aux.length > o; o++) {
               adicio = aux[o] + '<br> <br>' + adicio;
             }
-
             this.DataConsulta[i].ADICIONALES = adicio;
           }
         }
@@ -320,16 +318,6 @@ export class RepComprasComponent implements OnInit {
       });
     }
   }
-
-
-  VerGrilla() {
-    if (this.Siguiente == true) {
-      this.Siguiente = false;
-    } else if (this.Siguiente == false) {
-      this.Siguiente = true;
-    }
-  }
-
 
   //Factura
   Cargadetallesfactura(data: any, modaldetalle: any) {

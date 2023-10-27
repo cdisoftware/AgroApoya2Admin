@@ -73,14 +73,6 @@
     </div>
 </div>
 <br>
-<div class="row">
-    <div class="d-flex flex-row-reverse">
-        <img src="../../../../../assets/ImagenesAgroApoya2Adm/Siguiente.png" class="ImgSiguiente" (click)="VerGrilla()"
-            *ngIf="Siguiente == false" />
-        <img src="../../../../../assets/ImagenesAgroApoya2Adm/Anterior.png" class="ImgSiguiente" (click)="VerGrilla()"
-            *ngIf="Siguiente == true" />
-    </div>
-</div>
 <label style="margin-left: 50px;">
     <strong>{{NumeroRegistros}}</strong>
 </label>
@@ -88,64 +80,56 @@
 <div class="row m-0 p-0">
     <table class="col-sm-12 TableAgro">
         <tr>
-            <th *ngIf="Siguiente == false">Fecha / Oferta / Sector</th>
-            <th *ngIf="Siguiente == false">Nombre</th>
-            <th *ngIf="Siguiente == false">Teléfono / Direccion entrega</th>
-            <th *ngIf="Siguiente == false">Productos</th>
-            <th *ngIf="Siguiente == false">Valor Domicilio</th>
-            <th *ngIf="Siguiente == false">Total Compra</th>
-
-
-            <th *ngIf="Siguiente == true">Estado Compra</th>
-            <th *ngIf="Siguiente == true">Tipo Comprador</th>
-            <th *ngIf="Siguiente == true">Código Promo</th>
-            <th *ngIf="Siguiente == true">Codigo participante</th>
-            <th *ngIf="Siguiente == true">Codigo Lider</th>
-            <th *ngIf="Siguiente == true">Medio de pago</th>
-            <th *ngIf="Siguiente == true">Estado de pago</th>
-            <th *ngIf="Siguiente == true">Fecha entrega</th>
-            <th *ngIf="Siguiente == true">Email</th>
-            <th scope="col">Detalle</th>
+            <th>Fecha Compra / Oferta / Sector</th>
+            <th>Nombre</th>
+            <th>Teléfono / Direccion entrega</th>
+            <th>Productos</th>
+            <th style="width: 120px;">Valor Domicilio</th>
+            <th style="width: 120px;">Total Compra</th>
+            <th style="width: 80px;">Detalle</th>
         </tr>
         <tr *ngFor="let oferta of DataConsulta">
-            <td *ngIf="Siguiente == false">
-                {{oferta.FECHA_COMPRA}}
-                <br> {{oferta.OFERTA}}
+            <td>
+                {{oferta.OFERTA}}
+                <br> <strong>{{oferta.FECHA_COMPRA}}</strong>
                 <br> {{oferta.SECTOR}}
+                <br>
+                <label style="color: red;" *ngIf="oferta.ESTADO_CARRO ==  'Pendiente de entrega' ">
+                    <strong>{{oferta.ESTADO_CARRO}}</strong>
+                </label>
+                <label style="color: #1BCA56;" *ngIf="oferta.ESTADO_CARRO == 'Entregado' ">
+                    <strong>{{oferta.ESTADO_CARRO}}</strong>
+                </label>
+                <label style="color: #CA1BCA;" *ngIf="oferta.ESTADO_CARRO == 'Rechazado' ">
+                    <strong>{{oferta.ESTADO_CARRO}}</strong>
+                </label>
+
             </td>
-            <td *ngIf="Siguiente == false">{{oferta.NOMBRES_PERSONA}} {{oferta.APELLIDOS_PERSONA}}</td>
-            <td *ngIf="Siguiente == false">{{oferta.CELULAR_PERSONA}} <br> {{oferta.DIRECCION_ENTREGA}}</td>
-            <td *ngIf="Siguiente == false ">
+            <td class="overflow">
+                <strong>{{oferta.NOMBRES_PERSONA}}</strong>
+                <br> {{oferta.CORREO_PERSONA}}
+            </td>
+            <td>
+                <strong>{{oferta.CELULAR_PERSONA}} </strong>
+                <br> {{oferta.DIRECCION_ENTREGA}}
+            </td>
+            <td>
                 <div class="m-0 p-0" *ngIf="oferta.Unidades != 0 ">
-                    <label>{{oferta.PRODUCTO}}: {{oferta.Unidades}} Und x 
+                    <label>{{oferta.PRODUCTO}} : {{oferta.Unidades}} Und x
                         {{oferta.ValorProdcuto | currency : 'USD' : 'symbol' :'1.0-0'}} </label>
-                        <br/><br/>
+                    <br> <br>
                 </div>
                 <div [innerHTML]="oferta.ADICIONALES"></div>
             </td>
-            <td *ngIf="Siguiente == false">{{oferta.ValorDomicilio | currency : 'USD' : 'symbol' :
-                '1.0-0'}}</td>
-            <td *ngIf="Siguiente == false">{{oferta.VALOR_PAGO | currency : 'USD' : 'symbol' :
-                '1.0-0'}}</td>
-            <td *ngIf="Siguiente == true">{{oferta.ESTADO_CARRO}}</td>
-            <td *ngIf="Siguiente == true">{{oferta.TIPO_USUARIO_COMPRA}}</td>
-            <td *ngIf="Siguiente == true">{{oferta.CodigoDescuentoGeneral}}</td>
-            <td *ngIf="Siguiente == true">{{oferta.CODIGO_COMPARTIR}}</td>
-            <td *ngIf="Siguiente == true">{{oferta.CODIGO_LIDER}}</td>
-            <td *ngIf="Siguiente == true">{{oferta.MEDIO_PAGO}}</td>
-            <td *ngIf="Siguiente == true">{{oferta.ESTADO_PAGO}}</td>
-            <td *ngIf="Siguiente == true">{{oferta.FECHA_ENTREGA}}</td>
-            <td *ngIf="Siguiente == true" class="overflow">{{oferta.CORREO_PERSONA}} </td>
-            <td>
-                <button class="SinEstilo" (click)="DetalleCompra(oferta, ModalDetalle)">
-                    <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/info.png" alt="">
-                </button>
-
-                <!--
-                    <button class="SinEstilo" (click)="Cargadetallesfactura(oferta, ModalFactura)">
-                    <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_factura.png" alt="">
-                </button>
-                -->
+            <td style="width: 120px;">
+                {{oferta.ValorDomicilio | currency : 'USD' : 'symbol' :'1.0-0'}}
+            </td>
+            <td style="width: 120px;">
+                {{oferta.VALOR_PAGO | currency : 'USD' : 'symbol' : '1.0-0'}}
+            </td>
+            <td style="width: 80px;">
+                <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/info.png"
+                    (click)="DetalleCompra(oferta, ModalDetalle)">
             </td>
         </tr>
     </table>
