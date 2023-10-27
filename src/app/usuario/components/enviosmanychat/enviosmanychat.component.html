@@ -1,0 +1,157 @@
+<div class="container bg-white" [ngClass]="Loader == true ? 'Opacity' : '' ">
+    <br>
+    <h1 class="br">Envios ManyChat</h1>
+
+    <div class="row br justify-content-center">
+        <div class="col-sm-6 br">
+            <label class="col-sm-12 Llave">Consecutivo</label>
+            <ng-autocomplete [data]="ArrayConsectvo" [searchKeyword]="keywordConSec"
+                (selected)='selectConsecutvo($event)' (inputCleared)="LimpiaConsecutvo('')" [itemTemplate]="templateSec"
+                [notFoundTemplate]="templateVacio" [(ngModel)]="CdCnsctvo">
+            </ng-autocomplete>
+            <ng-template #templateSec let-item>
+                <a [innerHTML]="item.CD_CNSCTVO"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+        <div class="col-sm-6 br">
+            <label class="col-sm-12 Llave">Sector</label>
+            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" (selected)='selectSector($event)'
+                (inputCleared)="LimpiaSector('')" [itemTemplate]="templateSector"
+                [notFoundTemplate]="templateVacioSector" [(ngModel)]="Sector">
+            </ng-autocomplete>
+            <ng-template #templateSector let-item>
+                <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+            </ng-template>
+            <ng-template #templateVacioSector let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-sm-12 br">
+            <label class="col-sm-12 Llave">Condicional extra</label>
+            <textarea class="form-control form-control-sm textArea" cols="30" rows="4"
+                [(ngModel)]="CondicionalExtra"></textarea>
+        </div>
+    </div>
+
+    <div class="row br justify-content-center">
+        <div class="col-sm-3 col-12">
+            <button class="col-sm-12 btn btn-agro-sec" title="Buscar plantilla" (click)="LimpiarTodo()">Limpiar</button>
+        </div>
+        <div class="col-sm-3 col-12">
+            <button class="col-sm-12 btn btn-agro-prin" title="Buscar plantilla" (click)="VerQuery()">Ver
+                Query</button>
+        </div>
+    </div>
+
+    <div class="row br " *ngIf="VerOcultarCampos !='1'">
+        <hr>
+        <h5 class="textblue">Visualización Query</h5>
+        <div class="col-sm-4">
+            <label class="col-sm-12 Llave">Campos Query</label>
+            <select #selectCampo class="form-control form-control-sm textBox" [(ngModel)]="IdCampo"
+                [ngModelOptions]="{standalone: true}" title="Seleccionar el campo del Query">
+                <option value="" selected>Seleccione campos Query...</option>
+                <option *ngFor="let Respu of arregloCampos" [value]="Respu.Campo"> {{Respu.Descripcion}}
+                </option>
+            </select>
+        </div>
+        <div class="col-sm-4">
+            <label class="col-sm-12 Llave">Campo personalizado</label>
+            <input type="text" name="something" class="form-control form-control-sm textBox" placeholder="Código campo"
+                title="Código campo" [(ngModel)]="IdCampo" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="col-sm-12 br">
+            <br>
+            <textarea name="newQuery" id="newQuery" class="form-control form-control-sm textArea" cols="30" rows="5"
+                [(ngModel)]="QueryFinal"></textarea>
+            <div class="row br justify-content-center">
+                <div class="col-sm-3 col-12">
+                    <button class="col-sm-12 btn btn-agro-prin" title="Buscar plantilla"
+                        (click)="Buscar()">Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row br justify-content-center" *ngIf="VerOcultarCampos =='3'">
+        <div class="col-sm-4 br">
+            <label class="col-sm-12 Llave">IdManyChat</label>
+            <input type="number" class="form-control form-control-sm textBox" [(ngModel)]="IdManychatUser">
+        </div>
+
+        <div class="col-sm-3 br">
+            <label class="col-sm-12 Llave"></label>
+            <button class="col-sm-12 btn btn-agro-prin" title="Buscar plantilla"
+                (click)="enviarPrueba()">Buscar/Prueba</button>
+        </div>
+
+
+        <div class="row br justify-content-center">
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                <hr>
+                <table class="table col-sm-12 TableAgro">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>IdManyChat</th>
+                        <th>Usucodig</th>
+                        <th>Telefono</th>
+                        <th>Sector</th>
+                    </tr>
+                    <tr *ngFor="let data of DataQuery">
+                        <td>{{data.USUARIO}}</td>
+                        <td>{{data.CORREO_PERSONA}}</td>
+                        <td>{{data.ID_MANYCHAT}}</td>
+                        <td>{{data.USUCODIG}}</td>
+                        <td>{{data.CELULAR}}</td>
+                        <td>{{data.IDSECTOR}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-sm-4 br">
+                <label class="col-sm-12 Llave">IdPlantilla</label>
+                <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="IdPlantll">
+            </div>
+            <div class="col-sm-3 col-12 m-3">
+                <label class="col-sm-12 Llave"></label>
+                <button class="col-sm-12 btn btn-agro-whats" title="Buscar plantilla" (click)="EvioMennychat()">
+                    <img src="../../../../assets/ImagenesAgroApoya2Adm/whatsapp.png" alt=""><strong> Enviar
+                        Flujo</strong></button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #ModalRespuesta let-modal>
+    <div class="modal-header">
+        <h1>Respuesta</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">{{Respuesta}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
+<div class="divloader text-center" *ngIf="Loader == true">
+    <img src="../../../../assets/animate/svg-loaders/circles.svg" />
+    <h3 style="color: #397c97;">Enviando mensajes... {{NunMensajesEnviados}} de {{this.DataQuery.length}}</h3>
+</div>
