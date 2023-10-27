@@ -17,59 +17,62 @@ import autoTable from 'jspdf-autotable';
 })
 
 export class RepComprasComponent implements OnInit {
+
+  constructor(private serviciosoferta: ValorarofertaService,
+    private serviciosreportes: ReporteService,
+    private modalservices: NgbModal,
+    public cookies: CookieService) { }
+
+  //cookis
+  IdUsuarioCooki: string = '';
+
+  //Oferta
   Filacompra: any = [];
-
-  constructor(private serviciosoferta: ValorarofertaService, private serviciosreportes: ReporteService, private modalservices: NgbModal, public cookies: CookieService) { }
-
-  IdUsuario: string = '';
-
-  OferFiltro: string = '';
-  DataSectores: any = [];
-  keywordSec: string = '';
-  SectorSelec: string = '';
-  Sector: string = '';
   DataConsulta: any = [];
-  ValidaConsulta: string = '';
-  txtValidaCons: string = '';
-  ValidaDescarga: boolean = true;
   ArregloAdicionales: any = [];
-
-  //William
-  DataEstadoPago: any = [];
-  keywordEsPago: string = '';
-  SelectorEstPago: string = '';
-  EstadoPago: string = '';
-
-
-  DataEstadoCompra: any = [];
-  keywordEsCompra: string = '';
-  SelectorEstComra: string = '';
-  EstadoCompra: string = '';
-
-
-  //Fechas
-  FechaIniCom: any = "";
-  FechaFinCom: any = "";
-
-  //Grilla
   Siguiente: boolean = false;
+  ValidaDescarga: boolean = true;
+  NumeroRegistros: string = '0 registros';
 
   //Factura
   DataParticipantes: any = [];
   DataLider: any = [];
   idTipoFactura: string = "";// 1 lider, 2 participante o individual
 
-  NumeroRegistros: string = '0 registros';
+  //Filtros
+  OferFiltro: string = '';
+
+  DataSectores: any = [];
+  keywordSec: string = '';
+  SectorSelec: string = '';
+  Sector: string = '';
+
+  DataEstadoPago: any = [];
+  keywordEsPago: string = '';
+  SelectorEstPago: string = '';
+  EstadoPago: string = '';
+
+  DataEstadoCompra: any = [];
+  keywordEsCompra: string = '';
+  SelectorEstComra: string = '';
+  EstadoCompra: string = '';
+
+  FechaIniCom: any = "";
+  FechaFinCom: any = "";
+
 
   ngOnInit(): void {
-    this.IdUsuario = this.cookies.get('IDU');
-    this.ValidaConsulta = '1';
-    this.txtValidaCons = 'No se encuentran registros segun los filtros utilizados, favor valida tu información';
+    this.IdUsuarioCooki = this.cookies.get('IDU');
+    this.CargarInformacionIncial();
+  }
+
+  CargarInformacionIncial() {
     this.ConsultaSectores();
     this.ConsultaEstadoPago();
     this.ConsultaEstadoCompra();
   }
 
+  // FILTRO SECTOR
   ConsultaSectores() {
     this.serviciosoferta.ConsultaSectores('1', '0', '0', '0', '0').subscribe(ResultCons => {
       this.DataSectores = ResultCons
@@ -80,28 +83,28 @@ export class RepComprasComponent implements OnInit {
   selectSector(sector: any) {
     this.SectorSelec = sector.SCTOR_OFRTA;
   }
+
   LimpiaSector(Sector: String) {
     this.SectorSelec = "" + Sector;
   }
 
-
-  //William
+  // FILTRO ESTADO PAGO
   ConsultaEstadoPago() {
     this.serviciosoferta.ConsultaCompraPagos('2').subscribe(ResultCons => {
       this.DataEstadoPago = ResultCons
       this.keywordEsPago = 'descripcion';
     })
   }
+
   selectEstadoPago(sector: any) {
     this.SelectorEstPago = sector.codigo.toString();
   }
+
   LimpiaEstadoPago(EsPago: String) {
     this.SelectorEstPago = "" + EsPago;
   }
 
-
-
-
+  // FILTRO ESTADO COMPRA
   ConsultaEstadoCompra() {
     this.serviciosoferta.ConsultaCompraPagos('1').subscribe(ResultCons => {
       this.DataEstadoCompra = ResultCons
@@ -112,15 +115,14 @@ export class RepComprasComponent implements OnInit {
   selectEstadoCompra(sector: any) {
     this.SelectorEstComra = sector.codigo;
   }
+
   LimpiaEstadoCompra(EsCompra: String) {
     this.SelectorEstComra = "" + EsCompra;
   }
-  ////////////////////////
 
 
-
+  //BTN BUSCAR LA CONSULTA REPORTE
   BusquedaGen() {
-
     var validaofer = '0';
     var validasec = '0';
     var validaCompra = '0';
@@ -169,11 +171,10 @@ export class RepComprasComponent implements OnInit {
     }
 
     this.serviciosreportes.ConsultaComprasXOfer('1', validaofer, validasec, validaCompra, validaPago, body).subscribe(Resultcons => {
-      this.NumeroRegistros = Resultcons.length.toString() +  ' Registros' ;
+      this.NumeroRegistros = Resultcons.length.toString() + ' Registros';
       console.log(Resultcons)
       if (Resultcons.length > 0) {
 
-        this.ValidaConsulta = '0';
         this.ValidaDescarga = false;
         this.DataConsulta = Resultcons;
 
@@ -190,7 +191,6 @@ export class RepComprasComponent implements OnInit {
         }
       }
       else {
-        this.ValidaConsulta = '1';
         this.ValidaDescarga = true;
         this.DataConsulta = [];
       }
@@ -205,7 +205,6 @@ export class RepComprasComponent implements OnInit {
     this.Sector = '';
     this.SectorSelec = '';
     this.OferFiltro = '';
-    this.ValidaConsulta = '1';
     this.ValidaDescarga = true;
     this.DataConsulta = [];
     this.FechaIniCom = '0';
@@ -218,7 +217,7 @@ export class RepComprasComponent implements OnInit {
   }
 
   GeneraExcel() {
-    
+
     if (this.DataConsulta.length > 0) {
 
       for (var i = 0; this.DataConsulta.length > i; i++) {
@@ -339,7 +338,7 @@ export class RepComprasComponent implements OnInit {
     this.DataLider = data;
     if (this.DataLider.TIPO_USUARIO_COMPRA == "Lider") {
       this.idTipoFactura = "1";
-      this.serviciosreportes.ConsultaParticipantesGrupo('1', data.idGrupoLider, this.IdUsuario).subscribe(ResultConst => {
+      this.serviciosreportes.ConsultaParticipantesGrupo('1', data.idGrupoLider, this.IdUsuarioCooki).subscribe(ResultConst => {
         if (ResultConst.length > 0) {
           for (var i = 0; i < ResultConst.length; i++) {
             if (ResultConst[i].Vinculado == '0' && ResultConst[i].DesEstadoPago == 'Exitoso') {
@@ -364,10 +363,7 @@ export class RepComprasComponent implements OnInit {
       }
     }
     this.modalservices.open(modaldetalle, { size: "md" })
-
-
   }
-
 
 
 
