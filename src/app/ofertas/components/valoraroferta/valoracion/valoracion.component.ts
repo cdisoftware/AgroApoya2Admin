@@ -2950,8 +2950,7 @@ export class ValoracionComponent implements OnInit {
     this.ListaPresentacionesProdAncla();
     this.modalService.open(PresentacionesProdAncla, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
   }
-  ListaPresentacionesProdAncla() {
-    alert(this.SessionSectorSel)
+  ListaPresentacionesProdAncla() {    
     this.serviciosvaloracion.consCRelacionProducTopping('4', this.SessionOferta, this.SessionSectorSel).subscribe(Respu => {
       this.ArrayPresentacionesProdAncla = Respu;
     });
