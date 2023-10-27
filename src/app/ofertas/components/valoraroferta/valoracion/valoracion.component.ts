@@ -2951,6 +2951,7 @@ export class ValoracionComponent implements OnInit {
     this.modalService.open(PresentacionesProdAncla, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
   }
   ListaPresentacionesProdAncla() {
+    alert(this.SessionSectorSel)
     this.serviciosvaloracion.consCRelacionProducTopping('4', this.SessionOferta, this.SessionSectorSel).subscribe(Respu => {
       this.ArrayPresentacionesProdAncla = Respu;
     });

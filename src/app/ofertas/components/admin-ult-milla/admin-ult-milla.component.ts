@@ -5,6 +5,15 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { GrupoMillaServices } from 'src/app/core/GrupoMillaServices';
+import {
+  CdkDragDrop,
+  CdkDrag,
+  CdkDropList,
+  CdkDropListGroup,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-admin-ult-milla',
@@ -41,6 +50,8 @@ export class AdminUltMillaComponent implements OnInit {
   map: google.maps.Map;
   markers: google.maps.Marker[] = [];
   markerBodega: google.maps.Marker[] = [];
+  PoliLynes: google.maps.Polyline[] = [];
+
   infoWindow = new google.maps.InfoWindow();
   ArrayEntregas: any = [];
 
@@ -97,28 +108,54 @@ export class AdminUltMillaComponent implements OnInit {
   //#endregion CerrarViajeUltimaMilla
 
 
+  //#region VariablesGrupoMilla
+  ArrayGruposMilla: any = [];
+  //#endregion VariablesGrupoMilla
+
+  //#region MapaRutaEspecifica
+  geocoderRuta = new google.maps.Geocoder();
+  mapRuta: google.maps.Map;
+  markersRuta: google.maps.Marker[] = [];
+  markerBodegaRuta: google.maps.Marker[] = [];
+  PoliLynesRuta: google.maps.Polyline[] = [];
+
+  ArrayRuta: any = [];
+  //#endregion MapaRutaEspecifica
+
+  //#region CambioFechEntrega
+  //Ofertas
+  ArrayCOfertaCambioFecha: any = [];
+  IdOfertaCambioFecha: string = "0";
+  OfertaCambioFecha: string = "";
+
+  //Sector
+  ArraySectorCambioFecha: any = [];
+  IdSecorCambioFecha: string = '0';
+  SectorCambioFecha: string = "";
+
+
+  //Fechas
+  ArrayFechas: any = [];
+  //#endregion CambioFechEntrega
+
   constructor(private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService,
     private serviciosreportes: ReporteService,
     private metodosglobales: MetodosglobalesService,
     public cookies: CookieService,
-    public rutas: Router) { }
+    public rutas: Router,
+    public sevicesmilla: GrupoMillaServices) { }
 
   ngOnInit(): void {
     this.UsuCod = this.cookies.get('IDU');
     this.UrlImagenes = this.metodosglobales.RecuperaRutaImagenes();
     this.ConsCdOfer();
     this.ListaOfertasPorCerrar();
+
+    this.CargarListasCmbioFecha();
   }
 
   //#region Anterior
-
-  //Reinicia la data de la ruta arreglos etc...
-  ReiniciaDataRuta() {
-
-    this.ConsultaGrupos();
-    this.ConsPartGrupoMilla('0');
-  }
 
 
 
@@ -133,7 +170,8 @@ export class AdminUltMillaComponent implements OnInit {
     this.SectorSelec = sector.ID_SCTOR_OFRTA;
     this.ConsultaInfoOfer();
     this.ConsPins();
-    this.ReiniciaDataRuta();
+    //this.ReiniciaDataRuta();
+    this.ListaGruposMilla();
 
   }
   LimpiaSector(Sector: String) {
@@ -197,7 +235,6 @@ export class AdminUltMillaComponent implements OnInit {
     })
   }
   Centramapa(request: google.maps.GeocoderRequest): void {
-
     this.geocoder.geocode(request).then((result) => {
       const { results } = result;
       this.map = new google.maps.Map(
@@ -216,6 +253,8 @@ export class AdminUltMillaComponent implements OnInit {
       });
   }
   AgregarSitios() {
+    this.markers = [];
+
 
     const features = [];
 
@@ -277,6 +316,7 @@ export class AdminUltMillaComponent implements OnInit {
     }
     this.PolilimeasDinamicas();
   }
+  PesoEntregaIndividual: string = "";
   InfoWindow(i: any) {
     this.infoWindow.close();
 
@@ -303,6 +343,7 @@ export class AdminUltMillaComponent implements OnInit {
     var Direccion: string = '' + this.ArrayEntregas[i].DireccionEntrega;
     var Cantidad: string = '' + this.ArrayEntregas[i].UndProd;
     var Peso: string = '' + this.ArrayEntregas[i].PesoTotalCarga;
+    this.PesoEntregaIndividual = this.ArrayEntregas[i].PesoTotalCarga;
 
     const Html =
       //DivSensillo
@@ -335,13 +376,6 @@ export class AdminUltMillaComponent implements OnInit {
 
 
   //Agregar a entrega o transport
-  PesoRuta(IdGrupo: string) {
-    this.AcumPeso = 0;
-    for (var i = 0; i < this.ArrayPartGrupos.length; i++) {
-
-      this.AcumPeso += parseFloat(this.ArrayPartGrupos[i].PesoTotalCarga);
-    }
-  }
   ConsultaGrupos() {
     this.ArrayGrupos = [];
     this.ServiciosValorar.ConsGruposUltimaMilla('1', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
@@ -368,35 +402,7 @@ export class AdminUltMillaComponent implements OnInit {
     })
   }
 
-  ConsPartGrupoMilla(IdGrupo: string) {
-    this.ServiciosValorar.ConsParadasRutaUltMilla('1', '0', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
-      const IdRuta: string | any[] = [];
-      const RutaPeso: string | any[] = [];
-      for (var f = 0; f < Resultado.length; f++) {
-        if (IdRuta.includes(Resultado[f].GrupoMilla) == true) {
-          for (var i = 0; i < IdRuta.length; i++) {
-            if (IdRuta[i] == Resultado[f].GrupoMilla) {
-              RutaPeso[i].PesoKg = parseInt(RutaPeso[i].PesoKg) + parseInt(Resultado[f].PesoTotalCarga);
-            }
-          }
-        } else {
-          IdRuta.push(Resultado[f].GrupoMilla)
-          RutaPeso.push({ IdRuta: Resultado[f].GrupoMilla, PesoKg: Resultado[f].PesoTotalCarga })
-        }
-      }
-      for (var k = 0; k < this.ArrayGrupos.length; k++) {
-        for (var t = 0; t < RutaPeso.length; t++) {
-          if (RutaPeso[t].IdRuta == this.ArrayGrupos[k].IdGrupo) {
-            this.ArrayGrupos[k].PesoRuta = RutaPeso[t].PesoKg;
-          }
-        }
-      }
-      this.ArrayPartGrupos = Resultado;
-      this.PesoRuta(IdGrupo);
-    })
 
-
-  }
 
 
 
@@ -417,15 +423,15 @@ export class AdminUltMillaComponent implements OnInit {
 
   AbreModalConfirmacion(templateQuitaCompra: any, item: any) {
     this.banderaModalConfirmacion = '1';
-    this.MesajeModal = '¿Esta seguro de actualizar el precio de la ruta ' + this.NomreGrupoMilla + ' ?';
+    this.MesajeModal = '¿Esta seguro de actualizar el precio de la ruta ' + item.NombreGrupo + ' ?';
     this.ArrayElimina = item;
     this.modalService.open(templateQuitaCompra, { ariaLabelledBy: 'modal-basic-title' });
   }
   ActualizarValorTransporte() {
     const body = {
       ValorTrans: this.ArrayElimina.ValorTransporte,
-      cd_cnctvo: this.ArrayElimina.cd_cnctvo,
-      idSector: this.ArrayElimina.id_sector,
+      cd_cnctvo: this.SelectOferta,
+      idSector: this.SectorSelec,
       IdGrupo: this.ArrayElimina.IdGrupo
     }
     this.ServiciosValorar.ModValorUberUltMilla('3', body).subscribe(Resultado => {
@@ -462,25 +468,6 @@ export class AdminUltMillaComponent implements OnInit {
     })
   }
 
-
-
-  AbreModalGrupos(ModalRutasUltMilla: any) {
-    this.modalService.open(ModalRutasUltMilla, { ariaLabelledBy: 'modal-basic-title' });
-  }
-  AgregaComprasAruta(respugrupo: any) {
-    const agregar = {
-      IdGrupo: respugrupo.IdGrupo,
-      IdCarro: this.ArrayAgregaEntrega.ID_CARRO,
-      cd_csctvo: this.ArrayAgregaEntrega.CD_CNSCTVO,
-      IdSector: this.ArrayAgregaEntrega.IdSector
-    }
-    this.ServiciosValorar.ModPinMilla('3', agregar).subscribe(Resultado => {
-      this.modalService.dismissAll();
-      this.ConsPins();
-      this.PesoRuta(respugrupo.IdGrupo);
-      this.ReiniciaDataRuta();
-    })
-  }
 
 
   DetalleCompra(ModalDetalleCompra: any, respu: any) {
@@ -537,10 +524,30 @@ export class AdminUltMillaComponent implements OnInit {
     var coun: number = 0;
     for (var i = 0; i < this.ArrayEntregas.length; i++) {
       if (this.ArrayEntregas[i].GrupoMilla == null) {
+        coun += 1;
+        break;
+      }
+    }
+
+    for (var i = 0; i < this.ArrayGruposMilla.length; i++) {
+
+      if (this.ArrayGruposMilla[i].ValorTransporte != null && this.ArrayGruposMilla[i].ValorTransporte != undefined) {
+        if (Number(this.ArrayGruposMilla[i].ValorTransporte) > 0) {
+
+        } else {
+          coun += 1;
+        }
+      } else {
+        coun += 1;
+      }
+
+      if (this.ArrayEntregas[i].GrupoMilla == null) {
         coun = 1;
         break;
       }
     }
+
+
     if (coun == 0) {
       const body = {
         usucodig: this.UsuCod,
@@ -557,7 +564,7 @@ export class AdminUltMillaComponent implements OnInit {
         this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
       })
     } else {
-      this.MesajeModal = 'No puedes publicar las rutas debido a que tienes entrega(s) no asignadas a una ruta.';
+      this.MesajeModal = 'No puedes publicar las rutas debido a que tienes entrega(s) no asignadas a una ruta o el valor del transporte no es válido.';
       this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
     }
   }
@@ -603,6 +610,7 @@ export class AdminUltMillaComponent implements OnInit {
       var color = this.GenColor();
       console.log(color)
       const Polylines = [];
+      this.PoliLynes = [];
       Polylines.push({ lat: this.latbodega, lng: this.longbodega });
       for (var j = 0; j < ArrayPoliFin[i].length; j++) {
         lat = parseFloat(ArrayPoliFin[i][j].lat);
@@ -616,6 +624,7 @@ export class AdminUltMillaComponent implements OnInit {
         strokeOpacity: 1.0,
         strokeWeight: 3,
       });
+      this.PoliLynes.push(flightPath);
       flightPath.setMap(this.map);
     }
     this.ArrayColors = [];
@@ -701,5 +710,362 @@ export class AdminUltMillaComponent implements OnInit {
     });
   }
   //#endregion CerrarViajeUltimaMilla
+
+
+  //#region LimpiaMaps
+  LimpiaMaps() {
+    for (var i = 0; i < this.markers.length; i++) {
+      this.markers[i].setMap(null);
+    }
+    this.markers = [];
+
+    for (var i = 0; i < this.PoliLynes.length; i++) {
+      this.PoliLynes[i].setMap(null);
+    }
+    this.PoliLynes = [];
+
+    this.ConsPins();
+  }
+  //#endregion LimpiaMaps
+
+
+  //#region GrupoMilla
+
+  //Reinicia la data de la ruta arreglos etc...
+  ReiniciaDataRuta() {
+
+    this.ConsultaGrupos();
+    this.ListaGruposMilla();
+  }
+
+
+  //ListaGrupos
+  ListaGruposMilla() {
+
+    this.ArrayGruposMilla = [];
+
+    this.sevicesmilla.ConsultaGruposMilla(this.SectorSelec, this.SelectOferta).subscribe(Respu => {
+      for (var i = 0; i < Respu.length; i++) {
+        this.ArrayGruposMilla.push({
+          IdUltimaMilla: Respu[i].IdUltimaMilla,
+          IdGrupo: Respu[i].IdGrupo,
+          NombreGrupo: Respu[i].NombreGrupo,
+          cd_cnctvo: Respu[i].cd_cnctvo,
+          id_sector: Respu[i].id_sector,
+          IdConductor: Respu[i].IdConductor,
+          Estado: Respu[i].Estado,
+          ValorTransporte: Respu[i].ValorTransporte,
+          Participantes: []
+        });
+      }
+      this.ConsPartGrupoMilla();
+    });
+  }
+  //ListaGrupoParticipantesgrupo
+  ConsPartGrupoMilla() {
+    this.ServiciosValorar.ConsParadasRutaUltMilla('1', '0', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
+      for (var y = 0; y < Resultado.length; y++) {
+        if (Resultado[y].GrupoMilla != null && Resultado[y].GrupoMilla != '' && Resultado[y].GrupoMilla != 'null') {
+          const existe = this.ArrayGruposMilla.findIndex((obj: any) => obj.IdGrupo.toString() === Resultado[y].GrupoMilla.toString());
+
+          if (existe !== -1) {
+            this.ArrayGruposMilla[existe].Participantes.push(Resultado[y]);
+          } else {
+            //alert("No existe");
+          }
+        }
+      }
+
+
+      this.ArrayPartGrupos = Resultado;
+    })
+
+
+  }
+
+
+  //Agrega grupo
+  CreaGrupoMilla() {
+    const body = {
+      IdGrupo: 0,
+      cd_csctvo: this.SelectOferta,
+      IdSector: this.SectorSelec
+    }
+    this.sevicesmilla.modgrupoMilla('3', body).subscribe(RespuMod => {
+      var auxrespu = RespuMod.split("|");
+      if (auxrespu.length > 1) {
+        this.ListaGruposMilla();
+
+        this.MesajeModal = auxrespu[1].toString();
+        this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      } else {
+        this.MesajeModal = auxrespu[0].toString();
+        this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      }
+    });
+  }
+
+  //Elimina grupo
+  EliminaGrupoMilla(item: any) {
+    const body = {
+      IdGrupo: item.IdGrupo,
+      cd_csctvo: this.SelectOferta,
+      IdSector: this.SectorSelec
+    }
+    this.sevicesmilla.modgrupoMilla('4', body).subscribe(RespuMod => {
+      var auxrespu = RespuMod.split("|");
+      if (auxrespu.length > 1) {
+        this.ListaGruposMilla();
+
+        this.MesajeModal = auxrespu[1].toString();
+        this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      } else {
+        this.MesajeModal = auxrespu[0].toString();
+        this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      }
+    });
+  }
+  //#endregion GrupoMilla
+
+
+  //#region ParticiantesMilla
+  //ModOrden
+  drop(event: CdkDragDrop<string[]>, Participantes: any, IdGrup: string) {
+    moveItemInArray(Participantes, event.previousIndex, event.currentIndex);
+    var cadenaOrden: string = "";
+    for (var i = 0; i < Participantes.length; i++) {
+      cadenaOrden += Participantes[i].ID_CARRO + "-" + (i + 1) + "|";
+    }
+
+
+    const orden = {
+      CadenaOrden: cadenaOrden,
+      IdGrupo: IdGrup,
+      Cd_cnsctivo: this.SelectOferta,
+      IdSector: this.SectorSelec
+    }
+    this.sevicesmilla.ModificaOrdenEntregas('1', orden).subscribe(Resultado => {
+      this.VerBtnAgregarGrupo = false;
+      this.SelectPin = false;
+      this.ListaGruposMilla();
+      this.LimpiaMaps();
+    });
+  }
+
+  EliminaParticipanteGrupoMilla(item: any) {
+    const body = {
+      IdGrupo: item.GrupoMilla,
+      IdCarro: item.ID_CARRO,
+      cd_csctvo: this.SelectOferta,
+      IdSector: this.SectorSelec
+    }
+    this.sevicesmilla.modpinmilla('4', body).subscribe(RespuMod => {
+      var auxrespu = RespuMod.split("|");
+      if (auxrespu.length > 1) {
+        this.ListaGruposMilla();
+        this.LimpiaMaps();
+
+        this.MesajeModal = auxrespu[1].toString();
+        this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      } else {
+        this.MesajeModal = auxrespu[0].toString();
+        this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      }
+    });
+  }
+
+
+  AbreModalGrupos(ModalRutasUltMilla: any) {
+    this.modalService.open(ModalRutasUltMilla, { ariaLabelledBy: 'modal-basic-title' });
+  }
+  AgregaComprasAruta(respugrupo: any) {
+    const agregar = {
+      IdGrupo: respugrupo.IdGrupo,
+      IdCarro: this.ArrayAgregaEntrega.ID_CARRO,
+      cd_csctvo: this.ArrayAgregaEntrega.CD_CNSCTVO,
+      IdSector: this.ArrayAgregaEntrega.IdSector
+    }
+    this.sevicesmilla.modpinmilla('3', agregar).subscribe(Resultado => {
+      this.modalService.dismissAll();
+      var auxrespu = Resultado.split("|");
+      if (auxrespu.length > 1) {
+        this.ListaGruposMilla();
+        this.LimpiaMaps();
+        this.VerBtnAgregarGrupo = false;
+        this.SelectPin = false;
+        this.MesajeModal = auxrespu[1].toString();
+        this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      } else {
+        this.MesajeModal = auxrespu[0].toString();
+        this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      }
+    })
+  }
+  //#endregion ParticiantesMilla
+
+
+  //#region MapaRutaEspecifica
+  ModalMapaRutaEspecifica(ModalRuta: any, paerticipantes: any) {
+    this.ArrayRuta = paerticipantes;
+    this.modalService.open(ModalRuta, { size: 'xl', centered: true, backdrop: 'static', keyboard: false });
+    this.CentramapaRuta({ address: 'Bogotá' + ',' + 'Bogotá' });
+  }
+
+
+  CentramapaRuta(request: google.maps.GeocoderRequest): void {
+    this.geocoderRuta.geocode(request).then((result) => {
+      const { results } = result;
+      this.mapRuta = new google.maps.Map(
+        document.getElementById("mapRuta") as HTMLElement,
+        {
+          center: { lat: this.latbodega, lng: this.longbodega },
+          zoom: 11,
+        }
+      );
+      this.AgregarSitiosRuta();
+
+      return results;
+    })
+      .catch((e) => {
+        console.log("Geocode was not successful for the following reason: " + e);
+      });
+  }
+  AgregarSitiosRuta() {
+    this.markers = [];
+
+
+    const features = [];
+
+    this.markerBodega = [];
+    var lat: number;
+    var long: number;
+
+
+    var marker = new google.maps.Marker({
+      title: "Bodega / Punto de partida",
+      animation: google.maps.Animation.DROP,
+      position: new google.maps.LatLng(this.latbodega, this.longbodega),
+      map: this.mapRuta,
+      icon: "../../../../assets/ImagenesAgroApoya2Adm/ic_bodega.png",
+      label: ""
+    });
+    this.markerBodega.push(marker);
+
+
+    for (var i = 0; i < this.ArrayRuta.length; i++) {
+      if (this.ArrayRuta[i].CoordenadasEntrega != null && this.ArrayRuta[i].CoordenadasEntrega != undefined && this.ArrayRuta[i].CoordenadasEntrega != '') {
+        var auxcoor = this.ArrayRuta[i].CoordenadasEntrega.split(",");
+        lat = parseFloat(auxcoor[0]);
+        long = parseFloat(auxcoor[1]);
+        features.push({ position: new google.maps.LatLng(lat, long), NomCli: this.ArrayRuta[i].NombreCliente, IdGrupoMilla: this.ArrayRuta[i].GrupoMilla });
+      }
+    }
+
+    for (let i = 0; i < features.length; i++) {
+
+      var marker = new google.maps.Marker({
+        title: features[i].NomCli,
+        animation: google.maps.Animation.DROP,
+        position: features[i].position,
+        map: this.mapRuta,
+        icon: '../../../../assets/ImagenesAgroApoya2Adm/ic_AsignadoAruta.png',
+        zIndex: i,
+        label: ''
+      });
+      this.markers.push(marker);
+    }
+    this.AgregaPolilineasRuta();
+  }
+
+  AgregaPolilineasRuta() {
+    var lat: number;
+    var long: number;
+    const Polylines = [];
+    this.PoliLynes = [];
+    Polylines.push({ lat: this.latbodega, lng: this.longbodega });
+    for (var j = 0; j < this.ArrayRuta.length; j++) {
+      var auxcoor = this.ArrayRuta[j].CoordenadasEntrega.split(",");
+      lat = parseFloat(auxcoor[0]);
+      long = parseFloat(auxcoor[1]);
+      Polylines.push({ lat: lat, lng: long });
+    }
+    const flightPath = new google.maps.Polyline({
+      path: Polylines,
+      geodesic: true,
+      strokeColor: '#E74C3C',
+      strokeOpacity: 1.0,
+      strokeWeight: 3,
+    });
+    this.PoliLynes.push(flightPath);
+    flightPath.setMap(this.mapRuta);
+  }
+  //#endregion MapaRutaEspecifica
+
+
+  //#region CambioFechEntrega
+
+  CargarListasCmbioFecha() {
+    this.ListaOfertasCambioFecha();
+  }
+
+  //Lista ofertas cerradas
+  ListaOfertasCambioFecha() {
+    this.ServiciosValorar.ConsOferEst('1').subscribe(ResultCons => {
+      this.ArrayCOfertaCambioFecha = ResultCons;
+    });
+  }
+  LimpiaOfertCambioFecha(clear: string) {
+    this.IdOfertaCambioFecha = "0";
+    this.OfertaCambioFecha = "";
+
+    this.LimpiaSectorCambioFecha('0');
+  }
+  selectOferCambioFecha(item: any) {
+    this.IdOfertaCambioFecha = item.CD_CNSCTVO;
+    this.OfertaCambioFecha = item.CD_CNSCTVO;
+
+    this.ListaSectoresCambioFecha();
+  }
+
+
+  //Secores
+  ListaSectoresCambioFecha() {
+    this.ServiciosValorar.ConsultaSectoresOferta('1', this.IdOfertaCambioFecha).subscribe(ResultCons => {
+      this.ArraySectorCambioFecha = ResultCons;
+    })
+  }
+  LimpiaSectorCambioFecha(clear: string) {
+    this.IdSecorCambioFecha = "0";
+    this.SectorCambioFecha = "";
+  }
+  selectSectorCambioFecha(item: any) {
+    this.IdSecorCambioFecha = item.ID_SCTOR_OFRTA;
+    this.SectorCambioFecha = item.DSCRPCION_SCTOR;
+
+    this.CargarListaFechas();
+  }
+
+
+  CargarListaFechas() {
+    this.sevicesmilla.ConsultaTransportes(this.IdOfertaCambioFecha, this.IdSecorCambioFecha).subscribe(ResultCons => {
+      this.ArrayFechas = ResultCons;
+    });
+  }
+
+
+  ActualizaFecha(item: any) {
+    const body = {
+      Cd_cnsctivo: this.IdOfertaCambioFecha,
+      IdSecotor: this.IdSecorCambioFecha,
+      IdGrupo: item.IdGrupo,
+      FechaActualizar: item.FechaActual
+    }
+    this.sevicesmilla.ModificaFechaEntrega('1', body).subscribe(ResultCons => {
+      this.CargarListaFechas();
+      this.MesajeModal = ResultCons.toString();
+      this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+    });
+  }
+  //#endregion CambioFechEntrega
 
 }
