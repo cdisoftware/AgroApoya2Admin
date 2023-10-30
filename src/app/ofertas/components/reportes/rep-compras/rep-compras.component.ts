@@ -169,7 +169,7 @@ export class RepComprasComponent implements OnInit {
       FECHA_ENTREGA: AuxFechaEntre
     }
 
-    this.serviciosreportes.ConsultaComprasXOfer('1', validaofer, validasec, validaCompra, validaPago, body).subscribe(Resultcons => {
+    this.serviciosreportes.consAdminReporteVentas('1', validaofer, validasec, validaCompra, validaPago, body).subscribe(Resultcons => {
       this.NumeroRegistros = Resultcons.length.toString() + ' Registros';
       console.log(Resultcons)
       if (Resultcons.length > 0) {
@@ -182,7 +182,7 @@ export class RepComprasComponent implements OnInit {
             var aux = Resultcons[i].ADICIONALES.split('|');
             var adicio = '';
             for (var o = 0; aux.length > o; o++) {
-              adicio = aux[o] + '<br> <br>' + adicio;
+              adicio = aux[o] + '<br>' + adicio;
             }
             this.DataConsulta[i].ADICIONALES = adicio;
           }
@@ -209,21 +209,23 @@ export class RepComprasComponent implements OnInit {
     this.FechaFinCom = '0';
   }
 
+  //BTN DETALLE DE LA COMPRA
   DetalleCompra(compra: any, modaldetalle: any) {
     this.modalservices.open(modaldetalle, { size: "lg" })
     this.Filacompra = compra;
   }
 
+  //BTN GENERAL EXCEL
   GeneraExcel() {
 
     if (this.DataConsulta.length > 0) {
 
       for (var i = 0; this.DataConsulta.length > i; i++) {
         if (this.DataConsulta[i].ADICIONALES != undefined && this.DataConsulta[i].ADICIONALES != null) {
-          var aux = this.DataConsulta[i].ADICIONALES.split('<br> <br>');
+          var aux = this.DataConsulta[i].ADICIONALES.split('<br>');
           var adicio = '';
           for (var o = 0; aux.length > o; o++) {
-            adicio = aux[o] + '\n' + adicio;
+            adicio = aux[o] + '\n' +'\n' + adicio;
           }
           this.DataConsulta[i].ADICIONALES = adicio;
         }
@@ -233,30 +235,31 @@ export class RepComprasComponent implements OnInit {
       let worksheet = workbook.addWorksheet("Reporte compras");
 
       let header = [
-        "Oferta",
-        "Fecha compra",
-        "Nombre Sector",
+        "Código de compra",
+        "id oferta",
+        "Tipo de oferta",
         "Nombre completo",
         "Direccion entrega",
-        "Telefono",
+        "Coordenadas de entrega",
+        "Celular",
         "Email",
-        "Producto Ancla",
-        "Unidades",
-        "Valor producto ancla",
-        "Adicionales",
-        "Valor domicilio",
-        "Valor total",
+        "sector",
+        "Producto a entregar",
+        "Fecha compra",
         "Fecha entrega",
-        "Observaciones cliente",
-        "Medio de pago",
-        "Estado pago",
-        "Estado Compra",
+        "Estado compra",
+        "Código grupo lider",
+        "Número referidos",
+        "Nombre referidos",
+        "Código de registro",
+        "Nombre Referidor",
+        "Código de descuento general",
         "Tipo Compra",
-        "Codigo Compartir",
-        "Codigo lider"];
+        "Valor domicilio",
+        "Valor total"];
 
       worksheet.addRow(header);
-      ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1'].map(key => {
+      ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1', 'U1', 'V1'].map(key => {
         worksheet.getCell(key).fill = {
           type: 'pattern',
           pattern: 'darkTrellis',
@@ -269,40 +272,42 @@ export class RepComprasComponent implements OnInit {
       });
 
       worksheet.columns = [
-        { width: 10, key: 'A' }, { width: 15, key: 'B' }, { width: 25, key: 'C' }, { width: 25, key: 'D' }, { width: 25, key: 'E' }, { width: 20, key: 'F' },
-        { width: 25, key: 'G' }, { width: 30, key: 'H' }, { width: 10, key: 'I' }, { width: 15, key: 'J' }, { width: 40, key: 'K' }, { width: 15, key: 'L' },
-        { width: 15, key: 'M' }, { width: 30, key: 'N' }, { width: 30, key: 'O' }, { width: 30, key: 'P' }, { width: 30, key: 'Q' }, { width: 30, key: 'R' },
-        { width: 30, key: 'S' }, { width: 30, key: 'T' }
+        { width: 15, key: 'A' }, { width: 15, key: 'B' }, { width: 20, key: 'C' }, { width: 30, key: 'D' }, { width: 30, key: 'E' }, { width: 30, key: 'F' },
+        { width: 20, key: 'G' }, { width: 30, key: 'H' }, { width: 20, key: 'I' }, { width: 40, key: 'J' }, { width: 20, key: 'K' }, { width: 20, key: 'L' },
+        { width: 20, key: 'M' }, { width: 15, key: 'N' }, { width: 10, key: 'O' }, { width: 30, key: 'P' }, { width: 15, key: 'Q' }, { width: 30, key: 'R' },
+        { width: 15, key: 'S' }, { width: 20, key: 'T' }, { width: 15, key: 'U' }, { width: 15, key: 'V' }
       ];
-      worksheet.autoFilter = 'A1:T1';
+
+      worksheet.autoFilter = 'A1:W1';
 
       for (let fila of this.DataConsulta) {
         let temp = []
-        temp.push(fila['OFERTA'])
-        temp.push(fila['FECHA_COMPRA'])
+        temp.push(fila['id'])
+        temp.push(fila['IdOferta'])
+        temp.push(fila['DesTipoOfeta'])
+        temp.push(fila['NombrePesona'])
+        temp.push(fila['DireccionEntrega'])
+        temp.push(fila['CoordenadasEntrega'])
+        temp.push(fila['CelularPersona'])
+        temp.push(fila['CorreoPersona'])
         temp.push(fila['SECTOR'])
-        temp.push(fila['NOMBRES_PERSONA'] + ' ' + fila['APELLIDOS_PERSONA'])
-        temp.push(fila['DIRECCION_ENTREGA'])
-        temp.push(fila['CELULAR_PERSONA'])
-        temp.push(fila['CORREO_PERSONA'])
-        if (fila['Unidades'] == '0') {
-          temp.push('n/a')
-        } else {
-          temp.push(fila['PRODUCTO'])
+        if(fila.Unidades != '0'){
+          temp.push(fila['PRODUCTO'] +' : ' + fila['Unidades'] + 'Und x' + fila['ValorProdcuto']  + '\n' +  fila['ADICIONALES'] )
+        }else{
+          temp.push( fila['ADICIONALES'] )
         }
-        temp.push(fila['Unidades'])
-        temp.push(fila['ValorProdcuto'])
-        temp.push(fila['ADICIONALES'])
-        temp.push(fila['ValorDomicilio'])
-        temp.push(fila['VALOR_PAGO'])
-        temp.push(fila['FECHA_ENTREGA'])
-        temp.push(fila['observaciones_cliente'])
-        temp.push(fila['MEDIO_PAGO'])
-        temp.push(fila['ESTADO_PAGO'])
-        temp.push(fila['ESTADO_CARRO'])
-        temp.push(fila['TIPO_USUARIO_COMPRA'])
-        temp.push(fila['CODIGO_COMPARTIR'])
-        temp.push(fila['CODIGO_LIDER'])
+        temp.push(fila['FechaCompra'])
+        temp.push(fila['FechaEntrega'])
+        temp.push(fila['DescEstadoCompra'])
+        temp.push(fila['DesGrupoLider'])
+        temp.push(fila['NumReferidos'])
+        temp.push(fila['NombresReferidos'])
+        temp.push(fila['DesCodigoRegistro'])
+        temp.push(fila['NombreReferidor'])
+        temp.push(fila['CodigoDescuentoGeneral'])
+        temp.push(fila['DesTipoPago'])
+        temp.push(fila['TotalValorDomicilio'])
+        temp.push(fila['TotalValorPago'])
 
         worksheet.addRow(temp)
       }
@@ -316,250 +321,6 @@ export class RepComprasComponent implements OnInit {
         let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
         fs.saveAs(blob, fname + '.xlsx');
       });
-    }
-  }
-
-  //Factura
-  Cargadetallesfactura(data: any, modaldetalle: any) {
-    this.DataLider = [];
-    this.DataParticipantes = [];
-    this.DataLider = data;
-    if (this.DataLider.TIPO_USUARIO_COMPRA == "Lider") {
-      this.idTipoFactura = "1";
-      this.serviciosreportes.ConsultaParticipantesGrupo('1', data.idGrupoLider, this.IdUsuarioCooki).subscribe(ResultConst => {
-        if (ResultConst.length > 0) {
-          for (var i = 0; i < ResultConst.length; i++) {
-            if (ResultConst[i].Vinculado == '0' && ResultConst[i].DesEstadoPago == 'Exitoso') {
-              this.DataParticipantes.push(ResultConst[i]);
-            } else if (ResultConst[i].Vinculado != '0') {
-              this.DataParticipantes.push(ResultConst[i]);
-            }
-          }
-          if (this.DataParticipantes.length == 0) {
-            this.idTipoFactura = "2";
-          }
-        }
-        else {
-          this.DataParticipantes = [];
-          this.idTipoFactura = "2";
-        }
-      })
-    } else {
-      this.idTipoFactura = "2";
-      if (this.DataLider.ADICIONALES != '' && this.DataLider.ADICIONALES != null && this.DataLider.ADICIONALES != undefined) {
-        this.DataLider.ADICIONALES = this.DataLider.ADICIONALES.replace("|", "<br>");
-      }
-    }
-    this.modalservices.open(modaldetalle, { size: "md" })
-  }
-
-
-
-  DescargarDatosPdf(bandera: string) {
-    this.modalservices.dismissAll();
-    const doc = new jsPDF('p', 'px', 'a3');//p = 630px
-    if (bandera == "1") {
-      //Titulo mas lo de la imagen
-      autoTable(doc, {
-        styles: { fillColor: [216, 216, 216] },
-        didParseCell: function (data) {
-          data.cell.styles.fillColor = [255, 255, 255];
-          data.cell.styles.textColor = [24, 29, 35];
-          data.cell.styles.fontSize = 15;
-          data.cell.styles.cellPadding = 0;
-          data.cell.styles.halign = 'center';
-        },
-
-        body: [
-          ['', 'Hola ' + this.DataLider.NOMBRES_PERSONA + ' esta es tu compra en agroapoya2', '']
-        ],
-        margin: { top: 30, bottom: 30 }
-      })
-      //Detalle de la compra de el lider
-      autoTable(doc, {
-        styles: { fillColor: [216, 216, 216] },
-
-        didParseCell: function (data) {
-
-          if ((data.column.index % 2) == 0) {
-            data.cell.styles.fontStyle = 'bold';
-          }
-          data.cell.styles.halign = 'left';
-          data.cell.styles.fillColor = [255, 255, 255];
-          data.cell.styles.textColor = [24, 29, 35];
-          data.cell.styles.cellPadding = 0;
-        },
-        margin: { top: 0 },
-        body: [
-          ['Compraste ' + this.DataLider.Unidades + ' Unidad(es) de ', this.DataLider.PRODUCTO, '   Agregaste a tu compra', this.DataLider.ADICIONALES],
-          ['Tu código es:   ', this.DataLider.CODIGO_COMPARTIR, '   Tu medio de pago fue:   ', this.DataLider.MEDIO_PAGO],
-          ['El estado de tu compra es:   ', this.DataLider.ESTADO_CARRO + ' - ' + this.DataLider.ESTADO_PAGO, '   A la dirección: ', this.DataLider.DIRECCION_ENTREGA]
-        ]
-      })
-      //Resumen Compra lider
-      let amount: number = parseFloat(this.DataLider.ValorProdcuto);
-      let FormatMon: string = amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-      autoTable(doc, {
-        styles: { fillColor: [216, 216, 216] },
-        columnStyles: {
-          1: { cellWidth: 78 },
-          2: { cellWidth: 78 },
-          3: { cellWidth: 58 },
-          4: { cellWidth: 58 },
-          5: { cellWidth: 58 },
-          6: { cellWidth: 108 },
-          7: { cellWidth: 68 },
-          8: { cellWidth: 119 }
-        },
-        didParseCell: function (data) {
-          if (data.row.index === 0) {
-            data.cell.styles.fillColor = [255, 255, 255];
-            data.cell.styles.textColor = [24, 29, 35];
-            data.cell.styles.halign = 'left';
-            data.cell.styles.fontStyle = 'bold';
-          } else if (data.row.index === 1) {
-            data.cell.styles.fillColor = [57, 124, 151];
-            data.cell.styles.textColor = [255, 255, 255];
-            data.cell.styles.halign = 'center';
-          } else if (data.row.index === 2) {
-            data.cell.styles.halign = 'center';
-          } else if (data.row.index === 3) {
-            data.cell.styles.fillColor = [255, 255, 255];
-            data.cell.styles.textColor = [24, 29, 35];
-            data.cell.styles.halign = 'left';
-            data.cell.styles.fontStyle = 'bold';
-          } else if (data.row.index === 4) {
-            data.cell.styles.fillColor = [57, 124, 151];
-            data.cell.styles.textColor = [255, 255, 255];
-            data.cell.styles.halign = 'center';
-          }
-        },
-        margin: { top: 0 },
-        body: [
-          ['Tu compra', '', '', '', '', '', '', ''],
-          ['Nombre', 'Teléfono', 'Producto', 'Unidades', 'Valor Producto', "Adicionales", "Estado pago", "Valor a cancelar"],
-          [this.DataLider.NOMBRES_PERSONA, this.DataLider.CELULAR_PERSONA, this.DataLider.PRODUCTO, this.DataLider.Unidades, FormatMon, this.DataLider.ADICIONALES, this.DataLider.ESTADO_PAGO, this.DataLider.VALOR_PAGO],
-          ['Compañeros'],
-          ['Nombre', 'Teléfono', 'Producto', 'Unidades', 'Valor Producto', "Adicionales", "Estado pago", "Valor a cancelar"]
-        ]
-      });
-
-      //Servicios participantes
-      var calculaTotal: number = 0;
-      var calculaTotalPagado: number = 0;
-      this.DataParticipantes.forEach(function (respuesta: any) {
-        let amount: number = parseFloat(respuesta.ValorProdcuto);
-        let FormatMoneda: string = amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-
-        if (respuesta.DesEstadoPago != "Exitoso") {
-          calculaTotal += parseInt(respuesta.ValorTotal);
-        } else {
-          calculaTotalPagado += parseInt(respuesta.ValorTotal);
-        }
-        var Res = [respuesta.NombrePersona, respuesta.CelularPersona, respuesta.DesProducto, respuesta.UndsCmpradas, FormatMoneda, respuesta.DescToppings, respuesta.DesEstadoPago, respuesta.ValorTotalForm];
-
-        autoTable(doc, {
-          margin: { top: 0, bottom: 0 },
-          columnStyles: {
-            1: { cellWidth: 78 },
-            2: { cellWidth: 78 },
-            3: { cellWidth: 58 },
-            4: { cellWidth: 58 },
-            5: { cellWidth: 58 },
-            6: { cellWidth: 108 },
-            7: { cellWidth: 68 },
-            8: { cellWidth: 119 }
-          },
-          didParseCell: function (data) {
-            data.cell.styles.halign = 'center';
-          },
-
-          body:
-            [
-              Res
-            ]
-        })
-      });
-
-      //Calcula el valor a pagar del lider + el valor globar a pagar de los participantes
-      if (this.DataLider.ESTADO_PAGO != "Pagado") {
-        calculaTotal += (parseInt(this.DataLider.ValorProdcuto) + parseInt(this.DataLider.SumToppings))
-      } else {
-        calculaTotalPagado += (parseInt(this.DataLider.ValorProdcuto) + parseInt(this.DataLider.SumToppings))
-      }
-
-      //Se le da formato moneda
-      let FormatMoneda: string = calculaTotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-
-
-      //Calcula el total
-      autoTable(doc, {
-        styles: { fillColor: [216, 216, 216] },
-        columnStyles: {
-          1: { cellWidth: 305 },
-          2: { cellWidth: 305 }
-        },
-        didParseCell: function (data) {
-          var rows = data.table.body;
-          if (data.row.index === 0) {
-
-            data.cell.styles.halign = 'center';
-          }
-        },
-        margin: { top: 0 },
-        body: [
-          ['Total a cancelar', FormatMoneda]
-        ]
-      })
-
-
-      //Firma
-      autoTable(doc, {
-        styles: { fillColor: [216, 216, 216] },
-        columnStyles: {
-          1: { cellWidth: 530 },
-          2: { cellWidth: 100 }
-        },
-        didParseCell: function (data) {
-          var rows = data.table.body;
-          if (data.row.index === 0) {
-            data.cell.styles.fillColor = [255, 255, 255];
-            data.cell.styles.textColor = [24, 29, 35];
-          }
-        },
-        margin: { top: 20 },
-        body: [
-          ['Firma ', '_________________________________________________________________']
-        ]
-      })
-      doc.save('Factura Oferta ' + this.DataLider.OFERTA + '.pdf')
-    } else if (bandera == "2") {
-      const doc = new jsPDF('p', 'pt', 'a4');
-      const options = {
-        background: 'white',
-        scale: 3
-      };
-
-
-      var DATAg = document.getElementById('htmlData_');
-      if (DATAg != undefined && DATAg != null) {
-        DATAg.innerHTML += '<div class="row mt-4 CentrarText"> <label class="col-2 Llave ">Firma:&nbsp;</label>  <hr class="col-8 mt-3 hrSinEstilo">  </div>';
-      }
-
-
-      if (DATAg != null) {
-        html2canvas(DATAg, options).then((canvas) => {
-          var imgDos = canvas.toDataURL('image/PNG');
-          var imgPropDso = (doc as any).getImageProperties(imgDos);
-
-          var pdfWidthDso = doc.internal.pageSize.getWidth() - 2 * 15;
-          var pdfHeightDso = (imgPropDso.height * pdfWidthDso) / imgPropDso.width;
-
-          doc.addImage(imgDos, 'PNG', 15, 15, pdfWidthDso, pdfHeightDso, undefined, 'FAST');
-
-          doc.save('Factura Oferta ' + this.DataLider.OFERTA + '.pdf');
-        })
-      }
     }
   }
 

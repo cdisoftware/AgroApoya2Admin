@@ -91,41 +91,41 @@
         <tr *ngFor="let oferta of DataConsulta">
             <td>
                 {{oferta.OFERTA}}
-                <br> <strong>{{oferta.FECHA_COMPRA}}</strong>
+                <br> <strong>{{oferta.IdOferta}}</strong>
                 <br> {{oferta.SECTOR}}
                 <br>
-                <label style="color: red;" *ngIf="oferta.ESTADO_CARRO ==  'Pendiente de entrega' ">
-                    <strong>{{oferta.ESTADO_CARRO}}</strong>
+                <label style="color: red;" *ngIf="oferta.IdEstadoCompra ==  '4' ">
+                    <strong>{{oferta.DescEstadoCompra}}</strong>
                 </label>
-                <label style="color: #1BCA56;" *ngIf="oferta.ESTADO_CARRO == 'Entregado' ">
-                    <strong>{{oferta.ESTADO_CARRO}}</strong>
+                <label style="color: #1BCA56;" *ngIf="oferta.IdEstadoCompra == '1' ">
+                    <strong>{{oferta.DescEstadoCompra}}</strong>
                 </label>
-                <label style="color: #CA1BCA;" *ngIf="oferta.ESTADO_CARRO == 'Rechazado' ">
-                    <strong>{{oferta.ESTADO_CARRO}}</strong>
+                <label style="color: #CA1BCA;" *ngIf="oferta.IdEstadoCompra != '4' && oferta.IdEstadoCompra != '1' ">
+                    <strong>{{oferta.DescEstadoCompra}}</strong>
                 </label>
 
             </td>
             <td class="overflow">
-                <strong>{{oferta.NOMBRES_PERSONA}}</strong>
+                <strong>{{oferta.NombrePesona}}</strong>
                 <br> {{oferta.CORREO_PERSONA}}
             </td>
             <td>
-                <strong>{{oferta.CELULAR_PERSONA}} </strong>
-                <br> {{oferta.DIRECCION_ENTREGA}}
+                <strong>{{oferta.CelularPersona}} </strong>
+                <br> {{oferta.DireccionEntrega}}
             </td>
             <td>
                 <div class="m-0 p-0" *ngIf="oferta.Unidades != 0 ">
                     <label>{{oferta.PRODUCTO}} : {{oferta.Unidades}} Und x
                         {{oferta.ValorProdcuto | currency : 'USD' : 'symbol' :'1.0-0'}} </label>
-                    <br> <br>
+                    <br>
                 </div>
                 <div [innerHTML]="oferta.ADICIONALES"></div>
             </td>
             <td style="width: 120px;">
-                {{oferta.ValorDomicilio | currency : 'USD' : 'symbol' :'1.0-0'}}
+                {{oferta.TotalValorDomicilio | currency : 'USD' : 'symbol' :'1.0-0'}}
             </td>
             <td style="width: 120px;">
-                {{oferta.VALOR_PAGO | currency : 'USD' : 'symbol' : '1.0-0'}}
+                {{oferta.TotalValorPago | currency : 'USD' : 'symbol' : '1.0-0'}}
             </td>
             <td style="width: 80px;">
                 <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/info.png"
@@ -141,119 +141,124 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
-        <div class="row">
-            <div class="col-sm-6">
-                <h6 class="textblue"><strong>Compra</strong></h6>
+        <div>
+            <div class="row br">
+                <div class="col-sm-6">
+                    <h6 class="textblue"><strong>INFORMACIÓN DEL CLIENTE</strong></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label class="Llave">Nombre cliente:&nbsp;</label>
+                    <label class="Valor">{{Filacompra.NombrePesona}}</label>
+                </div>
+                <div class="col-sm-6">
+                    <label class="Llave">Correo:&nbsp;</label>
+                    <label class="Valor">{{Filacompra.CorreoPersona}}</label>
+                </div>
+                <div class="col-sm-6">
+                    <label class="Llave">Celular:&nbsp;</label>
+                    <label class="Valor">{{Filacompra.CelularPersona}}</label>
+                </div>
+                <div class="col-sm-6">
+                    <label class="Llave">Dirección:&nbsp;</label>
+                    <label class="Valor">{{Filacompra.DireccionEntrega}}</label>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <label class="Llave">Nombre sector:&nbsp;</label>
-                <label class="Valor">{{Filacompra.SECTOR}}</label>
+        <br>
+        <div>
+            <div class="row br">
+                <div class="col-sm-6">
+                    <h6 class="textblue"><strong>INFORMACIÓN GENERAL DE LA COMPRA</strong></h6>
+                </div>
             </div>
-            <div class="col-sm-6">
-                <label class="Llave">Estado compra:&nbsp;</label>
-                <label class="Valor">{{Filacompra.ESTADO_CARRO}}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <label class="Llave">Codigo pedido:&nbsp;</label>
-                <label class="Valor">{{Filacompra.ID_CARRO}}</label>
-            </div>
-            <div class="col-sm-6">
-                <label class="Llave">Estado pago:&nbsp;</label>
-                <label class="Valor">{{Filacompra.ESTADO_PAGO}}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <label class="Llave">Producto:&nbsp;</label>
-                <label class="Valor">{{Filacompra.PRODUCTO}}</label>
-            </div>
-            <div class="col-sm-6">
-                <label class="Llave">Cantidades:&nbsp;</label>
-                <label class="Valor">{{Filacompra.Unidades}}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <label class="Llave">Valor Producto Ancla:&nbsp;</label>
-                <label class="Valor">{{Filacompra.ValorProdcuto | currency : 'USD' : 'symbol' :
-                    '1.0-0'}}</label>
-            </div>
-            <div class="col-sm-6">
-                <label class="Llave">Tipo de pago:&nbsp;</label>
-                <label class="Valor">{{Filacompra.MEDIO_PAGO}}</label>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label class="Llave">Codigo pedido:&nbsp;</label>
+                    <label class="Valor">{{Filacompra.id}}</label>
+                </div>
+                <div class="col-sm-6">
+                    <label class="Llave">Nombre sector:&nbsp;</label>
+                    <label class="Valor">{{Filacompra.SECTOR}}</label>
+                </div>
+                <div class="col-sm-6">
+                    <label class="Llave">Estado compra:&nbsp;</label>
+                    <label class="Valor">{{Filacompra.DescEstadoCompra}}</label>
+                </div>
+                <div class="col-sm-6">
+                    <label class="Llave">Estado pago:&nbsp;</label>
+                    <label class="Valor">{{Filacompra.DesEstadoPago}}</label>
+                </div>
+                <div class="col-sm-6">
+                    <label class="Llave">Tipo de pago:&nbsp;</label>
+                    <label class="Valor">{{Filacompra.DesTipoPago}}</label>
+                </div>
+                <div class="col-sm-6">
+                    <label class="Llave">Código Promocional:&nbsp;</label>
+                    <label class="Valor">{{Filacompra.CodigoDescuentoGeneral}}</label>
+                </div>
+                <div class="col-sm-6">
+                    <label class="Llave">Tipo de oferta:&nbsp;</label>
+                    <label class="Valor">{{Filacompra.DesTipoOfeta}}</label>
+                </div>
             </div>
         </div>
-        <div class="row" *ngIf="Filacompra.CodigoDescuentoGeneral != '0'">
-            <div class="col-sm-6">
-                <label class="Llave">Código Promo:&nbsp;</label>
-                <label class="Valor">{{Filacompra.CodigoDescuentoGeneral}}</label>
+        <br>
+        <div>
+            <div class="row br">
+                <div class="col-sm-6">
+                    <h6 class="textblue"><strong>PRODUCTOS A ENTREGAR</strong></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12" *ngIf="Filacompra.Unidades != 0 ">
+                    <label>{{Filacompra.PRODUCTO}} : {{Filacompra.Unidades}} Und x
+                        {{Filacompra.ValorProdcuto | currency : 'USD' : 'symbol' :'1.0-0'}} </label>
+                    <br>
+                </div>
+                <div class="col-12">
+                    <div [innerHTML]="Filacompra.ADICIONALES"></div>
+                </div>
             </div>
         </div>
-        <!-- <div class="row">
-            <div class="col-sm-6">
-                <h6 class="textblue"><strong>Adicionales</strong></h6>
+        <br>
+        <div>
+            <div class="row br">
+                <div class="col-sm-6">
+                    <h6 class="textblue"><strong>INFORMACIÓN DE REFERIDOS</strong></h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label class="Llave">Número de referidos:&nbsp;</label>
+                    <label class="Valor">{{Filacompra.NumReferidos}}</label>
+                </div>
+                <div class="col-sm-12">
+                    <label class="Llave">Información de los referidos:&nbsp;</label>
+                </div>
+                <div class="col-12">
+                    <div [innerHTML]="Filacompra.NombresReferidos"></div>
+                </div>
             </div>
         </div>
-        <div class="row">
-             
-        </div> -->
-        <div class="row br">
-            <div class="col-sm-6">
-                <h6 class="textblue"><strong>Cliente</strong></h6>
+        <br>
+        <div>
+            <div class="row br">
+                <div class="col-sm-6">
+                    <h6 class="textblue"><strong>INFORMACIÓN DE REFERIDOR</strong></h6>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <label class="Llave">Nombre cliente:&nbsp;</label>
-                <label class="Valor">{{Filacompra.NOMBRES_PERSONA}}&nbsp;{{Filacompra.APELLIDOS_PERSONA}}</label>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label class="Llave">Código de registro:&nbsp;</label>
+                    <label class="Valor">{{Filacompra.DesCodigoRegistro}}</label>
+                </div>
+                <div class="col-sm-6">
+                    <label class="Llave">Nombre referidor:&nbsp;</label>
+                    <label class="Valor">{{Filacompra.NombreReferidor}}</label>
+                </div>
             </div>
-            <div class="col-sm-6">
-                <label class="Llave">Contacto:&nbsp;</label>
-                <label class="Valor">{{Filacompra.CELULAR_PERSONA}}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <label class="Llave">Direccion:&nbsp;</label>
-                <label class="Valor">{{Filacompra.DIRECCION_ENTREGA}}</label>
-            </div>
-            <div class="col-sm-6">
-                <label class="Llave">Observaciones:&nbsp;</label>
-                <label class="Valor">{{Filacompra.observaciones_cliente}}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <label class="Llave">Correo:&nbsp;</label>
-                <label class="Valor">{{Filacompra.CORREO_PERSONA}}</label>
-            </div>
-        </div>
-
-
-
-        <div class="row br">
-            <div class="col-sm-6">
-                <h6 class="textblue"><strong>Producto</strong></h6>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <label class="Llave">Adicionales:&nbsp;</label>
-                <div [innerHTML]="Filacompra.ADICIONALES"></div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <h6><strong class="textblue">Total Compra: </strong><label class="Valor">{{Filacompra.VALOR_PAGO |
-                        currency : 'USD' : 'symbol' :
-                        '1.0-0'}}</label></h6>
-
-            </div>
-
         </div>
     </div>
     <hr class="hrSinEstilo">
@@ -261,117 +266,5 @@
     <div class="row justify-content-center">
         <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
     </div>
-    <br>
-</ng-template>
-
-
-<ng-template #ModalFactura let-modal>
-    <div class="modal-header">
-        <h1>Factura de compra</h1>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
-    </div>
-    <div class="modal-body" *ngIf="idTipoFactura == '1'">
-        <div class="row">
-            <p class="Valor LetraPequeña">Recuerda que solo te aparecerán los participantes que ya han pagado o que tú
-                como líder les realizaste o realizaras el pago.</p>
-        </div>
-        <div class="row" *ngFor="let part of DataParticipantes; let i = index">
-            <h6 class="textblue CentrarText" [ngClass]="{'mt-3': i != 0}">
-                <strong>{{part.NombrePersona}}</strong>
-            </h6>
-
-            <label class="Llave">{{part.DesProducto}}</label>
-
-
-            <label class="Llave"
-                *ngIf="part.DescToppings != '' || part.DescToppings != null || part.DescToppings != undefined">Adicionales</label>
-            <label class="Valor"
-                *ngIf="part.DescToppings != '' || part.DescToppings != null || part.DescToppings != undefined">{{part.DescToppings}}</label>
-
-            <div class="col-sm-6">
-                <label class="Llave">Unidades</label>
-                <label class="Valor">{{part.UndsCmpradas}}</label>
-            </div>
-
-            <div class="col-sm-6 textrigt">
-                <label class="Llave">Telefono:&nbsp;</label>
-                <label class="Valor">{{part.CelularPersona}}</label>
-            </div>
-
-            <div class="col-sm-6">
-                <label class="Llave">Estado Pago:&nbsp;</label>
-                <label class="Valor">{{part.DesEstadoPago}}</label>
-            </div>
-
-            <div class="col-sm-6 textrigt">
-                <label class="Llave">Precio:&nbsp;</label>
-                <label class="Valor">{{part.ValorTotalForm}}</label>
-            </div>
-            <hr class="hrSinEstilo" *ngIf="(i + 1) != DataParticipantes.length">
-
-
-
-        </div>
-    </div>
-    <div class="modal-body" id="htmlData_" *ngIf="idTipoFactura == '2'">
-        <div class="row">
-            <h6 class="textblue CentrarText mt-1">
-                <strong>Hola {{DataLider.NOMBRES_PERSONA}}</strong>
-            </h6>
-
-            <div class="CentrarText">
-                <p class="Valor">Compraste&nbsp;{{DataLider.Unidades}} Unidad(es) de {{DataLider.PRODUCTO}}</p>
-            </div>
-
-            <div class="col-sm-6 CentrarText">
-                <label class="Llave">Unidad(es):&nbsp;</label>
-                <label class="Valor">{{DataLider.Unidades}}</label>
-            </div>
-
-            <div class="col-sm-6 CentrarText">
-                <label class="Llave">Estado:&nbsp;</label>
-                <label class="Valor">{{DataLider.ESTADO_CARRO}}</label>
-            </div>
-
-            <div class="col-sm-12 CentrarText" *ngIf="DataLider.ADICIONALES != ''">
-                <label class="Llave">Adicionales:&nbsp;</label>
-                <label class="Valor" [innerHTML]="DataLider.ADICIONALES"></label>
-            </div>
-
-            <div class="col-sm-6 CentrarText mt-2">
-                <label class="Llave">Tipo de compra:&nbsp;</label>
-                <label class="Valor">{{DataLider.TIPO_USUARIO_COMPRA}}</label>
-            </div>
-
-            <div class="col-sm-6 CentrarText mt-2">
-                <label class="Llave">Dirección:&nbsp;</label>
-                <label class="Valor">{{DataLider.DIRECCION_ENTREGA}}</label>
-            </div>
-
-            <div class="col-sm-6 CentrarText">
-                <label class="Llave">Fecha entrega:&nbsp;</label>
-                <label class="Valor">{{DataLider.FECHA_ENTREGA}}</label>
-            </div>
-
-            <div class="col-sm-6 CentrarText">
-                <label class="Llave">Valor a cancelar:&nbsp;</label>
-                <label class="Valor">{{DataLider.VALOR_PAGO}}</label>
-            </div>
-        </div>
-    </div>
-
-
-    <br>
-    <div class="row justify-content-center" *ngIf="idTipoFactura == '1'">
-        <button type="button" class="btn btn-agro-prin col-4" (click)="DescargarDatosPdf('1')">Imprimir
-            <img src="../../../../../assets/ImagenesAgroApoya2Adm/ic_pdf.png" class="imgpdf" />
-        </button>
-    </div>
-    <div class="row justify-content-center" *ngIf="idTipoFactura == '2'">
-        <button type="button" class="btn btn-agro-prin col-4" (click)="DescargarDatosPdf('2')">Imprimir
-            <img src="../../../../../assets/ImagenesAgroApoya2Adm/ic_pdf.png" class="imgpdf" />
-        </button>
-    </div>
-
     <br>
 </ng-template>
