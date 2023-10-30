@@ -944,7 +944,8 @@
                     <div class="row justify-content-center">
                         <div class="col-sm-3">
                             <label class="col-sm-12 Llave"></label>
-                            <button class="btn btn-agro-prin col-sm-12" (click)="PrecargarInfo()">Precargar Información</button>
+                            <button class="btn btn-agro-prin col-sm-12" (click)="PrecargarInfo()">Precargar
+                                Información</button>
                         </div>
                         <div class="col-sm-3">
                             <label class="col-sm-12 Llave"></label>
@@ -1382,7 +1383,11 @@
             <label class="p-0 m-0 smsError mt-2 mb-2 CentrarText">{{SmsError}}</label>
 
             <button type="button" class="btn btn-agro-prin col-sm-2" style="margin-right: 5px;"
-                (click)="AgregarPresentacion()">Agregar</button>
+                *ngIf="banderaAgregarAdicional=='1'" (click)="AgregarPresentacion('2')">Agregar</button>
+
+            <button type="button" class="btn btn-agro-prin col-sm-2" style="margin-right: 5px;"
+                *ngIf="banderaAgregarAdicional=='2'" (click)="AgregarPresentacion('3')">Actualizar</button>
+
             <button type="button" class="btn btn-agro-sec col-sm-2" style="margin-left: 5px;"
                 (click)="LimpiarCamposModalPresentacion()">Limpiar</button>
         </div>
@@ -1395,7 +1400,7 @@
                         <th>Unidades</th>
                         <th>Maximo Unidades</th>
                         <th>Presentación</th>
-                        <th>Peso (KL)</th>
+                        <th>Peso (kg)</th>
                         <th>Valor</th>
                         <th>Valor Referencia</th>
                         <th>Acciones</th>
@@ -1413,6 +1418,10 @@
                             <button class="SinEstilo" title="Eliminar presentación">
                                 <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basura.png"
                                     class="imgpresentacion" (click)="ConfirmacionEliminar(prodTop, ModalConfirmacion)">
+                            </button>
+                            <button class="SinEstilo" title="Editar presentación">
+                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
+                                    class="imgpresentacion" (click)="EditarAdicional(prodTop)">
                             </button>
                         </td>
                     </tr>
@@ -1527,7 +1536,7 @@
             </div>
 
             <div class="col-sm-4 mt-2">
-                <label class="col-sm-12 Llave">Peso (KL)</label>
+                <label class="col-sm-12 Llave">Peso (kg)</label>
                 <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PesoProdAncla"
                     placeholder="Peso" (keypress)="LimpiSmsError()">
             </div>
@@ -1549,7 +1558,11 @@
             <label class="p-0 m-0 smsError mt-2 mb-2 CentrarText">{{SmsError}}</label>
 
             <button type="button" class="btn btn-agro-prin col-sm-2" style="margin-right: 5px;"
-                (click)="AgregarPresentacionProdPrin()">Agregar</button>
+                *ngIf="banderaAgregarAncla=='1'" (click)="AgregarPresentacionProdPrin('5')">Agregar</button>
+
+            <button type="button" class="btn btn-agro-prin col-sm-2" style="margin-right: 5px;"
+                *ngIf="banderaAgregarAncla=='2'" (click)="AgregarPresentacionProdPrin('3')">Actualizar</button>
+
             <button type="button" class="btn btn-agro-sec col-sm-2" style="margin-left: 5px;"
                 (click)="LimpiaCamposPresentacioProdAncla()">Limpiar</button>
         </div>
@@ -1562,7 +1575,7 @@
                         <th>Unidades</th>
                         <th>Maximo Unidades</th>
                         <th>Presentación</th>
-                        <th>Peso (KL)</th>
+                        <th>Peso (kg)</th>
                         <th>Valor</th>
                         <th>Valor Referencia</th>
                         <th>Acciones</th>
@@ -1581,6 +1594,10 @@
                                 (click)="ConfirmacionEliminarProdPrincipal(Presprod, ModalConfirmacionProdAncla)">
                                 <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basura.png"
                                     class="imgpresentacion">
+                            </button>
+                            <button class="SinEstilo" title="Editar presentación">
+                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
+                                    class="imgpresentacion" (click)="EditarAncla(Presprod)">
                             </button>
                         </td>
                     </tr>

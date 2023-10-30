@@ -126,6 +126,9 @@ export class ValoracionComponent implements OnInit {
   PesoTopping: string = '';
   RutaImagenes: string = '';
 
+  banderaAgregarAncla: string = '1';
+  banderaAgregarAdicional: string = '1';
+
   //Adicionales
   DescLargaAdd: string = '';
   DescCortaAdd: string = '';
@@ -178,7 +181,7 @@ export class ValoracionComponent implements OnInit {
   ProdTipoTpp: string = "";
   IdProdTipoTopping: string = "0";
   ProductoNgModel: string = "";
-
+  AuxIdRelacion: string = '';
   //Presentacion
   Presentacion: string = "";
 
@@ -2863,8 +2866,9 @@ export class ValoracionComponent implements OnInit {
     this.PesoKl = "";
     this.ValorReal = "";
     this.ValorReferencia = "";
+    this.banderaAgregarAdicional = '1';
   }
-  AgregarPresentacion() {
+  AgregarPresentacion(bandera: string) {
     this.SmsError = "";
 
     if (this.UnidadesOferta == '' || this.UnidadesOferta == '0' || Number(this.UnidadesOferta) < 1) {
@@ -2884,27 +2888,61 @@ export class ValoracionComponent implements OnInit {
     } else {
       this.SmsError = "";
       //Agrega la presentacion
-      const body = {
-        IdTopping: this.IdToppingSelect,
-        IdRelacion: 0,
-        Presentacion: this.PresentacionModal,
-        ValorReal: this.ValorReal,
-        ValorReferencia: this.ValorReferencia,
-        UnidadesOferta: this.UnidadesOferta,
-        MximoUnidades: this.MaximoUnidades,
-        Id_Sector: this.SessionSectorSel,
-        PesoUnidad: this.PesoKl
-      }
-      this.serviciosvaloracion.modCRelacionProductoTopping('2', body).subscribe(Respu => {
-        var split = Respu.toString().split("|");
-        if (split[0] == "1") {
-          this.ListaPresentacionesTopping(this.IdToppingSelect);
-          this.LimpiarCamposModalPresentacion();
-        } else {
-          this.SmsError = split[1];
+      if (bandera == '2') {
+        const body = {
+          IdTopping: this.IdToppingSelect,
+          IdRelacion: 0,
+          Presentacion: this.PresentacionModal,
+          ValorReal: this.ValorReal,
+          ValorReferencia: this.ValorReferencia,
+          UnidadesOferta: this.UnidadesOferta,
+          MximoUnidades: this.MaximoUnidades,
+          Id_Sector: this.SessionSectorSel,
+          PesoUnidad: this.PesoKl
         }
-      });
+        this.serviciosvaloracion.modCRelacionProductoTopping('2', body).subscribe(Respu => {
+          var split = Respu.toString().split("|");
+          if (split[0] == "1") {
+            this.ListaPresentacionesTopping(this.IdToppingSelect);
+            this.LimpiarCamposModalPresentacion();
+          } else {
+            this.SmsError = split[1];
+          }
+        });
+      } else if (bandera == '3') {
+        const body = {
+          IdTopping: this.IdToppingSelect,
+          IdRelacion: this.AuxIdRelacion,
+          Presentacion: this.PresentacionModal,
+          ValorReal: this.ValorReal,
+          ValorReferencia: this.ValorReferencia,
+          UnidadesOferta: this.UnidadesOferta,
+          MximoUnidades: this.MaximoUnidades,
+          Id_Sector: this.SessionSectorSel,
+          PesoUnidad: this.PesoKl
+        }
+        this.serviciosvaloracion.modCRelacionProductoTopping('3', body).subscribe(Respu => {
+          var split = Respu.toString().split("|");
+          if (split[0] == "1") {
+            this.ListaPresentacionesTopping(this.IdToppingSelect);
+            this.LimpiarCamposModalPresentacion();
+          } else {
+            this.SmsError = split[1];
+          }
+        });
+      }
     }
+  }
+
+  EditarAdicional(Adicional: any) {
+    this.AuxIdRelacion = Adicional.IdRelacion;
+    this.UnidadesOferta = Adicional.cantidadReserva;
+    this.MaximoUnidades = Adicional.MaxCantidad;
+    this.PresentacionModal = Adicional.Presentacion;
+    this.PesoKl = Adicional.PesoKilos;
+    this.ValorReal = Adicional.ValorUnitario;
+    this.ValorReferencia = Adicional.VlorRefencia;
+    this.banderaAgregarAdicional = '2';
   }
 
   ConfirmacionEliminar(item: any, ModalConfirmacion: any) {
@@ -2950,12 +2988,12 @@ export class ValoracionComponent implements OnInit {
     this.ListaPresentacionesProdAncla();
     this.modalService.open(PresentacionesProdAncla, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
   }
-  ListaPresentacionesProdAncla() {    
+  ListaPresentacionesProdAncla() {
     this.serviciosvaloracion.consCRelacionProducTopping('4', this.SessionOferta, this.SessionSectorSel).subscribe(Respu => {
       this.ArrayPresentacionesProdAncla = Respu;
     });
   }
-  AgregarPresentacionProdPrin() {
+  AgregarPresentacionProdPrin(bandera: string) {
     this.SmsError = "";
 
     if (this.UnidadesProdAncla == '' || this.UnidadesProdAncla == '0' || Number(this.UnidadesProdAncla) < 1) {
@@ -2975,32 +3013,67 @@ export class ValoracionComponent implements OnInit {
     } else {
       this.SmsError = "";
       //Agrega la presentacion
-      const body = {
-        IdTopping: this.SessionOferta,
-        IdRelacion: 0,
-        Presentacion: this.PresentacionProdAncla,
-        ValorReal: this.ValorProdAncla,
-        ValorReferencia: this.ValorReferenciaProdAncla,
-        UnidadesOferta: this.UnidadesProdAncla,
-        MximoUnidades: this.MaxinoProdAncla,
-        Id_Sector: this.SessionSectorSel,
-        PesoUnidad: this.PesoProdAncla
-      }
-      this.serviciosvaloracion.modCRelacionProductoTopping('5', body).subscribe(Respu => {
-        var split = Respu.toString().split("|");
-        if (split[0] == "1") {
-          this.ListaPresentacionesProdAncla();
-          this.LimpiaCamposPresentacioProdAncla();
-        } else {
-          if (split.length > 0) {
-            this.SmsError = split[1];
-          } else {
-            this.SmsError = split[0];
-          }
+      if (bandera == '5') {
+        const body = {
+          IdTopping: this.SessionOferta,
+          IdRelacion: 0,
+          Presentacion: this.PresentacionProdAncla,
+          ValorReal: this.ValorProdAncla,
+          ValorReferencia: this.ValorReferenciaProdAncla,
+          UnidadesOferta: this.UnidadesProdAncla,
+          MximoUnidades: this.MaxinoProdAncla,
+          Id_Sector: this.SessionSectorSel,
+          PesoUnidad: this.PesoProdAncla
         }
-      });
+        this.serviciosvaloracion.modCRelacionProductoTopping('5', body).subscribe(Respu => {
+         
+          var split = Respu.toString().split("|");
+          if (split[0] == "1") {
+            this.ListaPresentacionesProdAncla();
+            this.LimpiaCamposPresentacioProdAncla();
+          } else {
+            if (split.length > 0) {
+              this.SmsError = split[1];
+            } else {
+              this.SmsError = split[0];
+            }
+          }
+        });
+      } else if (bandera == '3') {
+        const body = {
+          IdTopping: this.SessionOferta,
+          IdRelacion: this.AuxIdRelacion,
+          Presentacion: this.PresentacionProdAncla,
+          ValorReal: this.ValorProdAncla,
+          ValorReferencia: this.ValorReferenciaProdAncla,
+          UnidadesOferta: this.UnidadesProdAncla,
+          MximoUnidades: this.MaxinoProdAncla,
+          Id_Sector: this.SessionSectorSel,
+          PesoUnidad: this.PesoProdAncla
+        }
+        console.log(body)
+        this.serviciosvaloracion.modCRelacionProductoTopping('3', body).subscribe(Respu => {          
+        console.log(Respu)
+            this.ListaPresentacionesProdAncla();
+            this.LimpiaCamposPresentacioProdAncla();
+         
+        });
+      }
     }
   }
+
+  EditarAncla(producto: any) {
+    this.AuxIdRelacion = producto.IdRelacion;
+    this.UnidadesProdAncla = producto.cantidadReserva;
+    this.MaxinoProdAncla = producto.MaxCantidad;
+    this.PresentacionProdAncla = producto.Presentacion;
+    this.PesoProdAncla = producto.PesoKilos;
+    this.ValorProdAncla = producto.ValorUnitario;
+    this.ValorReferenciaProdAncla = producto.VlorRefencia;
+    this.banderaAgregarAncla = '2';
+  }
+
+
   ConfirmacionEliminarProdPrincipal(item: any, ModalConfirmacion: any) {
     this.SmsError = "";
     this.itemEliminar = item;
@@ -3039,6 +3112,7 @@ export class ValoracionComponent implements OnInit {
     this.PesoProdAncla = "";
     this.ValorProdAncla = "";
     this.ValorReferenciaProdAncla = "";
+    this.banderaAgregarAncla = '1';
   }
   //#endregion AgregaPresentacionesProdAncla
 
@@ -3087,8 +3161,8 @@ export class ValoracionComponent implements OnInit {
     });
   }
 
-  obtenerNombreArchivo(url: string): string {    
-    const partesURL = url.split('/');    
+  obtenerNombreArchivo(url: string): string {
+    const partesURL = url.split('/');
     const nombreArchivo = partesURL[partesURL.length - 1];
     return nombreArchivo;
   }
