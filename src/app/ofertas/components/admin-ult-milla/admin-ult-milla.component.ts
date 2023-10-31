@@ -228,7 +228,7 @@ export class AdminUltMillaComponent implements OnInit {
       idSector: this.SectorSelec
     }
     this.ServiciosValorar.ModUltimMillaIni('1', body).subscribe(Resultado => {
-      this.ServiciosValorar.ConsPinsUltMilla('1', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
+      this.ServiciosValorar.ConsPinsUltMilla('1', this.SelectOferta, this.SectorSelec, '0').subscribe(Resultado => {
         this.ArrayEntregas = Resultado;
         this.Centramapa({ address: 'Bogotá' + ',' + 'Bogotá' });
       })
@@ -635,7 +635,6 @@ export class AdminUltMillaComponent implements OnInit {
     const Colors = ["#1C2833", "#7F8C8D", "#C0392B", "#9B59B6", "#2E86C1", "#D35400", "#7D6608", "#7D3C98", "#172A40", "#000000"];
     var color = "";
     for (var i = 0; i < 10; i++) {
-      console.log(this.ArrayColors)
       if (Colors.length <= i) {
         if (this.ArrayColors.includes(Colors[i]) == false) {
           this.ArrayColors.push(Colors[i])
@@ -774,9 +773,10 @@ export class AdminUltMillaComponent implements OnInit {
             //alert("No existe");
           }
         }
+        /*if(Resultado[y].GrupoMilla == '37'){
+          this.ArrayPartGrupos.push(Resultado[y]);
+        }*/
       }
-
-
       this.ArrayPartGrupos = Resultado;
     })
 
@@ -836,7 +836,6 @@ export class AdminUltMillaComponent implements OnInit {
     for (var i = 0; i < Participantes.length; i++) {
       cadenaOrden += Participantes[i].ID_CARRO + "-" + (i + 1) + "|";
     }
-
 
     const orden = {
       CadenaOrden: cadenaOrden,
