@@ -1,10 +1,117 @@
-<div class="bg-white">
+<div class="bg-white mt-4 sinmp row">
     <h1>Administrador ultima milla</h1>
-    <div class="row justify-content-center mt-1">
+    <div class="mt-1">
         <ngb-accordion #acc="ngbAccordion">
-            <ngb-panel title="Cerrar Transporte" id="config-panel-one">
+            <ngb-panel title="Administración" id="config-panel-one">
+                <ng-template ngbPanelContent>
+                    <div class="row justify-content-center" *ngIf="IdEstadoProceso == '0'">
+                        <div class="col-sm-4 mt-2 mb-2">
+                            <button type="button" class="btn btn-agro-prin w-100">Editar transporte</button>
+                        </div>
+                        <div class="col-sm-4 mt-2 mb-2">
+                            <button type="button" class="btn btn-agro-prin w-100" (click)="CambioEstadoProceso()">Nuevo
+                                transporte</button>
+                        </div>
+                    </div>
 
+                    <div class="row justify-content-center" *ngIf="IdEstadoProceso == '1'">
+
+
+                        <div class="col-sm-6 mt-2">
+                            <label class="col-sm-12 Llave">Valor flete</label>
+                            <input mask="separator" thousandSeparator="," type="text" value="0" [(ngModel)]="ValorFlete"
+                                class="col-sm-12 form-control mt-1 textBox" placeholder="Valor flete">
+                        </div>
+
+
+                        <div class="col-sm-6 mt-2">
+                            <label class="col-sm-12 Llave">Fecha entrega</label>
+                            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="FechaEntrega">
+                        </div>
+
+                        <div class="col-sm-6 mt-2">
+                            <label class="col-sm-12 Llave">Ubicación entrega</label>
+                            <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                placeholder="Ubicación entrega" [(ngModel)]="UbicacionEntrega"/>
+                        </div>
+
+                        <div class="col-sm-6 mt-2">
+                            <label class="col-sm-12 mb-1 Llave">Bodega</label>
+                            <ng-autocomplete [data]="DataBodegas"
+                                [searchKeyword]="'NombreBodega'" placeholder="Bodega" (selected)='selectBodega($event)'
+                                [itemTemplate]="templateResBodega" [notFoundTemplate]="templateVacio"
+                                [(ngModel)]="Bodega" (inputCleared)="LimpiaBodega('0')">
+                            </ng-autocomplete>
+                            <ng-template #templateResBodega let-item>
+                                <a [innerHTML]="item.NombreBodega"></a>
+                            </ng-template>
+                            <ng-template #templateVacio let-SinRegistro>
+                                <label for="">Sin registros</label>
+                            </ng-template>
+                        </div>
+
+
+                        <div class="col-sm-4 mt-4 mb-2">
+                            <button type="button" class="btn btn-agro-prin w-100" (click)="Volver()">Cancelar</button>
+                        </div>
+                        <div class="col-sm-4 mt-4 mb-2">
+                            <button type="button" class="btn btn-agro-prin w-100" (click)="CreaTransporte()">Crear</button>
+                        </div>
+                    </div>
+
+
+                    <div class="row justify-content-center" *ngIf="IdEstadoProceso == '2'">
+                        <table class="col-sm-11 TableAgro ">
+                            <tr>
+                                <th>Selección</th>
+                                <th>Consecutivo</th>
+                                <th>Sector</th>
+                                <th>Numero de entregas</th>
+                            </tr>
+                            <tr class="textresult" *ngFor="let item of ArrayConsTransporte; let i = index" [ngClass]="item.checked == true ? 'Ischecked' : 'IsNotchecked' ">
+                                <td>
+                                    <input class="form-check-input check" type="checkbox" id="flexCheckDefault" [checked]="item.checked" (change)="SetStile($event, i)"/>
+                                </td>
+
+                                <td>{{item.CD_CNSCTVO}}</td>
+                                <td>{{item.DesSector}}</td>
+                                <td>{{item.NumeroDeCompras}}</td>
+                            </tr>
+                        </table>
+                        <div class="col-sm-4 mt-4 mb-2">
+                            <button type="button" class="btn btn-agro-prin w-100"
+                                (click)="Volver()">Volver</button>
+                        </div>
+                        <div class="col-sm-4 mt-4 mb-2">
+                            <button type="button" class="btn btn-agro-prin w-100">Asignar entregas</button>
+                        </div>
+                    </div>
+                </ng-template>
             </ngb-panel>
         </ngb-accordion>
     </div>
 </div>
+
+
+
+
+
+
+<ng-template #ModalMensaje let-modal>
+    <div class="modal-header">
+        <h1>AgroApoya2 Admin</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <h6 class="CentrarText">{{MesajeModal}}</h6>
+        </div>
+
+        <div class="row justify-content-center mt-2 mb-2">
+            <div class="col-sm-5">
+                <button type="button" class="btn btn-agro-prin w-100" (click)="modal.close()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+    <br>
+</ng-template>

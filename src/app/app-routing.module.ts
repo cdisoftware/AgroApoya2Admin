@@ -31,6 +31,7 @@ import { ReporteentregasComponent } from './ofertas/components/reportes/reportee
 import { ManychatComponent } from './usuario/components/manychat/manychat.component';
 import { AdminCodigosComponent } from './ofertas/components/admin-codigos/admin-codigos.component';
 import { EnviosmanychatComponent } from './usuario/components/enviosmanychat/enviosmanychat.component';
+import { UltimamillamultientregasComponent } from './ofertas/components/ultimamillamultientregas/ultimamillamultientregas.component';
 const routes: Routes = [
   {
     path: '',
@@ -163,6 +164,10 @@ const routes: Routes = [
         path: 'EnviosManyChat',
         component: EnviosmanychatComponent
       },
+      {
+        path: 'Ultimamillamultientregas',
+        component: UltimamillamultientregasComponent
+      }
     ]
   },
 
