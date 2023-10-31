@@ -228,7 +228,7 @@ export class AdminUltMillaComponent implements OnInit {
       idSector: this.SectorSelec
     }
     this.ServiciosValorar.ModUltimMillaIni('1', body).subscribe(Resultado => {
-      this.ServiciosValorar.ConsPinsUltMilla('1', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
+      this.ServiciosValorar.ConsPinsUltMilla('1', this.SelectOferta, this.SectorSelec, '0').subscribe(Resultado => {
         this.ArrayEntregas = Resultado;
         this.Centramapa({ address: 'Bogotá' + ',' + 'Bogotá' });
       })
@@ -774,9 +774,10 @@ export class AdminUltMillaComponent implements OnInit {
             //alert("No existe");
           }
         }
+        /*if(Resultado[y].GrupoMilla == '37'){
+          this.ArrayPartGrupos.push(Resultado[y]);
+        }*/
       }
-
-
       this.ArrayPartGrupos = Resultado;
     })
 
@@ -837,13 +838,13 @@ export class AdminUltMillaComponent implements OnInit {
       cadenaOrden += Participantes[i].ID_CARRO + "-" + (i + 1) + "|";
     }
 
-
     const orden = {
       CadenaOrden: cadenaOrden,
       IdGrupo: IdGrup,
       Cd_cnsctivo: this.SelectOferta,
       IdSector: this.SectorSelec
     }
+console.log(cadenaOrden)
     this.sevicesmilla.ModificaOrdenEntregas('1', orden).subscribe(Resultado => {
       this.VerBtnAgregarGrupo = false;
       this.SelectPin = false;

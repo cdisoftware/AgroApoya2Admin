@@ -271,8 +271,8 @@ export class ValorarofertaService {
     return this.http.get<any>(this.url_servidor + 'conscofertaestados/' + Bandera)
   }
 
-  ConsPinsUltMilla(Bandera: string, CD_CNSCTVO: string, IdSector: string) {
-    return this.http.get<any>(this.url_servidor + 'conscpinultimailla/' + Bandera + '/' + CD_CNSCTVO + '/' + IdSector)
+  ConsPinsUltMilla(Bandera: string, CD_CNSCTVO: string, IdSector: string, IdGrupo: string) {
+    return this.http.get<any>(this.url_servidor + 'conscpinultimailla/' + Bandera + '/' + CD_CNSCTVO + '/' + IdSector + '/' + IdGrupo)
   }
 
   ConsultaBodegas(Bandera: string, Departamento: string, Ciudad: string, idSector: string) {
@@ -301,6 +301,7 @@ export class ValorarofertaService {
   }
 
   ConsParadasRutaUltMilla(Bandera: string, IdGrupo: string, CD_CNSCTVO: string, IdSector: string) {
+    console.log(this.url_servidor + 'conscagrogruposultimamilla/' + Bandera + '/' + IdGrupo + '/' + CD_CNSCTVO + '/' + IdSector)
     return this.http.get<any>(this.url_servidor + 'conscagrogruposultimamilla/' + Bandera + '/' + IdGrupo + '/' + CD_CNSCTVO + '/' + IdSector)
   }
 
