@@ -5,10 +5,6 @@ import * as fs from 'file-saver';
 import { Workbook } from 'exceljs'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
-import autoTable from 'jspdf-autotable';
-
 
 @Component({
   selector: 'app-rep-compras',
@@ -29,14 +25,9 @@ export class RepComprasComponent implements OnInit {
   //Oferta
   Filacompra: any = [];
   DataConsulta: any = [];
-  ArregloAdicionales: any = [];
   ValidaDescarga: boolean = true;
   NumeroRegistros: string = '0 registros';
-
-  //Factura
-  DataParticipantes: any = [];
-  DataLider: any = [];
-  idTipoFactura: string = "";// 1 lider, 2 participante o individual
+  ArregloUnidadesOferta: any = [];
 
   //Filtros
   OferFiltro: string = '';
@@ -59,6 +50,8 @@ export class RepComprasComponent implements OnInit {
   FechaIniCom: any = "";
   FechaFinCom: any = "";
 
+  //Modal
+  Respuesta: string = '';
 
   ngOnInit(): void {
     this.IdUsuarioCooki = this.cookies.get('IDU');
@@ -225,7 +218,7 @@ export class RepComprasComponent implements OnInit {
           var aux = this.DataConsulta[i].ADICIONALES.split('<br>');
           var adicio = '';
           for (var o = 0; aux.length > o; o++) {
-            adicio = aux[o] + '\n' +'\n' + adicio;
+            adicio = aux[o] + '\n' + '\n' + adicio;
           }
           this.DataConsulta[i].ADICIONALES = adicio;
         }
@@ -291,10 +284,10 @@ export class RepComprasComponent implements OnInit {
         temp.push(fila['CelularPersona'])
         temp.push(fila['CorreoPersona'])
         temp.push(fila['SECTOR'])
-        if(fila.Unidades != '0'){
-          temp.push(fila['PRODUCTO'] +' : ' + fila['Unidades'] + 'Und x' + fila['ValorProdcuto']  + '\n' +  fila['ADICIONALES'] )
-        }else{
-          temp.push( fila['ADICIONALES'] )
+        if (fila.Unidades != '0') {
+          temp.push(fila['PRODUCTO'] + ' : ' + fila['Unidades'] + 'Und x' + fila['ValorProdcuto'] + '\n' + fila['ADICIONALES'])
+        } else {
+          temp.push(fila['ADICIONALES'])
         }
         temp.push(fila['FechaCompra'])
         temp.push(fila['FechaEntrega'])
@@ -324,5 +317,18 @@ export class RepComprasComponent implements OnInit {
     }
   }
 
+  ProductoTotal(modaldetalle: any, ModalProductos:any) {
+    if (this.OferFiltro == null || this.OferFiltro == undefined
+      || this.OferFiltro == 'undefined' || this.OferFiltro == '' || this.OferFiltro == ' ') {
+        this.Respuesta = 'El id de la oferta es obligatorio para la consulta';
+        this.modalservices.open(modaldetalle, { size: "lg" })
+    } else {
+      this.serviciosreportes.consMVReporteEntregas('1', '61','0').subscribe(Resultcons => {
+        this.ArregloUnidadesOferta = Resultcons;
+        console.log(Resultcons)
+      })
+      this.modalservices.open(ModalProductos, { size: "lg" })
+    }
+  }
 
 }

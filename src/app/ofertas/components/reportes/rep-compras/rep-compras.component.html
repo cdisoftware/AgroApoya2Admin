@@ -61,6 +61,11 @@
             </button>
         </div>
         <div class="col-sm-3 col-2">
+            <button class="btn btn-agro-prin col-sm-12" (click)="ProductoTotal(ModalRespuesta,ModalProductos)">
+                Producto total
+            </button>
+        </div>
+        <div class="col-sm-3 col-2">
             <button class="btn btn-agro-prin col-sm-12" [disabled]="ValidaDescarga" (click)="GeneraExcel()">
                 Descargar
             </button>
@@ -265,6 +270,58 @@
     <br>
     <div class="row justify-content-center">
         <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalRespuesta let-modal>
+    <div class="modal-header ">
+        <h1>Respuesta</h1>
+        <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
+    </div>
+    <div class="modal-body ">
+        <div class="row br ">
+            <div class="col-sm-12 ">
+                <h2 class="TituloDetalle ">{{Respuesta}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center ">
+        <button type="button " class="btn btn-agro-prin col-sm-6" (click)="modal.dismiss() ">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalProductos let-modal>
+    <div class="modal-header ">
+        <h1>Cantidad Productos</h1>
+        <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
+    </div>
+    <div class="modal-body ">
+        <div class="row br ">
+            <div class="col-sm-12 ">
+
+                <table class="col-sm-12 ">
+                    <tr class="TableAgro">
+                        <th></th>
+                        <th>Producto</th>
+                        <th>Cantidad total</th>
+                    </tr>
+                    <tr *ngFor="let oferta of ArregloUnidadesOferta">
+                        <th style="margin: auto;">
+                            <div style="width: 100%; margin: auto; text-align: center;">
+                                <img src="{{oferta.imagen}}" style="width: 100px; margin: auto;">
+                            </div>
+                        </th>
+                        <th><label class="p-2">{{oferta.Producto}}</label> </th>
+                        <th style="text-align: center;"><label class="p-2">{{oferta.CantidadTotal}}</label> </th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center ">
+        <button type="button " class="btn btn-agro-prin col-sm-6" (click)="modal.dismiss() ">Aceptar</button>
     </div>
     <br>
 </ng-template>

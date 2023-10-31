@@ -39,7 +39,7 @@ export class ReporteService {
   consAdminReporteVentas(Bandera: string, cd_cnscutivo: string, IdSector: string, IdCompra: string, IdPago: string, body: any) {
     return this.http.post<any>(this.url_servidor + 'consAdminReporteVentas/' + Bandera + '/' + cd_cnscutivo + '/' + IdSector + '/' + IdCompra + '/' + IdPago, body)
   }
-  
+
   ConsultaParticipantesGrupo(Bandera: string, IdGrupo: string, Usucodig: string) {
     return this.http.get<any[]>(this.url_servidor + 'conscparticipantegrupo/' + Bandera + '/' + IdGrupo + '/' + Usucodig)
   }
@@ -125,5 +125,10 @@ export class ReporteService {
       ]
     }
   }
+
+  consMVReporteEntregas(Bandera: string, IdGrupo: any,IdProducto:string ) {
+    return this.http.get<any[]>(this.url_servidor + 'consMVReporteEntregas/' + Bandera + '/' + IdGrupo + '/' + IdProducto)
+  }
+
 
 }
