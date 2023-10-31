@@ -191,8 +191,6 @@ export class ValorarofertaService {
   }
 
   ModificaTopping(Bandera: string, Bodymod: any) {
-    console.log(this.url_servidor + 'modctopping/' + Bandera)
-    console.log(Bodymod)
     return this.http.post<any>(this.url_servidor + 'modctopping/' + Bandera, Bodymod)
   }
   ConsultaCompraPagos(Bandera: string) {
@@ -271,8 +269,8 @@ export class ValorarofertaService {
     return this.http.get<any>(this.url_servidor + 'conscofertaestados/' + Bandera)
   }
 
-  ConsPinsUltMilla(Bandera: string, CD_CNSCTVO: string, IdSector: string) {
-    return this.http.get<any>(this.url_servidor + 'conscpinultimailla/' + Bandera + '/' + CD_CNSCTVO + '/' + IdSector)
+  ConsPinsUltMilla(Bandera: string, CD_CNSCTVO: string, IdSector: string, IdGrupo: string) {
+    return this.http.get<any>(this.url_servidor + 'conscpinultimailla/' + Bandera + '/' + CD_CNSCTVO + '/' + IdSector + '/' + IdGrupo)
   }
 
   ConsultaBodegas(Bandera: string, Departamento: string, Ciudad: string, idSector: string) {
