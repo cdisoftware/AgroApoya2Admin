@@ -3026,7 +3026,7 @@ export class ValoracionComponent implements OnInit {
           PesoUnidad: this.PesoProdAncla
         }
         this.serviciosvaloracion.modCRelacionProductoTopping('5', body).subscribe(Respu => {
-         
+
           var split = Respu.toString().split("|");
           if (split[0] == "1") {
             this.ListaPresentacionesProdAncla();
@@ -3051,12 +3051,18 @@ export class ValoracionComponent implements OnInit {
           Id_Sector: this.SessionSectorSel,
           PesoUnidad: this.PesoProdAncla
         }
-        console.log(body)
-        this.serviciosvaloracion.modCRelacionProductoTopping('3', body).subscribe(Respu => {          
-        console.log(Respu)
+        this.serviciosvaloracion.modCRelacionProductoTopping('3', body).subscribe(Respu => {
+          var split = Respu.toString().split("|");
+          if (split[0] == "1") {
             this.ListaPresentacionesProdAncla();
             this.LimpiaCamposPresentacioProdAncla();
-         
+          } else {
+            if (split.length > 0) {
+              this.SmsError = split[1];
+            } else {
+              this.SmsError = split[0];
+            }
+          }
         });
       }
     }
