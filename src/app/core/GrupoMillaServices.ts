@@ -21,7 +21,6 @@ export class GrupoMillaServices {
         return this.http.post<any>(this.url_servidor + 'modcpinmilla/' + bandera, body);
     }
     ModificaOrdenEntregas(bandera: string, body: any) {
-        console.log(this.url_servidor + 'modCOrdenUltimaMilla/' + bandera)
         return this.http.post<any>(this.url_servidor + 'modCOrdenUltimaMilla/' + bandera, body);
     }
     ConsultaTransportes(CdCons: string, IdSector: string){

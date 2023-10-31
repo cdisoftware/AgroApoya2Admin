@@ -191,8 +191,6 @@ export class ValorarofertaService {
   }
 
   ModificaTopping(Bandera: string, Bodymod: any) {
-    console.log(this.url_servidor + 'modctopping/' + Bandera)
-    console.log(Bodymod)
     return this.http.post<any>(this.url_servidor + 'modctopping/' + Bandera, Bodymod)
   }
   ConsultaCompraPagos(Bandera: string) {
@@ -301,7 +299,6 @@ export class ValorarofertaService {
   }
 
   ConsParadasRutaUltMilla(Bandera: string, IdGrupo: string, CD_CNSCTVO: string, IdSector: string) {
-    console.log(this.url_servidor + 'conscagrogruposultimamilla/' + Bandera + '/' + IdGrupo + '/' + CD_CNSCTVO + '/' + IdSector)
     return this.http.get<any>(this.url_servidor + 'conscagrogruposultimamilla/' + Bandera + '/' + IdGrupo + '/' + CD_CNSCTVO + '/' + IdSector)
   }
 

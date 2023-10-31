@@ -635,7 +635,6 @@ export class AdminUltMillaComponent implements OnInit {
     const Colors = ["#1C2833", "#7F8C8D", "#C0392B", "#9B59B6", "#2E86C1", "#D35400", "#7D6608", "#7D3C98", "#172A40", "#000000"];
     var color = "";
     for (var i = 0; i < 10; i++) {
-      console.log(this.ArrayColors)
       if (Colors.length <= i) {
         if (this.ArrayColors.includes(Colors[i]) == false) {
           this.ArrayColors.push(Colors[i])
@@ -844,7 +843,6 @@ export class AdminUltMillaComponent implements OnInit {
       Cd_cnsctivo: this.SelectOferta,
       IdSector: this.SectorSelec
     }
-console.log(cadenaOrden)
     this.sevicesmilla.ModificaOrdenEntregas('1', orden).subscribe(Resultado => {
       this.VerBtnAgregarGrupo = false;
       this.SelectPin = false;
