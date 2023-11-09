@@ -59,6 +59,9 @@ export class AdminusuariosComponent implements OnInit {
   ArrayDepa: any = [];
   IdCiudad: string = '';
   IdDepartamento: string = '';
+  INPVereda: string = '';
+  INPFinca: string = '';
+  INPEdad: string = '';
 
   ValidaMostrar: string;
 
