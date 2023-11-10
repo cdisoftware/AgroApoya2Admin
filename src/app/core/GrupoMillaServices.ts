@@ -56,6 +56,11 @@ export class GrupoMillaServices {
     }
     //modAdMillaPoligono
     ModificaPoligoCordenada(bandera: string, body: any){
-        return this.http.post<any>(this.url_servidor + 'mosAdminCoordsMilla/' + bandera, body);
+        return this.http.post<any>(this.url_servidor + 'modAdMillaPoligono/' + bandera, body);
+    }
+
+    //ConsultaPoligonos
+    ConsultaPolygonosGrupoMilla(bandera: string, IdSector: string){
+        return this.http.get<any>(this.url_servidor + 'consAdMillaComprasSector/' + bandera + '/' + IdSector);
     }
 }
