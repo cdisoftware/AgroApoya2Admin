@@ -24,7 +24,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   //0 Botones nuevo transporte o editar transporte
   //1 Nuevo Transporte
   //2 Consulta Ofertas para asignar entregas
-  IdEstadoProceso: string = "2";
+  IdEstadoProceso: string = "0";
   //#endregion EstadoProceso
 
   //#region  CreaTransporte
@@ -42,17 +42,44 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
 
   //#region ConsultaTransporte
   ArrayConsTransporte: any = [];
+  ArrayEntregasDisponibles: any = [];
   //#endregion ConsultaTransporte
+
+  //#region ConsultaTransportes
+  ArrayConsTransportes: any = [];
+  //#endregion ConsultaTransportes
+
+  //#region Mapa
+  //Mapa
+  geocoder = new google.maps.Geocoder();
+  map: google.maps.Map;
+  MarkersEntregasDisponibles: google.maps.Marker[] = [];
+  markerBodega: google.maps.Marker[] = [];
+  PoliLynes: google.maps.Polyline[] = [];
+  infoWindow = new google.maps.InfoWindow();
+  ArrayEntregas: any = [];
+
+  //MapaRutaPolygon
+  IdSectorMilla_: string = "";
+  geocoderRutaPolygon = new google.maps.Geocoder();
+  mapRutaPolygon: google.maps.Map;
+  AreaPolygon: google.maps.Polygon | null = null;
+  markersMapaRutaPolygon: google.maps.Marker[] = [];
+  CoordenadasMapaRutaPlygon: string = "";
+  NombrePolygonCrear: string = "";
+  VerMapRutaPolygon: boolean = false;
+
+  //ApiDireccion
+  directionsService = new google.maps.DirectionsService();
+  directionsRenderers: google.maps.DirectionsRenderer[] = [];
+  //#endregion Mapa
+
 
   ngAfterViewInit(): void {
 
   }
 
   ngOnInit(): void {
-    //Borrar
-    this.ConsultaTransporte();
-    //Borrar
-
     this.ConsultaListas();
   }
 
@@ -68,6 +95,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   //#region General
   ConsultaListas() {
     this.ConsultaBodegas();
+    this.ConsultaTransporte();
   }
   //#endregion General
 
@@ -106,7 +134,6 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       this.sevicesmilla.CreaTransporteEntrega('4', body).subscribe(Resultado => {
         const result = Resultado.split("|");
         this.IdGrugo_ = result[0];
-        this.ConsultaTransporte();
       })
 
 
@@ -121,18 +148,187 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   //#region ConsultaTransporte
   ConsultaTransporte() {
     this.ArrayConsTransporte = [];
-    this.IdEstadoProceso = "2";
-    this.sevicesmilla.ConsultaTransporte("1", /*this.IdGrugo_*/'1147').subscribe(Respu => {
+    this.sevicesmilla.ConsultaTransporte("1", /*this.IdGrugo_*/'0').subscribe(Respu => {
       for (var i = 0; i < Respu.length; i++) {
         this.ArrayConsTransporte.push({ CD_CNSCTVO: Respu[i].CD_CNSCTVO, IdSector: Respu[i].IdSector, DesSector: Respu[i].DesSector, NumeroDeCompras: Respu[i].NumeroDeCompras, checked: false })
       }
-    })
+    });
   }
   SetStile(e: any, position: number) {
     this.ArrayConsTransporte[position].checked = e.target.checked;
   }
+  MuestraEntregasDisponibles() {
+    this.ArrayEntregasDisponibles = [];
+    var cadenaOfertas = "";
+    for (var i = 0; i < this.ArrayConsTransporte.length; i++) {
+      if (this.ArrayConsTransporte[i].checked == true) {
+        cadenaOfertas += this.ArrayConsTransporte[i].CD_CNSCTVO + "-" + this.ArrayConsTransporte[i].IdSector + "|"
+      }
+    }
+    if (cadenaOfertas != "") {
+      const body = {
+        OfertaSector: cadenaOfertas
+      }
+      this.sevicesmilla.ConsultaEntregasDisponibles("1", body).subscribe(Respu => {
+        if (Respu.length > 0) {
+          this.ArrayEntregasDisponibles = Respu;
+          this.IniciaMapa();
+        } else {
+          this.MesajeModal = "Comunícate con soporte. No pudimos cargar información de las ofertas seleccionadas.";
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        }
+      });
+    } else {
+      this.MesajeModal = "Por favor, seleccione las ofertas para asignar le transporte.";
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    }
+  }
   //#endregion ConsultaTransporte
 
+
+
+  //#region EditarTransporte
+  SeleccionaTransporte(templateTransportes: any) {
+    this.ConsultaTransportes();
+    this.modalService.open(templateTransportes, { ariaLabelledBy: 'modal-basic-title', size: 'lg' });
+  }
+  //#region ConsultaTransportes
+  ConsultaTransportes() {
+    this.ArrayConsTransportes = [];
+    this.sevicesmilla.ConsultaTransportesCreados("1", '0').subscribe(Respu => {
+      this.ArrayConsTransportes = Respu;
+    })
+  }
+  SelectTransporte(item: any) {
+    //Borrar
+    this.IniciaMapa();
+    this.modalService.dismissAll();
+  }
+  //#endregion ConsultaTransportes
+
+  //#endregion EditarTransporte
+
+
+
+  //#region Mapa
+  IniciaMapa() {
+    this.IdEstadoProceso = "2";
+    this.Centramapa({ address: 'Bogotá' + ',' + 'Bogotá' });
+  }
+  Centramapa(request: google.maps.GeocoderRequest): void {
+    this.geocoder.geocode(request).then((result) => {
+      const { results } = result;
+      this.map = new google.maps.Map(
+        document.getElementById("map") as HTMLElement,
+        {
+          center: { lat: 4.70281065790573, lng: -74.05637826500855 },
+          zoom: 12,
+        }
+      );
+      this.AgregarSitiosRuta();
+      return results;
+    })
+      .catch((e) => {
+      });
+  }
+  AgregarSitiosRuta() {
+    this.MarkersEntregasDisponibles = [];
+
+
+    const features = [];
+
+    this.markerBodega = [];
+    var lat: number;
+    var long: number;
+
+
+
+
+
+    for (var i = 0; i < this.ArrayEntregasDisponibles.length; i++) {
+      var auxcoor = this.ArrayEntregasDisponibles[i].CoordenadasEntrega.split(",");
+      lat = parseFloat(auxcoor[0]);
+      long = parseFloat(auxcoor[1]);
+      features.push({ position: new google.maps.LatLng(lat, long), NomCli: this.ArrayEntregasDisponibles[i].NombresCliente });
+    }
+
+    for (let i = 0; i < features.length; i++) {
+
+      var marker = new google.maps.Marker({
+        title: features[i].NomCli,
+        animation: google.maps.Animation.DROP,
+        position: features[i].position,
+        map: this.map,
+        icon: '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png',
+        zIndex: i,
+        label: ''
+      });
+      this.MarkersEntregasDisponibles.push(marker);
+    }
+  }
+
+  //#region DireccionApi
+  DireccionApi() {
+    var arrayEntregas = [];
+    var arrayDirections: any;
+
+    arrayEntregas = [
+      {
+        coordenadas: "4.758772067158138, -74.06965737201203"
+      },
+      {
+        coordenadas: "4.702658951909229, -74.04871468534449"
+      },
+      {
+        coordenadas: "4.712581723589741, -74.13317207747914"
+      },
+      {
+        coordenadas: "4.638328602588013, -74.12699226829857"
+      }];
+
+
+    // Calcular y mostrar rutas entre ubicaciones
+    for (let i = 0; i < arrayEntregas.length - 1; i++) {
+      const start = arrayEntregas[i].coordenadas;
+      const end = arrayEntregas[i + 1].coordenadas;
+
+      const request = {
+        origin: start,
+        destination: end,
+        travelMode: google.maps.TravelMode.DRIVING,
+      };
+
+      this.directionsService.route(request, (result, status) => {
+        if (status === 'OK') {
+          const directionsRenderer = new google.maps.DirectionsRenderer({
+            suppressMarkers: true, // Esto quitará los marcadores "A" y "B"
+          });
+          directionsRenderer.setDirections(result);
+          directionsRenderer.setMap(this.map);
+          this.directionsRenderers.push(directionsRenderer);
+
+
+          // Personalizar el estilo de la polilínea
+          const polylineOptions = {
+            strokeColor: '#FF0000', // Color de la línea (rojo)
+            strokeOpacity: 0.8,     // Opacidad de la línea (0.0 a 1.0)
+            strokeWeight: 4        // Grosor de la línea
+          };
+          directionsRenderer.setOptions({ polylineOptions });
+        }
+      });
+    }
+  }
+
+
+  LimpiaPolilineas() {
+    for (const renderer of this.directionsRenderers) {
+      renderer.setMap(null); // Esto elimina la polilínea del mapa
+    }
+    this.directionsRenderers = []; // Limpia el array
+  }
+  //#endregion DireccionApi
+  //#endregion Mapa
 
   //#region Volver
   Volver() {
@@ -150,4 +346,118 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
     this.ArrayConsTransporte = [];
   }
   //#endregion Volver
+
+  //#region MapaRutaPoligono
+  IniciaMapRutaPoligon(templatePoligonRuta: any) {
+    this.NombrePolygonCrear = "";
+    this.modalService.open(templatePoligonRuta, { ariaLabelledBy: 'modal-basic-title', size: 'xl', backdrop: 'static', keyboard: false });
+  }
+
+
+  CreaPolygon() {
+    if (this.NombrePolygonCrear != "") {
+      const body = {
+        NombreSector: this.NombrePolygonCrear,
+        cd_rgion: "401",
+        cd_mncpio: "266"
+      }
+      this.sevicesmilla.CreaPolygono("3", body).subscribe(Respu => {
+        var aux = Respu.split("|");
+        if (aux.length > 0) {
+          if (Number(aux[0]) > 0) {
+            this.IdSectorMilla_ = aux[0];
+            this.VerMapRutaPolygon = true;
+            this.NombrePolygonCrear = "";
+            this.CentramapRutaPoligon({ address: 'Bogotá' + ',' + 'Bogotá' });
+          } else {
+            this.MesajeModal = aux[1];
+            this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+          }
+        } else {
+          this.MesajeModal = aux[0];
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        }
+      });
+    } else {
+      this.MesajeModal = "Ingresa el nombre del polígono e intenta nuevamente.";
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    }
+  }
+
+
+  CentramapRutaPoligon(request: google.maps.GeocoderRequest): void {
+    this.geocoderRutaPolygon.geocode(request).then((result) => {
+      const { results } = result;
+      this.mapRutaPolygon = new google.maps.Map(
+        document.getElementById("CreamapPoligon") as HTMLElement,
+        {
+          center: { lat: 4.70281065790573, lng: -74.05637826500855 },
+          zoom: 14,
+        }
+      );
+      this.mapRutaPolygon.addListener("click", (e: any) => {
+        this.AgregarMarcador(e.latLng, this.mapRutaPolygon);
+
+        var coors = e.latLng;
+        const latitud = coors.lat();
+        const longitud = coors.lng();
+
+        this.CoordenadasMapaRutaPlygon += `${latitud},${longitud}` + '|';
+        var nuevaCoord = this.CoordenadasMapaRutaPlygon.substring(0, this.CoordenadasMapaRutaPlygon.length - 1)
+
+
+        var bounds = new google.maps.LatLngBounds;
+        var coords = nuevaCoord.split('|').map(function (data: string) {
+          var info = data.split(','), // Separamos por coma
+            coord = { // Creamos el obj de coordenada
+              lat: parseFloat(info[0]),
+              lng: parseFloat(info[1])
+            };
+          // Agregamos la coordenada al bounds
+          bounds.extend(coord);
+          return coord;
+        });
+        this.AreaPolygon = new google.maps.Polygon({
+          paths: coords,
+          strokeColor: '#397c97',
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+          fillColor: '#B1B0B0',
+          fillOpacity: 0.35,
+        });
+        this.AreaPolygon.setMap(this.mapRutaPolygon);
+      });
+      return results;
+    })
+      .catch((e) => {
+      });
+  }
+  AgregarMarcador(latLng: google.maps.LatLng, map: google.maps.Map) {
+    this.LimpiaMappRutaPoligono();
+    const marker = new google.maps.Marker({
+      position: latLng,
+      map: map,
+    });
+    this.markersMapaRutaPolygon.push(marker);
+  }
+
+
+  LimpiaMappRutaPoligono() {
+    if (this.AreaPolygon != null || this.AreaPolygon != undefined) {
+      this.AreaPolygon.setMap(null);
+    }
+    this.AreaPolygon = null;
+
+    for (var i = 0; i < this.markersMapaRutaPolygon.length; i++) {
+      this.markersMapaRutaPolygon[i].setMap(null);
+    }
+    this.markersMapaRutaPolygon = [];
+  }
+
+  CerrarModalMapaRutaPolygon() {
+    this.modalService.dismissAll();
+    this.LimpiaMappRutaPoligono();
+  }
+  //#endregion MapaRutaPoligono
+
 }

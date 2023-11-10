@@ -1,23 +1,65 @@
-.sinmp{
+.sinmp {
     padding: 0;
     margin: 0;
 }
-.check{
+
+.check {
     width: 20px;
     height: 20px;
     cursor: pointer;
 }
-.textresult{
+
+.textresult {
     font-weight: bold;
     font-size: 20px;
 }
 
-.Ischecked{
+.Ischecked {
     background-color: #ECF0F1;
     color: #17202A;
     box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
-.IsNotchecked{
+
+.IsNotchecked {
     background-color: white;
     color: black;
+}
+
+
+
+.espacioul {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+.listasStyle {
+    background: #F0F0F0;
+    border-radius: 5px;
+    border: #DFDFDF solid 1px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.bot {
+    border: 0;
+    background: none;
+    outline: none;
+}
+
+.bot:active {
+    border: 0;
+    background: none;
+    outline: none;
+}
+
+.BtnimgTamanoPeque {
+    width: 21px;
+    height: 21px;
+    padding: 0px;
+}
+.disppleflex {
+    display: flex;
+    margin: 0px;
 }

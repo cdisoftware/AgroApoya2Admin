@@ -6,15 +6,68 @@
                 <ng-template ngbPanelContent>
                     <div class="row justify-content-center" *ngIf="IdEstadoProceso == '0'">
                         <div class="col-sm-4 mt-2 mb-2">
-                            <button type="button" class="btn btn-agro-prin w-100">Editar transporte</button>
+                            <button type="button" class="btn btn-agro-prin w-100"
+                                (click)="SeleccionaTransporte(templateTransportes)">Editar transporte</button>
                         </div>
                         <div class="col-sm-4 mt-2 mb-2">
-                            <button type="button" class="btn btn-agro-prin w-100" (click)="CambioEstadoProceso()">Nuevo
-                                transporte</button>
+                            <button type="button" class="btn btn-agro-prin w-100"
+                                (click)="CambioEstadoProceso()">Generar Rutas</button>
                         </div>
                     </div>
-
                     <div class="row justify-content-center" *ngIf="IdEstadoProceso == '1'">
+                        <table class="col-sm-11 TableAgro ">
+                            <tr>
+                                <th>Selección</th>
+                                <th>Consecutivo</th>
+                                <th>Sector</th>
+                                <th>Numero de entregas</th>
+                            </tr>
+                            <tr class="textresult" *ngFor="let item of ArrayConsTransporte; let i = index"
+                                [ngClass]="item.checked == true ? 'Ischecked' : 'IsNotchecked' ">
+                                <td>
+                                    <input class="form-check-input check" type="checkbox" id="flexCheckDefault"
+                                        [checked]="item.checked" (change)="SetStile($event, i)" />
+                                </td>
+
+                                <td>{{item.CD_CNSCTVO}}</td>
+                                <td>{{item.DesSector}}</td>
+                                <td>{{item.NumeroDeCompras}}</td>
+                            </tr>
+                        </table>
+                        <div class="col-sm-4 mt-4 mb-2">
+                            <button type="button" class="btn btn-agro-prin w-100" (click)="Volver()">Volver</button>
+                        </div>
+                        <div class="col-sm-4 mt-4 mb-2">
+                            <button type="button" class="btn btn-agro-prin w-100"
+                                (click)="MuestraEntregasDisponibles()">Asignar entregas</button>
+                        </div>
+                        <hr class="mt-2 mb-2" />
+                    </div>
+                    <div class="row" *ngIf="IdEstadoProceso == '2'">
+
+                        <div class="col-sm-4 mt-2 mb-2">
+                            <button type="button" class="btn btn-agro-prin w-100"
+                                (click)="IniciaMapRutaPoligon(templatePoligonRuta)">Sector Ruta</button>
+                        </div>
+                        <div class="col-sm-4 mt-2 mb-2">
+                            <button type="button" class="btn btn-agro-prin w-100">Generar Rutas</button>
+                        </div>
+
+                        <hr class="mt-2 mb-2" />
+
+                        <div class="row justify-content-center">
+                            <div id="map" class="ShowMap"></div>
+                        </div>
+                        <div class="col-sm-4 mt-2 mb-2">
+                            <button type="button" class="btn btn-agro-prin w-100"
+                                (click)="DireccionApi()">VerRuta</button>
+                        </div>
+                        <div class="col-sm-4 mt-2 mb-2">
+                            <button type="button" class="btn btn-agro-prin w-100" (click)="LimpiaPolilineas()">Limpiar
+                                Ruta</button>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center" *ngIf="IdEstadoProceso == '3'">
 
 
                         <div class="col-sm-6 mt-2">
@@ -32,15 +85,15 @@
                         <div class="col-sm-6 mt-2">
                             <label class="col-sm-12 Llave">Ubicación entrega</label>
                             <input type="text" class="col-sm-12 form-control mt-1 textBox"
-                                placeholder="Ubicación entrega" [(ngModel)]="UbicacionEntrega"/>
+                                placeholder="Ubicación entrega" [(ngModel)]="UbicacionEntrega" />
                         </div>
 
                         <div class="col-sm-6 mt-2">
                             <label class="col-sm-12 mb-1 Llave">Bodega</label>
-                            <ng-autocomplete [data]="DataBodegas"
-                                [searchKeyword]="'NombreBodega'" placeholder="Bodega" (selected)='selectBodega($event)'
-                                [itemTemplate]="templateResBodega" [notFoundTemplate]="templateVacio"
-                                [(ngModel)]="Bodega" (inputCleared)="LimpiaBodega('0')">
+                            <ng-autocomplete [data]="DataBodegas" [searchKeyword]="'NombreBodega'" placeholder="Bodega"
+                                (selected)='selectBodega($event)' [itemTemplate]="templateResBodega"
+                                [notFoundTemplate]="templateVacio" [(ngModel)]="Bodega"
+                                (inputCleared)="LimpiaBodega('0')">
                             </ng-autocomplete>
                             <ng-template #templateResBodega let-item>
                                 <a [innerHTML]="item.NombreBodega"></a>
@@ -55,35 +108,8 @@
                             <button type="button" class="btn btn-agro-prin w-100" (click)="Volver()">Cancelar</button>
                         </div>
                         <div class="col-sm-4 mt-4 mb-2">
-                            <button type="button" class="btn btn-agro-prin w-100" (click)="CreaTransporte()">Crear</button>
-                        </div>
-                    </div>
-
-
-                    <div class="row justify-content-center" *ngIf="IdEstadoProceso == '2'">
-                        <table class="col-sm-11 TableAgro ">
-                            <tr>
-                                <th>Selección</th>
-                                <th>Consecutivo</th>
-                                <th>Sector</th>
-                                <th>Numero de entregas</th>
-                            </tr>
-                            <tr class="textresult" *ngFor="let item of ArrayConsTransporte; let i = index" [ngClass]="item.checked == true ? 'Ischecked' : 'IsNotchecked' ">
-                                <td>
-                                    <input class="form-check-input check" type="checkbox" id="flexCheckDefault" [checked]="item.checked" (change)="SetStile($event, i)"/>
-                                </td>
-
-                                <td>{{item.CD_CNSCTVO}}</td>
-                                <td>{{item.DesSector}}</td>
-                                <td>{{item.NumeroDeCompras}}</td>
-                            </tr>
-                        </table>
-                        <div class="col-sm-4 mt-4 mb-2">
                             <button type="button" class="btn btn-agro-prin w-100"
-                                (click)="Volver()">Volver</button>
-                        </div>
-                        <div class="col-sm-4 mt-4 mb-2">
-                            <button type="button" class="btn btn-agro-prin w-100">Asignar entregas</button>
+                                (click)="CreaTransporte()">Crear</button>
                         </div>
                     </div>
                 </ng-template>
@@ -114,4 +140,59 @@
         </div>
     </div>
     <br>
+</ng-template>
+
+
+
+
+<ng-template #templateTransportes let-modal>
+    <div class="modal-header">
+        <h1>SELECCIONAR TRANSPORTE</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+
+    <div class="modaBody">
+
+        <div class="row justify-content-center">
+            <li class="col-sm-10 espacioul row" *ngFor="let ite of ArrayConsTransportes">
+                <div class="col-11">
+                    <div class="listasStyle">
+                        <label title="{{ite.UbicacionEntrega}} ">{{ite.UbicacionEntrega}} </label>
+                    </div>
+                </div>
+                <div class="col-1">
+                    <button class="bot" title="Selecciónar transporte" (click)="SelectTransporte(ite)">
+                        <img src="../../../../assets/ImagenesAgroApoya2Adm/aprobar.png" alt="Selecciónar"
+                            class="BtnimgTamanoPeque">
+                    </button>
+                </div>
+            </li>
+        </div>
+    </div>
+    <br>
+</ng-template>
+
+
+
+
+<ng-template #templatePoligonRuta let-modal>
+    <div class="modal-header">
+        <h1>Crear poligono</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="CerrarModalMapaRutaPolygon()"></button>
+    </div>
+    <div class="row justify-content-center mb-4" *ngIf="VerMapRutaPolygon == false">
+        <div class="col-sm-6 mt-2">
+            <label class="col-sm-12 Llave">Nombre Polygono</label>
+            <input type="text" class="col-sm-12 form-control mt-1 textBox" placeholder="Nombre Polygono"
+                [(ngModel)]="NombrePolygonCrear" />
+        </div>
+        <div class="col-sm-3 mt-4">
+            <button type="button" class="btn btn-agro-prin w-100" (click)="CreaPolygon()">Crear</button>
+        </div>
+    </div>
+
+
+    <div class="modaBody" *ngIf="VerMapRutaPolygon == true">
+        <div id="CreamapPoligon" class="ShowMap"></div>
+    </div>
 </ng-template>
