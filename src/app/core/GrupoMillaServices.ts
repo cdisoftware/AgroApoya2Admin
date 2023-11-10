@@ -51,4 +51,11 @@ export class GrupoMillaServices {
     CreaPolygono(bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'modAdminMillaSectores/' + bandera, body);
     }
+    InsertaCoordenada(bandera: string, body: any){
+        return this.http.post<any>(this.url_servidor + 'mosAdminCoordsMilla/' + bandera, body);
+    }
+    //modAdMillaPoligono
+    ModificaPoligoCordenada(bandera: string, body: any){
+        return this.http.post<any>(this.url_servidor + 'mosAdminCoordsMilla/' + bandera, body);
+    }
 }

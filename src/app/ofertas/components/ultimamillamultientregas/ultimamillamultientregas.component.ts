@@ -68,6 +68,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   CoordenadasMapaRutaPlygon: string = "";
   NombrePolygonCrear: string = "";
   VerMapRutaPolygon: boolean = false;
+  ArrayCoordenadas: any = [];
 
   //ApiDireccion
   directionsService = new google.maps.DirectionsService();
@@ -396,36 +397,9 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
         }
       );
       this.mapRutaPolygon.addListener("click", (e: any) => {
+        this.LimpiaMappRutaPoligono();
         this.AgregarMarcador(e.latLng, this.mapRutaPolygon);
-
-        var coors = e.latLng;
-        const latitud = coors.lat();
-        const longitud = coors.lng();
-
-        this.CoordenadasMapaRutaPlygon += `${latitud},${longitud}` + '|';
-        var nuevaCoord = this.CoordenadasMapaRutaPlygon.substring(0, this.CoordenadasMapaRutaPlygon.length - 1)
-
-
-        var bounds = new google.maps.LatLngBounds;
-        var coords = nuevaCoord.split('|').map(function (data: string) {
-          var info = data.split(','), // Separamos por coma
-            coord = { // Creamos el obj de coordenada
-              lat: parseFloat(info[0]),
-              lng: parseFloat(info[1])
-            };
-          // Agregamos la coordenada al bounds
-          bounds.extend(coord);
-          return coord;
-        });
-        this.AreaPolygon = new google.maps.Polygon({
-          paths: coords,
-          strokeColor: '#397c97',
-          strokeOpacity: 0.8,
-          strokeWeight: 3,
-          fillColor: '#B1B0B0',
-          fillOpacity: 0.35,
-        });
-        this.AreaPolygon.setMap(this.mapRutaPolygon);
+        this.CreaPoligono(e.latLng, this.mapRutaPolygon);
       });
       return results;
     })
@@ -433,12 +407,78 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       });
   }
   AgregarMarcador(latLng: google.maps.LatLng, map: google.maps.Map) {
-    this.LimpiaMappRutaPoligono();
+    const latitud = latLng.lat();
+    const longitud = latLng.lng();
+
+    const body = {
+      ID: 0,
+      ID_SCTOR_MILLA: this.IdSectorMilla_,
+      LTTUD: latitud,
+      LNGTUD: longitud
+    }
+    this.sevicesmilla.InsertaCoordenada("3", body).subscribe(Respu => {
+      var auxrespu = Respu.split("|");
+      if (auxrespu.length > 0) {
+        if (Number(auxrespu[0]) > 0) {
+          const bod = {
+            ID_SCTOR: this.IdSectorMilla_
+          }
+          this.sevicesmilla.ModificaPoligoCordenada("3", bod).subscribe(Respu => {
+            if (auxrespu.length > 0) {
+              if (Number(auxrespu[0]) > 0) {
+                this.ArrayPolilyneas();
+              } else {
+                this.MesajeModal = "No fue posible modificar el sector, por favor comuníquese con soporte (2).";
+                this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+              }
+            } else {
+              this.MesajeModal = "No fue posible modificar el sector, por favor comuníquese con soporte (1).";
+              this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+            }
+          });
+        } else {
+          this.MesajeModal = "No fue posible agregar las coordenadas, por favor comunícate con soporte. (2)";
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        }
+      } else {
+        this.MesajeModal = "No fue posible agregar las coordenadas, por favor comunícate con soporte. (1)";
+        this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+      }
+    });
     const marker = new google.maps.Marker({
       position: latLng,
       map: map,
     });
     this.markersMapaRutaPolygon.push(marker);
+  }
+  CreaPoligono(latLng: google.maps.LatLng, map: google.maps.Map) {
+    const latitud = latLng.lat();
+    const longitud = latLng.lng();
+
+    this.CoordenadasMapaRutaPlygon += `${latitud},${longitud}` + '|';
+    var nuevaCoord = this.CoordenadasMapaRutaPlygon.substring(0, this.CoordenadasMapaRutaPlygon.length - 1)
+
+
+    var bounds = new google.maps.LatLngBounds;
+    var coords = nuevaCoord.split('|').map(function (data: string) {
+      var info = data.split(','), // Separamos por coma
+        coord = { // Creamos el obj de coordenada
+          lat: parseFloat(info[0]),
+          lng: parseFloat(info[1])
+        };
+      // Agregamos la coordenada al bounds
+      bounds.extend(coord);
+      return coord;
+    });
+    this.AreaPolygon = new google.maps.Polygon({
+      paths: coords,
+      strokeColor: '#397c97',
+      strokeOpacity: 0.8,
+      strokeWeight: 3,
+      fillColor: '#B1B0B0',
+      fillOpacity: 0.35,
+    });
+    this.AreaPolygon.setMap(this.mapRutaPolygon);
   }
 
 
@@ -454,9 +494,23 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
     this.markersMapaRutaPolygon = [];
   }
 
+
+  ArrayPolilyneas() {
+    this.ArrayCoordenadas = [];
+    var auxResult = this.CoordenadasMapaRutaPlygon.split("|");
+    for (var i = 0; i < auxResult.length - 1; i++) {
+      var auxcoor = auxResult[i].split(",");
+      this.ArrayCoordenadas.push({Id: i, Latitude: auxcoor[0], Longitude: auxcoor[1]});
+    }
+    console.log(this.ArrayCoordenadas)
+  }
+
   CerrarModalMapaRutaPolygon() {
+    this.VerMapRutaPolygon = false;
+    this.NombrePolygonCrear = "";
     this.modalService.dismissAll();
     this.LimpiaMappRutaPoligono();
+    this.CoordenadasMapaRutaPlygon = "";
   }
   //#endregion MapaRutaPoligono
 

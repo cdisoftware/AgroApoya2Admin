@@ -193,6 +193,18 @@
 
 
     <div class="modaBody" *ngIf="VerMapRutaPolygon == true">
-        <div id="CreamapPoligon" class="ShowMap"></div>
+        <div class="row">
+            <div class="col-sm-10">
+                <div id="CreamapPoligon" class="ShowMap"></div>
+            </div>
+            <div class="col-sm-2">
+                <div class="row" *ngFor="let coor of ArrayCoordenadas; let i = index">
+                    <div class="row">Lat: {{coor.Latitude}}</div>
+                    <div class="row">Long: {{coor.Longitude}}</div>
+
+                    <hr *ngIf="i != ArrayCoordenadas.length"/>
+                </div>
+            </div>
+        </div>
     </div>
 </ng-template>
