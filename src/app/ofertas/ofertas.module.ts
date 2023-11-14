@@ -10,6 +10,7 @@ import { CarruselofertasComponent } from './components/carruselofertas/carruselo
   declarations: [
     CarruselofertasComponent
     ],
+
   imports: [
     CommonModule,
   ]

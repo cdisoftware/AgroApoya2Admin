@@ -31,6 +31,7 @@ import { ReporteentregasComponent } from './ofertas/components/reportes/reportee
 import { ManychatComponent } from './usuario/components/manychat/manychat.component';
 import { AdminCodigosComponent } from './ofertas/components/admin-codigos/admin-codigos.component';
 import { EnviosmanychatComponent } from './usuario/components/enviosmanychat/enviosmanychat.component';
+import { SeguimientosComponent } from './ofertas/components/seguimientos/seguimientos.component';
 import { UltimamillamultientregasComponent } from './ofertas/components/ultimamillamultientregas/ultimamillamultientregas.component';
 import { MapacalorComponent } from './ofertas/components/mapacalor/mapacalor.component';
 
@@ -167,6 +168,9 @@ const routes: Routes = [
         component: EnviosmanychatComponent
       },
       {
+        path: 'Seguimientos',
+        component: SeguimientosComponent
+      },
         path: 'Ultimamillamultientregas',
         component: UltimamillamultientregasComponent
       },
