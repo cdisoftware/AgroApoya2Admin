@@ -171,6 +171,7 @@ const routes: Routes = [
         path: 'Seguimientos',
         component: SeguimientosComponent
       },
+      {
         path: 'Ultimamillamultientregas',
         component: UltimamillamultientregasComponent
       },
