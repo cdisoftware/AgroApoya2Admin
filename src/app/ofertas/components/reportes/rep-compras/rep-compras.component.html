@@ -95,7 +95,7 @@
         </tr>
         <tr *ngFor="let oferta of DataConsulta">
             <td>
-                {{oferta.OFERTA}}
+                    {{oferta.OFERTA}}
                 <br> <strong>{{oferta.IdOferta}}</strong>
                 <br> {{oferta.SECTOR}}
                 <br>
@@ -108,7 +108,7 @@
                 <label style="color: #CA1BCA;" *ngIf="oferta.IdEstadoCompra != '4' && oferta.IdEstadoCompra != '1' ">
                     <strong>{{oferta.DescEstadoCompra}}</strong>
                 </label>
-
+                <br> <strong>{{oferta.FechaCompra}}</strong>
             </td>
             <td class="overflow">
                 <strong>{{oferta.NombrePesona}}</strong>

@@ -56,6 +56,14 @@ export class ReporteService {
     return this.http.post<any>(this.url_servidor + 'consclistapersona/' + Bandera, Body)
   }
 
+  ConsultaImagenesProductor(Bandera: string, Usucodig: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consImagenesAdminUsers/' + Bandera + '/' + Usucodig)
+  }
+
+  ActualizaImagen(Bandera: string, Body: any){
+    return this.http.post<any>(this.url_servidor + 'mosAdminImgUsers/' + Bandera, Body)
+  }
+
   //Métodos para descargar el Excel
 
   async decargarExcel(data: any): Promise<void> {
@@ -71,6 +79,9 @@ export class ReporteService {
       FileSaver.saveAs(blob, "UsuariosAgro.xlsx");
     })
   }
+
+
+
 
   async crearTabla(data: any): Promise<void> {
     const sheet = this.libro.addWorksheet("Reporte");
@@ -126,8 +137,10 @@ export class ReporteService {
     }
   }
 
-  consMVReporteEntregas(Bandera: string, IdGrupo: any,IdProducto:string ) {
-    return this.http.get<any[]>(this.url_servidor + 'consMVReporteEntregas/' + Bandera + '/' + IdGrupo + '/' + IdProducto)
+
+  consAdminReporteCantTotal(Bandera: string, IdOferta: any ) {
+    return this.http.get<any[]>(this.url_servidor + 'consAdminReporteCantTotal/' + Bandera + '/' + IdOferta)
+
   }
 
 

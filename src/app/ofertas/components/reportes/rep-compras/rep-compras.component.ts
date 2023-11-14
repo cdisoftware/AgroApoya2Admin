@@ -154,17 +154,13 @@ export class RepComprasComponent implements OnInit {
       AuxFechaEntre = this.FechaFinCom;
     }
 
-    console.log(this.FechaIniCom)
-    console.log(this.FechaFinCom)
-
     const body = {
-      FechaCompra: AuxFechaComp,
-      FECHA_ENTREGA: AuxFechaEntre
+      fcha_compra_ini: AuxFechaComp,
+      fcha_compra_fin: AuxFechaEntre
     }
 
     this.serviciosreportes.consAdminReporteVentas('1', validaofer, validasec, validaCompra, validaPago, body).subscribe(Resultcons => {
       this.NumeroRegistros = Resultcons.length.toString() + ' Registros';
-      console.log(Resultcons)
       if (Resultcons.length > 0) {
 
         this.ValidaDescarga = false;
@@ -323,9 +319,8 @@ export class RepComprasComponent implements OnInit {
         this.Respuesta = 'El id de la oferta es obligatorio para la consulta';
         this.modalservices.open(modaldetalle, { size: "lg" })
     } else {
-      this.serviciosreportes.consMVReporteEntregas('1', '61','0').subscribe(Resultcons => {
+      this.serviciosreportes.consAdminReporteCantTotal('1', this.OferFiltro).subscribe(Resultcons => {
         this.ArregloUnidadesOferta = Resultcons;
-        console.log(Resultcons)
       })
       this.modalservices.open(ModalProductos, { size: "lg" })
     }
