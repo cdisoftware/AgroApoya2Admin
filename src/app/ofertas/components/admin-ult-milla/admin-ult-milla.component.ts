@@ -308,7 +308,6 @@ export class AdminUltMillaComponent implements OnInit {
       this.markers.push(marker);
 
 
-
       const infoWindow = new google.maps.InfoWindow();
       this.markers[i].addListener("click", () => {
         this.InfoWindow(this.markers[i].getZIndex());
