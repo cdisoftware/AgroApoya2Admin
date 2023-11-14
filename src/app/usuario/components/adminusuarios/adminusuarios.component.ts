@@ -12,6 +12,7 @@ import { ReporteService } from 'src/app/core/reporte.service';
 })
 export class AdminusuariosComponent implements OnInit {
 
+
   constructor(private SeriviciosGenerales: MetodosglobalesService,
     private modalService: NgbModal,
     private rutas: Router,
@@ -62,6 +63,10 @@ export class AdminusuariosComponent implements OnInit {
   INPVereda: string = '';
   INPFinca: string = '';
   INPEdad: string = '';
+  Imagen1: string = '../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+  Imagen2: string = '../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+  Imagen3: string = '../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+  IdUsuario: string = '';
 
   ValidaMostrar: string;
 
@@ -69,6 +74,7 @@ export class AdminusuariosComponent implements OnInit {
   ImagenAdd: string = '../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
   NomImagen1: string = '0';
   RutaImagenes: string = '';
+  ArrayImagenes: any = [];
 
 
 
@@ -93,9 +99,9 @@ export class AdminusuariosComponent implements OnInit {
     if (this.TipoUsuarioBuscar != '1') {
       this.Respuesta = 'Estamos trabajando en esta funcionalidad.';
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } 
-      
-    
+    }
+
+
   }
 
 
@@ -133,7 +139,7 @@ export class AdminusuariosComponent implements OnInit {
       console.log(this.arregloListaPerfil)
       this.INPNombre = Resultado[0].NOMBRES_PERSONA;
       this.INPApellido = Resultado[0].APELLIDOS_PERSONA;
-      this.INPTipoDocumento = Resultado[0].TIPO_DOCUMENTO;
+      this.INPTipoDocumento = Resultado[0].DescDocumento;
       this.INPNumIdentidad = Resultado[0].DOCUMENTO_USUARIO;
       this.IdDepartamento = Resultado[0].CD_DPTO;
       this.IdCiudad = Resultado[0].CD_CDAD;
@@ -147,18 +153,35 @@ export class AdminusuariosComponent implements OnInit {
       this.INPDescDos = Resultado[0].DscripDos;
       this.INPDescTres = Resultado[0].DscripTres;
       this.INPObservacion = Resultado[0].Observacion;
-
+      this.INPEdad = Resultado[0].FechaNacimiento;
+      this.INPVereda = Resultado[0].Vereda;
+      this.INPFinca = Resultado[0].NombreFinca
+      this.IdUsuario = Resultado[0].USUCODIG
       if (Resultado[0].Imagen == null || Resultado[0].Imagen == '') {
         this.ImagenAdd = '../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
       } else {
         this.ImagenAdd = this.RutaImagenes + Resultado[0].Imagen;
       }
       this.NomImagen1 = Resultado[0].Imagen;
+      this.ConsultaImagenes(Resultado[0].USUCODIG)
       this.ValidaMostrar = '1';
     })
   }
 
 
+  ConsultaImagenes(idusuario: string) {
+    //alert(idusuario)
+    this.serviciosreportes.ConsultaImagenesProductor('1', idusuario).subscribe(Resultado => {
+      console.log(Resultado)
+      this.ArrayImagenes = Resultado
+      if (Resultado.length > 0) {
+        this.ImagenAdd = this.RutaImagenes + Resultado[0].nombreimagen
+        this.Imagen1 = this.RutaImagenes + Resultado[1].nombreimagen
+        this.Imagen2 = this.RutaImagenes + Resultado[2].nombreimagen
+        this.Imagen3 = this.RutaImagenes + Resultado[3].nombreimagen
+      }
+    })
+  }
 
   CargarUbicaciones() {
     this.ServiciosOferta.ConsultaDepartamento('5').subscribe(Resultado => {
@@ -250,9 +273,11 @@ export class AdminusuariosComponent implements OnInit {
         DescripDos: this.INPDescDos,
         DescripTres: this.INPDescTres,
         Observacion: this.INPObservacion,
-        Imagen: this.NomImagen1
+        FechaNacimiento: this.INPEdad,
+        Vereda: this.INPVereda,
+        Finca:this.INPFinca
       }
-
+      console.log(BodyInsert)
       this.serviciosreportes.AgregaInfoPerfil('3', BodyInsert).subscribe(Resultado => {
         console.log(Resultado)
         this.Respuesta = Resultado;
@@ -268,18 +293,70 @@ export class AdminusuariosComponent implements OnInit {
     this.CorreoBuscar = '';
     this.CedulaBuscar = '';
   }
-  public CargaImagen(event: any) {
-
-    console.log(event.target.files[0])
+  public CargaImagen(idimagen: string, event: any) {
+    var bandera = '3'
+    console.log(this.ArrayImagenes)
+    alert(idimagen)
     this.ServiciosOferta.postFileImgUsers(event.target.files[0]).subscribe(
+      
       response => {
+        if (idimagen == '1') {
+          this.ImagenAdd = this.RutaImagenes + event.target.files[0].name;
+          //this.NomImagen1 = event.target.files[0].name;
+          if (this.ArrayImagenes.length > 1) {
+            bandera = '2'
+          } else {
+            bandera = '3'
+          }
+          this.ActualizaImagen(bandera, this.ArrayImagenes[0].id, event.target.files[0].name);
+        }
+        if (idimagen == '2') {
+          this.Imagen1 = this.RutaImagenes + event.target.files[0].name;
+          if (this.ArrayImagenes.length > 2) {
+            bandera = '2'
+          } else {
+            bandera = '3'
+          }
+          this.ActualizaImagen(bandera, this.ArrayImagenes[1].id, event.target.files[0].name);
+        }
+        if (idimagen == '3') {
+          this.Imagen2 = this.RutaImagenes + event.target.files[0].name;
+          if (this.ArrayImagenes.length > 3) {
+            bandera = '2'
+          } else {
+            bandera = '3'
+          }
+          this.ActualizaImagen(bandera, this.ArrayImagenes[2].id, event.target.files[0].name);
+        }
+        if (idimagen == '4') {
+          this.Imagen3 = this.RutaImagenes + event.target.files[0].name;
+          if (this.ArrayImagenes.length > 4) {
+            bandera = '2'
+          } else {
+            bandera = '3'
+          }
+          this.ActualizaImagen(bandera, this.ArrayImagenes[3].id, event.target.files[0].name);
+        }
         console.log(response);
-        this.ImagenAdd = this.RutaImagenes + event.target.files[0].name;
-        this.NomImagen1 = event.target.files[0].name;
+
       },
       error => {
       }
     );
+  }
+
+  ActualizaImagen(bandera: string, IdImagen: string, NombreImagen: string) {
+    const BodyImagen = {
+      IdImagen: IdImagen,
+      Usucodig: this.IdUsuario,
+      NombreImagen: NombreImagen,
+      ImgPrincipal: '1',
+      Orden: '1'
+    }
+    console.log(BodyImagen)
+    this.serviciosreportes.ActualizaImagen(bandera, BodyImagen).subscribe(Resultado => {
+      console.log(Resultado)
+    })
   }
 
 
