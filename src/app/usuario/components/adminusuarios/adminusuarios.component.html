@@ -51,9 +51,9 @@
                     <div class="col-sm-3 ContentCenter">
                         <div class="image-upload">
                             <label for="file-input1">
-                                <img id="Imagen1" title="Selecciona una imagen" [src]="ImagenAdd" class="w-100 ImgUser">
+                                <img id="Imagenp" title="Selecciona una imagen" [src]="ImagenAdd" style="max-width: 200px; max-height: 200px;" class="w-100 ImgUser">
                             </label>
-                            <input name="file-input" id="file-input1" type="file" (change)="CargaImagen($event)"
+                            <input name="file-inputp" id="file-inputp" type="file" (change)="CargaImagen('1', $event)"
                                 [(ngModel)]="ImagenAdd" />
                         </div>
                     </div>
@@ -88,8 +88,8 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-6 ">
-                                <label class="col-sm-12 Llave">Edad</label>
-                                <input type="number" class="form-control form-control-sm textBox"
+                                <label class="col-sm-12 Llave">Fecha Nacimiento</label>
+                                <input type="date" class="form-control form-control-sm textBox"
                                     placeholder="Edad (Obligatorio)" required="required"
                                     name="edad" [(ngModel)]="INPEdad">
                             </div>
@@ -209,6 +209,37 @@
                             <textarea required="required" name="comentario" id="comentario"
                                 class="form-control form-control-sm textArea" cols="30"
                                 placeholder="Comentario (Obligatorio)" rows="1" [(ngModel)]="INPComentario"></textarea>
+                        </div>
+                    </div>
+                    <br>
+                    <label class="col-sm-12 Llave">Imagenes productor</label>
+                    <div class="row br">
+                        <div class="col-sm-3 ContentCenter">
+                            <div class="image-upload">
+                                <label for="file-input1">
+                                    <img id="Imagen1" title="Selecciona una imagen" [src]="Imagen1" style="max-width: 200px; max-height: 200px;" class="w-100 ImgUser">
+                                </label>
+                                <input name="file-input1" id="file-input1" type="file" (change)="CargaImagen('2', $event)"
+                                    [(ngModel)]="Imagen1" />
+                            </div>
+                        </div>
+                        <div class="col-sm-3 ContentCenter">
+                            <div class="image-upload">
+                                <label for="file-input2">
+                                    <img id="Imagen2" title="Selecciona una imagen" [src]="Imagen2" style="max-width: 200px; max-height: 200px;" class="w-100 ImgUser">
+                                </label>
+                                <input name="file-input2" id="file-input2" type="file" (change)="CargaImagen('3', $event)"
+                                    [(ngModel)]="Imagen2" />
+                            </div>
+                        </div>
+                        <div class="col-sm-3 ContentCenter">
+                            <div class="image-upload">
+                                <label for="file-input3">
+                                    <img id="Imagen3" title="Selecciona una imagen" [src]="Imagen3" style="max-width: 200px; max-height: 200px;" class="w-100 ImgUser">
+                                </label>
+                                <input name="file-input3" id="file-input3" type="file" (change)="CargaImagen('4',$event)"
+                                    [(ngModel)]="Imagen3" />
+                            </div>
                         </div>
                     </div>
                 </div>
