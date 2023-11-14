@@ -261,7 +261,7 @@ export class AdminusuariosComponent implements OnInit {
         NombrePersona: this.INPNombre,
         ApellidoPersona: this.INPApellido,
         CelularPersona: this.INPCelular,
-        TipoDocumento: this.INPTipoDocumento,
+        TipoDocumento: '1',
         DocumentoUsuario: this.INPNumIdentidad,
         IdDepto: this.IdDepartamento,
         IdCiudad: this.IdCiudad,
