@@ -38,4 +38,8 @@ export class GrupoMillaServices {
     ConsultaTransporte(CdCons: string, IdSector: string){
         return this.http.get<any>(this.url_servidor + 'consAdMillaDtallOfertaCompra/' + CdCons + '/' + IdSector);
     }
+
+    consAdUserMapCalor(Bandera:string){
+        return this.http.get<any>(this.url_servidor + 'consAdUserMapCalor/' + Bandera);
+    }
 }

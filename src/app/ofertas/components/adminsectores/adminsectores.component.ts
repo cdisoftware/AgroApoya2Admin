@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router'
 import { CookieService } from 'ngx-cookie-service';
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';

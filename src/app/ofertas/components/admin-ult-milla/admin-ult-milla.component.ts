@@ -548,7 +548,7 @@ export class AdminUltMillaComponent implements OnInit {
     }
 
 
-    if (coun == 0) {
+    if (coun != 0) {
       const body = {
         usucodig: this.UsuCod,
         cnctivoOferta: this.SelectOferta,

@@ -219,6 +219,11 @@ th {
     height: 500px;
 }
 
+.ShowMapaCalor {
+    visibility: visible !important;
+    height: 700px;
+}
+
 .HideMap {
     visibility: hidden !important;
 }
