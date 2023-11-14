@@ -33,6 +33,8 @@ import { AdminCodigosComponent } from './ofertas/components/admin-codigos/admin-
 import { EnviosmanychatComponent } from './usuario/components/enviosmanychat/enviosmanychat.component';
 import { SeguimientosComponent } from './ofertas/components/seguimientos/seguimientos.component';
 import { UltimamillamultientregasComponent } from './ofertas/components/ultimamillamultientregas/ultimamillamultientregas.component';
+import { MapacalorComponent } from './ofertas/components/mapacalor/mapacalor.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -171,6 +173,10 @@ const routes: Routes = [
       },
         path: 'Ultimamillamultientregas',
         component: UltimamillamultientregasComponent
+      },
+      {
+        path: 'MapaCalor',
+        component: MapacalorComponent
       }
     ]
   },

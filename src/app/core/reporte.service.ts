@@ -137,8 +137,10 @@ export class ReporteService {
     }
   }
 
-  consMVReporteEntregas(Bandera: string, IdGrupo: any, IdProducto: string) {
-    return this.http.get<any[]>(this.url_servidor + 'consMVReporteEntregas/' + Bandera + '/' + IdGrupo + '/' + IdProducto)
+
+  consAdminReporteCantTotal(Bandera: string, IdOferta: any ) {
+    return this.http.get<any[]>(this.url_servidor + 'consAdminReporteCantTotal/' + Bandera + '/' + IdOferta)
+
   }
 
 
