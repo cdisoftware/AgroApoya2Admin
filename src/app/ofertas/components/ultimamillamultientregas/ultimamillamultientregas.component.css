@@ -1,0 +1,23 @@
+.sinmp{
+    padding: 0;
+    margin: 0;
+}
+.check{
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+.textresult{
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.Ischecked{
+    background-color: #ECF0F1;
+    color: #17202A;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.IsNotchecked{
+    background-color: white;
+    color: black;
+}

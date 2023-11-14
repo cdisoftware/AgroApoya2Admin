@@ -3,7 +3,6 @@
     <div class="container bg-white">
         <br>
         <h1>Administración de usuarios </h1>
-
         <div class="row">
             <div class="col-sm-12 br">
                 <label class="col-sm-12 Llave">Tipo usuario</label>
@@ -47,40 +46,88 @@
         <div class="row br" *ngIf="ValidaMostrar=='1'">
             <hr>
             <div class="row justify-content-center br tarjetadetalle">
-
                 <div class="row m-3">
-                    <h1>Información basica</h1>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Nombres</label>
-                            <input type="text" class="form-control form-control-sm textBox"
-                                placeholder="Nombres (Obligatorio)" required="required" name="Nombres"
-                                [(ngModel)]="INPNombre">
-                        </div>
-                        <div class="col-sm-6">
-                            <label class="col-sm-12 Llave">Apellidos</label>
-                            <input type="text" class="form-control form-control-sm textBox"
-                                placeholder="Apellidos (Obligatorio)" required="required" name="Apellidos"
-                                [(ngModel)]="INPApellido">
+                    <h1>Perfil Productor</h1>
+                    <div class="col-sm-3 ContentCenter">
+                        <div class="image-upload">
+                            <label for="file-input1">
+                                <img id="Imagenp" title="Selecciona una imagen" [src]="ImagenAdd" style="max-width: 200px; max-height: 200px;" class="w-100 ImgUser">
+                            </label>
+                            <input name="file-inputp" id="file-inputp" type="file" (change)="CargaImagen('1', $event)"
+                                [(ngModel)]="ImagenAdd" />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-6 br">
-                            <label class="col-sm-12 Llave">Tipo de documento</label>
-                            <input type="text" class="form-control form-control-sm textBox"
-                                placeholder="Tipo de documento (Obligatorio)" disabled required="required"
-                                name="tipodoc" [(ngModel)]="INPTipoDocumento">
-
+                    <div class="col-sm-9">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="col-sm-12 Llave">Nombres</label>
+                                <input type="text" class="form-control form-control-sm textBox"
+                                    placeholder="Nombres (Obligatorio)" required="required" name="Nombres"
+                                    [(ngModel)]="INPNombre">
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="col-sm-12 Llave">Apellidos</label>
+                                <input type="text" class="form-control form-control-sm textBox"
+                                    placeholder="Apellidos (Obligatorio)" required="required" name="Apellidos"
+                                    [(ngModel)]="INPApellido">
+                            </div>
                         </div>
-                        <div class="col-sm-6 br">
-                            <label class="col-sm-12 Llave">Número de identificación</label>
-                            <input type="number" class="form-control form-control-sm textBox"
-                                placeholder="Número de identificación (Obligatorio)" disabled required="required"
-                                name="numident" [(ngModel)]="INPNumIdentidad">
+                        <div class="row">
+                            <div class="col-sm-6 ">
+                                <label class="col-sm-12 Llave">Tipo de documento</label>
+                                <input type="text" class="form-control form-control-sm textBox"
+                                    placeholder="Tipo de documento (Obligatorio)" disabled required="required"
+                                    name="tipodoc" [(ngModel)]="INPTipoDocumento">
+                            </div>
+                            <div class="col-sm-6 ">
+                                <label class="col-sm-12 Llave">Número de identificación</label>
+                                <input type="number" class="form-control form-control-sm textBox"
+                                    placeholder="Número de identificación (Obligatorio)" disabled required="required"
+                                    name="numident" [(ngModel)]="INPNumIdentidad">
+                            </div>
                         </div>
+                        <div class="row">
+                            <div class="col-sm-6 ">
+                                <label class="col-sm-12 Llave">Fecha Nacimiento</label>
+                                <input type="date" class="form-control form-control-sm textBox"
+                                    placeholder="Edad (Obligatorio)" required="required"
+                                    name="edad" [(ngModel)]="INPEdad">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label class="Llave">Descripción corta:&nbsp;</label><textarea required="required"
+                                    name="desuno" id="descuno" class="form-control form-control-sm textArea" cols="30"
+                                    rows="3" [(ngModel)]="INPDescUno"></textarea>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="Llave">Caracterización:&nbsp;</label>
+                                <textarea required="required" name="desdos" id="descdos"
+                                    class="form-control form-control-sm textArea" cols="30" rows="3"
+                                    [(ngModel)]="INPDescDos"></textarea>
+                            </div>
+                        </div>
+                        <!-- <div class="row">
+                            <div class="col-sm-6">
+                                <label class="Llave">Descripción Tres:&nbsp;</label>
+                                <textarea required="required" name="destres" id="desctres"
+                                    class="form-control form-control-sm textArea" cols="30" rows="3"
+                                    [(ngModel)]="INPDescTres"></textarea>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="Llave">Observación:&nbsp;</label>
+                                <textarea required="required" name="obvacion" id="observacion"
+                                    class="form-control form-control-sm textArea" cols="30" rows="3"
+                                    [(ngModel)]="INPObservacion"></textarea>
+                            </div>
+                        </div> -->
                     </div>
+                </div>
+            </div>
+            <div class="row justify-content-center br tarjetadetalle">
+                <div class="row m-3">
+                    <h1>Información complementaria</h1>
                     <div class="row">
-
                         <div class="col-sm-6 br">
                             <select class="form-control form-control-sm textBox" [(ngModel)]="IdDepartamento"
                                 (change)='SelDepa()' [ngModelOptions]="{standalone: true}">
@@ -103,8 +150,21 @@
                                 </option>
                             </select>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 br">
+                            <label class="col-sm-12 Llave">Vereda</label>
+                            <input type="text" class="form-control form-control-sm textBox"
+                                placeholder="Vereda (Obligatorio)" required="required" name="vereda"
+                                [(ngModel)]="INPVereda">
 
-
+                        </div>
+                        <div class="col-sm-6 br">
+                            <label class="col-sm-12 Llave">Nombre finca</label>
+                            <input type="text" class="form-control form-control-sm textBox"
+                                placeholder="Nombre Finca (Obligatorio)" required="required" name="nombrefinca"
+                                [(ngModel)]="INPFinca">
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6 br">
@@ -140,70 +200,51 @@
                     <div class="row">
                         <div class="col-sm-6 br">
                             <label class="col-sm-12 Llave">Id ManyChat</label>
-                            <input type="number" class="form-control form-control-sm textBox"
-                                placeholder="Id ManyChat" required="required" name="id_manychat"
-                                [(ngModel)]="INPIdManychat">
+                            <input type="number" class="form-control form-control-sm textBox" placeholder="Id ManyChat"
+                                required="required" name="id_manychat" [(ngModel)]="INPIdManychat">
 
                         </div>
                         <div class="col-sm-6 br">
                             <label class="col-sm-12 Llave">Comentario</label>
                             <textarea required="required" name="comentario" id="comentario"
                                 class="form-control form-control-sm textArea" cols="30"
-                                placeholder="Comentario (Obligatorio)" rows="2" [(ngModel)]="INPComentario"></textarea>
+                                placeholder="Comentario (Obligatorio)" rows="1" [(ngModel)]="INPComentario"></textarea>
+                        </div>
+                    </div>
+                    <br>
+                    <label class="col-sm-12 Llave">Imagenes productor</label>
+                    <div class="row br">
+                        <div class="col-sm-3 ContentCenter">
+                            <div class="image-upload">
+                                <label for="file-input1">
+                                    <img id="Imagen1" title="Selecciona una imagen" [src]="Imagen1" style="max-width: 200px; max-height: 200px;" class="w-100 ImgUser">
+                                </label>
+                                <input name="file-input1" id="file-input1" type="file" (change)="CargaImagen('2', $event)"
+                                    [(ngModel)]="Imagen1" />
+                            </div>
+                        </div>
+                        <div class="col-sm-3 ContentCenter">
+                            <div class="image-upload">
+                                <label for="file-input2">
+                                    <img id="Imagen2" title="Selecciona una imagen" [src]="Imagen2" style="max-width: 200px; max-height: 200px;" class="w-100 ImgUser">
+                                </label>
+                                <input name="file-input2" id="file-input2" type="file" (change)="CargaImagen('3', $event)"
+                                    [(ngModel)]="Imagen2" />
+                            </div>
+                        </div>
+                        <div class="col-sm-3 ContentCenter">
+                            <div class="image-upload">
+                                <label for="file-input3">
+                                    <img id="Imagen3" title="Selecciona una imagen" [src]="Imagen3" style="max-width: 200px; max-height: 200px;" class="w-100 ImgUser">
+                                </label>
+                                <input name="file-input3" id="file-input3" type="file" (change)="CargaImagen('4',$event)"
+                                    [(ngModel)]="Imagen3" />
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row justify-content-center br tarjetadetalle">
-                <div class="row m-3">
-                    <h1>Información adicional</h1>
-                    <div class="col-sm-4 ContentCenter">
-                        <div class="image-upload">
-                            <label for="file-input1">
-                                <img id="Imagen1" title="Selecciona una imagen" [src]="ImagenAdd" class="w-100 ImgUser">
-                            </label>
-                            <input name="file-input" id="file-input1" type="file" (change)="CargaImagen($event)"
-                                [(ngModel)]="ImagenAdd" />
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <label class="Llave">Descripción Uno:&nbsp;</label><textarea required="required"
-                                    name="desuno" id="descuno" class="form-control form-control-sm textArea" cols="30"
-                                    rows="3" [(ngModel)]="INPDescUno"></textarea>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12 br">
-                                <label class="Llave">Descripción Dos:&nbsp;</label>
-                                <textarea required="required" name="desdos" id="descdos"
-                                    class="form-control form-control-sm textArea" cols="30" rows="3"
-                                    [(ngModel)]="INPDescDos"></textarea>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12 br">
-                                <label class="Llave">Descripción Tres:&nbsp;</label>
-                                <textarea required="required" name="destres" id="desctres"
-                                    class="form-control form-control-sm textArea" cols="30" rows="3"
-                                    [(ngModel)]="INPDescTres"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <label class="Llave">Observación:&nbsp;</label>
-                                <textarea required="required" name="obvacion" id="observacion"
-                                    class="form-control form-control-sm textArea" cols="30" rows="3"
-                                    [(ngModel)]="INPObservacion"></textarea>
-                            </div>
-                        </div>
-                    </div>
 
-                </div>
-            </div>
 
 
             <div class="row br justify-content-center mt-3">

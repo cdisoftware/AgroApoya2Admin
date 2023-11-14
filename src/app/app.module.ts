@@ -47,6 +47,7 @@ import { ManychatComponent } from './usuario/components/manychat/manychat.compon
 import { AdminCodigosComponent } from './ofertas/components/admin-codigos/admin-codigos.component';
 import { EnviosmanychatComponent } from './usuario/components/enviosmanychat/enviosmanychat.component';
 import { SeguimientosComponent } from './ofertas/components/seguimientos/seguimientos.component';
+import { UltimamillamultientregasComponent } from './ofertas/components/ultimamillamultientregas/ultimamillamultientregas.component';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     ReporteentregasComponent,
     ManychatComponent,
     AdminCodigosComponent,
-    EnviosmanychatComponent
+    EnviosmanychatComponent,
+    UltimamillamultientregasComponent
   ],
   imports: [
     NgxMaskModule.forRoot(options),
