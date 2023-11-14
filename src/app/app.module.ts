@@ -46,6 +46,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ManychatComponent } from './usuario/components/manychat/manychat.component';
 import { AdminCodigosComponent } from './ofertas/components/admin-codigos/admin-codigos.component';
 import { EnviosmanychatComponent } from './usuario/components/enviosmanychat/enviosmanychat.component';
+import { SeguimientosComponent } from './ofertas/components/seguimientos/seguimientos.component';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     CarguepublicidadComponent,
     EvaluacionofertaComponent,
     SeguimientoComponent,
+    SeguimientosComponent,
     ComboofertasComponent,
     EnviocorreosComponent,
     ConsultacorreosComponent,
