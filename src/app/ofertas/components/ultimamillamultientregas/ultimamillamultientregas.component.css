@@ -63,3 +63,21 @@
     display: flex;
     margin: 0px;
 }
+
+.CirculoImg{
+    padding: 5px;
+    justify-content: right;
+    background-color: #184050;
+}
+
+.imagen-flotante {
+    width: 80px;
+    height: 40px;
+    right: 0;
+    transition: transform 0.5s ease-in-out;
+    cursor: pointer;
+}
+
+  .ArrayCoors:hover .imagen-flotante {
+    transform: scale(1.2);
+  }

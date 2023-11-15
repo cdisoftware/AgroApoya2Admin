@@ -43,26 +43,26 @@
                         </div>
                         <hr class="mt-2 mb-2" />
                     </div>
-                    <div class="row" *ngIf="IdEstadoProceso == '2'">
+                    <div class="row justify-content-center" *ngIf="IdEstadoProceso == '2'">
 
-                        <div class="col-sm-4 mt-2 mb-2">
+                        <div class="col-sm-3 mt-2 mb-2">
                             <button type="button" class="btn btn-agro-prin w-100"
-                                (click)="IniciaMapRutaPoligon(templatePoligonRuta)">Sector Ruta</button>
+                                (click)="IniciaMapRutaPoligon(templatePoligonRuta)">Crear sector milla</button>
                         </div>
-                        <!--<div class="col-sm-6 mt-3">
+                        <div class="col-sm-4 mb-2 mt-2">
                             <ng-autocomplete [data]="ArrayPolygonos"
-                                [searchKeyword]="'DSCRPCION_SCTOR'" placeholder="Sector"
-                                (inputCleared)="LimpiaSectorCambioFecha('0')"
-                                (selected)='selectSectorCambioFecha($event)' [itemTemplate]="templateSecCambioFecha"
-                                [notFoundTemplate]="templateVacio" [(ngModel)]="SectorCambioFecha">
+                                [searchKeyword]="'NombreSector'" placeholder="Buscar sector milla"
+                                (inputCleared)="LimpiaSectorUtimaMilla('0')"
+                                (selected)='selectSectorUtimaMilla($event)' [itemTemplate]="templateSecUltimaMilla"
+                                [notFoundTemplate]="templateVacio" [(ngModel)]="SectorUltimaMilla">
                             </ng-autocomplete>
-                            <ng-template #templateSecCambioFecha let-item>
-                                <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+                            <ng-template #templateSecUltimaMilla let-item>
+                                <a [innerHTML]="item.NombreSector"></a>
                             </ng-template>
                             <ng-template #templateVacio let-SinRegistro>
                                 <label for="">Sin registros</label>
                             </ng-template>
-                        </div>-->
+                        </div>
 
                         <hr class="mt-2 mb-2" />
 
@@ -205,13 +205,17 @@
 
     <div class="modaBody" *ngIf="VerMapRutaPolygon == true">
         <div class="row">
-            <div class="col-sm-10">
+            <div [ngClass]="ArrayCoordenadas.length > 0? 'col-sm-10' : 'col-sm-12'">
                 <div id="CreamapPoligon" class="ShowMap"></div>
             </div>
-            <div class="col-sm-2" id="CoordenadasDiv">
-                <div class="row" *ngFor="let coor of ArrayCoordenadas; let i = index">
-                    <div class="row">Lat: {{coor.Latitude}}</div>
-                    <div class="row">Long: {{coor.Longitude}}</div>
+            <div class="col-sm-2" id="CoordenadasDiv" *ngIf="ArrayCoordenadas.length > 0">
+                <div class="row ArrayCoors" *ngFor="let coor of ArrayCoordenadas; let i = index">
+                    <div class="row CirculoImg"  alt="Borrar" (click)="EliminarCoordenadasMap(coor)">
+                        <img class="imagen-flotante" src="../../../../assets/ImagenesAgroApoya2Adm/ic_borrar.png">
+                    </div>
+
+                    <div class="row">Lat: {{coor.LTTUD}}</div>
+                    <div class="row">Long: {{coor.LNGTUD}}</div>
 
                     <hr *ngIf="i != ArrayCoordenadas.length"/>
                 </div>

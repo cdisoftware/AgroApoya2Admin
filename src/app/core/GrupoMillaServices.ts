@@ -38,7 +38,7 @@ export class GrupoMillaServices {
     ConsultaTransporte(CdCons: string, IdSector: string) {
         return this.http.get<any>(this.url_servidor + 'consAdMillaDtallOfertaCompra/' + CdCons + '/' + IdSector);
     }
-  
+
     ConsultaTransportesCreados(bandera: string, IdGrupo: string) {
         return this.http.get<any>(this.url_servidor + 'consAdminMillaTransportes/' + bandera + '/' + IdGrupo);
     }
@@ -52,20 +52,25 @@ export class GrupoMillaServices {
     CreaPolygono(bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'modAdminMillaSectores/' + bandera, body);
     }
-    InsertaCoordenada(bandera: string, body: any){
+    InsertaCoordenada(bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'mosAdminCoordsMilla/' + bandera, body);
     }
     //modAdMillaPoligono
-    ModificaPoligoCordenada(bandera: string, body: any){
+    ModificaPoligoCordenada(bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'modAdMillaPoligono/' + bandera, body);
     }
 
     //ConsultaPoligonos
-    ConsultaPolygonosGrupoMilla(bandera: string, IdSector: string){
+    ConsultaPolygonosGrupoMilla(bandera: string, IdSector: string) {
         return this.http.get<any>(this.url_servidor + 'consAdMillaComprasSector/' + bandera + '/' + IdSector);
     }
-  
-    consAdUserMapCalor(Bandera:string){
+    consAdUserMapCalor(Bandera: string) {
         return this.http.get<any>(this.url_servidor + 'consAdUserMapCalor/' + Bandera);
+    }
+    ConsSectoresMilla(bandera: string, IdSector: string) {
+        return this.http.get<any>(this.url_servidor + 'consAdMillaSectores/' + bandera + '/' + IdSector);
+    }
+    ConsCoordenadasSectorMilla(bandera: string, IdSector: string) {
+        return this.http.get<any>(this.url_servidor + 'consAdMillaCoordSector/' + bandera + '/' + IdSector);
     }
 }
