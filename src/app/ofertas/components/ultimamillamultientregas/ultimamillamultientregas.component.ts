@@ -77,8 +77,18 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   //ApiDireccion
   directionsService = new google.maps.DirectionsService();
   directionsRenderers: google.maps.DirectionsRenderer[] = [];
+
+  //#region MapaPinSTransportesGenerados
+  geocoderPinRutaEntrega = new google.maps.Geocoder();
+  mapPinRutaEntrega: google.maps.Map;
+  MarkersPinRutaEntrega: google.maps.Marker[] = [];
+  //#endregion MapaPinSTransportesGenerados
   //#endregion Mapa
 
+
+  //#region MapaRutaGenerada
+  ArrayPinsRutaGenerada: any = [];
+  //#endregion MapaRutaGenerada
 
   ngAfterViewInit(): void {
 
@@ -108,6 +118,15 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
 
   //#region CreaTransporte
 
+  CambiaEstadoProceso() {
+    if (this.IdSectorUltimaMilla_ != "0") {
+      this.IdEstadoProceso = "3";
+    } else {
+      this.MesajeModal = "Por favor selecciona un sector al cual quieras asignar las entregas, ten en cuenta que las entregas que quieres realizar deben estar dentro del sector seleccionado.";
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    }
+  }
+
   //#region Bodega
   ConsultaBodegas() {
     this.sectoresservices.ConsultaBodegas("2", '401', '2161', '0').subscribe(Resultado => {
@@ -121,12 +140,12 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
     this.Bodega = item.NombreBodega;
   }
   LimpiaBodega(limpia: string) {
-    this.NombreBodega = limpia;
+    this.NombreBodega = "";
     this.Bodega = "";
   }
   //#endregion Bodega
 
-  //#region creaTransporte
+  //#region creaTransporteMtd
   CreaTransporte() {
     if (this.NombreBodega != "" && Number(this.ValorFlete) >= 0 && this.FechaEntrega != "" && this.UbicacionEntrega != "") {
       const body = {
@@ -139,7 +158,9 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       this.sevicesmilla.CreaTransporteEntrega('4', body).subscribe(Resultado => {
         const result = Resultado.split("|");
         this.IdGrugo_ = result[0];
-      })
+        this.ValidaEntregasUltimaMilla(this.IdSectorUltimaMilla_);
+        //this.IniciaMapaRuta();
+      });
 
 
     } else {
@@ -147,7 +168,82 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
     }
   }
-  //#endregion creaTransporte
+  ValidaEntregasUltimaMilla(IdSector: string) {
+    var cadenaOfertas = "";
+    for (var i = 0; i < this.ArrayConsTransporte.length; i++) {
+      if (this.ArrayConsTransporte[i].checked == true) {
+        cadenaOfertas += this.ArrayConsTransporte[i].CD_CNSCTVO + "|"
+      }
+    }
+    const body = {
+      IdSector: IdSector,
+      OfertaSector: cadenaOfertas
+    }
+    this.sevicesmilla.ValidaEntregasSector('1', body).subscribe(ResultadoValida => {
+      this.sevicesmilla.ConsultaPolygonosGrupoMilla('1', IdSector).subscribe(RespuPins => {
+        this.ArrayPinsRutaGenerada = RespuPins;
+        this.IniciaMapaRuta();
+      });
+    });
+  }
+
+
+
+
+  IniciaMapaRuta() {
+    this.IdEstadoProceso = "4";
+    this.CentramapaRuta({ address: 'Bogotá' + ',' + 'Bogotá' });
+  }
+  CentramapaRuta(request: google.maps.GeocoderRequest): void {
+    this.geocoderPinRutaEntrega.geocode(request).then((result) => {
+      const { results } = result;
+      this.mapPinRutaEntrega = new google.maps.Map(
+        document.getElementById("mapRuta") as HTMLElement,
+        {
+          center: { lat: 4.70281065790573, lng: -74.05637826500855 },
+          zoom: 12,
+        }
+      );
+      this.AgregarSitiosRutaEntregas();
+      return results;
+    })
+      .catch((e) => {
+      });
+  }
+  AgregarSitiosRutaEntregas() {
+    for (var i = 0; i < this.MarkersPinRutaEntrega.length; i++) {
+      this.MarkersPinRutaEntrega[i].setMap(null);
+    }
+    this.MarkersPinRutaEntrega = [];
+
+    const features = [];
+    var lat: number;
+    var long: number;
+
+    for (var i = 0; i < this.ArrayPinsRutaGenerada.length; i++) {
+      var auxcoor = this.ArrayPinsRutaGenerada[i].CoordenadasEntrega.split(",");
+      lat = parseFloat(auxcoor[0]);
+      long = parseFloat(auxcoor[1]);
+      features.push({ position: new google.maps.LatLng(lat, long), NomCli: this.ArrayPinsRutaGenerada[i].NombresCliente });
+    }
+
+    for (let i = 0; i < features.length; i++) {
+
+      var marker = new google.maps.Marker({
+        title: features[i].NomCli,
+        animation: google.maps.Animation.DROP,
+        position: features[i].position,
+        map: this.mapPinRutaEntrega,
+        icon: '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png',
+        zIndex: i,
+        label: ''
+      });
+      this.MarkersPinRutaEntrega.push(marker);
+    }
+  }
+  //#endregion creaTransporteMtd
+
+
   //#endregion CreaTransporte
 
   //#region ConsultaTransporte
@@ -389,6 +485,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
     this.directionsRenderers = []; // Limpia el array
   }
   //#endregion DireccionApi
+
   //#endregion Mapa
 
   //#region Volver

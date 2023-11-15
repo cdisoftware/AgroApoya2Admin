@@ -50,9 +50,8 @@
                                 (click)="IniciaMapRutaPoligon(templatePoligonRuta)">Crear sector milla</button>
                         </div>
                         <div class="col-sm-4 mb-2 mt-2">
-                            <ng-autocomplete [data]="ArrayPolygonos"
-                                [searchKeyword]="'NombreSector'" placeholder="Buscar sector milla"
-                                (inputCleared)="LimpiaSectorUtimaMilla('0')"
+                            <ng-autocomplete [data]="ArrayPolygonos" [searchKeyword]="'NombreSector'"
+                                placeholder="Buscar sector milla" (inputCleared)="LimpiaSectorUtimaMilla('0')"
                                 (selected)='selectSectorUtimaMilla($event)' [itemTemplate]="templateSecUltimaMilla"
                                 [notFoundTemplate]="templateVacio" [(ngModel)]="SectorUltimaMilla">
                             </ng-autocomplete>
@@ -69,11 +68,17 @@
                         <div class="row justify-content-center">
                             <div id="map" class="ShowMap"></div>
                         </div>
-                        <div class="col-sm-4 mt-2 mb-2">
+                        <div class="row justify-content-center mt-4">
+                            <div class="col-sm-4 mt-2 mb-2">
+                                <button type="button" class="btn btn-agro-prin w-100" (click)="CambiaEstadoProceso()">Generar Ruta</button>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4 mt-2 mb-2" *ngIf="1 + 1 == 3">
                             <button type="button" class="btn btn-agro-prin w-100"
                                 (click)="DireccionApi()">VerRuta</button>
                         </div>
-                        <div class="col-sm-4 mt-2 mb-2">
+                        <div class="col-sm-4 mt-2 mb-2" *ngIf="1 + 1 == 3">
                             <button type="button" class="btn btn-agro-prin w-100" (click)="LimpiaPolilineas()">Limpiar
                                 Ruta</button>
                         </div>
@@ -121,6 +126,13 @@
                         <div class="col-sm-4 mt-4 mb-2">
                             <button type="button" class="btn btn-agro-prin w-100"
                                 (click)="CreaTransporte()">Crear</button>
+                        </div>
+                    </div>
+
+                    <!--*ngIf="IdEstadoProceso == '3'"-->
+                    <div class="row justify-content-center" *ngIf="IdEstadoProceso == '4'">
+                        <div class="row justify-content-center">
+                            <div id="mapRuta" class="ShowMap"></div>
                         </div>
                     </div>
                 </ng-template>
@@ -210,14 +222,14 @@
             </div>
             <div class="col-sm-2" id="CoordenadasDiv" *ngIf="ArrayCoordenadas.length > 0">
                 <div class="row ArrayCoors" *ngFor="let coor of ArrayCoordenadas; let i = index">
-                    <div class="row CirculoImg"  alt="Borrar" (click)="EliminarCoordenadasMap(coor)">
+                    <div class="row CirculoImg" alt="Borrar" (click)="EliminarCoordenadasMap(coor)">
                         <img class="imagen-flotante" src="../../../../assets/ImagenesAgroApoya2Adm/ic_borrar.png">
                     </div>
 
                     <div class="row">Lat: {{coor.LTTUD}}</div>
                     <div class="row">Long: {{coor.LNGTUD}}</div>
 
-                    <hr *ngIf="i != ArrayCoordenadas.length"/>
+                    <hr *ngIf="i != ArrayCoordenadas.length" />
                 </div>
             </div>
         </div>
