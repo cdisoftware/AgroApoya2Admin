@@ -193,7 +193,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
     var cadenaOfertas = "";
     for (var i = 0; i < this.ArrayConsTransporte.length; i++) {
       if (this.ArrayConsTransporte[i].checked == true) {
-        cadenaOfertas += this.ArrayConsTransporte[i].CD_CNSCTVO + "|"
+        cadenaOfertas += this.ArrayConsTransporte[i].CD_CNSCTVO + "-" + this.ArrayConsTransporte[i].IdSector + "|"
       }
     }
     const body = {
@@ -202,18 +202,24 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
     }
     this.sevicesmilla.ValidaEntregasSector('1', body).subscribe(ResultadoValida => {
       this.sevicesmilla.ConsultaPolygonosGrupoMilla('1', IdSector).subscribe(RespuPins => {
-        var IdCarr = "";
-        for (var i = 0; i < RespuPins.length; i++) {
-          IdCarr += RespuPins[i].IdCarro + "|";
+        if (RespuPins.length > 0) {
+          var IdCarr = "";
+          for (var i = 0; i < RespuPins.length; i++) {
+            IdCarr += RespuPins[i].IdCarro + "|";
+          }
+          const body = {
+            IdGrupo: this.IdGrugo_,
+            IdCarros: IdCarr
+          }
+          this.sevicesmilla.AgregaCompras('3', body).subscribe(RespuInsert => {
+            this.ArrayPinsRutaGenerada = RespuPins;
+            this.IniciaMapaRuta();
+          });
+        } else {
+          this.MesajeModal = "Verifique que el sector seleccionado tenga mínimo una entrega dentro";
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+          this.IdEstadoProceso = "2";
         }
-        const body = {
-          IdGrupo: this.IdGrugo_,
-          IdCarros: IdCarr
-        }
-        this.sevicesmilla.AgregaCompras('3', body).subscribe(RespuInsert => {
-          this.ArrayPinsRutaGenerada = RespuPins;
-          this.IniciaMapaRuta();
-        });
       });
     });
   }
@@ -336,7 +342,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   }
 
 
-  AgregaPolilyneasApiDireccion(){
+  AgregaPolilyneasApiDireccion() {
     // Calcular y mostrar rutas entre ubicaciones
     for (let i = 0; i < this.ArrayPinsRutaGenerada.length - 1; i++) {
       const start = this.ArrayPinsRutaGenerada[i].CoordenadasEntrega;
@@ -398,9 +404,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       const body = {
         OfertaSector: cadenaOfertas
       }
-      console.log(cadenaOfertas);
       this.sevicesmilla.ConsultaEntregasDisponibles("1", body).subscribe(Respu => {
-        console.log(Respu);
         if (Respu.length > 0) {
           this.ArrayEntregasDisponibles = Respu;
           this.ListaPolygonos();
@@ -920,7 +924,6 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
     const miDiv: HTMLElement | null = document.getElementById('CreamapPoligon');
     let ancho: number = 0;
     let altura: number = 0;
-    console.log(miDiv)
     if (miDiv) {
       // Obtener el ancho y la altura
       ancho = miDiv.offsetWidth;
@@ -930,7 +933,6 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
 
     // Obtener el elemento div por su ID
     const DivCoor: HTMLElement | null = document.getElementById('CoordenadasDiv');
-    console.log(DivCoor)
     if (DivCoor) {
       DivCoor.style.height = altura + 'px';
       DivCoor.style.overflow = "auto";
