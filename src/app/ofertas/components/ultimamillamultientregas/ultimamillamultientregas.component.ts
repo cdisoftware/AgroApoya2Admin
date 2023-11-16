@@ -2,6 +2,14 @@ import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { GrupoMillaServices } from 'src/app/core/GrupoMillaServices';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
+import {
+  CdkDragDrop,
+  CdkDrag,
+  CdkDropList,
+  CdkDropListGroup,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-ultimamillamultientregas',
@@ -111,6 +119,13 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   ArrayPinsRutaGenerada: any = [];
   //#endregion MapaRutaGenerada
 
+  //#region VariablesGrupoMilla
+  NombreGrupo: string = "";
+  ValorGrupo: string = "";
+  IdGrupo_: string = "";
+  ArrayGruposMilla: any = [];
+  //#endregion VariablesGrupoMilla
+
   ngAfterViewInit(): void {
 
   }
@@ -200,6 +215,8 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       IdSector: IdSector,
       OfertaSector: cadenaOfertas
     }
+    alert(cadenaOfertas)
+    alert(IdSector)
     this.sevicesmilla.ValidaEntregasSector('1', body).subscribe(ResultadoValida => {
       this.sevicesmilla.ConsultaPolygonosGrupoMilla('1', IdSector).subscribe(RespuPins => {
         if (RespuPins.length > 0) {
@@ -214,6 +231,8 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
           this.sevicesmilla.AgregaCompras('3', body).subscribe(RespuInsert => {
             this.ArrayPinsRutaGenerada = RespuPins;
             this.IniciaMapaRuta();
+
+            this.ListaGruposMilla()
           });
         } else {
           this.MesajeModal = "Verifique que el sector seleccionado tenga mínimo una entrega dentro";
@@ -687,7 +706,6 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
           zoom: 14,
         }
       );
-      this.mapRutaPolygon.setOptions({ styles: this.StyleMap });
       this.mapRutaPolygon.addListener("click", (e: any) => {
         this.LimpiaMappRutaPoligono();
         this.AgregarMarcador(e.latLng, this.mapRutaPolygon);
@@ -940,4 +958,46 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   }
   //#endregion MapaRutaPoligono
 
+
+
+  //#region VariablesGrupoMilla
+  ListaGruposMilla() {
+
+    this.ArrayGruposMilla = [];
+
+    this.sevicesmilla.ConsultaTransportesCreados('1', this.IdGrugo_).subscribe(Respu => {
+      this.NombreGrupo = Respu[0].NombreGrupo;
+      this.ValorGrupo = Respu[0].ValorFlete;
+      this.IdGrupo_ = Respu[0].IdGrupoMilla;
+      this.ListaEntregasTransporte();
+    });
+  }
+  ListaEntregasTransporte() {
+    this.sevicesmilla.ConsEntregasTransporte('1', this.IdGrugo_).subscribe(Respu => {
+      console.log(Respu)
+      this.ArrayGruposMilla = Respu;
+    });
+  }
+    //ModOrden
+    drop(event: CdkDragDrop<string[]>, ArrayEntregas: any) {
+      moveItemInArray(ArrayEntregas, event.previousIndex, event.currentIndex);
+      var cadenaOrden: string = "";
+      for (var i = 0; i < ArrayEntregas.length; i++) {
+        cadenaOrden += ArrayEntregas[i].ID_CARRO + "-" + (i + 1) + "|";
+      }
+  
+      /*const orden = {
+        CadenaOrden: cadenaOrden,
+        IdGrupo: IdGrup,
+        Cd_cnsctivo: this.SelectOferta,
+        IdSector: this.SectorSelec
+      }
+      this.sevicesmilla.ModificaOrdenEntregas('1', orden).subscribe(Resultado => {
+        this.VerBtnAgregarGrupo = false;
+        this.SelectPin = false;
+        this.ListaGruposMilla();
+        this.LimpiaMaps();
+      });*/
+    }
+  //#endregion VariablesGrupoMilla
 }

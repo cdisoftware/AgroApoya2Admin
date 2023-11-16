@@ -70,7 +70,8 @@
                         </div>
                         <div class="row justify-content-center mt-4">
                             <div class="col-sm-4 mt-2 mb-2">
-                                <button type="button" class="btn btn-agro-prin w-100" (click)="CambiaEstadoProceso()">Generar Ruta</button>
+                                <button type="button" class="btn btn-agro-prin w-100"
+                                    (click)="CambiaEstadoProceso()">Generar Ruta</button>
                             </div>
                         </div>
 
@@ -134,6 +135,57 @@
                         <div class="row justify-content-center">
                             <div id="mapRuta" class="ShowMap"></div>
                             <div id="mapRutaPolilyneas" class="ShowMap"></div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-sm-4">
+                                <label class="Llave lblSmall">Nombre de
+                                    grupo:&nbsp;{{NombreGrupo}}</label>
+                            </div>
+
+                            <div class="col-sm-6 row">
+
+                                <div class="col-sm-6">
+                                    <label class="Llave lblSmall">Su precio sugerido es de:</label>
+                                </div>
+                                <div class="col-sm-6 TextRight">
+                                    <input type="text" mask="separator" thousandSeparator="," class="form-control"
+                                        placeholder="Valor contra oferta" required="required" [(ngModel)]="ValorGrupo">
+                                </div>
+                            </div>
+                            <div class="col-sm-2" style="text-align: center;">
+                                <button class="SinEstilo" title="Actualizar precio">
+                                    <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_guardar.png">
+                                </button>
+                                <button class="SinEstilo" title="Información">
+                                    <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/alert.png">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row" cdkDropList [cdkDropListData]="ArrayGruposMilla"
+                            (cdkDropListDropped)="drop($event, ArrayGruposMilla)">
+
+                            <div cdkDrag class="row justify-content-center Parada sinmp mt-3 CursorPointer"
+                                *ngFor="let part of ArrayGruposMilla; let y = index">
+                                <div class="row Parada">
+                                    <div class="col-sm-1">
+                                        <label class="Llave lblSmall">{{y+1}}</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="Llave lblSmall">{{part.NombrePersona}}</label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class="Llave lblSmall">{{part.DireccionEntrega}}</label>
+                                    </div>
+
+                                    <div class="col-sm-3 TextRight">
+                                        <button class="SinEstilo" title="Eliminar">
+                                            <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/basura.png">
+                                        </button>
+                                    </div>
+                                </div>
+                                <hr class="mt-1" *ngIf="y + 1 != ArrayGruposMilla.length">
+
+                            </div>
                         </div>
                     </div>
                 </ng-template>

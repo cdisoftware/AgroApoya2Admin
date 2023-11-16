@@ -79,4 +79,13 @@ export class GrupoMillaServices {
     AgregaCompras(bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'modAdMillaGruposFoco/' + bandera, body);
     }
+
+
+    //UtimaMilla
+    ConsEntregasTransporte(bandera: string, IdGrupo: string) {
+        return this.http.get<any>(this.url_servidor + 'consAdMillaGrupos/' + bandera + '/' + IdGrupo);
+    }
+    OrdenEntregas(bandera: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'AdmillaOrdenComprasGrupo/' + bandera, body);
+    }
 }
