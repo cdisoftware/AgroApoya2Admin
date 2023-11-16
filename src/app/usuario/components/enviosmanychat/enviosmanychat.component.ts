@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ValorarofertaService } from './../../../core/valoraroferta.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PublicidadService } from 'src/app/core/publicidad.service';
+import { timer } from 'rxjs';
 @Component({
   selector: 'app-enviosmanychat',
   templateUrl: './enviosmanychat.component.html',
@@ -162,7 +163,7 @@ export class EnviosmanychatComponent implements OnInit {
     })
   }
 
-  async EvioMennychat() {
+  async EnvioManyChat() {
     if (this.IdPlantll == null || this.IdPlantll == undefined || this.IdPlantll == '') {
       this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
       this.Respuesta = "IdPlantilla obligatorio.";
@@ -173,12 +174,17 @@ export class EnviosmanychatComponent implements OnInit {
           this.Loader = true;
           //Envio plantilla
           const result3 = await this.EnviaPlantilla(this.DataQuery[i].ID_MANYCHAT);
-          await new Promise(resolve => setTimeout(resolve, 500));//Hace esperar 1 segundos para ejecutar el siguiente servicio
+          // Espera 1 segundo después de cada bloque de 25 solicitudes
+          if ((i + 1) % 25 === 0) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
         }
         this.AuditoriaManychat();
         this.IdPlantll = '';
         this.NunMensajesEnviados = 0;
         this.Loader = false;
+        this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        this.Respuesta = "Mensajes enviados.";
       } else {
         this.Respuesta = "Sin resultados.";
         this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
@@ -187,7 +193,6 @@ export class EnviosmanychatComponent implements OnInit {
   }
 
   async EnviaPlantilla(IdMenyChat: string) {
-
     await new Promise((resolve, reject) => {
       const body = {
         subscriber_id: IdMenyChat,
@@ -200,7 +205,6 @@ export class EnviosmanychatComponent implements OnInit {
         return true;
       });
     });
-
   }
 
 
