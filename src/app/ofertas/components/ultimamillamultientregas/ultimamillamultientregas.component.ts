@@ -71,7 +71,6 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   map: google.maps.Map;
   MarkersEntregasDisponibles: google.maps.Marker[] = [];
   markerBodega: google.maps.Marker[] = [];
-  PoliLynes: google.maps.Polyline[] = [];
   infoWindow = new google.maps.InfoWindow();
   AreaPolygonMap: google.maps.Polygon | null = null;
   ArrayEntregas: any = [];
@@ -101,6 +100,9 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
 
   mapPinRutaEntregaPolylineas: google.maps.Map;
   MarkersPinRutaEntregaPolylineas: google.maps.Marker[] = [];
+
+  PoliLynes: google.maps.Polyline[] = [];
+  AreaPolygonMapApi: google.maps.Polygon | null = null;
   //#endregion MapaPinSTransportesGenerados
   //#endregion Mapa
 
@@ -253,6 +255,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       );
       this.mapPinRutaEntregaPolylineas.setOptions({ styles: this.StyleMap });
       this.AgregarSitiosRutaEntregas();
+      this.AgregaPolilineasRuta();
       return results;
     })
       .catch((e) => {
@@ -306,6 +309,66 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       this.MarkersPinRutaEntregaPolylineas.push(marker);
     }
   }
+
+
+
+  AgregaPolilineasRuta() {
+    var lat: number;
+    var long: number;
+    const Polylines = [];
+    this.PoliLynes = [];
+    for (var j = 0; j < this.ArrayPinsRutaGenerada.length; j++) {
+      var auxcoor = this.ArrayPinsRutaGenerada[j].CoordenadasEntrega.split(",");
+      lat = parseFloat(auxcoor[0]);
+      long = parseFloat(auxcoor[1]);
+      Polylines.push({ lat: lat, lng: long });
+    }
+    const flightPath = new google.maps.Polyline({
+      path: Polylines,
+      geodesic: true,
+      strokeColor: '#000000',
+      strokeOpacity: 1.0,
+      strokeWeight: 3,
+    });
+    this.PoliLynes.push(flightPath);
+    flightPath.setMap(this.mapPinRutaEntrega);
+    this.AgregaPolilyneasApiDireccion();
+  }
+
+
+  AgregaPolilyneasApiDireccion(){
+    // Calcular y mostrar rutas entre ubicaciones
+    for (let i = 0; i < this.ArrayPinsRutaGenerada.length - 1; i++) {
+      const start = this.ArrayPinsRutaGenerada[i].CoordenadasEntrega;
+      const end = this.ArrayPinsRutaGenerada[i + 1].CoordenadasEntrega;
+
+      const request = {
+        origin: start,
+        destination: end,
+        travelMode: google.maps.TravelMode.DRIVING,
+      };
+
+      this.directionsService.route(request, (result, status) => {
+        if (status === 'OK') {
+          const directionsRenderer = new google.maps.DirectionsRenderer({
+            suppressMarkers: true, // Esto quitará los marcadores "A" y "B"
+          });
+          directionsRenderer.setDirections(result);
+          directionsRenderer.setMap(this.mapPinRutaEntregaPolylineas);
+          this.directionsRenderers.push(directionsRenderer);
+
+
+          // Personalizar el estilo de la polilínea
+          const polylineOptions = {
+            strokeColor: '#000000', // Color de la línea (rojo)
+            strokeOpacity: 0.8,     // Opacidad de la línea (0.0 a 1.0)
+            strokeWeight: 2      // Grosor de la línea
+          };
+          directionsRenderer.setOptions({ polylineOptions });
+        }
+      });
+    }
+  }
   //#endregion creaTransporteMtd
 
 
@@ -335,7 +398,9 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       const body = {
         OfertaSector: cadenaOfertas
       }
+      console.log(cadenaOfertas);
       this.sevicesmilla.ConsultaEntregasDisponibles("1", body).subscribe(Respu => {
+        console.log(Respu);
         if (Respu.length > 0) {
           this.ArrayEntregasDisponibles = Respu;
           this.ListaPolygonos();
