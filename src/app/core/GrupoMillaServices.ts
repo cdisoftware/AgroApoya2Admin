@@ -76,4 +76,7 @@ export class GrupoMillaServices {
     ValidaEntregasSector(bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'ValidaSectorAdmin/' + bandera, body);
     }
+    AgregaCompras(bandera: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'modAdMillaGruposFoco/' + bandera, body);
+    }
 }

@@ -13,6 +13,22 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
 
   //#region General
   IdGrugo_: string = "0";
+
+  StyleMap = [
+    {
+      featureType: 'poi',
+      stylers: [{ visibility: 'off' }]
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels',
+      stylers: [{ visibility: 'off' }]
+    },
+    {
+      featureType: 'transit',
+      stylers: [{ visibility: 'off' }]
+    }
+  ];
   //#endregion General
 
   //#region ModalMensaje
@@ -82,6 +98,9 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   geocoderPinRutaEntrega = new google.maps.Geocoder();
   mapPinRutaEntrega: google.maps.Map;
   MarkersPinRutaEntrega: google.maps.Marker[] = [];
+
+  mapPinRutaEntregaPolylineas: google.maps.Map;
+  MarkersPinRutaEntregaPolylineas: google.maps.Marker[] = [];
   //#endregion MapaPinSTransportesGenerados
   //#endregion Mapa
 
@@ -181,8 +200,18 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
     }
     this.sevicesmilla.ValidaEntregasSector('1', body).subscribe(ResultadoValida => {
       this.sevicesmilla.ConsultaPolygonosGrupoMilla('1', IdSector).subscribe(RespuPins => {
-        this.ArrayPinsRutaGenerada = RespuPins;
-        this.IniciaMapaRuta();
+        var IdCarr = "";
+        for (var i = 0; i < RespuPins.length; i++) {
+          IdCarr += RespuPins[i].IdCarro + "|";
+        }
+        const body = {
+          IdGrupo: this.IdGrugo_,
+          IdCarros: IdCarr
+        }
+        this.sevicesmilla.AgregaCompras('3', body).subscribe(RespuInsert => {
+          this.ArrayPinsRutaGenerada = RespuPins;
+          this.IniciaMapaRuta();
+        });
       });
     });
   }
@@ -204,6 +233,25 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
           zoom: 12,
         }
       );
+      this.mapPinRutaEntrega.setOptions({ styles: this.StyleMap });
+
+
+
+      return results;
+    })
+      .catch((e) => {
+      });
+
+    this.geocoderPinRutaEntrega.geocode(request).then((result) => {
+      const { results } = result;
+      this.mapPinRutaEntregaPolylineas = new google.maps.Map(
+        document.getElementById("mapRutaPolilyneas") as HTMLElement,
+        {
+          center: { lat: 4.70281065790573, lng: -74.05637826500855 },
+          zoom: 12,
+        }
+      );
+      this.mapPinRutaEntregaPolylineas.setOptions({ styles: this.StyleMap });
       this.AgregarSitiosRutaEntregas();
       return results;
     })
@@ -215,6 +263,11 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       this.MarkersPinRutaEntrega[i].setMap(null);
     }
     this.MarkersPinRutaEntrega = [];
+    for (var i = 0; i < this.MarkersPinRutaEntregaPolylineas.length; i++) {
+      this.MarkersPinRutaEntregaPolylineas[i].setMap(null);
+    }
+    this.MarkersPinRutaEntregaPolylineas = [];
+
 
     const features = [];
     var lat: number;
@@ -239,6 +292,18 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
         label: ''
       });
       this.MarkersPinRutaEntrega.push(marker);
+
+
+      var marker = new google.maps.Marker({
+        title: features[i].NomCli,
+        animation: google.maps.Animation.DROP,
+        position: features[i].position,
+        map: this.mapPinRutaEntregaPolylineas,
+        icon: '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png',
+        zIndex: i,
+        label: ''
+      });
+      this.MarkersPinRutaEntregaPolylineas.push(marker);
     }
   }
   //#endregion creaTransporteMtd
@@ -382,6 +447,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
           zoom: 12,
         }
       );
+      this.map.setOptions({ styles: this.StyleMap });
       this.AgregarSitiosRuta();
       return results;
     })
@@ -552,6 +618,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
           zoom: 14,
         }
       );
+      this.mapRutaPolygon.setOptions({ styles: this.StyleMap });
       this.mapRutaPolygon.addListener("click", (e: any) => {
         this.LimpiaMappRutaPoligono();
         this.AgregarMarcador(e.latLng, this.mapRutaPolygon);
