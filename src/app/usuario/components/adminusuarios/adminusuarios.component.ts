@@ -236,9 +236,6 @@ export class AdminusuariosComponent implements OnInit {
     } else if (this.INPDescTres == undefined || this.INPDescTres == null || this.INPDescTres == '') {
       this.Respuesta = 'El campo descripción tres es obligatorio.';
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.INPObservacion == undefined || this.INPObservacion == null || this.INPObservacion == '') {
-      this.Respuesta = 'El campo observación es obligatorio.';
-      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else if (this.INPComentario == undefined || this.INPComentario == null || this.INPComentario == '') {
       this.Respuesta = 'El campo comentario es obligatorio.';
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -296,7 +293,7 @@ export class AdminusuariosComponent implements OnInit {
   public CargaImagen(numimg: string, event: any) {
     var bandera = '3'
     console.log(this.ArrayImagenes)
-
+    var IdImagen = '0'
     this.ServiciosOferta.postFileImgUsers(event.target.files[0]).subscribe(
 
       response => {
@@ -304,38 +301,46 @@ export class AdminusuariosComponent implements OnInit {
           this.ImagenAdd = this.RutaImagenes + event.target.files[0].name;
           //this.NomImagen1 = event.target.files[0].name;
           if (this.ArrayImagenes.length > 1) {
+            IdImagen = this.ArrayImagenes[0].id
             bandera = '2'
           } else {
+            IdImagen = '0'
             bandera = '3'
           }
-          this.ActualizaImagen(bandera, this.ArrayImagenes[0].id, event.target.files[0].name, '1');
+          this.ActualizaImagen(bandera, IdImagen, event.target.files[0].name, '1');
         }
         if (numimg == '2') {
           this.Imagen1 = this.RutaImagenes + event.target.files[0].name;
           if (this.ArrayImagenes.length > 2) {
+            IdImagen = this.ArrayImagenes[1].id
             bandera = '2'
           } else {
+            IdImagen = '0'
             bandera = '3'
           }
-          this.ActualizaImagen(bandera, this.ArrayImagenes[1].id, event.target.files[0].name, '2');
+          this.ActualizaImagen(bandera, IdImagen, event.target.files[0].name, '2');
         }
         if (numimg == '3') {
           this.Imagen2 = this.RutaImagenes + event.target.files[0].name;
           if (this.ArrayImagenes.length > 3) {
+            IdImagen = this.ArrayImagenes[2].id
             bandera = '2'
           } else {
+            IdImagen = '0'
             bandera = '3'
           }
-          this.ActualizaImagen(bandera, this.ArrayImagenes[2].id, event.target.files[0].name, '3');
+          this.ActualizaImagen(bandera, IdImagen, event.target.files[0].name, '3');
         }
         if (numimg == '4') {
           this.Imagen3 = this.RutaImagenes + event.target.files[0].name;
           if (this.ArrayImagenes.length > 4) {
+            IdImagen = this.ArrayImagenes[3].id
             bandera = '2'
           } else {
+            IdImagen = '0'
             bandera = '3'
           }
-          this.ActualizaImagen(bandera, this.ArrayImagenes[3].id, event.target.files[0].name, '4');
+          this.ActualizaImagen(bandera, IdImagen, event.target.files[0].name, '4');
         }
         console.log(response);
 
