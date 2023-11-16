@@ -275,7 +275,7 @@ export class AdminusuariosComponent implements OnInit {
         Observacion: this.INPObservacion,
         FechaNacimiento: this.INPEdad,
         Vereda: this.INPVereda,
-        Finca:this.INPFinca
+        Finca: this.INPFinca
       }
       console.log(BodyInsert)
       this.serviciosreportes.AgregaInfoPerfil('3', BodyInsert).subscribe(Resultado => {
@@ -293,14 +293,14 @@ export class AdminusuariosComponent implements OnInit {
     this.CorreoBuscar = '';
     this.CedulaBuscar = '';
   }
-  public CargaImagen(idimagen: string, event: any) {
+  public CargaImagen(numimg: string, event: any) {
     var bandera = '3'
     console.log(this.ArrayImagenes)
-    alert(idimagen)
+
     this.ServiciosOferta.postFileImgUsers(event.target.files[0]).subscribe(
-      
+
       response => {
-        if (idimagen == '1') {
+        if (numimg == '1') {
           this.ImagenAdd = this.RutaImagenes + event.target.files[0].name;
           //this.NomImagen1 = event.target.files[0].name;
           if (this.ArrayImagenes.length > 1) {
@@ -308,34 +308,34 @@ export class AdminusuariosComponent implements OnInit {
           } else {
             bandera = '3'
           }
-          this.ActualizaImagen(bandera, this.ArrayImagenes[0].id, event.target.files[0].name);
+          this.ActualizaImagen(bandera, this.ArrayImagenes[0].id, event.target.files[0].name, '1');
         }
-        if (idimagen == '2') {
+        if (numimg == '2') {
           this.Imagen1 = this.RutaImagenes + event.target.files[0].name;
           if (this.ArrayImagenes.length > 2) {
             bandera = '2'
           } else {
             bandera = '3'
           }
-          this.ActualizaImagen(bandera, this.ArrayImagenes[1].id, event.target.files[0].name);
+          this.ActualizaImagen(bandera, this.ArrayImagenes[1].id, event.target.files[0].name, '2');
         }
-        if (idimagen == '3') {
+        if (numimg == '3') {
           this.Imagen2 = this.RutaImagenes + event.target.files[0].name;
           if (this.ArrayImagenes.length > 3) {
             bandera = '2'
           } else {
             bandera = '3'
           }
-          this.ActualizaImagen(bandera, this.ArrayImagenes[2].id, event.target.files[0].name);
+          this.ActualizaImagen(bandera, this.ArrayImagenes[2].id, event.target.files[0].name, '3');
         }
-        if (idimagen == '4') {
+        if (numimg == '4') {
           this.Imagen3 = this.RutaImagenes + event.target.files[0].name;
           if (this.ArrayImagenes.length > 4) {
             bandera = '2'
           } else {
             bandera = '3'
           }
-          this.ActualizaImagen(bandera, this.ArrayImagenes[3].id, event.target.files[0].name);
+          this.ActualizaImagen(bandera, this.ArrayImagenes[3].id, event.target.files[0].name, '4');
         }
         console.log(response);
 
@@ -345,13 +345,13 @@ export class AdminusuariosComponent implements OnInit {
     );
   }
 
-  ActualizaImagen(bandera: string, IdImagen: string, NombreImagen: string) {
+  ActualizaImagen(bandera: string, IdImagen: string, NombreImagen: string, Orden: string) {
     const BodyImagen = {
       IdImagen: IdImagen,
       Usucodig: this.IdUsuario,
       NombreImagen: NombreImagen,
-      ImgPrincipal: '1',
-      Orden: '1'
+      ImgPrincipal: Orden,
+      Orden: Orden
     }
     console.log(BodyImagen)
     this.serviciosreportes.ActualizaImagen(bandera, BodyImagen).subscribe(Resultado => {
