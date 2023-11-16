@@ -71,7 +71,6 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   map: google.maps.Map;
   MarkersEntregasDisponibles: google.maps.Marker[] = [];
   markerBodega: google.maps.Marker[] = [];
-  PoliLynes: google.maps.Polyline[] = [];
   infoWindow = new google.maps.InfoWindow();
   AreaPolygonMap: google.maps.Polygon | null = null;
   ArrayEntregas: any = [];
@@ -101,6 +100,9 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
 
   mapPinRutaEntregaPolylineas: google.maps.Map;
   MarkersPinRutaEntregaPolylineas: google.maps.Marker[] = [];
+
+  PoliLynes: google.maps.Polyline[] = [];
+  AreaPolygonMapApi: google.maps.Polygon | null = null;
   //#endregion MapaPinSTransportesGenerados
   //#endregion Mapa
 
@@ -191,7 +193,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
     var cadenaOfertas = "";
     for (var i = 0; i < this.ArrayConsTransporte.length; i++) {
       if (this.ArrayConsTransporte[i].checked == true) {
-        cadenaOfertas += this.ArrayConsTransporte[i].CD_CNSCTVO + "|"
+        cadenaOfertas += this.ArrayConsTransporte[i].CD_CNSCTVO + "-" + this.ArrayConsTransporte[i].IdSector + "|"
       }
     }
     const body = {
@@ -200,18 +202,24 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
     }
     this.sevicesmilla.ValidaEntregasSector('1', body).subscribe(ResultadoValida => {
       this.sevicesmilla.ConsultaPolygonosGrupoMilla('1', IdSector).subscribe(RespuPins => {
-        var IdCarr = "";
-        for (var i = 0; i < RespuPins.length; i++) {
-          IdCarr += RespuPins[i].IdCarro + "|";
+        if (RespuPins.length > 0) {
+          var IdCarr = "";
+          for (var i = 0; i < RespuPins.length; i++) {
+            IdCarr += RespuPins[i].IdCarro + "|";
+          }
+          const body = {
+            IdGrupo: this.IdGrugo_,
+            IdCarros: IdCarr
+          }
+          this.sevicesmilla.AgregaCompras('3', body).subscribe(RespuInsert => {
+            this.ArrayPinsRutaGenerada = RespuPins;
+            this.IniciaMapaRuta();
+          });
+        } else {
+          this.MesajeModal = "Verifique que el sector seleccionado tenga mínimo una entrega dentro";
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+          this.IdEstadoProceso = "2";
         }
-        const body = {
-          IdGrupo: this.IdGrugo_,
-          IdCarros: IdCarr
-        }
-        this.sevicesmilla.AgregaCompras('3', body).subscribe(RespuInsert => {
-          this.ArrayPinsRutaGenerada = RespuPins;
-          this.IniciaMapaRuta();
-        });
       });
     });
   }
@@ -253,6 +261,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       );
       this.mapPinRutaEntregaPolylineas.setOptions({ styles: this.StyleMap });
       this.AgregarSitiosRutaEntregas();
+      this.AgregaPolilineasRuta();
       return results;
     })
       .catch((e) => {
@@ -304,6 +313,66 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
         label: ''
       });
       this.MarkersPinRutaEntregaPolylineas.push(marker);
+    }
+  }
+
+
+
+  AgregaPolilineasRuta() {
+    var lat: number;
+    var long: number;
+    const Polylines = [];
+    this.PoliLynes = [];
+    for (var j = 0; j < this.ArrayPinsRutaGenerada.length; j++) {
+      var auxcoor = this.ArrayPinsRutaGenerada[j].CoordenadasEntrega.split(",");
+      lat = parseFloat(auxcoor[0]);
+      long = parseFloat(auxcoor[1]);
+      Polylines.push({ lat: lat, lng: long });
+    }
+    const flightPath = new google.maps.Polyline({
+      path: Polylines,
+      geodesic: true,
+      strokeColor: '#000000',
+      strokeOpacity: 1.0,
+      strokeWeight: 3,
+    });
+    this.PoliLynes.push(flightPath);
+    flightPath.setMap(this.mapPinRutaEntrega);
+    this.AgregaPolilyneasApiDireccion();
+  }
+
+
+  AgregaPolilyneasApiDireccion() {
+    // Calcular y mostrar rutas entre ubicaciones
+    for (let i = 0; i < this.ArrayPinsRutaGenerada.length - 1; i++) {
+      const start = this.ArrayPinsRutaGenerada[i].CoordenadasEntrega;
+      const end = this.ArrayPinsRutaGenerada[i + 1].CoordenadasEntrega;
+
+      const request = {
+        origin: start,
+        destination: end,
+        travelMode: google.maps.TravelMode.DRIVING,
+      };
+
+      this.directionsService.route(request, (result, status) => {
+        if (status === 'OK') {
+          const directionsRenderer = new google.maps.DirectionsRenderer({
+            suppressMarkers: true, // Esto quitará los marcadores "A" y "B"
+          });
+          directionsRenderer.setDirections(result);
+          directionsRenderer.setMap(this.mapPinRutaEntregaPolylineas);
+          this.directionsRenderers.push(directionsRenderer);
+
+
+          // Personalizar el estilo de la polilínea
+          const polylineOptions = {
+            strokeColor: '#000000', // Color de la línea (rojo)
+            strokeOpacity: 0.8,     // Opacidad de la línea (0.0 a 1.0)
+            strokeWeight: 2      // Grosor de la línea
+          };
+          directionsRenderer.setOptions({ polylineOptions });
+        }
+      });
     }
   }
   //#endregion creaTransporteMtd
@@ -855,7 +924,6 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
     const miDiv: HTMLElement | null = document.getElementById('CreamapPoligon');
     let ancho: number = 0;
     let altura: number = 0;
-    console.log(miDiv)
     if (miDiv) {
       // Obtener el ancho y la altura
       ancho = miDiv.offsetWidth;
@@ -865,7 +933,6 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
 
     // Obtener el elemento div por su ID
     const DivCoor: HTMLElement | null = document.getElementById('CoordenadasDiv');
-    console.log(DivCoor)
     if (DivCoor) {
       DivCoor.style.height = altura + 'px';
       DivCoor.style.overflow = "auto";
