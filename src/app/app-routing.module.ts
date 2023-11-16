@@ -34,6 +34,7 @@ import { EnviosmanychatComponent } from './usuario/components/enviosmanychat/env
 import { SeguimientosComponent } from './ofertas/components/seguimientos/seguimientos.component';
 import { UltimamillamultientregasComponent } from './ofertas/components/ultimamillamultientregas/ultimamillamultientregas.component';
 import { MapacalorComponent } from './ofertas/components/mapacalor/mapacalor.component';
+import { ModificarOfertaPublicaComponent } from './ofertas/components/modificar-oferta-publica/modificar-oferta-publica.component';
 
 const routes: Routes = [
   {
@@ -178,6 +179,10 @@ const routes: Routes = [
       {
         path: 'MapaCalor',
         component: MapacalorComponent
+      },
+      {
+        path: 'ModificarOferta',
+        component: ModificarOfertaPublicaComponent
       }
     ]
   },
