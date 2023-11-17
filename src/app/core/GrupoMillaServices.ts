@@ -88,4 +88,7 @@ export class GrupoMillaServices {
     OrdenEntregas(bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'AdmillaOrdenComprasGrupo/' + bandera, body);
     }
+    ModEntrega(bandera: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'modAdmillaPin/' + bandera, body);
+    }
 }

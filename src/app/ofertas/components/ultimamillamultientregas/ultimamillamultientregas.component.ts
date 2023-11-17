@@ -193,9 +193,13 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       }
       this.sevicesmilla.CreaTransporteEntrega('4', body).subscribe(Resultado => {
         const result = Resultado.split("|");
-        this.IdGrugo_ = result[0];
-        this.ValidaEntregasUltimaMilla(this.IdSectorUltimaMilla_);
-        //this.IniciaMapaRuta();
+        if (Number(result[0]) > 0) {
+          this.IdGrugo_ = result[0];
+          this.ValidaEntregasUltimaMilla(this.IdSectorUltimaMilla_);
+        } else {
+          this.MesajeModal = "No fue posible crear el transporte, por favor comuníquese con soporte";
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        }
       });
 
 
@@ -215,8 +219,6 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       IdSector: IdSector,
       OfertaSector: cadenaOfertas
     }
-    alert(cadenaOfertas)
-    alert(IdSector)
     this.sevicesmilla.ValidaEntregasSector('1', body).subscribe(ResultadoValida => {
       this.sevicesmilla.ConsultaPolygonosGrupoMilla('1', IdSector).subscribe(RespuPins => {
         if (RespuPins.length > 0) {
@@ -228,6 +230,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
             IdGrupo: this.IdGrugo_,
             IdCarros: IdCarr
           }
+          var aux = body
           this.sevicesmilla.AgregaCompras('3', body).subscribe(RespuInsert => {
             this.ArrayPinsRutaGenerada = RespuPins;
             this.IniciaMapaRuta();
@@ -315,7 +318,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
         animation: google.maps.Animation.DROP,
         position: features[i].position,
         map: this.mapPinRutaEntrega,
-        icon: '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png',
+        icon: '../../../../assets/ImagenesAgroApoya2Adm/Entregado.png',
         zIndex: i,
         label: ''
       });
@@ -327,7 +330,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
         animation: google.maps.Animation.DROP,
         position: features[i].position,
         map: this.mapPinRutaEntregaPolylineas,
-        icon: '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png',
+        icon: '../../../../assets/ImagenesAgroApoya2Adm/Entregado.png',
         zIndex: i,
         label: ''
       });
@@ -393,6 +396,30 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
         }
       });
     }
+  }
+
+  LimpiaMapsEntregas() {
+    for (const renderer of this.directionsRenderers) {
+      renderer.setMap(null); // Esto elimina la polilínea del mapa
+    }
+    this.directionsRenderers = []; // Limpia el array
+
+
+    for (var i = 0; i < this.MarkersPinRutaEntregaPolylineas.length; i++) {
+      this.MarkersPinRutaEntregaPolylineas[i].setMap(null);
+    }
+    this.MarkersPinRutaEntregaPolylineas = [];
+
+    for (var i = 0; i < this.MarkersPinRutaEntrega.length; i++) {
+      this.MarkersPinRutaEntrega[i].setMap(null);
+    }
+    this.MarkersPinRutaEntrega = [];
+
+
+    for (var i = 0; i < this.PoliLynes.length; i++) {
+      this.PoliLynes[i].setMap(null);
+    }
+    this.PoliLynes = [];
   }
   //#endregion creaTransporteMtd
 
@@ -577,69 +604,6 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       this.MarkersEntregasDisponibles.push(marker);
     }
   }
-
-  //#region DireccionApi
-  DireccionApi() {
-    var arrayEntregas = [];
-    var arrayDirections: any;
-
-    arrayEntregas = [
-      {
-        coordenadas: "4.758772067158138, -74.06965737201203"
-      },
-      {
-        coordenadas: "4.702658951909229, -74.04871468534449"
-      },
-      {
-        coordenadas: "4.712581723589741, -74.13317207747914"
-      },
-      {
-        coordenadas: "4.638328602588013, -74.12699226829857"
-      }];
-
-
-    // Calcular y mostrar rutas entre ubicaciones
-    for (let i = 0; i < arrayEntregas.length - 1; i++) {
-      const start = arrayEntregas[i].coordenadas;
-      const end = arrayEntregas[i + 1].coordenadas;
-
-      const request = {
-        origin: start,
-        destination: end,
-        travelMode: google.maps.TravelMode.DRIVING,
-      };
-
-      this.directionsService.route(request, (result, status) => {
-        if (status === 'OK') {
-          const directionsRenderer = new google.maps.DirectionsRenderer({
-            suppressMarkers: true, // Esto quitará los marcadores "A" y "B"
-          });
-          directionsRenderer.setDirections(result);
-          directionsRenderer.setMap(this.map);
-          this.directionsRenderers.push(directionsRenderer);
-
-
-          // Personalizar el estilo de la polilínea
-          const polylineOptions = {
-            strokeColor: '#FF0000', // Color de la línea (rojo)
-            strokeOpacity: 0.8,     // Opacidad de la línea (0.0 a 1.0)
-            strokeWeight: 4        // Grosor de la línea
-          };
-          directionsRenderer.setOptions({ polylineOptions });
-        }
-      });
-    }
-  }
-
-
-  LimpiaPolilineas() {
-    for (const renderer of this.directionsRenderers) {
-      renderer.setMap(null); // Esto elimina la polilínea del mapa
-    }
-    this.directionsRenderers = []; // Limpia el array
-  }
-  //#endregion DireccionApi
-
   //#endregion Mapa
 
   //#region Volver
@@ -978,26 +942,77 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       this.ArrayGruposMilla = Respu;
     });
   }
-    //ModOrden
-    drop(event: CdkDragDrop<string[]>, ArrayEntregas: any) {
-      moveItemInArray(ArrayEntregas, event.previousIndex, event.currentIndex);
-      var cadenaOrden: string = "";
-      for (var i = 0; i < ArrayEntregas.length; i++) {
-        cadenaOrden += ArrayEntregas[i].ID_CARRO + "-" + (i + 1) + "|";
-      }
-  
-      /*const orden = {
-        CadenaOrden: cadenaOrden,
-        IdGrupo: IdGrup,
-        Cd_cnsctivo: this.SelectOferta,
-        IdSector: this.SectorSelec
-      }
-      this.sevicesmilla.ModificaOrdenEntregas('1', orden).subscribe(Resultado => {
-        this.VerBtnAgregarGrupo = false;
-        this.SelectPin = false;
-        this.ListaGruposMilla();
-        this.LimpiaMaps();
-      });*/
+  //ModOrden
+  drop(event: CdkDragDrop<string[]>, ArrayEntregas: any) {
+    moveItemInArray(ArrayEntregas, event.previousIndex, event.currentIndex);
+    var cadenaOrden: string = "";
+    for (var i = 0; i < ArrayEntregas.length; i++) {
+      cadenaOrden += ArrayEntregas[i].IdCarro + "-" + (i + 1) + "|";
     }
+
+    const orden = {
+      CadenaOrden: cadenaOrden,
+      IdGrupo: 34
+    }
+    this.sevicesmilla.OrdenEntregas('1', orden).subscribe(Resultado => {
+      var auxrespuorden = Resultado.split("|");
+      if (auxrespuorden.length > 1) {
+        if (Number(auxrespuorden[0]) > 0) {
+          this.ArrayPinsRutaGenerada = [];
+
+          this.sevicesmilla.ConsultaPolygonosGrupoMilla('1', this.IdSectorUltimaMilla_).subscribe(RespuPins => {
+            this.ArrayPinsRutaGenerada = RespuPins;
+            this.LimpiaMapsEntregas();
+            this.IniciaMapaRuta();
+          });
+        } else {
+          this.MesajeModal = "No fue posible realizar la acción, por favor válida el orden que estás ingresando e intenta nuevamente (Orden (2))";
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        }
+      } else {
+        this.MesajeModal = "No fue posible realizar la acción, por favor válida el orden que estás ingresando e intenta nuevamente (Orden (1))";
+        this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+      }
+    });
+  }
+
+  ItemEliminacion: any = null;
+  AbreModalConfirmacionModEntrega(item: any, templateConfirmacionElimina: any) {
+    console.log(item)
+    this.ItemEliminacion = item;
+    this.modalService.open(templateConfirmacionElimina, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+  }
+
+  EliminaEntrega(item: any) {
+    const body = {
+      IdGrupo: item.IdGrupo,
+      IdCarro: item.IdCarro
+    }
+    this.sevicesmilla.ModEntrega('4', body).subscribe(Respu => {
+      var auxrespu = Respu.split("|");
+      if (Number(auxrespu[0]) > 0) {
+        this.MesajeModal = "La entrega de " + item.NombrePersona + " se elimino exitosamente";
+        this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+
+        this.ArrayPinsRutaGenerada = [];
+
+        this.sevicesmilla.ConsultaPolygonosGrupoMilla('1', this.IdSectorUltimaMilla_).subscribe(RespuPins => {
+          this.ArrayPinsRutaGenerada = RespuPins;
+          this.LimpiaMapsEntregas();
+          this.IniciaMapaRuta();
+        });
+      } else {
+        this.MesajeModal = "No fue posible eliminar la entrega de " + item.NombrePersona + " comunicate con soporte";
+        this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+      }
+    });
+  }
+
+
+  ItemVerInfo: any = null;
+  AbreModalInfoCompra(item: any, templateDetalleEntrega: any) {
+    this.ItemVerInfo = item;
+    this.modalService.open(templateDetalleEntrega, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+  }
   //#endregion VariablesGrupoMilla
 }
