@@ -15,124 +15,138 @@
                 <ng-template #templateVacio let-SinRegistro>
                     <label for="">Sin registros</label>
                 </ng-template>
-            </div>        
-        </div>
-
-        <div class="row justify-content-center br tarjetadetalle" *ngFor="let oferta of DataOferta">
-            <div class="row m-2">
-                <div class="col-sm-3">
-                    <img src={{RutaImagen+oferta.IMAGEN}} class="col-sm-12 ImgOferta">
-                </div>
-                <div class="col-sm-9">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <label class="Llave TextMay">Código oferta:&nbsp;</label><label
-                                        class="ValorIDOfer"><strong>{{oferta.COD_OFR_PUBLICO}}</strong></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <label class="Llave">Producto:&nbsp;</label><label
-                                        class="Valor">{{oferta.Nombre_Producto}}</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <label class="Llave">Presentación empaque:&nbsp;</label><label
-                                        class="Valor">{{oferta.Descripcion_empaque}}</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <label class="Llave">Tamaño:&nbsp;</label><label
-                                        class="Valor">{{oferta.Nmbre_tamano}}</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <label class="Llave">Condición entrega:&nbsp;</label> <label
-                                        class="Valor">{{oferta.Condicion_entrega}}</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <label class="Llave">Unidades disponibles:&nbsp;</label><label
-                                        class="Valor">{{oferta.Unidades_disponibles}}</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <hr class="hrSinEstilo">
-
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <label class="Llave">Caracterización:&nbsp;</label><label
-                                class="Valor">{{oferta.caracterizacion}}</label>
-                        </div>
-                    </div>
-                    <hr class="hrSinEstilo">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <label class="Llave">Fecha recogida:&nbsp;</label><label
-                                        class="Valor">{{oferta.fecha_recogida}}</label>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <label class="Llave">Estado oferta:&nbsp;</label><label
-                                        class="textblue"><strong>{{oferta.Nombre_estado}}</strong></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-            <hr>
-            <div class="row justify-content-center ">
-                <div class="col-sm-1">
-                    <div class="row justify-content-center">
-                        <button class="SinEstilo col-sm-11">
-                            <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
-                                title="Editar oferta">
-                        </button>
-                        <label class="col-sm-11 CentrarText">Editar</label>
+            <div class="col-sm-6">
+                <label class="Llave">Sector a valorar</label>
+                <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" (selected)='selectSector($event)'
+                    (inputCleared)='LimpiaSector()' placeholder="Sector" [itemTemplate]="templateSec"
+                    [notFoundTemplate]="templateVacio" [disabled]="SectorBlock == false">
+                </ng-autocomplete>
+                <ng-template #templateSec let-item>
+                    <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+                </ng-template>
+                <ng-template #templateVacio let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
+            </div>
+        </div>
+        <div *ngIf="ValidaVigencia=='1'">
+            <div class="row justify-content-center br tarjetadetalle" *ngFor="let oferta of DataOferta">
+                <div class="row m-2">
+                    <div class="col-sm-3">
+                        <img src={{RutaImagen+oferta.IMAGEN}} class="col-sm-12 ImgOferta">
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="Llave TextMay">Código oferta:&nbsp;</label><label
+                                            class="ValorIDOfer"><strong>{{oferta.COD_OFR_PUBLICO}}</strong></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="Llave">Producto:&nbsp;</label><label
+                                            class="Valor">{{oferta.Nombre_Producto}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="Llave">Presentación empaque:&nbsp;</label><label
+                                            class="Valor">{{oferta.Descripcion_empaque}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="Llave">Tamaño:&nbsp;</label><label
+                                            class="Valor">{{oferta.Nmbre_tamano}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="Llave">Condición entrega:&nbsp;</label> <label
+                                            class="Valor">{{oferta.Condicion_entrega}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="Llave">Unidades disponibles:&nbsp;</label><label
+                                            class="Valor">{{oferta.Unidades_disponibles}}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="hrSinEstilo">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <label class="Llave">Caracterización:&nbsp;</label><label
+                                    class="Valor">{{oferta.caracterizacion}}</label>
+                            </div>
+                        </div>
+                        <hr class="hrSinEstilo">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="Llave">Fecha recogida:&nbsp;</label><label
+                                            class="Valor">{{oferta.fecha_recogida}}</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="Llave">Estado oferta:&nbsp;</label><label
+                                            class="textblue"><strong>{{oferta.Nombre_estado}}</strong></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="col-sm-1">
-                    <div class="row justify-content-center">
-                        <button class="SinEstilo col-sm-11">
-                            <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Adm/Cerrar.png"
-                                title="Cerrar oferta">
-                        </button>
-                        <label class="col-sm-11 CentrarText">Cerrar</label>
+                <hr>
+                <div class="row justify-content-center ">
+                    <div class="col-sm-1">
+                        <div class="row justify-content-center">
+                            <button class="SinEstilo col-sm-11">
+                                <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
+                                    title="Editar oferta">
+                            </button>
+                            <label class="col-sm-11 CentrarText">Editar</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="row justify-content-center">
+                            <button class="SinEstilo col-sm-11">
+                                <img class="BtnimgTamano" src="./../../../../../assets/ImagenesAgroApoya2Adm/Cerrar.png"
+                                    title="Cerrar oferta">
+                            </button>
+                            <label class="col-sm-11 CentrarText">Cerrar</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -197,7 +211,7 @@
                     <ng-autocomplete [data]="DataTipoOferta" [searchKeyword]="keyword"
                         (selected)='selectTipOferta($event)' [initialValue]="ArrayTipoOferCon[0]"
                         (inputCleared)='LimpiaTipoOferta($event)' placeholder="Individual o Mixta"
-                        [itemTemplate]="templateOfer" [notFoundTemplate]="templateVacio">
+                        [itemTemplate]="templateOfer" [notFoundTemplate]="templateVacio" [(ngModel)]="sessionDescripcionOferta">
                     </ng-autocomplete>
                     <ng-template #templateOfer let-item>
                         <a [innerHTML]="item.name"></a>
@@ -208,7 +222,370 @@
                 </div>
             </div>
             <div class="row br">
+                <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-one" *ngIf="MuestraIndividual=='1'">
+                    <ngb-panel title="Compra individual" id="config-panel-one">
+                        <ng-template ngbPanelContent>
+                            <div class="row br">
+                                <div class="col-sm-6">
+                                    <label class="col-sm-12 Llave mb-1">Tipo comisión</label>
+                                    <ng-autocomplete [data]="DataTipoComisiono" [searchKeyword]="keyword"
+                                        [initialValue]="ArrayTipoComICon[0]"
+                                        (inputCleared)='LimpiaTipoComisionI($event)' (selected)='selectTipComiI($event)'
+                                        placeholder="Fija o por Porcentaje" [itemTemplate]="templateSec"
+                                        [notFoundTemplate]="templateVacio">
+                                    </ng-autocomplete>
+                                    <ng-template #templateSec let-item>
+                                        <a [innerHTML]="item.name"></a>
+                                    </ng-template>
+                                    <ng-template #templateVacio let-SinRegistro>
+                                        <label for="">Sin registros</label>
+                                    </ng-template>
+                                </div>
+                                <div class="col-sm-6" *ngIf="MuestraPorcentajeI=='1'">
+                                    <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
+                                    <input mask="separator" thousandSeparator="." type="text"
+                                        class="col-sm-12 form-control mt-1 textBox" min="1" max="100"
+                                        onkeyup="if(parseInt(this.value)>100){ this.value=100; return false; }"
+                                        [(ngModel)]="VlrComPorI" (change)="CalcuPreFinInd()">
+                                </div>
+                                <div class="col-sm-6" *ngIf="MuestraFijoI=='1'">
+                                    <label class="col-sm-12 Llave">Valor comisión fija</label>
+                                    <input mask="separator" thousandSeparator="." type="text"
+                                        class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrComFijaI"
+                                        (change)="CalcuPreFinInd()">
+                                </div>
+                            </div>
+                            <div class="row br">
+                                <div class="col-sm-6">
+                                    <label class="col-sm-12 Llave">Mínimo unidades</label>
+                                    <input type="number" class="col-sm-12 form-control mt-1 textBox"
+                                        (blur)="ValidaCantidadMinimaIndiv(MinUnidI,ModalRespuesta)"
+                                        [(ngModel)]="MinUnidI"
+                                        onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}"
+                                        [disabled]="MuestraGrupal == '1' ">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="col-sm-12 Llave">Máximo unidades</label>
+                                    <input type="number" class="col-sm-12 form-control mt-1 textBox"
+                                        (blur)="ValidaCantidadmaxIndiv(MaxUnidI,ModalRespuesta)" [(ngModel)]="MaxUnidI"
+                                        onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}"
+                                        [disabled]="MuestraGrupal == '1' ">
+                                </div>
+                            </div>
+                            <div class="row br">
+                                <div class="col-sm-6">
+                                    <label class="col-sm-12 Llave mb-1">Tipo Domicilio</label>
+                                    <ng-autocomplete [data]="ArrayDomicilio" [searchKeyword]="keywordDomicilio"
+                                        (inputCleared)='LimpiaTipoDomicilio($event)'
+                                        [initialValue]="ArrayDomicilio[indexTipoDomicilio]"
+                                        (selected)='selectDomicilio($event)' placeholder="Tipo de domicilio"
+                                        [itemTemplate]="templateDomicilio" [notFoundTemplate]="templateVacio"
+                                        [(ngModel)]="Domicilio">
+                                    </ng-autocomplete>
+                                    <ng-template #templateDomicilio let-item>
+                                        <a [innerHTML]="item.Descripcion"></a>
+                                    </ng-template>
+                                    <ng-template #templateVacio let-SinRegistro>
+                                        <label for="">Sin registros</label>
+                                    </ng-template>
+                                </div>
 
+                                <div class="col-sm-6" *ngIf="IdDomicilio == '1'">
+                                    <label class="col-sm-12 Llave">Valor domicilio</label>
+                                    <input mask="separator" thousandSeparator="." type="text"
+                                        [disabled]="MuestraGrupal == '1' " class="col-sm-12 form-control mt-1 textBox"
+                                        [(ngModel)]="VlrDomiI">
+                                </div>
+                                <div class="col-sm-3" *ngIf="IdDomicilio == '2'">
+                                    <label class="col-sm-12 Llave">Por compras menores a</label>
+                                    <input mask="separator" thousandSeparator="." type="text"
+                                        [disabled]="MuestraGrupal == '1' " class="col-sm-12 form-control mt-1 textBox"
+                                        [(ngModel)]="Valorapartirde">
+                                </div>
+                                <div class="col-sm-3" *ngIf="IdDomicilio == '2'">
+                                    <label class="col-sm-12 Llave">Valor domicilio</label>
+                                    <input mask="separator" thousandSeparator="." type="text"
+                                        [disabled]="MuestraGrupal == '1' " class="col-sm-12 form-control mt-1 textBox"
+                                        [(ngModel)]="VlrDomiIValormenora">
+                                </div>
+
+
+
+                                <div class="col-sm-6 br">
+                                    <label class="col-sm-12 Llave mb-1">Oferta dirigida a</label>
+                                    <ng-autocomplete [data]="ArrayOfertaDirigida" [searchKeyword]="'Descripcion'"
+                                        (inputCleared)='LimpiaOfertaDirigidaA($event)'
+                                        [initialValue]="ArrayOfertaDirigida[IndexOfertaDirigidaA]"
+                                        (selected)='selectOfertaDirigidaA($event)' placeholder="Oferta dirigida a"
+                                        [itemTemplate]="templateOfertaDirigidaA" [notFoundTemplate]="templateVacio"
+                                        [(ngModel)]="OfertaDirigidaA">
+                                    </ng-autocomplete>
+                                    <ng-template #templateOfertaDirigidaA let-item>
+                                        <a [innerHTML]="item.Descripcion"></a>
+                                    </ng-template>
+                                    <ng-template #templateVacio let-SinRegistro>
+                                        <label for="">Sin registros</label>
+                                    </ng-template>
+                                </div>
+
+
+
+                            </div>
+                            <br>
+                            <h2>Asociar Cupon</h2>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label class="Llave">Cupon</label>
+                                    <ng-autocomplete [data]="ArrayCupones" [searchKeyword]="keywordCuponOfer"
+                                        placeholder="Cupon" (inputCleared)="LimpiaOferta('')"
+                                        (selected)='selectCuponOferta($event)' [itemTemplate]="templateOferta"
+                                        [notFoundTemplate]="templateVacio" [(ngModel)]="DescCupon">
+                                    </ng-autocomplete>
+                                    <ng-template #templateOferta let-item>
+                                        <a [innerHTML]="item.codigo_Mostrar"></a>
+                                    </ng-template>
+                                    <ng-template #templateVacio let-SinRegistro>
+                                        <label for="">Sin registros</label>
+                                    </ng-template>
+                                </div>
+                                <div class="col-sm-1 position-relative">
+                                    <button class="SinEstilo position-absolute bottom-0 start-0" title="Asociar Cupon"
+                                        (click)="AsociarCupon()">
+                                        <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/mas.png"
+                                            width="30px" height="30px">
+                                    </button>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row justify-content-center" *ngIf="ArrayCuponesOferta.length > 0">
+                                <table class="col-sm-10 TableAgro">
+                                    <tr>
+                                        <th>Oferta</th>
+                                        <th>Descripción</th>
+                                        <th>Código Mostrar</th>
+                                        <th>Código Grupo</th>
+                                        <th>Eliminar</th>
+                                    </tr>
+                                    <tr *ngFor="let registro of ArrayCuponesOferta ">
+                                        <td>{{registro.Cd_cnsctvo}}</td>
+                                        <td>{{registro.descripcionCupon}}</td>
+                                        <td>{{registro.codigo_Mostrar}}</td>
+                                        <td>{{registro.codigo_grupo}}</td>
+                                        <td>
+                                            <button class="SinEstilo" (click)="Eliminar(registro)">
+                                                <img src="./../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png"
+                                                    width="32px">
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="row justify-content-center br" *ngIf="MuestraBtnIndividual=='1'">
+                                <div class="col-sm-3">
+                                    <button class="btn btn-agro-prin col-sm-12"
+                                        (click)="GuardaIndividual(ModalRespuesta)">Guardar individual</button>
+                                </div>
+                            </div>
+
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
+                <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-two" *ngIf="MuestraGrupal=='1'">
+                    <ngb-panel title="Compra grupal" id="config-panel-two">
+                        <ng-template ngbPanelContent>
+                            <div class="row br">
+                                <div class="col-sm-6">
+                                    <label class="col-sm-12 Llave mb-1">Tipo comisión</label>
+                                    <ng-autocomplete [data]="DataTipoComisiono" [searchKeyword]="keyword"
+                                        (inputCleared)='LimpiaTipoComision($event)' [initialValue]="ArrayTipoComGCon[0]"
+                                        (selected)='selectTipComiG($event)' placeholder="Fija o por Porcentaje"
+                                        [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio">
+                                    </ng-autocomplete>
+                                    <ng-template #templateSec let-item>
+                                        <a [innerHTML]="item.name"></a>
+                                    </ng-template>
+                                    <ng-template #templateVacio let-SinRegistro>
+                                        <label for="">Sin registros</label>
+                                    </ng-template>
+                                </div>
+                                <div class="col-sm-6" *ngIf="MuestraPorcentaje=='1'">
+                                    <label class="col-sm-12 Llave">Valor comisión porcentaje</label>
+                                    <input type="number" class="col-sm-12 form-control mt-1 textBox" min="1" max="100"
+                                        onkeyup="if(parseInt(this.value)>100){ this.value=100; return false; }"
+                                        [(ngModel)]="VlrComPorG" (change)="CalculaPreoferGrupalM()">
+                                </div>
+                                <div class="col-sm-6" *ngIf="MuestraFijo=='1'">
+                                    <label class="col-sm-12 Llave">Valor comisión fija</label>
+                                    <input mask="separator" thousandSeparator="." type="text"
+                                        class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrComFijaG"
+                                        (change)="CalculaPreoferGrupalM()">
+                                </div>
+                            </div>
+                            <div class="row br">
+                                <div class="col-sm-6">
+                                    <label class="col-sm-12 Llave">Tipo de descuento</label>
+                                    <ng-autocomplete [data]="DataTipoDescuento" [searchKeyword]="keyword"
+                                        placeholder="Registro / Unidades" [itemTemplate]="templateSec"
+                                        [notFoundTemplate]="templateVacio" (selected)='selectTipDescuento($event)'
+                                        (inputCleared)='LimpiaTipoDescuento($event)'
+                                        [initialValue]="DataTipoDescuento[IndexTipoDescuento]">
+                                    </ng-autocomplete>
+                                    <ng-template #templateSec let-item>
+                                        <a [innerHTML]="item.name"></a>
+                                    </ng-template>
+                                    <ng-template #templateVacio let-SinRegistro>
+                                        <label for="">Sin registros</label>
+                                    </ng-template>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <label class="col-sm-12 Llave">Tipo de cupon</label>
+
+                                    <!--[(ngModel)]="TipoCupon"-->
+                                    <ng-autocomplete [data]="ArrayDataCupon" [searchKeyword]="keywordCupon"
+                                        placeholder="Tipo Cupon" [itemTemplate]="templateCupon"
+                                        [notFoundTemplate]="templateVacio" (selected)='selectTipoCupon($event)'
+                                        (inputCleared)='LimpiaTipoCupon("")'
+                                        [initialValue]="ArrayDataCupon[IndexTipoCupon]">
+                                    </ng-autocomplete>
+                                    <ng-template #templateCupon let-item>
+                                        <a [innerHTML]="item.NombreCupon"></a>
+                                    </ng-template>
+                                    <ng-template #templateVacio let-SinRegistro>
+                                        <label for="">Sin registros</label>
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <div class="row br mb-1" *ngIf="IdTipoCupon == '2'">
+                                <div class="col-sm-6">
+                                    <label class="col-sm-12 Llave">Porcentaje de descuento por unidad / registro</label>
+                                    <input type="number" class="col-sm-12 form-control mt-1 textBox"
+                                        onkeyup="if(parseInt(this.value)>100){ this.value=100; return false; }"
+                                        [(ngModel)]="PorcDescLider">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="col-sm-12 Llave">Numero maximo de unidades / registros para
+                                        descuento</label>
+                                    <input type="number" class="col-sm-12 form-control mt-1 textBox"
+                                        [(ngModel)]="UnidXGrupos" (change)="CalculaCCI(ModalRespuesta)"
+                                        onkeyup="if(this.value>999 || this.value<=0){this.value=''; return false;}">
+                                </div>
+                            </div>
+
+                            <div class="row br" *ngIf="IdTipoCupon == '1'">
+                                <div class="col-sm-6">
+                                    <label class="col-sm-12 Llave">Descripción</label>
+                                    <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                        placeholder="Descripción (Obligatorio)" [(ngModel)]="DescripcionRegalo" />
+                                </div>
+
+                                <div class="col-6 col-sm-4">
+                                    <label class="col-sm-12 Llave">Numero de usuario por cupon</label>
+                                    <input type="number" class="col-12 form-control mt-1 textBox"
+                                        onkeyup="if(parseInt(this.value)>100){ this.value=100; return false; }"
+                                        [(ngModel)]="NumeroUsuariosCupon">
+                                </div>
+
+                                <div class="col-sm-2 centraimagen" style="text-align: center;">
+                                    <div class="image-upload">
+                                        <label for="file-input5">
+                                            <img id="Imagen5" title="Selecciona una imagen" [src]="ImagenRegalo"
+                                                style="border-radius: 10px;" class="mt-2">
+                                        </label>
+                                        <input name="file-input5" id="file-input5" type="file"
+                                            (change)="CargaImagen($event, ModalRespuestaImg)" />
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="row br">
+                                <div class="col-sm-6">
+                                    <label class="col-sm-12 Llave">Unidades mínimo</label>
+                                    <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                        [(ngModel)]="MinUnidLider">
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="col-sm-12 Llave">Unidades máximo</label>
+                                    <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                        [(ngModel)]="MaxUnidLider">
+                                </div>
+                            </div>
+                            <div class="row br">
+                                <div class="col-sm-6">
+                                    <label class="col-sm-12 Llave">Precio final participante</label>
+                                    <input mask="separator" thousandSeparator="." type="text"
+                                        class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PrecioFinPart">
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-sm-6">
+                                    <label class="col-sm-12 Llave mb-1">Tipo Domicilio</label>
+                                    <ng-autocomplete [data]="ArrayDomicilio" [searchKeyword]="keywordDomicilio"
+                                        (inputCleared)='LimpiaTipoDomicilio($event)'
+                                        [initialValue]="ArrayDomicilio[indexTipoDomicilio]"
+                                        (selected)='selectDomicilio($event)' placeholder="Tipo de domicilio"
+                                        [itemTemplate]="templateDomicilio" [notFoundTemplate]="templateVacio"
+                                        [(ngModel)]="Domicilio">
+                                    </ng-autocomplete>
+                                    <ng-template #templateDomicilio let-item>
+                                        <a [innerHTML]="item.Descripcion"></a>
+                                    </ng-template>
+                                    <ng-template #templateVacio let-SinRegistro>
+                                        <label for="">Sin registros</label>
+                                    </ng-template>
+                                </div>
+
+
+                                <div class="col-sm-6" *ngIf="IdDomicilio == '1'">
+                                    <label class="col-sm-12 Llave">Valor domicilio</label>
+                                    <input mask="separator" thousandSeparator="." type="text"
+                                        class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="ValorDomicilioGrup">
+                                </div>
+                                <div class="col-sm-3" *ngIf="IdDomicilio == '2'">
+                                    <label class="col-sm-12 Llave">Por compras menores a</label>
+                                    <input mask="separator" thousandSeparator="." type="text"
+                                        class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="Valorapartirde">
+                                </div>
+                                <div class="col-sm-3" *ngIf="IdDomicilio == '2'">
+                                    <label class="col-sm-12 Llave">Valor domicilio</label>
+                                    <input mask="separator" thousandSeparator="." type="text"
+                                        class="col-sm-12 form-control mt-1 textBox"
+                                        [(ngModel)]="ValorDomcilioGrupValorMenora">
+                                </div>
+
+
+
+                                <div class="col-sm-6 br">
+                                    <label class="col-sm-12 Llave mb-1">Oferta dirigida a</label>
+                                    <ng-autocomplete [data]="ArrayOfertaDirigida" [searchKeyword]="'Descripcion'"
+                                        (inputCleared)='LimpiaOfertaDirigidaA($event)'
+                                        [initialValue]="ArrayOfertaDirigida[IndexOfertaDirigidaA]"
+                                        (selected)='selectOfertaDirigidaA($event)' placeholder="Oferta dirigida a"
+                                        [itemTemplate]="templateOfertaDirigidaA" [notFoundTemplate]="templateVacio"
+                                        [(ngModel)]="OfertaDirigidaA">
+                                    </ng-autocomplete>
+                                    <ng-template #templateOfertaDirigidaA let-item>
+                                        <a [innerHTML]="item.Descripcion"></a>
+                                    </ng-template>
+                                    <ng-template #templateVacio let-SinRegistro>
+                                        <label for="">Sin registros</label>
+                                    </ng-template>
+                                </div>
+                            </div>
+                            <div class="row justify-content-center br" *ngIf="MuestraBtnMixta=='1'">
+                                <div class="col-sm-3">
+                                    <button class="btn btn-agro-prin col-sm-12"
+                                        (click)="GuardarMixta(ModalRespuesta)">Guardar
+                                        mixta</button>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
             </div>
 
             <div class="row br">
@@ -221,12 +598,12 @@
                             <div class="row br">
                                 <div class="col-sm-6">
                                     <label class="col-sm-12 Llave">Valor</label>
-                                    <input mask="separator" thousandSeparator="." type="text"
+                                    <input mask="separator" thousandSeparator="." type="text" [(ngModel)]="ValorUni"
                                         class="col-sm-12 form-control mt-1 textBox">
                                 </div>
                                 <div class="col-sm-1 position-relative">
                                     <button class="SinEstilo position-absolute bottom-0 start-0"
-                                        title="Agregar unidades">
+                                        title="Agregar unidades" (click)="AgregaValorUni(ModalRespuesta)">
                                         <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/mas.png"
                                             width="30px" height="30px">
                                     </button>
@@ -240,11 +617,12 @@
                                             <th>Orden</th>
                                             <th>Acciones</th>
                                         </tr>
-                                        <tr>
-                                            <td>xxx</td>
-                                            <td>xxx</td>
+                                        <tr *ngFor="let valores of DataValores">
+                                            <td>{{valores.ValorUnidad | currency}}</td>
+                                            <td>{{valores.OrdenMostrar}}</td>
                                             <td>
-                                                <button class="SinEstilo" title="Eliminar amparado">
+                                                <button class="SinEstilo" title="Eliminar amparado"
+                                                    (click)="EliminaValorUni(valores)">
                                                     <img
                                                         src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
                                                 </button>
@@ -258,30 +636,34 @@
                 </ngb-accordion>
             </div>
             <br>
-            <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-one">
-                <ngb-panel title="Valor de referencia" id="config-panel-one">
-                    <ng-template ngbPanelContent>
-                        <div class="row">
-                            <div class="col-12">
-                                <label class="col-sm-12 Llave">Valor referencia</label>
+            <div class="row br">
+                <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-one">
+                    <ngb-panel title="Valor de referencia" id="config-panel-one">
+                        <ng-template ngbPanelContent>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label class="col-sm-12 Llave">Valor referencia</label>
+                                </div>
+                                <div class="col-sm-6 mt-2">
+                                    <input mask="separator" thousandSeparator="." type="text"
+                                        class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlReferencia">
+                                </div>
+                                <div class="col-4 col-sm-4 mt-2">
+                                    <button class="btn btn-agro-prin col-12"
+                                        (click)="ActualizaValorReferencia(VlReferencia,ModalRespuesta)">Guardar</button>
+                                </div>
+                                <div class="col-4 col-sm-2 mt-2" *ngIf="ValidaVigencia=='1'">
+                                    <button type="button" class="btn btn-agro-prin col-12"
+                                        (click)="AbreModalPresentacioProdAncla(PresentacionesProdAncla)">Presentaciones</button>
+                                </div>
                             </div>
-                            <div class="col-sm-6 mt-2">
-                                <input mask="separator" thousandSeparator="." type="text"
-                                    class="col-sm-12 form-control mt-1 textBox">
-                            </div>
-                            <div class="col-4 col-sm-4 mt-2">
-                                <button class="btn btn-agro-prin col-12">Guardar</button>
-                            </div>
-                            <div class="col-4 col-sm-2 mt-2">
-                                <button type="button" class="btn btn-agro-prin col-12">Presentaciones</button>
-                            </div>
-                        </div>
-                    </ng-template>
-                </ngb-panel>
-            </ngb-accordion>
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
+            </div>
+
             <div class="row br">
                 <h5 class="SubTituloForm">Definición conceptos adicionales</h5>
-
             </div>
 
             <div class="row br">
@@ -289,13 +671,17 @@
                     <ngb-panel title="Adicionales" id="config-panel-three">
                         <ng-template ngbPanelContent>
                             <div class="col-sm-2 col-12 br">
-                                <button type="button" class="btn btn-agro-prin col-sm-12">
+                                <button type="button" class="btn btn-agro-prin col-sm-12"
+                                    (click)="CrearEditarproduct(templateEditar)">
                                     Crear/Editar Producto</button>
                             </div>
                             <div class="row br">
                                 <div class="col-sm-4 mt-2 mb-2">
                                     <label class="col-sm-12 Llave mt-1">Tipo</label>
-                                    <ng-autocomplete>
+                                    <ng-autocomplete [data]="DataTipotopping" [searchKeyword]="keywordTipTopp"
+                                        (selected)='selectTipTopp($event)' placeholder="Tipo Adición"
+                                        [itemTemplate]="templateOfer" [notFoundTemplate]="templateVacio"
+                                        (inputCleared)='LimpiaTipoTopp()' [(ngModel)]="TipoTopp">
                                     </ng-autocomplete>
                                     <ng-template #templateOfer let-item>
                                         <a [innerHTML]="item.Descripcion"></a>
@@ -306,14 +692,18 @@
                                 </div>
 
 
-                                <div class="col-sm-4 mt-2 mb-2">
+                                <div class="col-sm-4 mt-2 mb-2" *ngIf="VerTipoDescripcion == '1'">
                                     <label class="col-sm-12 Llave mt-1">Descripción</label>
                                     <input type="text" title="Descripción máximo 150 caracteres"
-                                        class="col-sm-12 form-control mt-1 textBox" maxlength="150">
+                                        class="col-sm-12 form-control mt-1 textBox" maxlength="150"
+                                        [(ngModel)]="ProdTipoTpp" [ngModelOptions]="{standalone: true}">
                                 </div>
-                                <div class="col-sm-4 mt-2 mb-2">
+                                <div class="col-sm-4 mt-2 mb-2" *ngIf="VerTipoDescripcion == '2'">
                                     <label class="col-sm-12 Llave mt-1">Descripción</label>
-                                    <ng-autocomplete>
+                                    <ng-autocomplete [data]="ArrayProductos" [searchKeyword]="keywordProductos"
+                                        (selected)='selectProductoTopp($event)' placeholder="Productos"
+                                        [itemTemplate]="templateProdTopp" [notFoundTemplate]="templateVacioVenta"
+                                        (inputCleared)='LimpiaProductoTopp()' [(ngModel)]="ProductoNgModel">
                                     </ng-autocomplete>
                                     <ng-template #templateProdTopp let-item>
                                         <a [innerHTML]="item.DSCRPCION"></a>
@@ -326,7 +716,10 @@
 
                                 <div class="col-sm-4 mt-2 mb-2">
                                     <label class="col-sm-12 Llave mt-1">Tipo Adicional</label>
-                                    <ng-autocomplete>
+                                    <ng-autocomplete [data]="DataTipotoppingVenta" [searchKeyword]="keywordTipToppVenta"
+                                        (selected)='selectTipToppVenta($event)' placeholder="Tipo Venta topping"
+                                        [itemTemplate]="templateOferVenta" [notFoundTemplate]="templateVacioVenta"
+                                        (inputCleared)='LimpiaTipoToppVenta()' [(ngModel)]="TipoToppVenta">
                                     </ng-autocomplete>
                                     <ng-template #templateOferVenta let-item>
                                         <a [innerHTML]="item.Descripcion"></a>
@@ -335,43 +728,51 @@
                                         <label for="">Sin registros</label>
                                     </ng-template>
                                 </div>
-                                <div class="col-sm-4 mt-2">
+                                <div class="col-sm-4 mt-2" *ngIf="IsEnables == false ">
                                     <label class="col-sm-12 Llave">Peso adición en kilogramos</label>
-                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    <input type="number" class="col-sm-12 form-control mt-1 textBox"
+                                        [(ngModel)]="PesoTopping" [disabled]="ValidaTipoTopp">
                                 </div>
                                 <div class="col-sm-4 mt-2">
                                     <label class="col-sm-12 Llave">Valor unitario</label>
                                     <input mask="separator" thousandSeparator="." type="text"
-                                        class="col-sm-12 form-control mt-1 textBox">
+                                        disabled="{{IsEnablesValor == true}}"
+                                        class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="VlrUniTopp">
                                 </div>
                                 <div class="col-sm-4 mt-2">
                                     <label class="col-sm-12 Llave">Valor referencia</label>
                                     <input mask="separator" thousandSeparator="." type="text"
-                                        class="col-sm-12 form-control mt-1 textBox">
+                                        disabled="{{IsEnablesValor == true}}"
+                                        class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="ValorRefAdd">
                                 </div>
                                 <div class="col-sm-4 mt-2">
                                     <label class="col-sm-12 Llave">Descripción corta</label>
                                     <textarea name="DescCortaAdd" id="DescCortaAdd" cols="30" rows="5"
-                                        class="form-control textBox" placeholder="Descripcion corta"></textarea>
+                                        class="form-control textBox" placeholder="Descripcion corta"
+                                        [(ngModel)]="DescCortaAdd"></textarea>
                                 </div>
                                 <div class="col-sm-4 mt-2">
                                     <label class="col-sm-12 Llave">Descripción larga</label>
                                     <textarea name="DescLargaAdd" id="DescLargaAdd" cols="30" rows="5"
-                                        class="form-control textBox" placeholder="Descripcion larga"></textarea>
+                                        class="form-control textBox" placeholder="Descripcion larga"
+                                        [(ngModel)]="DescLargaAdd"></textarea>
                                 </div>
                                 <div class="col-sm-4 mt-2">
                                     <label class="col-sm-12 Llave">Unidades para la oferta</label>
-                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    <input type="number" class="col-sm-12 form-control mt-1 textBox"
+                                        [(ngModel)]="UnidOferta" disabled="{{IsEnables == true}}">
                                 </div>
                                 <div class="col-sm-4 mt-2">
                                     <label class="col-sm-12 Llave">Máximo unidades por cada compra</label>
-                                    <input type="number" class="col-sm-12 form-control mt-1 textBox">
+                                    <input type="number" class="col-sm-12 form-control mt-1 textBox"
+                                        [(ngModel)]="UnidMaxTopp" [disabled]="ValidaTipoTopp">
                                 </div>
 
-                                <div class="col-sm-4 mt-2">
+                                <div class="col-sm-4 mt-2" *ngIf="VerTipoDescripcion == '2'">
                                     <label class="col-sm-12 Llave">Presentación</label>
                                     <textarea name="DescCortaAdd" id="DescCortaAdd" cols="30" rows="5"
-                                        class="form-control textBox" placeholder="Presentación"></textarea>
+                                        class="form-control textBox" placeholder="Presentación"
+                                        [(ngModel)]="Presentacion"></textarea>
                                 </div>
                             </div>
 
@@ -381,36 +782,49 @@
                                 <div class="col-sm-2 centraimagen">
                                     <div class="image-upload">
                                         <label for="file-input1">
-                                            <img id="Imagen1" title="Selecciona una imagen"
+                                            <img id="Imagen1" title="Selecciona una imagen" [src]="Add1"
                                                 style="border-radius: 10px;">
                                         </label>
-                                        <input name="file-input1" id="file-input1" type="file" />
+                                        <input name="file-input1" id="file-input1" type="file"
+                                            (change)="CargaImagenAdicionales($event, '1', ModalRespuestaImg)" />
                                     </div>
                                 </div>
                                 <div class="col-sm-2 centraimagen">
                                     <div class="image-upload">
                                         <label for="file-input2">
-                                            <img id="Imagen2" title="Selecciona una imagen"
+                                            <img id="Imagen2" title="Selecciona una imagen" [src]="Add2"
                                                 style="border-radius: 10px;">
                                         </label>
-                                        <input name="file-input2" id="file-input2" type="file" />
+                                        <input name="file-input2" id="file-input2" type="file"
+                                            (change)="CargaImagenAdicionales($event,'2', ModalRespuestaImg)" />
                                     </div>
                                 </div>
                                 <div class="col-sm-2 centraimagen">
                                     <div class="image-upload">
                                         <label for="file-input3">
-                                            <img id="Imagen3" title="Selecciona una imagen"
+                                            <img id="Imagen3" title="Selecciona una imagen" [src]="Add3"
                                                 style="border-radius: 10px;">
                                         </label>
-                                        <input name="file-input3" id="file-input3" type="file" />
+                                        <input name="file-input3" id="file-input3" type="file"
+                                            (change)="CargaImagenAdicionales($event, '3', ModalRespuestaImg)" />
                                     </div>
                                 </div>
                             </div>
+                            <!-- <div class="row br">
+                                <div class="col-sm-4" *ngIf="IsEnables == false ">
+                                    <button type="button" class="btn-warning col-sm-12">
+                                        <i class="fa fa-upload marginleft"></i> Subir Imagen
+                                        <input name="file-input3" id="file-input3" type="file"
+                                            (change)="CargaImagenAdicionales($event, ModalRespuestaImg)" title="" />
+                                    </button>
+                                </div>
+                            </div> -->
 
                             <div class="row justify-content-center br">
                                 <div class="col-sm-3">
                                     <label class="col-sm-12 Llave"></label>
-                                    <button class="btn btn-agro-prin col-sm-12">Agregar</button>
+                                    <button class="btn btn-agro-prin col-sm-12"
+                                        (click)="GuardaTopping(ModalRespuesta)">Agregar</button>
                                 </div>
                             </div>
 
@@ -430,39 +844,53 @@
                                             <th>Peso Adición</th>
                                             <th>Acciones</th>
                                         </tr>
-                                        <tr>
-                                            <td>xxx</td>
+                                        <tr *ngFor="let topping of DataToppings">
+                                            <td>{{topping.Descripcion}}</td>
                                             <td>
-                                                <div class="descripcionlarga">xxx</div>
+                                                <div class="descripcionlarga">{{topping.CrctrzcionCrta}}</div>
                                             </td>
                                             <td>
-                                                <div class="descripcionlarga">xxx</div>
+                                                <div class="descripcionlarga">{{topping.CrctrzcionLrga}}</div>
 
                                             </td>
-                                            <td><strong>xxx </strong> /
-                                                xxx
+                                            <td><strong>{{topping.ValorUnitario | currency}} </strong> /
+                                                {{topping.VlorRefencia | currency}}
                                             </td>
-                                            <td>xxx</td>
-                                            <td>xxx</td>
-                                            <td>xxx</td>
-                                            <td>xxx</td>
-                                            <td>xxx</td>
+                                            <td>{{topping.DesTipoVentaTopping}}</td>
+                                            <td>{{topping.descTipotopping}}</td>
+                                            <td>{{topping.cantidadReserva}}</td>
+                                            <td>{{topping.MaxCantidad}}</td>
+                                            <td>{{topping.PesoKilos}}</td>
                                             <td>
+                                                <button class="SinEstilo" title="Activar/Desactivar amparado"
+                                                    (click)="ModificaTopping('1', topping,ModalRespuesta)">
+                                                    <img *ngIf="topping.Estado=='1'"
+                                                        src="./../../../../../assets/ImagenesAgroApoya2Adm/visible.png">
+                                                    <img *ngIf="topping.Estado=='2'"
+                                                        src="./../../../../../assets/ImagenesAgroApoya2Adm/notvisible.png">
 
-                                                <button class="SinEstilo" title="Eliminar amparado">
-                                                    <img
-                                                        src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
                                                 </button>
-                                                <button class="SinEstilo" title="Imagen amparado">
-                                                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png">
+                                                <button class="SinEstilo" title="Eliminar amparado"
+                                                    *ngIf="topping.IdTipoToppingVenta != '3'">
+                                                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png"
+                                                        (click)="ModificaTopping('2', topping,ModalRespuesta)">
                                                 </button>
-                                                <button class="SinEstilo" title="Presentaciones">
+                                                <button *ngIf="topping.IdTipoTopping == '1'" class="SinEstilo"
+                                                    title="Imagen amparado">
+                                                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png"
+                                                        (click)="visualizaImagenTopping(ModalImagen, topping)">
+                                                </button>
+                                                <button *ngIf="topping.IdTipoToppingVenta == '1'" class="SinEstilo"
+                                                    title="Presentaciones">
                                                     <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Presentaciones.png"
-                                                        class="imgpresentacion">
+                                                        class="imgpresentacion"
+                                                        (click)="AbreAdminPresentaciones(Presentaciones, topping)">
                                                 </button>
                                             </td>
                                         </tr>
-
+                                        <tr *ngIf="ValidaConsulta=='1'">
+                                            <td colspan="6">{{txtValidaCons}}</td>
+                                        </tr>
                                     </table>
                                 </div>
                             </div>
@@ -483,27 +911,30 @@
                             <div class="row">
                                 <div class="col-sm-6 mt-2">
                                     <label class="col-sm-12 Llave">Texto modal uno</label>
-                                    <input type="text" class="col-sm-12 form-control mt-1 textBox">
+                                    <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                        [(ngModel)]="TextMod1">
                                 </div>
 
                                 <div class="col-sm-6 mt-2">
                                     <label class="col-sm-12 Llave">Texto modal dos</label>
-                                    <input type="text" class="col-sm-12 form-control mt-1 textBox">
+                                    <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                        [(ngModel)]="TextMod2">
                                 </div>
 
                                 <div class="col-sm-10 mt-2">
                                     <label class="col-sm-12 Llave">Texto modal tres</label>
-                                    <textarea class="form-control form-control-sm textArea" cols="30"
-                                        rows="3"></textarea>
+                                    <textarea class="form-control form-control-sm textArea" cols="30" rows="3"
+                                        [(ngModel)]="TextMod3"></textarea>
                                 </div>
                                 <div class="col-sm-2 text-center">
 
                                     <div class="image-upload p-3">
                                         <label for="file-inputModal">
-                                            <img id="Imagen1" title="Selecciona una imagen"
+                                            <img id="Imagen1" title="Selecciona una imagen" [src]="AddModal"
                                                 style="border-radius: 10px;">
                                         </label>
-                                        <input name="file-inputModal" id="file-inputModal" type="file" />
+                                        <input name="file-inputModal" id="file-inputModal" type="file"
+                                            (change)="CargaImagenTxtModal($event, ModalRespuestaImg)" />
                                     </div>
                                 </div>
                             </div>
@@ -511,16 +942,18 @@
                             <div class="row justify-content-center">
                                 <div class="col-sm-3">
                                     <label class="col-sm-12 Llave"></label>
-                                    <button class="btn btn-agro-prin col-sm-12">Precargar
+                                    <button class="btn btn-agro-prin col-sm-12" (click)="PrecargarInfo()">Precargar
                                         Información</button>
                                 </div>
                                 <div class="col-sm-3">
                                     <label class="col-sm-12 Llave"></label>
-                                    <button class="btn btn-agro-sec col-sm-12">Limpiar</button>
+                                    <button class="btn btn-agro-sec col-sm-12"
+                                        (click)="LimpiarTextosModals()">Limpiar</button>
                                 </div>
                                 <div class="col-sm-3">
                                     <label class="col-sm-12 Llave"></label>
-                                    <button class="btn btn-agro-prin col-sm-12">Guardar</button>
+                                    <button class="btn btn-agro-prin col-sm-12"
+                                        (click)="GuardarTxtModal(ModalRespuesta)">Guardar</button>
                                 </div>
                             </div>
 
@@ -533,19 +966,20 @@
                                             <th colspan="3">Texto Modal Tres</th>
                                             <th>Imagen</th>
                                         </tr>
-                                        <tr>
+                                        <tr *ngFor="let data of DataTxtModal">
                                             <td>
-                                                <div class="descripcionlarga">xxx</div>
+                                                <div class="descripcionlarga">{{data.TextoUno}}</div>
                                             </td>
                                             <td>
-                                                <div class="descripcionlarga">xxx</div>
+                                                <div class="descripcionlarga">{{data.TextoDos}}</div>
                                             </td>
                                             <td colspan="3">
-                                                <div class="descripcionlarga">xxx</div>
+                                                <div class="descripcionlarga">{{data.TextoTres}}</div>
                                             </td>
                                             <td>
                                                 <button class="SinEstilo" title="Imagen amparado">
-                                                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png">
+                                                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png"
+                                                        (click)="visualizaImagenModal(ModalImagenModal, data)">
                                                 </button>
 
                                             </td>
@@ -564,6 +998,24 @@
     </div>
 </div>
 
+<ng-template #ModalRespuestaImg let-modal>
+    <div class="modal-header">
+        <h1>Respuesta</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">{{Respuesta}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
 <ng-template #ModalRespuesta let-modal>
     <div class="modal-header">
         <h1>Respuesta</h1>
@@ -573,10 +1025,468 @@
         <div class="row br">
             <h2 class="TituloDetalle">{{Respuesta}}</h2>
         </div>
-
+        <div class="row br" *ngIf="this.ValidaCam=='1'">
+            <div class="col-sm-9">
+                <label>Campo</label>
+            </div>
+            <div class="col-sm-3">
+                <label>Diligenciado</label>
+            </div>
+        </div>
+        <div class="row br" *ngFor="let campos of ArrayCamposValida">
+            <div class="col-sm-9">
+                <label for="" class="{{campos.class}}">{{campos.campof}}</label>
+            </div>
+            <div class="col-sm-3">
+                <div class="row justify-content-center">
+                    <div class="col-sm-6">
+                        <img src="{{campos.imagen}}">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="row justify-content-center">
         <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
+<!-- INICIO AÑADEPRODUCTOS -->
+
+<ng-template #templateEditar let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title">Creación/Edición producto</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-6 mt-2">
+                <label class="col-sm-12 Llave">Descripción</label>
+                <input type="text" title="Descripción máximo 150 caracteres" class="col-sm-12 form-control mt-1 textBox"
+                    maxlength="150" [(ngModel)]="DesProduct" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="col-sm-6 mt-2">
+                <label class="col-sm-12 Llave">Prefijo</label>
+                <input type="text" title="Prefijo máximo 3 caracteres" class="col-sm-12 form-control mt-1 textBox"
+                    maxlength="3" [(ngModel)]="PrfjoProduct" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="col-sm-6 mt-2">
+                <label class="col-sm-12 Llave">Caracterización corta</label>
+                <textarea name="DescCortaAdd" id="DescCortaAdd" cols="30" rows="5" class="form-control textBox"
+                    title="Caracterización corta" [(ngModel)]="CaractCorta"></textarea>
+            </div>
+            <div class="col-sm-6 mt-2">
+                <label class="col-sm-12 Llave">Caracterización larga</label>
+                <textarea name="DescLargaAdd" id="DescLargaAdd" cols="30" rows="5" class="form-control textBox"
+                    title="Caracterización larga" [(ngModel)]="CaractLarga"></textarea>
+            </div>
+
+            <div class="row br justify-content-center">
+                <h5 class="SubTituloForm">Agrega las imagenes del producto</h5>
+                <br><br>
+                <div class="col-sm-2 centraimagen">
+                    <div class="image-upload">
+                        <label for="file-inputp1">
+                            <img id="Imagenp1" title="Selecciona una imagen" [src]="AddProducto1"
+                                style="border-radius: 10px;">
+                        </label>
+                        <input name="file-inputp1" id="file-inputp1" type="file"
+                            (change)="CargarImagenProducto($event, '1', ModalRespuestaImg)" />
+                    </div>
+                </div>
+                <div class="col-sm-2 centraimagen">
+                    <div class="image-upload">
+                        <label for="file-inputp2">
+                            <img id="Imagenp2" title="Selecciona una imagen" [src]="AddProducto2"
+                                style="border-radius: 10px;">
+                        </label>
+                        <input name="file-inputp2" id="file-inputp2" type="file"
+                            (change)="CargarImagenProducto($event,'2', ModalRespuestaImg)" />
+                    </div>
+                </div>
+                <div class="col-sm-2 centraimagen">
+                    <div class="image-upload">
+                        <label for="file-inputp3">
+                            <img id="Imagenp3" title="Selecciona una imagen" [src]="AddProducto3"
+                                style="border-radius: 10px;">
+                        </label>
+                        <input name="file-inputp3" id="file-inputp3" type="file"
+                            (change)="CargarImagenProducto($event, '3', ModalRespuestaImg)" />
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row justify-content-center br">
+                <div class="col-sm-3">
+
+                    <button class="btn btn-agro-prin col-sm-12" (click)="GuardarProducto('2', ModalRespuesta)"
+                        *ngIf="banderaAgregar=='1'">Guardar</button>
+
+
+                    <button class="btn btn-agro-prin col-sm-12" (click)="GuardarProducto('3', ModalRespuesta)"
+                        *ngIf="banderaAgregar=='2'">Actualizar</button>
+                </div>
+                <div class="col-sm-3">
+
+                    <button class="btn btn-agro-sec col-sm-12" (click)="LimpiarADDProduct()">Limpiar</button>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row justify-content-center">
+            <div class="table-responsive">
+                <table class="table col-sm-12 TableAgro">
+                    <tr id="TablaValoracion">
+                        <th>Descripción</th>
+                        <th>Prefijo</th>
+                        <th>Caracterización corta</th>
+                        <th>Caracterización larga</th>
+                        <th>Acciones</th>
+                    </tr>
+                    <tr *ngFor="let producto of DataProducts">
+                        <td>{{producto.DSCRPCION}}</td>
+                        <td>{{producto.PRFJO}}</td>
+                        <td>
+                            <div class="descripcionlarga">{{producto.crctzcionCrta}}</div>
+                        </td>
+                        <td>
+                            <div class="descripcionlarga">{{producto.crctzcionLrga}}</div>
+                        </td>
+                        <td>
+                            <button class="SinEstilo" title="Editar producto" (click)="EditarProducto(producto)">
+                                <img src="../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
+                                    class="BtnimgTamanoPeque" />
+                            </button>
+                            <button class="SinEstilo" title="Eliminar producto"
+                                (click)="EliminarProd(producto, templateConfirmacion)">
+                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
+                            </button>
+                            <button class="SinEstilo" title="Imagenes producto"
+                                (click)="visualizaImagenProducto(ModalImagenProduct, producto)">
+                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png">
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<!--Añade o quita presentaciones-->
+<ng-template #Presentaciones let-modal>
+    <div class="modal-header">
+        <h1>Presentaciones: {{DescripcionProductoTopping}}</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="CierraModalPresentacion()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-4 mt-2">
+                <label class="col-sm-12 Llave">Unidades para la oferta</label>
+                <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidadesOferta"
+                    placeholder="Unidades" (keypress)="LimpiSmsError()">
+            </div>
+
+            <div class="col-sm-4 mt-2">
+                <label class="col-sm-12 Llave">Máximo unidades por compra</label>
+                <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaximoUnidades"
+                    placeholder="Máximo unidades" (keypress)="LimpiSmsError()">
+            </div>
+
+            <div class="col-sm-4 mt-2">
+                <label class="col-sm-12 Llave">Presentación</label>
+                <textarea name="DescCortaAdd" id="DescCortaAdd" cols="30" rows="5" class="form-control textBox"
+                    placeholder="Presentación" [(ngModel)]="PresentacionModal" (keypress)="LimpiSmsError()"></textarea>
+            </div>
+
+            <div class="col-sm-4 mt-2">
+                <label class="col-sm-12 Llave">Peso (Kg)</label>
+                <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PesoKl" placeholder="Peso"
+                    (keypress)="LimpiSmsError()">
+            </div>
+
+            <div class="col-sm-4 mt-2">
+                <label class="col-sm-12 Llave">Valor real</label>
+                <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox"
+                    [(ngModel)]="ValorReal" placeholder="Valor Real" (keypress)="LimpiSmsError()">
+            </div>
+
+            <div class="col-sm-4 mt-2">
+                <label class="col-sm-12 Llave">Valor Referencia</label>
+                <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox"
+                    [(ngModel)]="ValorReferencia" placeholder="Valor Referencia" (keypress)="LimpiSmsError()">
+            </div>
+        </div>
+
+        <div class="row mt-3 justify-content-center">
+            <label class="p-0 m-0 smsError mt-2 mb-2 CentrarText">{{SmsError}}</label>
+
+            <button type="button" class="btn btn-agro-prin col-sm-2" style="margin-right: 5px;"
+                *ngIf="banderaAgregarAdicional=='1'" (click)="AgregarPresentacion('2')">Agregar</button>
+
+            <button type="button" class="btn btn-agro-prin col-sm-2" style="margin-right: 5px;"
+                *ngIf="banderaAgregarAdicional=='2'" (click)="AgregarPresentacion('3')">Actualizar</button>
+
+            <button type="button" class="btn btn-agro-sec col-sm-2" style="margin-left: 5px;"
+                (click)="LimpiarCamposModalPresentacion()">Limpiar</button>
+        </div>
+
+
+        <div class="row mt-3">
+            <div class="table-responsive">
+                <table class="table col-sm-12 TableAgro">
+                    <tr id="TablaValoracion">
+                        <th>Unidades</th>
+                        <th>Maximo Unidades</th>
+                        <th>Presentación</th>
+                        <th>Peso (kg)</th>
+                        <th>Valor</th>
+                        <th>Valor Referencia</th>
+                        <th>Acciones</th>
+                    </tr>
+                    <tr *ngFor="let prodTop of ArrayProdTopping">
+                        <td>{{prodTop.cantidadReserva}}</td>
+                        <td>
+                            <strong>{{prodTop.MaxCantidad}}</strong>
+                        </td>
+                        <td>{{prodTop.Presentacion}}</td>
+                        <td>{{prodTop.PesoKilos}} Kg</td>
+                        <td>{{prodTop.ValorUnitario | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                        <td>{{prodTop.VlorRefencia | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                        <td>
+                            <button class="SinEstilo" title="Eliminar presentación">
+                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basura.png"
+                                    class="imgpresentacion" (click)="ConfirmacionEliminar(prodTop, ModalConfirmacion)">
+                            </button>
+                            <button class="SinEstilo" title="Editar presentación">
+                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
+                                    class="imgpresentacion" (click)="EditarAdicional(prodTop)">
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</ng-template>
+<!--Presentaciones producto ancla-->
+<ng-template #PresentacionesProdAncla let-modal>
+    <div class="modal-header">
+        <h1>Producto: {{DataOferta[0].Nombre_Producto}}</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="CierraModalPresentacion()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-4 mt-2">
+                <label class="col-sm-12 Llave">Unidades para la oferta</label>
+                <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidadesProdAncla"
+                    placeholder="Unidades" (keypress)="LimpiSmsError()">
+            </div>
+
+            <div class="col-sm-4 mt-2">
+                <label class="col-sm-12 Llave">Máximo unidades por compra</label>
+                <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="MaxinoProdAncla"
+                    placeholder="Máximo unidades" (keypress)="LimpiSmsError()">
+            </div>
+
+            <div class="col-sm-4 mt-2">
+                <label class="col-sm-12 Llave">Presentación</label>
+                <textarea name="DescCortaAdd" id="DescCortaAdd" cols="30" rows="5" class="form-control textBox"
+                    placeholder="Presentación" [(ngModel)]="PresentacionProdAncla"
+                    (keypress)="LimpiSmsError()"></textarea>
+            </div>
+
+            <div class="col-sm-4 mt-2">
+                <label class="col-sm-12 Llave">Peso (kg)</label>
+                <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PesoProdAncla"
+                    placeholder="Peso" (keypress)="LimpiSmsError()">
+            </div>
+
+            <div class="col-sm-4 mt-2">
+                <label class="col-sm-12 Llave">Valor</label>
+                <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox"
+                    [(ngModel)]="ValorProdAncla" placeholder="Valor Real" (keypress)="LimpiSmsError()">
+            </div>
+
+            <div class="col-sm-4 mt-2">
+                <label class="col-sm-12 Llave">Valor Referencia</label>
+                <input mask="separator" thousandSeparator="." type="text" class="col-sm-12 form-control mt-1 textBox"
+                    [(ngModel)]="ValorReferenciaProdAncla" placeholder="Valor Referencia" (keypress)="LimpiSmsError()">
+            </div>
+        </div>
+
+        <div class="row mt-3 justify-content-center">
+            <label class="p-0 m-0 smsError mt-2 mb-2 CentrarText">{{SmsError}}</label>
+
+            <button type="button" class="btn btn-agro-prin col-sm-2" style="margin-right: 5px;"
+                *ngIf="banderaAgregarAncla=='1'" (click)="AgregarPresentacionProdPrin('5')">Agregar</button>
+
+            <button type="button" class="btn btn-agro-prin col-sm-2" style="margin-right: 5px;"
+                *ngIf="banderaAgregarAncla=='2'" (click)="AgregarPresentacionProdPrin('3')">Actualizar</button>
+
+            <button type="button" class="btn btn-agro-sec col-sm-2" style="margin-left: 5px;"
+                (click)="LimpiaCamposPresentacioProdAncla()">Limpiar</button>
+        </div>
+
+
+        <div class="row mt-3">
+            <div class="table-responsive">
+                <table class="table col-sm-12 TableAgro">
+                    <tr id="TablaValoracion">
+                        <th>Unidades</th>
+                        <th>Maximo Unidades</th>
+                        <th>Presentación</th>
+                        <th>Peso (kg)</th>
+                        <th>Valor</th>
+                        <th>Valor Referencia</th>
+                        <th>Acciones</th>
+                    </tr>
+                    <tr *ngFor="let Presprod of ArrayPresentacionesProdAncla">
+                        <td>{{Presprod.cantidadReserva}}</td>
+                        <td>
+                            <strong>{{Presprod.MaxCantidad}}</strong>
+                        </td>
+                        <td>{{Presprod.Presentacion}}</td>
+                        <td>{{Presprod.PesoKilos}} Kg</td>
+                        <td>{{Presprod.ValorUnitario | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                        <td>{{Presprod.VlorRefencia | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                        <td>
+                            <button *ngIf="Presprod.Ancla != 2" class="SinEstilo" title="Eliminar presentación"
+                                (click)="ConfirmacionEliminarProdPrincipal(Presprod, ModalConfirmacionProdAncla)">
+                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basura.png"
+                                    class="imgpresentacion">
+                            </button>
+                            <button class="SinEstilo" title="Editar presentación">
+                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
+                                    class="imgpresentacion" (click)="EditarAncla(Presprod)">
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #ModalConfirmacionProdAncla let-modal>
+    <div class="modal-header">
+        <h1>¿Estás seguro de eliminar esta presentación?</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br justify-content-center">
+            <label style="text-align: center; font-size: 15px;"><strong>{{DescripcionPresentacion}}</strong></label>
+        </div>
+    </div>
+    <div class="row mt-3 justify-content-center">
+
+        <button type="button" class="btn btn-agro-prin col-sm-2" style="margin-right: 5px;" (click)="modal.close()"
+            (click)="EliminaPresentacionProdPinsipal()">Eliminar</button>
+        <button type="button" class="btn btn-agro-sec col-sm-2" style="margin-left: 5px;"
+            (click)="modal.close()">Cancelar</button>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalImagen let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title">Imagen adicionales</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body" *ngFor="let oferta of ArrayToppingSeleccionado">
+        <div class="row br">
+            <img src="{{RutaImagenTopping}}{{oferta.imagen}}" class="col-sm-12">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.dismiss()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #templateConfirmacion let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title">Eliminar Producto</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="mt-4 mb-1 text-center">
+        <div class="row justify-content-center">
+
+            <div class="col-12 mb-3">
+                ¿Estás seguro de eliminar el producto?
+            </div>
+
+            <div class="col-sm-4">
+                <button type="button" id="btnGuardarDirecccion" class="btn btn-agro-prin w-100"
+                    (click)="AceptEliminarProd(ModalRespuesta)">
+                    Aceptar
+                </button>
+            </div>
+            <div class="col-sm-4">
+                <button type="button" id="btnGuardarDirecccion" class="btn btn-agro-sec w-100"
+                    (click)="modal.dismiss('Cross click')">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+        <br>
+    </div>
+</ng-template>
+
+
+<ng-template #ModalImagenProduct let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title">Imagenes producto</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="row br">
+        <h2 class="TituloDetalle">{{Respuesta}}</h2>
+    </div>
+    <div class="modal-body" *ngFor="let producto of ArrayProductoSeleccionado">
+        <div class="row br">
+            <img src="{{RutaImagenTopping}}{{producto.imagen}}" class="col-sm-12">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.dismiss()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalConfirmacion let-modal>
+    <div class="modal-header">
+        <h1>¿Estás seguro de eliminar esta presentación?</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br justify-content-center">
+            <label style="text-align: center; font-size: 15px;"><strong>{{DescripcionPresentacion}}</strong></label>
+        </div>
+    </div>
+    <div class="row mt-3 justify-content-center">
+
+        <button type="button" class="btn btn-agro-prin col-sm-2" style="margin-right: 5px;" (click)="modal.close()"
+            (click)="EliminaPresentacion()">Eliminar</button>
+        <button type="button" class="btn btn-agro-sec col-sm-2" style="margin-left: 5px;"
+            (click)="modal.close()">Cancelar</button>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalImagenModal let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title">Imagen adicionales</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body" *ngFor="let data of DataTxtModal">
+        <div class="row br">
+            <img src="{{RutaImagenTopping}}{{data.ImagenUno}}" class="col-sm-12">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.dismiss()">Aceptar</button>
     </div>
     <br>
 </ng-template>

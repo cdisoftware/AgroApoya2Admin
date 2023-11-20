@@ -456,5 +456,9 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'modAdminTextOferta/' + Bandera, Body);
   }
 
+  ActualizarFechasOferta(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modAdmiOfertaFechas/' + Bandera, Body);
+  }
+
 }
 
