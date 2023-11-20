@@ -126,6 +126,11 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   ArrayGruposMilla: any = [];
   //#endregion VariablesGrupoMilla
 
+//#region CreaTransporteManual
+IdentificadorIdCarr_: string = "";
+IdEstadoProcesoCreaTransporteManual: string = "1";
+//#endregion CreaTransporteManual
+
   ngAfterViewInit(): void {
 
   }
@@ -1018,28 +1023,49 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
 
 
   AgregaCompraAGrupo(IdCarr: string) {
-    const body = {
-      IdGrupo: this.IdGrugo_,
-      IdCarro: IdCarr
-    }
-    this.sevicesmilla.ModEntrega('3', body).subscribe(Respu => {
-      var auxrespu = Respu.split("|");
-      if (Number(auxrespu[0]) > 0) {
-        this.MesajeModal = "La entrega se agrego exitosamente";
-        this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-
-        this.ArrayPinsRutaGenerada = [];
-
-        this.sevicesmilla.ConsultaPolygonosGrupoMilla('1', this.IdSectorUltimaMilla_).subscribe(RespuPins => {
-          this.ArrayPinsRutaGenerada = RespuPins;
-          this.LimpiaMapsEntregas();
-          this.IniciaMapaRuta();
-        });
-      } else {
-        this.MesajeModal = "No fue posible agregar la entrega comunicate con soporte";
-        this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    if (IdCarr != null && IdCarr != undefined && IdCarr != '0') {
+      const body = {
+        IdGrupo: this.IdGrugo_,
+        IdCarro: IdCarr
       }
-    });
+      this.sevicesmilla.ModEntrega('3', body).subscribe(Respu => {
+        var auxrespu = Respu.split("|");
+        if (Number(auxrespu[0]) > 0) {
+          this.MesajeModal = "La entrega se agrego exitosamente";
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+
+          this.ArrayPinsRutaGenerada = [];
+
+          this.sevicesmilla.ConsultaPolygonosGrupoMilla('1', this.IdSectorUltimaMilla_).subscribe(RespuPins => {
+            this.ArrayPinsRutaGenerada = RespuPins;
+            this.LimpiaMapsEntregas();
+            this.IniciaMapaRuta();
+            this.ListaGruposMilla();
+          });
+        } else {
+          this.MesajeModal = auxrespu[1];
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        }
+      });
+    } else {
+      this.MesajeModal = "No fue posible agregar la entrega comunicate con soporte";
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    }
   }
   //#endregion VariablesGrupoMilla
+
+
+
+  //#region CreaTransporteManual
+  CambiaEstadoProcesoManual() {
+    this.IdEstadoProceso = "5";
+  }
+  CancelarCreacionTransportemanual(){
+    this.IdEstadoProceso = '0';
+  }
+  CreaTransporteManual() {
+    this.IdEstadoProcesoCreaTransporteManual = "2";
+    this.CentramapaRuta({ address: 'Bogotá' + ',' + 'Bogotá' });
+  }
+  //#endregion CreaTransporteManual
 }
