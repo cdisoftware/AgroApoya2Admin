@@ -135,10 +135,10 @@
                                 <label style="text-align: center;" class="col-sm-12 mt-3 Llave">IdCompra:</label>
                             </div>
                             <div class="col-sm-2 mt-2">
-                                <input type="number" class="col-sm-12 form-control mt-1 textBox" placeholder="IdCarro"/>
+                                <input type="number" class="col-sm-12 form-control mt-1 textBox" placeholder="IdCarro" #IdCarrAgrega/>
                             </div>
                             <div class="col-sm-3 mt-2 mb-2">
-                                <button type="button" class="btn btn-agro-prin w-100">Agregar</button>
+                                <button type="button" class="btn btn-agro-prin w-100" (click)="AgregaCompraAGrupo(IdCarrAgrega.value)">Agregar</button>
                             </div>
                         </div>
 
