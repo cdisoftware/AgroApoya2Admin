@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ValorarofertaService } from './../../../core/valoraroferta.service';
-import { NgbAccordionConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router'
-import { CrearofertaService } from 'src/app/core/crearoferta.service';
+import { CookieService } from 'ngx-cookie-service';
 @Component({
   selector: 'app-modificar-oferta-publica',
   templateUrl: './modificar-oferta-publica.component.html',
@@ -28,6 +28,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   SessionSectorSel: any;
   IdOferta: string;
   SectorBlock: boolean = false;
+  Sector: string = '';
 
   //SessionOferta: any;
   DataOferta: any[] = [];
@@ -237,8 +238,15 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   //#endregion OfertaDirigidaA
 
   sessionDescripcionOferta: string = '';
+  ConfirmacionModal: string = '';
+  SessionIdUsuario: any;
 
-  constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) { }
+  constructor(private serviciosvaloracion: ValorarofertaService,
+    private modalService: NgbModal,
+    public rutas: Router,
+    private SeriviciosGenerales: MetodosglobalesService,
+    private formatofecha: DatePipe,
+    private cookies: CookieService) { }
 
   ngOnInit(): void {
     this.ConsultaOferta();
@@ -319,6 +327,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.RutaImagen = this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.RutaLanding = this.SeriviciosGenerales.RecuperarRutaVista('1');
     this.RutaImagenTopping = this.SeriviciosGenerales.RecuperarRutasOtrasImagenes('4');
+    this.SessionIdUsuario = this.cookies.get('IDU');
     this.DataProducts = [];
     this.Consultatoppings();
     this.consultaProductos();
@@ -381,12 +390,14 @@ export class ModificarOfertaPublicaComponent implements OnInit {
 
     this.ConsultaVigenciaOferta();
     this.consultaToppingsOferta();
+    this.ConsultaValoracionOferta();
     //this.ConsultaLinks();  
     this.GrillaTextoModal();
     this.ValidaVigencia = '1';
   }
 
   LimpiaSector() {
+    this.Sector = '';
     this.CodigoOferSector = '';
     this.VlrFletSect = '';
     this.SessionSectorSel = ''
@@ -396,6 +407,53 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.MuestraGrupal = '0'
   }
 
+  AbreModalConfirmacion(template: any, item: any) {
+    this.ConfirmacionModal = '¿Esta seguro de publicar la oferta ' + item.COD_OFR_PUBLICO + '-' + item.Nombre_Producto + '?';
+    this.modalService.open(template, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  CerrarOfertaModal(template: any, item: any) {
+    this.ConfirmacionModal = '¿Esta seguro de cerrar la oferta ' + item.COD_OFR_PUBLICO + '-' + item.Nombre_Producto + '?';
+    this.modalService.open(template, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  PublicarOferta(modalRespuesta: any) {
+    const datosPublica = {
+      usucodig: this.SessionIdUsuario,
+      cnctivoOferta: this.SelectorOferta,
+      ObsEstado: "",
+      estado: 10,
+      parametro1: "",
+      parametro2: "",
+      parametro3: ""
+    }
+    this.serviciosvaloracion.ModificaEstadoOferta('3', datosPublica).subscribe(Resultado => {
+      var arrayrespuesta = Resultado.split('|');
+      this.Respuesta = arrayrespuesta[1];
+      this.ConsultaDetalleOferta();
+    })
+    this.modalService.dismissAll();
+    this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+  }
+
+  CerrarOferta(modalRespuesta: any) {
+    const datosCerrar = {
+      usucodig: this.SessionIdUsuario,
+      cnctivoOferta: this.SelectorOferta,
+      ObsEstado: "",
+      estado: 6,
+      parametro1: "",
+      parametro2: "",
+      parametro3: ""
+    }
+    this.serviciosvaloracion.ModificaEstadoOferta('3', datosCerrar).subscribe(Resultado => {
+      var arrayrespuesta = Resultado.split('|');
+      this.Respuesta = arrayrespuesta[1];
+      this.ConsultaDetalleOferta();
+    })
+    this.modalService.dismissAll();
+    this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+  }
 
   ConsultaDetalleOferta() {
     this.serviciosvaloracion.ConsultaOferta('1', this.IdOfertaSelect).subscribe(ResultConsu => {
@@ -405,7 +463,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   }
 
   ConsultaVigenciaOferta() {
-    this.serviciosvaloracion.ConsultaVigenciaOferta('1', this.SelectorOferta, this.SessionSectorSel).subscribe(ResultCons => {  
+    this.serviciosvaloracion.ConsultaVigenciaOferta('1', this.SelectorOferta, this.SessionSectorSel).subscribe(ResultCons => {
       if (ResultCons.length > 0) {
         this.VigenDesde = ResultCons[0].vgncia_desde;
         this.VigenHasta = ResultCons[0].vgncia_hasta;
@@ -472,6 +530,12 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         this.Respuesta = 'La fecha de recogida no puede ser mayor a la fecha entrega, favor valida tu información.';
       }
     }
+  }
+  LimpiarFechas() {
+    this.VigenDesde = '';
+    this.VigenHasta = '';
+    this.FechaEntrega = '';
+    this.SessionFechaRecogida = '';
   }
 
   GuardaVigencia(templateMensaje: any) {
@@ -564,7 +628,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
       }
       this.serviciosvaloracion.ActualizarFechasOferta('1', Body).subscribe(ResultUpdate => {
         this.Respuesta = ResultUpdate;
-        this.ConsultaValoracionOferta();
+
       })
     }
 
@@ -2946,7 +3010,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         })
       }
     }
-    else {  
+    else {
       this.serviciosvaloracion.ModificaTopping('3', Body).subscribe(ResultOper => {
         this.consultaToppingsOferta();
         this.Respuesta = ResultOper
@@ -3119,7 +3183,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         ModalRegistroTextoDos: this.TextMod2,
         ModalRegistroTextoTres: this.TextMod3,
         ModalRegistroImagenUno: this.NomImagenTxt
-      }  
+      }
       this.serviciosvaloracion.GuardarTextosModal('4', Body).subscribe(Respu => {
         this.Respuesta = Respu;
         this.GrillaTextoModal();

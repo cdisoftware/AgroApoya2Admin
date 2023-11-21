@@ -47,3 +47,23 @@
   font-size: 15px;
   font-weight: bold;
 }
+
+.Imagen {
+  position: relative;
+  overflow: hidden;
+  display: flex; /* Establece el contenedor como un contenedor flex */
+  align-items: center; /* Centra verticalmente los elementos hijos */
+  justify-content: center; /* Centra horizontalmente los elementos hijos */
+}
+
+.Imagen img {
+  border-radius: 20px;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.ValorTextModal {
+  color: #575A5F;
+  text-align: center !important;
+}
