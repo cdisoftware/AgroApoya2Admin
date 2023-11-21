@@ -37,6 +37,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       stylers: [{ visibility: 'off' }]
     }
   ];
+  ItemEliminacion: any = null;
   //#endregion General
 
   //#region ModalMensaje
@@ -126,10 +127,10 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   ArrayGruposMilla: any = [];
   //#endregion VariablesGrupoMilla
 
-//#region CreaTransporteManual
-IdentificadorIdCarr_: string = "";
-IdEstadoProcesoCreaTransporteManual: string = "1";
-//#endregion CreaTransporteManual
+  //#region CreaTransporteManual
+  IdentificadorIdCarr_: string = "";
+  IdEstadoProcesoCreaTransporteManual: string = "1";
+  //#endregion CreaTransporteManual
 
   ngAfterViewInit(): void {
 
@@ -237,7 +238,7 @@ IdEstadoProcesoCreaTransporteManual: string = "1";
           }
           var aux = body
           this.sevicesmilla.AgregaCompras('3', body).subscribe(RespuInsert => {
-            this.ArrayPinsRutaGenerada = RespuPins;
+            this.ConsultaEntregasGrupo(this.IdGrugo_);
             this.IniciaMapaRuta();
 
             this.ListaGruposMilla()
@@ -256,7 +257,6 @@ IdEstadoProcesoCreaTransporteManual: string = "1";
 
   IniciaMapaRuta() {
     this.IdEstadoProceso = "4";
-    this.CentramapaRuta({ address: 'Bogotá' + ',' + 'Bogotá' });
   }
   CentramapaRuta(request: google.maps.GeocoderRequest): void {
     this.geocoderPinRutaEntrega.geocode(request).then((result) => {
@@ -313,7 +313,7 @@ IdEstadoProcesoCreaTransporteManual: string = "1";
       var auxcoor = this.ArrayPinsRutaGenerada[i].CoordenadasEntrega.split(",");
       lat = parseFloat(auxcoor[0]);
       long = parseFloat(auxcoor[1]);
-      features.push({ position: new google.maps.LatLng(lat, long), NomCli: this.ArrayPinsRutaGenerada[i].NombresCliente });
+      features.push({ position: new google.maps.LatLng(lat, long), NomCli: this.ArrayPinsRutaGenerada[i].NombrePersona });
     }
 
     for (let i = 0; i < features.length; i++) {
@@ -943,7 +943,6 @@ IdEstadoProcesoCreaTransporteManual: string = "1";
   }
   ListaEntregasTransporte() {
     this.sevicesmilla.ConsEntregasTransporte('1', this.IdGrugo_).subscribe(Respu => {
-      console.log(Respu)
       this.ArrayGruposMilla = Respu;
     });
   }
@@ -957,7 +956,7 @@ IdEstadoProcesoCreaTransporteManual: string = "1";
 
     const orden = {
       CadenaOrden: cadenaOrden,
-      IdGrupo: 34
+      IdGrupo: this.IdGrugo_
     }
     this.sevicesmilla.OrdenEntregas('1', orden).subscribe(Resultado => {
       var auxrespuorden = Resultado.split("|");
@@ -965,10 +964,12 @@ IdEstadoProcesoCreaTransporteManual: string = "1";
         if (Number(auxrespuorden[0]) > 0) {
           this.ArrayPinsRutaGenerada = [];
 
-          this.sevicesmilla.ConsultaPolygonosGrupoMilla('1', this.IdSectorUltimaMilla_).subscribe(RespuPins => {
+          this.sevicesmilla.ConsEntregasTransporte('1', this.IdGrugo_).subscribe(RespuPins => {
             this.ArrayPinsRutaGenerada = RespuPins;
             this.LimpiaMapsEntregas();
-            this.IniciaMapaRuta();
+          this.ListaGruposMilla();
+          this.AgregarSitiosRutaEntregas();
+          this.AgregaPolilineasRuta();
           });
         } else {
           this.MesajeModal = "No fue posible realizar la acción, por favor válida el orden que estás ingresando e intenta nuevamente (Orden (2))";
@@ -981,7 +982,6 @@ IdEstadoProcesoCreaTransporteManual: string = "1";
     });
   }
 
-  ItemEliminacion: any = null;
   AbreModalConfirmacionModEntrega(item: any, templateConfirmacionElimina: any) {
     console.log(item)
     this.ItemEliminacion = item;
@@ -999,12 +999,12 @@ IdEstadoProcesoCreaTransporteManual: string = "1";
         this.MesajeModal = "La entrega de " + item.NombrePersona + " se elimino exitosamente";
         this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
 
-        this.ArrayPinsRutaGenerada = [];
-
-        this.sevicesmilla.ConsultaPolygonosGrupoMilla('1', this.IdSectorUltimaMilla_).subscribe(RespuPins => {
+        this.sevicesmilla.ConsEntregasTransporte('1', this.IdGrugo_).subscribe(RespuPins => {
           this.ArrayPinsRutaGenerada = RespuPins;
           this.LimpiaMapsEntregas();
-          this.IniciaMapaRuta();
+          this.ListaGruposMilla();
+          this.AgregarSitiosRutaEntregas();
+          this.AgregaPolilineasRuta();
         });
       } else {
         this.MesajeModal = "No fue posible eliminar la entrega de " + item.NombrePersona + " comunicate con soporte";
@@ -1036,7 +1036,7 @@ IdEstadoProcesoCreaTransporteManual: string = "1";
 
           this.ArrayPinsRutaGenerada = [];
 
-          this.sevicesmilla.ConsultaPolygonosGrupoMilla('1', this.IdSectorUltimaMilla_).subscribe(RespuPins => {
+          this.sevicesmilla.ConsEntregasTransporte('1', this.IdGrugo_).subscribe(RespuPins => {
             this.ArrayPinsRutaGenerada = RespuPins;
             this.LimpiaMapsEntregas();
             this.IniciaMapaRuta();
@@ -1060,12 +1060,113 @@ IdEstadoProcesoCreaTransporteManual: string = "1";
   CambiaEstadoProcesoManual() {
     this.IdEstadoProceso = "5";
   }
-  CancelarCreacionTransportemanual(){
+  CancelarCreacionTransportemanual() {
     this.IdEstadoProceso = '0';
   }
   CreaTransporteManual() {
-    this.IdEstadoProcesoCreaTransporteManual = "2";
-    this.CentramapaRuta({ address: 'Bogotá' + ',' + 'Bogotá' });
+
+    if (this.NombreBodega != "" && Number(this.ValorFlete) >= 0 && this.FechaEntrega != "" && this.UbicacionEntrega != "" && this.IdentificadorIdCarr_ != "") {
+      const body = {
+        IdGrupoMilla: 0,
+        ValorFlete: Number(this.ValorFlete),
+        FechaEntrega: this.FechaEntrega,
+        UbicacionEntrega: this.UbicacionEntrega,
+        UbicacionRecoge: this.NombreBodega,
+        Id_carrosManual: this.IdentificadorIdCarr_
+      }
+      this.sevicesmilla.CreaTransporteEntrega('6', body).subscribe(Resultado => {
+        const result = Resultado.split("|");
+        if (Number(result[0]) > 0) {
+          this.IdGrugo_ = result[0];
+          this.ConsultaEntregasGrupo(this.IdGrugo_);
+        } else {
+          this.MesajeModal = "No fue posible crear el transporte, por favor comuníquese con soporte";
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        }
+      });
+    } else {
+      this.MesajeModal = "Por favor, verifique los datos ingresados e inténtente nuevamente.";
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    }
+  }
+  ConsultaEntregasGrupo(IdGrupo: string) {
+    this.sevicesmilla.ConsEntregasTransporte('1', IdGrupo).subscribe(Respu => {
+      if (Respu.length > 0) {
+        this.ArrayPinsRutaGenerada = Respu;
+        this.LimpiaMapsEntregas();
+        this.CentramapaRuta({ address: 'Bogotá' + ',' + 'Bogotá' });
+        this.IdEstadoProcesoCreaTransporteManual = "2";
+        this.ListaGruposMilla();
+      } else {
+        this.MesajeModal = "No tienes entregas disponibles valida tu información";
+        this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+      }
+    });
+  }
+
+  AbreModalConfirmacionModEntregaManual(item: any, templateConfirmacionEliminaManual: any) {
+    console.log(item)
+    this.ItemEliminacion = item;
+    this.modalService.open(templateConfirmacionEliminaManual, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+  }
+
+  EliminaEntregaManual(item: any) {
+    const body = {
+      IdGrupo: item.IdGrupo,
+      IdCarro: item.IdCarro
+    }
+    this.sevicesmilla.ModEntrega('4', body).subscribe(Respu => {
+      var auxrespu = Respu.split("|");
+      if (Number(auxrespu[0]) > 0) {
+        this.MesajeModal = "La entrega de " + item.NombrePersona + " se elimino exitosamente";
+        this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        this.sevicesmilla.ConsEntregasTransporte('1', this.IdGrugo_).subscribe(RespuPins => {
+          this.ArrayPinsRutaGenerada = RespuPins;
+          this.LimpiaMapsEntregas();
+          this.ListaGruposMilla();
+          this.AgregarSitiosRutaEntregas();
+          this.AgregaPolilineasRuta();
+        });
+
+      } else {
+        this.MesajeModal = "No fue posible eliminar la entrega de " + item.NombrePersona + " comunicate con soporte";
+        this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+      }
+    });
+  }
+
+
+
+
+
+  dropTransporteManual(event: CdkDragDrop<string[]>, ArrayEntregas: any) {
+    moveItemInArray(ArrayEntregas, event.previousIndex, event.currentIndex);
+    var cadenaOrden: string = "";
+    for (var i = 0; i < ArrayEntregas.length; i++) {
+      cadenaOrden += ArrayEntregas[i].IdCarro + "-" + (i + 1) + "|";
+    }
+
+    const orden = {
+      CadenaOrden: cadenaOrden,
+      IdGrupo: this.IdGrugo_
+    }
+    this.sevicesmilla.OrdenEntregas('1', orden).subscribe(Resultado => {
+      var auxrespuorden = Resultado.split("|");
+      if (auxrespuorden.length > 1) {
+        if (Number(auxrespuorden[0]) > 0) {
+          this.LimpiaMapsEntregas();
+          this.ListaGruposMilla();
+          this.AgregarSitiosRutaEntregas();
+          this.AgregaPolilineasRuta();
+        } else {
+          this.MesajeModal = "No fue posible realizar la acción, por favor válida el orden que estás ingresando e intenta nuevamente (Orden (2))";
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        }
+      } else {
+        this.MesajeModal = "No fue posible realizar la acción, por favor válida el orden que estás ingresando e intenta nuevamente (Orden (1))";
+        this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+      }
+    });
   }
   //#endregion CreaTransporteManual
 }

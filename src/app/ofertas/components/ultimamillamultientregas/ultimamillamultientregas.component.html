@@ -11,12 +11,12 @@
                         </div>
                         <div class="col-sm-4 mt-2 mb-2">
                             <button type="button" class="btn btn-agro-prin w-100"
-                                (click)="CambioEstadoProceso()">Generar Rutas</button>
+                                (click)="CambioEstadoProceso()">Generar rutas automaticas</button>
                         </div>
 
                         <div class="col-sm-5 mt-2 mb-2">
                             <button type="button" class="btn btn-agro-prin w-100"
-                                (click)="CambiaEstadoProcesoManual()">Crear transporte</button>
+                                (click)="CambiaEstadoProcesoManual()">Generar rutas manuales</button>
                         </div>
                     </div>
                     <div class="row justify-content-center" *ngIf="IdEstadoProceso == '1'">
@@ -271,6 +271,61 @@
                                 <div id="mapRutaPolilyneas" class="ShowMap"></div>
                             </div>
                         </div>
+                        <div class="row mt-5" *ngIf="IdEstadoProcesoCreaTransporteManual == '2'">
+                            <div class="col-sm-4">
+                                <label class="Llave lblSmall">Nombre de
+                                    grupo:&nbsp;{{NombreGrupo}}</label>
+                            </div>
+
+                            <div class="col-sm-6 row">
+
+                                <div class="col-sm-6">
+                                    <label class="Llave lblSmall">Su precio sugerido es de:</label>
+                                </div>
+                                <div class="col-sm-6 TextRight">
+                                    <input type="text" mask="separator" thousandSeparator="," class="form-control"
+                                        placeholder="Valor contra oferta" required="required" [(ngModel)]="ValorGrupo">
+                                </div>
+                            </div>
+                            <div class="col-sm-2" style="text-align: center;">
+                                <button class="SinEstilo" title="Actualizar precio">
+                                    <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_guardar.png">
+                                </button>
+                                <button class="SinEstilo" title="Información">
+                                    <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/alert.png">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row" cdkDropList [cdkDropListData]="ArrayGruposMilla"
+                            (cdkDropListDropped)="dropTransporteManual($event, ArrayGruposMilla)" *ngIf="IdEstadoProcesoCreaTransporteManual == '2'">
+
+                            <div cdkDrag class="col-sm-6 justify-content-center Parada sinmp mt-3 CursorPointer"
+                                *ngFor="let part of ArrayGruposMilla; let y = index">
+                                <div class="row Parada">
+                                    <div class="col-sm-1">
+                                        <label class="Llave lblSmall">{{y+1}}</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="Llave lblSmall">{{part.NombrePersona}}</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="Llave lblSmall">{{part.DireccionEntrega}}</label>
+                                    </div>
+
+                                    <div class="col-sm-3 TextRight">
+                                        <button class="SinEstilo" title="Eliminar"
+                                            (click)="AbreModalConfirmacionModEntrega(part,templateConfirmacionEliminaManual)">
+                                            <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/basura.png">
+                                        </button>
+                                        <button class="SinEstilo" title="Ver"
+                                            (click)="AbreModalInfoCompra(part, templateDetalleEntrega)">
+                                            <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ver.png">
+                                        </button>
+                                    </div>
+                                </div>
+                                <hr class="mt-1" *ngIf="y + 1 != ArrayGruposMilla.length">
+                            </div>
+                        </div>
                     </div>
                 </ng-template>
             </ngb-panel>
@@ -428,6 +483,32 @@
         <div class="row justify-content-center">
             <div class="col-sm-4 mt-2 mb-2">
                 <button type="button" class="btn btn-agro-prin w-100" (click)="modal.dismiss()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+    <br>
+</ng-template>
+
+
+<ng-template #templateConfirmacionEliminaManual let-modal>
+    <div class="modal-header">
+        <h1>ESTÁ SEGURO DE ELIMINAR ESTA ENTREGA EN EL TRANSPORTE</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+
+    <div class="modaBody">
+
+        <div class="row p-3 justify-content-center">
+            <p style="text-align: center;">Esta seguro de eliminar la compra de {{ItemEliminacion.NombrePersona}} en el
+                transporte;</p>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-sm-4 mt-2 mb-2">
+                <button type="button" class="btn btn-agro-prin w-100" (click)="EliminaEntregaManual(ItemEliminacion)"
+                    (click)="modal.dismiss()">Eliminar</button>
+            </div>
+            <div class="col-sm-4 mt-2 mb-2">
+                <button type="button" class="btn btn-agro-prin w-100" (click)="modal.dismiss()">Cancelar</button>
             </div>
         </div>
     </div>
