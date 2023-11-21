@@ -759,7 +759,6 @@ export class AdminUltMillaComponent implements OnInit {
       this.ConsPartGrupoMilla();
     });
   }
-  //ListaGrupoParticipantesgrupo
   ConsPartGrupoMilla() {
     this.ServiciosValorar.ConsParadasRutaUltMilla('1', '0', this.SelectOferta, this.SectorSelec).subscribe(Resultado => {
       for (var y = 0; y < Resultado.length; y++) {
@@ -768,18 +767,10 @@ export class AdminUltMillaComponent implements OnInit {
 
           if (existe !== -1) {
             this.ArrayGruposMilla[existe].Participantes.push(Resultado[y]);
-          } else {
-            //alert("No existe");
           }
         }
-        /*if(Resultado[y].GrupoMilla == '37'){
-          this.ArrayPartGrupos.push(Resultado[y]);
-        }*/
       }
-      this.ArrayPartGrupos = Resultado;
-    })
-
-
+    });
   }
 
 
