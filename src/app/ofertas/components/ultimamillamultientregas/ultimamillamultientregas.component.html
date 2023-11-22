@@ -19,7 +19,7 @@
                                 (click)="CambiaEstadoProcesoManual()">Generar rutas manuales</button>
                         </div>
                     </div>
-                    <div class="row justify-content-center" *ngIf="IdEstadoProceso == '1'">
+                    <div class="row justify-content-center" *ngIf="IdEstadoProceso == '1' || IdEstadoProceso == '2'">
                         <table class="col-sm-11 TableAgro ">
                             <tr>
                                 <th>Selección</th>
@@ -205,8 +205,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <div class="row justify-content-center" *ngIf="IdEstadoProceso == '5'">
 
                         <div class="row justify-content-center" *ngIf="IdEstadoProcesoCreaTransporteManual == '1'">
@@ -297,7 +295,8 @@
                             </div>
                         </div>
                         <div class="row" cdkDropList [cdkDropListData]="ArrayGruposMilla"
-                            (cdkDropListDropped)="dropTransporteManual($event, ArrayGruposMilla)" *ngIf="IdEstadoProcesoCreaTransporteManual == '2'">
+                            (cdkDropListDropped)="dropTransporteManual($event, ArrayGruposMilla)"
+                            *ngIf="IdEstadoProcesoCreaTransporteManual == '2'">
 
                             <div cdkDrag class="col-sm-6 justify-content-center Parada sinmp mt-3 CursorPointer"
                                 *ngFor="let part of ArrayGruposMilla; let y = index">
@@ -325,6 +324,80 @@
                                 </div>
                                 <hr class="mt-1" *ngIf="y + 1 != ArrayGruposMilla.length">
                             </div>
+                        </div>
+
+                        <div class="col-sm-3 mt-2 mb-4">
+                            <button type="button" class="btn btn-agro-prin w-100" (click)="Volver()">Finalizar</button>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center" *ngIf="IdEstadoProceso == '6'">
+                        <h3 class="mt-4">{{ArrayTransporteSeleccionado.UbicacionEntrega}}</h3>
+                        <div class="row">
+                            <div class="mb-2 mt-2">
+                                <div id="mapRuta" class="ShowMap"></div>
+                                <div id="mapRutaPolilyneas" class="ShowMap"></div>
+                            </div>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-sm-4">
+                                <label class="Llave lblSmall">Nombre de
+                                    grupo:&nbsp;{{NombreGrupo}}</label>
+                            </div>
+
+                            <div class="col-sm-6 row">
+
+                                <div class="col-sm-6">
+                                    <label class="Llave lblSmall">Su precio sugerido es de:</label>
+                                </div>
+                                <div class="col-sm-6 TextRight">
+                                    <input type="text" mask="separator" thousandSeparator="," class="form-control"
+                                        placeholder="Valor contra oferta" required="required" [(ngModel)]="ValorGrupo">
+                                </div>
+                            </div>
+                            <div class="col-sm-2" style="text-align: center;">
+                                <button class="SinEstilo" title="Actualizar precio">
+                                    <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_guardar.png">
+                                </button>
+                                <button class="SinEstilo" title="Información">
+                                    <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/alert.png">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center" cdkDropList [cdkDropListData]="ArrayGruposMilla"
+                            (cdkDropListDropped)="dropTransporteManual($event, ArrayGruposMilla)"
+                            *ngIf="IdEstadoProcesoCreaTransporteManual == '2'">
+
+                            <div cdkDrag class="col-sm-12 justify-content-center Parada sinmp mt-3 CursorPointer"
+                                *ngFor="let part of ArrayGruposMilla; let y = index">
+                                <div class="row Parada">
+                                    <div class="col-sm-1">
+                                        <label class="Llave lblSmall">{{y+1}}</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="Llave lblSmall">{{part.NombrePersona}}</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="Llave lblSmall">{{part.DireccionEntrega}}</label>
+                                    </div>
+
+                                    <div class="col-sm-3 TextRight">
+                                        <button class="SinEstilo" title="Eliminar"
+                                            (click)="AbreModalConfirmacionModEntrega(part,templateConfirmacionEliminaManual)">
+                                            <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/basura.png">
+                                        </button>
+                                        <button class="SinEstilo" title="Ver"
+                                            (click)="AbreModalInfoCompra(part, templateDetalleEntrega)">
+                                            <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ver.png">
+                                        </button>
+                                    </div>
+                                </div>
+                                <hr class="mt-1">
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-3 mt-2 mb-4">
+                            <button type="button" class="btn btn-agro-prin w-100" (click)="Volver()">Finalizar</button>
                         </div>
                     </div>
                 </ng-template>
@@ -372,11 +445,12 @@
             <li class="col-sm-10 espacioul row" *ngFor="let ite of ArrayConsTransportes">
                 <div class="col-11">
                     <div class="listasStyle">
-                        <label title="{{ite.UbicacionEntrega}} ">{{ite.UbicacionEntrega}} </label>
+                        <label title="{{ite.UbicacionEntrega}}">{{ite.IdTrans}}-{{ite.UbicacionEntrega}}</label>
                     </div>
                 </div>
                 <div class="col-1">
-                    <button class="bot" title="Selecciónar transporte" (click)="SelectTransporte(ite)">
+                    <button class="bot" title="Selecciónar transporte"
+                        (click)="SelectTransporte(ite, templateConfirmacionEditTransporte)">
                         <img src="../../../../assets/ImagenesAgroApoya2Adm/aprobar.png" alt="Selecciónar"
                             class="BtnimgTamanoPeque">
                     </button>
@@ -438,8 +512,8 @@
     <div class="modaBody">
 
         <div class="row p-3 justify-content-center">
-            <p style="text-align: center;">Esta seguro de eliminar la compra de {{ItemEliminacion.NombrePersona}} en el
-                transporte;</p>
+            <p style="text-align: center;">¿Esta seguro de eliminar la compra de {{ItemEliminacion.NombrePersona}} en el
+                transporte?</p>
         </div>
         <div class="row justify-content-center">
             <div class="col-sm-4 mt-2 mb-2">
@@ -499,13 +573,38 @@
     <div class="modaBody">
 
         <div class="row p-3 justify-content-center">
-            <p style="text-align: center;">Esta seguro de eliminar la compra de {{ItemEliminacion.NombrePersona}} en el
-                transporte;</p>
+            <p style="text-align: center;">¿Esta seguro de eliminar la compra de {{ItemEliminacion.NombrePersona}} en el
+                transporte?</p>
         </div>
         <div class="row justify-content-center">
             <div class="col-sm-4 mt-2 mb-2">
                 <button type="button" class="btn btn-agro-prin w-100" (click)="EliminaEntregaManual(ItemEliminacion)"
                     (click)="modal.dismiss()">Eliminar</button>
+            </div>
+            <div class="col-sm-4 mt-2 mb-2">
+                <button type="button" class="btn btn-agro-prin w-100" (click)="modal.dismiss()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #templateConfirmacionEditTransporte let-modal>
+    <div class="modal-header">
+        <h1>ESTÁ SEGURO DE EDITAR LA INFORMACIÓN DEL TRANSPORTE</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+
+    <div class="modaBody">
+
+        <div class="row p-3 justify-content-center">
+            <p style="text-align: center;">¿Esta seguro de editar el transporte de
+                {{ArrayTransporteSeleccionado.UbicacionEntrega}}?</p>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-sm-4 mt-2 mb-2">
+                <button type="button" class="btn btn-agro-prin w-100" (click)="AbreModalConfirmacionEditarTransporte()"
+                    (click)="modal.dismiss()">Editar</button>
             </div>
             <div class="col-sm-4 mt-2 mb-2">
                 <button type="button" class="btn btn-agro-prin w-100" (click)="modal.dismiss()">Cancelar</button>
