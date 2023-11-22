@@ -13,6 +13,11 @@
                             <button type="button" class="btn btn-agro-prin w-100"
                                 (click)="CambioEstadoProceso()">Generar Rutas</button>
                         </div>
+
+                        <div class="col-sm-5 mt-2 mb-2">
+                            <button type="button" class="btn btn-agro-prin w-100"
+                                (click)="CambiaEstadoProcesoManual()">Crear transporte</button>
+                        </div>
                     </div>
                     <div class="row justify-content-center" *ngIf="IdEstadoProceso == '1'">
                         <table class="col-sm-11 TableAgro ">
@@ -70,17 +75,9 @@
                         </div>
                         <div class="row justify-content-center mt-4">
                             <div class="col-sm-4 mt-2 mb-2">
-                                <button type="button" class="btn btn-agro-prin w-100" (click)="CambiaEstadoProceso()">Generar Ruta</button>
+                                <button type="button" class="btn btn-agro-prin w-100"
+                                    (click)="CambiaEstadoProceso()">Generar Ruta</button>
                             </div>
-                        </div>
-
-                        <div class="col-sm-4 mt-2 mb-2" *ngIf="1 + 1 == 3">
-                            <button type="button" class="btn btn-agro-prin w-100"
-                                (click)="DireccionApi()">VerRuta</button>
-                        </div>
-                        <div class="col-sm-4 mt-2 mb-2" *ngIf="1 + 1 == 3">
-                            <button type="button" class="btn btn-agro-prin w-100" (click)="LimpiaPolilineas()">Limpiar
-                                Ruta</button>
                         </div>
                     </div>
                     <div class="row justify-content-center" *ngIf="IdEstadoProceso == '3'">
@@ -128,12 +125,151 @@
                                 (click)="CreaTransporte()">Crear</button>
                         </div>
                     </div>
-
-                    <!--*ngIf="IdEstadoProceso == '3'"-->
                     <div class="row justify-content-center" *ngIf="IdEstadoProceso == '4'">
-                        <div class="row justify-content-center">
+                        <div class="row justify-content-center mb-2">
                             <div id="mapRuta" class="ShowMap"></div>
                             <div id="mapRutaPolilyneas" class="ShowMap"></div>
+                        </div>
+
+
+                        <div class="row mt-5 justify-content-center">
+                            <label class="Llave lblSmall mb-3" style="text-align: center;">¿Quieres agregar otra entrega
+                                a este grupo?</label>
+
+                            <div class="col-sm-2">
+                                <label style="text-align: center;" class="col-sm-12 mt-3 Llave">IdCompra:</label>
+                            </div>
+                            <div class="col-sm-2 mt-2">
+                                <input type="number" class="col-sm-12 form-control mt-1 textBox" placeholder="IdCarro"
+                                    #IdCarrAgrega />
+                            </div>
+                            <div class="col-sm-3 mt-2 mb-2">
+                                <button type="button" class="btn btn-agro-prin w-100"
+                                    (click)="AgregaCompraAGrupo(IdCarrAgrega.value)">Agregar</button>
+                            </div>
+                        </div>
+
+                        <div class="row mt-5">
+                            <div class="col-sm-4">
+                                <label class="Llave lblSmall">Nombre de
+                                    grupo:&nbsp;{{NombreGrupo}}</label>
+                            </div>
+
+                            <div class="col-sm-6 row">
+
+                                <div class="col-sm-6">
+                                    <label class="Llave lblSmall">Su precio sugerido es de:</label>
+                                </div>
+                                <div class="col-sm-6 TextRight">
+                                    <input type="text" mask="separator" thousandSeparator="," class="form-control"
+                                        placeholder="Valor contra oferta" required="required" [(ngModel)]="ValorGrupo">
+                                </div>
+                            </div>
+                            <div class="col-sm-2" style="text-align: center;">
+                                <button class="SinEstilo" title="Actualizar precio">
+                                    <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_guardar.png">
+                                </button>
+                                <button class="SinEstilo" title="Información">
+                                    <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/alert.png">
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row" cdkDropList [cdkDropListData]="ArrayGruposMilla"
+                            (cdkDropListDropped)="drop($event, ArrayGruposMilla)">
+
+                            <div cdkDrag class="col-sm-6 justify-content-center Parada sinmp mt-3 CursorPointer"
+                                *ngFor="let part of ArrayGruposMilla; let y = index">
+                                <div class="row Parada">
+                                    <div class="col-sm-1">
+                                        <label class="Llave lblSmall">{{y+1}}</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="Llave lblSmall">{{part.NombrePersona}}</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="Llave lblSmall">{{part.DireccionEntrega}}</label>
+                                    </div>
+
+                                    <div class="col-sm-3 TextRight">
+                                        <button class="SinEstilo" title="Eliminar"
+                                            (click)="AbreModalConfirmacionModEntrega(part,templateConfirmacionElimina)">
+                                            <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/basura.png">
+                                        </button>
+                                        <button class="SinEstilo" title="Ver"
+                                            (click)="AbreModalInfoCompra(part, templateDetalleEntrega)">
+                                            <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ver.png">
+                                        </button>
+                                    </div>
+                                </div>
+                                <hr class="mt-1" *ngIf="y + 1 != ArrayGruposMilla.length">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row justify-content-center" *ngIf="IdEstadoProceso == '5'">
+
+                        <div class="row justify-content-center" *ngIf="IdEstadoProcesoCreaTransporteManual == '1'">
+                            <div class="col-sm-6 mt-2">
+                                <label class="col-sm-12 Llave">Valor flete</label>
+                                <input mask="separator" thousandSeparator="," type="text" value="0"
+                                    [(ngModel)]="ValorFlete" class="col-sm-12 form-control mt-1 textBox"
+                                    placeholder="Valor flete">
+                            </div>
+
+
+                            <div class="col-sm-6 mt-2">
+                                <label class="col-sm-12 Llave">Fecha entrega</label>
+                                <input type="date" class="col-sm-12 form-control mt-1 textBox"
+                                    [(ngModel)]="FechaEntrega">
+                            </div>
+
+                            <div class="col-sm-6 mt-2">
+                                <label class="col-sm-12 Llave">Ubicación entrega</label>
+                                <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                    placeholder="Ubicación entrega" [(ngModel)]="UbicacionEntrega" />
+                            </div>
+
+                            <div class="col-sm-6 mt-2">
+                                <label class="col-sm-12 mb-1 Llave">Bodega</label>
+                                <ng-autocomplete [data]="DataBodegas" [searchKeyword]="'NombreBodega'"
+                                    placeholder="Bodega" (selected)='selectBodega($event)'
+                                    [itemTemplate]="templateResBodega" [notFoundTemplate]="templateVacio"
+                                    [(ngModel)]="Bodega" (inputCleared)="LimpiaBodega('0')">
+                                </ng-autocomplete>
+                                <ng-template #templateResBodega let-item>
+                                    <a [innerHTML]="item.NombreBodega"></a>
+                                </ng-template>
+                                <ng-template #templateVacio let-SinRegistro>
+                                    <label for="">Sin registros</label>
+                                </ng-template>
+                            </div>
+
+                            <div class="col-sm-8 mt-2">
+                                <label class="col-sm-12 mb-1 Llave">Identificador de entregas</label>
+                                <textarea class="form-control form-control-sm textArea" cols="30" rows="3"
+                                    placeholder="Identificador de la compra (Obligatorio)"
+                                    [(ngModel)]="IdentificadorIdCarr_"></textarea>
+                            </div>
+
+
+
+                            <div class="row justify-content-center">
+                                <div class="col-sm-4 mt-4 mb-2">
+                                    <button type="button" class="btn btn-agro-prin w-100"
+                                        (click)="CancelarCreacionTransportemanual()">Cancelar</button>
+                                </div>
+                                <div class="col-sm-4 mt-4 mb-2">
+                                    <button type="button" class="btn btn-agro-prin w-100"
+                                        (click)="CreaTransporteManual()">Crear</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="IdEstadoProcesoCreaTransporteManual == '2'">
+                            <div class="mb-2 mt-2">
+                                <div id="mapRuta" class="ShowMap"></div>
+                                <div id="mapRutaPolilyneas" class="ShowMap"></div>
+                            </div>
                         </div>
                     </div>
                 </ng-template>
@@ -235,4 +371,65 @@
             </div>
         </div>
     </div>
+</ng-template>
+
+
+<ng-template #templateConfirmacionElimina let-modal>
+    <div class="modal-header">
+        <h1>ESTÁ SEGURO DE ELIMINAR ESTA ENTREGA EN EL TRANSPORTE</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+
+    <div class="modaBody">
+
+        <div class="row p-3 justify-content-center">
+            <p style="text-align: center;">Esta seguro de eliminar la compra de {{ItemEliminacion.NombrePersona}} en el
+                transporte;</p>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-sm-4 mt-2 mb-2">
+                <button type="button" class="btn btn-agro-prin w-100" (click)="EliminaEntrega(ItemEliminacion)"
+                    (click)="modal.dismiss()">Eliminar</button>
+            </div>
+            <div class="col-sm-4 mt-2 mb-2">
+                <button type="button" class="btn btn-agro-prin w-100" (click)="modal.dismiss()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    <br>
+</ng-template>
+
+
+<ng-template #templateDetalleEntrega let-modal>
+    <div class="modal-header">
+        <h1>Detalle entrega</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+
+    <div class="modaBody">
+        <div class="row p-3">
+            <div class="col-sm-6">
+                <label class="Llave lblSmall">Nombre:</label>{{ItemVerInfo.NombrePersona}}
+            </div>
+            <div class="col-sm-6">
+                <label class="Llave lblSmall">Telefono:</label> {{ItemVerInfo.CELULAR_PERSONA}}
+            </div>
+            <div class="col-12">
+                <label class="Llave lblSmall">Dirección:</label> {{ItemVerInfo.DireccionEntrega}}
+            </div>
+
+            <div class="col-12" *ngIf="ItemVerInfo.Producto != null">
+                <label class="Llave lblSmall">Productos:</label>
+                <br>
+                <p>{{ItemVerInfo.Producto}}</p>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-sm-4 mt-2 mb-2">
+                <button type="button" class="btn btn-agro-prin w-100" (click)="modal.dismiss()">Aceptar</button>
+            </div>
+        </div>
+    </div>
+    <br>
 </ng-template>

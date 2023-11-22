@@ -59,12 +59,13 @@
     height: 21px;
     padding: 0px;
 }
+
 .disppleflex {
     display: flex;
     margin: 0px;
 }
 
-.CirculoImg{
+.CirculoImg {
     padding: 5px;
     justify-content: right;
     background-color: #184050;
@@ -78,6 +79,24 @@
     cursor: pointer;
 }
 
-  .ArrayCoors:hover .imagen-flotante {
+.ArrayCoors:hover .imagen-flotante {
     transform: scale(1.2);
-  }
+}
+
+.Parada {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.tarjetadetallehistorial {
+    background-color: white;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    overflow-y: hidden;
+    height: 95%;
+}
+.SinEstilo img {
+    width: 24px;
+    height: 24px;
+    margin-left: 5px;
+}
