@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ValorarofertaService } from './../../../core/valoraroferta.service';
-import { NgbAccordionConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router'
-import { CrearofertaService } from 'src/app/core/crearoferta.service';
+import { CookieService } from 'ngx-cookie-service';
+import { CrearofertaService } from 'src/app/core/crearoferta.service'
+
 @Component({
   selector: 'app-modificar-oferta-publica',
   templateUrl: './modificar-oferta-publica.component.html',
@@ -28,6 +30,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   SessionSectorSel: any;
   IdOferta: string;
   SectorBlock: boolean = false;
+  Sector: string = '';
 
   //SessionOferta: any;
   DataOferta: any[] = [];
@@ -237,8 +240,44 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   //#endregion OfertaDirigidaA
 
   sessionDescripcionOferta: string = '';
+  ConfirmacionModal: string = '';
+  SessionIdUsuario: any;
+  seleczona: string = '0';
+  DataZonas: any = [];
+  keywordZonasAsignaSector: string = '';
+  Cant: string = '';
+  ZonaAsignaSector: string = '';
+  DataSector: any;
+  keywordS: string = '';
+  Sectores: string;
+  SessionNombreSector: any;
+  ValidaMapSector: string = '0';
+  UserSector: string = '';
+  ImgMapaSec: string = './../../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+  ValidaImgMapa: string = '0';
+  SectModif: string = '';
+  RespuestaImgMapa: any;
+  file: FileList | undefined;
+  ImagenSector: string = "";
+  public respuestaImagenEnviada: any;
+  public resultadoCarga: any;
 
-  constructor(private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) { }
+  SessionCDMunicipio: any;
+  SessionCDRegion: any;
+  NomImagenSector: string = '';
+
+  constructor(private serviciosvaloracion: ValorarofertaService,
+    private modalService: NgbModal,
+    public rutas: Router,
+    private SeriviciosGenerales: MetodosglobalesService,
+    private formatofecha: DatePipe,
+    private cookies: CookieService,
+    private ServiciosOferta: CrearofertaService) { }
+  geocoder = new google.maps.Geocoder();
+  SessionCiudad: any;
+  Sessioncoordenada: any;
+  map: google.maps.Map;
+
 
   ngOnInit(): void {
     this.ConsultaOferta();
@@ -248,7 +287,12 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.ListaProductos();
     this.LimpiaProductoTopp();
     this.CargaInfoCupon();
-
+    this.ConsultaCiudadOferta();
+    this.ConsultaSectoresOferta();
+    this.SessionCDMunicipio = '0';
+    this.SessionCiudad = '0';
+    this.SessionCDRegion = '0';
+    this.Cant = '';
     this.keyword = 'name';
     this.keywordSec = 'name';
     this.RutaImagenes = this.SeriviciosGenerales.RecuperaRutaImagenes();
@@ -319,6 +363,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.RutaImagen = this.SeriviciosGenerales.RecuperaRutaImagenes();
     this.RutaLanding = this.SeriviciosGenerales.RecuperarRutaVista('1');
     this.RutaImagenTopping = this.SeriviciosGenerales.RecuperarRutasOtrasImagenes('4');
+    this.SessionIdUsuario = this.cookies.get('IDU');
     this.DataProducts = [];
     this.Consultatoppings();
     this.consultaProductos();
@@ -366,27 +411,30 @@ export class ModificarOfertaPublicaComponent implements OnInit {
       if (ResultConsulta.length > 0) {
         this.keywordSec = 'DSCRPCION_SCTOR';
         this.DataSectores = ResultConsulta;
+        this.NombreSector = this.DataSectores[0].DSCRPCION_SCTOR;
       }
     })
   }
-
+  NombreSector: any;
   selectSector(item: any) {
     this.ValidaVigencia = '1';
+    
     this.CodigoOferSector = item.COD_OFERTA_SECTOR;
     this.VlrFletSect = item.VLOR_FLTE_SGRDOForm;
     this.SessionCantSector = item.CNTDAD
     this.SessionSectorSel = item.ID_SCTOR_OFRTA
     this.IdOferta = item.CD_CNSCTVO;
     this.ConsultaDetalleOferta();
-
     this.ConsultaVigenciaOferta();
     this.consultaToppingsOferta();
+    this.ConsultaValoracionOferta();
     //this.ConsultaLinks();  
     this.GrillaTextoModal();
     this.ValidaVigencia = '1';
   }
 
   LimpiaSector() {
+    this.Sector = '';
     this.CodigoOferSector = '';
     this.VlrFletSect = '';
     this.SessionSectorSel = ''
@@ -396,6 +444,55 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.MuestraGrupal = '0'
   }
 
+  AbreModalConfirmacion(template: any, item: any) {
+    this.ConfirmacionModal = '¿Esta seguro de publicar la oferta ' + item.COD_OFR_PUBLICO + '-' + item.Nombre_Producto + '?';
+    this.modalService.open(template, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+
+
+  CerrarOfertaModal(template: any, item: any) {
+    this.ConfirmacionModal = '¿Esta seguro de cerrar la oferta ' + item.COD_OFR_PUBLICO + '-' + item.Nombre_Producto + '?';
+    this.modalService.open(template, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  PublicarOferta(modalRespuesta: any) {
+    const datosPublica = {
+      usucodig: this.SessionIdUsuario,
+      cnctivoOferta: this.SelectorOferta,
+      ObsEstado: "",
+      estado: 10,
+      parametro1: "",
+      parametro2: "",
+      parametro3: ""
+    }
+    this.serviciosvaloracion.ModificaEstadoOferta('3', datosPublica).subscribe(Resultado => {
+      var arrayrespuesta = Resultado.split('|');
+      this.Respuesta = arrayrespuesta[1];
+      this.ConsultaDetalleOferta();
+    })
+    this.modalService.dismissAll();
+    this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+  }
+
+  CerrarOferta(modalRespuesta: any) {
+    const datosCerrar = {
+      usucodig: this.SessionIdUsuario,
+      cnctivoOferta: this.SelectorOferta,
+      ObsEstado: "",
+      estado: 6,
+      parametro1: "",
+      parametro2: "",
+      parametro3: ""
+    }
+    this.serviciosvaloracion.ModificaEstadoOferta('3', datosCerrar).subscribe(Resultado => {
+      var arrayrespuesta = Resultado.split('|');
+      this.Respuesta = arrayrespuesta[1];
+      this.ConsultaDetalleOferta();
+    })
+    this.modalService.dismissAll();
+    this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+  }
 
   ConsultaDetalleOferta() {
     this.serviciosvaloracion.ConsultaOferta('1', this.IdOfertaSelect).subscribe(ResultConsu => {
@@ -404,8 +501,116 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     })
   }
 
+  ConsultaCiudadOferta() {
+    this.serviciosvaloracion.ConsultaCiudadOferta('1', this.SelectorOferta).subscribe(ResultadoCons => {
+      this.SessionCiudad = ResultadoCons[0].Cuidad;
+      this.SessionCDMunicipio = ResultadoCons[0].CD_MNCPIO;
+      this.SessionCDRegion = ResultadoCons[0].CD_RGION;
+      this.ConsultaZonas(this.SessionCDMunicipio, this.SessionCDRegion);
+    })
+  }
+
+  ConsultaZonas(idCiudad: string, IdDepartamento: string) {
+    const descripcion = {
+      "Descripcion": ""
+    }
+    this.serviciosvaloracion.ConsZona('1', '0', idCiudad, IdDepartamento, descripcion).subscribe(ResultadoCons => {
+      this.DataZonas = ResultadoCons;
+      this.keywordZonasAsignaSector = 'Descripcion';
+    })
+  }
+
+  ConsultaSectoresSelect(IdZona: string) {
+    this.serviciosvaloracion.ConsultaSectoresEtv('1', '0', IdZona, this.SelectorOferta).subscribe(Result => {
+      this.DataSector = Result;
+      this.keywordS = 'DSCRPCION_SCTOR';
+    })
+  }
+
+  selectZona(item: any) {
+    this.seleczona = '1';
+    this.ConsultaSectoresSelect(item.id);
+    if (this.Cant != "" && this.Cant != "0") {
+      this.seleczona = '1';
+    }
+  }
+  LimpiaZona(result: string) {
+    this.ZonaAsignaSector = result;
+    this.seleczona = '0';
+    this.Sectores = '';
+    this.Cant = '';
+  }
+
+  ID_SCTOR_OFRTAAUX: string;
+  imagen_sctorAux: string;
+
+  selectSectores(item: any, modalmapa: any) {
+    this.ConsultaUserSector(item);
+    this.modalService.open(modalmapa, { size: 'lg' });
+    this.ValidaMapSector = '1';
+    // this.VlrFle = '';
+    // this.SectSelec = item.SCTOR_OFRTA;
+    this.SessionNombreSector = item.DSCRPCION_SCTOR;
+    this.Sessioncoordenada = item.coordenadas;
+    this.ConsultaMapaSector();
+    // this.ValidaCoord = '3';
+    // this.ConsultaBodegas();
+
+    this.ID_SCTOR_OFRTAAUX = item.SCTOR_OFRTA;
+    this.imagen_sctorAux = item.imagen_sctor;
+  }
+  LimpiaSectores(result: string) {
+    this.Sector = result;
+    // this.ValidaCoord = "";
+    this.UserSector = "";
+  }
+
+
+  ConsultaMapaSector() {
+    this.geocoder.geocode({ address: this.SessionCiudad }).then((result) => {
+      const { results } = result;
+      var bounds = new google.maps.LatLngBounds;
+      var coords = this.Sessioncoordenada.split('|').map(function (data: string) {
+        var info = data.split(','), // Separamos por coma
+          coord = { // Creamos el obj de coordenada
+            lat: parseFloat(info[0]),
+            lng: parseFloat(info[1])
+          };
+        // Agregamos la coordenada al bounds
+        bounds.extend(coord);
+        return coord;
+      });
+      var area = new google.maps.Polygon({
+        paths: coords,
+        strokeColor: '#397c97',
+        strokeOpacity: 0.8,
+        strokeWeight: 3,
+        fillColor: '#B1B0B0',
+        fillOpacity: 0.35
+      });
+      this.map = new google.maps.Map(
+        document.getElementById("mapCS") as HTMLElement,
+        {
+          zoom: 15,
+          center: bounds.getCenter(),
+          mapTypeId: "terrain",
+        }
+      );
+      area.setMap(this.map);
+    })
+
+  }
+
+  ConsultaUserSector(sector: any) {
+    var selectSector = sector.SCTOR_OFRTA;
+    //this.IdSectorSelect = sector.SCTOR_OFRTA;
+    this.serviciosvaloracion.ConsultaNumUsuariosSector('3', selectSector).subscribe(ResultadoCons => {
+      this.UserSector = ResultadoCons.toString();
+    })
+  }
+
   ConsultaVigenciaOferta() {
-    this.serviciosvaloracion.ConsultaVigenciaOferta('1', this.SelectorOferta, this.SessionSectorSel).subscribe(ResultCons => {  
+    this.serviciosvaloracion.ConsultaVigenciaOferta('1', this.SelectorOferta, this.SessionSectorSel).subscribe(ResultCons => {
       if (ResultCons.length > 0) {
         this.VigenDesde = ResultCons[0].vgncia_desde;
         this.VigenHasta = ResultCons[0].vgncia_hasta;
@@ -413,6 +618,107 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         this.Observaciones = ResultCons[0].observaciones;
       }
     })
+  }
+
+  AbreModalConfSector(template: any) {
+    this.ConfirmacionModal = '¿Esta seguro de actualizar el sector?';
+    this.modalService.open(template, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  ActualizarSector(template: any) {
+    const body = {
+      cd_cnstvo: this.SelectorOferta,
+      Id_sectorNuevo: this.ID_SCTOR_OFRTAAUX,
+      Id_sectorViejo: this.SessionSectorSel
+    }  
+    this.serviciosvaloracion.ActualizarSector('1', body).subscribe(Resultado => {
+      this.Respuesta = Resultado;
+      //this.LimpiaZona('');
+      this.ConsultaSectores(this.SelectorOferta);
+    })
+    this.modalService.dismissAll();
+    this.modalService.open(template, { ariaLabelledBy: 'modal-basic-title' });
+  }
+
+  EditarImgMapa(Modalmapa: any, ID_SCTOR_OFRTA: string, imagen_sctor: string) {
+    if (ID_SCTOR_OFRTA == '') {
+      ID_SCTOR_OFRTA = this.ID_SCTOR_OFRTAAUX;
+      imagen_sctor = this.imagen_sctorAux;
+    }
+
+    this.ValidaImgMapa = '0'
+    this.SectModif = ID_SCTOR_OFRTA
+    if (imagen_sctor != '') {
+      this.ImgMapaSec = this.RutaImagenes + imagen_sctor;
+    } else {
+      this.ImgMapaSec = './../../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
+    }
+    this.modalService.open(Modalmapa, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+  }
+
+  ConsultaSectoresOferta() {
+    this.serviciosvaloracion.ConsultaSectoresOferta('1', this.SelectorOferta).subscribe(ResultConsulta => {
+      if (ResultConsulta.length > 0) {
+        this.ImagenSector = ResultConsulta[0].imagen_sctor;
+        this.ValidaConsulta = '0';
+      }
+    })
+
+  }
+
+  GuardarImgMapa() {
+    if (!this.ImgMapaSec.includes('SubirImagen')) {
+      const datos = {
+        ID_SECTOR: this.SectModif,
+        NOMBRE_IMG: this.NomImagenSector
+      }
+      console.log(datos)
+      this.serviciosvaloracion.ModificarImagenSector('3', datos).subscribe(Resultado => {
+        console.log(Resultado)
+        this.modalService.dismissAll();
+        this.ConsultaSectoresOferta();
+      })
+      this.ValidaImgMapa = '0';
+    } else {
+      this.ValidaImgMapa = '1';
+      this.RespuestaImgMapa = 'Debe seleccionar una imagen para guardar';
+    }
+
+  }
+
+  SubirImgMapa(event: any, imagen: string) {
+    this.file = event.target.files[0];
+    if (event.target.files[0] != "" && event.target.files[0] != undefined && event.target.files[0] != null) {
+      this.ImagenSector = event.target.files[0];
+      this.ServiciosOferta.postFileImagen(event.target.files[0]).subscribe(
+        response => {
+          this.respuestaImagenEnviada = response;
+          if (this.respuestaImagenEnviada <= 1) {
+          } else {
+            if (this.respuestaImagenEnviada == 'Archivo Subido Correctamente') {
+              if (imagen == '1') {
+                this.ImgMapaSec = this.RutaImagenes + event.target.files[0].name;
+                this.NomImagenSector = event.target.files[0].name;
+              }
+            } else {
+              this.resultadoCarga = 2;
+            }
+
+          }
+        },
+        error => {
+
+        }
+      );
+    } else {
+      this.ImagenSector = "";
+      alert("Fallando (Asignación imagen)");
+    }
+  }
+
+  AbrirMensaje(ModalRespuesta: any) {
+    this.modalService.open(ModalRespuesta, { ariaLabelledBy: 'modal-basic-title' });
+    this.Respuesta = 'Debe seleccionar un sector primero, para poder modificar su imagen';
   }
 
   ValidaVigencias(templateMensaje: any, bandera: string) {
@@ -472,6 +778,12 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         this.Respuesta = 'La fecha de recogida no puede ser mayor a la fecha entrega, favor valida tu información.';
       }
     }
+  }
+  LimpiarFechas() {
+    this.VigenDesde = '';
+    this.VigenHasta = '';
+    this.FechaEntrega = '';
+    this.SessionFechaRecogida = '';
   }
 
   GuardaVigencia(templateMensaje: any) {
@@ -564,7 +876,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
       }
       this.serviciosvaloracion.ActualizarFechasOferta('1', Body).subscribe(ResultUpdate => {
         this.Respuesta = ResultUpdate;
-        this.ConsultaValoracionOferta();
+
       })
     }
 
@@ -2946,7 +3258,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         })
       }
     }
-    else {  
+    else {
       this.serviciosvaloracion.ModificaTopping('3', Body).subscribe(ResultOper => {
         this.consultaToppingsOferta();
         this.Respuesta = ResultOper
@@ -3119,7 +3431,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         ModalRegistroTextoDos: this.TextMod2,
         ModalRegistroTextoTres: this.TextMod3,
         ModalRegistroImagenUno: this.NomImagenTxt
-      }  
+      }
       this.serviciosvaloracion.GuardarTextosModal('4', Body).subscribe(Respu => {
         this.Respuesta = Respu;
         this.GrillaTextoModal();
