@@ -4,8 +4,8 @@ import { CarruselofertasComponent } from './components/carruselofertas/carruselo
 
 @NgModule({
   declarations: [
-    CarruselofertasComponent,    
-    ],
+    CarruselofertasComponent
+  ],
 
   imports: [
     CommonModule,
