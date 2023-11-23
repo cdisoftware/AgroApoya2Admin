@@ -4,19 +4,19 @@
         <h1>Seguimiento</h1>
         <div class="row">
             <div class="col-sm-6">
-                <label class="Llave">Oferta</label>
-                <ng-autocomplete [data]="ArrayOferta" [searchKeyword]="keywordOferta" placeholder="Oferta"
+                <label class="Llave">Ruta</label>
+                <ng-autocomplete [data]="ArrayGrupos" [searchKeyword]="keywordGrupo" placeholder="Grupo"
                     (inputCleared)="LimpiaOferta('')" (selected)='selectOfertaFiltro($event)'
-                    [itemTemplate]="templateOferta" [notFoundTemplate]="templateVacio" [(ngModel)]="Oferta">
+                    [itemTemplate]="templateGrupo" [notFoundTemplate]="templateVacio" [(ngModel)]="Grupo">
                 </ng-autocomplete>
-                <ng-template #templateOferta let-item>
-                    <a [innerHTML]="item.Producto"></a>
+                <ng-template #templateGrupo let-item>
+                    <a [innerHTML]="item.NombreGrupo"></a>
                 </ng-template>
                 <ng-template #templateVacio let-SinRegistro>
                     <label for="">Sin registros</label>
                 </ng-template>
             </div>
-            <div class="col-sm-6">
+            <!-- <div class="col-sm-6">
                 <label class="Llave">Sector</label>
                 <ng-autocomplete [data]="ArraySector" [searchKeyword]="keywordSector" placeholder="Sector"
                     (inputCleared)="LimpiaSector('')" (selected)='SelectSector($event)' [itemTemplate]="templateSect"
@@ -42,6 +42,16 @@
                 <ng-template #templateVacioCond let-SinRegistro>
                     <label for="">Sin registros</label>
                 </ng-template>
+            </div> -->
+        </div>
+        <div class="row br">
+            <div class="col-sm-6">
+                <label class="Llave">Fecha Inicio</label>
+                <input type="date" class="form-control" [(ngModel)]="FechaInicio">
+            </div>
+            <div class="col-sm-6">
+                <label class="Llave">Fecha Fin</label>
+                <input type="date" class="form-control" [(ngModel)]="FechaFin">
             </div>
         </div>
         <br>
@@ -158,9 +168,9 @@
                                 <td>{{Seguimiento.descTipoPago}}</td>
                                 <td>{{Seguimiento.orden}}</td>
                                 <td>{{Seguimiento.fecha_entrega}} - {{Seguimiento.hora_entrega}}</td>
-                                <td>{{Seguimiento.VLOR_PGARSINDOMICILIO | currency :'USD' : 'symbol' : '1.0-0'}}</td>
-                                <td>{{Seguimiento.VLOR_DOMICILIO | currency :'USD' : 'symbol' : '1.0-0'}}</td>
-                                <td>{{Seguimiento.VLOR_PGAR | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                                <td>{{Seguimiento.ValorPagarSinDomicilio | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                                <td>{{Seguimiento.ValorDomicilio | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                                <td>{{Seguimiento.ValorTotalPagar | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                                 <td colspan="2">
                                     <button class="SinEstilo " (click)="MostrarMapa(Seguimiento, ModalMapa)">
                                         <img src="./../../../../../assets/ImagenesAgroApoya2Adm/mapaSec.png"
@@ -208,7 +218,8 @@
                         </tr>
                         <tr *ngIf="ObjetEntrega != undefined && ObjetEntrega != null">
                             <td>{{ObjetEntrega[1].ValTotalEntregado | currency :'USD' : 'symbol' : '1.0-0'}}</td>
-                            <td style="color: forestgreen;">{{ValorDomicilio | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                            <td style="color: forestgreen;">{{ValorDomicilio | currency :'USD' : 'symbol' : '1.0-0'}}
+                            </td>
                         </tr>
                         <tr>
                             <td colspan="2" style="color: forestgreen;"><strong>{{TotalCosolidado | currency :'USD' :
@@ -301,13 +312,15 @@
                 <tr *ngFor="let Detalle of ArrayDetalle ">
                     <td>{{Detalle.Producto}}</td>
                     <td>{{Detalle.Cantidad}}</td>
-                    <td [ngClass]="Detalle.DescDevuelto !='Devuelto' ? 'ColorTextEntregado' : 'ColorTextDevuelto' ">{{Detalle.DescDevuelto}}</td>
-                 <td>{{Detalle.valor}}</td>
+                    <td [ngClass]="Detalle.DescDevuelto !='Devuelto' ? 'ColorTextEntregado' : 'ColorTextDevuelto' ">
+                        {{Detalle.DescDevuelto}}</td>
+                    <td>{{Detalle.valor | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                 </tr>
                 <tr>
                     <td><strong>Total</strong></td>
                     <td>{{NumProductos}}</td>
-                    <td colspan="2" style="color: forestgreen;">{{ValorTotalCompra | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                    <td colspan="2" style="color: forestgreen;">{{ValorTotalCompra | currency :'USD' : 'symbol' :
+                        '1.0-0'}}</td>
                 </tr>
             </table>
         </div>
@@ -356,6 +369,38 @@
         <div class="row justify-content-center">
             <button type="button" id="btnGuardarDirecccion" class="btn ColorAgro col-sm-6 mt-4 bn-2 col-3"
                 (click)="modal.dismiss('Cross click')">Aceptar </button>
+        </div>
+
+    </div>
+</ng-template>
+<ng-template #templateGrupos let-modal>
+    <div class="p-2">
+        <div class="modal-header">
+            <img style="width: 40px; margin-right: 10px;" src="../../../../assets/ImagenesAgroApoya2Adm/ic_Agro.png">
+            <h5 class="modal-title TituloForm">{{TituloModal}}</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="mt-4 mb-4 text-center">
+            <table class="col-sm-12 TableAgro ">
+                <tr>
+                    <th>Grupo</th>
+                    <th>Seleccionar</th>
+                </tr>
+                <tr *ngFor="let DetalleGrupo of ArrayGruposSel ">
+                    <td>{{DetalleGrupo.NombreGrupo}}</td>
+                    <td>
+                        <button class="SinEstilo" (click)="SeleccionGrupo(DetalleGrupo)">
+                            <img src="./../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
+                            style="width: 32px; object-fit: cover;" >
+                        </button>
+                        
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="row justify-content-center">
+            <button type="button" id="btnGuardarDirecccion" class="btn ColorAgro col-sm-3 col-3"
+                (click)="modal.dismiss('Cross click')">Aceptar</button>
         </div>
 
     </div>
