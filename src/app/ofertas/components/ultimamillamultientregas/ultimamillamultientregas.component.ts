@@ -133,6 +133,11 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   IdEstadoProcesoCreaTransporteManual: string = "1";
   //#endregion CreaTransporteManual
 
+  //#region VarialesEditarTransporte
+  ArrayConductores: any;
+  Conductor: any;
+  IdConductorSelec_: string = "0";
+  //#endregion VarialesEditarTransporte
   ngAfterViewInit(): void {
 
   }
@@ -584,7 +589,54 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
     }
   }
-  AbreModalConfirmacionEditarTransporte() {
+
+  AbreModalAsignaTransportista(templateAasignaTransportista: any) {
+    this.ConsultaConductores();
+    this.modalService.open(templateAasignaTransportista, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+  }
+
+  ConsultaConductores() {
+    this.sevicesmilla.ConsultaConductores('1').subscribe(Resultado => {
+      console.log(Resultado)
+      if (Resultado.length > 0) {
+        this.ArrayConductores = Resultado
+      }
+    })
+  }
+  LimpiaConductoresUtimaMilla() {
+    this.Conductor = "";
+    this.IdConductorSelec_ = "0";
+  }
+  selectConductoresUltimaMilla(item: any) {
+    this.Conductor = item.NMBRE_CNDCTOR;
+    this.IdConductorSelec_ = item.ID_CNDCTOR;
+  }
+
+  AceptaEditar() {
+    if (this.IdConductorSelec_ != '0') {
+      const Datos = {
+        IdGrupo: this.IdGrugo_,
+        cd_cnsctivo: '0',
+        idSector: '0',
+        idConductor: this.IdConductorSelec_
+      }
+      this.sevicesmilla.ModificaConductor('2', Datos).subscribe(Resultado => {
+        var auxrespu = Resultado.split("|");
+        if (Number(auxrespu[0]) > 0) {
+          this.MesajeModal = "Se asigno el transportista correctamente";
+          this.LimpiaConductoresUtimaMilla();
+        } else {
+          this.MesajeModal = "No fue posible editar el transporte por favor comunícate con soporte.";
+        }
+      })
+
+      this.modalService.dismissAll();
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    } else {
+      this.MesajeModal = "Debes seleccionar un transportista para realizar la acción.";
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    }
+
 
   }
   //#endregion ConsultaTransportes
@@ -1143,6 +1195,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
         this.IdEstadoProcesoCreaTransporteManual = "2";
         this.ListaGruposMilla();
       } else {
+        this.IdEstadoProceso = "0";
         this.MesajeModal = "No tienes entregas disponibles valida tu información";
         this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
       }

@@ -166,7 +166,8 @@
                                 </div>
                             </div>
                             <div class="col-sm-2" style="text-align: center;">
-                                <button class="SinEstilo" title="Actualizar precio" (click)="ActualizarValorTransporte()">
+                                <button class="SinEstilo" title="Actualizar precio"
+                                    (click)="ActualizarValorTransporte()">
                                     <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_guardar.png">
                                 </button>
                             </div>
@@ -307,7 +308,8 @@
                                 </div>
                             </div>
                             <div class="col-sm-2" style="text-align: center;">
-                                <button class="SinEstilo" title="Actualizar precio" (click)="ActualizarValorTransporte()">
+                                <button class="SinEstilo" title="Actualizar precio"
+                                    (click)="ActualizarValorTransporte()">
                                     <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_guardar.png">
                                 </button>
                             </div>
@@ -368,8 +370,8 @@
                                 <label style="text-align: center;" class="col-sm-12 mt-3 Llave">IdCompra:</label>
                             </div>
                             <div class="col-sm-2 mt-2">
-                                <input type="number" [(ngModel)]="IdEntregaAgrega_" class="col-sm-12 form-control mt-1 textBox" placeholder="IdCarro"
-                                    #IdCarrAgrega />
+                                <input type="number" [(ngModel)]="IdEntregaAgrega_"
+                                    class="col-sm-12 form-control mt-1 textBox" placeholder="IdCarro" #IdCarrAgrega />
                             </div>
                             <div class="col-sm-3 mt-2 mb-2">
                                 <button type="button" class="btn btn-agro-prin w-100"
@@ -394,7 +396,8 @@
                                 </div>
                             </div>
                             <div class="col-sm-2" style="text-align: center;">
-                                <button class="SinEstilo" title="Actualizar precio" (click)="ActualizarValorTransporte()">
+                                <button class="SinEstilo" title="Actualizar precio"
+                                    (click)="ActualizarValorTransporte()">
                                     <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/ic_guardar.png">
                                 </button>
                             </div>
@@ -436,7 +439,12 @@
 
 
                         <div class="col-sm-3 mt-2 mb-4">
-                            <button type="button" class="btn btn-agro-prin w-100" (click)="Volver()">Volver</button>
+                            <button type="button" class="btn btn-agro-sec w-100" (click)="Volver()">Volver</button>
+                        </div>
+                        <div class="col-sm-3 mt-2 mb-4">
+                            <button type="button" class="btn btn-agro-prin w-100"
+                                (click)="AbreModalAsignaTransportista(templateAasignaTransportista)">Asignar
+                                transportista</button>
                         </div>
                     </div>
                 </ng-template>
@@ -482,14 +490,19 @@
 
         <div class="row justify-content-center">
             <li class="col-sm-10 espacioul row" *ngFor="let ite of ArrayConsTransportes">
-                <div class="col-11">
-                    <div class="listasStyle">
-                        <label title="{{ite.UbicacionEntrega}}">{{ite.IdGrupoMilla}}-{{ite.UbicacionEntrega}}</label>
+                <div class="col-11 row">
+                    <div class="col-12 row" [ngClass]="ite.IdCondutor != null ? 'TieneTransportista' : 'listasStyle'">
+                        <div class="col-sm-7">
+                            <p class="sinmp" style="text-align: start;" title="{{ite.UbicacionEntrega}}">{{ite.IdGrupoMilla}}-{{ite.UbicacionEntrega}}</p>
+                        </div>
+                        <div class="col-sm-5">
+                            <p class="sinmp" style="text-align: end;">{{ite.NombreConductor}}</p>
+                        </div>
+                        <!--<p class="sinmp" title="{{ite.UbicacionEntrega}}">{{ite.IdGrupoMilla}}-{{ite.UbicacionEntrega}}<span *ngIf="ite.IdCondutor != null">{{ite.NombreConductor}}</span></p>-->
                     </div>
                 </div>
                 <div class="col-1">
-                    <button class="bot" title="Selecciónar transporte"
-                        (click)="SelectTransporte(ite)">
+                    <button class="bot" title="Selecciónar transporte" (click)="SelectTransporte(ite)">
                         <img src="../../../../assets/ImagenesAgroApoya2Adm/aprobar.png" alt="Selecciónar"
                             class="BtnimgTamanoPeque">
                     </button>
@@ -622,6 +635,42 @@
             </div>
             <div class="col-sm-4 mt-2 mb-2">
                 <button type="button" class="btn btn-agro-prin w-100" (click)="modal.dismiss()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    <br>
+</ng-template>
+
+
+
+<ng-template #templateAasignaTransportista let-modal>
+    <div class="modal-header">
+        <h1>Seleccinone el transportista</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+
+    <div class="modaBody">
+        <div class="row p-3 justify-content-center">
+            <div class="col-sm-12 mb-2 mt-2">
+                <ng-autocomplete [data]="ArrayConductores" [searchKeyword]="'NMBRE_CNDCTOR'" placeholder="Conductores"
+                    (inputCleared)="LimpiaConductoresUtimaMilla()" (selected)='selectConductoresUltimaMilla($event)'
+                    [itemTemplate]="templateConductores" [notFoundTemplate]="templateVacio" [(ngModel)]="Conductor">
+                </ng-autocomplete>
+                <ng-template #templateConductores let-item>
+                    <a [innerHTML]="item.NMBRE_CNDCTOR"></a>
+                </ng-template>
+                <ng-template #templateVacio let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-sm-4 mt-2 mb-2">
+                <button type="button" class="btn btn-agro-sec w-100" (click)="modal.dismiss()">Cerrar</button>
+            </div>
+            <div class="col-sm-4 mt-2 mb-2">
+                <button type="button" class="btn btn-agro-prin w-100" (click)="AceptaEditar()">Asignar</button>
             </div>
         </div>
     </div>

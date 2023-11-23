@@ -46,6 +46,12 @@ export class GrupoMillaServices {
     ConsultaEntregasDisponibles(bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'consAdmillaEntregDisponible/' + bandera, body);
     }
+    ConsultaConductores(Bandera: string) {
+        return this.http.get<any>(this.url_servidor + 'consclistaconductor/' + Bandera + '/' + '0' + '/' + '0')
+    }
+    ModificaConductor(Bandera: string, Datos: any) {
+        return this.http.post<any>(this.url_servidor + 'modctorultmilla/' + Bandera, Datos)
+    }
 
 
     //ServiciosPolygono
