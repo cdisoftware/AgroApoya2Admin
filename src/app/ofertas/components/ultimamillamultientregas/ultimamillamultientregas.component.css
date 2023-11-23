@@ -95,11 +95,23 @@
     overflow-y: hidden;
     height: 95%;
 }
+
 .SinEstilo img {
     width: 24px;
     height: 24px;
     margin-left: 5px;
 }
-.TextRight{
+
+.TextRight {
     text-align: end;
+}
+
+.TieneTransportista {
+    background: #48C9B0;
+    border-radius: 5px;
+    border: #17202A solid 1px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
