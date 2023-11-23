@@ -48,6 +48,7 @@ import { EnviosmanychatComponent } from './usuario/components/enviosmanychat/env
 import { SeguimientosComponent } from './ofertas/components/seguimientos/seguimientos.component';
 import { UltimamillamultientregasComponent } from './ofertas/components/ultimamillamultientregas/ultimamillamultientregas.component';
 import { MapacalorComponent } from './ofertas/components/mapacalor/mapacalor.component';
+import { DuplicarofertaComponent } from './ofertas/components/duplicaroferta/duplicaroferta.component';
 import { ModificarOfertaPublicaComponent } from './ofertas/components/modificar-oferta-publica/modificar-oferta-publica.component';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -85,7 +86,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     EnviosmanychatComponent,
     UltimamillamultientregasComponent,
     MapacalorComponent,
-    ModificarOfertaPublicaComponent
+    ModificarOfertaPublicaComponent,
+    DuplicarofertaComponent
     ],
   imports: [
     NgxMaskModule.forRoot(options),

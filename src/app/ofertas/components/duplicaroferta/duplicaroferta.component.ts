@@ -1,31 +1,44 @@
 import { Component, OnInit } from '@angular/core';
-import { MetodosglobalesService } from './../../../../core/metodosglobales.service'
-import { ValorarofertaService } from './../../../../core/valoraroferta.service'
+import { ValorarofertaService } from './../../../core/valoraroferta.service'
+import { MetodosglobalesService } from './../../../core/metodosglobales.service'
 import { NgbModal, NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 
 
 @Component({
-  selector: 'app-buscaroferta',
-  templateUrl: './buscaroferta.component.html',
-  styleUrls: ['./buscaroferta.component.css']
+  selector: 'app-duplicaroferta',
+  templateUrl: './duplicaroferta.component.html',
+  styleUrls: ['./duplicaroferta.component.css']
 })
-export class BuscarofertaComponent implements OnInit {
-  producto = 'des_producto';
-  productor = 'nombre_persona';
-  estado = 'DSCRPCION_ESTADO';
-  ArrayProductos: any = [];
-  ArrayProductor: any = [];
-  ArrayEstado: any = [];
+
+export class DuplicarofertaComponent implements OnInit {
+
+  constructor(private ServiciosValorar: ValorarofertaService,
+    private SeriviciosGenerales: MetodosglobalesService,
+    private modalService: NgbModal,
+    public rutas: Router,
+    public cookies: CookieService,
+    ConfigAcord: NgbAccordionConfig
+  ) {
+    ConfigAcord.closeOthers = true;
+
+  }
+
+
+  IdOfertaSeleccion: string = '0';
+  arrayOfertas: any[] = []
+  keywordSecOferta: string = 'Producto'
+
   ArrayOferta: any = [];
+  ArrayResumenOferta: any = [];
   Producto: string = '';
   Productor: string = '';
   IdProducto: string = '0';
   IdProductor: string = '0';
   IdEstado: string = '0';
   FechaOferta: string = '';
-  ValidaBusqueda: string = '0';
+
   //Variables Detalle Oferta
   NombreProductor: string = '';
   DesProducto: string = '';
@@ -45,9 +58,6 @@ export class BuscarofertaComponent implements OnInit {
   ArrayBusqueda: any = [];
   ImagenOferta: string = ''
   //Editar Oferta
-  ECaracteriza: string = '';
-  EFechaRecogida: string = '';
-  EJornada: string = '0';
   ArrayJornada: any = [];
   Respuesta: string = '';
   NomEstado: string = '';
@@ -56,7 +66,6 @@ export class BuscarofertaComponent implements OnInit {
   ImagenEstado: string = '';
   NoOferta: string = '';
   RutaImagen: string = this.SeriviciosGenerales.RecuperaRutaImagenes();
-  RutaSiguiente: string = '';
 
   //Resumen
   DataSectores: any[];
@@ -120,55 +129,18 @@ export class BuscarofertaComponent implements OnInit {
   Plantilla: string = '';
   ImgCorreo: string = '';
   Previsucorreo: string = '';
-  constructor(
-    private SeriviciosGenerales: MetodosglobalesService,
-    private ServiciosValorar: ValorarofertaService,
-    private modalService: NgbModal,
-    public rutas: Router,
-    public cookies: CookieService,
-    ConfigAcord: NgbAccordionConfig
-  ) {
-    ConfigAcord.closeOthers = true;
 
-  }
+  cdConsSectorResumen: string = "";
+  SelectSect: boolean = false;
 
+  EnvioSms: boolean = false;
+  EnvioEmal: boolean = false;
 
   ngOnInit(): void {
-    this.IdUsuario = this.cookies.get('IDU');
-    if (this.IdUsuario == '') {
-      this.rutas.navigateByUrl('');
-    } else {
-      this.CargaObjetosIniciales();
-    }
-    this.RutaImagenTopping = this.SeriviciosGenerales.RecuperarRutasOtrasImagenes('4');
-  }
-  ngAfterViewInit() {
-
+    this.ListaOfertas();
   }
 
-  CargaObjetosIniciales() {
-    //lista Productos
-    this.ServiciosValorar.ConsultaProductos('1').subscribe(Resultado => {
-      this.ArrayProductos = Resultado;
-    })
-
-    //lista Productor
-    const datosproductor = {
-      nombre_persona: ''
-    }
-    this.ServiciosValorar.ConsultaProductor('1', '1', datosproductor).subscribe(Resultado => {
-      this.ArrayProductor = Resultado;
-    })
-
-    //ListaEstado
-    this.ServiciosValorar.ConsultaEstado('1').subscribe(Resultado => {
-      this.ArrayEstado = Resultado;
-    })
-  }
-
-  Buscar(modalBuscar: any) {
-    var noferta = '0';
-    this.modalService.open(modalBuscar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+  ListaOfertas() {
     const datosbusqueda = {
       UsuCodig: 0,
       Producto: 0,
@@ -177,131 +149,45 @@ export class BuscarofertaComponent implements OnInit {
       Cd_cndcion: 0,
       Cd_tmno: 0,
       ID_EMPAQUE: 0,
-      VigenciaDesde: this.FechaOferta,
-      VigenciaHasta: 0,
-      IdEstado_Oferta: this.IdEstado,
+      VigenciaDesde: '0',
+      VigenciaHasta: '0',
+      IdEstado_Oferta: '0',
       CD_RGION: 0,
       CD_MNCPIO: 0
     }
-    if (this.NoOferta != '') {
-      noferta = this.NoOferta
-    }
-    this.ServiciosValorar.BusquedaOferta('2', noferta, this.IdProducto, this.IdProductor, datosbusqueda).subscribe(Resultado => {
-      this.ArrayBusqueda = Resultado;
-      if (Resultado.length > 0) {
-        this.Respuesta = '';
-      } else {
-        this.Respuesta = 'No hay resultados.'
-      }
-    })
 
-
-  }
-
-  ConsultaIconoEstado() {
-    this.ServiciosValorar.ConsultaEstadoOferta('1', this.IdOferta).subscribe(Resultado => {
-      this.EstadoOferta = Resultado[0].descripcion;
-      this.ImagenEstado = this.SeriviciosGenerales.RecuperaRutaImagenes() + Resultado[0].imagen_icono;
+    this.ServiciosValorar.BusquedaOferta('6', '0', '0', '0', datosbusqueda).subscribe(Resultado => {
+      console.log(Resultado)
+      this.arrayOfertas = Resultado;
+      this.keywordSecOferta = 'Producto'
     })
   }
 
-  Limpiar() {
-    location.reload();
+  SeleccionarOferta(item: any, ModalResumen: any) {
+    console.log(item)
+    this.IdOfertaSeleccion = item.cd_cnsctvo;
+    this.CargaBusqueda(item.cd_cnsctvo);
+    this.modalService.open(ModalResumen, { ariaLabelledBy: 'modal-basic-title', size: 'xl', centered: true, backdrop: 'static', keyboard: false });
+
   }
 
-  selectProducto(item: any) {
-    this.IdProducto = item.id_producto;
+  LimpiarOferta() {
+    this.IdOfertaSeleccion = '0';
   }
 
-  selectProductor(item: any) {
-    this.IdProductor = item.codigo_persona;
-  }
-
-  selectEstado(item: any) {
-    this.IdEstado = item.CD_ESTDO;
-  }
-
-  EditaOferta(modalEditar: any) {
-    this.ECaracteriza = this.Caracterizacion;
-    this.EFechaRecogida = this.FechaRecogida;
-    this.ServiciosValorar.ConsultaJornada('1').subscribe(Resultado => {
-      this.ArrayJornada = Resultado;
-    })
-    this.modalService.open(modalEditar, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-  }
-
-  SelEJornada(jornada: string) {
-    this.EJornada = jornada;
-  }
-
-  CerrarOferta(modalCerrar: any) {
-    this.modalService.open(modalCerrar, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-  }
-
-  AceptaCerrar(modalRespuesta: any) {
-    const datosCerrar = {
-      usucodig: this.IdUsuario,
-      cnctivoOferta: this.IdOferta,
-      ObsEstado: this.mcObservacion,
-      estado: 6,
-      parametro1: "",
-      parametro2: "",
-      parametro3: ""
-    }
-    this.ServiciosValorar.ModificaEstadoOferta('3', datosCerrar).subscribe(Resultado => {
-      var arrayrespuesta = Resultado.split('|');
-      this.Respuesta = arrayrespuesta[1];
-      this.CargaInfoOferta();
-    })
+  // RESUMEN DE LA OFERTA
+  CargaBusqueda(IdOferta: string) {
+    this.IdOferta = IdOferta;
     this.modalService.dismissAll();
-    this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-  }
-
-  AceptaEditar(modalRespuesta: any) {
-    const DatosEditar = {
-      CD_PRDCTO: '0',
-      UND_EMPQUE: "0",
-      CD_CNDCION: "0",
-      CD_TMNO: "0",
-      DSCRPCION_PRDCTO: "0",
-      VR_UNDAD_EMPQUE: "0",
-      CD_UNDAD: "0",
-      VR_TOTAL_OFRTA: "0",
-      VGNCIA_DESDE: this.EFechaRecogida,
-      CD_JRNDA: this.EJornada,
-      CD_RGION: "0",
-      CD_MNCPIO: "0",
-      UBCCION_PRCLA: "0",
-      COORDENADAS_PRCLA: "0",
-      USUCODIG: "0",
-      ID_PRODUCTOR: '0',
-      CD_CNSCTVO: this.IdOferta,
-      CRCTRZCION: this.ECaracteriza,
-      OBS_EDICION: "0"
-    }
-    this.ServiciosValorar.EditarOfertaBusqueda('4', '0', DatosEditar).subscribe(Resultado => {
-      var arrayrespuesta = Resultado.split('|');
-      this.Respuesta = arrayrespuesta[1];
-      this.CargaInfoOferta();
-    })
-    this.modalService.dismissAll();
-    this.modalService.open(modalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-
-  }
-
-  CargaBusqueda(seleccion: any) {
-    console.log(seleccion)
-    this.IdOferta = seleccion.cd_cnsctvo;
-    this.modalService.dismissAll();
-    this.ValidaBusqueda = '1';
     this.CargaInfoOferta();
     this.ConsultaSectores();
+    this.ServiciosValorar.ConsultaMenuResumenOferta('1', IdOferta).subscribe(Resultado => {
+      this.ArrayResumenOferta = Resultado;
+    });
   }
 
   CargaInfoOferta() {
-    this.ConsultaIconoEstado();
     this.ServiciosValorar.ConsultaOferta('1', this.IdOferta).subscribe(Resultado => {
-      console.log(Resultado)
       this.ArrayOferta = Resultado;
       this.NombreProductor = Resultado[0].Nombre_productor;
       this.DesProducto = Resultado[0].Nombre_Producto;
@@ -313,42 +199,23 @@ export class BuscarofertaComponent implements OnInit {
       this.Unidades = Resultado[0].Unidades_disponibles;
       this.FechaRecogida = Resultado[0].fecha_recogida;
       this.Jornada = Resultado[0].Nombre_jornada;
-      this.EJornada = Resultado[0].jornada;
       this.Direccion = Resultado[0].coordenadas_parcela;
       this.ValorTotal = Resultado[0].VR_TOTAL_OFRTA;
-      //this.IdProducto = Resultado[0].Producto;
       this.NomEstado = Resultado[0].Nombre_estado;
       this.ImagenOferta = this.SeriviciosGenerales.RecuperaRutaImagenes() + Resultado[0].IMAGEN;
       this.IdEstado = Resultado[0].Estado;
-      //this.IdEstado = Resultado[0].Estado;
-      this.ValidaEstados(Resultado[0].Estado);
       this.ListasResumen();
     });
   }
 
-  ValidaEstados(estado: string) {
-    if (estado == '1' || estado == '2' || estado == '3') {
-      this.ValidaBusqueda = '1'
-      this.RutaSiguiente = '/conciliacion';
-    } else if (estado == '4' || estado == '5') {
-      this.ValidaBusqueda = '1'
-      this.RutaSiguiente = '/sectorizar'
-    } else if (estado == '13') {
-      this.RutaSiguiente = '/transportista'
-    } else if (estado == '14') {
-      this.ValidaBusqueda = '1'
-      this.RutaSiguiente = '/costeo'
-    } else if (estado == '6' || estado == '7' || estado == '11') {
-      this.ValidaBusqueda = '0'
-    } else if (estado == '10') {
-      this.ValidaBusqueda = '2'
-    }
-  }
-
-  Enviar() {
-    this.SeriviciosGenerales.CrearCookie('IDO', this.IdOferta);
-    this.SeriviciosGenerales.CrearCookie('IDP', this.IdProducto);
-    this.rutas.navigateByUrl('home' + this.RutaSiguiente);
+  ConsultaSectores() {
+    this.ServiciosValorar.ConsultaSectoresOferta('2', this.IdOferta).subscribe(ResultConsulta => {
+      if (ResultConsulta.length > 0) {
+        this.keywordSec = 'DSCRPCION_SCTOR';
+        this.DataSectores = ResultConsulta;
+        this.ValidaEnvio == ResultConsulta[0].EnvioSms;
+      }
+    })
   }
 
   LimpiarCampos(campo: string) {
@@ -366,8 +233,6 @@ export class BuscarofertaComponent implements OnInit {
     }
   }
 
-  //William
-  ArrayResumenOferta: any = [];
   AbrirPopuPResumen(ModalResumen: any, respu: any) {
     this.SelectSect = false;
     this.modalService.dismissAll();
@@ -378,48 +243,6 @@ export class BuscarofertaComponent implements OnInit {
     });
   }
 
-
-  PopupEnvio(ModalEnvio: any, oferta: any, accion: string) {
-    this.SessionSectorSel = '';
-    this.AccionEnvio = accion;
-    this.modalService.open(ModalEnvio, { ariaLabelledBy: 'modal-basic-title', size: 'xl', centered: true, backdrop: 'static', keyboard: false });
-  }
-
-  AceptaEnviar() {
-    this.EnviaNotificaciones(this.DataSectores, this.AccionEnvio);
-    this.modalService.dismissAll();
-  }
-
-  EnviaNotificaciones(ArraySectores: any, accion: string) {
-    if (ArraySectores.length > 0) {
-      if (accion == '1') {
-        for (var i = 0; i < ArraySectores.length; i++) {
-          this.ServiciosValorar.CorreoMasivo('1', '9', '2', this.IdOferta, ArraySectores[i].ID_SCTOR_OFRTA).subscribe(ResultCorreo => {
-            console.log(ResultCorreo)
-          })
-        }
-      } else {
-        for (var i = 0; i < ArraySectores.length; i++) {
-          this.ServiciosValorar.EnviarSms('7', '0', this.IdOferta, ArraySectores[i].ID_SCTOR_OFRTA, '0', '0', '0').subscribe(Resultado => {
-            console.log(Resultado)
-          })
-        }
-      }
-
-    }
-  }
-
-  ConsultaSectores() {
-    this.ServiciosValorar.ConsultaSectoresOferta('2', this.IdOferta).subscribe(ResultConsulta => {
-      if (ResultConsulta.length > 0) {
-        this.keywordSec = 'DSCRPCION_SCTOR';
-        this.DataSectores = ResultConsulta;
-        this.ValidaEnvio == ResultConsulta[0].EnvioSms;
-      }
-    })
-  }
-  cdConsSectorResumen: string = "";
-  SelectSect: boolean = false;
   selectSector(item: any) {
     this.SelectSect = true;
     this.CodigoOferSector = item.COD_OFERTA_SECTOR;
@@ -435,8 +258,6 @@ export class BuscarofertaComponent implements OnInit {
     this.ConsultaLink();
   }
 
-  EnvioSms: boolean = false;
-  EnvioEmal: boolean = false;
   ConsEnvioSmsEmail() {
     this.ServiciosValorar.ConsultaSectoresOferta('1', this.cdConsSectorResumen).subscribe(ResultConsulta => {
       if (ResultConsulta.length > 0) {
@@ -448,7 +269,6 @@ export class BuscarofertaComponent implements OnInit {
         }
       }
     })
-
   }
 
 
@@ -456,7 +276,6 @@ export class BuscarofertaComponent implements OnInit {
     this.SelectSect = false;
     this.CodigoOferSector = "";
     this.VlrFletSect = "";
-    //Limpia valoracion
     this.VigenDesde = "";
     this.VigenHasta = "";
     this.HoraIni = "";
@@ -475,6 +294,7 @@ export class BuscarofertaComponent implements OnInit {
     this.ConsCosteo();
     this.ConsultaTrazabilidad();
   }
+  
   ConsSectorizacion() {
     this.ServiciosValorar.ConsultaSectoresOferta('1', this.IdOferta).subscribe(ResultConsulta => {
       this.DataSectorOferta = ResultConsulta;
@@ -585,7 +405,7 @@ export class BuscarofertaComponent implements OnInit {
   }
   visualizaImagenTopping(ModalImagen: any, imagenesAdicional: string) {
     this.consultaimagen = this.RutaImagenTopping + imagenesAdicional;
-    console.log( this.consultaimagen)
+    console.log(this.consultaimagen)
     this.modalService.open(ModalImagen, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
   }
   consultaToppingsOferta() {
@@ -623,7 +443,7 @@ export class BuscarofertaComponent implements OnInit {
         inputLinkC.value = Resultado[0].link_corto;
         const inputLink: HTMLInputElement = document.getElementById('ResumenLink') as HTMLInputElement;
         inputLink.value = Resultado[0].link_largo;
-  
+
         const inputWhatsapp: HTMLInputElement = document.getElementById('MsmWhatsap') as HTMLInputElement;
         inputWhatsapp.value = ResultUpdate[0].TextoWhat;
       });
@@ -687,31 +507,29 @@ export class BuscarofertaComponent implements OnInit {
     } else {
       this.ServiciosValorar.postImgToppings(event.target.files[0]).subscribe(
         response => {
-          if (response <= 1) {
-            console.log("Error en el servidor");
-          } else {
-            if (response == 'Archivo Subido Correctamente') {
-              this.ImgCorreo = this.RutaImagenTopping + event.target.files[0].name;
-              console.log(this.ImgCorreo)
 
-              const Bodymod = {
-                idSector: this.SessionSectorSel,
-                cd_cnctivo: this.IdOferta,
-                TextoCorreo: "0",
-                TextoWhat: "0",
-                ImgCorreo: this.ImgCorreo
-              }
+          if (response == 'Archivo Subido Correctamente') {
+            this.ImgCorreo = this.RutaImagenTopping + event.target.files[0].name;
+            console.log(this.ImgCorreo)
 
-              this.ServiciosValorar.TextosOferta('2', Bodymod).subscribe(ResultCorreo => {
-                this.PrevisualizaCorreo()
-              })
-
-              this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-              this.Respuesta = "Imagen cargada correctamente.";
-            } else {
-              console.log(response)
+            const Bodymod = {
+              idSector: this.SessionSectorSel,
+              cd_cnctivo: this.IdOferta,
+              TextoCorreo: "0",
+              TextoWhat: "0",
+              ImgCorreo: this.ImgCorreo
             }
+
+            this.ServiciosValorar.TextosOferta('2', Bodymod).subscribe(ResultCorreo => {
+              this.PrevisualizaCorreo()
+            })
+
+            this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+            this.Respuesta = "Imagen cargada correctamente.";
+          } else {
+            console.log(response)
           }
+
         },
         error => {
           console.log(<any>error);
@@ -745,4 +563,6 @@ export class BuscarofertaComponent implements OnInit {
     })
 
   }
+
+
 }
