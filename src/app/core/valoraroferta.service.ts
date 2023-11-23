@@ -460,5 +460,8 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'modAdmiOfertaFechas/' + Bandera, Body);
   }
 
+  ActualizarSector(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modCambioSectorOferta/' + Bandera, Body);
+  }
 }
 
