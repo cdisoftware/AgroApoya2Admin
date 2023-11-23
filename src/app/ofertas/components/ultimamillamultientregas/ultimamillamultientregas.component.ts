@@ -125,6 +125,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   ValorGrupo: string = "";
   IdGrupo_: string = "";
   ArrayGruposMilla: any = [];
+  IdEntregaAgrega_: string = "";
   //#endregion VariablesGrupoMilla
 
   //#region CreaTransporteManual
@@ -145,6 +146,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   CambioEstadoProceso() {
     if (this.IdEstadoProceso == '0') {
       this.IdEstadoProceso = '1';
+      this.ConsultaTransporte();
     }
   }
   //#endregion CambioEstadoProceso
@@ -153,6 +155,34 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   ConsultaListas() {
     this.ConsultaBodegas();
     this.ConsultaTransporte();
+  }
+
+  ActualizarValorTransporte() {
+    if (this.ValorGrupo != "" && this.ValorGrupo != "0") {
+      const body = {
+        IdGrupoMilla: this.IdGrugo_,
+        ValorFlete: this.ValorGrupo,
+        FechaEntrega: "0",
+        UbicacionEntrega: "0",
+        UbicacionRecoge: "0",
+        Id_carrosManual: "0"
+      }
+      console.log(body)
+      this.sevicesmilla.CreaTransporteEntrega('7', body).subscribe(Resultado => {
+        var auxrespu = Resultado.split("|");
+        console.log(Resultado);
+        if (Number(auxrespu[0]) > 0) {
+          this.MesajeModal = "Se actualizo el valor del transporte correctamente.";
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        } else {
+          this.MesajeModal = "No fue posible actualizar el valor del transporte, por favor comuníquese con soporte";
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        }
+      });
+    } else {
+      this.MesajeModal = "No fue posible actualizar el valor del transporte, por favor comuníquese con soporte";
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    }
   }
   //#endregion General
 
@@ -385,6 +415,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
         if (status === 'OK') {
           const directionsRenderer = new google.maps.DirectionsRenderer({
             suppressMarkers: true, // Esto quitará los marcadores "A" y "B"
+            preserveViewport: true
           });
           directionsRenderer.setDirections(result);
           directionsRenderer.setMap(this.mapPinRutaEntregaPolylineas);
@@ -541,21 +572,20 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       this.ArrayConsTransportes = Respu;
     })
   }
-  ArrayTransporteSeleccionado: any = [];
-  SelectTransporte(item: any, templateConfirmacionEditTransporte: any) {
-    this.ArrayTransporteSeleccionado = item;
-    this.modalService.open(templateConfirmacionEditTransporte, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-  }
-  AbreModalConfirmacionEditarTransporte(){
+
+  SelectTransporte(item: any) {
     this.modalService.dismissAll();
-    if(this.ArrayTransporteSeleccionado.IdGrupoMilla != null){
+    if (item.IdGrupoMilla != null) {
       this.IdEstadoProceso = '6';
-      this.IdGrugo_ = this.ArrayTransporteSeleccionado.IdGrupoMilla;
+      this.IdGrugo_ = item.IdGrupoMilla;
       this.ConsultaEntregasGrupo(this.IdGrugo_);
-    }else{
+    } else {
       this.MesajeModal = "No fue posible editar el transporte por favor comunícate con soporte.";
       this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
     }
+  }
+  AbreModalConfirmacionEditarTransporte() {
+
   }
   //#endregion ConsultaTransportes
 
@@ -636,12 +666,12 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
     this.Bodega = "";
 
     this.ArrayConsTransporte = [];
-    this.ArrayTransporteSeleccionado = [];
   }
   //#endregion Volver
 
   //#region MapaRutaPoligono
   IniciaMapRutaPoligon(templatePoligonRuta: any) {
+    this.ArrayCoordenadas = [];
     this.NombrePolygonCrear = "";
     this.modalService.open(templatePoligonRuta, { ariaLabelledBy: 'modal-basic-title', size: 'xl', backdrop: 'static', keyboard: false });
   }
@@ -1043,6 +1073,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       this.sevicesmilla.ModEntrega('3', body).subscribe(Respu => {
         var auxrespu = Respu.split("|");
         if (Number(auxrespu[0]) > 0) {
+          this.IdEntregaAgrega_ = "";
           this.MesajeModal = "La entrega se agrego exitosamente";
           this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
 
@@ -1051,8 +1082,9 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
           this.sevicesmilla.ConsEntregasTransporte('1', this.IdGrugo_).subscribe(RespuPins => {
             this.ArrayPinsRutaGenerada = RespuPins;
             this.LimpiaMapsEntregas();
-            this.IniciaMapaRuta();
             this.ListaGruposMilla();
+            this.AgregarSitiosRutaEntregas();
+            this.AgregaPolilineasRuta();
           });
         } else {
           this.MesajeModal = auxrespu[1];
