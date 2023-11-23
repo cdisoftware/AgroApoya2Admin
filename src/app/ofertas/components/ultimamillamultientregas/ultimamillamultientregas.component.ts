@@ -1102,6 +1102,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
 
   //#region CreaTransporteManual
   CambiaEstadoProcesoManual() {
+    this.IdEstadoProcesoCreaTransporteManual = "1";
     this.IdEstadoProceso = "5";
   }
   CancelarCreacionTransportemanual() {
@@ -1198,10 +1199,14 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       var auxrespuorden = Resultado.split("|");
       if (auxrespuorden.length > 1) {
         if (Number(auxrespuorden[0]) > 0) {
-          this.LimpiaMapsEntregas();
-          this.ListaGruposMilla();
-          this.AgregarSitiosRutaEntregas();
-          this.AgregaPolilineasRuta();
+          this.ArrayPinsRutaGenerada = [];
+          this.sevicesmilla.ConsEntregasTransporte('1', this.IdGrugo_).subscribe(RespuPins => {
+            this.ArrayPinsRutaGenerada = RespuPins;
+            this.LimpiaMapsEntregas();
+            this.ListaGruposMilla();
+            this.AgregarSitiosRutaEntregas();
+            this.AgregaPolilineasRuta();
+          });
         } else {
           this.MesajeModal = "No fue posible realizar la acción, por favor válida el orden que estás ingresando e intenta nuevamente (Orden (2))";
           this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
