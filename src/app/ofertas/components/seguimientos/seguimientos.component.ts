@@ -608,7 +608,7 @@ export class SeguimientosComponent implements AfterContentInit, OnInit {
   ObjetEntrega: any;
   TotalCosolidado: number = 0;
   ConsReporteEntregas() {
-    this.ServiciosValorar.ConsultaReporteEntregas('1', this.SelectorOferta, this.SelectorSector, this.ConductorSelect).subscribe(Resultado => {
+    this.ServiciosValorar.ConsultaReporteEntregas('1', '20').subscribe(Resultado => {
       this.ArrayReporte = Resultado;
 
       var NumRecibidos: number = 0;

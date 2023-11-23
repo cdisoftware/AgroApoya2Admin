@@ -22,7 +22,7 @@ import jsPDF from 'jspdf';
 export class SeguimientoComponent implements AfterContentInit, OnInit {
   @ViewChild('ModalMensaje', { static: false }) ModalMensaje: any;
   @ViewChild('ModalMapaSugerido', { static: false }) ModalMapaSugerido: any;
-
+  @ViewChild('templateGrupos', { static: false }) ModalGrupos: any;
   selecsector: string = '0'
   selectConductor: string = '0'
   Respuesta: string = '';
@@ -54,7 +54,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
 
   //VariablesFiltro Oferta
   ArrayOferta: any = [];
-  keywordOferta: string = '';
+  keywordGrupo = 'NombreGrupo';
   SelectorOferta: string = '0';
   OfertaSelect: string = '';
   Oferta: string = '';
@@ -97,6 +97,13 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
 
   Fecha: string = this.Año + '-' + this.Mes + '-' + this.Dia;
 
+  FechaInicio: string = '0'
+  FechaFin: string = '0';
+  ArrayGrupos: any = [];
+  IdGrupo: any;
+  ArrayGruposSel: any = [];
+  Grupo: string = ''
+
   constructor(
     private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService) { }
@@ -120,6 +127,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
 
   ngOnInit(): void {
     this.ConsultaOferta();
+    this.ConsutaGrupos();
   }
 
 
@@ -182,8 +190,8 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         ["Cliente", "Celular", "Dirección", "Producto"],
       ]
     })
-   
-    this.ArrayConsultaSeg.forEach(function (respuesta: any) { 
+
+    this.ArrayConsultaSeg.forEach(function (respuesta: any) {
       const productoFormatted = respuesta.producto_addTodos.replace(/\|/g, '\n');
       var Res =
         [respuesta.NOMBRES_PERSONA, respuesta.CELULAR_PERSONA, respuesta.DRCCION, productoFormatted];
@@ -202,12 +210,19 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
           ]
       })
     });
-    doc.save('Seguimiento - ' + this.OfertaSelect + "_" +  this.Fecha + '.pdf')
+    doc.save('Seguimiento - ' + this.OfertaSelect + "_" + this.Fecha + '.pdf')
   }
 
   ConsultaTransportista(idconductor: string, idtransportista: string) {
     this.ServiciosValorar.ConsultaDetalleCond('1', idconductor, idtransportista).subscribe(Resultado => {
       this.ArrayConductor = Resultado
+    })
+  }
+
+  ConsutaGrupos() {
+    this.ServiciosValorar.ConsultaGruposMilla('1', '0').subscribe(Resultado => {
+      console.log(Resultado)
+      this.ArrayGrupos = Resultado
     })
   }
 
@@ -228,7 +243,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     }
     this.ServiciosValorar.BusquedaOferta('2', this.SelectorOferta, '0', '0', datosbusqueda).subscribe(Resultado => {
       this.ArrayOferta = Resultado;
-      this.keywordOferta = 'Producto';
+      this.keywordGrupo = 'NombreGrupo';
     })
   }
   LimpiaOferta(Valor: string) {
@@ -239,11 +254,13 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     this.LimpiaSector('');
     this.ArrayConductor = []
   }
+
   selectOfertaFiltro(item: any) {
-    this.SelectorOferta = item.cd_cnsctvo.toString();
-    this.OfertaSelect = item.Producto;
+    this.IdGrupo = item.IdGrupoMilla;
+    //this.Grupo = item.IdGrupoMilla;
+    this.OfertaSelect = item.NombreGrupo;
     this.selecsector = '1'
-    this.ConsultaSectores(item.cd_cnsctvo);
+    //this.ConsultaSectores(item.cd_cnsctvo);
   }
 
   ConsultaSectores(cd_cnctivo: string) {
@@ -276,6 +293,30 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   }
 
   Buscar(templateRespuesta: any) {
+    const BodyConsulta = {
+      FechaIncio: this.FechaInicio,
+      FechaFin: this.FechaFin
+    }
+    this.ServiciosValorar.ConsultaSegNew('1', this.IdGrupo, BodyConsulta).subscribe(Resultado => {
+      console.log(Resultado)
+      this.ArrayGruposSel = Resultado
+      if (Resultado.length == 0) {
+        this.Respuesta = 'No encontramos registros de compras para este sector.';
+        this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
+        this.ValidaInsertSec = '0';
+        this.ValidaInsertSecs = '0';
+      } else {
+        this.VerBtnMapSugerido = true;
+        this.VerBtnDescargarPdf = this.ConductorSelect !== '0';
+        this.Detalle = '1';
+        this.ArrayConsultaSeg = Resultado;
+        this.ValidaInsertSec = '1';
+        this.ValidaInsertSecs = '1';
+
+      }
+    })
+    this.modalService.open(this.ModalGrupos, { ariaLabelledBy: 'modal-basic-title' });
+    /*
     if (this.SelectorSector == '' && this.SelectorOferta == '0' || this.SelectorSector != '' && this.SelectorOferta == '0' || this.SelectorSector == '' && this.SelectorOferta != '0') {
       this.Respuesta = 'Es necesario que selecciones una oferta y un sector.';
       this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
@@ -303,7 +344,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         }
 
       })
-    }
+    }*/
   }
 
   Centramapa2(request: google.maps.GeocoderRequest): void {
@@ -374,7 +415,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     this.NumProductos = 0;
     this.TituloModal = 'Detalle Entregas'
     var IdGrupo = Entrega.IdGrupoMilla
-    var IdCarro = Entrega.ID_CARRO
+    var IdCarro = Entrega.ID
     this.ServiciosValorar.ConsultaDetalleEntregas('1', IdCarro).subscribe(Resultado => {
       this.ArrayDetalle = Resultado;
       for (var i = 0; i < this.ArrayDetalle.length; i++) {
@@ -406,7 +447,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         Polylines.push({ lat: lat, lng: long });
       }
 
-      this.ValorDomicilio += Number(this.ArrayConsultaSeg[i].VLOR_DOMICILIO);
+      this.ValorDomicilio += Number(this.ArrayConsultaSeg[i].ValorDomicilio);
     }
     this.TotalCosolidado = this.TotalCosolidado + this.ValorDomicilio;
     for (let i = 0; i < features.length; i++) {
@@ -607,87 +648,101 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   }
   ObjetEntrega: any;
   TotalCosolidado: number = 0;
-  ConsReporteEntregas() {
-    this.ServiciosValorar.ConsultaReporteEntregas('1', this.SelectorOferta, this.SelectorSector, this.ConductorSelect).subscribe(Resultado => {
-      this.ArrayReporte = Resultado;
 
-      var NumRecibidos: number = 0;
-      var NumPendientes: number = 0;
-      var NumDevuelto: number = 0;
-      var NumTotal: number = 0;
-
-      var ValEntregado: number = 0;
-      var ValPendiente: number = 0;
-      var ValDevuelto: number = 0;
-      var ValTotalRecaudo: number = 0;
-
-      for (var i = 0; this.ArrayReporte.length > i; i++) {
-        NumRecibidos = NumRecibidos + parseInt(this.ArrayReporte[i].CANTIDAD_ENTREGADA.toString());
-        NumPendientes = NumPendientes + parseInt(this.ArrayReporte[i].CANTIDAD_PENDIENTE.toString());
-        NumDevuelto = NumDevuelto + parseInt(this.ArrayReporte[i].CANTIDAD_DEVUELTA.toString());
-        NumTotal = NumTotal + parseInt(this.ArrayReporte[i].CANTIDAD_TOTAL.toString());
-
-        ValEntregado = ValEntregado + parseInt(this.ArrayReporte[i].VLR_RECAUDADO.toString());
-        ValPendiente = ValPendiente + parseInt(this.ArrayReporte[i].VLR_PENDIENTE_RECAUDO.toString());
-        ValDevuelto = ValDevuelto + parseInt(this.ArrayReporte[i].VLOR_DEVOLUCION.toString());
-        ValTotalRecaudo = ValTotalRecaudo + parseInt(this.ArrayReporte[i].VLOR_TTL_RECAUDAR.toString());
-
-
-
-
-        const fila = {
-          "name": this.ArrayReporte[i].PRODUCTO, "series":
-            [
-              {
-                "name": "Entregado",
-                "value": this.ArrayReporte[i].CANTIDAD_ENTREGADA
-              },
-              {
-                "name": "Pendiente",
-                "value": this.ArrayReporte[i].CANTIDAD_PENDIENTE
-              },
-              {
-                "name": "Devuelto",
-                "value": this.ArrayReporte[i].CANTIDAD_DEVUELTA
-              }
-            ]
+  ConsReporteEntregas(idGrupo: string) {
+    this.ServiciosValorar.ConsultaReporteEntregas('1', idGrupo).subscribe(Resultado => {
+      console.log(Resultado)
+      if (Resultado.length > 0) {
+        this.ArrayReporte = Resultado;
+        var NumRecibidos: number = 0;
+        var NumPendientes: number = 0;
+        var NumDevuelto: number = 0;
+        var NumTotal: number = 0;
+        var ValEntregado: number = 0;
+        var ValPendiente: number = 0;
+        var ValDevuelto: number = 0;
+        var ValTotalRecaudo: number = 0;
+        for (var i = 0; this.ArrayReporte.length > i; i++) {
+          if (this.ArrayReporte[i].VLR_RECAUDADO == null) {
+            this.ArrayReporte[i].VLR_RECAUDADO = '0'
+          }
+          if (this.ArrayReporte[i].VLR_PENDIENTE_RECAUDO == null) {
+            this.ArrayReporte[i].VLR_PENDIENTE_RECAUDO = '0'
+          }
+          if (this.ArrayReporte[i].VLOR_DEVOLUCION == null) {
+            this.ArrayReporte[i].VLOR_DEVOLUCION = '0'
+          }
+          if (this.ArrayReporte[i].VLOR_TTL_RECAUDAR == null) {
+            this.ArrayReporte[i].VLOR_TTL_RECAUDAR = '0'
+          }
+          NumRecibidos = NumRecibidos + parseInt(this.ArrayReporte[i].CANTIDAD_ENTREGADA);
+          NumPendientes = NumPendientes + parseInt(this.ArrayReporte[i].CANTIDAD_PENDIENTE);
+          NumDevuelto = NumDevuelto + parseInt(this.ArrayReporte[i].CANTIDAD_DEVUELTA);
+          NumTotal = NumTotal + parseInt(this.ArrayReporte[i].CANTIDAD_TOTAL);
+          ValEntregado = ValEntregado + parseInt(this.ArrayReporte[i].VLR_RECAUDADO);
+          ValPendiente = ValPendiente + parseInt(this.ArrayReporte[i].VLR_PENDIENTE_RECAUDO);
+          ValDevuelto = ValDevuelto + parseInt(this.ArrayReporte[i].VLOR_DEVOLUCION);
+          ValTotalRecaudo = ValTotalRecaudo + parseInt(this.ArrayReporte[i].VLOR_TTL_RECAUDAR);
+          const fila = {
+            "name": this.ArrayReporte[i].PRODUCTO, "series":
+              [
+                {
+                  "name": "Entregado",
+                  "value": this.ArrayReporte[i].CANTIDAD_ENTREGADA
+                },
+                {
+                  "name": "Pendiente",
+                  "value": this.ArrayReporte[i].CANTIDAD_PENDIENTE
+                },
+                {
+                  "name": "Devuelto",
+                  "value": this.ArrayReporte[i].CANTIDAD_DEVUELTA
+                }
+              ]
+          }
+          this.ArrayVentas.push(fila)
+          const fila2 = {
+            "name": this.ArrayReporte[i].PRODUCTO, "series":
+              [
+                {
+                  "name": "Recaudado",
+                  "value": this.ArrayReporte[i].VLR_RECAUDADO
+                },
+                {
+                  "name": "Pendiente",
+                  "value": this.ArrayReporte[i].VLR_PENDIENTE_RECAUDO
+                },
+                {
+                  "name": "Devuelto",
+                  "value": this.ArrayReporte[i].VLOR_DEVOLUCION
+                }
+              ]
+          }
+          this.ArrayValores.push(fila2)
         }
-        this.ArrayVentas.push(fila)
-        const fila2 = {
-          "name": this.ArrayReporte[i].PRODUCTO, "series":
-            [
-              {
-                "name": "Recaudado",
-                "value": this.ArrayReporte[i].VLR_RECAUDADO
-              },
-              {
-                "name": "Pendiente",
-                "value": this.ArrayReporte[i].VLR_PENDIENTE_RECAUDO
-              },
-              {
-                "name": "Devuelto",
-                "value": this.ArrayReporte[i].VLOR_DEVOLUCION
-              }
-            ]
-        }
-        this.ArrayValores.push(fila2)
+        this.ObjetEntrega = [
+          {
+            TotalRecibido: NumRecibidos,
+            TotalPendiente: NumPendientes,
+            TotalDevuelto: NumDevuelto,
+            TotalProducto: NumTotal
+          },
+          {
+            ValTotalEntregado: ValEntregado,
+            ValTotalPendiente: ValPendiente,
+            ValTotalDevuelto: ValDevuelto,
+            ValTotalRecaudo: ValTotalRecaudo
+          }
+        ];
+        this.TotalCosolidado = ValTotalRecaudo;
+        this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
+      } else {
+        this.modalService.dismissAll()
+        this.TituloModal = 'AgroApoya2';
+        this.Mensaje = 'El grupo seleccionado tiene entregas.'
+        this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title' });
       }
-      this.ObjetEntrega = [
-        {
-          TotalRecibido: NumRecibidos,
-          TotalPendiente: NumPendientes,
-          TotalDevuelto: NumDevuelto,
-          TotalProducto: NumTotal
-        },
-        {
-          ValTotalEntregado: ValEntregado,
-          ValTotalPendiente: ValPendiente,
-          ValTotalDevuelto: ValDevuelto,
-          ValTotalRecaudo: ValTotalRecaudo
-        }
-      ];
-      this.TotalCosolidado = ValTotalRecaudo;
-      this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
+
     })
   }
 
@@ -699,13 +754,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   RezizePantalla(Tamanio: number) {
     this.viewBar = [Tamanio, 200];
   }
-
-
-
-
-
-
-
 
 
   //#region MapaRutaSugerida
@@ -793,5 +841,19 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     flightPath.setMap(this.map);
   }
   //#endregion MapaRutaSugerida
+
+  SeleccionGrupo(Detalle: any) {
+    this.modalService.dismissAll()
+    this.ConsReporteEntregas(Detalle.idgrupomilla);
+    this.ConsultaDetalle(Detalle.idgrupomilla);
+    
+  }
+
+  ConsultaDetalle(IdGrupo: string){
+    this.ServiciosValorar.ConsultaDetalle('1',IdGrupo).subscribe(Resultado => {
+      console.log(Resultado)
+      this.ArrayConsultaSeg = Resultado;
+    })
+  }
 
 }

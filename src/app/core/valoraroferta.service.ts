@@ -355,8 +355,8 @@ export class ValorarofertaService {
     return this.http.get<any[]>(this.url_servidor + 'consSeguimientoEntregaDell/' + Bandera + '/' + IdCarro)
   }
 
-  ConsultaReporteEntregas(Bandera: string, IdOferta: string, IdSector: string, IdCondutor: string) {
-    return this.http.get<any[]>(this.url_servidor + 'consRepEstEntrega/' + Bandera + '/' + IdOferta + '/' + IdSector + '/' + IdCondutor)
+  ConsultaReporteEntregas(Bandera: string, IdGrupoMilla: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consRepEstEntrega/' + Bandera + '/' + IdGrupoMilla)
   }
   ConsCupon(Bandera: string) {
     return this.http.get<any[]>(this.url_servidor + 'consTipoCupon/' + Bandera);
@@ -460,5 +460,16 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'modAdmiOfertaFechas/' + Bandera, Body);
   }
 
+  ConsultaSegNew(Bandera: string, GrupoMilla: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'consAdSeguimientoFiltroFecha/' + Bandera + '/' + GrupoMilla, Body);
+  }
+
+  ConsultaGruposMilla(Bandera: string, IdGrupo: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consAdminMillaTransportes/' + Bandera + '/' + IdGrupo);
+  }
+
+  ConsultaDetalle(Bandera: string, IdGrupo: string){
+    return this.http.get<any[]>(this.url_servidor + 'consAdSeguimientoInfoGen/' + Bandera + '/' + IdGrupo);
+  }
 }
 
