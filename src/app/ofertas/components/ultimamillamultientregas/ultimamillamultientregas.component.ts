@@ -716,6 +716,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
 
     this.NombreBodega = "";
     this.Bodega = "";
+    this.IdentificadorIdCarr_ = "";
 
     this.ArrayConsTransporte = [];
   }
