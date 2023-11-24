@@ -303,7 +303,6 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
           zoom: 12,
         }
       );
-      this.mapPinRutaEntrega.setOptions({ styles: this.StyleMap });
 
 
 
@@ -321,7 +320,6 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
           zoom: 12,
         }
       );
-      this.mapPinRutaEntregaPolylineas.setOptions({ styles: this.StyleMap });
       this.AgregarSitiosRutaEntregas();
       this.AgregaPolilineasRuta();
       return results;
