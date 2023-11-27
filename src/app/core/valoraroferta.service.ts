@@ -207,8 +207,8 @@ export class ValorarofertaService {
     return this.http.get<any[]>(this.url_servidor + 'conscentregaseg/' + Bandera + '/' + IdOferta + '/' + IdSector)
   }
 
-  ConsultaSeguimientoEntregas(Bandera: string, IdConductor: string, IdSector: string, IdOferta: string, Datos: any) {
-    return this.http.post<any>(this.url_servidor + 'consSeguimientoEntregas/' + Bandera + '/' + IdConductor + '/' + IdSector + '/' + IdOferta, Datos)
+  ConsultaSeguimientoEntregas(Bandera: string, IdGrupo: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consSeguimientoEntregas/' + Bandera + '/' + IdGrupo)
   }
 
   ConsultaTrazabilidad(Bandera: string, cd_cnctivo: string) {

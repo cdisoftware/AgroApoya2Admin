@@ -112,11 +112,11 @@
                         <hr class="br">
                         <!-- Consolidado Dinero -->
                         <ngx-charts-bar-vertical-2d [results]="ArrayValores" [legendTitle]="'Ventas'" [legend]="true"
-                            [xAxis]="true" [animations]="false" [scheme]="colorSchemeTort"
+                            [xAxis]="true" [animations]="false" [scheme]="colorSchemeTort" hidden
                             [view]="viewBar"></ngx-charts-bar-vertical-2d>
                         <!-- Tabla Dinero -->
                         <br>
-                        <table class="col-sm-11 TableAgro br ">
+                        <table class="col-sm-11 TableAgro br " hidden>
                             <tr>
                                 <th colspan="2">Producto</th>
                                 <th>Entregado</th>
@@ -207,7 +207,7 @@
                     </div>
                 </div>
 
-                <div class="row mt-2 justify-content-center" *ngIf="VerBtnMapSugerido == true">
+                <div class="row mt-2 justify-content-center" *ngIf="VerBtnMapSugerido == true" hidden>
                     <table class="col-sm-8 TableAgro br ">
                         <tr>
                             <th colspan="2"><strong>Total recaudado</strong></th>

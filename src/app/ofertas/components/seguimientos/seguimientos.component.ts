@@ -286,7 +286,7 @@ export class SeguimientosComponent implements AfterContentInit, OnInit {
         coordernadas: "0"
       }
       //this.ServiciosValorar.ConsultaSeguimiento('1', this.SelectorOferta, this.SelectorSector).subscribe(Resultado => {
-      this.ServiciosValorar.ConsultaSeguimientoEntregas('1', this.ConductorSelect, this.SelectorSector, this.SelectorOferta, datos).subscribe(Resultado => {
+      this.ServiciosValorar.ConsultaSeguimientoEntregas('1', '1').subscribe(Resultado => {
          if (Resultado.length == 0) {
           this.Respuesta = 'No encontramos registros de compras para este sector.';
           this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
@@ -713,7 +713,7 @@ export class SeguimientosComponent implements AfterContentInit, OnInit {
     const datos = {
       coordernadas: "0"
     }
-    this.ServiciosValorar.ConsultaSeguimientoEntregas('2', this.ConductorSelect, this.SelectorSector, this.SelectorOferta, datos).subscribe(Resultado => {
+    this.ServiciosValorar.ConsultaSeguimientoEntregas('2', '1').subscribe(Resultado => {
       this.modalService.open(this.ModalMapaSugerido, { size: 'xl', centered: true });
       this.ArrayDataRutaSugerida = Resultado;
       if (this.ArrayDataRutaSugerida.length > 0) {

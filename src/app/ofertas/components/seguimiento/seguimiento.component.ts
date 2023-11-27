@@ -758,10 +758,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
 
   //#region MapaRutaSugerida
   CargarRutaSugerida() {
-    const datos = {
-      coordernadas: "0"
-    }
-    this.ServiciosValorar.ConsultaSeguimientoEntregas('2', this.ConductorSelect, this.SelectorSector, this.SelectorOferta, datos).subscribe(Resultado => {
+    this.ServiciosValorar.ConsultaSeguimientoEntregas('1', this.IdGrupo).subscribe(Resultado => {
       this.modalService.open(this.ModalMapaSugerido, { size: 'xl', centered: true });
       this.ArrayDataRutaSugerida = Resultado;
       if (this.ArrayDataRutaSugerida.length > 0) {

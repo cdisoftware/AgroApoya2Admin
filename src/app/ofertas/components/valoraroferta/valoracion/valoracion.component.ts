@@ -6,7 +6,7 @@ import { Router } from '@angular/router'
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 import { DatePipe } from '@angular/common';
 import { CrearofertaService } from 'src/app/core/crearoferta.service';
-
+import { ReporteService } from 'src/app/core/reporte.service';
 
 
 @Component({
@@ -203,6 +203,10 @@ export class ValoracionComponent implements OnInit {
 
   DescripcionProductoTopping: string = "";
   DescripcionPresentacion: string = "";
+  ArrayCampesino: any = []
+  keywordCampesino: string = 'NOMBRES_PERSONA';
+  IdCampesino: string = '0';
+  DesCampesino: string = ''
 
   //#endregion AgregarTopping
 
@@ -238,7 +242,7 @@ export class ValoracionComponent implements OnInit {
   IndexOfertaDirigidaA: number = 0;
   //#endregion OfertaDirigidaA
 
-  constructor(private ServiciosOferta: CrearofertaService, private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe) {
+  constructor(private ServiciosOferta: CrearofertaService, private serviciosvaloracion: ValorarofertaService, ConfigAcord: NgbAccordionConfig, private modalService: NgbModal, private cookies: CookieService, public rutas: Router, private SeriviciosGenerales: MetodosglobalesService, private formatofecha: DatePipe, private serviciosreportes: ReporteService) {
     ConfigAcord.closeOthers = true;
   }
   //#region Anterior
@@ -248,7 +252,7 @@ export class ValoracionComponent implements OnInit {
     this.ListaProductos();
     this.LimpiaProductoTopp();
     this.CargaInfoCupon();
-
+    this.ConsultaCampesino() 
     this.keyword = 'name';
     this.keywordSec = 'name';
     this.RutaImagenes = this.SeriviciosGenerales.RecuperaRutaImagenes();
@@ -687,7 +691,8 @@ export class ValoracionComponent implements OnInit {
         IdTipoTopingVenta: this.SessionTipoToppVenta,
 
         IdProdTopin: AuxIdProdTopping,
-        PresentacionProd: Auxpresentacion
+        PresentacionProd: Auxpresentacion,
+        IdCampesino: this.IdCampesino
       }
 
       this.serviciosvaloracion.ModificaTopping('2', Body).subscribe(ResultOper => {
@@ -842,6 +847,25 @@ export class ValoracionComponent implements OnInit {
       this.VlrUniTopp = '0';
       this.ValorRefAdd = '0';
     }
+  }
+
+  selectCampesino(item: any) {
+    this.IdCampesino = item.USUCODIG;
+    this.DesCampesino = item.NOMBRES_PERSONA;
+  }
+
+  ConsultaCampesino() {
+    const Data = {
+      CD_TPO_PRSNA: 1,
+      CORREO_PERSONA: "0",
+      CELULAR_PERSONA: "0",
+      DOCUMENTO_USUARIO: "0",
+      NOMBRES_PERSONA: "0"
+    }
+    this.serviciosreportes.ConsultaListaPersona('3', Data).subscribe(Resultado => {
+      this.ArrayCampesino = Resultado;
+      console.log(Resultado)
+    })
   }
 
   LimpiaTipoToppVenta() {

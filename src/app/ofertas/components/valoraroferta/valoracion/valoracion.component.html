@@ -778,6 +778,21 @@
                                 class="form-control textBox" placeholder="Presentación"
                                 [(ngModel)]="Presentacion"></textarea>
                         </div>
+
+                        <div class="col-sm-4 mt-2" >
+                            <label class="col-sm-12 Llave">Campesino</label>
+                            <ng-autocomplete [data]="ArrayCampesino" [searchKeyword]="keywordCampesino"
+                                (selected)='selectCampesino($event)' placeholder="Campesino"
+                                [itemTemplate]="templateCampesino" [notFoundTemplate]="templateVacioCampesino"
+                                (inputCleared)='LimpiaTipoToppVenta()' [(ngModel)]="DesCampesino">
+                            </ng-autocomplete>
+                            <ng-template #templateCampesino let-item>
+                                <a [innerHTML]="item.NOMBRES_PERSONA + ' ' + item.APELLIDOS_PERSONA"></a>
+                            </ng-template>
+                            <ng-template #templateVacioCampesino let-SinRegistro>
+                                <label for="">Sin registros</label>
+                            </ng-template>
+                        </div>
                     </div>
 
                     <div class="row br justify-content-center">
