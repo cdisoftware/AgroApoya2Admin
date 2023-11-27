@@ -303,7 +303,6 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
           zoom: 12,
         }
       );
-      this.mapPinRutaEntrega.setOptions({ styles: this.StyleMap });
 
 
 
@@ -321,7 +320,6 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
           zoom: 12,
         }
       );
-      this.mapPinRutaEntregaPolylineas.setOptions({ styles: this.StyleMap });
       this.AgregarSitiosRutaEntregas();
       this.AgregaPolilineasRuta();
       return results;
@@ -636,8 +634,34 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       this.MesajeModal = "Debes seleccionar un transportista para realizar la acción.";
       this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
     }
+  }
+
+  Eliminatransporte: any = [];
+  SelectEliminaTransporte(item: any, templateConfirmacionEliminaTransporte: any) {
+    this.Eliminatransporte = item;
+    this.modalService.open(templateConfirmacionEliminaTransporte, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+  }
 
 
+  EliminaTransporte(item: any) {
+    const body = {
+      IdGrupoMilla: item.IdGrupoMilla,
+      ValorFlete: 0,
+      FechaEntrega: '0',
+      UbicacionEntrega: '0',
+      UbicacionRecoge: '0'
+    }
+    this.sevicesmilla.CreaTransporteEntrega('5', body).subscribe(Resultado => {
+      const result = Resultado.split("|");
+      if (Number(result[0]) > 0) {
+        this.MesajeModal = result[1];
+        this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        this.ConsultaTransportes();
+      } else {
+        this.MesajeModal = "No fue posible eliminar el transporte, por favor comuníquese con soporte";
+        this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+      }
+    });
   }
   //#endregion ConsultaTransportes
 
@@ -716,6 +740,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
 
     this.NombreBodega = "";
     this.Bodega = "";
+    this.IdentificadorIdCarr_ = "";
 
     this.ArrayConsTransporte = [];
   }
