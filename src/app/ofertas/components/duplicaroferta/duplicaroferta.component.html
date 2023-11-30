@@ -189,6 +189,11 @@
                     </div>
                 </div>
             </div>
+            <div class="row justify-content-center">
+                <div class="col-4" style="margin-top: 30px; margin-bottom: 30px;">
+                    <button type="button" class="btn btn-agro-prin w-100" (click)="EstasSeguroDuplicar(ModalEstasSeguroDuplicar)" >Duplicar oferta</button>
+                </div>
+            </div>
             <div class="accordion-shadow mt-2">
                 <ngb-accordion [destroyOnHide]='false' [closeOthers]="true" #shadow>
                     <ngb-panel id="{{i}}" *ngFor="let respu of ArrayResumenOferta; let i = index">
@@ -700,6 +705,50 @@
         <div class="row justify-content-center">
             <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.dismiss()">Aceptar</button>
         </div>
+        <br>
+    </ng-template>
+
+    <ng-template #ModalEstasSeguroDuplicar let-modal>
+        <div class="modal-header">
+            <h1 class="modal-title" id="modal-basic-title">AgroApoya2</h1>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        </div>
+        <div class="modal-body" style="text-align: center;">
+            <label style="text-align: center; font-size: 18px;" >
+                <strong>Ingresa las fechas de la oferta con las que quieres publicar la oferta</strong>
+            </label>
+            <br>
+            <div class="row br">
+                <div class="col-sm-6">
+                    <label class="col-sm-12 Llave">Fecha recoge</label>
+                    <input type="date" class="col-sm-12 form-control mt-1 textBox" >
+                </div>
+                <div class="col-sm-6">
+                    <label class="col-sm-12 Llave">Fecha desde</label>
+                    <input type="date" class="col-sm-12 form-control mt-1 textBox">
+                </div>
+            </div>
+            <div class="row br">
+                <div class="col-sm-6">
+                    <label class="col-sm-12 Llave">Fecha hasta</label>
+                    <input type="date" class="col-sm-12 form-control mt-1 textBox" >
+                </div>
+                <div class="col-sm-6">
+                    <label class="col-sm-12 Llave">Fecha entrega</label>
+                    <input type="date" class="col-sm-12 form-control mt-1 textBox">
+                </div>
+            </div>
+            <br><br>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-5 justify-content-center">
+                <button type="button" class="btn btn-agro-sec w-100" (click)="modal.dismiss()">Cancelar</button>
+            </div>
+            <div class="col-5 justify-content-center">
+                <button type="button" class="btn btn-agro-prin w-100" (click)="modal.dismiss()">Si estoy seguro</button>
+            </div>
+        </div>
+
         <br>
     </ng-template>
 

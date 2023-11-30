@@ -136,6 +136,13 @@ export class DuplicarofertaComponent implements OnInit {
   EnvioSms: boolean = false;
   EnvioEmal: boolean = false;
 
+  // fechas actualizacion oferta
+  fechaRecogeActu: string = '';
+  fechaDesdeActu: string = '';
+  fechaHastaActu: string = '';
+  fechaEntregaActu: string = '';
+
+
   ngOnInit(): void {
     this.ListaOfertas();
   }
@@ -294,7 +301,7 @@ export class DuplicarofertaComponent implements OnInit {
     this.ConsCosteo();
     this.ConsultaTrazabilidad();
   }
-  
+
   ConsSectorizacion() {
     this.ServiciosValorar.ConsultaSectoresOferta('1', this.IdOferta).subscribe(ResultConsulta => {
       this.DataSectorOferta = ResultConsulta;
@@ -561,8 +568,29 @@ export class DuplicarofertaComponent implements OnInit {
       this.Respuesta = ResultCorreo;
       this.PrevisualizaCorreo()
     })
-
   }
 
+  EstasSeguroDuplicar(ModalEstasSeguroDuplicar: any) {
+    this.fechaRecogeActu = '';
+    this.fechaDesdeActu = '';
+    this.fechaHastaActu = '';
+    this.fechaEntregaActu = '';
+    this.modalService.open(ModalEstasSeguroDuplicar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+  }
+
+  DuplicarOferta() {
+    const Body = {
+      CD_CNSCTVO: "2362",
+      FechaRecoge: "2023-11-25",
+      FechaDesde: "2023-11-20",
+      FechaHasta: "2023-11-25",
+      FechaEntrega: "2023-11-25"
+    }
+
+    if (this.fechaRecogeActu  == ''){
+
+    }
+    //CopiaAdminMillaOferta
+  }
 
 }
