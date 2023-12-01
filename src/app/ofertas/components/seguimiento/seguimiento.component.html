@@ -112,16 +112,18 @@
                         <hr class="br">
                         <!-- Consolidado Dinero -->
                         <ngx-charts-bar-vertical-2d [results]="ArrayValores" [legendTitle]="'Ventas'" [legend]="true"
-                            [xAxis]="true" [animations]="false" [scheme]="colorSchemeTort" hidden
+                            [xAxis]="true" [animations]="false" [scheme]="colorSchemeTort" 
                             [view]="viewBar"></ngx-charts-bar-vertical-2d>
                         <!-- Tabla Dinero -->
                         <br>
-                        <table class="col-sm-11 TableAgro br " hidden>
+                        <table class="col-sm-11 TableAgro br " >
                             <tr>
                                 <th colspan="2">Producto</th>
                                 <th>Entregado</th>
                                 <th>Pendiente</th>
                                 <th>Devuelto</th>
+                                <th>Valor Contraentrega</th>
+                                <th>Valor Electronico</th>
                                 <th>Total a recaudar</th>
                             </tr>
                             <tr *ngFor="let Valores of ArrayReporte">
@@ -129,6 +131,8 @@
                                 <td>{{Valores.VLR_RECAUDADO | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                                 <td>{{Valores.VLR_PENDIENTE_RECAUDO | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                                 <td>{{Valores.VLOR_DEVOLUCION | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                                <td>{{Valores.VLRRECAUDADOCONTRAENTREGA | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                                <td>{{Valores.VLRRECAUDADOELECTRONICO | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                                 <td style="color: forestgreen;">{{Valores.VLOR_TTL_RECAUDAR | currency :'USD' : 'symbol'
                                     : '1.0-0'}}</td>
                             </tr>
@@ -167,7 +171,7 @@
                                     {{Seguimiento.descEstado}}</td>
                                 <td>{{Seguimiento.descTipoPago}}</td>
                                 <td>{{Seguimiento.orden}}</td>
-                                <td>{{Seguimiento.fecha_entrega}} - {{Seguimiento.hora_entrega}}</td>
+                                <td>{{Seguimiento.FechaEntrega}}</td>
                                 <td>{{Seguimiento.ValorPagarSinDomicilio | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                                 <td>{{Seguimiento.ValorDomicilio | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                                 <td>{{Seguimiento.ValorTotalPagar | currency :'USD' : 'symbol' : '1.0-0'}}</td>
@@ -207,26 +211,46 @@
                     </div>
                 </div>
 
-                <div class="row mt-2 justify-content-center" *ngIf="VerBtnMapSugerido == true" hidden>
+                 <div class="row mt-2 justify-content-center" *ngIf="VerBtnMapSugerido == true" >
                     <table class="col-sm-8 TableAgro br ">
                         <tr>
-                            <th colspan="2"><strong>Total recaudado</strong></th>
+                            <th colspan="4"><strong>Total recaudado</strong></th>
                         </tr>
                         <tr>
-                            <th>Total venta</th>
-                            <th>Total domicilio</th>
+                            <th></th>
+                            <th>Domicilio</th>
+                            <th>Producto</th>
+                            <th>Total</th>
                         </tr>
-                        <tr *ngIf="ObjetEntrega != undefined && ObjetEntrega != null">
-                            <td>{{ObjetEntrega[1].ValTotalEntregado | currency :'USD' : 'symbol' : '1.0-0'}}</td>
-                            <td style="color: forestgreen;">{{ValorDomicilio | currency :'USD' : 'symbol' : '1.0-0'}}
+                        <tr>
+                            <th>Electronico</th>
+                            <td style="color: forestgreen;">{{ArrayTotales[0].ValorElcDomi | currency :'USD' : 'symbol' : '1.0-0'}}
+                            </td>
+                            <td style="color: forestgreen;">{{ArrayTotales[0].ValorElcProducto | currency :'USD' : 'symbol' : '1.0-0'}}
+                            </td>
+                            <td style="color: forestgreen;">{{ArrayTotales[0].ValorElcTotal | currency :'USD' : 'symbol' : '1.0-0'}}
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" style="color: forestgreen;"><strong>{{TotalCosolidado | currency :'USD' :
-                                    'symbol' : '1.0-0'}}</strong></td>
+                            <th>Contraentrega</th>
+                            <td style="color: forestgreen;">{{ArrayTotales[0].ValorContraDomi | currency :'USD' : 'symbol' : '1.0-0'}}
+                            </td>
+                            <td style="color: forestgreen;">{{ArrayTotales[0].ValorContraProducto | currency :'USD' : 'symbol' : '1.0-0'}}
+                            </td>
+                            <td style="color: forestgreen;">{{ArrayTotales[0].ValorContraTotal | currency :'USD' : 'symbol' : '1.0-0'}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Totales</th>
+                            <td style="color: forestgreen;font-weight: bold;">{{ArrayTotales[0].ValorTotalDomi | currency :'USD' : 'symbol' : '1.0-0'}}
+                            </td>
+                            <td style="color: forestgreen;font-weight: bold;">{{ArrayTotales[0].ValorTotalProducto | currency :'USD' : 'symbol' : '1.0-0'}}
+                            </td>
+                            <td style="color: forestgreen;font-weight: bold; ">{{ArrayTotales[0].ValorTotalTotal | currency :'USD' : 'symbol' : '1.0-0'}}
+                            </td>
                         </tr>
                     </table>
-                </div>
+                </div> 
             </div>
         </div>
 
@@ -307,7 +331,8 @@
                     <th>Producto</th>
                     <th>Cantidad</th>
                     <th>Estado</th>
-                    <th>Valor</th>
+                    <th>Valor Esperado</th>
+                    <th>Valor Recaudado</th>
                 </tr>
                 <tr *ngFor="let Detalle of ArrayDetalle ">
                     <td>{{Detalle.Producto}}</td>
@@ -315,13 +340,19 @@
                     <td [ngClass]="Detalle.DescDevuelto !='Devuelto' ? 'ColorTextEntregado' : 'ColorTextDevuelto' ">
                         {{Detalle.DescDevuelto}}</td>
                     <td>{{Detalle.valor | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                    <td style="font-weight: bold;">{{Detalle.ValorReal | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                 </tr>
                 <tr>
-                    <td><strong>Total</strong></td>
-                    <td>{{NumProductos}}</td>
-                    <td colspan="2" style="color: forestgreen;">{{ValorTotalCompra | currency :'USD' : 'symbol' :
-                        '1.0-0'}}</td>
+                    <td style="font-weight: bold;" colspan="3">Total</td>
+                    <td style="font-weight: bold; color:rgb(0, 151, 0)">{{TotalEsperado | currency :'USD' : 'symbol' : '1.0-0'}}</td>
+                    <td style="font-weight: bold; color:rgb(0, 151, 0)" >{{TotalReal | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                 </tr>
+                <!-- <tr>
+                    <td><strong>Total</strong></td>
+                     <td>{{NumProductos}}</td>
+                    <td colspan="3" style="color: forestgreen;">{{ValorTotalCompra | currency :'USD' : 'symbol' :
+                        '1.0-0'}}</td>
+                </tr> -->
             </table>
         </div>
         <div class="row justify-content-center">
