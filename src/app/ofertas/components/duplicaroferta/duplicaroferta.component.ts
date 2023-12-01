@@ -571,26 +571,46 @@ export class DuplicarofertaComponent implements OnInit {
   }
 
   EstasSeguroDuplicar(ModalEstasSeguroDuplicar: any) {
+    this.modalService.open(ModalEstasSeguroDuplicar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
     this.fechaRecogeActu = '';
     this.fechaDesdeActu = '';
     this.fechaHastaActu = '';
     this.fechaEntregaActu = '';
-    this.modalService.open(ModalEstasSeguroDuplicar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+   }
+
+  DuplicarOferta(TemplateMensaje: any, ModalRespuestaEditar: any) {
+  alert(this.fechaRecogeActu)
+    if (this.fechaRecogeActu != '' && this.fechaEntregaActu != '' &&
+      this.fechaHastaActu != '' && this.fechaDesdeActu != '') {
+        
+        const Body = {
+          CD_CNSCTVO: this.IdOfertaSeleccion,
+          FechaRecoge: this.fechaRecogeActu,
+          FechaDesde: this.fechaDesdeActu,
+          FechaHasta: this.fechaHastaActu,
+          FechaEntrega: this.fechaEntregaActu
+        }
+  
+        this.ServiciosValorar.CopiaAdminMillaOferta(Body).subscribe(ResultCorreo => {
+          var Sepa: string[] = ResultCorreo.split('|')
+          if(Number(Sepa[0]) > 0){
+            this.modalService.dismissAll();
+            this.Respuesta = ResultCorreo
+            this.modalService.open(ModalRespuestaEditar, { ariaLabelledBy: 'modal-basic-title', size: 'md' })  
+          }else{
+            this.modalService.open(TemplateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+            this.Respuesta = ResultCorreo;
+          }
+    })
+    }else{
+      this.modalService.open(TemplateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = 'Todos los campos de fecha son obligatorios';
+    }
   }
 
-  DuplicarOferta() {
-    const Body = {
-      CD_CNSCTVO: "2362",
-      FechaRecoge: "2023-11-25",
-      FechaDesde: "2023-11-20",
-      FechaHasta: "2023-11-25",
-      FechaEntrega: "2023-11-25"
-    }
-
-    if (this.fechaRecogeActu  == ''){
-
-    }
-    //CopiaAdminMillaOferta
+  EditarOferta(){
+    this.modalService.dismissAll();
+    this.rutas.navigateByUrl('/home/ModificarOferta');
   }
-
+  
 }
