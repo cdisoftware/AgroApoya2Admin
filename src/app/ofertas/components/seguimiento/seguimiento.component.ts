@@ -100,9 +100,12 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   FechaInicio: string = '0'
   FechaFin: string = '0';
   ArrayGrupos: any = [];
-  IdGrupo: any;
+  IdGrupo: string = '0';
   ArrayGruposSel: any = [];
   Grupo: string = ''
+  ArrayTotales: any = [];
+  TotalEsperado: number = 0;
+  TotalReal: number = 0;
 
   constructor(
     private modalService: NgbModal,
@@ -247,12 +250,8 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     })
   }
   LimpiaOferta(Valor: string) {
-    this.Oferta = Valor;
-    this.SelectorOferta = '0';
-    this.selecsector = '0'
-    this.ValidaInsertSec = '0';
-    this.LimpiaSector('');
-    this.ArrayConductor = []
+    this.IdGrupo = '0';
+    this.Grupo = '';
   }
 
   selectOfertaFiltro(item: any) {
@@ -297,6 +296,8 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       FechaIncio: this.FechaInicio,
       FechaFin: this.FechaFin
     }
+    console.log(BodyConsulta)
+    console.log(this.IdGrupo)
     this.ServiciosValorar.ConsultaSegNew('1', this.IdGrupo, BodyConsulta).subscribe(Resultado => {
       console.log(Resultado)
       this.ArrayGruposSel = Resultado
@@ -306,7 +307,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         this.ValidaInsertSec = '0';
         this.ValidaInsertSecs = '0';
       } else {
-        this.VerBtnMapSugerido = true;
         this.VerBtnDescargarPdf = this.ConductorSelect !== '0';
         this.Detalle = '1';
         this.ArrayConsultaSeg = Resultado;
@@ -418,11 +418,15 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     var IdCarro = Entrega.ID
     this.ServiciosValorar.ConsultaDetalleEntregas('1', IdCarro).subscribe(Resultado => {
       this.ArrayDetalle = Resultado;
+      this.TotalEsperado = 0;
+      this.TotalReal = 0;
       for (var i = 0; i < this.ArrayDetalle.length; i++) {
         this.NumProductos = this.NumProductos + this.ArrayDetalle[i].Cantidad
+        this.TotalEsperado = this.TotalEsperado +  Number(this.ArrayDetalle[i].valor) 
+        this.TotalReal = this.TotalReal +  Number(this.ArrayDetalle[i].ValorReal) 
       }
     })
-    this.modalService.open(TemplateDetalle, { size: 'md', centered: true });
+    this.modalService.open(TemplateDetalle, { size: 'lg', centered: true });
   }
 
   MostrarEvidencia(Entrega: any, TemplateImagen: any) {
@@ -734,6 +738,8 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
             ValTotalRecaudo: ValTotalRecaudo
           }
         ];
+        console.log('////Objeto Entregas')
+        console.log(this.ObjetEntrega)
         this.TotalCosolidado = ValTotalRecaudo;
         this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
       } else {
@@ -744,6 +750,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       }
 
     })
+
   }
 
   CambioDetalle(Bandera: string) {
@@ -843,13 +850,21 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     this.modalService.dismissAll()
     this.ConsReporteEntregas(Detalle.idgrupomilla);
     this.ConsultaDetalle(Detalle.idgrupomilla);
-    
+    this.ConsultaValoresTotales(Detalle.idgrupomilla)
+    this.VerBtnMapSugerido = true;
   }
 
-  ConsultaDetalle(IdGrupo: string){
-    this.ServiciosValorar.ConsultaDetalle('1',IdGrupo).subscribe(Resultado => {
+  ConsultaDetalle(IdGrupo: string) {
+    this.ServiciosValorar.ConsultaDetalle('1', IdGrupo).subscribe(Resultado => {
       console.log(Resultado)
       this.ArrayConsultaSeg = Resultado;
+    })
+  }
+
+  ConsultaValoresTotales(idgrupomilla: string){
+    this.ServiciosValorar.ConsultaTotales('1', idgrupomilla).subscribe(Resultado => {
+      this.ArrayTotales = Resultado;
+      console.log(Resultado);
     })
   }
 
