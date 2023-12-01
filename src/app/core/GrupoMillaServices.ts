@@ -32,8 +32,8 @@ export class GrupoMillaServices {
 
 
     //Servicios nueva etapa
-    CreaTransporteEntrega(bandera: string, body: any) {
-        return this.http.post<any>(this.url_servidor + 'modAdminMillaTransporte/' + bandera, body);
+    CreaTransporteEntrega(bandera: string, IdBodega: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'modAdminMillaTransporte/' + bandera + '/' + IdBodega, body);
     }
     ConsultaTransporte(CdCons: string, IdSector: string) {
         return this.http.get<any>(this.url_servidor + 'consAdMillaDtallOfertaCompra/' + CdCons + '/' + IdSector);
