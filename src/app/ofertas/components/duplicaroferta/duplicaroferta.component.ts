@@ -136,6 +136,13 @@ export class DuplicarofertaComponent implements OnInit {
   EnvioSms: boolean = false;
   EnvioEmal: boolean = false;
 
+  // fechas actualizacion oferta
+  fechaRecogeActu: string = '';
+  fechaDesdeActu: string = '';
+  fechaHastaActu: string = '';
+  fechaEntregaActu: string = '';
+
+
   ngOnInit(): void {
     this.ListaOfertas();
   }
@@ -294,7 +301,7 @@ export class DuplicarofertaComponent implements OnInit {
     this.ConsCosteo();
     this.ConsultaTrazabilidad();
   }
-  
+
   ConsSectorizacion() {
     this.ServiciosValorar.ConsultaSectoresOferta('1', this.IdOferta).subscribe(ResultConsulta => {
       this.DataSectorOferta = ResultConsulta;
@@ -561,8 +568,49 @@ export class DuplicarofertaComponent implements OnInit {
       this.Respuesta = ResultCorreo;
       this.PrevisualizaCorreo()
     })
-
   }
 
+  EstasSeguroDuplicar(ModalEstasSeguroDuplicar: any) {
+    this.modalService.open(ModalEstasSeguroDuplicar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+    this.fechaRecogeActu = '';
+    this.fechaDesdeActu = '';
+    this.fechaHastaActu = '';
+    this.fechaEntregaActu = '';
+   }
 
+  DuplicarOferta(TemplateMensaje: any, ModalRespuestaEditar: any) {
+  alert(this.fechaRecogeActu)
+    if (this.fechaRecogeActu != '' && this.fechaEntregaActu != '' &&
+      this.fechaHastaActu != '' && this.fechaDesdeActu != '') {
+        
+        const Body = {
+          CD_CNSCTVO: this.IdOfertaSeleccion,
+          FechaRecoge: this.fechaRecogeActu,
+          FechaDesde: this.fechaDesdeActu,
+          FechaHasta: this.fechaHastaActu,
+          FechaEntrega: this.fechaEntregaActu
+        }
+  
+        this.ServiciosValorar.CopiaAdminMillaOferta(Body).subscribe(ResultCorreo => {
+          var Sepa: string[] = ResultCorreo.split('|')
+          if(Number(Sepa[0]) > 0){
+            this.modalService.dismissAll();
+            this.Respuesta = ResultCorreo
+            this.modalService.open(ModalRespuestaEditar, { ariaLabelledBy: 'modal-basic-title', size: 'md' })  
+          }else{
+            this.modalService.open(TemplateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+            this.Respuesta = ResultCorreo;
+          }
+    })
+    }else{
+      this.modalService.open(TemplateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+      this.Respuesta = 'Todos los campos de fecha son obligatorios';
+    }
+  }
+
+  EditarOferta(){
+    this.modalService.dismissAll();
+    this.rutas.navigateByUrl('/home/ModificarOferta');
+  }
+  
 }

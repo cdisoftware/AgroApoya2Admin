@@ -476,6 +476,10 @@ export class ValorarofertaService {
     return this.http.get<any[]>(this.url_servidor + 'consAdSeguimientoInfoGen/' + Bandera + '/' + IdGrupo);
   }
 
+
+  CopiaAdminMillaOferta(Body: any) {
+    return this.http.post<any>(this.url_servidor + 'CopiaAdminMillaOferta', Body);
+  }
   ConsultaTotales(Bandera: string, IdGrupo: string){
     return this.http.get<any[]>(this.url_servidor + 'Consadmin_segValores/' + Bandera + '/' + IdGrupo);
   }
