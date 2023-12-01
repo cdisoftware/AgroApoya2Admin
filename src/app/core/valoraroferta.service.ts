@@ -475,5 +475,9 @@ export class ValorarofertaService {
   ConsultaDetalle(Bandera: string, IdGrupo: string){
     return this.http.get<any[]>(this.url_servidor + 'consAdSeguimientoInfoGen/' + Bandera + '/' + IdGrupo);
   }
+
+  ConsultaTotales(Bandera: string, IdGrupo: string){
+    return this.http.get<any[]>(this.url_servidor + 'Consadmin_segValores/' + Bandera + '/' + IdGrupo);
+  }
 }
 
