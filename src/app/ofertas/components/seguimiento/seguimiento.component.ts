@@ -55,6 +55,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   //VariablesFiltro Oferta
   ArrayOferta: any = [];
   keywordGrupo = 'NombreGrupo';
+  keywordOferta = 'Producto'
   SelectorOferta: string = '0';
   OfertaSelect: string = '';
   Oferta: string = '';
@@ -245,8 +246,10 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       CD_MNCPIO: 0
     }
     this.ServiciosValorar.BusquedaOferta('2', this.SelectorOferta, '0', '0', datosbusqueda).subscribe(Resultado => {
+      console.log(Resultado)
       this.ArrayOferta = Resultado;
       this.keywordGrupo = 'NombreGrupo';
+      this.keywordOferta = 'Producto'
     })
   }
   LimpiaOferta(Valor: string) {
@@ -255,9 +258,15 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   }
 
   selectOfertaFiltro(item: any) {
+    this.OfertaSelect = item.cd_cnctivo;
+    this.selecsector = '1'
+    //this.ConsultaSectores(item.cd_cnsctvo);
+  }
+
+  selectGrupoFiltro(item: any) {
     this.IdGrupo = item.IdGrupoMilla;
     //this.Grupo = item.IdGrupoMilla;
-    this.OfertaSelect = item.NombreGrupo;
+    //this.OfertaSelect = item.cd_cnctivo;
     this.selecsector = '1'
     //this.ConsultaSectores(item.cd_cnsctvo);
   }
@@ -298,7 +307,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     }
     console.log(BodyConsulta)
     console.log(this.IdGrupo)
-    this.ServiciosValorar.ConsultaSegNew('1', this.IdGrupo, BodyConsulta).subscribe(Resultado => {
+    this.ServiciosValorar.ConsultaSegNew('1', this.IdGrupo, this.SelectorOferta, BodyConsulta).subscribe(Resultado => {
       console.log(Resultado)
       this.ArrayGruposSel = Resultado
       if (Resultado.length == 0) {

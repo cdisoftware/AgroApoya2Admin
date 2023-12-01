@@ -6,7 +6,7 @@
             <div class="col-sm-6">
                 <label class="Llave">Ruta</label>
                 <ng-autocomplete [data]="ArrayGrupos" [searchKeyword]="keywordGrupo" placeholder="Grupo"
-                    (inputCleared)="LimpiaOferta('')" (selected)='selectOfertaFiltro($event)'
+                    (inputCleared)="LimpiaOferta('')" (selected)='selectGrupoFiltro($event)'
                     [itemTemplate]="templateGrupo" [notFoundTemplate]="templateVacio" [(ngModel)]="Grupo">
                 </ng-autocomplete>
                 <ng-template #templateGrupo let-item>
@@ -16,19 +16,20 @@
                     <label for="">Sin registros</label>
                 </ng-template>
             </div>
-            <!-- <div class="col-sm-6">
-                <label class="Llave">Sector</label>
-                <ng-autocomplete [data]="ArraySector" [searchKeyword]="keywordSector" placeholder="Sector"
-                    (inputCleared)="LimpiaSector('')" (selected)='SelectSector($event)' [itemTemplate]="templateSect"
-                    [notFoundTemplate]="templateVaciosec" [disabled]="selecsector == '0'" [(ngModel)]="Sector">
+            <div class="col-sm-6">
+                <label class="Llave">Oferta</label>
+                <ng-autocomplete [data]="ArrayOferta" [searchKeyword]="keywordOferta" placeholder="Oferta"
+                    (inputCleared)="LimpiaOferta('')" (selected)='selectOfertaFiltro($event)'
+                    [itemTemplate]="templateOferta" [notFoundTemplate]="templateVacio" [(ngModel)]="Oferta">
                 </ng-autocomplete>
-                <ng-template #templateSect let-item>
-                    <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+                <ng-template #templateOferta let-item>
+                    <a [innerHTML]="item.Producto"></a>
                 </ng-template>
-                <ng-template #templateVaciosec let-SinRegistro>
+                <ng-template #templateVacio let-SinRegistro>
                     <label for="">Sin registros</label>
                 </ng-template>
             </div>
+            <!-- 
             <div class="col-sm-6">
                 <label class="Llave">Conductor</label>
                 <ng-autocomplete [data]="ArrayConductores" [searchKeyword]="keywordConductor" placeholder="Conductor"
@@ -415,16 +416,21 @@
             <table class="col-sm-12 TableAgro ">
                 <tr>
                     <th>Grupo</th>
+                    <th>Conductor</th>
+                    <th>Ubicación Recogida</th>
+                    <th>Ubicación Entrega</th>
+                    
                     <th>Seleccionar</th>
                 </tr>
                 <tr *ngFor="let DetalleGrupo of ArrayGruposSel ">
                     <td>{{DetalleGrupo.NombreGrupo}}</td>
+                    <td>{{DetalleGrupo.NMBRE_CNDCTOR}}</td>
+                    <td>{{DetalleGrupo.UbicacionEntrega}}</td>
                     <td>
                         <button class="SinEstilo" (click)="SeleccionGrupo(DetalleGrupo)">
                             <img src="./../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
                             style="width: 32px; object-fit: cover;" >
                         </button>
-                        
                     </td>
                 </tr>
             </table>

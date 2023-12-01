@@ -464,8 +464,8 @@ export class ValorarofertaService {
   ActualizarSector(Bandera: string, Body: any) {
     return this.http.post<any>(this.url_servidor + 'modCambioSectorOferta/' + Bandera, Body);
   }
-  ConsultaSegNew(Bandera: string, GrupoMilla: string, Body: any) {
-    return this.http.post<any>(this.url_servidor + 'consAdSeguimientoFiltroFecha/' + Bandera + '/' + GrupoMilla, Body);
+  ConsultaSegNew(Bandera: string, GrupoMilla: string, idOferta: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'consAdSeguimientoFiltroFecha/' + Bandera + '/' + GrupoMilla +'/' + idOferta, Body);
   }
 
   ConsultaGruposMilla(Bandera: string, IdGrupo: string) {
