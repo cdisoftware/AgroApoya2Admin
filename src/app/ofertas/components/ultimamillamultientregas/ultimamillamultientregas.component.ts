@@ -62,6 +62,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   DataBodegas: any = [];
   NombreBodega: string = "";
   Bodega: string = "";
+  IdBodega_: string = '0';
   //#endregion Bodega
   //#endregion CreaTransporte
 
@@ -173,7 +174,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
         Id_carrosManual: "0"
       }
       console.log(body)
-      this.sevicesmilla.CreaTransporteEntrega('7', body).subscribe(Resultado => {
+      this.sevicesmilla.CreaTransporteEntrega('7', '0', body).subscribe(Resultado => {
         var auxrespu = Resultado.split("|");
         console.log(Resultado);
         if (Number(auxrespu[0]) > 0) {
@@ -215,10 +216,12 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   selectBodega(item: any) {
     this.NombreBodega = item.NombreBodega;
     this.Bodega = item.NombreBodega;
+    this.IdBodega_ = item.IdBodega;
   }
   LimpiaBodega(limpia: string) {
     this.NombreBodega = "";
     this.Bodega = "";
+    this.IdBodega_ = "0";
   }
   //#endregion Bodega
 
@@ -232,7 +235,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
         UbicacionEntrega: this.UbicacionEntrega,
         UbicacionRecoge: this.NombreBodega
       }
-      this.sevicesmilla.CreaTransporteEntrega('4', body).subscribe(Resultado => {
+      this.sevicesmilla.CreaTransporteEntrega('4', this.IdBodega_, body).subscribe(Resultado => {
         const result = Resultado.split("|");
         if (Number(result[0]) > 0) {
           this.IdGrugo_ = result[0];
@@ -651,7 +654,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       UbicacionEntrega: '0',
       UbicacionRecoge: '0'
     }
-    this.sevicesmilla.CreaTransporteEntrega('5', body).subscribe(Resultado => {
+    this.sevicesmilla.CreaTransporteEntrega('5', '0', body).subscribe(Resultado => {
       const result = Resultado.split("|");
       if (Number(result[0]) > 0) {
         this.MesajeModal = result[1];
@@ -1196,7 +1199,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
         UbicacionRecoge: this.NombreBodega,
         Id_carrosManual: this.IdentificadorIdCarr_
       }
-      this.sevicesmilla.CreaTransporteEntrega('6', body).subscribe(Resultado => {
+      this.sevicesmilla.CreaTransporteEntrega('6', this.IdBodega_, body).subscribe(Resultado => {
         const result = Resultado.split("|");
         if (Number(result[0]) > 0) {
           this.IdGrugo_ = result[0];
