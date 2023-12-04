@@ -133,6 +133,8 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   //UrlPubliC: any;
   PesoTopping: string = '';
   RutaImagenes: string = '';
+  RutaImageneSector: string = this.SeriviciosGenerales.RecuperaRutaImagenes();
+
 
   banderaAgregarAncla: string = '1';
   banderaAgregarAdicional: string = '1';
@@ -268,6 +270,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
 
   constructor(private serviciosvaloracion: ValorarofertaService,
     private modalService: NgbModal,
+    public sectoresservices: ValorarofertaService,
     public rutas: Router,
     private SeriviciosGenerales: MetodosglobalesService,
     private formatofecha: DatePipe,
@@ -418,7 +421,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   NombreSector: any;
   selectSector(item: any) {
     this.ValidaVigencia = '1';
-    
+
     this.CodigoOferSector = item.COD_OFERTA_SECTOR;
     this.VlrFletSect = item.VLOR_FLTE_SGRDOForm;
     this.SessionCantSector = item.CNTDAD
@@ -630,7 +633,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
       cd_cnstvo: this.SelectorOferta,
       Id_sectorNuevo: this.ID_SCTOR_OFRTAAUX,
       Id_sectorViejo: this.SessionSectorSel
-    }  
+    }
     this.serviciosvaloracion.ActualizarSector('1', body).subscribe(Resultado => {
       this.Respuesta = Resultado;
       //this.LimpiaZona('');
@@ -649,15 +652,16 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.ValidaImgMapa = '0'
     this.SectModif = ID_SCTOR_OFRTA
     if (imagen_sctor != '') {
-      this.ImgMapaSec = this.RutaImagenes + imagen_sctor;
+      this.ImgMapaSec = this.RutaImageneSector + imagen_sctor;
     } else {
       this.ImgMapaSec = './../../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
     }
     this.modalService.open(Modalmapa, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+    this.ConsultaSectoresOferta();
   }
 
   ConsultaSectoresOferta() {
-    this.serviciosvaloracion.ConsultaSectoresOferta('1', this.SelectorOferta).subscribe(ResultConsulta => {
+    this.sectoresservices.ConsultaSectoresOferta('1', this.SelectorOferta).subscribe(ResultConsulta => {  
       if (ResultConsulta.length > 0) {
         this.ImagenSector = ResultConsulta[0].imagen_sctor;
         this.ValidaConsulta = '0';
@@ -673,7 +677,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         NOMBRE_IMG: this.NomImagenSector
       }
       console.log(datos)
-      this.serviciosvaloracion.ModificarImagenSector('3', datos).subscribe(Resultado => {
+      this.sectoresservices.ModificarImagenSector('3', datos).subscribe(Resultado => {
         console.log(Resultado)
         this.modalService.dismissAll();
         this.ConsultaSectoresOferta();
@@ -697,7 +701,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
           } else {
             if (this.respuestaImagenEnviada == 'Archivo Subido Correctamente') {
               if (imagen == '1') {
-                this.ImgMapaSec = this.RutaImagenes + event.target.files[0].name;
+                this.ImgMapaSec = this.RutaImageneSector + event.target.files[0].name;
                 this.NomImagenSector = event.target.files[0].name;
               }
             } else {
