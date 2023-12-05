@@ -13,6 +13,8 @@ import { NgbModal, NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
 import autoTable from 'jspdf-autotable'
 import jsPDF from 'jspdf';
+import { Workbook } from 'exceljs';
+import * as fs from 'file-saver';
 
 @Component({
   selector: 'app-seguimiento',
@@ -884,5 +886,115 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       console.log(Resultado);
     })
   }
+
+  GenerarExcel(Reporte: string) {
+    let workbook = new Workbook();
+    let worksheet = workbook.addWorksheet("Reporte " + Reporte);
+    let header ;
+    if (Reporte == 'Cantidad') {
+      header = [
+        "PRODUCTO",
+        "ENTREGADO",
+        "PENDIENTE",
+        "DEVUELTO",
+        "TOTAL PRODUCTO",
+      ];
+    } else if ('Ventas') {
+      header = [
+        "PRODUCTO",
+        "ENTREGADO",
+        "PENDIENTE",
+        "DEVUELTO",
+        "VALOR CONTRAENTREGA",
+        "VALOR ELECTRONICO",
+        "TOTAL RECAUDAR"
+      ];
+    }else if(Reporte = 'Detalle'){
+      header = [
+        "CLIENTE",
+        "CELULAR",
+        "DIRECCIÓN",
+        "ESTADO",
+        "TIPO PAGO",
+        "ORDEN ENTREGA",
+        "FECHA",
+        "VALOR PRODUCTOS",
+        "DOMICILIO",
+        "VALOR TOTAL",
+        "PRODUCTOS",
+        "CONDUCTOR"
+      ];
+    }
+
+    worksheet.addRow(header);
+    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1', 'U1', 'V1',
+      'W1', 'X1', 'Y1', 'Z1', 'AA1', 'AB1', 'AC1', 'AD1', 'AE1'].map(key => {
+        worksheet.getCell(key).fill = {
+          type: 'pattern',
+          pattern: 'darkTrellis',
+          fgColor: { argb: '397c97' },
+          bgColor: { argb: '397c97' }
+        };
+        worksheet.getCell(key).font = {
+          color: { argb: 'FFFFFF' }
+        };
+      });
+    worksheet.columns = [
+      { width: 15, key: 'A' }, { width: 25, key: 'B' }, { width: 25, key: 'C' }, { width: 25, key: 'D' }, { width: 25, key: 'E' }, { width: 15, key: 'F' }, { width: 25, key: 'G' }, { width: 25, key: 'H' }, { width: 15, key: 'I' }, { width: 25, key: 'J' },
+      { width: 15, key: 'K' }, { width: 25, key: 'L' }, { width: 25, key: 'M' }, { width: 25, key: 'N' }, { width: 25, key: 'O' }, { width: 15, key: 'P' }, { width: 25, key: 'Q' }, { width: 25, key: 'R' }, { width: 25, key: 'S' }, { width: 25, key: 'T' },
+      { width: 15, key: 'U' }, { width: 25, key: 'V' }, { width: 25, key: 'W' }, { width: 25, key: 'X' }, { width: 25, key: 'Y' }, { width: 15, key: 'Z' }, { width: 25, key: 'AA' }, { width: 25, key: 'AB' }, { width: 25, key: 'AC' }, { width: 25, key: 'AD' },
+      { width: 15, key: 'AE' }
+    ];
+    worksheet.autoFilter = 'A1:AE1';
+    if (Reporte == 'Cantidad') {
+      for (let fila of this.ArrayReporte) {
+        let temp = []
+        temp.push(fila["PRODUCTO"])
+        temp.push(fila["CANTIDAD_ENTREGADA"])
+        temp.push(fila["CANTIDAD_PENDIENTE"])
+        temp.push(fila["CANTIDAD_DEVUELTA"])
+        temp.push(fila["CANTIDAD_TOTAL"])
+        worksheet.addRow(temp)
+      }
+    } else if ('Ventas') {
+      for (let fila of this.ArrayReporte) {
+        let temp = []
+        temp.push(fila["PRODUCTO"])
+        temp.push(fila["VLR_RECAUDADO"])
+        temp.push(fila["VLR_PENDIENTE_RECAUDO"])
+        temp.push(fila["VLOR_DEVOLUCION"])
+        temp.push(fila["VLRRECAUDADOCONTRAENTREGA"])
+        temp.push(fila["VLRRECAUDADOELECTRONICO"])
+        temp.push(fila["VLOR_TTL_RECAUDAR"])
+        worksheet.addRow(temp)
+      }
+    }else if(Reporte = 'Detalle'){
+      for (let fila of this.ArrayConsultaSeg) {
+        let temp = []
+        temp.push(fila["NOMBRES_PERSONA"])
+        temp.push(fila["CELULAR_PERSONA"])
+        temp.push(fila["DRCCION"])
+        temp.push(fila["descEstado"])
+        temp.push(fila["descTipoPago"])
+        temp.push(fila["VLRRECAUDADOELECTRONICO"])
+        temp.push(fila["orden"])
+        temp.push(fila["FechaEntrega"])
+        temp.push(fila["ValorPagarSinDomicilio"])
+        temp.push(fila["ValorDomicilio"])
+        temp.push(fila["ValorTotalPagar"])
+        temp.push(fila["TodosLosProductos"])
+        temp.push(fila["NMBRE_CNDCTOR"])
+        worksheet.addRow(temp)
+      }
+    }
+
+    let fname = "Reporte " + Reporte;
+    workbook.xlsx.writeBuffer().then((data) => {
+      let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      fs.saveAs(blob, fname + '.xlsx');
+      console.log('generando...')
+    });
+  }
+
 
 }
