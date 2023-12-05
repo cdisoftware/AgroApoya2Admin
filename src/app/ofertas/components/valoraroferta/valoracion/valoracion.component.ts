@@ -252,7 +252,7 @@ export class ValoracionComponent implements OnInit {
     this.ListaProductos();
     this.LimpiaProductoTopp();
     this.CargaInfoCupon();
-    this.ConsultaCampesino() 
+    this.ConsultaCampesino()
     this.keyword = 'name';
     this.keywordSec = 'name';
     this.RutaImagenes = this.SeriviciosGenerales.RecuperaRutaImagenes();
@@ -698,7 +698,7 @@ export class ValoracionComponent implements OnInit {
       this.serviciosvaloracion.ModificaTopping('2', Body).subscribe(ResultOper => {
         this.Respuesta = ResultOper;
         this.consultaToppingsOferta();
-
+        this.DesCampesino = '';
         this.DesTopp = '';
         this.VlrUniTopp = '';
         this.SessionTipoTopp = '0';
@@ -1575,7 +1575,12 @@ export class ValoracionComponent implements OnInit {
     } else {
       auxres = false;
     }
-
+    var auxIdOfertDirigidA: string = "0";
+    if (this.OfertaDirigidaA == 'Ventas') {
+      this.IdOfertaDirigidaA = '2'
+    } else if(this.OfertaDirigidaA == 'Registros'){
+      this.IdOfertaDirigidaA = '1'
+    }
     if (
       (this.SessionTipoComG == '' || this.SessionTipoComG == null) ||
       (validacomisionG == '' || validacomisionG == null) ||
@@ -1586,7 +1591,7 @@ export class ValoracionComponent implements OnInit {
       (this.MaxUnidLider == '' || this.MaxUnidLider == null) ||
       (valorDomicilio == false) ||
       (this.PrecioFinPart == '' || this.PrecioFinPart == null) ||
-      (this.IdOfertaDirigidaA == '' || this.IdOfertaDirigidaA == null)
+      (this.IdOfertaDirigidaA == '0' || this.IdOfertaDirigidaA == null || this.IdOfertaDirigidaA == '')
     ) {
       this.ValidaCam = '1';
       this.Respuesta = 'Favor valida las siguientes novedades en tu información.';
@@ -1765,7 +1770,7 @@ export class ValoracionComponent implements OnInit {
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png';
           }
         } else if (this.ArrayCamposValida[i].campo == 'OfertaDirigidaa') {
-          if (this.IdOfertaDirigidaA == '' || this.IdOfertaDirigidaA == null) {
+          if (this.IdOfertaDirigidaA == '0' || this.IdOfertaDirigidaA == null || this.IdOfertaDirigidaA == '') {
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }

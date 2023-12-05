@@ -169,16 +169,22 @@ export class EnviosmanychatComponent implements OnInit {
       this.Respuesta = "IdPlantilla obligatorio.";
     } else {
       if (this.DataQuery.length > 0) {
-        for (var i = 0; i < this.DataQuery.length; i++) {
-          this.NunMensajesEnviados = i + 1;
+        const batchSize = 25;
+
+        for (let i = 0; i < this.DataQuery.length; i += batchSize) {
+          const batch = this.DataQuery.slice(i, i + batchSize);
           this.Loader = true;
-          //Envio plantilla
-          const result3 = await this.EnviaPlantilla(this.DataQuery[i].ID_MANYCHAT);
-          // Espera 1 segundo después de cada bloque de 25 solicitudes
-          if ((i + 1) % 25 === 0) {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-          }
+
+          // Envío de plantillas para el lote actual
+          await Promise.all(batch.map(async (item) => {
+            this.NunMensajesEnviados++;
+            await this.EnviaPlantilla(item.ID_MANYCHAT);
+          }));
+
+          // Espera de 1 segundo antes de enviar el siguiente lote
+          await this.sleep(1000);
         }
+
         this.AuditoriaManychat();
         this.IdPlantll = '';
         this.NunMensajesEnviados = 0;
@@ -191,6 +197,12 @@ export class EnviosmanychatComponent implements OnInit {
       }
     }
   }
+
+  // Función para pausar la ejecución durante un período de tiempo
+  sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
 
   async EnviaPlantilla(IdMenyChat: string) {
     await new Promise((resolve, reject) => {
