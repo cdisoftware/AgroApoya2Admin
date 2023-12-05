@@ -25,6 +25,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   @ViewChild('ModalMensaje', { static: false }) ModalMensaje: any;
   @ViewChild('ModalMapaSugerido', { static: false }) ModalMapaSugerido: any;
   @ViewChild('templateGrupos', { static: false }) ModalGrupos: any;
+  @ViewChild('templateTransporte', { static: false }) ModalTransporte: any;
   selecsector: string = '0'
   selectConductor: string = '0'
   Respuesta: string = '';
@@ -59,7 +60,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   keywordGrupo = 'NombreGrupo';
   keywordOferta = 'Producto'
   SelectorOferta: string = '0';
-  OfertaSelect: string = '';
+  OfertaSelect: string = '0';
   Oferta: string = '';
 
   //VariablesFiltro Oferta
@@ -111,6 +112,9 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   TotalReal: number = 0;
   TotalContra: number = 0;
   TotalElect: number = 0;
+  ArrayInfoGeneral: any = [];
+  MotivoDevolucion: string = '';
+  EstadoDetalle: string = '';
 
   constructor(
     private modalService: NgbModal,
@@ -311,7 +315,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     }
     console.log(BodyConsulta)
     console.log(this.IdGrupo)
-    this.ServiciosValorar.ConsultaSegNew('1', this.IdGrupo, this.SelectorOferta, BodyConsulta).subscribe(Resultado => {
+    this.ServiciosValorar.ConsultaSegNew('1', this.IdGrupo, this.OfertaSelect, BodyConsulta).subscribe(Resultado => {
       console.log(Resultado)
       this.ArrayGruposSel = Resultado
       if (Resultado.length == 0) {
@@ -424,6 +428,9 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   NumProductos: number = 0;
   ValorTotalCompra: string = "";
   MostrarDetalle(Entrega: any, TemplateDetalle: any) {
+    this.EstadoDetalle = Entrega.ESTDO;
+    console.log(Entrega)
+    this.MotivoDevolucion = Entrega.ObsEvidenciaDos
     this.ValorTotalCompra = Entrega.VLOR_PGAR;
     this.NumProductos = 0;
     this.TituloModal = 'Detalle Entregas'
@@ -866,6 +873,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   //#endregion MapaRutaSugerida
 
   SeleccionGrupo(Detalle: any) {
+    this.IdGrupo = Detalle.idgrupomilla
     this.modalService.dismissAll()
     this.ConsReporteEntregas(Detalle.idgrupomilla);
     this.ConsultaDetalle(Detalle.idgrupomilla);
@@ -891,25 +899,22 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     let workbook = new Workbook();
     let worksheet = workbook.addWorksheet("Reporte " + Reporte);
     let header ;
-    if (Reporte == 'Cantidad') {
+    let temp = []
+    if (Reporte == 'Ventas') {
       header = [
         "PRODUCTO",
-        "ENTREGADO",
-        "PENDIENTE",
-        "DEVUELTO",
-        "TOTAL PRODUCTO",
-      ];
-    } else if ('Ventas') {
-      header = [
-        "PRODUCTO",
-        "ENTREGADO",
-        "PENDIENTE",
-        "DEVUELTO",
+        "CANTIDAD ENTREGADO",
+        "CANTIDAD PENDIENTE",
+        "CANTIDAD DEVUELTO",
+        "CANTIDAD TOTAL",
+        "VALOR ENTREGADO",
+        "VALOR PENDIENTE",
+        "VALOR DEVUELTO",
         "VALOR CONTRAENTREGA",
         "VALOR ELECTRONICO",
         "TOTAL RECAUDAR"
       ];
-    }else if(Reporte = 'Detalle'){
+    }else if(Reporte == 'Detalle'){
       header = [
         "CLIENTE",
         "CELULAR",
@@ -927,8 +932,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     }
 
     worksheet.addRow(header);
-    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1', 'U1', 'V1',
-      'W1', 'X1', 'Y1', 'Z1', 'AA1', 'AB1', 'AC1', 'AD1', 'AE1'].map(key => {
+    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1'].map(key => {
         worksheet.getCell(key).fill = {
           type: 'pattern',
           pattern: 'darkTrellis',
@@ -946,42 +950,35 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       { width: 15, key: 'AE' }
     ];
     worksheet.autoFilter = 'A1:AE1';
-    if (Reporte == 'Cantidad') {
+    if (Reporte == 'Ventas') {
       for (let fila of this.ArrayReporte) {
-        let temp = []
+        temp = []
         temp.push(fila["PRODUCTO"])
         temp.push(fila["CANTIDAD_ENTREGADA"])
         temp.push(fila["CANTIDAD_PENDIENTE"])
         temp.push(fila["CANTIDAD_DEVUELTA"])
         temp.push(fila["CANTIDAD_TOTAL"])
+        temp.push(this.FormatoValores('USD', fila["VLR_RECAUDADO"]))
+        temp.push(this.FormatoValores('USD', fila["VLR_PENDIENTE_RECAUDO"]))
+        temp.push(this.FormatoValores('USD', fila["VLOR_DEVOLUCION"]))
+        temp.push(this.FormatoValores('USD', fila["VLRRECAUDADOCONTRAENTREGA"]))
+        temp.push(this.FormatoValores('USD', fila["VLRRECAUDADOELECTRONICO"]))
+        temp.push(this.FormatoValores('USD', fila["VLOR_TTL_RECAUDAR"]))
         worksheet.addRow(temp)
       }
-    } else if ('Ventas') {
-      for (let fila of this.ArrayReporte) {
-        let temp = []
-        temp.push(fila["PRODUCTO"])
-        temp.push(fila["VLR_RECAUDADO"])
-        temp.push(fila["VLR_PENDIENTE_RECAUDO"])
-        temp.push(fila["VLOR_DEVOLUCION"])
-        temp.push(fila["VLRRECAUDADOCONTRAENTREGA"])
-        temp.push(fila["VLRRECAUDADOELECTRONICO"])
-        temp.push(fila["VLOR_TTL_RECAUDAR"])
-        worksheet.addRow(temp)
-      }
-    }else if(Reporte = 'Detalle'){
+    }else if(Reporte == 'Detalle'){
       for (let fila of this.ArrayConsultaSeg) {
-        let temp = []
+        temp = []
         temp.push(fila["NOMBRES_PERSONA"])
         temp.push(fila["CELULAR_PERSONA"])
         temp.push(fila["DRCCION"])
         temp.push(fila["descEstado"])
         temp.push(fila["descTipoPago"])
-        temp.push(fila["VLRRECAUDADOELECTRONICO"])
         temp.push(fila["orden"])
         temp.push(fila["FechaEntrega"])
-        temp.push(fila["ValorPagarSinDomicilio"])
-        temp.push(fila["ValorDomicilio"])
-        temp.push(fila["ValorTotalPagar"])
+        temp.push(this.FormatoValores('USD', fila["ValorPagarSinDomicilio"]))
+        temp.push(this.FormatoValores('USD', fila["ValorDomicilio"]))
+        temp.push(this.FormatoValores('USD', fila["ValorTotalPagar"]))
         temp.push(fila["TodosLosProductos"])
         temp.push(fila["NMBRE_CNDCTOR"])
         worksheet.addRow(temp)
@@ -994,6 +991,27 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       fs.saveAs(blob, fname + '.xlsx');
       console.log('generando...')
     });
+  }
+
+  FormatoValores(currency: string, value: number) {
+    const formatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      minimumFractionDigits: 2,
+      currency
+    })
+    return formatter.format(value)
+  }
+
+  InfoConductor(){
+    this.ServiciosValorar.ConsultaGeneralTrans('1', this.IdGrupo).subscribe(Resultado =>{
+      if(Resultado.length > 0){
+        console.log(Resultado)
+        this.ArrayInfoGeneral = Resultado;
+        this.modalService.open(this.ModalTransporte, { size: 'lg', centered: true });
+      }
+      
+    })
+    
   }
 
 

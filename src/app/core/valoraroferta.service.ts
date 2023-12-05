@@ -465,14 +465,14 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'modCambioSectorOferta/' + Bandera, Body);
   }
   ConsultaSegNew(Bandera: string, GrupoMilla: string, idOferta: string, Body: any) {
-    return this.http.post<any>(this.url_servidor + 'consAdSeguimientoFiltroFecha/' + Bandera + '/' + GrupoMilla +'/' + idOferta, Body);
+    return this.http.post<any>(this.url_servidor + 'consAdSeguimientoFiltroFecha/' + Bandera + '/' + GrupoMilla + '/' + idOferta, Body);
   }
 
   ConsultaGruposMilla(Bandera: string, IdGrupo: string) {
     return this.http.get<any[]>(this.url_servidor + 'consAdminMillaTransportes/' + Bandera + '/' + IdGrupo);
   }
 
-  ConsultaDetalle(Bandera: string, IdGrupo: string){
+  ConsultaDetalle(Bandera: string, IdGrupo: string) {
     return this.http.get<any[]>(this.url_servidor + 'consAdSeguimientoInfoGen/' + Bandera + '/' + IdGrupo);
   }
 
@@ -480,8 +480,14 @@ export class ValorarofertaService {
   CopiaAdminMillaOferta(Body: any) {
     return this.http.post<any>(this.url_servidor + 'CopiaAdminMillaOferta', Body);
   }
-  ConsultaTotales(Bandera: string, IdGrupo: string){
+
+  ConsultaTotales(Bandera: string, IdGrupo: string) {
     return this.http.get<any[]>(this.url_servidor + 'Consadmin_segValores/' + Bandera + '/' + IdGrupo);
+  }
+
+  
+  ConsultaGeneralTrans(Bandera: string, IdGrupo: string) {
+    return this.http.get<any[]>(this.url_servidor + 'Consadmin_SeguiTarjetaDetalle/' + Bandera + '/' + IdGrupo);
   }
 }
 
