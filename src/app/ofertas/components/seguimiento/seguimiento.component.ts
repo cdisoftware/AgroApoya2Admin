@@ -107,6 +107,8 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   ArrayTotales: any = [];
   TotalEsperado: number = 0;
   TotalReal: number = 0;
+  TotalContra: number = 0;
+  TotalElect: number = 0;
 
   constructor(
     private modalService: NgbModal,
@@ -431,8 +433,8 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       this.TotalReal = 0;
       for (var i = 0; i < this.ArrayDetalle.length; i++) {
         this.NumProductos = this.NumProductos + this.ArrayDetalle[i].Cantidad
-        this.TotalEsperado = this.TotalEsperado +  Number(this.ArrayDetalle[i].valor) 
-        this.TotalReal = this.TotalReal +  Number(this.ArrayDetalle[i].ValorReal) 
+        this.TotalEsperado = this.TotalEsperado + Number(this.ArrayDetalle[i].valor)
+        this.TotalReal = this.TotalReal + Number(this.ArrayDetalle[i].ValorReal)
       }
     })
     this.modalService.open(TemplateDetalle, { size: 'lg', centered: true });
@@ -663,6 +665,8 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   TotalCosolidado: number = 0;
 
   ConsReporteEntregas(idGrupo: string) {
+    this.TotalContra = 0
+    this.TotalElect = 0
     this.ServiciosValorar.ConsultaReporteEntregas('1', idGrupo).subscribe(Resultado => {
       console.log(Resultado)
       if (Resultado.length > 0) {
@@ -676,6 +680,8 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         var ValDevuelto: number = 0;
         var ValTotalRecaudo: number = 0;
         for (var i = 0; this.ArrayReporte.length > i; i++) {
+          this.TotalContra = this.TotalContra + Number(this.ArrayReporte[i].VLRRECAUDADOCONTRAENTREGA);
+          this.TotalElect = this.TotalElect + Number(this.ArrayReporte[i].VLRRECAUDADOELECTRONICO)
           if (this.ArrayReporte[i].VLR_RECAUDADO == null) {
             this.ArrayReporte[i].VLR_RECAUDADO = '0'
           }
@@ -749,6 +755,8 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         ];
         console.log('////Objeto Entregas')
         console.log(this.ObjetEntrega)
+
+
         this.TotalCosolidado = ValTotalRecaudo;
         this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
       } else {
@@ -870,7 +878,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     })
   }
 
-  ConsultaValoresTotales(idgrupomilla: string){
+  ConsultaValoresTotales(idgrupomilla: string) {
     this.ServiciosValorar.ConsultaTotales('1', idgrupomilla).subscribe(Resultado => {
       this.ArrayTotales = Resultado;
       console.log(Resultado);
