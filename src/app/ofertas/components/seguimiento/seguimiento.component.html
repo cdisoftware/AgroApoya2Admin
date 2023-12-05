@@ -89,7 +89,7 @@
                         <table class="col-sm-11 TableAgro br">
                             <tr>
                                 <th colspan="2">Producto</th>
-                                <th>Recibido</th>
+                                <th>Entregado</th>
                                 <th>Pendiente</th>
                                 <th>Devuelto</th>
                                 <th>Total Producto</th>
@@ -109,7 +109,8 @@
                                 <td>{{ObjetEntrega[0].TotalProducto}}</td>
                             </tr>
                         </table>
-
+                        <br>
+                        <button class="btn btn-agro-prin col-sm-3" (click)="GenerarExcel('Cantidad')">Exportar Excel</button>
                         <hr class="br">
                         <!-- Consolidado Dinero -->
                         <ngx-charts-bar-vertical-2d [results]="ArrayValores" [legendTitle]="'Ventas'" [legend]="true"
@@ -148,8 +149,9 @@
                                     'symbol'
                                     : '1.0-0'}}</td>
                             </tr>
-
                         </table>
+                        <br>
+                        <button class="btn btn-agro-prin col-sm-3" (click)="GenerarExcel('Ventas')">Exportar Excel</button>
                     </div>
                     <div class="row justify-content-center" *ngIf="Detalle == '2'">
                         <table class="col-sm-11 TableAgro ">
@@ -170,8 +172,10 @@
                                 <td>{{Seguimiento.NOMBRES_PERSONA}}</td>
                                 <td>{{Seguimiento.CELULAR_PERSONA}}</td>
                                 <td>{{Seguimiento.DRCCION }}</td>
-                                <td [ngClass]="Seguimiento.ESTDO !='4' ? 'ColorTextEntregado' : 'ColorTextDevuelto' ">
+                                <td [ngClass]="Seguimiento.descEstado !='DEVUELTO' ? 'ColorTextEntregado' : 'ColorTextDevuelto' ">
                                     {{Seguimiento.descEstado}}</td>
+                                <!-- <td [ngClass]="Seguimiento.ESTDO !='4' ? 'ColorTextEntregado' : 'ColorTextDevuelto' ">
+                                    {{Seguimiento.descEstado}}</td> -->
                                 <td>{{Seguimiento.descTipoPago}}</td>
                                 <td>{{Seguimiento.orden}}</td>
                                 <td>{{Seguimiento.FechaEntrega}}</td>
@@ -195,6 +199,8 @@
                                 </td>
                             </tr>
                         </table>
+                        <br>
+                        <button class="btn btn-agro-prin col-sm-3" (click)="GenerarExcel('Detalle')">Exportar Excel</button>
                     </div>
                 </div>
 
@@ -340,7 +346,7 @@
                 <tr *ngFor="let Detalle of ArrayDetalle ">
                     <td>{{Detalle.Producto}}</td>
                     <td>{{Detalle.Cantidad}}</td>
-                    <td [ngClass]="Detalle.DescDevuelto !='Devuelto' ? 'ColorTextEntregado' : 'ColorTextDevuelto' ">
+                    <td [ngClass]="Detalle.DescDevuelto !='DEVUELTO' ? 'ColorTextEntregado' : 'ColorTextDevuelto' ">
                         {{Detalle.DescDevuelto}}</td>
                     <td>{{Detalle.valor | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                     <td style="font-weight: bold;">{{Detalle.ValorReal | currency :'USD' : 'symbol' : '1.0-0'}}</td>
