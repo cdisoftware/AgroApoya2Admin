@@ -114,8 +114,10 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   TotalElect: number = 0;
   ArrayInfoGeneral: any = [];
   MotivoDevolucion: string = '';
+  MotivoDevolucion2: string = '';
   EstadoDetalle: string = '';
-
+  ArrayInfoGeneralTrans: any = []
+  ValidaFiltros: boolean = false;
   constructor(
     private modalService: NgbModal,
     private ServiciosValorar: ValorarofertaService) { }
@@ -260,9 +262,18 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       this.keywordOferta = 'Producto'
     })
   }
-  LimpiaOferta(Valor: string) {
+  LimpiaGrupo(Valor: string) {
+    this.ValidaFiltros = false;
+    this.ArrayReporte = []
     this.IdGrupo = '0';
     this.Grupo = '';
+  }
+
+  LimpiaOferta(Valor: string) {
+    this.ValidaFiltros = false
+    this.ArrayReporte = []
+    this.Oferta = '0';
+    this.OfertaSelect = '0';
   }
 
   selectOfertaFiltro(item: any) {
@@ -321,18 +332,14 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       if (Resultado.length == 0) {
         this.Respuesta = 'No encontramos registros de compras para este sector.';
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' });
-        this.ValidaInsertSec = '0';
-        this.ValidaInsertSecs = '0';
+        // this.ValidaInsertSec = '0';
+        // this.ValidaInsertSecs = '0';
       } else {
-        this.VerBtnDescargarPdf = this.ConductorSelect !== '0';
-        this.Detalle = '1';
-        this.ArrayConsultaSeg = Resultado;
-        this.ValidaInsertSec = '1';
-        this.ValidaInsertSecs = '1';
+        this.modalService.open(this.ModalGrupos, { ariaLabelledBy: 'modal-basic-title' });
 
       }
     })
-    this.modalService.open(this.ModalGrupos, { ariaLabelledBy: 'modal-basic-title' });
+
     /*
     if (this.SelectorSector == '' && this.SelectorOferta == '0' || this.SelectorSector != '' && this.SelectorOferta == '0' || this.SelectorSector == '' && this.SelectorOferta != '0') {
       this.Respuesta = 'Es necesario que selecciones una oferta y un sector.';
@@ -430,7 +437,8 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   MostrarDetalle(Entrega: any, TemplateDetalle: any) {
     this.EstadoDetalle = Entrega.ESTDO;
     console.log(Entrega)
-    this.MotivoDevolucion = Entrega.ObsEvidenciaDos
+    this.MotivoDevolucion = Entrega.ObsEvidencia
+    this.MotivoDevolucion2 = Entrega.ObsEvidenciaDos
     this.ValorTotalCompra = Entrega.VLOR_PGAR;
     this.NumProductos = 0;
     this.TituloModal = 'Detalle Entregas'
@@ -873,12 +881,18 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   //#endregion MapaRutaSugerida
 
   SeleccionGrupo(Detalle: any) {
+
     this.IdGrupo = Detalle.idgrupomilla
     this.modalService.dismissAll()
     this.ConsReporteEntregas(Detalle.idgrupomilla);
     this.ConsultaDetalle(Detalle.idgrupomilla);
     this.ConsultaValoresTotales(Detalle.idgrupomilla)
     this.VerBtnMapSugerido = true;
+    this.ValidaFiltros = true;
+    this.VerBtnDescargarPdf = this.ConductorSelect !== '0';
+    this.Detalle = '1';
+    this.ValidaInsertSec = '1';
+    this.ValidaInsertSecs = '1';
   }
 
   ConsultaDetalle(IdGrupo: string) {
@@ -898,7 +912,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   GenerarExcel(Reporte: string) {
     let workbook = new Workbook();
     let worksheet = workbook.addWorksheet("Reporte " + Reporte);
-    let header ;
+    let header;
     let temp = []
     if (Reporte == 'Ventas') {
       header = [
@@ -914,7 +928,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         "VALOR ELECTRONICO",
         "TOTAL RECAUDAR"
       ];
-    }else if(Reporte == 'Detalle'){
+    } else if (Reporte == 'Detalle') {
       header = [
         "CLIENTE",
         "CELULAR",
@@ -933,16 +947,16 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
 
     worksheet.addRow(header);
     ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1'].map(key => {
-        worksheet.getCell(key).fill = {
-          type: 'pattern',
-          pattern: 'darkTrellis',
-          fgColor: { argb: '397c97' },
-          bgColor: { argb: '397c97' }
-        };
-        worksheet.getCell(key).font = {
-          color: { argb: 'FFFFFF' }
-        };
-      });
+      worksheet.getCell(key).fill = {
+        type: 'pattern',
+        pattern: 'darkTrellis',
+        fgColor: { argb: '397c97' },
+        bgColor: { argb: '397c97' }
+      };
+      worksheet.getCell(key).font = {
+        color: { argb: 'FFFFFF' }
+      };
+    });
     worksheet.columns = [
       { width: 15, key: 'A' }, { width: 25, key: 'B' }, { width: 25, key: 'C' }, { width: 25, key: 'D' }, { width: 25, key: 'E' }, { width: 15, key: 'F' }, { width: 25, key: 'G' }, { width: 25, key: 'H' }, { width: 15, key: 'I' }, { width: 25, key: 'J' },
       { width: 15, key: 'K' }, { width: 25, key: 'L' }, { width: 25, key: 'M' }, { width: 25, key: 'N' }, { width: 25, key: 'O' }, { width: 15, key: 'P' }, { width: 25, key: 'Q' }, { width: 25, key: 'R' }, { width: 25, key: 'S' }, { width: 25, key: 'T' },
@@ -966,7 +980,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         temp.push(this.FormatoValores('USD', fila["VLOR_TTL_RECAUDAR"]))
         worksheet.addRow(temp)
       }
-    }else if(Reporte == 'Detalle'){
+    } else if (Reporte == 'Detalle') {
       for (let fila of this.ArrayConsultaSeg) {
         temp = []
         temp.push(fila["NOMBRES_PERSONA"])
@@ -1002,17 +1016,23 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     return formatter.format(value)
   }
 
-  InfoConductor(){
-    this.ServiciosValorar.ConsultaGeneralTrans('1', this.IdGrupo).subscribe(Resultado =>{
-      if(Resultado.length > 0){
-        console.log(Resultado)
+  InfoConductor() {
+    this.ServiciosValorar.ConsultaGeneralTrans('1', this.IdGrupo).subscribe(Resultado => {
+      if (Resultado.length > 0) {
         this.ArrayInfoGeneral = Resultado;
-        this.modalService.open(this.ModalTransporte, { size: 'lg', centered: true });
       }
-      
     })
-    
+    this.ServiciosValorar.ConsultaGeneralTransporte('1', this.IdGrupo).subscribe(Resultado => {
+      if (Resultado.length > 0) {
+        console.log('/////////')
+        console.log(Resultado)
+        this.ArrayInfoGeneralTrans = Resultado;
+      }
+    })
+    this.modalService.open(this.ModalTransporte, { size: 'lg', centered: true });
   }
+
+
 
 
 }
