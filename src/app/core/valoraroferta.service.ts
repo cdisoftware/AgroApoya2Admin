@@ -493,5 +493,8 @@ export class ValorarofertaService {
   ConsultaGeneralTransporte(Bandera: string, IdGrupo: string) {
     return this.http.get<any[]>(this.url_servidor + 'Consadmin_SeguiTarjeta/' + Bandera + '/' + IdGrupo);
   }
-}
 
+  ConsultaPresentaciones(Producto: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conslistempaque/' + Producto);
+  }
+}

@@ -732,11 +732,6 @@
                                 <label for="">Sin registros</label>
                             </ng-template>
                         </div>
-                        <div class="col-sm-4 mt-2" *ngIf="IsEnables == false ">
-                            <label class="col-sm-12 Llave">Peso adición en kilogramos</label>
-                            <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PesoTopping"
-                                [disabled]="ValidaTipoTopp">
-                        </div>
                         <div class="col-sm-4 mt-2">
                             <label class="col-sm-12 Llave">Valor unitario</label>
                             <input mask="separator" thousandSeparator="." type="text"
@@ -771,13 +766,23 @@
                             <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidMaxTopp"
                                 [disabled]="ValidaTipoTopp">
                         </div>
-
                         <div class="col-sm-4 mt-2" *ngIf="VerTipoDescripcion == '2'">
                             <label class="col-sm-12 Llave">Presentación</label>
-                            <textarea name="DescCortaAdd" id="DescCortaAdd" cols="30" rows="5"
-                                class="form-control textBox" placeholder="Presentación"
-                                [(ngModel)]="Presentacion"></textarea>
+                            <ng-autocomplete [data]="ArrayPresentaciones" [searchKeyword]="'des_empaque'"
+                                (selected)='SelectPresentacion($event)' placeholder="Presentación"
+                                [itemTemplate]="templateCampesino" [notFoundTemplate]="templateVacioCampesino"
+                                (inputCleared)='LimpiaPresentacion()' [(ngModel)]="PresentacionSelect">
+                            </ng-autocomplete>
+                            <ng-template #templateCampesino let-item>
+                                <a [innerHTML]="item.des_empaque"></a>
+                            </ng-template>
+                            <ng-template #templateVacioCampesino let-SinRegistro>
+                                <label for="">Sin registros</label>
+                            </ng-template>
                         </div>
+
+
+                        
 
                         <div class="col-sm-4 mt-2" >
                             <label class="col-sm-12 Llave">Campesino</label>
@@ -1369,16 +1374,20 @@
                     placeholder="Máximo unidades" (keypress)="LimpiSmsError()">
             </div>
 
-            <div class="col-sm-4 mt-2">
-                <label class="col-sm-12 Llave">Presentación</label>
-                <textarea name="DescCortaAdd" id="DescCortaAdd" cols="30" rows="5" class="form-control textBox"
-                    placeholder="Presentación" [(ngModel)]="PresentacionModal" (keypress)="LimpiSmsError()"></textarea>
-            </div>
 
             <div class="col-sm-4 mt-2">
-                <label class="col-sm-12 Llave">Peso (Kg)</label>
-                <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PesoKl" placeholder="Peso"
-                    (keypress)="LimpiSmsError()">
+                <label class="col-sm-12 Llave">Presentación</label>
+                <ng-autocomplete [data]="ArrayPresentacionesTopping" [searchKeyword]="'des_empaque'"
+                [initialValue]="ArrayPresentacionesTopping[IndexPresentacionTopping_]" (selected)='SelectPresentacionTopping($event)' placeholder="Presentación"
+                    [itemTemplate]="templateCampesino" [notFoundTemplate]="templateVacioCampesino"
+                    (inputCleared)='LimpiaPresentacionTopping()' [(ngModel)]="PresentacionToppingSelect">
+                </ng-autocomplete>
+                <ng-template #templateCampesino let-item>
+                    <a [innerHTML]="item.des_empaque"></a>
+                </ng-template>
+                <ng-template #templateVacioCampesino let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
             </div>
 
             <div class="col-sm-4 mt-2">
@@ -1415,7 +1424,7 @@
                         <th>Unidades</th>
                         <th>Maximo Unidades</th>
                         <th>Presentación</th>
-                        <th>Peso (kg)</th>
+                        <th>Peso (Lb)</th>
                         <th>Valor</th>
                         <th>Valor Referencia</th>
                         <th>Acciones</th>
@@ -1426,7 +1435,7 @@
                             <strong>{{prodTop.MaxCantidad}}</strong>
                         </td>
                         <td>{{prodTop.Presentacion}}</td>
-                        <td>{{prodTop.PesoKilos}} Kg</td>
+                        <td>{{prodTop.PesoKilos}} Lb</td>
                         <td>{{prodTop.ValorUnitario | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                         <td>{{prodTop.VlorRefencia | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                         <td>
@@ -1530,7 +1539,7 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="CierraModalPresentacion()"></button>
     </div>
     <div class="modal-body">
-        <div class="row">
+        <div class="row justify-content-center">
             <div class="col-sm-4 mt-2">
                 <label class="col-sm-12 Llave">Unidades para la oferta</label>
                 <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UnidadesProdAncla"
@@ -1545,15 +1554,17 @@
 
             <div class="col-sm-4 mt-2">
                 <label class="col-sm-12 Llave">Presentación</label>
-                <textarea name="DescCortaAdd" id="DescCortaAdd" cols="30" rows="5" class="form-control textBox"
-                    placeholder="Presentación" [(ngModel)]="PresentacionProdAncla"
-                    (keypress)="LimpiSmsError()"></textarea>
-            </div>
-
-            <div class="col-sm-4 mt-2">
-                <label class="col-sm-12 Llave">Peso (kg)</label>
-                <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PesoProdAncla"
-                    placeholder="Peso" (keypress)="LimpiSmsError()">
+                <ng-autocomplete [data]="ArrayPresentacionesProdPrincipal" [searchKeyword]="'des_empaque'"
+                [initialValue]="ArrayPresentacionesProdPrincipal[IndexPresentacionProdAncla_]" (selected)='SelectPresentacionRodAncla($event)' placeholder="Presentación"
+                    [itemTemplate]="templateCampesino" [notFoundTemplate]="templateVacioCampesino"
+                    (inputCleared)='LimpiaPresentacionProdAncla()' [(ngModel)]="PresentacionProdAnclaSelect">
+                </ng-autocomplete>
+                <ng-template #templateCampesino let-item>
+                    <a [innerHTML]="item.des_empaque"></a>
+                </ng-template>
+                <ng-template #templateVacioCampesino let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
             </div>
 
             <div class="col-sm-4 mt-2">
@@ -1590,7 +1601,7 @@
                         <th>Unidades</th>
                         <th>Maximo Unidades</th>
                         <th>Presentación</th>
-                        <th>Peso (kg)</th>
+                        <th>Peso (Lb)</th>
                         <th>Valor</th>
                         <th>Valor Referencia</th>
                         <th>Acciones</th>
@@ -1601,7 +1612,7 @@
                             <strong>{{Presprod.MaxCantidad}}</strong>
                         </td>
                         <td>{{Presprod.Presentacion}}</td>
-                        <td>{{Presprod.PesoKilos}} Kg</td>
+                        <td>{{Presprod.PesoKilos}} Lb</td>
                         <td>{{Presprod.ValorUnitario | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                         <td>{{Presprod.VlorRefencia | currency :'USD' : 'symbol' : '1.0-0'}}</td>
                         <td>
