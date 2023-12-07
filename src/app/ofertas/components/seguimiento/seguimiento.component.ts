@@ -22,6 +22,7 @@ import * as fs from 'file-saver';
   styleUrls: ['./seguimiento.component.css']
 })
 export class SeguimientoComponent implements AfterContentInit, OnInit {
+
   @ViewChild('ModalMensaje', { static: false }) ModalMensaje: any;
   @ViewChild('ModalMapaSugerido', { static: false }) ModalMapaSugerido: any;
   @ViewChild('templateGrupos', { static: false }) ModalGrupos: any;
@@ -85,7 +86,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     group: ScaleType.Ordinal,
     domain: ["#31C231", "#FAA432", "#F02C29", "#AAAAAA"]
   };
-  viewBar: [number, number] = [1000, 200];
+  viewBar: [number, number] = [1000, 800];
   ArrayValores: any = [];
   Detalle: string = '';
   Conductor: string = '';
@@ -687,6 +688,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     this.ServiciosValorar.ConsultaReporteEntregas('1', idGrupo).subscribe(Resultado => {
       console.log(Resultado)
       if (Resultado.length > 0) {
+        this.ArrayVentas = []
         this.ArrayReporte = Resultado;
         var NumRecibidos: number = 0;
         var NumPendientes: number = 0;
@@ -742,7 +744,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
               [
                 {
                   "name": "Recaudado",
-                  "value": this.ArrayReporte[i].VLR_RECAUDADO
+                  "value": Number(this.ArrayReporte[i].VLR_RECAUDADO)
                 },
                 {
                   "name": "Pendiente",
@@ -750,7 +752,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
                 },
                 {
                   "name": "Devuelto",
-                  "value": this.ArrayReporte[i].VLOR_DEVOLUCION
+                  "value": Number(this.ArrayReporte[i].VLOR_DEVOLUCION)
                 }
               ]
           }

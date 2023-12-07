@@ -86,13 +86,20 @@
                     </div>
                     <br>
                     <div class="row justify-content-center " id="rowGraficas" *ngIf="Detalle == '1'">
-                        <div class="col-sm-12">
+                        
                             <!-- Consolidado ventas -->
-                            <ngx-charts-bar-vertical-2d [results]="ArrayVentas" [legendTitle]="'Entregas'"
-                                [legend]="true" [showDataLabel]="true" [xAxis]="true" [animations]="false"
-                                [scheme]="colorSchemeTort" [view]="viewBar"></ngx-charts-bar-vertical-2d>
+                            <ngx-charts-bar-horizontal-stacked
+                            [results]="ArrayVentas" 
+                            [legendTitle]="'Entregas'"
+                            [legend]="true" 
+                            [xAxis]="true" 
+                            [showDataLabel]="true"
+                            [animations]="false"
+                            [scheme]="colorSchemeTort" 
+                            [view]="viewBar"
+                            [showYAxisLabel]="true"></ngx-charts-bar-horizontal-stacked>
                             <!-- Tabla Ventas -->
-                        </div>
+                       
                         <br>
                         <table class="col-sm-11 TableAgro br">
                             <tr>
@@ -120,9 +127,9 @@
 
                         <hr class="br">
                         <!-- Consolidado Dinero -->
-                        <ngx-charts-bar-vertical-2d [results]="ArrayValores" [legendTitle]="'Ventas'" [legend]="true"
+                        <!-- <ngx-charts-bar-vertical-2d [results]="ArrayValores" [legendTitle]="'Ventas'" [legend]="true"
                             [xAxis]="true" [animations]="false" [scheme]="colorSchemeTort"
-                            [view]="viewBar"></ngx-charts-bar-vertical-2d>
+                            [view]="[1000,1500]"></ngx-charts-bar-vertical-2d> -->
                         <!-- Tabla Dinero -->
                         <br>
                         <table class="col-sm-11 TableAgro br ">
