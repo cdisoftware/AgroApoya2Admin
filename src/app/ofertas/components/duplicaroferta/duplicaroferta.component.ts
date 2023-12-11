@@ -4,6 +4,14 @@ import { MetodosglobalesService } from './../../../core/metodosglobales.service'
 import { NgbModal, NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import {
+  CdkDragDrop,
+  CdkDrag,
+  CdkDropList,
+  CdkDropListGroup,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 
 
 @Component({
@@ -141,6 +149,11 @@ export class DuplicarofertaComponent implements OnInit {
   fechaDesdeActu: string = '';
   fechaHastaActu: string = '';
   fechaEntregaActu: string = '';
+
+   //#region AdminOrdenProd
+   ArrayProdAdminOrden: any = [];
+   ArrayPresentacionesProdSelect: any = [];
+   //#endregion AdminOrdenProd
 
 
   ngOnInit(): void {
@@ -612,5 +625,111 @@ export class DuplicarofertaComponent implements OnInit {
     this.modalService.dismissAll();
     this.rutas.navigateByUrl('/home/ModificarOferta');
   }
+ 
+  
+    //#region AdminOrdenProd
+    AbreModalOrden(AdminOrdenProd: any) {
+      this.ArrayPresentacionesProdSelect = [];
+      this.ArrayProdAdminOrden = [];
+  
+      this.modalService.open(AdminOrdenProd, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
+      this.ConsultaProd();
+    }
+  
+  
+    ConsultaProd() {
+      this.ArrayProdAdminOrden = [];
+      this.ServiciosValorar.ConsultaProdOferta('1', this.IdOfertaSeleccion, this.SessionSectorSel).subscribe(Respu => {
+        for (var i = 0; i < Respu.length; i++) {
+          this.ArrayProdAdminOrden.push({ Id: Respu[i].Id, IdProducto: Respu[i].IdProducto, ancla: Respu[i].ancla, NombreProducto: Respu[i].NombreProducto, Imagen: Respu[i].Imagen, Orden: Respu[i].Orden, Check: false });
+        }
+      });
+    }
+    dropProd(event: CdkDragDrop<string[]>, Array: any) {
+      moveItemInArray(Array, event.previousIndex, event.currentIndex);
+      var cadenaorden: string = "";
+      for (var i = 0; i < this.ArrayProdAdminOrden.length; i++) {
+        if (this.ArrayProdAdminOrden[i].ancla.toString() == "2") {
+          cadenaorden += "-" + this.ArrayProdAdminOrden[i].IdProducto + "|";
+        } else {
+          cadenaorden += this.ArrayProdAdminOrden[i].IdProducto + "|";
+        }
+      }
+      const body = {
+        CadenaOrden: cadenaorden
+      }
+      this.ServiciosValorar.ModOrdenProductos('1', body).subscribe(Respu => {
+        console.log(Respu)
+      });
+    }
+    SelectProducto(item: any) {
+      const Position = this.ArrayProdAdminOrden.findIndex((obj: any) => obj.Id === item.Id);
+      this.ArrayProdAdminOrden[Position].Check = true;
+      for (var i = 0; i < this.ArrayProdAdminOrden.length; i++) {
+        if (this.ArrayProdAdminOrden[i].Id != item.Id) {
+          this.ArrayProdAdminOrden[i].Check = false;
+        }
+      }
+      if (this.ArrayProdAdminOrden[Position].ancla.toString() == "2") {
+        this.ListPresentacionesProdAnclaSelect(item.IdProducto);
+      } else {
+        this.ListPresentacionesToopingSelect(item.IdProducto);
+      }
+    }
+  
+  
+  
+    ListPresentacionesProdAnclaSelect(IdProd: string) {
+      this.ArrayPresentacionesProdSelect = [];
+      this.ServiciosValorar.consCRelacionProducTopping('4', IdProd, this.SessionSectorSel).subscribe(Respu => {
+        console.log(Respu)
+        this.ArrayPresentacionesProdSelect = Respu;
+      });
+    }
+    ListPresentacionesToopingSelect(IdProd: string) {
+      this.ArrayPresentacionesProdSelect = [];
+      this.ServiciosValorar.consCRelacionProducTopping('1', IdProd, this.SessionSectorSel).subscribe(Respu => {
+        console.log(Respu)
+        this.ArrayPresentacionesProdSelect = Respu;
+      });
+    }
+    dropPresentacion(event: CdkDragDrop<string[]>, Array: any) {
+      moveItemInArray(Array, event.previousIndex, event.currentIndex);
+      var cadenaorden: string = "";
+      for (var i = 0; i < this.ArrayPresentacionesProdSelect.length; i++) {
+        if (this.ArrayPresentacionesProdSelect[i].Ancla.toString() == "2") {
+          cadenaorden += "-" + this.ArrayPresentacionesProdSelect[i].IdRelacion + "|";
+        } else {
+          cadenaorden += this.ArrayPresentacionesProdSelect[i].IdRelacion + "|";
+        }
+      }
+      const body = {
+        CadenaOrden: cadenaorden
+      }
+      this.ServiciosValorar.ModOrdenPresentaciones('1', body).subscribe(Respu => {
+        console.log(Respu)
+      });
+    }
+  
+  
+    SelectVerPrimero(item: any) {
+      const body = {
+        Ancla: item.Ancla,
+        IdProducto: item.IdRelacion,
+        Cd_cnsctvo: this.IdOfertaSeleccion,
+        Id_Sector: this.SessionSectorSel
+      }
+      this.ServiciosValorar.ModVerPrimeroLista('1', body).subscribe(Respu => {
+  
+        for (var i = 0; i < this.ArrayPresentacionesProdSelect.length; i++) {
+          if (item.IdRelacion == this.ArrayPresentacionesProdSelect[i].IdRelacion) {
+            this.ArrayPresentacionesProdSelect[i].PrimeroVer = "1";
+          }else{
+            this.ArrayPresentacionesProdSelect[i].PrimeroVer = null;
+          }
+        }
+      });
+    }
+    //#endregion AdminOrdenProd
   
 }
