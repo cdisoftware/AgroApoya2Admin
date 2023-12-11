@@ -2,13 +2,6 @@
 <div class="container bg-white">
     <br>
     <h1>Valorar Oferta</h1>
-    <div class="row justify-content-center">
-        <div class="col-sm-4">
-            <label class="col-sm-12 Llave">Orden Productos</label>
-            <button class="btn btn-agro-prin col-sm-12 w-100" (click)="AbreModalOrden(AdminOrdenProd)">Admin orden
-                prod</button>
-        </div>
-    </div>
     <div class="row justify-content-center br ">
         <img src="./../../../../../assets/ImagenesAgroApoya2Adm/barra6.png" style="width: 65%;">
     </div>
@@ -923,6 +916,14 @@
                                     <td colspan="6">{{txtValidaCons}}</td>
                                 </tr>
                             </table>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center mt-4">
+                        <div class="col-sm-4">
+                            <label class="col-sm-12 Llave" style="text-align: center;">Orden Productos</label>
+                            <button class="btn btn-agro-prin col-sm-12 w-100" (click)="AbreModalOrden(AdminOrdenProd)">Admin orden
+                                prod</button>
                         </div>
                     </div>
                 </ng-template>
