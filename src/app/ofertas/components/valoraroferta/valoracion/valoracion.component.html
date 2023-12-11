@@ -2,6 +2,13 @@
 <div class="container bg-white">
     <br>
     <h1>Valorar Oferta</h1>
+    <div class="row justify-content-center">
+        <div class="col-sm-4">
+            <label class="col-sm-12 Llave">Orden Productos</label>
+            <button class="btn btn-agro-prin col-sm-12 w-100" (click)="AbreModalOrden(AdminOrdenProd)">Admin orden
+                prod</button>
+        </div>
+    </div>
     <div class="row justify-content-center br ">
         <img src="./../../../../../assets/ImagenesAgroApoya2Adm/barra6.png" style="width: 65%;">
     </div>
@@ -782,9 +789,9 @@
                         </div>
 
 
-                        
 
-                        <div class="col-sm-4 mt-2" >
+
+                        <div class="col-sm-4 mt-2">
                             <label class="col-sm-12 Llave">Campesino</label>
                             <ng-autocomplete [data]="ArrayCampesino" [searchKeyword]="keywordCampesino"
                                 (selected)='selectCampesino($event)' placeholder="Campesino"
@@ -1378,7 +1385,8 @@
             <div class="col-sm-4 mt-2">
                 <label class="col-sm-12 Llave">Presentación</label>
                 <ng-autocomplete [data]="ArrayPresentacionesTopping" [searchKeyword]="'des_empaque'"
-                [initialValue]="ArrayPresentacionesTopping[IndexPresentacionTopping_]" (selected)='SelectPresentacionTopping($event)' placeholder="Presentación"
+                    [initialValue]="ArrayPresentacionesTopping[IndexPresentacionTopping_]"
+                    (selected)='SelectPresentacionTopping($event)' placeholder="Presentación"
                     [itemTemplate]="templateCampesino" [notFoundTemplate]="templateVacioCampesino"
                     (inputCleared)='LimpiaPresentacionTopping()' [(ngModel)]="PresentacionToppingSelect">
                 </ng-autocomplete>
@@ -1555,7 +1563,8 @@
             <div class="col-sm-4 mt-2">
                 <label class="col-sm-12 Llave">Presentación</label>
                 <ng-autocomplete [data]="ArrayPresentacionesProdPrincipal" [searchKeyword]="'des_empaque'"
-                [initialValue]="ArrayPresentacionesProdPrincipal[IndexPresentacionProdAncla_]" (selected)='SelectPresentacionRodAncla($event)' placeholder="Presentación"
+                    [initialValue]="ArrayPresentacionesProdPrincipal[IndexPresentacionProdAncla_]"
+                    (selected)='SelectPresentacionRodAncla($event)' placeholder="Presentación"
                     [itemTemplate]="templateCampesino" [notFoundTemplate]="templateVacioCampesino"
                     (inputCleared)='LimpiaPresentacionProdAncla()' [(ngModel)]="PresentacionProdAnclaSelect">
                 </ng-autocomplete>
@@ -1654,3 +1663,52 @@
     <br>
 </ng-template>
 <!--Fin Presentaciones producto ancla-->
+
+
+<!--Admin Orden productos-->
+<ng-template #AdminOrdenProd let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title">Orden</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="row p-3 justify-content-center">
+        <div class="row mt-3">
+            <div class="row mt-2">
+                <div class="col-sm-6 justify-content-center">
+                    <p class="sinmp" style="text-align: center; font-weight: bold;">Producto</p>
+                </div>
+                <div class="col-sm-6 justify-content-center" *ngIf="ArrayPresentacionesProdSelect.length > 0">
+                    <p class="sinmp" style="text-align: center; font-weight: bold;">Presentaciones</p>
+                </div>
+            </div>
+
+            <div class="col-sm-6 row" cdkDropList [cdkDropListData]="ArrayProdAdminOrden" (cdkDropListDropped)="dropProd($event, ArrayProdAdminOrden)">
+                <div cdkDrag *ngFor="let respu of ArrayProdAdminOrden; let i = index" (click)="SelectProducto(respu)"
+                    [ngClass]="respu.Check == true ? 'col-12 cajaProdOrdenCheck lblCajaOrden mt-2' : 'col-12 cajaProdOrden lblCajaOrden mt-2'">
+                    {{respu.NombreProducto}}
+                </div>
+            </div>
+            <div class="col-sm-6 justify-content-center" cdkDropList [cdkDropListData]="ArrayPresentacionesProdSelect" (cdkDropListDropped)="dropPresentacion($event, ArrayPresentacionesProdSelect)">
+                <div cdkDrag *ngFor="let ite of ArrayPresentacionesProdSelect; let y = index"
+                    class="justify-content-center row">
+                    <div class="col-10 cajaProdOrdenCheck lblCajaOrdenPresentacion mt-2">
+                        {{ite.Presentacion}}
+                    </div>
+                    <div class="col-sm-1 mt-2" *ngIf="ite.PrimeroVer == null">
+                        <button class="bot" title="Selecciónar presentacion"  (click)="SelectVerPrimero(ite)">
+                            <img src="../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png" alt="Selecciónar"
+                                class="BtnimgTamanoPeque">
+                        </button>
+                    </div>
+                    <div class="col-sm-1 mt-2" *ngIf="ite.PrimeroVer != null">
+                        <button class="bot" title="Selecciónar presentacion">
+                            <img src="../../../../../assets/ImagenesAgroApoya2Adm/Primero.png" alt="Selecciónar"
+                                class="BtnimgTamanoPeque">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+<!--Fin Admin Orden productos-->
