@@ -1045,4 +1045,20 @@ ConsultaBodegas(bandera: string) {
   //#endregion ModBodega
   //#endregion William
 
+  ActualizaNombre(){
+    const BodyInsert = {
+      USUCODIG: '0',
+      SCTOR_OFR: this.IdSectorSelect,
+      DSCRPCION_SCTOR: this.NombreSectorEditar,
+      CD_RGION: '0',
+      CD_MNCPIO: '0',
+      cd_cnsctvo: '0',
+      TEMPORAL: '0',
+      ID_ZONA: '0'
+    }
+    //console.log(BodyInsert)
+    this.sectoresservices.InsertarSector('2', BodyInsert).subscribe(ResultInsert => {
+      console.log(ResultInsert)
+    })
+  }
 }
