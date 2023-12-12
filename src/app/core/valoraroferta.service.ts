@@ -497,4 +497,17 @@ export class ValorarofertaService {
   ConsultaPresentaciones(Producto: string) {
     return this.http.get<any[]>(this.url_servidor + 'conslistempaque/' + Producto);
   }
+
+  ConsultaProdOferta(bandera: string, CdConsecutivo: string, IdSector: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consAdListadoProductos/' + bandera + '/' + CdConsecutivo + '/' + IdSector);
+  }
+  ModOrdenProductos(bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modAdOrdenProducts/' + bandera, Body);
+  }
+  ModOrdenPresentaciones(bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modAdOrdenRelacion/' + bandera, Body);
+  }
+  ModVerPrimeroLista(bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modAdProdVerPrimero/' + bandera, Body);
+  }
 }

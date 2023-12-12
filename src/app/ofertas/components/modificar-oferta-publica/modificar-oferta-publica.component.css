@@ -67,3 +67,46 @@
   color: #575A5F;
   text-align: center !important;
 }
+.cajaProdOrden {
+  -webkit-box-shadow: 0px 0px 0px 0px rgba(81, 135, 111, 0.42);
+  -moz-box-shadow: 0px 0px 0px 0px rgba(81, 135, 111, 0.42);
+  box-shadow: 0px 0px 0px 0px rgba(81, 135, 111, 0.42);
+  border: solid 1px #397c97;
+}
+
+.cajaProdOrdenCheck {
+  -webkit-box-shadow: 0px 0px 0px 0px rgba(81, 135, 111, 0.42);
+  -moz-box-shadow: 0px 0px 0px 0px rgba(81, 135, 111, 0.42);
+  box-shadow: 0px 0px 0px 0px rgba(81, 135, 111, 0.42);
+  border: solid 1px #000;
+  background-color: #397c97;
+}
+
+.lblCajaOrden {
+  color: black;
+  font-size: 23px;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.lblCajaOrdenPresentacion {
+  color: rgb(0, 0, 0);
+  font-size: 15px;
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.bot {
+  border: 0;
+  background: none;
+  outline: none;
+}
+
+.bot:active {
+  border: 0;
+  background: none;
+  outline: none;
+}
