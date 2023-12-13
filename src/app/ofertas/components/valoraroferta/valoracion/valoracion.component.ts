@@ -7,14 +7,7 @@ import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 import { DatePipe } from '@angular/common';
 import { CrearofertaService } from 'src/app/core/crearoferta.service';
 import { ReporteService } from 'src/app/core/reporte.service';
-import {
-  CdkDragDrop,
-  CdkDrag,
-  CdkDropList,
-  CdkDropListGroup,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 
 @Component({
@@ -131,6 +124,8 @@ export class ValoracionComponent implements OnInit {
   IdOferta: string;
   UrlParticipanteC: any;
   UrlPubliC: any;
+  UrlRegistroCompra: any;
+  UrlRegistroCompraC: any;
   RutaImagenes: string = '';
 
   banderaAgregarAncla: string = '1';
@@ -1208,6 +1203,10 @@ export class ValoracionComponent implements OnInit {
         } else if (Resultado[i].Tipo_Link == '2') {
           this.UrlPubli = Resultado[i].link_largo;
           this.UrlPubliC = Resultado[i].link_corto;
+        }
+        else if (Resultado[i].Tipo_Link == '5') {
+          this.UrlRegistroCompra = Resultado[i].link_largo;
+          this.UrlRegistroCompraC = Resultado[i].link_corto;
         }
       }
     })
@@ -3553,7 +3552,7 @@ export class ValoracionComponent implements OnInit {
       for (var i = 0; i < this.ArrayPresentacionesProdSelect.length; i++) {
         if (item.IdRelacion == this.ArrayPresentacionesProdSelect[i].IdRelacion) {
           this.ArrayPresentacionesProdSelect[i].PrimeroVer = "1";
-        }else{
+        } else {
           this.ArrayPresentacionesProdSelect[i].PrimeroVer = null;
         }
       }
