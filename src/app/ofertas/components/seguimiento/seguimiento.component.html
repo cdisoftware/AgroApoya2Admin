@@ -66,12 +66,14 @@
         <div class="row justify-content-center" *ngIf="ValidaFiltros == true">
             <div class="col-sm-12">
                 <div *ngIf="ArrayReporte.length > 0">
-                    <div class="row justify-content-center">
-                        <div class="col-sm-4">
-                            <button class="SinEstilo" (click)="InfoConductor()">
-                                <img src="./../../../../assets/ImagenesAgroApoya2Adm/envio.png"><br>
-                                <strong>Informacion Transporte Grupo &nbsp; {{IdGrupo}}</strong>
-                            </button>
+                    <div style="display: flex; margin-bottom: 15px;">
+                        <div class="padre" (click)="InfoConductor()">
+                            <label style="margin: auto; color: white; cursor: pointer;"> <strong>Informacion del
+                                    grupo</strong></label>
+                        </div>
+                        <div class="padre" (click)="GenerarPdfInformarcion()">
+                            <label style="margin: auto; color: white; cursor: pointer;"> <strong>PDF carga
+                                    transporte</strong></label>
                         </div>
                     </div>
                     <div class="row MerginLefRig">
@@ -86,20 +88,14 @@
                     </div>
                     <br>
                     <div class="row justify-content-center " id="rowGraficas" *ngIf="Detalle == '1'">
-                        
-                            <!-- Consolidado ventas -->
-                            <ngx-charts-bar-horizontal-stacked
-                            [results]="ArrayVentas" 
-                            [legendTitle]="'Entregas'"
-                            [legend]="true" 
-                            [xAxis]="true" 
-                            [showDataLabel]="true"
-                            [animations]="false"
-                            [scheme]="colorSchemeTort" 
-                            [view]="viewBar"
+
+                        <!-- Consolidado ventas -->
+                        <ngx-charts-bar-horizontal-stacked [results]="ArrayVentas" [legendTitle]="'Entregas'"
+                            [legend]="true" [xAxis]="true" [showDataLabel]="true" [animations]="false"
+                            [scheme]="colorSchemeTort" [view]="viewBar"
                             [showYAxisLabel]="true"></ngx-charts-bar-horizontal-stacked>
-                            <!-- Tabla Ventas -->
-                       
+                        <!-- Tabla Ventas -->
+
                         <br>
                         <table class="col-sm-11 TableAgro br">
                             <tr>
@@ -393,7 +389,7 @@
                         '1.0-0'}}</td>
                 </tr> -->
             </table>
-            <div class="row justify-content-center" >
+            <div class="row justify-content-center">
                 <h1>Observaciones</h1>
                 <div class="col-sm-6">
                     <textarea class="form-control" cols="30" rows="2" disabled>
@@ -545,5 +541,11 @@
                 (click)="modal.dismiss('Cross click')">Aceptar</button>
         </div>
 
+    </div>
+</ng-template>
+
+<ng-template #templateCarganod let-modal>
+    <div class="p-2" style="background-color: rgb(247, 247, 247); border-radius: 10px; display: flex; justify-content: center;">
+        <img src="./../../../../../assets/ImagenesAgroApoya2Adm/loder_seguimiento.gif" style="width: 150px;">
     </div>
 </ng-template>
