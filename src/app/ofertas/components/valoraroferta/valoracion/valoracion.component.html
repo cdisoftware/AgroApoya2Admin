@@ -674,10 +674,16 @@
         <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
             <ngb-panel title="Adicionales" id="config-panel-three">
                 <ng-template ngbPanelContent>
-                    <div class="col-sm-2 col-12 br">
-                        <button type="button" class="btn btn-agro-prin col-sm-12"
-                            (click)="CrearEditarproduct(templateEditar)">
-                            Crear/Editar Producto</button>
+                    <div class="row m-0 p-0" style="margin-top: 20px !important;">
+                        <div class="col-sm-3 col-12">
+                            <button type="button" class="btn btn-agro-prin col-sm-12"
+                                (click)="CrearEditarproduct(templateEditar)">
+                                Crear/Editar Producto</button>
+                        </div>
+                        <div class="col-sm-3 col-12" >
+                            <button class="btn btn-agro-prin col-sm-12 w-100"
+                                (click)="AbreModalOrden(AdminOrdenProd)">Organizar productos</button>
+                        </div>
                     </div>
                     <div class="row br">
                         <div class="col-sm-4 mt-2 mb-2">
@@ -918,14 +924,6 @@
                             </table>
                         </div>
                     </div>
-
-                    <div class="row justify-content-center mt-4">
-                        <div class="col-sm-4">
-                            <label class="col-sm-12 Llave" style="text-align: center;">Orden Productos</label>
-                            <button class="btn btn-agro-prin col-sm-12 w-100" (click)="AbreModalOrden(AdminOrdenProd)">Admin orden
-                                prod</button>
-                        </div>
-                    </div>
                 </ng-template>
             </ngb-panel>
         </ngb-accordion>
@@ -1034,19 +1032,19 @@
 
                     <div class="row br">
                         <div class="col-sm-12">
-                            <label class="col-sm-12 Llave">Link para acortar compartir participante</label>
+                            <label class="col-sm-12 Llave">Link corto de la oferta</label>
                             <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UrlParticipante" disabled>
                             <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UrlParticipanteC" disabled>
                         </div>
                     </div>
 
-                    <!-- <div class="row br">
+                     <div class="row br">
                         <div class="col-sm-12">
-                            <label class="col-sm-12 Llave">Link para Redes Sociales (Publicidad)</label>
-                            <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UrlPubli" disabled>
-                            <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UrlPubliC" disabled>
+                            <label class="col-sm-12 Llave">Link corto oferta por registros </label>
+                            <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UrlRegistroCompra" disabled>
+                            <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UrlRegistroCompraC" disabled>
                         </div>
-                    </div> -->
+                    </div>
 
                     <div class="row br">
                         <div class="col-sm-12">
@@ -1683,20 +1681,22 @@
                 </div>
             </div>
 
-            <div class="col-sm-6 row" cdkDropList [cdkDropListData]="ArrayProdAdminOrden" (cdkDropListDropped)="dropProd($event, ArrayProdAdminOrden)">
+            <div class="col-sm-6 row" cdkDropList [cdkDropListData]="ArrayProdAdminOrden"
+                (cdkDropListDropped)="dropProd($event, ArrayProdAdminOrden)">
                 <div cdkDrag *ngFor="let respu of ArrayProdAdminOrden; let i = index" (click)="SelectProducto(respu)"
                     [ngClass]="respu.Check == true ? 'col-12 cajaProdOrdenCheck lblCajaOrden mt-2' : 'col-12 cajaProdOrden lblCajaOrden mt-2'">
                     {{respu.NombreProducto}}
                 </div>
             </div>
-            <div class="col-sm-6 justify-content-center" cdkDropList [cdkDropListData]="ArrayPresentacionesProdSelect" (cdkDropListDropped)="dropPresentacion($event, ArrayPresentacionesProdSelect)">
+            <div class="col-sm-6 justify-content-center" cdkDropList [cdkDropListData]="ArrayPresentacionesProdSelect"
+                (cdkDropListDropped)="dropPresentacion($event, ArrayPresentacionesProdSelect)">
                 <div cdkDrag *ngFor="let ite of ArrayPresentacionesProdSelect; let y = index"
                     class="justify-content-center row">
                     <div class="col-10 cajaProdOrdenCheck lblCajaOrdenPresentacion mt-2">
                         {{ite.Presentacion}}
                     </div>
                     <div class="col-sm-1 mt-2" *ngIf="ite.PrimeroVer == null">
-                        <button class="bot" title="Selecciónar presentacion"  (click)="SelectVerPrimero(ite)">
+                        <button class="bot" title="Selecciónar presentacion" (click)="SelectVerPrimero(ite)">
                             <img src="../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png" alt="Selecciónar"
                                 class="BtnimgTamanoPeque">
                         </button>

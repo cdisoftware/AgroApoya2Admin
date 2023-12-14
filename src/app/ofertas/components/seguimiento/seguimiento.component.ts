@@ -1,12 +1,5 @@
 import {
-  Component, OnInit, ViewChild, HostListener,
-  OnChanges,
-  DoCheck,
-  AfterContentInit,
-  AfterContentChecked,
-  AfterViewInit,
-  AfterViewChecked,
-  OnDestroy,
+  Component, OnInit, ViewChild, HostListener, AfterContentInit
 } from '@angular/core';
 import { ValorarofertaService } from './../../../core/valoraroferta.service';
 import { NgbModal, NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
@@ -15,6 +8,7 @@ import autoTable from 'jspdf-autotable'
 import jsPDF from 'jspdf';
 import { Workbook } from 'exceljs';
 import * as fs from 'file-saver';
+import 'jspdf-autotable'
 
 @Component({
   selector: 'app-seguimiento',
@@ -27,6 +21,10 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   @ViewChild('ModalMapaSugerido', { static: false }) ModalMapaSugerido: any;
   @ViewChild('templateGrupos', { static: false }) ModalGrupos: any;
   @ViewChild('templateTransporte', { static: false }) ModalTransporte: any;
+  @ViewChild('templateCarganod', { static: false }) ModalCargando: any;
+
+
+
   selecsector: string = '0'
   selectConductor: string = '0'
   Respuesta: string = '';
@@ -1034,7 +1032,79 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     this.modalService.open(this.ModalTransporte, { size: 'lg', centered: true });
   }
 
+  ArregloPDFDetalleProd: any = [];
 
+  public GenerarPdfInformarcion(): void {
+    this.modalService.open(this.ModalCargando, { ariaLabelledBy: 'modal-basic-title', centered: true });
+    for (var e = 0; this.ArrayConsultaSeg.length > e; e++) {
+      this.ArregloPDFDetalleProd.push({
+        position: e,
+        CodigoOferta: this.ArrayConsultaSeg[e].ID,
+        NombreClientet: this.ArrayConsultaSeg[e].NOMBRES_PERSONA,
+        Productos: []
+      });
+    }
+    for (var t = 0; this.ArregloPDFDetalleProd.length > t; t++) {
+      this.downloadPDFDetalle(t, this.ArregloPDFDetalleProd[t].CodigoOferta);
+    }
+  }
 
+  public downloadPDFDetalle(e: number, IdCarro: string) {
+    this.ServiciosValorar.ConsultaDetalleEntregas('1', IdCarro).subscribe(Resultado => {
+      for (var j = 0; Resultado.length > j; j++) {
+        this.ArregloPDFDetalleProd[e].Productos.push({
+          NombreProducto: Resultado[j].Producto,
+          Cantidad: Resultado[j].Cantidad
+        });
+      }
+      if (e == this.ArregloPDFDetalleProd.length - 1) {
+        console.log(this.ArregloPDFDetalleProd)
+        setTimeout(() => {
+          this.DescargarPDF();
+        }, 3000);
+      }
+    })
+  }
+
+  public DescargarPDF(): void {
+    const doc = new jsPDF()
+
+    autoTable(doc, {
+      styles: { fillColor: [43, 70, 136] },
+      head: [['Totalidad de producto para la entrega']]
+    })
+
+    var arrrayProdTotal: any = [];
+    for (var a = 0; this.ArrayReporte.length > a; a++) {
+      arrrayProdTotal.push([this.ArrayReporte[a].PRODUCTO, this.ArrayReporte[a].CANTIDAD_TOTAL])
+    }
+
+    autoTable(doc, {
+      head: [['Nombre producto', 'Cantidad']],
+      body: arrrayProdTotal,
+    })
+
+    for (var e = 0; this.ArregloPDFDetalleProd.length > e; e++) {
+      autoTable(doc, {
+        styles: { fillColor: [43, 70, 136] },
+        head: [[this.ArregloPDFDetalleProd[e].CodigoOferta + ' - ' + this.ArregloPDFDetalleProd[e].NombreClientet]]
+      })
+
+      var arrrayProdDetalle: any = [];
+      for (var h = 0; this.ArregloPDFDetalleProd[e].Productos.length > h; h++) {
+        if (this.ArregloPDFDetalleProd[e].Productos[h].NombreProducto != 'Domicilio') {
+          arrrayProdDetalle.push([this.ArregloPDFDetalleProd[e].Productos[h].NombreProducto, this.ArregloPDFDetalleProd[e].Productos[h].Cantidad])
+        }
+      }
+
+      autoTable(doc, {
+        head: [['Producto', 'Cantidad',]],
+        body: arrrayProdDetalle,
+      })
+
+    }
+    doc.save('Carga' + this.IdGrupo + '.pdf');
+    this.modalService.dismissAll();
+  }
 
 }
