@@ -26,4 +26,9 @@ export class InteraccionMenyChat {
     modLogsRegManychat(Bandera: string, Body: any) {
         return this.http.post<any>(this.url_servidor + 'modLogsRegManychat/' + Bandera, Body)
     }
+    AsignaCampoManyChat(Body: any) {
+        console.log(this.url_servidor + 'AsignarCampoUserManyChat')
+        console.log(Body)
+        return this.http.post<any>(this.url_servidor + 'AsignarCampoUserManyChat', Body)
+    }
 }
