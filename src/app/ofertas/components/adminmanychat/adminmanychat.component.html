@@ -1,31 +1,130 @@
 <div class="container" [ngClass]="Loader == true ? 'Opacity' : '' ">
+
+    <div class="row mt-2 mb-2">
+        <h1 class="mt-3">Prueba</h1>
+
+        <div class="row justify-content-center">
+            <div class="col-sm-3">
+                <label class="Llave">Usuario</label>
+                <ng-autocomplete [data]="ArrayUsers" [searchKeyword]="'NOMBRES_PERSONA'"
+                    (selected)='selectUser($event)' (inputCleared)='LimpiaUser()' placeholder="Usuario"
+                    [itemTemplate]="templateUsers" [notFoundTemplate]="templateVacio" [(ngModel)]="Usuario">
+                </ng-autocomplete>
+                <ng-template #templateUsers let-item>
+                    <a [innerHTML]="item.NOMBRES_PERSONA"></a>
+                </ng-template>
+                <ng-template #templateVacio let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
+            </div>
+
+            <div class="col-sm-2">
+                <label class="Llave">Identificador manychat</label>
+                <input type="text" class="form-control textBox" disabled placeholder="IdManychat"
+                    [(ngModel)]="IdManyChat">
+            </div>
+
+            <div class="col-sm-2">
+                <label class="Llave">Valor</label>
+                <input type="text" class="form-control textBox" placeholder="Valor"
+                    [(ngModel)]="ValorEnvio">
+            </div>
+
+            <div class="col-sm-2">
+                <label class="Llave">Id Campo</label>
+                <input type="number" class="form-control textBox" placeholder="Valor"
+                    [(ngModel)]="IdCampo">
+            </div>
+
+            <div class="col-sm-3">
+                <button type="button" class="btn btn-agro-prin w-100 mt-4" (click)="EnvioPrueba(ModalRespuesta)">Enviar</button>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
     <div class="row mt-4 justify-content-center">
+        <div class="col-sm-4 col-md-3 mt-2">
+            <label class="Llave">Tipo usuario</label>
+            <ng-autocomplete [data]="ArrayTipoUsuario" [searchKeyword]="'Descripcion'"
+                (selected)='selectTipoUser($event)' (inputCleared)='LimpiaTipoUser()' placeholder="Tipo Usuario"
+                [itemTemplate]="templateTipoUsers" [notFoundTemplate]="templateVacio" [(ngModel)]="TipoUser">
+            </ng-autocomplete>
+            <ng-template #templateTipoUsers let-item>
+                <a [innerHTML]="item.Descripcion"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+        <div class="col-sm-4 col-md-3 mt-2">
+            <label class="Llave">Codigo Usuario</label>
+            <input type="text" class="form-control textBox" placeholder="Codigo usuario" [(ngModel)]="UsuCodig">
+        </div>
+        <div class="col-sm-4 col-md-3 mt-2">
+            <label class="Llave">Email</label>
+            <input type="text" class="form-control textBox" placeholder="Codigo usuario" [(ngModel)]="Email">
+        </div>
+        <div class="col-sm-4 col-md-3 mt-2">
+            <label class="Llave">Telefono</label>
+            <input type="text" class="form-control textBox" placeholder="Codigo usuario" [(ngModel)]="Telefono">
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <div class="col-sm-3">
+            <button type="button" class="btn btn-agro-prin w-100" (click)="ConsultaUsers(UsuCodig, Email, Telefono)">Consultar</button>
+        </div>
+    </div>
+
+    <div class="row mt-4 justify-content-center">
+
+        <div class="row TableResult">
+            <table class="table">
+                <thead class="thead-light"
+                    style="position: sticky; top: -1px; background-color: #397c97; color: aliceblue; text-align: center;">
+                    <tr>
+                        <th scope="col">CodUser</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Telefono</th>
+                        <th scope="col">ManyChat</th>
+                    </tr>
+                </thead>
+                <tbody style=" text-align: center;">
+                    <tr *ngFor="let respu of ArrayUsers; let i = index">
+                        <th>{{respu.USUCODIG}}</th>
+                        <td>{{respu.NOMBRES_PERSONA}}</td>
+                        <td>{{respu.CELULAR_PERSONA}}</td>
+                        <th>{{respu.id_manychat}}</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <div class="col-sm-4 mt-2 mb-2">
             <button type="button" class="btn btn-agro-prin w-100" (click)="AsignaCampoMayChat()">AsignaNombre</button>
         </div>
-
-        <table class="table">
-            <thead class="thead-light">
-                <tr>
-                    <th scope="col">CodUser</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Telefono</th>
-                    <th scope="col">ManyChat</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let respu of ArrayUsers; let i = index">
-                    <th>{{respu.USUCODIG}}</th>
-                    <td>{{respu.NOMBRES_PERSONA}}</td>
-                    <td>{{respu.CELULAR_PERSONA}}</td>
-                    <th>{{respu.id_manychat}}</th>
-                </tr>
-            </tbody>
-        </table>
     </div>
 </div>
 <div class="divloader text-center" *ngIf="Loader == true">
     <img src="../../../../assets/animate/svg-loaders/circles.svg" />
     <h3 style="color: #397c97;">Enviando mensajes... {{NunMensajesEnviados}} de {{this.ArrayUsers.length}}</h3>
 </div>
+
+<ng-template #ModalRespuesta let-modal>
+    <div class="modal-header ">
+        <h1>AgroApoya2</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body ">
+        <div class="row br ">
+            <div class="col-sm-12 ">
+                <h2 class="TituloDetalle ">{{Respuesta}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center ">
+        <button type="button " class="btn btn-agro-prin col-sm-6" (click)="modal.dismiss() ">Aceptar</button>
+    </div>
+    <br>
+</ng-template>

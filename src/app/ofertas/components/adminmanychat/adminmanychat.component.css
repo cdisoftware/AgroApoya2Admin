@@ -3,6 +3,7 @@
     border-color: #397c97;
     background-color: #397c97;
 }
+
 .btn-agro-whats:hover {
     color: white;
     border-color: #04c204;
@@ -23,4 +24,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.TableResult {
+    max-height: 300px;
+    overflow: auto;
 }
