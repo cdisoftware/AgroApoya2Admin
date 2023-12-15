@@ -684,6 +684,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     this.TotalContra = 0
     this.TotalElect = 0
     this.ServiciosValorar.ConsultaReporteEntregas('1', idGrupo).subscribe(Resultado => {
+      console.log('************ArrayReporte**************')
       console.log(Resultado)
       if (Resultado.length > 0) {
         this.ArrayVentas = []
@@ -1051,10 +1052,14 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
 
   public downloadPDFDetalle(e: number, IdCarro: string) {
     this.ServiciosValorar.ConsultaDetalleEntregas('1', IdCarro).subscribe(Resultado => {
+      console.log('**********DETALLE DETALLE DETALLE*********************')
+      console.log(Resultado)
       for (var j = 0; Resultado.length > j; j++) {
         this.ArregloPDFDetalleProd[e].Productos.push({
           NombreProducto: Resultado[j].Producto,
-          Cantidad: Resultado[j].Cantidad
+          Cantidad: Resultado[j].Cantidad,
+          PesoProd: parseFloat(Resultado[j].PesoProd),
+          PesoProdTotal: (parseFloat(Resultado[j].PesoProd) * parseFloat(Resultado[j].Cantidad)).toString()
         });
       }
       if (e == this.ArregloPDFDetalleProd.length - 1) {
@@ -1075,12 +1080,21 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     })
 
     var arrrayProdTotal: any = [];
+
+    var CantidadTotal: number = 0;
+    var PesoTotal: GLfloat = 0;
+
     for (var a = 0; this.ArrayReporte.length > a; a++) {
-      arrrayProdTotal.push([this.ArrayReporte[a].PRODUCTO, this.ArrayReporte[a].CANTIDAD_TOTAL])
+      arrrayProdTotal.push([this.ArrayReporte[a].PRODUCTO, this.ArrayReporte[a].CANTIDAD_TOTAL,
+      parseFloat(this.ArrayReporte[a].PesoProdUnidad), parseFloat(this.ArrayReporte[a].PesoProdTotal)])
+      PesoTotal = PesoTotal + parseFloat(this.ArrayReporte[a].PesoProdTotal)
+      CantidadTotal = CantidadTotal + parseInt(this.ArrayReporte[a].CANTIDAD_TOTAL)
     }
 
+    arrrayProdTotal.push(['Cantidades Total', CantidadTotal.toString(), 'Peso total', PesoTotal.toString()])
+
     autoTable(doc, {
-      head: [['Nombre producto', 'Cantidad']],
+      head: [['Nombre producto', 'Cantidad', 'Peso und Libras', 'Peso Total Libras']],
       body: arrrayProdTotal,
     })
 
@@ -1093,12 +1107,17 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       var arrrayProdDetalle: any = [];
       for (var h = 0; this.ArregloPDFDetalleProd[e].Productos.length > h; h++) {
         if (this.ArregloPDFDetalleProd[e].Productos[h].NombreProducto != 'Domicilio') {
-          arrrayProdDetalle.push([this.ArregloPDFDetalleProd[e].Productos[h].NombreProducto, this.ArregloPDFDetalleProd[e].Productos[h].Cantidad])
+          arrrayProdDetalle.push(
+            [this.ArregloPDFDetalleProd[e].Productos[h].NombreProducto,
+            this.ArregloPDFDetalleProd[e].Productos[h].Cantidad,
+            this.ArregloPDFDetalleProd[e].Productos[h].PesoProd,
+            this.ArregloPDFDetalleProd[e].Productos[h].PesoProdTotal],
+          )
         }
       }
 
       autoTable(doc, {
-        head: [['Producto', 'Cantidad',]],
+        head: [['Producto', 'Cantidad', 'Peso und Libras', 'Peso total Libras']],
         body: arrrayProdDetalle,
       })
 
