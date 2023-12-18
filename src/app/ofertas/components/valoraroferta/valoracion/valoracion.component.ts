@@ -95,7 +95,7 @@ export class ValoracionComponent implements OnInit {
   txtValidaCons: string = 'No se encuentran adicionales asociados a la oferta';
   DesTopp: string = '';
   VlrUniTopp: string;
-  UnidMaxTopp: string;
+  UnidMaxTopp: string = '5';
   SessionTipoTopp: string = '';
   SessionTipoToppVenta: string = '';
   ValidaTipoTopp: boolean;
@@ -104,7 +104,7 @@ export class ValoracionComponent implements OnInit {
   TipoTopp: string;
   TipoToppVenta: string;
   SessionFechaRecogida: any;
-  UnidOferta: string;
+  UnidOferta: string = '30';
   imagenesAdicionales: string = '';
   imagenesCorreo: string = '';
   consultaimagen: string = '';
@@ -188,8 +188,8 @@ export class ValoracionComponent implements OnInit {
 
 
   //Modal Presentaciones
-  UnidadesOferta: string = "";
-  MaximoUnidades: string = "";
+  UnidadesOferta: string = '30';
+  MaximoUnidades: string = '5';
   ValorReal: string = "";
   ValorReferencia: string = "";
   SmsError: string = "";
@@ -347,7 +347,7 @@ export class ValoracionComponent implements OnInit {
     this.VigenDesde = '';
     this.VigenHasta = '';
     this.FechaEntrega = '';
-    this.UnidOferta = '';
+
     this.DataValores = [];
     this.DataToppings = [];
     this.RutaImagen = this.SeriviciosGenerales.RecuperaRutaImagenes();
@@ -858,8 +858,8 @@ export class ValoracionComponent implements OnInit {
       this.ListaProductos();
       this.VerTipoDescripcion = "2";
       this.ValidaTipoTopp = false;
-      this.UnidMaxTopp = '';
-      this.UnidOferta = '';
+      this.UnidMaxTopp = '5';
+      this.UnidOferta = '30';
       this.IsEnables = false;
       this.imagenesAdicionales = '';
     }
@@ -2880,6 +2880,8 @@ export class ValoracionComponent implements OnInit {
     this.ProductoNgModel = "";
     this.ProdTipoTpp = "";
     this.IdProdTipoTopping = "0";
+    this.LimpiaPresentacion();
+    this.ArrayPresentaciones = [];
 
     //Limpia Las imagenes
     this.Add1 = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
@@ -3488,6 +3490,7 @@ export class ValoracionComponent implements OnInit {
     }
     this.serviciosvaloracion.ModOrdenProductos('1', body).subscribe(Respu => {
       console.log(Respu)
+      this.consultaToppingsOferta();
     });
   }
   SelectProducto(item: any) {

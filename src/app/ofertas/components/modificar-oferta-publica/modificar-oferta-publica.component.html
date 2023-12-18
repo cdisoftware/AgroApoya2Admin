@@ -163,8 +163,8 @@
             </div>
         </div>
 
-        <div class="row br" *ngIf="ValidaVigencia=='1'">     
-            
+        <div class="row br" *ngIf="ValidaVigencia=='1'">
+
             <h5 class="SubTituloForm br">Definición vigencia oferta</h5>
             <div class="row br">
                 <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
@@ -272,15 +272,16 @@
                                 </div>
                             </div>
 
-                            <div class="row justify-content-center">                               
+                            <div class="row justify-content-center">
                                 <div class="col-sm-3">
                                     <label class="col-sm-12 Llave"></label>
-                                    <button class="btn btn-agro-prin col-sm-12" (click)="AbreModalConfSector(ModalSectorizar)">Guardar</button>
+                                    <button class="btn btn-agro-prin col-sm-12"
+                                        (click)="AbreModalConfSector(ModalSectorizar)">Guardar</button>
                                 </div>
                             </div>
                         </ng-template>
                     </ngb-panel>
-                </ngb-accordion>               
+                </ngb-accordion>
             </div>
 
             <div class="row br">
@@ -752,11 +753,20 @@
                 <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
                     <ngb-panel title="Adicionales" id="config-panel-three">
                         <ng-template ngbPanelContent>
-                            <div class="col-sm-2 col-12 br">
-                                <button type="button" class="btn btn-agro-prin col-sm-12"
-                                    (click)="CrearEditarproduct(templateEditar)">
-                                    Crear/Editar Producto</button>
+
+                            <div class="row m-0 p-0" style="margin-top: 20px !important;">
+                                <div class="col-sm-3 col-12">
+                                    <button type="button" class="btn btn-agro-prin col-sm-12"
+                                        (click)="CrearEditarproduct(templateEditar)">
+                                        Crear/Editar Producto</button>
+                                </div>
+
+                                <div class="col-sm-3 col-12">
+                                    <button class="btn btn-agro-prin col-sm-12 w-100"
+                                        (click)="AbreModalOrden(AdminOrdenProd)">Organizar productos</button>
+                                </div>
                             </div>
+
                             <div class="row br">
                                 <div class="col-sm-4 mt-2 mb-2">
                                     <label class="col-sm-12 Llave mt-1">Tipo</label>
@@ -810,11 +820,7 @@
                                         <label for="">Sin registros</label>
                                     </ng-template>
                                 </div>
-                                <div class="col-sm-4 mt-2" *ngIf="IsEnables == false ">
-                                    <label class="col-sm-12 Llave">Peso adición en kilogramos</label>
-                                    <input type="number" class="col-sm-12 form-control mt-1 textBox"
-                                        [(ngModel)]="PesoTopping" [disabled]="ValidaTipoTopp">
-                                </div>
+
                                 <div class="col-sm-4 mt-2">
                                     <label class="col-sm-12 Llave">Valor unitario</label>
                                     <input mask="separator" thousandSeparator="." type="text"
@@ -852,10 +858,34 @@
 
                                 <div class="col-sm-4 mt-2" *ngIf="VerTipoDescripcion == '2'">
                                     <label class="col-sm-12 Llave">Presentación</label>
-                                    <textarea name="DescCortaAdd" id="DescCortaAdd" cols="30" rows="5"
-                                        class="form-control textBox" placeholder="Presentación"
-                                        [(ngModel)]="Presentacion"></textarea>
+                                    <ng-autocomplete [data]="ArrayPresentaciones" [searchKeyword]="'des_empaque'"
+                                        (selected)='SelectPresentacion($event)' placeholder="Presentación"
+                                        [itemTemplate]="templateCampesino" [notFoundTemplate]="templateVacioCampesino"
+                                        (inputCleared)='LimpiaPresentacion()' [(ngModel)]="PresentacionSelect">
+                                    </ng-autocomplete>
+                                    <ng-template #templateCampesino let-item>
+                                        <a [innerHTML]="item.des_empaque"></a>
+                                    </ng-template>
+                                    <ng-template #templateVacioCampesino let-SinRegistro>
+                                        <label for="">Sin registros</label>
+                                    </ng-template>
                                 </div>
+
+                                <div class="col-sm-4 mt-2">
+                                    <label class="col-sm-12 Llave">Campesino</label>
+                                    <ng-autocomplete [data]="ArrayCampesino" [searchKeyword]="keywordCampesino"
+                                        (selected)='selectCampesino($event)' placeholder="Campesino"
+                                        [itemTemplate]="templateCampesino" [notFoundTemplate]="templateVacioCampesino"
+                                        (inputCleared)='LimpiaTipoToppVenta()' [(ngModel)]="DesCampesino">
+                                    </ng-autocomplete>
+                                    <ng-template #templateCampesino let-item>
+                                        <a [innerHTML]="item.NOMBRES_PERSONA + ' ' + item.APELLIDOS_PERSONA"></a>
+                                    </ng-template>
+                                    <ng-template #templateVacioCampesino let-SinRegistro>
+                                        <label for="">Sin registros</label>
+                                    </ng-template>
+                                </div>
+
                             </div>
 
                             <div class="row br justify-content-center">
@@ -976,13 +1006,7 @@
                                     </table>
                                 </div>
 
-                                <div class="row justify-content-center mt-4">
-                                    <div class="col-sm-4">
-                                        <label class="col-sm-12 Llave" style="text-align: center;">Orden Productos</label>
-                                        <button class="btn btn-agro-prin col-sm-12 w-100" (click)="AbreModalOrden(AdminOrdenProd)">Admin orden
-                                            prod</button>
-                                    </div>
-                                </div>
+
                             </div>
                         </ng-template>
                     </ngb-panel>
@@ -1286,14 +1310,18 @@
 
             <div class="col-sm-4 mt-2">
                 <label class="col-sm-12 Llave">Presentación</label>
-                <textarea name="DescCortaAdd" id="DescCortaAdd" cols="30" rows="5" class="form-control textBox"
-                    placeholder="Presentación" [(ngModel)]="PresentacionModal" (keypress)="LimpiSmsError()"></textarea>
-            </div>
-
-            <div class="col-sm-4 mt-2">
-                <label class="col-sm-12 Llave">Peso (Kg)</label>
-                <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PesoKl" placeholder="Peso"
-                    (keypress)="LimpiSmsError()">
+                <ng-autocomplete [data]="ArrayPresentacionesTopping" [searchKeyword]="'des_empaque'"
+                    [initialValue]="ArrayPresentacionesTopping[IndexPresentacionTopping_]"
+                    (selected)='SelectPresentacionTopping($event)' placeholder="Presentación"
+                    [itemTemplate]="templateCampesino" [notFoundTemplate]="templateVacioCampesino"
+                    (inputCleared)='LimpiaPresentacionTopping()' [(ngModel)]="PresentacionToppingSelect">
+                </ng-autocomplete>
+                <ng-template #templateCampesino let-item>
+                    <a [innerHTML]="item.des_empaque"></a>
+                </ng-template>
+                <ng-template #templateVacioCampesino let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
             </div>
 
             <div class="col-sm-4 mt-2">
@@ -1383,16 +1411,20 @@
 
             <div class="col-sm-4 mt-2">
                 <label class="col-sm-12 Llave">Presentación</label>
-                <textarea name="DescCortaAdd" id="DescCortaAdd" cols="30" rows="5" class="form-control textBox"
-                    placeholder="Presentación" [(ngModel)]="PresentacionProdAncla"
-                    (keypress)="LimpiSmsError()"></textarea>
+                <ng-autocomplete [data]="ArrayPresentacionesProdPrincipal" [searchKeyword]="'des_empaque'"
+                    [initialValue]="ArrayPresentacionesProdPrincipal[IndexPresentacionProdAncla_]"
+                    (selected)='SelectPresentacionRodAncla($event)' placeholder="Presentación"
+                    [itemTemplate]="templateCampesino" [notFoundTemplate]="templateVacioCampesino"
+                    (inputCleared)='LimpiaPresentacionProdAncla()' [(ngModel)]="PresentacionProdAnclaSelect">
+                </ng-autocomplete>
+                <ng-template #templateCampesino let-item>
+                    <a [innerHTML]="item.des_empaque"></a>
+                </ng-template>
+                <ng-template #templateVacioCampesino let-SinRegistro>
+                    <label for="">Sin registros</label>
+                </ng-template>
             </div>
-
-            <div class="col-sm-4 mt-2">
-                <label class="col-sm-12 Llave">Peso (kg)</label>
-                <input type="number" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="PesoProdAncla"
-                    placeholder="Peso" (keypress)="LimpiSmsError()">
-            </div>
+       
 
             <div class="col-sm-4 mt-2">
                 <label class="col-sm-12 Llave">Valor</label>
@@ -1723,20 +1755,22 @@
                 </div>
             </div>
 
-            <div class="col-sm-6 row" cdkDropList [cdkDropListData]="ArrayProdAdminOrden" (cdkDropListDropped)="dropProd($event, ArrayProdAdminOrden)">
+            <div class="col-sm-6 row" cdkDropList [cdkDropListData]="ArrayProdAdminOrden"
+                (cdkDropListDropped)="dropProd($event, ArrayProdAdminOrden)">
                 <div cdkDrag *ngFor="let respu of ArrayProdAdminOrden; let i = index" (click)="SelectProducto(respu)"
                     [ngClass]="respu.Check == true ? 'col-12 cajaProdOrdenCheck lblCajaOrden mt-2' : 'col-12 cajaProdOrden lblCajaOrden mt-2'">
                     {{respu.NombreProducto}}
                 </div>
             </div>
-            <div class="col-sm-6 justify-content-center" cdkDropList [cdkDropListData]="ArrayPresentacionesProdSelect" (cdkDropListDropped)="dropPresentacion($event, ArrayPresentacionesProdSelect)">
+            <div class="col-sm-6 justify-content-center" cdkDropList [cdkDropListData]="ArrayPresentacionesProdSelect"
+                (cdkDropListDropped)="dropPresentacion($event, ArrayPresentacionesProdSelect)">
                 <div cdkDrag *ngFor="let ite of ArrayPresentacionesProdSelect; let y = index"
                     class="justify-content-center row">
                     <div class="col-10 cajaProdOrdenCheck lblCajaOrdenPresentacion mt-2">
                         {{ite.Presentacion}}
                     </div>
                     <div class="col-sm-1 mt-2" *ngIf="ite.PrimeroVer == null">
-                        <button class="bot" title="Selecciónar presentacion"  (click)="SelectVerPrimero(ite)">
+                        <button class="bot" title="Selecciónar presentacion" (click)="SelectVerPrimero(ite)">
                             <img src="../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png" alt="Selecciónar"
                                 class="BtnimgTamanoPeque">
                         </button>
