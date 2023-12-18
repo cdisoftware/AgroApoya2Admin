@@ -32,6 +32,7 @@ export class EnviosmanychatComponent implements OnInit {
   IdCampo: string = '';
   arregloCampos: any;
   RespuePlantilla: string = '';
+  IdAuditoria: string = '';
 
   constructor(private ServiciosValorar: ValorarofertaService,
     private modalService: NgbModal,
@@ -156,11 +157,26 @@ export class EnviosmanychatComponent implements OnInit {
   AuditoriaManychat() {
     var RespuAuditoria;
     const Body = {
-      QueryPre: this.QueryFinal
+      QueryPre: this.QueryFinal,
+      CodigoPlantilla: this.IdPlantll
     }
     this.ServiciosValorar.AuditoriAdminManychat('1', Body).subscribe(Resultado => {
       RespuAuditoria = Resultado;
+      this.IdAuditoria = RespuAuditoria.split('|')[0].trim()
     })
+  }
+
+  AuditoriaManychatEnvios(USUCODIG: string, ID_MANYCHAT:string) {  
+      const Body = {
+        IdManyChat: ID_MANYCHAT,
+        Usucodig: USUCODIG,
+        IdAuditoria: this.IdAuditoria,
+        IdTipoEnvio: 1
+      };
+      console.log(Body)
+      this.ServiciosValorar.AuditoriAdminManychatEnvios('1', Body).subscribe(Resultado => {
+        //console.log('Resultado de la auditoría Envios: ' + Resultado);
+      })
   }
 
   async EnvioManyChat() {
@@ -170,7 +186,7 @@ export class EnviosmanychatComponent implements OnInit {
     } else {
       if (this.DataQuery.length > 0) {
         const batchSize = 25;
-
+        this.AuditoriaManychat();
         for (let i = 0; i < this.DataQuery.length; i += batchSize) {
           const batch = this.DataQuery.slice(i, i + batchSize);
           this.Loader = true;
@@ -179,18 +195,20 @@ export class EnviosmanychatComponent implements OnInit {
           await Promise.all(batch.map(async (item) => {
             this.NunMensajesEnviados++;
             await this.EnviaPlantilla(item.ID_MANYCHAT);
+            await this.AuditoriaManychatEnvios(item.USUCODIG, item.ID_MANYCHAT);
           }));
 
           // Espera de 1 segundo antes de enviar el siguiente lote
           await this.sleep(1000);
         }
 
-        this.AuditoriaManychat();
+        
         this.IdPlantll = '';
         this.NunMensajesEnviados = 0;
         this.Loader = false;
         this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
         this.Respuesta = "Mensajes enviados.";
+    
       } else {
         this.Respuesta = "Sin resultados.";
         this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
