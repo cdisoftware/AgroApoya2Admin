@@ -1751,7 +1751,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.modalService.dismissAll();
 
     this.UnidadesOferta = "";
-    this.MaximoUnidades = "";    
+    this.MaximoUnidades = "";
     this.LimpiaPresentacionTopping();
     this.ValorReal = "";
     this.ValorReferencia = "";
@@ -1766,7 +1766,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   LimpiarCamposModalPresentacion() {
     this.UnidadesOferta = "";
     this.MaximoUnidades = "";
-   
+
     this.LimpiaPresentacionTopping();
     this.ValorReal = "";
     this.ValorReferencia = "";
@@ -2693,7 +2693,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   }
   //#region AgregaPresentacionesProdAncla
   AbreModalPresentacioProdAncla(PresentacionesProdAncla: any) {
-   
+
     this.ListaPresentacionesProdAncla();
     this.CargaListaPresentacionesProdAncla();
     this.modalService.open(PresentacionesProdAncla, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
@@ -3249,7 +3249,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         PresentacionProd: Auxpresentacion,
         IdCampesino: this.IdCampesino
       }
-
+      console.log(Body)
       this.serviciosvaloracion.ModificaTopping('2', Body).subscribe(ResultOper => {
         this.Respuesta = ResultOper;
         this.consultaToppingsOferta();
