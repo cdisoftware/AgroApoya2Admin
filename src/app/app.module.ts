@@ -50,6 +50,7 @@ import { UltimamillamultientregasComponent } from './ofertas/components/ultimami
 import { MapacalorComponent } from './ofertas/components/mapacalor/mapacalor.component';
 import { DuplicarofertaComponent } from './ofertas/components/duplicaroferta/duplicaroferta.component';
 import { ModificarOfertaPublicaComponent } from './ofertas/components/modificar-oferta-publica/modificar-oferta-publica.component';
+import { AdminmanychatComponent } from './ofertas/components/adminmanychat/adminmanychat.component';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 @NgModule({
@@ -87,7 +88,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     UltimamillamultientregasComponent,
     MapacalorComponent,
     ModificarOfertaPublicaComponent,
-    DuplicarofertaComponent
+    DuplicarofertaComponent,
+    AdminmanychatComponent
     ],
   imports: [
     NgxMaskModule.forRoot(options),

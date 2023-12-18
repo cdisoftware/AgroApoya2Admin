@@ -60,7 +60,7 @@ export class ReporteService {
     return this.http.get<any[]>(this.url_servidor + 'consImagenesAdminUsers/' + Bandera + '/' + Usucodig)
   }
 
-  ActualizaImagen(Bandera: string, Body: any){
+  ActualizaImagen(Bandera: string, Body: any) {
     return this.http.post<any>(this.url_servidor + 'mosAdminImgUsers/' + Bandera, Body)
   }
 
@@ -138,10 +138,11 @@ export class ReporteService {
   }
 
 
-  consAdminReporteCantTotal(Bandera: string, IdOferta: any ) {
+  consAdminReporteCantTotal(Bandera: string, IdOferta: any) {
     return this.http.get<any[]>(this.url_servidor + 'consAdminReporteCantTotal/' + Bandera + '/' + IdOferta)
-
   }
 
-
+  ConsultaUsers(Bandera: string, TipoUser: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'ConsCUsersAA2/' + Bandera + '/' + TipoUser, Body);
+  }
 }
