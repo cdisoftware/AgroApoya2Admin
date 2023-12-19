@@ -89,6 +89,7 @@ export class GrupoMillaServices {
 
     //UtimaMilla
     ConsEntregasTransporte(bandera: string, IdGrupo: string) {
+        console.log(this.url_servidor + 'consAdMillaGrupos/' + bandera + '/' + IdGrupo)
         return this.http.get<any>(this.url_servidor + 'consAdMillaGrupos/' + bandera + '/' + IdGrupo);
     }
     OrdenEntregas(bandera: string, body: any) {
