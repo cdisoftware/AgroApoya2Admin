@@ -36,6 +36,8 @@ import { UltimamillamultientregasComponent } from './ofertas/components/ultimami
 import { MapacalorComponent } from './ofertas/components/mapacalor/mapacalor.component';
 import { ModificarOfertaPublicaComponent } from './ofertas/components/modificar-oferta-publica/modificar-oferta-publica.component';
 import { DuplicarofertaComponent } from './ofertas/components/duplicaroferta/duplicaroferta.component';
+import { RepEntregasComponent } from './ofertas/components/reportes/rep-entregas/rep-entregas.component';
+
 
 const routes: Routes = [
   {
@@ -188,6 +190,10 @@ const routes: Routes = [
       {
         path: 'DuplicarOferta',
         component: DuplicarofertaComponent
+      },
+      {
+        path: 'ReporteEntregas',
+        component: RepEntregasComponent
       }
     ]
   },

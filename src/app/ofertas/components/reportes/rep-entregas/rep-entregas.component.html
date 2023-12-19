@@ -1,0 +1,118 @@
+<div class="container bg-white">
+    <br><br>
+    <h1>Reporte Entregas</h1>
+    <br><br>
+    <div class="row justify-content-center">
+        <button class="btn btn-agro-prin col-sm-3" (click)="AbrirModalIdOferta()">
+            Filtrar por id oferta</button>
+        <div class="col-sm-1"></div>
+        <button class="btn btn-agro-prin col-sm-3" (click)="AbrirModalFechas()">
+            Filtrar por fechas de entrega</button>
+        <div class="col-sm-1"></div>
+        <button class="btn btn-agro-prin col-sm-3" (click)="AbrirModalIdGrupos()">
+            Filtrar por rutas de entrega
+        </button>
+    </div>
+</div>
+
+<ng-template #ModalOferta let-modal>
+    <div class="modal-header ">
+        <h1>ID DE LA OFERTA</h1>
+        <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
+    </div>
+    <div class="modal-body ">
+        <div style="text-align: center ;">
+            <label>Ingresa los id de la oferta uno por uno, para obtener un reporte total del producto </label>
+            <div style="padding: 10px; display:flex;">
+                <input class="form-control" [(ngModel)]="IdOfertaB">
+                <img src="https://cdn-icons-png.flaticon.com/128/1828/1828817.png" (click)="AgregarIdOfertaClick()"
+                    style="width: 30px; height: 30px; margin-top: 5px; margin-left: 10px; cursor: pointer;">
+            </div>
+            <div *ngFor="let oferta of ArrayOfertaBuscar">
+                <div
+                    style="padding-left: 10px; padding-right: 10px; padding-top: 3px; padding-bottom: 3px; display:flex;">
+                    <input class="form-control" [(ngModel)]="oferta.IdOfertaB" disabled>
+                    <img src="https://cdn-icons-png.flaticon.com/128/1828/1828843.png"
+                        (click)="QuitarIdOfertaClick(oferta.IdOfertaB)"
+                        style="width: 30px; height: 30px; margin-top: 5px; margin-left: 10px; cursor: pointer;">
+                </div>
+            </div>
+            <br>
+            <label style="color: red;">{{smsError}}</label>
+            <br> <br>
+            <div class="justify-content-center row">
+                <button class="btn btn-agro-prin col-sm-3" (click)="BuscarIdOfertaClick()">
+                    Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #ModalFechas let-modal>
+    <div class="modal-header ">
+        <h1>FECHA DE ENTREGAS</h1>
+        <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
+    </div>
+    <div class="modal-body ">
+        <div style="text-align: center;">
+            <label>Selecciona las fechas de entrega del producto, de las cuales deseas obtener el reporte de producto
+                total
+            </label>
+            <div style="padding: 10px; display:flex;">
+                <div style="width: 49%;">
+                    <label><small>Fecha desde: </small> </label>
+                    <input class="form-control" type="date">
+                </div>
+                <div style="width: 2%;"></div>
+                <div style="width: 49%;">
+                    <label><small>Fecha hasta:</small> </label>
+                    <input class="form-control" type="date">
+                </div>
+            </div>
+            <br>
+            <label style="color: red;">{{smsError}}</label>
+            <br> <br>
+            <div class="justify-content-center row">
+                <button class="btn btn-agro-prin col-sm-3 " (click)="BuscarFechaClick()">
+                    Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #ModalGrupo let-modal>
+    <div class="modal-header ">
+        <h1>ID GRUPO DE ENTREGAS</h1>
+        <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
+    </div>
+    <div class="modal-body ">
+        <div style="text-align: center ;">
+            <label>Ingresa los id de los grupos de entrega uno por uno, para obtener un reporte total del producto
+            </label>
+            <div style="padding: 10px; display:flex;">
+                <input class="form-control" [(ngModel)]="IdOGrupoB">
+                <img src="https://cdn-icons-png.flaticon.com/128/1828/1828817.png" (click)="AgregarIdGrupoClick()"
+                    style="width: 30px; height: 30px; margin-top: 5px; margin-left: 10px; cursor: pointer;">
+            </div>
+            <div *ngFor="let oferta of ArrayGrupoBuscar">
+                <div
+                    style="padding-left: 10px; padding-right: 10px; padding-top: 3px; padding-bottom: 3px; display:flex;">
+                    <input class="form-control" [(ngModel)]="oferta.IdOGrupoB" disabled>
+                    <img src="https://cdn-icons-png.flaticon.com/128/1828/1828843.png"
+                        (click)="QuitarIdGrupoClick(oferta.IdOGrupoB)"
+                        style="width: 30px; height: 30px; margin-top: 5px; margin-left: 10px; cursor: pointer;">
+                </div>
+            </div>
+            <br>
+            <label style="color: red;">{{smsError}}</label>
+            <br> <br>
+            <div class="justify-content-center row">
+                <button class="btn btn-agro-prin col-sm-3" (click)="BuscarIdGrupoClick()">
+                    Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-template>
