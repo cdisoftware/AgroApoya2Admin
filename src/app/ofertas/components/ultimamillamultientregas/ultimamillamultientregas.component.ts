@@ -18,7 +18,6 @@ import {
 })
 export class UltimamillamultientregasComponent implements OnInit, AfterViewInit {
   constructor(private modalService: NgbModal, public sevicesmilla: GrupoMillaServices, public sectoresservices: ValorarofertaService) { }
-
   //#region General
   IdGrugo_: string = "0";
 
@@ -1063,6 +1062,10 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       this.ValorGrupo = Respu[0].ValorFlete;
       this.IdGrupo_ = Respu[0].IdGrupoMilla;
       this.PesoKiloGramos = this.librasAKilos(Number(Respu[0].PesoKilos));
+      if (this.PesoKiloGramos > 200) {
+        this.MesajeModal = "El transporte ya cuenta con más de 200 Kilogramos ten encuentra el transportista a asignar que pueda llevar esa carga.";
+        this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      }
       this.ListaEntregasTransporte();
     });
   }
