@@ -50,6 +50,7 @@ import { UltimamillamultientregasComponent } from './ofertas/components/ultimami
 import { MapacalorComponent } from './ofertas/components/mapacalor/mapacalor.component';
 import { DuplicarofertaComponent } from './ofertas/components/duplicaroferta/duplicaroferta.component';
 import { ModificarOfertaPublicaComponent } from './ofertas/components/modificar-oferta-publica/modificar-oferta-publica.component';
+import { RepEntregasComponent } from './ofertas/components/reportes/rep-entregas/rep-entregas.component';
 import { AdminmanychatComponent } from './ofertas/components/adminmanychat/adminmanychat.component';
 import { CoordenadasusuariosComponent } from './usuario/components/coordenadasusuarios/coordenadasusuarios.component';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
@@ -90,6 +91,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MapacalorComponent,
     ModificarOfertaPublicaComponent,
     DuplicarofertaComponent,
+    RepEntregasComponent
     AdminmanychatComponent,
     CoordenadasusuariosComponent
     ],
