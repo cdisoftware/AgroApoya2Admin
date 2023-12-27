@@ -1,0 +1,145 @@
+<div class="container bg-white">
+    <br>
+    <h1 class="br">Coordenadas Usuarios</h1>
+
+    <div class="row br justify-content-center">
+        <div class="col-sm-6 br">
+            <label class="col-sm-12 Llave">Usucodig</label>
+
+            <ng-autocomplete [data]="ArrayUsucodig" [searchKeyword]="keywordConSec" (selected)='selectUsucodig($event)'
+                (inputCleared)="LimpiaUsucodig('')" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio"
+                [(ngModel)]="UsucodigFiltro">
+            </ng-autocomplete>
+            <ng-template #templateSec let-item>
+                <a [innerHTML]="item.usucodig + ' - ' + item.NombreCompleto"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+        <div class="col-sm-6 br">
+            <label class="col-sm-12 Llave">Nombre</label>
+            <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="NombreFiltro">
+        </div>
+    </div>
+
+
+
+    <div class="row br justify-content-center">
+        <div class="col-sm-3 col-12">
+            <button class="col-sm-12 btn btn-agro-sec" title="Buscar plantilla"
+                (click)="LimpiarFiltros()">Limpiar</button>
+        </div>
+        <div class="col-sm-3 col-12">
+            <button class="col-sm-12 btn btn-agro-prin" title="Buscar plantilla"
+                (click)="BuscarUsuarios()">Buscar</button>
+        </div>
+    </div>
+
+    <div class="row br justify-content-center" *ngIf="VerOcultarCampos !='1'">
+        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+            <h5 class="textblue">Número de usuarios: <strong>{{this.DataUsuarios.length}}</strong></h5>
+            <hr>
+            <table class="table col-sm-12 TableAgro">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Usucodig</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Coordenadas</th>
+                    <th>Acción</th>
+                </tr>
+                <tr *ngFor="let data of DataUsuarios">
+                    <td>{{data.NombreCompleto}}</td>
+                    <td>{{data.usucodig}}</td>
+                    <td>{{data.DRCCION}}</td>
+                    <td>{{data.CELULAR_PERSONA}}</td>
+                    <td>{{data.coordenadas_entr}}</td>
+                    <td> <button class="SinEstilo" title="Ver usuario" (click)="AccionMapaUsuario(data)">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/mapa.png">
+                        </button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="row br" *ngIf="VerOcultarCampos =='3'">
+        <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three" *ngFor="let user of DatosUser">
+            <ngb-panel title="Datos Usuario" id="config-panel-three">
+                <ng-template ngbPanelContent>
+                    <div class="row justify-content-center m-1">
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label><strong>Nombre:&nbsp;</strong>{{user.NombreCompleto}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label><strong>Usucodig:&nbsp;</strong>{{user.usucodig}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label><strong>Dirección:&nbsp;</strong>{{user.DRCCION}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label><strong>Telefono:&nbsp;</strong>{{user.CELULAR_PERSONA}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label><strong>Coordenadas:&nbsp;</strong>{{user.coordenadas_entr}}</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="row mt-2 justify-content-center ">
+                                <div class="col-sm-12 ">
+                                    <div id="map" name="map"
+                                        [ngClass]="ValidaInsertSec == '1' ? 'ShowMap' : 'HideMap' "></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="col-sm-3">
+                            <label class="col-sm-12 Llave"></label>
+                            <button class="btn btn-agro-prin col-sm-12" (click)="GuardarCoordenada(user)">Guardar</button>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+    </div>
+</div>
+
+<ng-template #ModalRespuesta let-modal>
+    <div class="modal-header">
+        <h1>Respuesta</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">{{Respuesta}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>

@@ -1,0 +1,32 @@
+.btn-agro-whats {
+    color: white;
+    border-color: #397c97;
+    background-color: #397c97;
+}
+
+.btn-agro-whats:hover {
+    color: white;
+    border-color: #04c204;
+    background-color: #04c204;
+}
+
+.Opacity {
+    opacity: 0.1;
+}
+
+.Stiky {
+    position: sticky;
+    top: 0;
+}
+
+.divloader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.TableResult {
+    max-height: 300px;
+    overflow: auto;
+}

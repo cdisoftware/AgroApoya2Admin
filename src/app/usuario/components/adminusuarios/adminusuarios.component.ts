@@ -233,9 +233,6 @@ export class AdminusuariosComponent implements OnInit {
     } else if (this.INPDescDos == undefined || this.INPDescDos == null || this.INPDescDos == '') {
       this.Respuesta = 'El campo descripción dos es obligatorio.';
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.INPDescTres == undefined || this.INPDescTres == null || this.INPDescTres == '') {
-      this.Respuesta = 'El campo descripción tres es obligatorio.';
-      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else if (this.INPComentario == undefined || this.INPComentario == null || this.INPComentario == '') {
       this.Respuesta = 'El campo comentario es obligatorio.';
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })

@@ -51,7 +51,8 @@ import { MapacalorComponent } from './ofertas/components/mapacalor/mapacalor.com
 import { DuplicarofertaComponent } from './ofertas/components/duplicaroferta/duplicaroferta.component';
 import { ModificarOfertaPublicaComponent } from './ofertas/components/modificar-oferta-publica/modificar-oferta-publica.component';
 import { RepEntregasComponent } from './ofertas/components/reportes/rep-entregas/rep-entregas.component';
-
+import { AdminmanychatComponent } from './ofertas/components/adminmanychat/adminmanychat.component';
+import { CoordenadasusuariosComponent } from './usuario/components/coordenadasusuarios/coordenadasusuarios.component';
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 @NgModule({
@@ -91,6 +92,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     ModificarOfertaPublicaComponent,
     DuplicarofertaComponent,
     RepEntregasComponent
+    AdminmanychatComponent,
+    CoordenadasusuariosComponent
     ],
   imports: [
     NgxMaskModule.forRoot(options),

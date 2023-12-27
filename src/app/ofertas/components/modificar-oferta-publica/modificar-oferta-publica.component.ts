@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { Router } from '@angular/router'
 import { CookieService } from 'ngx-cookie-service';
 import { CrearofertaService } from 'src/app/core/crearoferta.service';
+import { ReporteService } from 'src/app/core/reporte.service';
 import {
   CdkDragDrop,
   CdkDrag,
@@ -111,7 +112,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   txtValidaCons: string = 'No se encuentran adicionales asociados a la oferta';
   DesTopp: string = '';
   VlrUniTopp: string;
-  UnidMaxTopp: string;
+  UnidMaxTopp: string = '5';
   SessionTipoTopp: string = '';
   SessionTipoToppVenta: string = '';
   ValidaTipoTopp: boolean;
@@ -120,7 +121,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   TipoTopp: string;
   TipoToppVenta: string;
   SessionFechaRecogida: any;
-  UnidOferta: string;
+  UnidOferta: string = '30';
   imagenesAdicionales: string = '';
   imagenesCorreo: string = '';
   //consultaimagen: string = '';
@@ -138,8 +139,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   UrlPubli: string = '';
   UrlParticipante: string = '';
   UrlParticipanteC: any;
-  //UrlPubliC: any;
-  PesoTopping: string = '';
+  //UrlPubliC: any; 
   RutaImagenes: string = '';
   RutaImageneSector: string = this.SeriviciosGenerales.RecuperaRutaImagenes();
 
@@ -200,15 +200,24 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   IdProdTipoTopping: string = "0";
   ProductoNgModel: string = "";
   AuxIdRelacion: string = '';
+
   //Presentacion
   Presentacion: string = "";
+  ArrayPresentaciones: any = [];
+  PresentacionSelect: any = "";
+  PesoPresentacion: string = '0';
 
+  //Campesino
+  ArrayCampesino: any = []
+  keywordCampesino: string = 'NOMBRES_PERSONA';
+  IdCampesino: string = '0';
+  DesCampesino: string = ''
 
   //Modal Presentaciones
-  UnidadesOferta: string = "";
-  MaximoUnidades: string = "";
-  PresentacionModal: string = "";
-  PesoKl: string = "";
+  UnidadesOferta: string = '30';
+  MaximoUnidades: string = '5';
+
+
   ValorReal: string = "";
   ValorReferencia: string = "";
   SmsError: string = "";
@@ -222,10 +231,26 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   DescripcionPresentacion: string = "";
 
   //#region AgregaPresentacionesProdAncla
-  UnidadesProdAncla: string = "";
-  MaxinoProdAncla: string = "";
+  UnidadesProdAncla: string = '30';
+  MaxinoProdAncla: string = '5';
   PresentacionProdAncla: string = "";
-  PesoProdAncla: string = "";
+  IdProductoAncla_: string = "0";
+  ArrayPresentacionesProdPrincipal: any[];
+  PresentacionProdAnclaSelect: any = "";
+  PesoPresentacionProdAncla: string = "0";
+
+  //Editar
+  IndexPresentacionProdAncla_: number = -1;
+
+  //PresentacionesTopping
+  IdProductoTopping_: string = "0";
+  ArrayPresentacionesTopping: any[];
+  PresentacionToppingSelect: any = "";
+  PesoPresentacionTopping: string = "0";
+  PresentacionTopping: string = "0";
+  //Editar
+  IndexPresentacionTopping_: number = -1;
+
   ValorProdAncla: string = "";
   ValorReferenciaProdAncla: string = "";
 
@@ -276,6 +301,8 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   SessionCDRegion: any;
   NomImagenSector: string = '';
 
+
+
   //#region AdminOrdenProd
   ArrayProdAdminOrden: any = [];
   ArrayPresentacionesProdSelect: any = [];
@@ -288,6 +315,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     private SeriviciosGenerales: MetodosglobalesService,
     private formatofecha: DatePipe,
     private cookies: CookieService,
+    private serviciosreportes: ReporteService,
     private ServiciosOferta: CrearofertaService) { }
   geocoder = new google.maps.Geocoder();
   SessionCiudad: any;
@@ -305,6 +333,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.CargaInfoCupon();
     this.ConsultaCiudadOferta();
     this.ConsultaSectoresOferta();
+    this.ConsultaCampesino();
     this.SessionCDMunicipio = '0';
     this.SessionCiudad = '0';
     this.SessionCDRegion = '0';
@@ -373,7 +402,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.VigenDesde = '';
     this.VigenHasta = '';
     this.FechaEntrega = '';
-    this.UnidOferta = '';
+
     this.DataValores = [];
     this.DataToppings = [];
     this.RutaImagen = this.SeriviciosGenerales.RecuperaRutaImagenes();
@@ -514,6 +543,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.serviciosvaloracion.ConsultaOferta('1', this.IdOfertaSelect).subscribe(ResultConsu => {
       this.DataOferta = ResultConsu;
       this.SessionFechaRecogida = this.DataOferta[0].fecha_recogida;
+      this.IdProductoAncla_ = this.DataOferta[0].Producto;
     })
   }
 
@@ -674,7 +704,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   }
 
   ConsultaSectoresOferta() {
-    this.sectoresservices.ConsultaSectoresOferta('1', this.SelectorOferta).subscribe(ResultConsulta => {  
+    this.sectoresservices.ConsultaSectoresOferta('1', this.SelectorOferta).subscribe(ResultConsulta => {
       if (ResultConsulta.length > 0) {
         this.ImagenSector = ResultConsulta[0].imagen_sctor;
         this.ValidaConsulta = '0';
@@ -1663,7 +1693,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   selectProductoTopp(item: any) {
     this.ProdTipoTpp = item.DSCRPCION;
     this.IdProdTipoTopping = item.CD_PRDCTO;
-
+    this.CargaListaPresentaciones(item.CD_PRDCTO);
 
     //Precarga imagenes con lo que trae el servicio
     if (item.imagen != null && item.imagen != '' && item.imagen != 'null') {
@@ -1688,6 +1718,8 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.ProductoNgModel = "";
     this.ProdTipoTpp = "";
     this.IdProdTipoTopping = "0";
+    this.LimpiaPresentacion();
+    this.ArrayPresentaciones = [];
 
     //Limpia Las imagenes
     this.Add1 = './../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
@@ -1707,18 +1739,20 @@ export class ModificarOfertaPublicaComponent implements OnInit {
 
 
   AbreAdminPresentaciones(Presentaciones: any, topping: any) {
+    this.IdProductoTopping_ = topping.Id_Producto;
     this.modalService.open(Presentaciones, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
     this.IdToppingSelect = topping.IdTopping;
     this.DescripcionProductoTopping = topping.Descripcion;
     this.ListaPresentacionesTopping(topping.IdTopping);
+    this.CargaListaPresentacionesTopping();
+    this.modalService.open(Presentaciones, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
   }
   CierraModalPresentacion() {
     this.modalService.dismissAll();
 
     this.UnidadesOferta = "";
     this.MaximoUnidades = "";
-    this.PresentacionModal = "";
-    this.PesoKl = "";
+    this.LimpiaPresentacionTopping();
     this.ValorReal = "";
     this.ValorReferencia = "";
     this.IdToppingSelect = "";
@@ -1732,22 +1766,21 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   LimpiarCamposModalPresentacion() {
     this.UnidadesOferta = "";
     this.MaximoUnidades = "";
-    this.PresentacionModal = "";
-    this.PesoKl = "";
+
+    this.LimpiaPresentacionTopping();
     this.ValorReal = "";
     this.ValorReferencia = "";
     this.banderaAgregarAdicional = '1';
   }
   AgregarPresentacion(bandera: string) {
     this.SmsError = "";
-
     if (this.UnidadesOferta == '' || this.UnidadesOferta == '0' || Number(this.UnidadesOferta) < 1) {
       this.SmsError = "Define agregar unidades para la oferta";
     } else if (this.MaximoUnidades == '' || this.MaximoUnidades == '0' || Number(this.MaximoUnidades) < 1) {
       this.SmsError = "Define la cantidad máxima por compra";
-    } else if (this.PresentacionModal == '') {
+    } else if (this.PresentacionTopping == '') {
       this.SmsError = "Define la presentación";
-    } else if (this.PesoKl == '' || this.PesoKl == '0' || Number(this.PesoKl) < 1) {
+    } else if (this.PesoPresentacionTopping == '' || this.PesoPresentacionTopping == '0' || Number(this.PesoPresentacionTopping) < 1) {
       this.SmsError = "Define el peso del producto";
     } else if (this.ValorReal == '' || this.ValorReal == '0' || Number(this.ValorReal) < 1) {
       this.SmsError = "Define el Valor del producto en esta presentación";
@@ -1762,13 +1795,13 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         const body = {
           IdTopping: this.IdToppingSelect,
           IdRelacion: 0,
-          Presentacion: this.PresentacionModal,
+          Presentacion: this.PresentacionTopping,
           ValorReal: this.ValorReal,
           ValorReferencia: this.ValorReferencia,
           UnidadesOferta: this.UnidadesOferta,
           MximoUnidades: this.MaximoUnidades,
           Id_Sector: this.SessionSectorSel,
-          PesoUnidad: this.PesoKl
+          PesoUnidad: this.PesoPresentacionTopping
         }
         this.serviciosvaloracion.modCRelacionProductoTopping('2', body).subscribe(Respu => {
           var split = Respu.toString().split("|");
@@ -1783,13 +1816,13 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         const body = {
           IdTopping: this.IdToppingSelect,
           IdRelacion: this.AuxIdRelacion,
-          Presentacion: this.PresentacionModal,
+          Presentacion: this.PresentacionTopping,
           ValorReal: this.ValorReal,
           ValorReferencia: this.ValorReferencia,
           UnidadesOferta: this.UnidadesOferta,
           MximoUnidades: this.MaximoUnidades,
           Id_Sector: this.SessionSectorSel,
-          PesoUnidad: this.PesoKl
+          PesoUnidad: this.PesoPresentacionTopping
         }
         this.serviciosvaloracion.modCRelacionProductoTopping('3', body).subscribe(Respu => {
           var split = Respu.toString().split("|");
@@ -1808,11 +1841,16 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.AuxIdRelacion = Adicional.IdRelacion;
     this.UnidadesOferta = Adicional.cantidadReserva;
     this.MaximoUnidades = Adicional.MaxCantidad;
-    this.PresentacionModal = Adicional.Presentacion;
-    this.PesoKl = Adicional.PesoKilos;
     this.ValorReal = Adicional.ValorUnitario;
     this.ValorReferencia = Adicional.VlorRefencia;
     this.banderaAgregarAdicional = '2';
+
+    for (var i = 0; i < this.ArrayPresentacionesTopping.length; i++) {
+      if (Adicional.Presentacion == this.ArrayPresentacionesTopping[i].des_empaque) {
+        this.IndexPresentacionTopping_ = i;
+        break;
+      }
+    }
   }
 
   ConfirmacionEliminar(item: any, ModalConfirmacion: any) {
@@ -2655,8 +2693,9 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   }
   //#region AgregaPresentacionesProdAncla
   AbreModalPresentacioProdAncla(PresentacionesProdAncla: any) {
-    this.LimpiaCamposPresentacioProdAncla();
+
     this.ListaPresentacionesProdAncla();
+    this.CargaListaPresentacionesProdAncla();
     this.modalService.open(PresentacionesProdAncla, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
   }
   ListaPresentacionesProdAncla() {
@@ -2673,7 +2712,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
       this.SmsError = "Define la cantidad máxima por compra";
     } else if (this.PresentacionProdAncla == '') {
       this.SmsError = "Define la presentación";
-    } else if (this.PesoProdAncla == '' || this.PesoProdAncla == '0' || Number(this.PesoProdAncla) < 1) {
+    } else if (this.PesoPresentacionProdAncla == '' || this.PesoPresentacionProdAncla == '0' || Number(this.PesoPresentacionProdAncla) < 1) {
       this.SmsError = "Define el peso del producto";
     } else if (this.ValorProdAncla == '' || this.ValorProdAncla == '0' || Number(this.ValorProdAncla) < 1) {
       this.SmsError = "Define el Valor del producto en esta presentación";
@@ -2694,7 +2733,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
           UnidadesOferta: this.UnidadesProdAncla,
           MximoUnidades: this.MaxinoProdAncla,
           Id_Sector: this.SessionSectorSel,
-          PesoUnidad: this.PesoProdAncla
+          PesoUnidad: this.PesoPresentacionProdAncla
         }
         this.serviciosvaloracion.modCRelacionProductoTopping('5', body).subscribe(Respu => {
 
@@ -2720,7 +2759,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
           UnidadesOferta: this.UnidadesProdAncla,
           MximoUnidades: this.MaxinoProdAncla,
           Id_Sector: this.SessionSectorSel,
-          PesoUnidad: this.PesoProdAncla
+          PesoUnidad: this.PesoPresentacionProdAncla
         }
         this.serviciosvaloracion.modCRelacionProductoTopping('3', body).subscribe(Respu => {
           var split = Respu.toString().split("|");
@@ -2744,10 +2783,15 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.UnidadesProdAncla = producto.cantidadReserva;
     this.MaxinoProdAncla = producto.MaxCantidad;
     this.PresentacionProdAncla = producto.Presentacion;
-    this.PesoProdAncla = producto.PesoKilos;
     this.ValorProdAncla = producto.ValorUnitario;
     this.ValorReferenciaProdAncla = producto.VlorRefencia;
     this.banderaAgregarAncla = '2';
+    for (var i = 0; i < this.ArrayPresentacionesProdPrincipal.length; i++) {
+      if (producto.Presentacion == this.ArrayPresentacionesProdPrincipal[i].des_empaque) {
+        this.IndexPresentacionProdAncla_ = i;
+        break;
+      }
+    }
   }
 
 
@@ -2785,8 +2829,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   LimpiaCamposPresentacioProdAncla() {
     this.UnidadesProdAncla = "";
     this.MaxinoProdAncla = "";
-    this.PresentacionProdAncla = "";
-    this.PesoProdAncla = "";
+    this.LimpiaPresentacionProdAncla();
     this.ValorProdAncla = "";
     this.ValorReferenciaProdAncla = "";
     this.banderaAgregarAncla = '1';
@@ -2869,8 +2912,8 @@ export class ModificarOfertaPublicaComponent implements OnInit {
       this.ListaProductos();
       this.VerTipoDescripcion = "2";
       this.ValidaTipoTopp = false;
-      this.UnidMaxTopp = '';
-      this.UnidOferta = '';
+      this.UnidMaxTopp = '5';
+      this.UnidOferta = '30';
       this.IsEnables = false;
       this.imagenesAdicionales = '';
     }
@@ -2956,7 +2999,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     }
 
     var auxPesoTopping: boolean = false;
-    if (this.VerTipoDescripcion == "2" && (this.PesoTopping == "" || this.PesoTopping == null)) {
+    if (this.VerTipoDescripcion == "2" && (this.PesoPresentacion == "0" || this.PesoPresentacion == null)) {
       auxPesoTopping = true;
     }
 
@@ -3142,7 +3185,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           }
         } else if (this.ArrayCamposValida[i].campo == 'PesoTopping' && this.VerTipoDescripcion == "2") {
-          if (this.PesoTopping == '' || this.PesoTopping == null) {
+          if (this.PesoPresentacion == '0' || this.PesoPresentacion == null) {
             this.ArrayCamposValida[i].class = 'TextAlert'
             this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/rechazado.png'
           }
@@ -3195,22 +3238,22 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         ValorUnitario: Number(this.VlrUniTopp),
         cantidadReserva: Number(this.UnidOferta),
         imagen: this.NomImagen1,
-        PesoKiloUnd: Number(this.PesoTopping),
+        PesoKiloUnd: this.PesoPresentacion,
         CrctrzcionCrta: this.DescCortaAdd,
         CrctrzcionLrga: this.DescLargaAdd,
         ImgDos: this.NomImagen2,
         ImgTres: this.NomImagen3,
         VlorRefencia: this.ValorRefAdd,
         IdTipoTopingVenta: this.SessionTipoToppVenta,
-
         IdProdTopin: AuxIdProdTopping,
-        PresentacionProd: Auxpresentacion
+        PresentacionProd: Auxpresentacion,
+        IdCampesino: this.IdCampesino
       }
-
+      console.log(Body)
       this.serviciosvaloracion.ModificaTopping('2', Body).subscribe(ResultOper => {
         this.Respuesta = ResultOper;
         this.consultaToppingsOferta();
-
+        this.DesCampesino = '';
         this.DesTopp = '';
         this.VlrUniTopp = '';
         this.SessionTipoTopp = '0';
@@ -3223,7 +3266,6 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         this.ValidaTipoTopp = false;
         this.IsEnables = false;
         this.imagenesAdicionales = '';
-        this.PesoTopping = '';
         this.DescCortaAdd = '';
         this.DescLargaAdd = '';
         this.ValorRefAdd = '';
@@ -3514,6 +3556,77 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   //#endregion Textosparaoferta
 
 
+  //Topping principal
+  CargaListaPresentaciones(IdProd: string) {
+    this.serviciosvaloracion.ConsultaPresentaciones(IdProd).subscribe(Respu => {
+      this.ArrayPresentaciones = Respu;
+    });
+  }
+  SelectPresentacion(item: any) {
+    this.PresentacionSelect = item.des_empaque;
+    this.PesoPresentacion = item.PESO;
+    this.Presentacion = item.des_empaque;
+  }
+  LimpiaPresentacion() {
+    this.PresentacionSelect = "";
+    this.PesoPresentacion = '0';
+    this.Presentacion = "0";
+  }
+
+  //ProdAncla
+  CargaListaPresentacionesProdAncla() {
+    this.serviciosvaloracion.ConsultaPresentaciones(this.IdProductoAncla_).subscribe(Respu => {
+      this.ArrayPresentacionesProdPrincipal = Respu;
+    });
+  }
+  SelectPresentacionRodAncla(item: any) {
+    this.PresentacionProdAnclaSelect = item.des_empaque;
+    this.PesoPresentacionProdAncla = item.PESO;
+    this.PresentacionProdAncla = item.des_empaque;
+  }
+  LimpiaPresentacionProdAncla() {
+    this.PresentacionProdAnclaSelect = "";
+    this.PesoPresentacionProdAncla = '0';
+    this.PresentacionProdAncla = "0";
+    this.IndexPresentacionProdAncla_ = -1;
+  }
+
+  //Toping
+  CargaListaPresentacionesTopping() {
+    this.serviciosvaloracion.ConsultaPresentaciones(this.IdProductoTopping_).subscribe(Respu => {
+      this.ArrayPresentacionesTopping = Respu;
+    });
+  }
+  SelectPresentacionTopping(item: any) {
+    this.PresentacionToppingSelect = item.des_empaque;
+    this.PesoPresentacionTopping = item.PESO;
+    this.PresentacionTopping = item.des_empaque;
+  }
+  LimpiaPresentacionTopping() {
+    this.PresentacionToppingSelect = "";
+    this.PesoPresentacionTopping = '0';
+    this.PresentacionTopping = "0";
+    this.IndexPresentacionTopping_ = -1;
+  }
+
+
+  ConsultaCampesino() {
+    const Data = {
+      CD_TPO_PRSNA: 1,
+      CORREO_PERSONA: "0",
+      CELULAR_PERSONA: "0",
+      DOCUMENTO_USUARIO: "0",
+      NOMBRES_PERSONA: "0"
+    }
+    this.serviciosreportes.ConsultaListaPersona('3', Data).subscribe(Resultado => {
+      this.ArrayCampesino = Resultado;
+    })
+  }
+
+  selectCampesino(item: any) {
+    this.IdCampesino = item.USUCODIG;
+    this.DesCampesino = item.NOMBRES_PERSONA;
+  }
 
 
 
@@ -3522,9 +3635,9 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   AbreModalOrden(AdminOrdenProd: any) {
     this.ArrayPresentacionesProdSelect = [];
     this.ArrayProdAdminOrden = [];
-
     this.modalService.open(AdminOrdenProd, { ariaLabelledBy: 'modal-basic-title', size: 'xl' });
     this.ConsultaProd();
+
   }
 
 
@@ -3551,6 +3664,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     }
     this.serviciosvaloracion.ModOrdenProductos('1', body).subscribe(Respu => {
       console.log(Respu)
+      this.consultaToppingsOferta();
     });
   }
   SelectProducto(item: any) {
@@ -3615,11 +3729,12 @@ export class ModificarOfertaPublicaComponent implements OnInit {
       for (var i = 0; i < this.ArrayPresentacionesProdSelect.length; i++) {
         if (item.IdRelacion == this.ArrayPresentacionesProdSelect[i].IdRelacion) {
           this.ArrayPresentacionesProdSelect[i].PrimeroVer = "1";
-        }else{
+        } else {
           this.ArrayPresentacionesProdSelect[i].PrimeroVer = null;
         }
       }
     });
+
   }
   //#endregion AdminOrdenProd
 

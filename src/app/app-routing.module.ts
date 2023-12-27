@@ -37,8 +37,8 @@ import { MapacalorComponent } from './ofertas/components/mapacalor/mapacalor.com
 import { ModificarOfertaPublicaComponent } from './ofertas/components/modificar-oferta-publica/modificar-oferta-publica.component';
 import { DuplicarofertaComponent } from './ofertas/components/duplicaroferta/duplicaroferta.component';
 import { RepEntregasComponent } from './ofertas/components/reportes/rep-entregas/rep-entregas.component';
-
-
+import { AdminmanychatComponent } from './ofertas/components/adminmanychat/adminmanychat.component';
+import { CoordenadasusuariosComponent } from './usuario/components/coordenadasusuarios/coordenadasusuarios.component';
 const routes: Routes = [
   {
     path: '',
@@ -194,10 +194,17 @@ const routes: Routes = [
       {
         path: 'ReporteEntregas',
         component: RepEntregasComponent
+       },
+      {
+        path: 'AdminManyChat',
+        component: AdminmanychatComponent
+      },
+      {
+        path: 'CoordenadasUsuarios',
+        component: CoordenadasusuariosComponent
       }
     ]
   },
-
   {
     path: 'admincod',
     component: AdminCodigosComponent

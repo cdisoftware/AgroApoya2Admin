@@ -440,6 +440,10 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'AuditoriaAdminManychat/' + Bandera, Body);
   }
 
+  AuditoriAdminManychatEnvios(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'AuditoriaManyChatEnvios/' + Bandera, Body);
+  }
+
   ConsultaUsersAdminManychat(Bandera: string, Body: any) {
     return this.http.post<any[]>(this.url_servidor + 'AdminUsuariosQuery/' + Bandera, Body);
   }
@@ -485,7 +489,7 @@ export class ValorarofertaService {
     return this.http.get<any[]>(this.url_servidor + 'Consadmin_segValores/' + Bandera + '/' + IdGrupo);
   }
 
-  
+
   ConsultaGeneralTrans(Bandera: string, IdGrupo: string) {
     return this.http.get<any[]>(this.url_servidor + 'Consadmin_SeguiTarjetaDetalle/' + Bandera + '/' + IdGrupo);
   }
@@ -510,4 +514,13 @@ export class ValorarofertaService {
   ModVerPrimeroLista(bandera: string, Body: any) {
     return this.http.post<any>(this.url_servidor + 'modAdProdVerPrimero/' + bandera, Body);
   }
+
+  ConsultaListaPersonas(Bandera: string, Cd_tpo_usuario: string, Usucodig: string, body: any) {
+    return this.http.post<any[]>(this.url_servidor + 'consAdListaPersona/' + Bandera + '/' + Cd_tpo_usuario + '/' + Usucodig, body);
+  }
+
+  ModAdDireccionUser(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modAdDireccionUsuario/' + Bandera, Body);
+  }
+
 }
