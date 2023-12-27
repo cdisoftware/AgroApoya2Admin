@@ -149,7 +149,12 @@
                             </div>
                         </div>
 
-                        <div class="row mt-5">
+
+                        <div class="row mt-5 justify-content-center">
+                            <label class="Llave lblSmall mb-3" style="text-align: center;">El transporte tiene un peso
+                                de {{PesoKiloGramos}} Kilogramos</label>
+                        </div>
+                        <div class="row mt-1">
                             <div class="col-sm-4">
                                 <label class="Llave lblSmall">Nombre de
                                     grupo:&nbsp;{{NombreGrupo}}</label>
@@ -363,6 +368,12 @@
                         </div>
 
                         <div class="row mt-5 justify-content-center">
+
+                            <label class="Llave lblSmall mb-3" style="text-align: center;">El transporte tiene un peso
+                                de {{PesoKiloGramos}} Kilogramos</label>
+                        </div>
+
+                        <div class="row mt-1 justify-content-center">
                             <label class="Llave lblSmall mb-3" style="text-align: center;">¿Quieres agregar otra entrega
                                 a este grupo?</label>
 
@@ -493,7 +504,8 @@
                 <div class="col-10 row">
                     <div class="col-12 row" [ngClass]="ite.IdCondutor != null ? 'TieneTransportista' : 'listasStyle'">
                         <div class="col-sm-7">
-                            <p class="sinmp" style="text-align: start;" title="{{ite.UbicacionEntrega}}">{{ite.IdGrupoMilla}}-{{ite.UbicacionEntrega}}</p>
+                            <p class="sinmp" style="text-align: start;" title="{{ite.UbicacionEntrega}}">
+                                {{ite.IdGrupoMilla}}-{{ite.UbicacionEntrega}}</p>
                         </div>
                         <div class="col-sm-5">
                             <p class="sinmp" style="text-align: end;">{{ite.NombreConductor}}</p>
@@ -506,7 +518,9 @@
                         <img src="../../../../assets/ImagenesAgroApoya2Adm/aprobar.png" alt="Selecciónar"
                             class="BtnimgTamanoPeque">
                     </button>
-                    <button class="bot" title="Selecciónar transporte" (click)="SelectEliminaTransporte(ite, templateConfirmacionEliminaTransporte)" *ngIf="ite.NumeroCompras == 0">
+                    <button class="bot" title="Selecciónar transporte"
+                        (click)="SelectEliminaTransporte(ite, templateConfirmacionEliminaTransporte)"
+                        *ngIf="ite.NumeroCompras == 0">
                         <img src="../../../../assets/ImagenesAgroApoya2Adm/basura.png" alt="Selecciónar"
                             class="BtnimgTamanoPeque">
                     </button>
@@ -689,7 +703,8 @@
     <div class="modaBody">
 
         <div class="row p-3 justify-content-center">
-            <p style="text-align: center;">¿Esta seguro de eliminar el transporte {{Eliminatransporte.NombreGrupo}} ?</p>
+            <p style="text-align: center;">¿Esta seguro de eliminar el transporte {{Eliminatransporte.NombreGrupo}} ?
+            </p>
         </div>
         <div class="row justify-content-center">
             <div class="col-sm-4 mt-2 mb-2">
