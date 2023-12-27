@@ -514,4 +514,13 @@ export class ValorarofertaService {
   ModVerPrimeroLista(bandera: string, Body: any) {
     return this.http.post<any>(this.url_servidor + 'modAdProdVerPrimero/' + bandera, Body);
   }
+
+  ConsultaListaPersonas(Bandera: string, Cd_tpo_usuario: string, Usucodig: string, body: any) {
+    return this.http.post<any[]>(this.url_servidor + 'consAdListaPersona/' + Bandera + '/' + Cd_tpo_usuario + '/' + Usucodig, body);
+  }
+
+  ModAdDireccionUser(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modAdDireccionUsuario/' + Bandera, Body);
+  }
+
 }
