@@ -91,7 +91,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MapacalorComponent,
     ModificarOfertaPublicaComponent,
     DuplicarofertaComponent,
-    RepEntregasComponent
+    RepEntregasComponent,
     AdminmanychatComponent,
     CoordenadasusuariosComponent
     ],
