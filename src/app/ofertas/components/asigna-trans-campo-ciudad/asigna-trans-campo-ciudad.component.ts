@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CrearofertaService } from 'src/app/core/crearoferta.service'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 @Component({
@@ -7,6 +7,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./asigna-trans-campo-ciudad.component.css']
 })
 export class AsignaTransCampoCiudadComponent implements OnInit {
+
+  @ViewChild('ModalMensaje', { static: false }) ModalMensaje: any;
+
+  RespuestaModal: string = '';
 
   //#region Departamento
   ArrayDepa: any = [];
@@ -23,13 +27,55 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
   IndexCiudadInsert: number = 0;
   //#endregion Ciudad
 
-  constructor(private ServiciosOferta: CrearofertaService) { }
+  constructor(private ServiciosOferta: CrearofertaService,
+    private modalService: NgbModal,) { }
 
 
   ngOnInit(): void {
     this.ConsultaDepartamentos();
     this.ConsultaCiudad();
   }
+
+
+  //Region Buscar
+
+
+  Buscar(modalBuscar: any) {
+    this.modalService.open(modalBuscar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+    // const body = {
+
+    // }
+
+    // this.ServiciosOferta.ConsultaProductos('1').subscribe(resultado => {
+    //   console.log(resultado)
+    //   if (resultado.length == 0) {
+    //     this.RespuestaModal = 'No hay resultados.';
+    //     this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+    //   } else {
+      
+    //     this.modalService.open(modalBuscar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+    //   }
+    // })
+  }
+
+
+
+
+  //Fin Region Buscar
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   //#region  Departamento
