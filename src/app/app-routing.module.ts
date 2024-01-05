@@ -39,6 +39,7 @@ import { DuplicarofertaComponent } from './ofertas/components/duplicaroferta/dup
 import { RepEntregasComponent } from './ofertas/components/reportes/rep-entregas/rep-entregas.component';
 import { AdminmanychatComponent } from './ofertas/components/adminmanychat/adminmanychat.component';
 import { CoordenadasusuariosComponent } from './usuario/components/coordenadasusuarios/coordenadasusuarios.component';
+import { AsignaTransCampoCiudadComponent } from './ofertas/components/asigna-trans-campo-ciudad/asigna-trans-campo-ciudad.component';
 const routes: Routes = [
   {
     path: '',
@@ -202,6 +203,10 @@ const routes: Routes = [
       {
         path: 'CoordenadasUsuarios',
         component: CoordenadasusuariosComponent
+      },
+      {
+        path: 'Asigna-trans-campo',
+        component: AsignaTransCampoCiudadComponent
       }
     ]
   },

@@ -1,0 +1,97 @@
+<br>
+<div class="container bg-white">
+    <h1 class="br" style="text-transform: uppercase;">Asignación transporte del campo a la ciudad</h1>
+
+    <div class="row br justify-content-center">
+        <div class="col-sm-6 br">
+            <label class="col-sm-12 Llave">Nombre transportista</label>
+            <input type="text" class="form-control form-control-sm textBox">
+        </div>
+        <div class="col-sm-6 br">
+            <label class="col-sm-12 Llave">Consecutivo oferta</label>
+            <input type="text" class="form-control form-control-sm textBox">
+        </div>
+
+        <div class="col-sm-6 br">
+            <label class="col-sm-12 Llave">Fecha inicio</label>
+            <input type="date" class="col-sm-12 form-control mt-1 textBox">
+        </div>
+        <div class="col-sm-6 br">
+            <label class="col-sm-12 Llave">Fecha fin</label>
+            <input type="date" class="col-sm-12 form-control mt-1 textBox">
+        </div>
+    </div>
+
+    <div class="row br justify-content-center">
+        <div class="col-sm-3 col-12">
+            <button class="col-sm-12 btn btn-agro-prin" title="Buscar plantilla">Buscar</button>
+        </div>
+        <div class="col-sm-3 col-12">
+            <button class="col-sm-12 btn btn-agro-prin" title="Buscar plantilla">Crear</button>
+        </div>
+        <div class="col-sm-3 col-12">
+            <button class="col-sm-12 btn btn-agro-sec" title="Buscar plantilla">Limpiar</button>
+        </div>
+    </div>
+
+    <div class="row br justify-content-center">
+        <hr class="col-sm-11 br">
+        <h5 class="textblue">Crear asignación de transporte</h5>
+      
+        <div class="col-sm-6 mt-2">
+            <label class="col-sm-12 Llave">Departamento de salida<strong>*</strong></label>
+            <ng-autocomplete [data]="ArrayDepa" [searchKeyword]="keywordDepartamento"
+                placeholder="Seleccione departamento..." (selected)='selectDepartamento($event)'
+                [itemTemplate]="templateResDepartamento" [notFoundTemplate]="templateVacio"
+                [(ngModel)]="Departamento" (inputCleared)="LimpiaDepartamento('')">
+            </ng-autocomplete>
+            <ng-template #templateResDepartamento let-item>
+                <a [innerHTML]="item.DSCRPCION"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+        <div class="col-sm-6 mt-2">
+            <label class="col-sm-12 Llave">Ciudad de salida<strong>*</strong></label>
+            <ng-autocomplete [disabled]="IdDepartamento == '0'" [data]="ArrayCiud" [searchKeyword]="keywordCiudad"
+                placeholder="Seleccione ciudad..." (selected)='SelectCiudad($event)' [itemTemplate]="templateResCiudad"
+                [notFoundTemplate]="templateVacio" [(ngModel)]="Ciudad" (inputCleared)="LimpiaCiudad('')">
+            </ng-autocomplete>
+            <ng-template #templateResCiudad let-item>
+                <a [innerHTML]="item.DSCRPCION"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+
+        <div class="col-sm-6 br">
+            <label class="col-sm-12 Llave">Fecha recogida<strong>*</strong></label>
+            <input type="date" class="col-sm-12 form-control mt-1 textBox">
+        </div>
+        <div class="col-sm-6 br">
+            <label class="col-sm-12 Llave">Conductor</label>
+            <input type="text" class="form-control form-control-sm textBox">
+        </div>
+    </div>
+
+
+
+    <div class="row br justify-content-center">
+        <hr class="col-sm-11 br">
+
+        <div class="col-6">
+            <label class="col-sm-12 Llave">Productos</label>
+            <input type="text" class="form-control form-control-sm textBox">
+        </div>
+        <div class="col-2">
+            <label class="col-sm-12 Llave">Cantidad</label>
+            <input type="number" class="form-control form-control-sm textBox">
+        </div>
+        <div class="col-2 mt-4">
+            <button class="col-sm-12 btn btn-agro-prin" title="Buscar plantilla">Agregar</button>
+        </div>
+    </div>
+
+</div>
