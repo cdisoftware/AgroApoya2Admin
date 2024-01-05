@@ -363,6 +363,10 @@ export class SectorizacionComponent implements OnInit {
         this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
         this.Respuesta = 'Las cantidades a asignar superan las disponibles de la oferta, favor valida tu información.';
       }
+      else if (this.ImgMapaSec == '' || this.ImgMapaSec == null || this.ImgMapaSec == undefined || this.ImgMapaSec == './../../../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png') {
+        this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+        this.Respuesta = 'Es obligatorio agregar una imagen al sector.';
+      }
       else {
         this.Respuesta = '';
         if (this.Cant != '' && this.VlrFle != '' && this.SectSelec != '') {
