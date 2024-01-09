@@ -51,5 +51,8 @@ export class CrearofertaService {
     return this.http.post(this.url_servidor + 'uploadImgUsuarios', formData);
   }
 
+  ConsultaAsignaTransport(Bandera: string, cd_cnsctivo: string, idSector: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'consAdTrasportesCons/' + Bandera + '/' + cd_cnsctivo + '/' + idSector, Body)
+  }
 
 }
