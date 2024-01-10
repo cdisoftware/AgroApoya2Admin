@@ -5,20 +5,38 @@
     <div class="row br justify-content-center">
         <div class="col-sm-6 br">
             <label class="col-sm-12 Llave">Nombre transportista</label>
-            <input type="text" class="form-control form-control-sm textBox">
+            <ng-autocomplete [data]="ArrayTransportistas" [searchKeyword]="keywordTrans" (selected)='selecTrans($event)'
+                (inputCleared)="LimpiaTrans('')" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio"
+                [(ngModel)]="Transportst">
+            </ng-autocomplete>
+            <ng-template #templateSec let-item>
+                <a [innerHTML]="item.NMBRE_CNDCTOR"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
         </div>
         <div class="col-sm-6 br">
             <label class="col-sm-12 Llave">Consecutivo oferta</label>
-            <input type="text" class="form-control form-control-sm textBox">
+            <ng-autocomplete [data]="arrayOfertas" [searchKeyword]="keywordSecOferta"
+                (selected)='SeleccionarOferta($event)' (inputCleared)='LimpiarOferta()' [itemTemplate]="templateSect"
+                [notFoundTemplate]="templateVaciot" [(ngModel)]="IdCntivOferta">
+            </ng-autocomplete>
+            <ng-template #templateSect let-item>
+                <a [innerHTML]="item.Producto"></a>
+            </ng-template>
+            <ng-template #templateVaciot let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
         </div>
 
         <div class="col-sm-6 br">
             <label class="col-sm-12 Llave">Fecha inicio</label>
-            <input type="date" class="col-sm-12 form-control mt-1 textBox">
+            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="FechaDesde">
         </div>
         <div class="col-sm-6 br">
             <label class="col-sm-12 Llave">Fecha fin</label>
-            <input type="date" class="col-sm-12 form-control mt-1 textBox">
+            <input type="date" class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="FechaHasta">
         </div>
     </div>
 
@@ -27,14 +45,14 @@
             <button class="col-sm-12 btn btn-agro-prin" (click)="Buscar(templateBuscar)">Buscar</button>
         </div>
         <div class="col-sm-3 col-12">
-            <button class="col-sm-12 btn btn-agro-prin">Crear</button>
+            <button class="col-sm-12 btn btn-agro-prin" (click)="Crear()">Crear</button>
         </div>
         <div class="col-sm-3 col-12">
-            <button class="col-sm-12 btn btn-agro-sec">Limpiar</button>
+            <button class="col-sm-12 btn btn-agro-sec" (click)="LimpiarBusqueda()">Limpiar</button>
         </div>
     </div>
 
-    <div class="row br justify-content-center">
+    <div class="row br justify-content-center" *ngIf="VerOcultarCampos !='1'">
         <hr class="col-sm-11 br">
         <h5 class="textblue">Crear asignación de transporte</h5>
 
@@ -72,16 +90,38 @@
         </div>
         <div class="col-sm-6 br">
             <label class="col-sm-12 Llave">Conductor</label>
-            <input type="text" class="form-control form-control-sm textBox">
+            <ng-autocomplete [data]="ArrayTransportistas" [searchKeyword]="keywordTrans" (selected)='selecTrans($event)'
+                (inputCleared)="LimpiaTrans('')" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio"
+                [(ngModel)]="Transportst">
+            </ng-autocomplete>
+            <ng-template #templateSec let-item>
+                <a [innerHTML]="item.NMBRE_CNDCTOR"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
+        </div>
+        <div class="col-sm-6 br">
+            <label class="col-sm-12 Llave">Oferta</label>
+            <ng-autocomplete [data]="ArrayTransportistas" [searchKeyword]="keywordTrans" (selected)='selecTrans($event)'
+                (inputCleared)="LimpiaTrans('')" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio"
+                [(ngModel)]="Transportst">
+            </ng-autocomplete>
+            <ng-template #templateSec let-item>
+                <a [innerHTML]="item.NMBRE_CNDCTOR"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
         </div>
 
         <div class="row br justify-content-center">
             <div class="col-sm-3 col-12">
-                <button class="col-sm-12 btn btn-agro-prin">Guardar</button>
+                <button class="col-sm-12 btn btn-agro-prin" (click)="Guardar()">Guardar</button>
             </div>
         </div>
     </div>
-    <div class="row br justify-content-center">
+    <div class="row br justify-content-center" *ngIf="VerOcultarCampos =='3'">
         <hr class="col-sm-11 br">
 
         <div class="col-6">
@@ -96,7 +136,7 @@
             <button class="col-sm-12 btn btn-agro-prin">Agregar</button>
         </div>
     </div>
-    <div class="row br justify-content-center">
+    <div class="row br justify-content-center" *ngIf="VerOcultarCampos =='3'">
         <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
             <!-- <h5 class="textblue">Número de usuarios: <strong>{{this.DataQuery.length}}</strong></h5> -->
             <hr>
@@ -121,7 +161,8 @@
                         </button>
 
                         <button class="SinEstilo" title="Elimina producto">
-                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" width="30" height="30">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" width="30"
+                                height="30">
                         </button>
                     </td>
                 </tr>
@@ -138,16 +179,16 @@
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="moda-body">
-        <div class="row justify-content-center m-3">
+        <div class="row justify-content-center m-1">
             <ul>
-                <li class="displayflex col-sm-12 br m-2">
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" disabled>
+                <li class="displayflex col-sm-12 br m-2" *ngFor="let respuesta of arregloTransportes">
+                    <div class="col-sm-11">
+                        <input type="text" value="{{respuesta.IdTrans}} | {{respuesta.UbicacionRecoge}} | {{respuesta.UbicacionEntrega}} | {{respuesta.FechaRecoge}}" class="form-control" disabled>
                     </div>
-                    <div class="col-sm-2">
-                        <button class="SinEstilo text-star">
+                    <div class="col-sm-1">
+                        <button class="SinEstilo">
                             <img class="Iconos" src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
-                                alt="Ver">
+                                alt="Editar">
                         </button>
                     </div>
                 </li>
