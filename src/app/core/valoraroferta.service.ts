@@ -523,4 +523,24 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'modAdDireccionUsuario/' + Bandera, Body);
   }
 
+  ConsultaTipoBodegas(Bandera: string) {
+    return this.http.get<any>(this.url_servidor + 'consAdTipoBodega/' + Bandera)
+  }
+
+  ConsultaPorductosTransporte(Bandera: string) {
+    return this.http.get<any>(this.url_servidor + 'consAdProductsTransport/' + Bandera)
+  }
+
+  GuardarAsignTransptes(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modTransporteNew/' + Bandera, Body);
+  }
+
+  ConsultaRelaOferTransp(Bandera: string, idTrans: string) {
+    return this.http.get<any>(this.url_servidor + 'consRelaOfertaTrans/' + Bandera + '/' + idTrans)
+  }
+
+  AgregaProductoTransport(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modAdRelaTranspOferta/' + Bandera, Body);
+  }
+
 }
