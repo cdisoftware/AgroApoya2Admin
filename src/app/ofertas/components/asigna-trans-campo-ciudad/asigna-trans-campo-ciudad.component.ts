@@ -73,7 +73,6 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
     this.ConsultaCiudad();
     this.ConsultaBodegas();
     this.ConsultaPorductosTransporte();
-    this.ConsultaRelaOferTransp();
   }
 
   //Region Buscar
@@ -114,7 +113,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
     this.IdOfertaSeleccion = item.cd_cnsctvo;
   }
   LimpiarOferta() {
-    this.IdOfertaSeleccion = '';
+    this.IdOfertaSeleccion = '0';
   }
 
   Buscar(modalBuscar: any) {
@@ -134,36 +133,87 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
       }
     })
   }
+  LimpTransportista: string = '';
+  Limpcnctivo: string = '';
+  LimpDep: string = '';
+  LimpCiudad: string = '';
+  LimpBodega: string = '';
 
   LimpiarBusqueda() {
     this.VerOcultarCampos = '1';
-    this.keywordTrans = '';
-    this.keywordSecOferta = '';
-    this.IdOfertaSeleccion = '';
-    this.IdTransportista = '';
-    this.FechaDesde = '';
-    this.FechaHasta = '';
+    this.IdOfertaSeleccion = '0';
+    this.LimpTransportista = '';
+    this.Limpcnctivo = '';
+    //this.IdTransportista = '0';
+    this.FechaDesde = '0';
+    this.FechaHasta = '0';
   }
   Crear() {
+    this.LimpiarCrear();
     this.VerOcultarCampos = '2';
     this.banderaAgregar = '1';
   }
 
+
+  LimpiarCrear() {
+
+    this.FechaRecoge = '0';
+    this.VlrFlete = '';
+  }
+
+  contadorBodga: number = 0;
+  contadorDep: number = 0;
+  contadorCiudad: number = 0;
+  contadorTranspor: number = 0;
+
   AuxIdTransporte: string = '';
+  AuxUbicacion: string = '';
   EditarTRansporte(transporte: any) {
     this.VerOcultarCampos = '2';
     this.banderaAgregar = '2';
+    this.VerOcultarCampos = '3';
+
+    this.AuxUbicacion = transporte.UbicacionRecoge.split('-');;
+    this.Departamento = this.AuxUbicacion[0].trim();
+    this.Ciudad = this.AuxUbicacion[1].trim();
+
     this.FechaRecoge = transporte.FechaRecoge;
-    this.IdBodega = transporte.idBodegaEntrega;
     this.VlrFlete = transporte.ValorFlete;
     this.IdTransportista = transporte.IdCondutor;
     this.AuxIdTransporte = transporte.IdTrans;
+    this.IdBodega = transporte.idBodegaEntrega;
+
+    this.contadorBodga = 0;
+    for (var i = 0; this.ArrayBodegas.length > i; i++) {
+      if (this.ArrayBodegas[i].IdBodega == this.IdBodega) {
+        this.contadorBodga = i;
+      }
+    }
+    this.contadorTranspor = 0;
+    for (var i = 0; this.ArrayTransportistas.length > i; i++) {
+      if (this.ArrayTransportistas[i].ID_CNDCTOR == this.IdTransportista) {
+        this.contadorTranspor = i;
+      }
+    }
+    this.contadorDep = 0;
+    for (var i = 0; this.ArrayDepa.length > i; i++) {
+      if (this.ArrayDepa[i].DSCRPCION == this.Departamento) {
+        this.contadorDep = i;
+      }
+    }
+    this.contadorCiudad = 0;
+    for (var i = 0; this.ArrayCiud.length > i; i++) {
+      if (this.ArrayCiud[i].DSCRPCION == this.Ciudad) {
+        this.contadorCiudad = i;
+      }
+    }
+
     this.modalService.dismissAll();
+    this.ConsultaRelaOferTranspAux()
   }
   arregloElimina: any;
   EstasSeguro(arreglo: any, templateEstasSeguro: any) {
     this.arregloElimina = arreglo;
-
     this.RespuestaModal = "Estas a punto de eliminar el transporte #" + arreglo.IdTrans + ", estas seguro?";
     this.modalService.open(templateEstasSeguro, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
   }
@@ -207,6 +257,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
   LimpiaDepartamento(value: string) {
     this.IdDepartamento = "0";
     this.Departamento = value;
+
     this.LimpiaCiudad('');
   }
   //#endregion Departamento
@@ -228,6 +279,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
   }
   //#endregion Ciudad
 
+  IndexBodegaInicial: string = '';
   ConsultaBodegas() {
     this.serviciosvaloracion.ConsultaTipoBodegas('1').subscribe(Resultado => {
       this.ArrayBodegas = Resultado;
@@ -244,7 +296,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
   IdTransporte: string = '';
   banderaAgregar: string = '1';
   Guardar(Bandera: string) {
-
+    this.banderaActualiza = '1';
     if (this.Departamento == null || this.Departamento == '') {
       this.RespuestaModal = 'El campo Departamento de salida es obligatorio.';
       this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
@@ -263,7 +315,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
     } else {
       var AuxUbicacion: string;
       var AuxRespuesta: string[];
-      this.VerOcultarCampos = '3';
+
       AuxUbicacion = this.Departamento + ' - ' + this.Ciudad;
 
       if (Bandera == '2') {
@@ -282,6 +334,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
           this.RespuestaModal = AuxRespuesta[1].trim();
           this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
           this.ConsultaRelaOferTransp();
+          this.VerOcultarCampos = '3';
         })
       } else if (Bandera == '3') {
         const body = {
@@ -293,11 +346,9 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
           IdTransporte: this.AuxIdTransporte
         }
         this.serviciosvaloracion.GuardarAsignTransptes(Bandera, body).subscribe(resultado => {
-          AuxRespuesta = resultado.split("|");
-          this.IdTransporte = AuxRespuesta[0].trim();
           this.RespuestaModal = 'Se actualizo correctamente.';
           this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-          this.ConsultaRelaOferTransp();
+          this.ConsultaRelaOferTranspAux();
         })
       }
     }
@@ -306,6 +357,20 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
   ConsultaRelaOferTransp() {
     this.serviciosvaloracion.ConsultaRelaOferTransp('1', this.IdTransporte).subscribe(Resultado => {
       this.DataQuery = Resultado;
+      // Calcular la suma total de cantidades
+      this.totalCantidad = this.DataQuery.reduce((total, data) => total + data.cantidad, 0);
+      this.totalPeso = this.DataQuery.reduce((total, data) => total + data.PesoKilos, 0);
+    })
+  }
+  totalCantidad: number = 0;
+  totalPeso: number = 0;
+
+  ConsultaRelaOferTranspAux() {
+    this.serviciosvaloracion.ConsultaRelaOferTransp('1', this.AuxIdTransporte).subscribe(Resultado => {
+      this.DataQuery = Resultado;
+      // Calcular la suma total de cantidades
+      this.totalCantidad = this.DataQuery.reduce((total, data) => total + data.cantidad, 0);
+      this.totalPeso = this.DataQuery.reduce((total, data) => total + parseFloat(data.PesoKilos), 0);
     })
   }
 
@@ -326,8 +391,8 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
     this.IdProduct = campo;
   }
 
-
-  AgregarProducto() {
+  banderaActualiza: string = '1';
+  AgregarProducto(bandera: string) {
     if (this.IdProduct == null || this.IdProduct == '' || this.IdProduct == undefined) {
       this.RespuestaModal = 'El campo Productos es obligatorio.';
       this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
@@ -335,21 +400,94 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
       this.RespuestaModal = 'El campo Cantidad es obligatorio.';
       this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
     } else {
-      const body = {
-        Id: 0,
-        IdTrans: this.IdTransporte,
-        IdTipoProducto: this.TipoProducto,
-        IdProducto: this.IdProduct,
-        Cantidad: this.Cantidad,
-        cd_cnsctvo: this.cnsctvoProducto
-      }
 
-      this.serviciosvaloracion.AgregaProductoTransport('2', body).subscribe(resultado => {
-        this.RespuestaModal = resultado;
-        this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-        this.ConsultaRelaOferTransp();
-      })
+      if (bandera == '2') {
+
+        const body = {
+          Id: 0,
+          IdTrans: this.AuxIdTransporte,
+          IdTipoProducto: this.TipoProducto,
+          IdProducto: this.IdProduct,
+          Cantidad: this.Cantidad,
+          cd_cnsctvo: this.cnsctvoProducto
+        }
+
+        this.serviciosvaloracion.AgregaProductoTransport(bandera, body).subscribe(resultado => {
+          this.RespuestaModal = resultado;
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+          this.Cantidad = '';
+          this.LimpProducts = '';
+          this.ConsultaRelaOferTranspAux()
+        })
+      } else if (bandera == '3') {
+        const body = {
+          Id: this.AuxId,
+          IdTrans: this.AuxIdTransporte,
+          IdTipoProducto: this.TipoProducto,
+          IdProducto: this.IdProduct,
+          Cantidad: this.Cantidad,
+          cd_cnsctvo: this.cnsctvoProducto
+        }
+        this.serviciosvaloracion.AgregaProductoTransport(bandera, body).subscribe(resultado => {
+          this.RespuestaModal = 'Se actualizo correctamente.';
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+          this.banderaActualiza = '1';
+          this.Cantidad = '';
+          this.LimpProducts = '';
+          this.ConsultaRelaOferTranspAux()
+        })
+      }
     }
   }
+
+  
+  AuxId: string = '';
+  LimpProducts: string = '';
+  ContadorProduct: number = 0;
+  EditarProduct(producto: any) {
+    this.banderaActualiza = '2';
+    this.AuxId = producto.id;
+    this.AuxIdTransporte = producto.IdTran;
+    this.TipoProducto = producto.TipoProducto;
+    this.IdProduct = producto.IdProducto;
+    this.Cantidad = producto.cantidad;
+    this.cnsctvoProducto = producto.cd_cnsctvo
+
+    this.ContadorProduct = 0;
+    for (var i = 0; this.ArrayProductos.length > i; i++) {
+      if (this.ArrayProductos[i].IdProducto == this.IdProduct) {
+        this.ContadorProduct = i;
+      }
+    }
+  }
+
+
+  arrEliminaProduct: any;
+  EliminaProdModal(arreglo: any, templateEstasSeguro: any) {
+    this.arrEliminaProduct = arreglo;
+    this.RespuestaModal = "Estas a punto de eliminar el producto " + arreglo.Descripcion + ", estas seguro?";
+    this.modalService.open(templateEstasSeguro, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+  }
+
+  EliminaProducto() {
+    this.modalService.dismissAll();
+
+    const body = {
+      Id: this.arrEliminaProduct.id,
+      IdTrans: this.arrEliminaProduct.IdTran,
+      IdTipoProducto: this.arrEliminaProduct.TipoProducto,
+      IdProducto: this.arrEliminaProduct.IdProducto,
+      Cantidad: this.arrEliminaProduct.cantidad,
+      cd_cnsctvo: this.arrEliminaProduct.cd_cnsctvo
+    }
+
+    this.serviciosvaloracion.AgregaProductoTransport('4', body).subscribe(resultado => {
+      this.ConsultaRelaOferTranspAux()
+      this.Cantidad = '';
+      this.LimpProducts = '';
+      this.banderaActualiza = '1';
+    })
+  }
+
   //FIN REGION CREAR ASIGNACION DE TRANSPORTE
 }

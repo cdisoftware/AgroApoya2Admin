@@ -6,7 +6,8 @@
         <div class="col-sm-6 br">
             <label class="col-sm-12 Llave">Nombre transportista</label>
             <ng-autocomplete [data]="ArrayTransportistas" [searchKeyword]="keywordTrans" (selected)='selecTrans($event)'
-                (inputCleared)="LimpiaTrans()" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio">
+                (inputCleared)="LimpiaTrans()" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio"
+                [(ngModel)]="LimpTransportista">
             </ng-autocomplete>
             <ng-template #templateSec let-item>
                 <a [innerHTML]="item.NMBRE_CNDCTOR"></a>
@@ -19,7 +20,7 @@
             <label class="col-sm-12 Llave">Consecutivo oferta</label>
             <ng-autocomplete [data]="arrayOfertas" [searchKeyword]="keywordSecOferta"
                 (selected)='SeleccionarOferta($event)' (inputCleared)='LimpiarOferta()' [itemTemplate]="templateSect"
-                [notFoundTemplate]="templateVaciot">
+                [notFoundTemplate]="templateVaciot" [(ngModel)]="Limpcnctivo">
             </ng-autocomplete>
             <ng-template #templateSect let-item>
                 <a [innerHTML]="item.Producto"></a>
@@ -60,7 +61,7 @@
             <ng-autocomplete [data]="ArrayDepa" [searchKeyword]="keywordDepartamento"
                 placeholder="Seleccione departamento..." (selected)='selectDepartamento($event)'
                 [itemTemplate]="templateResDepartamento" [notFoundTemplate]="templateVacio"
-                (inputCleared)="LimpiaDepartamento('')">
+                (inputCleared)="LimpiaDepartamento('')" [initialValue]="ArrayDepa[contadorDep]">
             </ng-autocomplete>
             <ng-template #templateResDepartamento let-item>
                 <a [innerHTML]="item.DSCRPCION"></a>
@@ -73,7 +74,8 @@
             <label class="col-sm-12 Llave">Ciudad de salida<strong>*</strong></label>
             <ng-autocomplete [disabled]="IdDepartamento == '0'" [data]="ArrayCiud" [searchKeyword]="keywordCiudad"
                 placeholder="Seleccione ciudad..." (selected)='SelectCiudad($event)' [itemTemplate]="templateResCiudad"
-                [notFoundTemplate]="templateVacio" (inputCleared)="LimpiaCiudad('')">
+                [notFoundTemplate]="templateVacio" (inputCleared)="LimpiaCiudad('')"
+                [initialValue]="ArrayCiud[contadorCiudad]" >
             </ng-autocomplete>
             <ng-template #templateResCiudad let-item>
                 <a [innerHTML]="item.DSCRPCION"></a>
@@ -92,7 +94,8 @@
         <div class="col-sm-6 br">
             <label class="col-sm-12 Llave">Bodega<strong>*</strong></label>
             <ng-autocomplete [data]="ArrayBodegas" [searchKeyword]="keywordBodega" (selected)='selecBodg($event)'
-                (inputCleared)="LimpiaBodg('')" [itemTemplate]="templateBodg" [notFoundTemplate]="templateVacioBodg">
+                (inputCleared)="LimpiaBodg('')" [itemTemplate]="templateBodg" [notFoundTemplate]="templateVacioBodg"
+                [initialValue]="ArrayBodegas[contadorBodga]">
             </ng-autocomplete>
             <ng-template #templateBodg let-item>
                 <a [innerHTML]="item.NombreBodega"></a>
@@ -109,7 +112,8 @@
         <div class="col-sm-6 br">
             <label class="col-sm-12 Llave">Conductor</label>
             <ng-autocomplete [data]="ArrayTransportistas" [searchKeyword]="keywordTrans" (selected)='selecTrans($event)'
-                (inputCleared)="LimpiaTrans()" [itemTemplate]="templateConduct" [notFoundTemplate]="templateVacioCond">
+                (inputCleared)="LimpiaTrans()" [itemTemplate]="templateConduct" [notFoundTemplate]="templateVacioCond"
+                [initialValue]="ArrayTransportistas[contadorTranspor]" [(ngModel)]="LimpTransportista">
             </ng-autocomplete>
             <ng-template #templateConduct let-item>
                 <a [innerHTML]="item.NMBRE_CNDCTOR"></a>
@@ -127,6 +131,9 @@
                 <button class="col-sm-12 btn btn-agro-prin" (click)="Guardar('3')"
                     *ngIf="banderaAgregar=='2'">Actualizar</button>
             </div>
+            <div class="col-sm-3 col-12">
+                <button class="col-sm-12 btn btn-agro-sec" (click)="LimpiarCrear()">Limpiar</button>
+            </div>
         </div>
     </div>
     <div class="row br justify-content-center" *ngIf="VerOcultarCampos =='3'">
@@ -136,7 +143,7 @@
             <label class="col-sm-12 Llave">Productos</label>
             <ng-autocomplete [data]="ArrayProductos" [searchKeyword]="keywordProduct" (selected)='selecProduct($event)'
                 (inputCleared)="LimpiaProduct('')" [itemTemplate]="templateProduct"
-                [notFoundTemplate]="templateVacProduct">
+                [notFoundTemplate]="templateVacProduct" [(ngModel)]="LimpProducts" [initialValue]="ArrayProductos[ContadorProduct]">
             </ng-autocomplete>
             <ng-template #templateProduct let-item>
                 <a [innerHTML]="item.Descripcion"></a>
@@ -150,38 +157,51 @@
             <input type="number" class="form-control form-control-sm textBox" [(ngModel)]="Cantidad">
         </div>
         <div class="col-2 mt-4">
-            <button class="col-sm-12 btn btn-agro-prin" (click)="AgregarProducto()">Agregar</button>
+            <button class="col-sm-12 btn btn-agro-prin" (click)="AgregarProducto('2')"
+                *ngIf="banderaActualiza=='1'">Agregar</button>
+            <button class="col-sm-12 btn btn-agro-prin" (click)="AgregarProducto('3')"
+                *ngIf="banderaActualiza=='2'">Actualizar</button>
         </div>
+
+
     </div>
     <div class="row br justify-content-center" *ngIf="VerOcultarCampos =='3'">
         <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-            <!-- <h5 class="textblue">Número de usuarios: <strong>{{this.DataQuery.length}}</strong></h5> -->
+            <h5 class="textblue">Número de productos: <strong>{{this.DataQuery.length}}</strong></h5>
             <hr>
             <table class="table col-sm-12 TableAgro">
                 <tr>
+                    <th>IdProducto</th>
                     <th>Consecutivo</th>
-                    <th>Oferta</th>
                     <th>Producto</th>
                     <th>Peso kg</th>
                     <th>Cantidad</th>
                     <th>Acciones</th>
                 </tr>
                 <tr *ngFor="let data of DataQuery">
+                    <td>{{data.IdProducto}}</td>
                     <td>{{data.cd_cnsctvo}}</td>
-                    <td>{{data.USUARIO}}</td>
                     <td>{{data.Descripcion}}</td>
                     <td>{{data.PesoKilos}}</td>
                     <td>{{data.cantidad}}</td>
                     <td>
-                        <button class="SinEstilo" title="Editar producto">
+                        <button class="SinEstilo" title="Editar producto" (click)="EditarProduct(data)">
                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png" width="30" height="30">
                         </button>
 
-                        <button class="SinEstilo" title="Elimina producto">
+                        <button class="SinEstilo" title="Elimina producto"
+                            (click)="EliminaProdModal(data, ModalEliminaProduct)">
                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" width="30"
                                 height="30">
                         </button>
                     </td>
+                </tr>
+                <tr>
+                    <td class="total">Total</td>
+                    <td></td>
+                    <td></td>
+                    <td class="total">{{totalPeso}}</td>
+                    <td class="total">{{totalCantidad}}</td>
                 </tr>
             </table>
         </div>
@@ -270,6 +290,32 @@
             <div class="col-1"> </div>
             <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
                 (click)="EliminaTRansporte()">Eliminar</button>
+        </div>
+    </div>
+    <br>
+</ng-template>
+
+<!-- Template Modal Eliminar producto-->
+<ng-template #ModalEliminaProduct let-modal>
+    <div class="modal-header">
+        <h1>AgroApoya2</h1>
+        <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
+            (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">{{RespuestaModal}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="row col-sm-12 text-center justify-content-center">
+            <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
+                (click)="modal.close()">Cancelar</button>
+            <div class="col-1"> </div>
+            <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
+                (click)="EliminaProducto()">Eliminar</button>
         </div>
     </div>
     <br>
