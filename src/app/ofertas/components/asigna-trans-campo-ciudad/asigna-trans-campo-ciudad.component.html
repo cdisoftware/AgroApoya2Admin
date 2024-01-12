@@ -121,7 +121,11 @@
 
         <div class="row br justify-content-center">
             <div class="col-sm-3 col-12">
-                <button class="col-sm-12 btn btn-agro-prin" (click)="Guardar()">Guardar</button>
+                <button class="col-sm-12 btn btn-agro-prin" (click)="Guardar('2')"
+                    *ngIf="banderaAgregar=='1'">Guardar</button>
+
+                <button class="col-sm-12 btn btn-agro-prin" (click)="Guardar('3')"
+                    *ngIf="banderaAgregar=='2'">Actualizar</button>
             </div>
         </div>
     </div>
@@ -201,11 +205,11 @@
                             class="form-control" disabled>
                     </div>
                     <div class="col-sm-2">
-                        <button class="SinEstilo">
+                        <button class="SinEstilo" (click)="EditarTRansporte(respuesta)">
                             <img class="Iconos" src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
                                 alt="Editar">
                         </button>
-                        <button class="SinEstilo">
+                        <button class="SinEstilo" (click)="EstasSeguro(respuesta, ModalEstasSeguro)">
                             <img class="Iconos" src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png"
                                 alt="Editar">
                         </button>
@@ -240,6 +244,32 @@
         <div class="col-sm-12 text-center">
             <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
                 (click)="modal.close()">Aceptar</button>
+        </div>
+    </div>
+    <br>
+</ng-template>
+
+<!-- Template Modal Estas seguro-->
+<ng-template #ModalEstasSeguro let-modal>
+    <div class="modal-header">
+        <h1>AgroApoya2</h1>
+        <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
+            (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">{{RespuestaModal}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="row col-sm-12 text-center justify-content-center">
+            <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
+                (click)="modal.close()">Cancelar</button>
+            <div class="col-1"> </div>
+            <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
+                (click)="EliminaTRansporte()">Eliminar</button>
         </div>
     </div>
     <br>

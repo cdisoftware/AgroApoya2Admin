@@ -124,10 +124,9 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
       NombreTrans: this.NombreConductor
     }
     this.ServiciosOferta.ConsultaAsignaTransport('1', this.IdOfertaSeleccion, '0', body).subscribe(resultado => {
-
       if (resultado.length == 0) {
         this.RespuestaModal = 'No hay resultados.';
-        this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+        this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
       } else {
         this.arregloTransportes = resultado;
         //this.IdTransporte = resultado[0].IdTrans;
@@ -147,7 +146,46 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
   }
   Crear() {
     this.VerOcultarCampos = '2';
+    this.banderaAgregar = '1';
   }
+
+  AuxIdTransporte: string = '';
+  EditarTRansporte(transporte: any) {
+    this.VerOcultarCampos = '2';
+    this.banderaAgregar = '2';
+    this.FechaRecoge = transporte.FechaRecoge;
+    this.IdBodega = transporte.idBodegaEntrega;
+    this.VlrFlete = transporte.ValorFlete;
+    this.IdTransportista = transporte.IdCondutor;
+    this.AuxIdTransporte = transporte.IdTrans;
+    this.modalService.dismissAll();
+  }
+  arregloElimina: any;
+  EstasSeguro(arreglo: any, templateEstasSeguro: any) {
+    this.arregloElimina = arreglo;
+
+    this.RespuestaModal = "Estas a punto de eliminar el transporte #" + arreglo.IdTrans + ", estas seguro?";
+    this.modalService.open(templateEstasSeguro, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
+  }
+
+  EliminaTRansporte() {
+    this.modalService.dismissAll();
+
+    const body = {
+      UbicacionRecoge: this.arregloElimina.UbicacionEntrega,
+      ValorFlete: this.arregloElimina.ValorFlete,
+      FechaRecoge: this.arregloElimina.FechaRecoge,
+      IdConductor: this.arregloElimina.IdCondutor,
+      IdBodegaEntrega: this.arregloElimina.idBodegaEntrega,
+      IdTransporte: this.arregloElimina.IdTrans
+    }
+
+    this.serviciosvaloracion.GuardarAsignTransptes('4', body).subscribe(resultado => {
+      this.ConsultaRelaOferTransp();
+    })
+  }
+
+
   //Fin Region Buscar
 
 
@@ -204,46 +242,64 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
 
 
   IdTransporte: string = '';
-
-  Guardar() {
+  banderaAgregar: string = '1';
+  Guardar(Bandera: string) {
 
     if (this.Departamento == null || this.Departamento == '') {
       this.RespuestaModal = 'El campo Departamento de salida es obligatorio.';
-      this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
     } else if (this.Ciudad == null || this.Ciudad == '') {
       this.RespuestaModal = 'El campo Ciudad de salida es obligatorio.';
-      this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
     } else if (this.FechaRecoge == null || this.FechaRecoge == '') {
       this.RespuestaModal = 'El campo Fecha recogida es obligatorio.';
-      this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
     } else if (this.IdBodega == null || this.IdBodega == '') {
       this.RespuestaModal = 'El campo Bodega es obligatorio.';
-      this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
     } else if (this.VlrFlete == null || this.VlrFlete == '') {
       this.RespuestaModal = 'El campo Valor flete es obligatorio.';
-      this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
     } else {
       var AuxUbicacion: string;
       var AuxRespuesta: string[];
       this.VerOcultarCampos = '3';
       AuxUbicacion = this.Departamento + ' - ' + this.Ciudad;
 
-      const body = {
-        UbicacionRecoge: AuxUbicacion,
-        ValorFlete: this.VlrFlete,
-        FechaRecoge: this.FechaRecoge,
-        IdConductor: this.IdTransportista,
-        IdBodegaEntrega: this.IdBodega,
-        IdTransporte: 0
+      if (Bandera == '2') {
+        const body = {
+          UbicacionRecoge: AuxUbicacion,
+          ValorFlete: this.VlrFlete,
+          FechaRecoge: this.FechaRecoge,
+          IdConductor: this.IdTransportista,
+          IdBodegaEntrega: this.IdBodega,
+          IdTransporte: 0
+        }
+
+        this.serviciosvaloracion.GuardarAsignTransptes(Bandera, body).subscribe(resultado => {
+          AuxRespuesta = resultado.split("|");
+          this.IdTransporte = AuxRespuesta[0].trim();
+          this.RespuestaModal = AuxRespuesta[1].trim();
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+          this.ConsultaRelaOferTransp();
+        })
+      } else if (Bandera == '3') {
+        const body = {
+          UbicacionRecoge: AuxUbicacion,
+          ValorFlete: this.VlrFlete,
+          FechaRecoge: this.FechaRecoge,
+          IdConductor: this.IdTransportista,
+          IdBodegaEntrega: this.IdBodega,
+          IdTransporte: this.AuxIdTransporte
+        }
+        this.serviciosvaloracion.GuardarAsignTransptes(Bandera, body).subscribe(resultado => {
+          AuxRespuesta = resultado.split("|");
+          this.IdTransporte = AuxRespuesta[0].trim();
+          this.RespuestaModal = 'Se actualizo correctamente.';
+          this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+          this.ConsultaRelaOferTransp();
+        })
       }
-      console.log(body)
-      this.serviciosvaloracion.GuardarAsignTransptes('2', body).subscribe(resultado => {
-        AuxRespuesta = resultado.split("|");
-        this.IdTransporte = AuxRespuesta[0].trim();
-        this.RespuestaModal = AuxRespuesta[1].trim();
-        this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
-        this.ConsultaRelaOferTransp();
-      })
     }
   }
 
@@ -274,10 +330,10 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
   AgregarProducto() {
     if (this.IdProduct == null || this.IdProduct == '' || this.IdProduct == undefined) {
       this.RespuestaModal = 'El campo Productos es obligatorio.';
-      this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
     } else if (this.Cantidad == null || this.Cantidad == '') {
       this.RespuestaModal = 'El campo Cantidad es obligatorio.';
-      this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
     } else {
       const body = {
         Id: 0,
@@ -290,7 +346,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
 
       this.serviciosvaloracion.AgregaProductoTransport('2', body).subscribe(resultado => {
         this.RespuestaModal = resultado;
-        this.modalService.open(this.ModalMensaje, { size: 'md', centered: true, backdrop: 'static', keyboard: false });
+        this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
         this.ConsultaRelaOferTransp();
       })
     }
