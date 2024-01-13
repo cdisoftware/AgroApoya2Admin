@@ -122,6 +122,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
       fechaHasta: this.FechaHasta,
       NombreTrans: this.NombreConductor
     }
+    console.log(body)
     this.ServiciosOferta.ConsultaAsignaTransport('1', this.IdOfertaSeleccion, '0', body).subscribe(resultado => {
       if (resultado.length == 0) {
         this.RespuestaModal = 'No hay resultados.';
@@ -409,8 +410,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
           IdProducto: this.IdProduct,
           Cantidad: this.Cantidad,
           cd_cnsctvo: this.cnsctvoProducto
-        }
-        console.log(body)
+        }     
         this.serviciosvaloracion.AgregaProductoTransport(bandera, body).subscribe(resultado => {
           this.RespuestaModal = resultado;
           this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
