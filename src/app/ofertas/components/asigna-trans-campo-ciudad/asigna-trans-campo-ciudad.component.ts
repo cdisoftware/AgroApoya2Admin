@@ -133,7 +133,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
       }
     })
   }
-  LimpTransportista: string = '';
+  LimpTransportista: string;
   Limpcnctivo: string = '';
   LimpDep: string = '';
   LimpCiudad: string = '';
@@ -141,32 +141,30 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
 
   LimpiarBusqueda() {
     this.VerOcultarCampos = '1';
-    this.IdOfertaSeleccion = '0';
     this.LimpTransportista = '';
     this.Limpcnctivo = '';
-    //this.IdTransportista = '0';
     this.FechaDesde = '0';
     this.FechaHasta = '0';
   }
   Crear() {
-    this.LimpiarCrear();
+    this.contadorBodga = -1;
+    this.contadorTranspor = -1;
+    this.contadorDep = -1;
+    this.contadorCiudad = -1;
+    this.FechaRecoge = '0';
+    this.VlrFlete = '';
     this.VerOcultarCampos = '2';
     this.banderaAgregar = '1';
   }
 
 
-  LimpiarCrear() {
-
-    this.FechaRecoge = '0';
-    this.VlrFlete = '';
-  }
 
   contadorBodga: number = 0;
   contadorDep: number = 0;
   contadorCiudad: number = 0;
   contadorTranspor: number = 0;
 
-  AuxIdTransporte: string = '';
+
   AuxUbicacion: string = '';
   EditarTRansporte(transporte: any) {
     this.VerOcultarCampos = '2';
@@ -180,7 +178,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
     this.FechaRecoge = transporte.FechaRecoge;
     this.VlrFlete = transporte.ValorFlete;
     this.IdTransportista = transporte.IdCondutor;
-    this.AuxIdTransporte = transporte.IdTrans;
+    this.IdTransporte = transporte.IdTrans;
     this.IdBodega = transporte.idBodegaEntrega;
 
     this.contadorBodga = 0;
@@ -279,7 +277,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
   }
   //#endregion Ciudad
 
-  IndexBodegaInicial: string = '';
+
   ConsultaBodegas() {
     this.serviciosvaloracion.ConsultaTipoBodegas('1').subscribe(Resultado => {
       this.ArrayBodegas = Resultado;
@@ -335,6 +333,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
           this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
           this.ConsultaRelaOferTransp();
           this.VerOcultarCampos = '3';
+          this.banderaAgregar = '2';
         })
       } else if (Bandera == '3') {
         const body = {
@@ -343,7 +342,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
           FechaRecoge: this.FechaRecoge,
           IdConductor: this.IdTransportista,
           IdBodegaEntrega: this.IdBodega,
-          IdTransporte: this.AuxIdTransporte
+          IdTransporte: this.IdTransporte
         }
         this.serviciosvaloracion.GuardarAsignTransptes(Bandera, body).subscribe(resultado => {
           this.RespuestaModal = 'Se actualizo correctamente.';
@@ -359,14 +358,14 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
       this.DataQuery = Resultado;
       // Calcular la suma total de cantidades
       this.totalCantidad = this.DataQuery.reduce((total, data) => total + data.cantidad, 0);
-      this.totalPeso = this.DataQuery.reduce((total, data) => total + data.PesoKilos, 0);
+      this.totalPeso = this.DataQuery.reduce((total, data) => total + parseFloat(data.PesoKilos), 0);
     })
   }
   totalCantidad: number = 0;
   totalPeso: number = 0;
 
   ConsultaRelaOferTranspAux() {
-    this.serviciosvaloracion.ConsultaRelaOferTransp('1', this.AuxIdTransporte).subscribe(Resultado => {
+    this.serviciosvaloracion.ConsultaRelaOferTransp('1', this.IdTransporte).subscribe(Resultado => {
       this.DataQuery = Resultado;
       // Calcular la suma total de cantidades
       this.totalCantidad = this.DataQuery.reduce((total, data) => total + data.cantidad, 0);
@@ -393,6 +392,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
 
   banderaActualiza: string = '1';
   AgregarProducto(bandera: string) {
+
     if (this.IdProduct == null || this.IdProduct == '' || this.IdProduct == undefined) {
       this.RespuestaModal = 'El campo Productos es obligatorio.';
       this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
@@ -402,27 +402,26 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
     } else {
 
       if (bandera == '2') {
-
         const body = {
           Id: 0,
-          IdTrans: this.AuxIdTransporte,
+          IdTrans: this.IdTransporte,
           IdTipoProducto: this.TipoProducto,
           IdProducto: this.IdProduct,
           Cantidad: this.Cantidad,
           cd_cnsctvo: this.cnsctvoProducto
         }
-
+        console.log(body)
         this.serviciosvaloracion.AgregaProductoTransport(bandera, body).subscribe(resultado => {
           this.RespuestaModal = resultado;
           this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
           this.Cantidad = '';
           this.LimpProducts = '';
-          this.ConsultaRelaOferTranspAux()
+          this.ConsultaRelaOferTransp()
         })
       } else if (bandera == '3') {
         const body = {
           Id: this.AuxId,
-          IdTrans: this.AuxIdTransporte,
+          IdTrans: this.IdTransporte,
           IdTipoProducto: this.TipoProducto,
           IdProducto: this.IdProduct,
           Cantidad: this.Cantidad,
@@ -440,14 +439,14 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
     }
   }
 
-  
+
   AuxId: string = '';
   LimpProducts: string = '';
   ContadorProduct: number = 0;
   EditarProduct(producto: any) {
     this.banderaActualiza = '2';
     this.AuxId = producto.id;
-    this.AuxIdTransporte = producto.IdTran;
+    this.IdTransporte = producto.IdTran;
     this.TipoProducto = producto.TipoProducto;
     this.IdProduct = producto.IdProducto;
     this.Cantidad = producto.cantidad;
@@ -480,7 +479,6 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
       Cantidad: this.arrEliminaProduct.cantidad,
       cd_cnsctvo: this.arrEliminaProduct.cd_cnsctvo
     }
-
     this.serviciosvaloracion.AgregaProductoTransport('4', body).subscribe(resultado => {
       this.ConsultaRelaOferTranspAux()
       this.Cantidad = '';

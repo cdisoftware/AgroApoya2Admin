@@ -75,7 +75,7 @@
             <ng-autocomplete [disabled]="IdDepartamento == '0'" [data]="ArrayCiud" [searchKeyword]="keywordCiudad"
                 placeholder="Seleccione ciudad..." (selected)='SelectCiudad($event)' [itemTemplate]="templateResCiudad"
                 [notFoundTemplate]="templateVacio" (inputCleared)="LimpiaCiudad('')"
-                [initialValue]="ArrayCiud[contadorCiudad]" >
+                [initialValue]="ArrayCiud[contadorCiudad]">
             </ng-autocomplete>
             <ng-template #templateResCiudad let-item>
                 <a [innerHTML]="item.DSCRPCION"></a>
@@ -113,7 +113,7 @@
             <label class="col-sm-12 Llave">Conductor</label>
             <ng-autocomplete [data]="ArrayTransportistas" [searchKeyword]="keywordTrans" (selected)='selecTrans($event)'
                 (inputCleared)="LimpiaTrans()" [itemTemplate]="templateConduct" [notFoundTemplate]="templateVacioCond"
-                [initialValue]="ArrayTransportistas[contadorTranspor]" [(ngModel)]="LimpTransportista">
+                [initialValue]="ArrayTransportistas[contadorTranspor]">
             </ng-autocomplete>
             <ng-template #templateConduct let-item>
                 <a [innerHTML]="item.NMBRE_CNDCTOR"></a>
@@ -131,9 +131,6 @@
                 <button class="col-sm-12 btn btn-agro-prin" (click)="Guardar('3')"
                     *ngIf="banderaAgregar=='2'">Actualizar</button>
             </div>
-            <div class="col-sm-3 col-12">
-                <button class="col-sm-12 btn btn-agro-sec" (click)="LimpiarCrear()">Limpiar</button>
-            </div>
         </div>
     </div>
     <div class="row br justify-content-center" *ngIf="VerOcultarCampos =='3'">
@@ -143,7 +140,8 @@
             <label class="col-sm-12 Llave">Productos</label>
             <ng-autocomplete [data]="ArrayProductos" [searchKeyword]="keywordProduct" (selected)='selecProduct($event)'
                 (inputCleared)="LimpiaProduct('')" [itemTemplate]="templateProduct"
-                [notFoundTemplate]="templateVacProduct" [(ngModel)]="LimpProducts" [initialValue]="ArrayProductos[ContadorProduct]">
+                [notFoundTemplate]="templateVacProduct"
+                [initialValue]="ArrayProductos[ContadorProduct]">
             </ng-autocomplete>
             <ng-template #templateProduct let-item>
                 <a [innerHTML]="item.Descripcion"></a>
