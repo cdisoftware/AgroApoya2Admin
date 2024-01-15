@@ -61,6 +61,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
 
   DataQuery: any[];
 
+  blockProducts: boolean = false;
   constructor(private ServiciosOferta: CrearofertaService,
     private modalService: NgbModal,
     private serviciosvaloracion: ValorarofertaService,) { }
@@ -130,7 +131,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
         this.RespuestaModal = 'No hay resultados.';
         this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
       } else {
-        this.arregloTransportes = resultado;       
+        this.arregloTransportes = resultado;
         //this.IdTransporte = resultado[0].IdTrans;
         this.modalService.open(modalBuscar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
       }
@@ -151,8 +152,10 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
     this.FechaHasta = '0';
     this.ContadorProduct = -1;
     this.Cantidad = '';
+    this.blockProducts = false;
   }
   Crear() {
+    this.blockProducts = false;
     this.contadorBodga = -1;
     this.contadorTranspor = -1;
     this.contadorDep = -1;
@@ -201,7 +204,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
           this.contadorTranspor = i;
         }
       }
-    }else{
+    } else {
       this.contadorTranspor = -1;
     }
 
@@ -356,7 +359,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
           IdBodegaEntrega: this.IdBodega,
           IdTransporte: this.IdTransporte
         }
-       
+
         this.serviciosvaloracion.GuardarAsignTransptes(Bandera, body).subscribe(resultado => {
           AuxRespuesta = resultado.split("|");
           this.RespuestaModal = AuxRespuesta[1].trim();
@@ -373,6 +376,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
       // Calcular la suma total de cantidades
       this.totalCantidad = this.DataQuery.reduce((total, data) => total + data.cantidad, 0);
       this.totalPeso = this.DataQuery.reduce((total, data) => total + parseFloat(data.PesoKilos), 0);
+
     })
   }
   totalCantidad: number = 0;
@@ -406,7 +410,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
 
   banderaActualiza: string = '1';
   AgregarProducto(bandera: string) {
-
+    this.LimpTransportista = '';
     if (this.IdProduct == null || this.IdProduct == '' || this.IdProduct == undefined) {
       this.RespuestaModal = 'El campo Productos es obligatorio.';
       this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
@@ -443,13 +447,15 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
           cd_cnsctvo: this.cnsctvoProducto
         }
         this.serviciosvaloracion.AgregaProductoTransport(bandera, body).subscribe(resultado => {
+
           const SMSBD = resultado.split('|');
           this.RespuestaModal = SMSBD[1].trim();
           this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-          this.banderaActualiza = '1';
           this.Cantidad = '';
           this.ContadorProduct = -1;
-          this.ConsultaRelaOferTransp()
+          this.blockProducts = false;
+          this.banderaActualiza = '1';
+          this.ConsultaRelaOferTransp();
         })
       }
     }
@@ -459,7 +465,7 @@ export class AsignaTransCampoCiudadComponent implements OnInit {
   AuxId: string = '';
   ContadorProduct: number = 0;
   EditarProduct(producto: any) {
-
+    this.blockProducts = true;
     this.banderaActualiza = '2';
     this.AuxId = producto.id;
     this.IdTransporte = producto.IdTran;

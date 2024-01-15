@@ -138,9 +138,9 @@
 
         <div class="col-6">
             <label class="col-sm-12 Llave">Productos</label>
-            <ng-autocomplete [data]="ArrayProductos" [searchKeyword]="keywordProduct" (selected)='selecProduct($event)'
-                (inputCleared)="LimpiaProduct('')" [itemTemplate]="templateProduct"
-                [notFoundTemplate]="templateVacProduct"
+            <ng-autocomplete [disabled]="blockProducts" [data]="ArrayProductos" [searchKeyword]="keywordProduct" (selected)='selecProduct($event)'
+                (inputCleared)="LimpiaProduct('')" [itemTemplate]="templateProduct" 
+                [notFoundTemplate]="templateVacProduct" [(ngModel)]="LimpTransportista"
                 [initialValue]="ArrayProductos[ContadorProduct]">
             </ng-autocomplete>
             <ng-template #templateProduct let-item>
