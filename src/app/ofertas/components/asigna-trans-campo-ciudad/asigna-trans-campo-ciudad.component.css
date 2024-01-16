@@ -11,3 +11,8 @@ strong {
     width: 25px;
     margin-left: 20px;
 }
+
+.total{
+    font-weight: bold;
+    color: black;
+}

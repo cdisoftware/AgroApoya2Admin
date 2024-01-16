@@ -6,8 +6,8 @@
         <div class="col-sm-6 br">
             <label class="col-sm-12 Llave">Nombre transportista</label>
             <ng-autocomplete [data]="ArrayTransportistas" [searchKeyword]="keywordTrans" (selected)='selecTrans($event)'
-                (inputCleared)="LimpiaTrans('')" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio"
-                [(ngModel)]="Transportst">
+                (inputCleared)="LimpiaTrans()" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio"
+                [(ngModel)]="LimpTransportista">
             </ng-autocomplete>
             <ng-template #templateSec let-item>
                 <a [innerHTML]="item.NMBRE_CNDCTOR"></a>
@@ -20,7 +20,7 @@
             <label class="col-sm-12 Llave">Consecutivo oferta</label>
             <ng-autocomplete [data]="arrayOfertas" [searchKeyword]="keywordSecOferta"
                 (selected)='SeleccionarOferta($event)' (inputCleared)='LimpiarOferta()' [itemTemplate]="templateSect"
-                [notFoundTemplate]="templateVaciot" [(ngModel)]="IdCntivOferta">
+                [notFoundTemplate]="templateVaciot" [(ngModel)]="Limpcnctivo">
             </ng-autocomplete>
             <ng-template #templateSect let-item>
                 <a [innerHTML]="item.Producto"></a>
@@ -52,7 +52,7 @@
         </div>
     </div>
 
-    <div class="row br justify-content-center" *ngIf="VerOcultarCampos !='1'">
+    <div class="row br" *ngIf="VerOcultarCampos !='1'">
         <hr class="col-sm-11 br">
         <h5 class="textblue">Crear asignación de transporte</h5>
 
@@ -60,8 +60,8 @@
             <label class="col-sm-12 Llave">Departamento de salida<strong>*</strong></label>
             <ng-autocomplete [data]="ArrayDepa" [searchKeyword]="keywordDepartamento"
                 placeholder="Seleccione departamento..." (selected)='selectDepartamento($event)'
-                [itemTemplate]="templateResDepartamento" [notFoundTemplate]="templateVacio" [(ngModel)]="Departamento"
-                (inputCleared)="LimpiaDepartamento('')">
+                [itemTemplate]="templateResDepartamento" [notFoundTemplate]="templateVacio"
+                (inputCleared)="LimpiaDepartamento('')" [initialValue]="ArrayDepa[contadorDep]">
             </ng-autocomplete>
             <ng-template #templateResDepartamento let-item>
                 <a [innerHTML]="item.DSCRPCION"></a>
@@ -74,7 +74,8 @@
             <label class="col-sm-12 Llave">Ciudad de salida<strong>*</strong></label>
             <ng-autocomplete [disabled]="IdDepartamento == '0'" [data]="ArrayCiud" [searchKeyword]="keywordCiudad"
                 placeholder="Seleccione ciudad..." (selected)='SelectCiudad($event)' [itemTemplate]="templateResCiudad"
-                [notFoundTemplate]="templateVacio" [(ngModel)]="Ciudad" (inputCleared)="LimpiaCiudad('')">
+                [notFoundTemplate]="templateVacio" (inputCleared)="LimpiaCiudad('')"
+                [initialValue]="ArrayCiud[contadorCiudad]">
             </ng-autocomplete>
             <ng-template #templateResCiudad let-item>
                 <a [innerHTML]="item.DSCRPCION"></a>
@@ -86,38 +87,49 @@
 
         <div class="col-sm-6 br">
             <label class="col-sm-12 Llave">Fecha recogida<strong>*</strong></label>
-            <input type="date" class="col-sm-12 form-control mt-1 textBox">
+            <input type="date" class="col-sm-12 form-control textBox" [(ngModel)]="FechaRecoge">
         </div>
+
+
         <div class="col-sm-6 br">
-            <label class="col-sm-12 Llave">Conductor</label>
-            <ng-autocomplete [data]="ArrayTransportistas" [searchKeyword]="keywordTrans" (selected)='selecTrans($event)'
-                (inputCleared)="LimpiaTrans('')" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio"
-                [(ngModel)]="Transportst">
+            <label class="col-sm-12 Llave">Bodega<strong>*</strong></label>
+            <ng-autocomplete [data]="ArrayBodegas" [searchKeyword]="keywordBodega" (selected)='selecBodg($event)'
+                (inputCleared)="LimpiaBodg('')" [itemTemplate]="templateBodg" [notFoundTemplate]="templateVacioBodg"
+                [initialValue]="ArrayBodegas[contadorBodga]">
             </ng-autocomplete>
-            <ng-template #templateSec let-item>
-                <a [innerHTML]="item.NMBRE_CNDCTOR"></a>
+            <ng-template #templateBodg let-item>
+                <a [innerHTML]="item.NombreBodega"></a>
             </ng-template>
-            <ng-template #templateVacio let-SinRegistro>
+            <ng-template #templateVacioBodg let-SinRegistro>
                 <label for="">Sin registros</label>
             </ng-template>
         </div>
         <div class="col-sm-6 br">
-            <label class="col-sm-12 Llave">Oferta</label>
+            <label class="col-sm-12 Llave">Valor flete<strong>*</strong></label>
+            <input mask="separator" thousandSeparator="." class="col-sm-12 form-control form-control-sm textBox"
+                type="text" [(ngModel)]="VlrFlete">
+        </div>
+        <div class="col-sm-6 br">
+            <label class="col-sm-12 Llave">Conductor</label>
             <ng-autocomplete [data]="ArrayTransportistas" [searchKeyword]="keywordTrans" (selected)='selecTrans($event)'
-                (inputCleared)="LimpiaTrans('')" [itemTemplate]="templateSec" [notFoundTemplate]="templateVacio"
-                [(ngModel)]="Transportst">
+                (inputCleared)="LimpiaTrans()" [itemTemplate]="templateConduct" [notFoundTemplate]="templateVacioCond"
+                [initialValue]="ArrayTransportistas[contadorTranspor]">
             </ng-autocomplete>
-            <ng-template #templateSec let-item>
+            <ng-template #templateConduct let-item>
                 <a [innerHTML]="item.NMBRE_CNDCTOR"></a>
             </ng-template>
-            <ng-template #templateVacio let-SinRegistro>
+            <ng-template #templateVacioCond let-SinRegistro>
                 <label for="">Sin registros</label>
             </ng-template>
         </div>
 
         <div class="row br justify-content-center">
             <div class="col-sm-3 col-12">
-                <button class="col-sm-12 btn btn-agro-prin" (click)="Guardar()">Guardar</button>
+                <button class="col-sm-12 btn btn-agro-prin" (click)="Guardar('2')"
+                    *ngIf="banderaAgregar=='1'">Guardar</button>
+
+                <button class="col-sm-12 btn btn-agro-prin" (click)="Guardar('3')"
+                    *ngIf="banderaAgregar=='2'">Actualizar</button>
             </div>
         </div>
     </div>
@@ -126,45 +138,68 @@
 
         <div class="col-6">
             <label class="col-sm-12 Llave">Productos</label>
-            <input type="text" class="form-control form-control-sm textBox">
+            <ng-autocomplete [disabled]="blockProducts" [data]="ArrayProductos" [searchKeyword]="keywordProduct" (selected)='selecProduct($event)'
+                (inputCleared)="LimpiaProduct('')" [itemTemplate]="templateProduct" 
+                [notFoundTemplate]="templateVacProduct" [(ngModel)]="LimpTransportista"
+                [initialValue]="ArrayProductos[ContadorProduct]">
+            </ng-autocomplete>
+            <ng-template #templateProduct let-item>
+                <a [innerHTML]="item.Descripcion"></a>
+            </ng-template>
+            <ng-template #templateVacProduct let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
         </div>
         <div class="col-2">
             <label class="col-sm-12 Llave">Cantidad</label>
-            <input type="number" class="form-control form-control-sm textBox">
+            <input type="number" class="form-control form-control-sm textBox" [(ngModel)]="Cantidad">
         </div>
         <div class="col-2 mt-4">
-            <button class="col-sm-12 btn btn-agro-prin">Agregar</button>
+            <button class="col-sm-12 btn btn-agro-prin" (click)="AgregarProducto('2')"
+                *ngIf="banderaActualiza=='1'">Agregar</button>
+            <button class="col-sm-12 btn btn-agro-prin" (click)="AgregarProducto('3')"
+                *ngIf="banderaActualiza=='2'">Actualizar</button>
         </div>
+
+
     </div>
     <div class="row br justify-content-center" *ngIf="VerOcultarCampos =='3'">
         <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
-            <!-- <h5 class="textblue">Número de usuarios: <strong>{{this.DataQuery.length}}</strong></h5> -->
+            <h5 class="textblue">Número de productos: <strong>{{this.DataQuery.length}}</strong></h5>
             <hr>
             <table class="table col-sm-12 TableAgro">
                 <tr>
+                    <th>IdProducto</th>
                     <th>Consecutivo</th>
-                    <th>Oferta</th>
                     <th>Producto</th>
-                    <th>Peso</th>
+                    <th>Peso kg</th>
                     <th>Cantidad</th>
                     <th>Acciones</th>
                 </tr>
-                <tr>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
-                    <td>xxx</td>
+                <tr *ngFor="let data of DataQuery">
+                    <td>{{data.IdProducto}}</td>
+                    <td>{{data.cd_cnsctvo}}</td>
+                    <td>{{data.Descripcion}}</td>
+                    <td>{{data.PesoKilos}}</td>
+                    <td>{{data.cantidad}}</td>
                     <td>
-                        <button class="SinEstilo" title="Editar producto">
+                        <button class="SinEstilo" title="Editar producto" (click)="EditarProduct(data)">
                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png" width="30" height="30">
                         </button>
 
-                        <button class="SinEstilo" title="Elimina producto">
+                        <button class="SinEstilo" title="Elimina producto"
+                            (click)="EliminaProdModal(data, ModalEliminaProduct)">
                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png" width="30"
                                 height="30">
                         </button>
                     </td>
+                </tr>
+                <tr>
+                    <td class="total">Total</td>
+                    <td></td>
+                    <td></td>
+                    <td class="total">{{totalPeso}}</td>
+                    <td class="total">{{totalCantidad}}</td>
                 </tr>
             </table>
         </div>
@@ -182,12 +217,18 @@
         <div class="row justify-content-center m-1">
             <ul>
                 <li class="displayflex col-sm-12 br m-2" *ngFor="let respuesta of arregloTransportes">
-                    <div class="col-sm-11">
-                        <input type="text" value="{{respuesta.IdTrans}} | {{respuesta.UbicacionRecoge}} | {{respuesta.UbicacionEntrega}} | {{respuesta.FechaRecoge}}" class="form-control" disabled>
+                    <div class="col-sm-10">
+                        <input type="text"
+                            value="{{respuesta.IdTrans}} | {{respuesta.UbicacionRecoge}} | {{respuesta.UbicacionEntrega}} | {{respuesta.FechaRecoge}}"
+                            class="form-control" disabled>
                     </div>
-                    <div class="col-sm-1">
-                        <button class="SinEstilo">
+                    <div class="col-sm-2">
+                        <button class="SinEstilo" (click)="EditarTRansporte(respuesta)">
                             <img class="Iconos" src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
+                                alt="Editar">
+                        </button>
+                        <button class="SinEstilo" (click)="EstasSeguro(respuesta, ModalEstasSeguro)">
+                            <img class="Iconos" src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png"
                                 alt="Editar">
                         </button>
                     </div>
@@ -196,9 +237,84 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-sm-12 text-center">
-                <button type="button" class="col-sm-3 btn btn-agro-prin" (click)="modal.close()">Aceptar</button>
+                <button type="button" class="col-sm-3 btn btn-agro-prin" (click)="modal.close()">Cerrar</button>
             </div>
         </div>
         <br>
     </div>
+</ng-template>
+
+<!-- Template Modal RESPUESTA-->
+<ng-template #ModalMensaje let-modal>
+    <div class="modal-header">
+        <h1>AgroApoya2</h1>
+        <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
+            (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">{{RespuestaModal}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-sm-12 text-center">
+            <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
+                (click)="modal.close()">Aceptar</button>
+        </div>
+    </div>
+    <br>
+</ng-template>
+
+<!-- Template Modal Estas seguro-->
+<ng-template #ModalEstasSeguro let-modal>
+    <div class="modal-header">
+        <h1>AgroApoya2</h1>
+        <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
+            (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">{{RespuestaModal}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="row col-sm-12 text-center justify-content-center">
+            <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
+                (click)="modal.close()">Cancelar</button>
+            <div class="col-1"> </div>
+            <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
+                (click)="EliminaTRansporte()">Eliminar</button>
+        </div>
+    </div>
+    <br>
+</ng-template>
+
+<!-- Template Modal Eliminar producto-->
+<ng-template #ModalEliminaProduct let-modal>
+    <div class="modal-header">
+        <h1>AgroApoya2</h1>
+        <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
+            (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">{{RespuestaModal}}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="row col-sm-12 text-center justify-content-center">
+            <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
+                (click)="modal.close()">Cancelar</button>
+            <div class="col-1"> </div>
+            <button (keyup.enter)="modal.close()" type="button" class="col-sm-3 btn btn-agro-prin"
+                (click)="EliminaProducto()">Eliminar</button>
+        </div>
+    </div>
+    <br>
 </ng-template>
