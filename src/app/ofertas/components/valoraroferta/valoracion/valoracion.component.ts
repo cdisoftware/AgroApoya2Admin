@@ -363,6 +363,8 @@ export class ValoracionComponent implements OnInit {
   }
   consultaToppingsOferta() {
     this.serviciosvaloracion.ConsultaToppingOfer('5', this.SessionSectorSel, this.SessionOferta, '0').subscribe(Resultcons => {
+      console.log("====CONSULTA====")
+      console.log(Resultcons)
       if (Resultcons.length > 0) {
         this.DataToppings = Resultcons;
         this.ValidaConsulta = '0';
@@ -724,10 +726,12 @@ export class ValoracionComponent implements OnInit {
         PresentacionProd: Auxpresentacion,
         IdCampesino: this.IdCampesino
       }
-
+      console.log("====INSERTA====")
+      console.log(Body)
       this.serviciosvaloracion.ModificaTopping('2', Body).subscribe(ResultOper => {
         this.Respuesta = ResultOper;
         this.consultaToppingsOferta();
+        this.IdCampesino = '';
         this.DesCampesino = '';
         this.DesTopp = '';
         this.VlrUniTopp = '';
