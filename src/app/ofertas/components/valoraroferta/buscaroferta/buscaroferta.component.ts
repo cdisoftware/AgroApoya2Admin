@@ -739,6 +739,7 @@ export class BuscarofertaComponent implements OnInit {
       bandera = '4'
     }
     this.ServiciosValorar.TextosOferta(bandera, Bodymod).subscribe(ResultCorreo => {
+      alert(ResultCorreo)
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
       this.Respuesta = ResultCorreo;
       this.PrevisualizaCorreo()
