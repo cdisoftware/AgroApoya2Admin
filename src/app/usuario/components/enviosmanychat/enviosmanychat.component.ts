@@ -90,6 +90,8 @@ export class EnviosmanychatComponent implements OnInit {
   }
 
   VerQuery() {
+    this.IdPlantll = '';
+    this.IdManychatUser == ''
     if (this.IdSector == '' || this.IdSector == null) {
       this.IdSector = '0';
     }
@@ -166,17 +168,17 @@ export class EnviosmanychatComponent implements OnInit {
     })
   }
 
-  AuditoriaManychatEnvios(USUCODIG: string, ID_MANYCHAT:string) {  
-      const Body = {
-        IdManyChat: ID_MANYCHAT,
-        Usucodig: USUCODIG,
-        IdAuditoria: this.IdAuditoria,
-        IdTipoEnvio: 1
-      };
-      console.log(Body)
-      this.ServiciosValorar.AuditoriAdminManychatEnvios('1', Body).subscribe(Resultado => {
-        //console.log('Resultado de la auditoría Envios: ' + Resultado);
-      })
+  AuditoriaManychatEnvios(USUCODIG: string, ID_MANYCHAT: string) {
+    const Body = {
+      IdManyChat: ID_MANYCHAT,
+      Usucodig: USUCODIG,
+      IdAuditoria: this.IdAuditoria,
+      IdTipoEnvio: 1
+    };
+    console.log(Body)
+    this.ServiciosValorar.AuditoriAdminManychatEnvios('1', Body).subscribe(Resultado => {
+      //console.log('Resultado de la auditoría Envios: ' + Resultado);
+    })
   }
 
   async EnvioManyChat() {
@@ -202,13 +204,13 @@ export class EnviosmanychatComponent implements OnInit {
           await this.sleep(1000);
         }
 
-        
+
         this.IdPlantll = '';
         this.NunMensajesEnviados = 0;
         this.Loader = false;
         this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
         this.Respuesta = "Mensajes enviados.";
-    
+
       } else {
         this.Respuesta = "Sin resultados.";
         this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
@@ -237,6 +239,31 @@ export class EnviosmanychatComponent implements OnInit {
     });
   }
 
+
+  EnvioPrueba() {
+    if (this.IdManychatUser == null || this.IdManychatUser == undefined || this.IdManychatUser == '') {
+      this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+      this.Respuesta = "Digita el IdManychat.";
+    } else if (this.IdPlantll == null || this.IdPlantll == undefined || this.IdPlantll == '') {
+      this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+      this.Respuesta = "IdPlantilla obligatorio.";
+    } else {
+      const body = {
+        subscriber_id: this.IdManychatUser,
+        flow_ns: this.IdPlantll
+      }
+      this.publicidadService.CManyChatFlows(body).subscribe(async Respu => {
+        console.log(Respu)
+        if (Respu && Respu.status === "success") {
+          this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+          this.Respuesta = "Mensaje enviado.";
+        } else {
+          this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+          this.Respuesta = "Mensaje NO enviado.";
+        }
+      });
+    }
+  }
 
 
 }
