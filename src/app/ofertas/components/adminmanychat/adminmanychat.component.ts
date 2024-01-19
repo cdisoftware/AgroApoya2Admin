@@ -55,7 +55,7 @@ export class AdminmanychatComponent implements OnInit {
   ArrayCreaUsersManyChat: any = [];
   //#endregion VariablesCreaManyChat
   ngOnInit(): void {
-    this.ConsultaUserManyChatNull();
+    //this.ConsultaUserManyChatNull();
   }
 
 
@@ -194,7 +194,7 @@ export class AdminmanychatComponent implements OnInit {
     this.service.ConsultaUsers('1', this.IdTipoUser, body).subscribe(async Resultado => {
       await new Promise((resolve, reject) => {
         for (var i = 0; i < Resultado.length; i++) {
-          this.ConsInfoUserManyChat(Resultado[i].USUCODIG);
+          this.ConsInfoUserManyChat(Resultado[i]);
           resolve(true);
         }
       });
@@ -255,76 +255,82 @@ export class AdminmanychatComponent implements OnInit {
   //Si no existe
   async CreaUserEnManyChat(item: any) {
     await new Promise((resolve, reject) => {
-    const body = {
-      first_name: item.NOMBRES_PERSONA.trim(),
-      last_name: "",
-      whatsapp_phone: "57" + item.CELULAR_PERSONA.trim(),
-      has_opt_in_sms: true,
-      has_opt_in_email: true,
-      consent_phrase: "string"
-    }
-    this.serviceintegracion.modmanychatcreateuser(body).subscribe(Resultado => {
-      var IdMenyChat: string = "";
-      if (Resultado != "Usuario ya existe") {
-
-        this.GuardaLogManyChat("status:success", item);
-        //this.UpdateInfoUserMenyChat(Resultado);
-
-        IdMenyChat = Resultado;
-        const bodyUsuCod = {
-          subscriber_id: IdMenyChat,
-          field_id: 9572495,
-          field_value: item.USUCODIG
-        }
-        this.serviceintegracion.AsignarUsucodigUserManyChat(bodyUsuCod).subscribe(Resultado => {
-          if (Resultado.status == "success") {
-            this.UpdateIdManyChatUser(IdMenyChat, item);
-            resolve(true);
-          }else{
-            resolve(true);
-          }
-        });
-      } else {
-        this.GuardaLogManyChat(Resultado, item);
-        resolve(true);
+      const body = {
+        first_name: item.NOMBRES_PERSONA.trim(),
+        last_name: "",
+        whatsapp_phone: "57" + item.CELULAR_PERSONA.trim(),
+        has_opt_in_sms: true,
+        has_opt_in_email: true,
+        consent_phrase: "string"
       }
+      this.serviceintegracion.modmanychatcreateuser(body).subscribe(Resultado => {
+        var IdMenyChat: string = "";
+        if (Resultado != "Usuario ya existe") {
+
+          this.GuardaLogManyChat("status:success", item);
+          //this.UpdateInfoUserMenyChat(Resultado);
+
+          IdMenyChat = Resultado;
+          const bodyUsuCod = {
+            subscriber_id: IdMenyChat,
+            field_id: 9572495,
+            field_value: item.USUCODIG
+          }
+          this.serviceintegracion.AsignarUsucodigUserManyChat(bodyUsuCod).subscribe(Resultado => {
+            if (Resultado.status == "success") {
+              this.UpdateIdManyChatUser(IdMenyChat, item);
+              resolve(true);
+            } else {
+              resolve(true);
+            }
+          });
+        } else {
+          this.GuardaLogManyChat(Resultado, item);
+          resolve(true);
+        }
+      });
     });
-  });
   }
 
   //Actualiza el id de menychat en la bd
-  UpdateIdManyChatUser(IdMenyChat: string, item: any) {
-    const bodyUsuCod = {
-      subscriber_id: IdMenyChat,
-      field_id: 9572495,
-      field_value: item.USUCODIG
-    }
-    this.serviceintegracion.AsignarUsucodigUserManyChat(bodyUsuCod).subscribe(Resultado => {
-      const body = {
-        correo_persona: item.CELULAR_PERSONA.toLowerCase().replace(' ', ''),
-        ID_MANYCHAT: IdMenyChat
+  async UpdateIdManyChatUser(IdMenyChat: string, item: any) {
+    await new Promise((resolve, reject) => {
+      const bodyUsuCod = {
+        subscriber_id: IdMenyChat,
+        field_id: 9572495,
+        field_value: item.USUCODIG
       }
-      this.serviceintegracion.ActualizaIdManyChat('3', body).subscribe(Resultado => {
-        var respu: string = Resultado.split("|");
-        if (respu[0].trim() == "1") {
-
-        } else {
-
+      this.serviceintegracion.AsignarUsucodigUserManyChat(bodyUsuCod).subscribe(Resultado => {
+        const body = {
+          correo_persona: item.CELULAR_PERSONA.toLowerCase().replace(' ', ''),
+          ID_MANYCHAT: IdMenyChat
         }
+        this.serviceintegracion.ActualizaIdManyChat('3', body).subscribe(Resultado => {
+          var respu: string = Resultado.split("|");
+          resolve(true);
+          if (respu[0].trim() == "1") {
+
+          } else {
+
+          }
+        });
       });
     });
   }
 
 
 
-  GuardaLogManyChat(Respuesta: string, item: any) {
-    const body = {
-      usucodig: item.USUCODIG,
-      celular: item.CELULAR_PERSONA,
-      rta_manychat: Respuesta,
-      origen: 1
-    }
-    this.serviceintegracion.modLogsRegManychat('3', body).subscribe(Resultado => {
+  async GuardaLogManyChat(Respuesta: string, item: any) {
+    await new Promise((resolve, reject) => {
+      const body = {
+        usucodig: item.USUCODIG,
+        celular: item.CELULAR_PERSONA,
+        rta_manychat: Respuesta,
+        origen: 1
+      }
+      this.serviceintegracion.modLogsRegManychat('3', body).subscribe(Resultado => {
+        resolve(true);
+      });
     });
   }
   //#endregion MetodosCreaManyChat
