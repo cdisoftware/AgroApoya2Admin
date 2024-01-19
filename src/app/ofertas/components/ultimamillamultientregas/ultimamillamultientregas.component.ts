@@ -79,7 +79,6 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   geocoder = new google.maps.Geocoder();
   map: google.maps.Map;
   MarkersEntregasDisponibles: google.maps.Marker[] = [];
-  markerBodega: google.maps.Marker[] = [];
   infoWindow = new google.maps.InfoWindow();
   AreaPolygonMap: google.maps.Polygon | null = null;
   ArrayEntregas: any = [];
@@ -687,7 +686,6 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
           zoom: 12,
         }
       );
-      this.map.setOptions({ styles: this.StyleMap });
       this.AgregarSitiosRuta();
       return results;
     })
@@ -695,12 +693,12 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       });
   }
   AgregarSitiosRuta() {
+    for (var i = 0; i < this.MarkersEntregasDisponibles.length; i++) {
+      this.MarkersEntregasDisponibles[i].setMap(null);
+    }
     this.MarkersEntregasDisponibles = [];
 
-
     const features = [];
-
-    this.markerBodega = [];
     var lat: number;
     var long: number;
 
@@ -722,6 +720,15 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
         animation: google.maps.Animation.DROP,
         position: features[i].position,
         map: this.map,
+        icon: '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png',
+        zIndex: i,
+        label: ''
+      });
+      var marker = new google.maps.Marker({
+        title: features[i].NomCli,
+        animation: google.maps.Animation.DROP,
+        position: features[i].position,
+        map: this.mapRutaPolygon,
         icon: '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png',
         zIndex: i,
         label: ''
@@ -797,6 +804,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
           zoom: 14,
         }
       );
+      this.AgregarSitiosRuta();
       this.mapRutaPolygon.addListener("click", (e: any) => {
         this.LimpiaMappRutaPoligono();
         this.AgregarMarcador(e.latLng, this.mapRutaPolygon);
