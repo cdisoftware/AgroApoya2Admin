@@ -29,4 +29,7 @@ export class InteraccionMenyChat {
     AsignaCampoManyChat(Body: any) {
         return this.http.post<any>(this.url_servidor + 'AsignarCampoUserManyChat', Body)
     }
+    BuscaUserCorreoTelefono(Body: any) {
+        return this.http.post<any>(this.url_servidor + 'buscarUserManychat', Body)
+    }
 }
