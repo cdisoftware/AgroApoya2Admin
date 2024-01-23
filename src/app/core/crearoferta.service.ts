@@ -54,5 +54,7 @@ export class CrearofertaService {
   ConsultaAsignaTransport(Bandera: string, cd_cnsctivo: string, idSector: string, Body: any) {
     return this.http.post<any>(this.url_servidor + 'consAdTrasportesCons/' + Bandera + '/' + cd_cnsctivo + '/' + idSector, Body)
   }
-
+  ConsUserSectores(bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consadusuariosSector/' + bandera)
+  }
 }
