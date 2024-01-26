@@ -234,7 +234,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
 
   ConsutaGrupos() {
     this.ServiciosValorar.ConsultaGruposMilla('1', '0').subscribe(Resultado => {
-      console.log(Resultado)
       this.ArrayGrupos = Resultado
     })
   }
@@ -255,7 +254,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       CD_MNCPIO: 0
     }
     this.ServiciosValorar.BusquedaOferta('2', this.SelectorOferta, '0', '0', datosbusqueda).subscribe(Resultado => {
-      console.log(Resultado)
       this.ArrayOferta = Resultado;
       this.keywordGrupo = 'NombreGrupo';
       this.keywordOferta = 'Producto'
@@ -323,10 +321,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       FechaIncio: this.FechaInicio,
       FechaFin: this.FechaFin
     }
-    console.log(BodyConsulta)
-    console.log(this.IdGrupo)
     this.ServiciosValorar.ConsultaSegNew('1', this.IdGrupo, this.OfertaSelect, BodyConsulta).subscribe(Resultado => {
-      console.log(Resultado)
       this.ArrayGruposSel = Resultado
       if (Resultado.length == 0) {
         this.Respuesta = 'No encontramos registros de compras para este sector.';
@@ -435,7 +430,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   ValorTotalCompra: string = "";
   MostrarDetalle(Entrega: any, TemplateDetalle: any) {
     this.EstadoDetalle = Entrega.ESTDO;
-    console.log(Entrega)
     this.MotivoDevolucion = Entrega.ObsEvidencia
     this.MotivoDevolucion2 = Entrega.ObsEvidenciaDos
     this.ValorTotalCompra = Entrega.VLOR_PGAR;
@@ -684,8 +678,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     this.TotalContra = 0
     this.TotalElect = 0
     this.ServiciosValorar.ConsultaReporteEntregas('1', idGrupo).subscribe(Resultado => {
-      console.log('************ArrayReporte**************')
-      console.log(Resultado)
       if (Resultado.length > 0) {
         this.ArrayVentas = []
         this.ArrayReporte = Resultado;
@@ -771,10 +763,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
             ValTotalRecaudo: ValTotalRecaudo
           }
         ];
-        console.log('////Objeto Entregas')
-        console.log(this.ObjetEntrega)
-
-
         this.TotalCosolidado = ValTotalRecaudo;
         this.Centramapa({ address: this.NomDepa + ',' + this.NomCiudad })
       } else {
@@ -898,7 +886,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
 
   ConsultaDetalle(IdGrupo: string) {
     this.ServiciosValorar.ConsultaDetalle('1', IdGrupo).subscribe(Resultado => {
-      console.log(Resultado)
       this.ArrayConsultaSeg = Resultado;
     })
   }
@@ -906,7 +893,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   ConsultaValoresTotales(idgrupomilla: string) {
     this.ServiciosValorar.ConsultaTotales('1', idgrupomilla).subscribe(Resultado => {
       this.ArrayTotales = Resultado;
-      console.log(Resultado);
     })
   }
 
@@ -1004,7 +990,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     workbook.xlsx.writeBuffer().then((data) => {
       let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
       fs.saveAs(blob, fname + '.xlsx');
-      console.log('generando...')
     });
   }
 
@@ -1025,8 +1010,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     })
     this.ServiciosValorar.ConsultaGeneralTransporte('1', this.IdGrupo).subscribe(Resultado => {
       if (Resultado.length > 0) {
-        console.log('/////////')
-        console.log(Resultado)
         this.ArrayInfoGeneralTrans = Resultado;
       }
     })
@@ -1036,12 +1019,15 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   ArregloPDFDetalleProd: any = [];
 
   public GenerarPdfInformarcion(): void {
+    console.log(this.ArrayConsultaSeg);
     this.modalService.open(this.ModalCargando, { ariaLabelledBy: 'modal-basic-title', centered: true });
     for (var e = 0; this.ArrayConsultaSeg.length > e; e++) {
       this.ArregloPDFDetalleProd.push({
         position: e,
         CodigoOferta: this.ArrayConsultaSeg[e].ID,
         NombreClientet: this.ArrayConsultaSeg[e].NOMBRES_PERSONA,
+        CelularCliente: this.ArrayConsultaSeg[e].CELULAR_PERSONA,
+        DireccionCliente: this.ArrayConsultaSeg[e].DRCCION + ' ' + this.ArrayConsultaSeg[e].CMPLMNTO_DRRCCION, 
         Productos: []
       });
     }
@@ -1052,8 +1038,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
 
   public downloadPDFDetalle(e: number, IdCarro: string) {
     this.ServiciosValorar.ConsultaDetalleEntregas('1', IdCarro).subscribe(Resultado => {
-      console.log('**********DETALLE DETALLE DETALLE*********************')
-      console.log(Resultado)
       for (var j = 0; Resultado.length > j; j++) {
         this.ArregloPDFDetalleProd[e].Productos.push({
           NombreProducto: Resultado[j].Producto,
@@ -1063,7 +1047,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         });
       }
       if (e == this.ArregloPDFDetalleProd.length - 1) {
-        console.log(this.ArregloPDFDetalleProd)
         setTimeout(() => {
           this.DescargarPDF();
         }, 3000);
@@ -1101,8 +1084,8 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     for (var e = 0; this.ArregloPDFDetalleProd.length > e; e++) {
       autoTable(doc, {
         styles: { fillColor: [43, 70, 136] },
-        head: [[this.ArregloPDFDetalleProd[e].CodigoOferta + ' - ' + this.ArregloPDFDetalleProd[e].NombreClientet]]
-      })
+        head: [[this.ArregloPDFDetalleProd[e].CodigoOferta + ' || ' + this.ArregloPDFDetalleProd[e].NombreClientet 
+        + ' || ' + this.ArregloPDFDetalleProd[e].CelularCliente  + ' || ' + this.ArregloPDFDetalleProd[e].DireccionCliente]] })
 
       var arrrayProdDetalle: any = [];
       for (var h = 0; this.ArregloPDFDetalleProd[e].Productos.length > h; h++) {

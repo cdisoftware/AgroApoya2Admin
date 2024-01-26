@@ -95,7 +95,7 @@
         </tr>
         <tr *ngFor="let oferta of DataConsulta">
             <td>
-                    {{oferta.OFERTA}}
+                {{oferta.OFERTA}}
                 <br> <strong>{{oferta.IdOferta}}</strong>
                 <br> {{oferta.SECTOR}}
                 <br>
@@ -306,6 +306,8 @@
                         <th></th>
                         <th>Producto</th>
                         <th>Cantidad total</th>
+                        <th>Peso und</th>
+                        <th>Peso Total</th>
                     </tr>
                     <tr *ngFor="let oferta of ArregloUnidadesOferta">
                         <th style="margin: auto;">
@@ -315,7 +317,20 @@
                         </th>
                         <th><label class="p-2">{{oferta.Producto}}</label> </th>
                         <th style="text-align: center;"><label class="p-2">{{oferta.CantidadTotal}}</label> </th>
+                        <th>{{oferta.PesoUnid}}</th>
+                        <th>{{oferta.PesoTotal}}</th>
                     </tr>
+                    <tr class="TableAgro">
+                      <br>
+                    </tr>
+                    <tr class="TableAgro">
+                        <th></th>
+                        <th>Totales</th>
+                        <th>{{ProdTotal}}</th>
+                        <th>{{LibrasUndTotales}}</th>
+                        <th>{{LibrasTotalTotales}}</th>
+                    </tr>
+
                 </table>
             </div>
         </div>
