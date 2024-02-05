@@ -3,6 +3,7 @@ import { ReporteService } from 'src/app/core/reporte.service';
 import { InteraccionMenyChat } from 'src/app/core/InteraccionMenyChat';
 import { NgbModal, NgbAccordionConfig } from '@ng-bootstrap/ng-bootstrap';
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
+import { CrearofertaService } from 'src/app/core/crearoferta.service';
 
 @Component({
   selector: 'app-adminmanychat',
@@ -11,7 +12,7 @@ import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 })
 export class AdminmanychatComponent implements OnInit {
 
-  constructor(private service: ReporteService, private serviceintegracion: InteraccionMenyChat, private modalService: NgbModal, private MetGlobalesService: MetodosglobalesService) {
+  constructor(private service: ReporteService, private serviceintegracion: InteraccionMenyChat, private modalService: NgbModal, private MetGlobalesService: MetodosglobalesService, private creaofer: CrearofertaService) {
     this.ConsultaUsers('0', '0', '0');
     this.ListaTipoUsuario();
   }
@@ -54,8 +55,10 @@ export class AdminmanychatComponent implements OnInit {
   //#region VariablesCreaManyChat
   ArrayCreaUsersManyChat: any = [];
   //#endregion VariablesCreaManyChat
+
   ngOnInit(): void {
-    this.ConsultaUserManyChatNull();
+    //this.ConsultaUserManyChatNull();
+    //this.ConsultaUser();
   }
 
 
@@ -334,4 +337,127 @@ export class AdminmanychatComponent implements OnInit {
     });
   }
   //#endregion MetodosCreaManyChat
+
+  //#region AgregaEtiquetasManyChat
+  ConsultaUser() {
+    this.creaofer.ConsUserSectores('1').subscribe(async Resultado => {
+      this.ArrayUsers = Resultado;
+      this.Loader = true;
+      this.NunMensajesEnviados = 0;
+      await new Promise(async (resolve, reject) => {
+        for (var i = 0; i < Resultado.length; i++) {
+          if(Resultado[i].id_manychat != null && Resultado[i].id_manychat != undefined && Resultado[i].id_manychat.toString() != "00"){
+            await this.AsignaEtiqueta(Resultado[i]);
+          }
+          resolve(true);
+          this.NunMensajesEnviados ++;
+        }
+      });
+    });
+  }
+
+  async AsignaEtiqueta(item: any) {
+    await new Promise((resolve, reject) => {
+      var IdEtiqueta = "";
+      console.log(item.id_manychat)
+      //#Usaquén
+      if (item.IdSector == 354) {
+        IdEtiqueta = "41461781";
+      } else
+        //#Suba
+        if (item.IdSector == 355) {
+          IdEtiqueta = "41461866";
+        } else
+          //#Engativa
+          if (item.IdSector == 356) {
+            IdEtiqueta = "41461853";
+          } else
+            //#Barrios Unidos
+            if (item.IdSector == 357) {
+              IdEtiqueta = "41461875";
+            } else
+              //#Teusaquillo
+              if (item.IdSector == 358) {
+                IdEtiqueta = "41461891";
+              } else
+                //#Fontibón
+                if (item.IdSector == 359) {
+                  IdEtiqueta = "41461840";
+                } else
+                  //#Chapinero
+                  if (item.IdSector == 360) {
+                    IdEtiqueta = "41461822";
+                  } else
+                    //#Kennedy
+                    if (item.IdSector == 361) {
+                      IdEtiqueta = "41461827";
+                    } else
+                      //#Candelaria
+                      if (item.IdSector == 364) {
+                        IdEtiqueta = "41461976";
+                      } else
+                        //#Martires
+                        if (item.IdSector == 365) {
+                          IdEtiqueta = "41461959";
+                        } else
+                          //#Puente Aranda
+                          if (item.IdSector == 366) {
+                            IdEtiqueta = "41461970";
+                          } else
+                            //#Antonio Nariño
+                            if (item.IdSector == 367) {
+                              IdEtiqueta = "41461965";
+                            } else
+                              //#Usme
+                              if (item.IdSector == 368) {
+                                IdEtiqueta = "41461938";
+                              } else
+                                //#Ciudad Bolivar
+                                if (item.IdSector == 369) {
+                                  IdEtiqueta = "41462024";
+                                } else
+                                  //#Rafael Uribe Uribe
+                                  if (item.IdSector == 370) {
+                                    IdEtiqueta = "41462011";
+                                  } else
+                                    //#Bosa
+                                    if (item.IdSector == 371) {
+                                      IdEtiqueta = "41461949";
+                                    } else
+                                      //#Tunjuelito
+                                      if (item.IdSector == 372) {
+                                        IdEtiqueta = "41461943";
+                                      } else
+                                        //#San Cristóbal
+                                        if (item.IdSector == 373) {
+                                          IdEtiqueta = "41461900";
+                                        } else
+                                          //#Santa Fé
+                                          if (item.IdSector == 373) {
+                                            IdEtiqueta = "41461896";
+                                          } else {
+                                            IdEtiqueta = "No se encuentra el id sector";
+                                          }
+      const body = {
+        subscriber_id: item.id_manychat,
+        tag_id: IdEtiqueta
+
+      }
+      var respu = "";
+      try {
+        this.serviceintegracion.AsignaEtiquetaUser(body).subscribe(async Resultado => {
+          var split = Resultado.split("|");
+          if (Number(split[0]) > 0) {
+            respu = "Todo melo";
+          } else {
+            respu = "No fue posible";
+          }
+          resolve(true);
+        }); 
+      } catch (error) {
+        resolve(true);
+      }
+    });
+  }
+  //#endregion AgregaEtiquetasManyChat
 }

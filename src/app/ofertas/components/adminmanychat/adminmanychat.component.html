@@ -106,6 +106,33 @@
         </div>
     </div>
 </div>
+
+
+<div class="container" [ngClass]="Loader == true ? 'Opacity' : '' ">
+    <div class="row TableResult">
+        <table class="table">
+            <thead class="thead-light"
+                style="position: sticky; top: -1px; background-color: #397c97; color: aliceblue; text-align: center;">
+                <tr>
+                    <th scope="col">USUCODIG</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Telefono</th>
+                    <th scope="col">ManyChat</th>
+                </tr>
+            </thead>
+            <tbody style=" text-align: center;">
+                <tr *ngFor="let respu of ArrayUsers; let i = index">
+                    <th>{{respu.USUCODIG}}</th>
+                    <td>{{respu.NOMBRES_PERSONA}}</td>
+                    <td>{{respu.CELULAR_PERSONA}}</td>
+                    <th>{{respu.id_manychat}}</th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
 <div class="divloader text-center" *ngIf="Loader == true">
     <img src="../../../../assets/animate/svg-loaders/circles.svg" />
     <h3 style="color: #397c97;">Enviando mensajes... {{NunMensajesEnviados}} de {{this.ArrayUsers.length}}</h3>

@@ -32,4 +32,7 @@ export class InteraccionMenyChat {
     BuscaUserCorreoTelefono(Body: any) {
         return this.http.post<any>(this.url_servidor + 'buscarUserManychat', Body)
     }
+    AsignaEtiquetaUser(Body: any) {
+        return this.http.post<any>(this.url_servidor + 'AddTagUserManyChat', Body)
+    }
 }

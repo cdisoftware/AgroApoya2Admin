@@ -343,7 +343,6 @@ export class DuplicarofertaComponent implements OnInit {
   MaximoUnidadesDescuento: string = "";
   ConsultaValoracionOferta() {
     this.ServiciosValorar.ConsultaValoracionOferta('1', this.IdOferta, this.SessionSectorSel).subscribe(ResultCons => {
-      console.log(ResultCons)
       this.ComInvid = ResultCons[0].Nom_tpo_cmsion_indvdual;
       this.ComGrup = ResultCons[0].Nom_tpo_cmsion_grpal;
       this.TipoDescuento = ResultCons[0].tpo_descuento;
@@ -358,8 +357,8 @@ export class DuplicarofertaComponent implements OnInit {
 
         this.VlrComicionIndividual = ResultCons[0].vlor_cmsion_indvdual;
 
-        this.MinUnidI = ResultCons[0].mnmo_unddes_indvdual;
-        this.MaxUnidI = ResultCons[0].mxmo_unddes_indvdual;
+        this.MinUnidI = ResultCons[0].mnmo_unddes_lider;
+        this.MaxUnidI = ResultCons[0].mxmo_unddes_lider;
         this.VlrDomiI = ResultCons[0].vlor_dmnclio_indvdual;
         this.PreFinI = ResultCons[0].vlor_fnal_indvdual;
 
