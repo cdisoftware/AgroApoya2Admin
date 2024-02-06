@@ -207,7 +207,7 @@ export class AdminmanychatComponent implements OnInit {
   async ConsInfoUserManyChat(item: any) {
     await new Promise((resolve, reject) => {
       var IdAmbbiente = this.MetGlobalesService.ambientedetrabajo;
-      if (IdAmbbiente == "1") {
+      if (IdAmbbiente == "2") {
         var ususcod: number = Number(item.USUCODIG);
         const body = {
           field_id: 9572495,
@@ -221,7 +221,7 @@ export class AdminmanychatComponent implements OnInit {
               this.BuscaUserTelefono_Mtd(item);
               resolve(true);
             } else {
-              IdMenyChat = Resultado.data[0].id;
+              IdMenyChat = Resultado;
               this.UpdateIdManyChatUser(IdMenyChat, item);
               resolve(true);
             }
@@ -236,13 +236,13 @@ export class AdminmanychatComponent implements OnInit {
   async BuscaUserTelefono_Mtd(item: any) {
     await new Promise((resolve, reject) => {
       const body = {
-        email: "0",
+        email: item.CORREO_PERSONA,
         phone: item.CELULAR_PERSONA
       }
       this.serviceintegracion.BuscaUserCorreoTelefono(body).subscribe(Resultado => {
         var IdMenyChat: string = "";
         if (Resultado != "Usuario NO existe") {
-          IdMenyChat = Resultado.data[0].id;
+          IdMenyChat = Resultado;
           this.UpdateIdManyChatUser(IdMenyChat, item);
           resolve(true);
         } else {

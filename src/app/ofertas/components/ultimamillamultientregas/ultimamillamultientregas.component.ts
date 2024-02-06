@@ -159,7 +159,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   //#region General
   ConsultaListas() {
     this.ConsultaBodegas();
-    this.ConsultaTransporte();
+    //this.ConsultaTransporte();
   }
 
   ActualizarValorTransporte() {
@@ -474,6 +474,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       for (var i = 0; i < Respu.length; i++) {
         this.ArrayConsTransporte.push({ CD_CNSCTVO: Respu[i].CD_CNSCTVO, IdSector: Respu[i].IdSector, DesSector: Respu[i].DesSector, NumeroDeCompras: Respu[i].NumeroDeCompras, checked: false })
       }
+      console.log(this.ArrayConsTransporte)
     });
   }
   SetStile(e: any, position: number) {

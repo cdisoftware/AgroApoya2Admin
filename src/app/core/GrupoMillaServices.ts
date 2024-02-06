@@ -36,6 +36,7 @@ export class GrupoMillaServices {
         return this.http.post<any>(this.url_servidor + 'modAdminMillaTransporte/' + bandera + '/' + IdBodega, body);
     }
     ConsultaTransporte(CdCons: string, IdSector: string) {
+        alert(this.url_servidor + 'consAdMillaDtallOfertaCompra/' + CdCons + '/' + IdSector)
         return this.http.get<any>(this.url_servidor + 'consAdMillaDtallOfertaCompra/' + CdCons + '/' + IdSector);
     }
 
