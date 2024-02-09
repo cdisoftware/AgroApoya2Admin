@@ -303,7 +303,7 @@
             <th scope="row">{{res.NombrePersona}}</th>
             <td style="overflow: auto;">{{res.CorreoElectronico}}</td>
             <td>{{res.NumTelefono}}</td>
-            <td><img style="width: 20px;" src="{{res.img}}"></td>
+            <td><img style="width: 20px;" [src]="res.img"></td>
           </tr>
         </tbody>
       </table>
