@@ -43,6 +43,7 @@
     "ng-sidebar": "^9.4.3",
     "ngx-cookie-service": "^14.0.1",
     "ngx-mask": "^14.2.4",
+    "ngx-ssrs-reportviewer-v2": "^17.0.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.4.0",
     "url": "^0.11.0",
