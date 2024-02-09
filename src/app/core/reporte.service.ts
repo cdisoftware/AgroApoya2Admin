@@ -145,4 +145,13 @@ export class ReporteService {
   ConsultaUsers(Bandera: string, TipoUser: string, Body: any) {
     return this.http.post<any>(this.url_servidor + 'ConsCUsersAA2/' + Bandera + '/' + TipoUser, Body);
   }
+
+  ListaLocalidades(Bandera: string){
+    return this.http.get<any[]>(this.url_servidor + 'consLocalidades/' + Bandera)
+  }
+
+  UsuariosRegistrados(Bandera: string, IdLocalidad: any, Body: any){
+    return this.http.post<any>(this.url_servidor + 'consReporteUsuarios/' + Bandera + '/' + IdLocalidad, Body);
+  }
+
 }

@@ -1,0 +1,116 @@
+<div class="container bg-white mt-5 mb-5">
+    <h1 class="h2">Reporte Registros de Usuarios</h1>
+    <div class="row g-3 mt-1">
+        <div class="col-md-4 mb-2">
+            <label for="NombreUsuario" class="form-label mb-2"><small>Nombre del usuario</small></label>
+            <input type="text" class="form-control textBox" id="NombreUsuario" placeholder="Ingrese el nombre de usuario" [(ngModel)]="NombreUsuario">
+        </div>
+        <div class="col-md-4">
+            <label for="DireccionUsuario" class="form-label mb-2"><small>Número de teléfono del usuario</small></label>
+            <input type="number" class="form-control textBox" id="DireccionUsuario" placeholder="Ingrese el número de teléfono del usuario" [(ngModel)]="NumeroUsuario">
+        </div>
+        <div class="col-md-4">
+            <label for="CorreoUsuario" class="form-label mb-2"><small>Correo electrónico del usuario</small></label>
+            <input type="email" class="form-control textBox" id="CorreoUsuario" placeholder="Ingrese el correo electrónico del usuario" [(ngModel)]="EmailUsuario">
+        </div>
+        <div class="col-md-4">
+            <label for="LocalidadUsuario" class="form-label mb-2"><small>Localidad del usuario</small></label>
+            <ng-autocomplete [data]="DataLocalidades" [searchKeyword]="KeyWordLocalidad" placeholder="Seleccione la localidad del usuario"
+            (inputCleared)="LimpiarListaLocalidades('')" (selected)='SelectListaLocalidades($event)'
+            [itemTemplate]="templateLocalidades" [notFoundTemplate]="templateVacio">
+            </ng-autocomplete>
+            <ng-template #templateLocalidades let-item>
+                <a [innerHTML]="item.dscrpcion_sctor"></a>
+            </ng-template>
+            <ng-template #templateVacio let-SinRegistro>
+                <label>No Existen Registros</label>
+            </ng-template>
+        </div>
+        <div class="col-md-4">
+            <label for="FechaRegistro" class="form-label mb-2"><small>Fecha de registro del usuario</small></label>
+            <input type="date" class="form-control textBox" id="FechaRegistro" placeholder="Ingrese el correo electrónico del usuario" [(ngModel)]="FechaRegistroUsuario">
+        </div>
+        <div class="col-md-4">
+            <label for="NumeroCompras" class="form-label mb-2"><small>Numero de compras realizadas por el usuario</small></label>
+            <input type="number" class="form-control textBox" id="NumeroCompras" placeholder="Ingrese el número de compras realizadas por el usuario" [(ngModel)]="ComprasUsuario">
+        </div>
+        <div class="col-md-12 text-center mt-5">
+            <button type="submit" class="btn btn-agro-prin w-25" (click)="CargarGrilla(ModalUsuariosInfo)" *ngIf="MostrarGenerarGrilla == true">Buscar</button>
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            <button type="submit" class="btn btn-agro-prin w-25" (click)="GenerarReporte()" *ngIf="MostrarGenerarReporte == true">Generar reporte</button>
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            <button type="submit" class="btn btn-agro-sec w-25" (click)="BotonLimpiar()">Limpiar</button>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" *ngIf="MostrarGrilla == true">
+    <hr>
+    <label class="mb-1" style="margin-left: 50px;">
+        <strong>{{NumeroResgistros}} Registros</strong>
+    </label>
+    <div class="row m-0 p-0">
+        <div class="col-sm-12 table-responsive">
+            <table class="table TableAgro">
+                <tr>
+                    <th scope="col">Nombre del usuario</th>
+                    <th scope="col">Identificacion del usuario</th>
+                    <th scope="col">Número de teléfono del usuario</th>
+                    <th scope="col">Correo electrónico del usuario</th>
+                    <th scope="col">Dirección del usuario</th>
+                    <th scope="col">Fecha de Registro</th>
+                    <th scope="col">Numero de compras</th>
+                </tr>
+                <tr *ngFor="let UsuariosRegistro of UsuariosRegistrados">
+                    <td scope="row" class="text-center">{{UsuariosRegistro.NombrePersona}}</td>
+                    <td class="text-center">{{UsuariosRegistro.NumeroDocumento}}</td>
+                    <td class="text-center">{{UsuariosRegistro.CelularPersona}}</td>
+                    <td class="text-center">
+                        <div style="overflow: auto;">
+                            {{UsuariosRegistro.CorreoPersona}}
+                        </div>
+                    </td>
+                    <td class="text-center">{{UsuariosRegistro.Direccion}}</td>
+                    <td class="text-center">{{UsuariosRegistro.FechaCreacion}}</td>
+                    <td class="text-center">{{UsuariosRegistro.NumCompras}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-5" *ngIf="MostrarReporte == true">
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mx-auto" style="width: 850px;">
+                <ssrs-reportviewer
+                [reportserver]="reportServer"
+                [reporturl]="reportUrl"
+                [showparameters]="showParameters"
+                [parameters]="parameters"
+                [toolbar]="toolbar">
+                </ssrs-reportviewer> 
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #ModalUsuariosInfo let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title">Usuarios Registrados</h1>
+        <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <p class="Llave text-center">{{RespuestaModal}}</p>
+    </div>
+    <div class="modal-footer">
+        <button (keyup.enter)="modal.close()" type="button" class="btn btn-agro-prin w-25 text-center" (click)="modal.close()">Cerrar</button>
+    </div>
+</ng-template>

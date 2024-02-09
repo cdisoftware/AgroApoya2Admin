@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -54,6 +54,9 @@ import { RepEntregasComponent } from './ofertas/components/reportes/rep-entregas
 import { AdminmanychatComponent } from './ofertas/components/adminmanychat/adminmanychat.component';
 import { CoordenadasusuariosComponent } from './usuario/components/coordenadasusuarios/coordenadasusuarios.component';
 import { AsignaTransCampoCiudadComponent } from './ofertas/components/asigna-trans-campo-ciudad/asigna-trans-campo-ciudad.component';
+import { RepusuariosComponent } from './ofertas/components/reportes/repusuarios/repusuarios.component';
+import { ReportViewerModule } from 'ngx-ssrs-reportviewer-v2';
+
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 @NgModule({
@@ -95,7 +98,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     RepEntregasComponent,
     AdminmanychatComponent,
     CoordenadasusuariosComponent,
-    AsignaTransCampoCiudadComponent
+    AsignaTransCampoCiudadComponent,
+    RepusuariosComponent
     ],
   imports: [
     NgxMaskModule.forRoot(options),
@@ -113,13 +117,15 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AngularEditorModule,
     GoogleMapsModule,
     NgxChartsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ReportViewerModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     CookieService,
     DatePipe
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
