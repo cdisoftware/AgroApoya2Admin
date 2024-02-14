@@ -100,6 +100,8 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
   //ApiDireccion
   directionsService = new google.maps.DirectionsService();
   directionsRenderers: google.maps.DirectionsRenderer[] = [];
+  distanceService = new google.maps.DistanceMatrixService();
+  AcumTiempo: number = 0;
 
   //#region MapaPinSTransportesGenerados
   geocoderPinRutaEntrega = new google.maps.Geocoder();
@@ -405,7 +407,9 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
 
 
   AgregaPolilyneasApiDireccion() {
-    // Calcular y mostrar rutas entre ubicaciones
+
+    var tiemposegundo: number = 0;
+
     for (let i = 0; i < this.ArrayPinsRutaGenerada.length - 1; i++) {
       const start = this.ArrayPinsRutaGenerada[i].CoordenadasEntrega;
       const end = this.ArrayPinsRutaGenerada[i + 1].CoordenadasEntrega;
@@ -413,7 +417,7 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
       const request = {
         origin: start,
         destination: end,
-        travelMode: google.maps.TravelMode.DRIVING,
+        travelMode: google.maps.TravelMode.DRIVING,//Conduccion
       };
 
       this.directionsService.route(request, (result, status) => {
@@ -434,6 +438,29 @@ export class UltimamillamultientregasComponent implements OnInit, AfterViewInit 
             strokeWeight: 2      // Grosor de la línea
           };
           directionsRenderer.setOptions({ polylineOptions });
+        }
+      });
+
+
+      const requestTiempo = {
+        origins: [start],
+        destinations: [end],
+        travelMode: google.maps.TravelMode.DRIVING,
+      };
+
+      this.distanceService.getDistanceMatrix(requestTiempo, (response, status) => {
+        if (status === 'OK') {
+          if (response) {
+            if (response.rows && response.rows.length > 0 && response.rows[0].elements && response.rows[0].elements.length > 0) {
+              const distanceInMeters = response.rows[0].elements[0].distance.value;
+              tiemposegundo += response.rows[0].elements[0].duration.value;
+              this.AcumTiempo = Math.round((tiemposegundo / 60) / 60);
+            } else {
+              console.error('No se encontraron resultados');
+            }
+          }
+        } else {
+          console.error('Error al obtener la distancia y el tiempo de viaje:', status);
         }
       });
     }
