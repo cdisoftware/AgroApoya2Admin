@@ -55,7 +55,6 @@ import { AdminmanychatComponent } from './ofertas/components/adminmanychat/admin
 import { CoordenadasusuariosComponent } from './usuario/components/coordenadasusuarios/coordenadasusuarios.component';
 import { AsignaTransCampoCiudadComponent } from './ofertas/components/asigna-trans-campo-ciudad/asigna-trans-campo-ciudad.component';
 import { RepusuariosComponent } from './ofertas/components/reportes/repusuarios/repusuarios.component';
-import { ReportViewerModule } from 'ngx-ssrs-reportviewer-v2';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -117,8 +116,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AngularEditorModule,
     GoogleMapsModule,
     NgxChartsModule,
-    BrowserAnimationsModule,
-    ReportViewerModule
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
