@@ -21,6 +21,16 @@
             <label class="col-sm-12 Llave">Nombre</label>
             <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="NombreFiltro">
         </div>
+
+        <div class="col-sm-6 br">
+            <label class="col-sm-12 Llave">Tipo Registro</label>
+            <input type="text" class="form-control form-control-sm textBox">
+        </div>
+
+        <div class="col-sm-6 br">
+            <label class="col-sm-12 Llave">Estado Registro</label>
+            <input type="text" class="form-control form-control-sm textBox">
+        </div>
     </div>
 
 
@@ -42,19 +52,19 @@
             <hr>
             <table class="table col-sm-12 TableAgro">
                 <tr>
-                    <th>Nombre</th>
-                    <th>Usucodig</th>
+                    <th>Nombre</th>                    
                     <th>Dirección</th>
                     <th>Teléfono</th>
                     <th>Coordenadas</th>
+                    <th>Estado</th>
                     <th>Acción</th>
                 </tr>
                 <tr *ngFor="let data of DataUsuarios">
-                    <td>{{data.NombreCompleto}}</td>
-                    <td>{{data.usucodig}}</td>
-                    <td>{{data.DRCCION}}</td>
+                    <td>{{data.NombreCompleto}} - {{data.usucodig}}</td>                    
+                    <td>{{data.DRCCION}}  {{data.CMPLMNTO_DRRCCION}}</td>                   
                     <td>{{data.CELULAR_PERSONA}}</td>
                     <td>{{data.coordenadas_entr}}</td>
+                    <td>TRUE</td>
                     <td> <button class="SinEstilo" title="Ver usuario" (click)="AccionMapaUsuario(data)">
                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/mapa.png">
                         </button></td>
@@ -67,59 +77,78 @@
         <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three" *ngFor="let user of DatosUser">
             <ngb-panel title="Datos Usuario" id="config-panel-three">
                 <ng-template ngbPanelContent>
-                    <div class="row justify-content-center m-1">
+
+                    <div class="row m-1">
+
+                        <!-- Sección izquierda -->
                         <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label><strong>Nombre:&nbsp;</strong>{{user.NombreCompleto}}</label>
+                                    <strong>Nombre:&nbsp;</strong>{{user.NombreCompleto}}
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label><strong>Usucodig:&nbsp;</strong>{{user.usucodig}}</label>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <label><strong>Dirección:&nbsp;</strong>{{user.DRCCION}}</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label><strong>Telefono:&nbsp;</strong>{{user.CELULAR_PERSONA}}</label>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-12">
                             <div class="row">
                                 <div class="col-sm-12">
-                                    <label><strong>Coordenadas:&nbsp;</strong>{{user.coordenadas_entr}}</label>
+                                    <label><strong>Dirección:&nbsp;</strong></label>
+                                    <input type="text" class="form-control form-control-sm textBox"
+                                        [(ngModel)]="DireccionInpt">
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label><strong>Complemento:&nbsp;</strong></label>
+                                    <input type="text" class="form-control form-control-sm textBox"
+                                        [(ngModel)]="ComplementoInpt">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label><strong>Coordenadas:&nbsp;</strong></label>
+                                    <input type="text" class="form-control form-control-sm textBox"
+                                        [(ngModel)]="CoordenadaInpt">
+                                </div>
+                            </div>
+                            <div class="row justify-content-center mt-2">
+                                <div class="col-sm-4">
+                                    <label class="col-sm-12 Llave"></label>
+                                    <button class="btn btn-agro-prin col-sm-12"
+                                        (click)="GuardarCoordenada(user)">Guardar</button>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="row mt-2 justify-content-center ">
-                                <div class="col-sm-12 ">
+                        <!-- Sección derecha -->
+                        <div class="col-sm-6">
+                            <div class="row justify-content-center mt-2">
+                                <div class="col-sm-12">
                                     <div id="map" name="map"
-                                        [ngClass]="ValidaInsertSec == '1' ? 'ShowMap' : 'HideMap' "></div>
+                                        [ngClass]="ValidaInsertSec == '1' ? 'ShowMap' : 'HideMap' ">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row justify-content-center">
+                    <div class="row justify-content-center mt-2">
                         <div class="col-sm-3">
-                            <label class="col-sm-12 Llave"></label>
-                            <button class="btn btn-agro-prin col-sm-12" (click)="GuardarCoordenada(user)">Guardar</button>
+                            <button class="btn btn-agro-prin col-sm-10"><img src="../../../../assets/ImagenesAgroApoya2Adm/back.png" alt="">Atras</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-agro-prin col-sm-10">Siguiente<img src="../../../../assets/ImagenesAgroApoya2Adm/right.png" alt=""></button>
                         </div>
                     </div>
+
                 </ng-template>
             </ngb-panel>
         </ngb-accordion>

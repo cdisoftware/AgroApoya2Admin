@@ -22,6 +22,10 @@ export class CoordenadasusuariosComponent implements OnInit {
   VerOcultarCampos: string = '1';
   Respuesta: string = '';
 
+  CoordenadaInpt: string = '';
+  DireccionInpt: string = '';
+  ComplementoInpt: string = '';
+
   //Variables Datos usuario
   DatosUser: any = [];
   ValidaInsertSec: string = '1';
@@ -78,6 +82,10 @@ export class CoordenadasusuariosComponent implements OnInit {
     }
     this.serviciosvaloracion.ConsultaListaPersonas('1', '2', idValor.usucodig, body).subscribe(Resultado => {
       this.DatosUser = Resultado;
+      this.DireccionInpt = this.DatosUser[0].DRCCION;
+      this.ComplementoInpt = this.DatosUser[0].CMPLMNTO_DRRCCION;
+      this.CoordenadaInpt = this.DatosUser[0].coordenadas_entr;
+
       this.Centramapa({ address: Resultado[0].DRCCION + ',' + 'Bogotá' })
     })
   }
