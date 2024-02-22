@@ -156,6 +156,29 @@ export class RegistroUserexcelComponent implements OnInit {
                                 COORDENADAS: auxcoordenadas,
                                 TPO_CLNTEINST: 5
                               }
+
+                              /*this.service.modcpersonacliente('3', '0', bodyPost).subscribe(Resultado => {
+                                var auxrespu = Resultado.toString().split("|");
+                                if (auxrespu[1] == "OK") {
+                                  const bodyPost = {
+                                    'USUCODIG': 0,
+                                    'CorreoPersona': auxcorreo.toLowerCase().replace(' ', '')
+                                  }
+                                  this.service.consLoginCliente('1', bodyPost).subscribe(Resultado => {
+                                    this.AsociaSector(Resultado[0].USUCODIG);
+                          
+                                    const bodyCorreo = {
+                                      "IdPlantilla": 232,
+                                      "usucodig": Resultado[0].USUCODIG,
+                                      "Cd_cnctvo": 0
+                                    }
+                                    this.service.enviocorreoindividual('1', '0', '0', bodyCorreo).subscribe(Resultado => {
+                                    })
+                                  })
+                                } else {
+                                }
+                              })*/
+
                               obj.Respuesta = 'Registro Exitoso';
                               obj.Estado = true;
 
@@ -211,5 +234,10 @@ export class RegistroUserexcelComponent implements OnInit {
         //return response.results[0].geometry.location;
       });
     });
+  }
+
+  AsociaSector(usucodig: string) {
+    this.service.AsociarSectores('1', usucodig).subscribe(Resultado => {
+    })
   }
 }

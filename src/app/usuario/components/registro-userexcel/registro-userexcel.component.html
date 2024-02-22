@@ -14,7 +14,7 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-6" style="height: 150px; overflow: auto;">
+    <div class="col-sm-6" style="height: 550px; overflow: auto;">
         <table class="table col-sm-12 TableAgro">
             <tr>
                 <th>Nombre</th>
@@ -26,7 +26,7 @@
             <tbody *ngFor="let data of ArrayRespuesta">
                 <tr *ngIf="data.Estado == true">
                     <td>{{data.Nombre}}</td>
-                    <td>{{data.Email}}</td>
+                    <td style="overflow: auto;">{{data.Email}}</td>
                     <td>{{data.Direccion}}</td>
                     <td>{{data.Telefono}}</td>
                     <td>{{data.Respuesta}}</td>
@@ -34,7 +34,7 @@
             </tbody>
         </table>
     </div>
-    <div class="col-sm-6" style="height: 150px; overflow: auto;">
+    <div class="col-sm-6" style="height: 550px; overflow: auto;">
         <table class="table col-sm-12 TableAgro">
             <tr>
                 <th>Nombre</th>
@@ -46,7 +46,7 @@
             <tbody *ngFor="let data of ArrayRespuesta">
                 <tr *ngIf="data.Estado == false">
                     <td>{{data.Nombre}}</td>
-                    <td>{{data.Email}}</td>
+                    <td style="overflow: auto;">{{data.Email}}</td>
                     <td>{{data.Direccion}}</td>
                     <td>{{data.Telefono}}</td>
                     <td>{{data.Respuesta}}</td>

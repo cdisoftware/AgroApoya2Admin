@@ -16,4 +16,13 @@ export class OperacionesDinamicas {
     conscvalidanumero(Bandera: string, NumTelefono: string) {
         return this.http.get<any>(this.url_servidor + 'conscvalidanumero/' + Bandera + '/' + NumTelefono)
     }
+    modcpersonacliente(Bandera: string, BanderaDos: string, cuerpoService: any) {
+        return this.http.post<any>(this.url_servidor + 'modcpersonacliente/' + Bandera + "/" + BanderaDos, cuerpoService)
+    }
+    AsociarSectores(bandera: string, Idusuario: string) {
+        return this.http.get<any>(this.url_servidor + 'conscvalidasectorusuario/' + bandera + '/' + Idusuario)
+    }
+    enviocorreoindividual(Bandera: string, IdCliente: string, IdSector: string, BodyPost: any) {
+        return this.http.post<any>(this.url_servidor + 'enviocorreoindividual/' + Bandera + '/' + IdCliente + '/' + IdSector, BodyPost)
+    }
 }
