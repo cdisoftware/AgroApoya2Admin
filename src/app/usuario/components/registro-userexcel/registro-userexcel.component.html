@@ -1,0 +1,57 @@
+<div class="row justify-content-center mt-4" style="margin: 0; padding: 0;">
+    <div class="row justify-content-center">
+        <div class="col-8 col-sm-5" style="text-align: end; font-weight: 900;">
+            <label style="vertical-align: sub; text-align: end;">Cargue usuarios automático</label>
+        </div>
+        <div class="col-12 col-sm-6 centraimagen">
+            <div class="image-upload">
+                <label for="file-input5">
+                    <img id="Imagen5" title="Selecciona el archivo xls"
+                        src="../../../../assets/ImagenesAgroApoya2Adm/user.png" style="width: 50px; height: 50px;">
+                </label>
+                <input name="file-input5" id="file-input5" type="file"
+                    (change)="Operacion($event, 1)" /><!--(change)="CargaImagen($event, '5')"-->
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6" style="height: 150px; overflow: auto;">
+        <table class="table col-sm-12 TableAgro">
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Direcciòn</th>
+                <th>Telefono</th>
+                <th>Resultado</th>
+            </tr>
+            <tbody *ngFor="let data of ArrayRespuesta">
+                <tr *ngIf="data.Estado == true">
+                    <td>{{data.Nombre}}</td>
+                    <td>{{data.Email}}</td>
+                    <td>{{data.Direccion}}</td>
+                    <td>{{data.Telefono}}</td>
+                    <td>{{data.Respuesta}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-sm-6" style="height: 150px; overflow: auto;">
+        <table class="table col-sm-12 TableAgro">
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Direcciòn</th>
+                <th>Telefono</th>
+                <th>Resultado</th>
+            </tr>
+            <tbody *ngFor="let data of ArrayRespuesta">
+                <tr *ngIf="data.Estado == false">
+                    <td>{{data.Nombre}}</td>
+                    <td>{{data.Email}}</td>
+                    <td>{{data.Direccion}}</td>
+                    <td>{{data.Telefono}}</td>
+                    <td>{{data.Respuesta}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
