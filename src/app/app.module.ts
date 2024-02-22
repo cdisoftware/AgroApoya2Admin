@@ -56,6 +56,7 @@ import { CoordenadasusuariosComponent } from './usuario/components/coordenadasus
 import { AsignaTransCampoCiudadComponent } from './ofertas/components/asigna-trans-campo-ciudad/asigna-trans-campo-ciudad.component';
 import { RepusuariosComponent } from './ofertas/components/reportes/repusuarios/repusuarios.component';
 import { ReportViewerModule } from 'ngx-ssrs-reportviewer-v2';
+import { DashboardComponent } from './ofertas/components/reportes/dashboard/dashboard.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -99,7 +100,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AdminmanychatComponent,
     CoordenadasusuariosComponent,
     AsignaTransCampoCiudadComponent,
-    RepusuariosComponent
+    RepusuariosComponent,
+    DashboardComponent
     ],
   imports: [
     NgxMaskModule.forRoot(options),

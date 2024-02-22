@@ -146,12 +146,20 @@ export class ReporteService {
     return this.http.post<any>(this.url_servidor + 'ConsCUsersAA2/' + Bandera + '/' + TipoUser, Body);
   }
 
-  ListaLocalidades(Bandera: string){
-    return this.http.get<any[]>(this.url_servidor + 'consLocalidades/' + Bandera)
+  ListaLocalidades(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consLocalidades/' + Bandera);
   }
 
-  UsuariosRegistrados(Bandera: string, IdLocalidad: any, Body: any){
+  UsuariosRegistrados(Bandera: string, IdLocalidad: any, Body: any) {
     return this.http.post<any>(this.url_servidor + 'consReporteUsuarios/' + Bandera + '/' + IdLocalidad, Body);
+  }
+
+  InfoUsuariosDash(Bandera:string) {
+    return this.http.get<any[]>(this.url_servidor + 'consCUserLocalidad/' + Bandera);
+  }
+
+  InfoUsuariosComprasDash(Bandera:string) {
+    return this.http.get<any[]>(this.url_servidor + 'consCUserLocalidadCompras/' + Bandera);
   }
 
 }

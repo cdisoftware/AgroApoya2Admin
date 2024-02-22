@@ -41,6 +41,7 @@ import { AdminmanychatComponent } from './ofertas/components/adminmanychat/admin
 import { CoordenadasusuariosComponent } from './usuario/components/coordenadasusuarios/coordenadasusuarios.component';
 import { AsignaTransCampoCiudadComponent } from './ofertas/components/asigna-trans-campo-ciudad/asigna-trans-campo-ciudad.component';
 import { RepusuariosComponent } from './ofertas/components/reportes/repusuarios/repusuarios.component';
+import { DashboardComponent } from './ofertas/components/reportes/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
@@ -213,6 +214,10 @@ const routes: Routes = [
       {
         path: 'ReporteUsuarios',
         component: RepusuariosComponent
+      },
+      {
+        path: 'DashboardAdmin',
+        component: DashboardComponent
       }
     ]
   },

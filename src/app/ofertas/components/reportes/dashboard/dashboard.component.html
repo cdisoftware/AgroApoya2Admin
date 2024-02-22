@@ -1,0 +1,94 @@
+<div class="container-fluid containerMain mb-5">
+    <div class="row g-3 mt-4">
+        <div class="col-md-4 ContenedorOpcionUno">
+            <span id="OpcionUno" class="OpcionUno">Usuarios</span>
+        </div>
+        <div class="col-md-4 ContenedorSlide">
+            <input type="checkbox" id="check" style="display: none;" (ngModelChange)="Onchange($event)" [(ngModel)]="SlideBoton">
+            <label for="check" class="slideToggle"></label>
+        </div>
+        <div class="col-md-4 ContenedorOpcionDos">
+            <span id="OpcionDos" class="OpcionDos">Ventas</span>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="SlideBoton == false">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-5 CartaTotal">
+            <div class="text-center m-3" style="width: 100%;">
+                <p class="display-1"> <strong>{{DatosUsuarios.length}}</strong></p>
+                <hr style="border-top: 5px solid #397c97; opacity: 1;">
+                <p class="display-6">Número Total de Usuarios</p>
+            </div>
+        </div>
+        <div class="col-md-5 m-3" style="height: 500px; overflow-x: auto; overflow-y: none;">
+            <div class="card Carta">
+                <div class="table-responsive m-2">
+                    <table class="table TableAgro">
+                        <tr>
+                            <th scope="col">Localidad</th>
+                            <th scope="col">Número de Usuarios</th>
+                        </tr>
+                        <tr>
+                            <td scope="row" class="text-center">Cedritos</td>
+                            <td class="text-center">{{UsersCedritos.length}}</td>
+                        </tr>
+                        <tr>
+                            <td scope="row" class="text-center">Toda Bogotá</td>
+                            <td class="text-center">{{UsersFullBgta.length}}</td>
+                        </tr>
+                        <tr>
+                            <td scope="row" class="text-center">Centro Bogotá</td>
+                            <td class="text-center">{{UsersCentroBgta.length}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-body text-center CartaPie">
+                  <h3 class="card-title h-3">Número de Usuarios por Localidad</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-4 mb-4" style="overflow-x: auto; overflow-y: none;">
+            <div class="card Carta">
+                <ngx-charts-bar-vertical class="card-img-top" style="overflow-x: auto; overflow-y: none;"
+                [view]="MedidasBarrasProm"
+                [scheme]="ColoresBarrasProm"
+                [results]="DatosBarrasUsuariosProm"
+                [xAxis]="MostrarEjeXProm"
+                [yAxis]="MostrarEjeYProm"
+                [legend]="MostrarLeyendaProm"
+                [showXAxisLabel]="MostrarXLabelProm"
+                [showYAxisLabel]="MostrarYLabelProm"
+                [xAxisLabel]="LabelXProm"
+                [yAxisLabel]="LabelYProm"
+                [legendTitle]="LeyendaTituloProm">
+              </ngx-charts-bar-vertical>
+                <div class="card-body text-center CartaPie">
+                  <h3 class="card-title">Promedio de Compra Diario por Localidad</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-4 mb-4">
+            <div class="card Carta">
+                <ngx-charts-bar-vertical-2d class="card-img-top" style="overflow-x: auto; overflow-y: none;"
+                [view]="MedidasBarras"
+                [scheme]="ColoresBarras"
+                [results]="DatosBarrasUsuarios"
+                [xAxis]="MostrarEjeX"
+                [yAxis]="MostrarEjeY"
+                [legend]="MostrarLeyenda"
+                [showXAxisLabel]="MostrarXLabel"
+                [showYAxisLabel]="MostrarYLabel"
+                [xAxisLabel]="LabelX"
+                [yAxisLabel]="LabelY"
+                [legendTitle]="LeyendaTitulo">
+              </ngx-charts-bar-vertical-2d>
+                <div class="card-body text-center CartaPie">
+                  <h3 class="card-title">Registros por Localidad Durante los Últimos Cuatro Meses</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
