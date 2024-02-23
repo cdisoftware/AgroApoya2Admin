@@ -18,6 +18,9 @@ export class RegistroUserexcelComponent implements OnInit {
 
   ArrayDataInsert: any = [];
   ArrayRespuesta: any = [];
+  NumberTotal: number = 0;
+  numberinsertados: number = 0;
+  numbernofueposible: number = 0;
 
   Operacion(event: any, bandera: number) {
     const file = event.target.files[0];
@@ -46,10 +49,12 @@ export class RegistroUserexcelComponent implements OnInit {
     var auxdireccion: string = "";
     var auxcoordenadas: string = "";
     var auxcomplemento: string = "";
-    console.log(this.ArrayDataInsert)
+    this.numberinsertados = 0;
+    this.numbernofueposible = 0;
+    this.NumberTotal = 0;
 
     for (var i = 0; i < this.ArrayDataInsert.length; i++) {
-      console.log(this.ArrayDataInsert[i].Nombre.toString().trim())
+      this.NumberTotal = i + 1;
 
       auxcorreo = "";
       auxnombre = "";
@@ -88,6 +93,8 @@ export class RegistroUserexcelComponent implements OnInit {
               for (var j = 2; j < arrnum.length; j++) {
                 auxtelefono = auxtelefono + arrnum[j];
               }
+            } else {
+              auxtelefono = tel;
             }
           } else {
             auxtelefono = "";
@@ -148,7 +155,7 @@ export class RegistroUserexcelComponent implements OnInit {
                                 direccion: auxdireccion,
                                 CMNTRIO: "Registro operacion automatica",
                                 TOKEN: this.MetodosServicio.encryptUsingTripleDES('Temporal1'),
-                                dpto: '269',
+                                dpto: '261',
                                 ciudad: '401',
                                 Complemento_direccion: auxcomplemento,
                                 RZON_SCIAL: '0',
@@ -156,64 +163,78 @@ export class RegistroUserexcelComponent implements OnInit {
                                 COORDENADAS: auxcoordenadas,
                                 TPO_CLNTEINST: 5
                               }
-
-                              /*this.service.modcpersonacliente('3', '0', bodyPost).subscribe(Resultado => {
+                              this.service.modcpersonacliente('3', '0', bodyPost).subscribe(Resultado => {
                                 var auxrespu = Resultado.toString().split("|");
-                                if (auxrespu[1] == "OK") {
+                                if (auxrespu[0].toString().trim() == "1") {
+                                  console.log("---")
+                                  console.log(auxcorreo)
+                                  console.log(Resultado)
+                                  console.log("---")
                                   const bodyPost = {
                                     'USUCODIG': 0,
                                     'CorreoPersona': auxcorreo.toLowerCase().replace(' ', '')
                                   }
-                                  this.service.consLoginCliente('1', bodyPost).subscribe(Resultado => {
-                                    this.AsociaSector(Resultado[0].USUCODIG);
-                          
+                                  this.service.consLoginCliente('1', bodyPost).subscribe(async Resultado => {
+                                    console.log(bodyPost)
+                                    console.log(Resultado)
+                                    await this.AsociaSector(Resultado[0].USUCODIG);
+
                                     const bodyCorreo = {
                                       "IdPlantilla": 232,
                                       "usucodig": Resultado[0].USUCODIG,
                                       "Cd_cnctvo": 0
                                     }
                                     this.service.enviocorreoindividual('1', '0', '0', bodyCorreo).subscribe(Resultado => {
+                                      obj.Respuesta = auxrespu[0];
+                                      this.numberinsertados++;
+                                      obj.Estado = true;
+                                      resolve(true);
                                     })
                                   })
                                 } else {
+                                  obj.Respuesta = auxrespu[1];
+                                  this.numbernofueposible++;
+                                  resolve(true);
                                 }
-                              })*/
-
-                              obj.Respuesta = 'Registro Exitoso';
-                              obj.Estado = true;
-
-                              resolve(true);
+                              });
                             } else {
                               obj.Respuesta = 'Tu teléfono ya se encuentra registrado en AgroApoya2.';
+                              this.numbernofueposible++;
                               resolve(true);
                             }
                           });
                         } else {
                           obj.Respuesta = "Número de teléfono no válido: " + "'" + num + "'";
+                          this.numbernofueposible++;
                           resolve(true);
                         }
                       } else {
                         obj.Respuesta = "No fue posible encontrar la direccion : " + "'" + auxdireccion + "'";
+                        this.numbernofueposible++;
                         resolve(true);
                       }
                     });
                   } else {
                     obj.Respuesta = 'Dirección no registrada';
+                    this.numbernofueposible++;
                     resolve(true);
                   }
 
                 } else {
                   obj.Respuesta = 'Nombre no registrado';
+                  this.numbernofueposible++;
                   resolve(true);
                 }
 
               } else {
                 obj.Respuesta = 'Usuario ya registrado';
+                this.numbernofueposible++;
                 resolve(true);
               }
             });
           } else {
             obj.Respuesta = 'Correo electronico invalido';
+            this.numbernofueposible++;
             resolve(true);
           }
           this.ArrayRespuesta.push(obj);

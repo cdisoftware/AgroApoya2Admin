@@ -14,7 +14,15 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-6" style="height: 550px; overflow: auto;">
+
+<div class="row mt-3 mb-3" style="text-align: center;" *ngIf="ArrayDataInsert.length > 0">
+    <label style="vertical-align: sub; text-align: center;">Usuarios verificados {{NumberTotal}} de {{ArrayDataInsert.length}}</label>
+</div>
+
+<label style="vertical-align: sub; text-align: center;" class="col-sm-6"  *ngIf="ArrayDataInsert.length > 0">Usuarios registrados {{numberinsertados}}</label>
+<label style="vertical-align: sub; text-align: center;" class="col-sm-6"  *ngIf="ArrayDataInsert.length > 0">Usuarios no registrados {{numbernofueposible}}</label>
+
+    <div class="col-sm-6" style="height: 550px; overflow: auto;"  *ngIf="ArrayDataInsert.length > 0">
         <table class="table col-sm-12 TableAgro">
             <tr>
                 <th>Nombre</th>
@@ -34,7 +42,7 @@
             </tbody>
         </table>
     </div>
-    <div class="col-sm-6" style="height: 550px; overflow: auto;">
+    <div class="col-sm-6" style="height: 550px; overflow: auto;"  *ngIf="ArrayDataInsert.length > 0">
         <table class="table col-sm-12 TableAgro">
             <tr>
                 <th>Nombre</th>
