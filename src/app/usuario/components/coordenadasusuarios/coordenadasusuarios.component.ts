@@ -30,6 +30,9 @@ export class CoordenadasusuariosComponent implements OnInit {
   DatosUser: any = [];
   ValidaInsertSec: string = '1';
 
+  ultimoUsuario: boolean = false;
+  primerUsuario: boolean = false;
+
   constructor(private serviciosvaloracion: ValorarofertaService,
     private modalService: NgbModal,) { }
 
@@ -85,7 +88,6 @@ export class CoordenadasusuariosComponent implements OnInit {
       this.DireccionInpt = this.DatosUser[0].DRCCION;
       this.ComplementoInpt = this.DatosUser[0].CMPLMNTO_DRRCCION;
       this.CoordenadaInpt = this.DatosUser[0].coordenadas_entr;
-
       this.Centramapa({ address: Resultado[0].DRCCION + ',' + 'Bogotá' })
     })
   }
@@ -137,11 +139,11 @@ export class CoordenadasusuariosComponent implements OnInit {
     });
     this.markers = [];
     this.markers.push(marker);
-    this.Coordenada = latLng.toString().replace('(', '').replace(')', '')  
+    this.Coordenada = latLng.toString().replace('(', '').replace(')', '')
   }
 
   // FIN REGION MAPA
-  GuardarCoordenada(user: any) {    
+  GuardarCoordenada(user: any) {
     const body = {
       Usucodig: user.usucodig,
       Direccion: "",
@@ -149,9 +151,43 @@ export class CoordenadasusuariosComponent implements OnInit {
       Coordenadas: this.Coordenada
     }
     this.serviciosvaloracion.ModAdDireccionUser('2', body).subscribe(Resultado => {
-      this.Respuesta = Resultado;
+      this.Respuesta = Resultado.split('|')[1].trim();
       this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
       this.AccionMapaUsuario(user);
     })
   }
+
+  usuarioActualIndex: number = -1;
+  // Método para retroceder al usuario anterior
+  retrocederUsuarioAnterior(idValor: any) {
+    this.ultimoUsuario = false;
+    // Encuentra la posición del usuario actual
+    const indexActual = this.DataUsuarios.findIndex((usuario: any) => usuario.usucodig === idValor.usucodig);
+
+    if (indexActual > 0) {
+      // Retrocede a la posición anterior
+      const indexAnterior = indexActual - 1;
+      const usuarioAnterior = this.DataUsuarios[indexAnterior];
+      this.AccionMapaUsuario(usuarioAnterior);
+    } else {
+      this.primerUsuario = true;
+    }
+  }
+
+  // Método para avanzar al siguiente usuario
+  avanzarSiguienteUsuario(idValor: any) {
+    this.primerUsuario = false;
+    // Encuentra la posición del usuario actual
+    const indexActual = this.DataUsuarios.findIndex((usuario: any) => usuario.usucodig === idValor.usucodig);
+
+    if (indexActual < this.DataUsuarios.length - 1) {
+      // Avanza a la posición siguiente
+      const indexSiguiente = indexActual + 1;
+      const usuarioSiguiente = this.DataUsuarios[indexSiguiente];
+      this.AccionMapaUsuario(usuarioSiguiente);
+    } else {
+      this.ultimoUsuario = true;
+    }
+  }
+
 }

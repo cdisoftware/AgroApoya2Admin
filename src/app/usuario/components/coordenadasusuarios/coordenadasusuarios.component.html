@@ -52,7 +52,7 @@
             <hr>
             <table class="table col-sm-12 TableAgro">
                 <tr>
-                    <th>Nombre</th>                    
+                    <th>Nombre</th>
                     <th>Dirección</th>
                     <th>Teléfono</th>
                     <th>Coordenadas</th>
@@ -60,11 +60,11 @@
                     <th>Acción</th>
                 </tr>
                 <tr *ngFor="let data of DataUsuarios">
-                    <td>{{data.NombreCompleto}} - {{data.usucodig}}</td>                    
-                    <td>{{data.DRCCION}}  {{data.CMPLMNTO_DRRCCION}}</td>                   
+                    <td>{{data.NombreCompleto}} - {{data.usucodig}}</td>
+                    <td>{{data.DRCCION}} {{data.CMPLMNTO_DRRCCION}}</td>
                     <td>{{data.CELULAR_PERSONA}}</td>
                     <td>{{data.coordenadas_entr}}</td>
-                    <td>TRUE</td>
+                    <td>Validado</td>
                     <td> <button class="SinEstilo" title="Ver usuario" (click)="AccionMapaUsuario(data)">
                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/mapa.png">
                         </button></td>
@@ -95,6 +95,12 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label><strong>Telefono:&nbsp;</strong>{{user.CELULAR_PERSONA}}</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label><strong>Estado:&nbsp;</strong>Validado</label>
                                 </div>
                             </div>
                             <div class="row">
@@ -142,10 +148,14 @@
 
                     <div class="row justify-content-center mt-2">
                         <div class="col-sm-3">
-                            <button class="btn btn-agro-prin col-sm-10"><img src="../../../../assets/ImagenesAgroApoya2Adm/back.png" alt="">Atras</button>
+                            <button class="btn btn-agro-prin col-sm-10" (click)="retrocederUsuarioAnterior(user)"
+                                [disabled]="primerUsuario"><img src="../../../../assets/ImagenesAgroApoya2Adm/back.png"
+                                    alt="">Atras</button>
                         </div>
                         <div class="col-sm-3">
-                            <button class="btn btn-agro-prin col-sm-10">Siguiente<img src="../../../../assets/ImagenesAgroApoya2Adm/right.png" alt=""></button>
+                            <button class="btn btn-agro-prin col-sm-10" (click)="avanzarSiguienteUsuario(user)"
+                                [disabled]="ultimoUsuario">Siguiente<img
+                                    src="../../../../assets/ImagenesAgroApoya2Adm/right.png" alt=""></button>
                         </div>
                     </div>
 
