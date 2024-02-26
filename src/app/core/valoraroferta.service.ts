@@ -516,7 +516,7 @@ export class ValorarofertaService {
   }
 
   ConsultaListaPersonas(Bandera: string, Cd_tpo_usuario: string, Usucodig: string, TipoRegistro: string, RegistroValidado: string, body: any) {
-    return this.http.post<any[]>(this.url_servidor + 'consAdListaPersona/' + Bandera + '/' + Cd_tpo_usuario + '/' + TipoRegistro + '/' + RegistroValidado + '/' + Usucodig, body);
+    return this.http.post<any[]>(this.url_servidor + 'consAdListaPersona/' + Bandera + '/' + Cd_tpo_usuario + '/' + Usucodig + '/' + TipoRegistro + '/' + RegistroValidado, body);
   }
 
   ModAdDireccionUser(Bandera: string, Body: any) {

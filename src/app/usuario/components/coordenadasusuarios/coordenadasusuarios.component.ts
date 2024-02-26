@@ -22,6 +22,7 @@ export class CoordenadasusuariosComponent implements OnInit {
   VerOcultarCampos: string = '1';
   Respuesta: string = '';
 
+  EstadoFiltro: string = '';
   IdEstado: string = '0';
   TpRegistroFiltro: string = '';
   RegistroDescripcion: string = '';
@@ -89,7 +90,7 @@ export class CoordenadasusuariosComponent implements OnInit {
     this.IdEstado = idestado;
   }
 
-  BuscarUsuarios() {  
+  BuscarUsuarios() {
     const body = {
       nombres_persona: this.NombreFiltro
     }
@@ -105,6 +106,8 @@ export class CoordenadasusuariosComponent implements OnInit {
     this.NombreFiltro = '';
     this.Usucodig = '0';
     this.VerOcultarCampos = '1';
+    this.IdEstado = '0';
+    this.EstadoFiltro = '';
   }
 
   AccionMapaUsuario(idValor: any) {
@@ -113,8 +116,6 @@ export class CoordenadasusuariosComponent implements OnInit {
       nombres_persona: idValor.nombres_persona
     }
     this.serviciosvaloracion.ConsultaListaPersonas('1', '2', idValor.usucodig, this.IdRegistro, this.IdEstado, body).subscribe(Resultado => {
-      console.log("=========================")
-      console.log(Resultado)
       this.DatosUser = Resultado;
       this.DireccionInpt = this.DatosUser[0].DRCCION;
       this.ComplementoInpt = this.DatosUser[0].CMPLMNTO_DRRCCION;
@@ -184,7 +185,7 @@ export class CoordenadasusuariosComponent implements OnInit {
     this.serviciosvaloracion.ModAdDireccionUser('3', body).subscribe(Resultado => {
       this.Respuesta = Resultado.split('|')[1].trim();
       this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-      this.AccionMapaUsuario(user);
+      this.AccionMapaUsuario(user);     
     })
   }
 
