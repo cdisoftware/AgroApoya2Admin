@@ -24,12 +24,27 @@
 
         <div class="col-sm-6 br">
             <label class="col-sm-12 Llave">Tipo Registro</label>
-            <input type="text" class="form-control form-control-sm textBox">
+            <ng-autocomplete [data]="ArrayTpRegistro" [searchKeyword]="keywordReg" (selected)='selectTpRegistro($event)'
+                (inputCleared)="LimpiaTpRegistro('')" [itemTemplate]="templateTpRegistro"
+                [notFoundTemplate]="templateVacioReg" [(ngModel)]="TpRegistroFiltro">
+            </ng-autocomplete>
+            <ng-template #templateTpRegistro let-item>
+                <a [innerHTML]="item.Descripcion"></a>
+            </ng-template>
+            <ng-template #templateVacioReg let-SinRegistro>
+                <label for="">Sin registros</label>
+            </ng-template>
         </div>
 
         <div class="col-sm-6 br">
             <label class="col-sm-12 Llave">Estado Registro</label>
-            <input type="text" class="form-control form-control-sm textBox">
+            <select class="form-control form-control-sm textBox" #SelectEstado id="SelectEstado"
+                (change)='SelEstado(SelectEstado.value)'>
+                <option value="0">Seleccione estado...</option>
+                <option value="1">Registro validado
+                </option>
+                <option value="2">Registro no validado</option>
+            </select>
         </div>
     </div>
 

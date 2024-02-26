@@ -515,8 +515,8 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'modAdProdVerPrimero/' + bandera, Body);
   }
 
-  ConsultaListaPersonas(Bandera: string, Cd_tpo_usuario: string, Usucodig: string, body: any) {
-    return this.http.post<any[]>(this.url_servidor + 'consAdListaPersona/' + Bandera + '/' + Cd_tpo_usuario + '/' + Usucodig, body);
+  ConsultaListaPersonas(Bandera: string, Cd_tpo_usuario: string, Usucodig: string, TipoRegistro: string, RegistroValidado: string, body: any) {
+    return this.http.post<any[]>(this.url_servidor + 'consAdListaPersona/' + Bandera + '/' + Cd_tpo_usuario + '/' + TipoRegistro + '/' + RegistroValidado + '/' + Usucodig, body);
   }
 
   ModAdDireccionUser(Bandera: string, Body: any) {
@@ -542,4 +542,9 @@ export class ValorarofertaService {
   AgregaProductoTransport(Bandera: string, Body: any) {
     return this.http.post<any>(this.url_servidor + 'modAdRelaTranspOferta/' + Bandera, Body);
   }
+
+  ConsultaTipoRegistro(Bandera: string) {
+    return this.http.get<any>(this.url_servidor + 'consAdTipoRegistro/' + Bandera)
+  }
+
 }

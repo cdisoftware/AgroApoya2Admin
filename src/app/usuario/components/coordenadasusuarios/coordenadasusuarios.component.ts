@@ -22,6 +22,13 @@ export class CoordenadasusuariosComponent implements OnInit {
   VerOcultarCampos: string = '1';
   Respuesta: string = '';
 
+  IdEstado: string = '0';
+  TpRegistroFiltro: string = '';
+  RegistroDescripcion: string = '';
+  IdRegistro: string = '0';
+  ArrayTpRegistro: any = [];
+  keywordReg: string = 'Descripcion';
+
   CoordenadaInpt: string = '';
   DireccionInpt: string = '';
   ComplementoInpt: string = '';
@@ -33,19 +40,20 @@ export class CoordenadasusuariosComponent implements OnInit {
   ultimoUsuario: boolean = false;
   primerUsuario: boolean = false;
 
+
   constructor(private serviciosvaloracion: ValorarofertaService,
     private modalService: NgbModal,) { }
 
   ngOnInit(): void {
     this.ConsultaUsuarios();
-
+    this.ConsultaTipoRegistro();
   }
 
   ConsultaUsuarios() {
     const body = {
       nombres_persona: this.NombreFiltro
     }
-    this.serviciosvaloracion.ConsultaListaPersonas('1', '2', '0', body).subscribe(Resultado => {
+    this.serviciosvaloracion.ConsultaListaPersonas('1', '2', '0', '0', '0', body).subscribe(Resultado => {
       this.ArrayUsucodig = Resultado;
     })
   }
@@ -61,29 +69,52 @@ export class CoordenadasusuariosComponent implements OnInit {
     this.Usucodig = '0';
   }
 
-  BuscarUsuarios() {
+  ConsultaTipoRegistro() {
+    this.serviciosvaloracion.ConsultaTipoRegistro('1').subscribe(Resultado => {
+      this.ArrayTpRegistro = Resultado;
+    })
+  }
+
+  selectTpRegistro(item: any) {
+    this.RegistroDescripcion = item.Descripcion;
+    this.IdRegistro = item.IdTipo;
+  }
+  LimpiaTpRegistro(campo: string) {
+    this.TpRegistroFiltro = campo;
+    this.RegistroDescripcion = campo;
+    this.IdRegistro = '0';
+  }
+
+  SelEstado(idestado: any) {
+    this.IdEstado = idestado;
+  }
+
+  BuscarUsuarios() {  
     const body = {
       nombres_persona: this.NombreFiltro
     }
-    this.serviciosvaloracion.ConsultaListaPersonas('1', '2', this.Usucodig, body).subscribe(Resultado => {
+    this.serviciosvaloracion.ConsultaListaPersonas('1', '2', this.Usucodig, this.IdRegistro, this.IdEstado, body).subscribe(Resultado => {
       this.DataUsuarios = Resultado;
       this.VerOcultarCampos = '2';
     })
   }
+
   LimpiarFiltros() {
     this.LimpiaUsucodig('');
+    this.LimpiaTpRegistro('');
     this.NombreFiltro = '';
     this.Usucodig = '0';
     this.VerOcultarCampos = '1';
   }
-
 
   AccionMapaUsuario(idValor: any) {
     this.VerOcultarCampos = '3';
     const body = {
       nombres_persona: idValor.nombres_persona
     }
-    this.serviciosvaloracion.ConsultaListaPersonas('1', '2', idValor.usucodig, body).subscribe(Resultado => {
+    this.serviciosvaloracion.ConsultaListaPersonas('1', '2', idValor.usucodig, this.IdRegistro, this.IdEstado, body).subscribe(Resultado => {
+      console.log("=========================")
+      console.log(Resultado)
       this.DatosUser = Resultado;
       this.DireccionInpt = this.DatosUser[0].DRCCION;
       this.ComplementoInpt = this.DatosUser[0].CMPLMNTO_DRRCCION;
@@ -146,11 +177,11 @@ export class CoordenadasusuariosComponent implements OnInit {
   GuardarCoordenada(user: any) {
     const body = {
       Usucodig: user.usucodig,
-      Direccion: "",
-      CompleDirecc: "",
+      Direccion: this.DireccionInpt,
+      CompleDirecc: this.ComplementoInpt,
       Coordenadas: this.Coordenada
     }
-    this.serviciosvaloracion.ModAdDireccionUser('2', body).subscribe(Resultado => {
+    this.serviciosvaloracion.ModAdDireccionUser('3', body).subscribe(Resultado => {
       this.Respuesta = Resultado.split('|')[1].trim();
       this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
       this.AccionMapaUsuario(user);
