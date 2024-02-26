@@ -54,3 +54,8 @@
     cursor: pointer;
     object-fit: cover;
   }
+  .selectExcel{
+    border-radius: 20px;
+    background-color: #a2a8a5;
+    border: solid 1px rgb(186, 184, 184);
+  }

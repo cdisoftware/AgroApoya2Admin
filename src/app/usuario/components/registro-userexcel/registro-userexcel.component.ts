@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { OperacionesDinamicas } from 'src/app/core/OperacionesDinamicas';
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 import * as XLSX from 'xlsx';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-registro-userexcel',
@@ -11,7 +12,9 @@ import * as XLSX from 'xlsx';
 })
 export class RegistroUserexcelComponent implements OnInit {
 
-  constructor(private service: OperacionesDinamicas, private http: HttpClient, private MetodosServicio: MetodosglobalesService) { }
+  constructor(private Modalservices: NgbModal, private service: OperacionesDinamicas, private http: HttpClient, private MetodosServicio: MetodosglobalesService) { }
+
+  @ViewChild('templateemai', { static: false }) ModalEmail: any;
 
   ngOnInit(): void {
   }
@@ -54,7 +57,7 @@ export class RegistroUserexcelComponent implements OnInit {
     this.NumberTotal = 0;
 
     for (var i = 0; i < this.ArrayDataInsert.length; i++) {
-      this.NumberTotal = i + 1;
+      this.Modalservices.dismissAll();
 
       auxcorreo = "";
       auxnombre = "";
@@ -163,78 +166,76 @@ export class RegistroUserexcelComponent implements OnInit {
                                 COORDENADAS: auxcoordenadas,
                                 TPO_CLNTEINST: 5
                               }
-                              this.service.modcpersonacliente('3', '0', bodyPost).subscribe(Resultado => {
+                              this.service.modcpersonacliente('4', '0', bodyPost).subscribe(Resultado => {
                                 var auxrespu = Resultado.toString().split("|");
                                 if (auxrespu[0].toString().trim() == "1") {
-                                  console.log("---")
-                                  console.log(auxcorreo)
-                                  console.log(Resultado)
-                                  console.log("---")
                                   const bodyPost = {
                                     'USUCODIG': 0,
                                     'CorreoPersona': auxcorreo.toLowerCase().replace(' ', '')
                                   }
                                   this.service.consLoginCliente('1', bodyPost).subscribe(async Resultado => {
-                                    console.log(bodyPost)
-                                    console.log(Resultado)
-                                    await this.AsociaSector(Resultado[0].USUCODIG);
+                                    //await this.AsociaSector(Resultado[0].USUCODIG);
 
-                                    const bodyCorreo = {
-                                      "IdPlantilla": 232,
-                                      "usucodig": Resultado[0].USUCODIG,
-                                      "Cd_cnctvo": 0
-                                    }
-                                    this.service.enviocorreoindividual('1', '0', '0', bodyCorreo).subscribe(Resultado => {
-                                      obj.Respuesta = auxrespu[0];
+                                    this.service.AsociarSectores('1', Resultado[0].USUCODIG).subscribe(Resultado => {
+                                      obj.Respuesta = auxrespu[1];
                                       this.numberinsertados++;
+                                      this.NumberTotal++;
                                       obj.Estado = true;
                                       resolve(true);
-                                    })
+                                    });
                                   })
                                 } else {
                                   obj.Respuesta = auxrespu[1];
                                   this.numbernofueposible++;
+                                  this.NumberTotal++;
                                   resolve(true);
                                 }
                               });
                             } else {
                               obj.Respuesta = 'Tu teléfono ya se encuentra registrado en AgroApoya2.';
                               this.numbernofueposible++;
+                              this.NumberTotal++;
                               resolve(true);
                             }
                           });
                         } else {
                           obj.Respuesta = "Número de teléfono no válido: " + "'" + num + "'";
                           this.numbernofueposible++;
+                          this.NumberTotal++;
                           resolve(true);
                         }
                       } else {
                         obj.Respuesta = "No fue posible encontrar la direccion : " + "'" + auxdireccion + "'";
                         this.numbernofueposible++;
+                        this.NumberTotal++;
                         resolve(true);
                       }
                     });
                   } else {
                     obj.Respuesta = 'Dirección no registrada';
                     this.numbernofueposible++;
+                    this.NumberTotal++;
                     resolve(true);
                   }
 
                 } else {
                   obj.Respuesta = 'Nombre no registrado';
                   this.numbernofueposible++;
+                  this.NumberTotal++;
                   resolve(true);
                 }
 
               } else {
                 obj.Respuesta = 'Usuario ya registrado';
                 this.numbernofueposible++;
+                this.NumberTotal++;
                 resolve(true);
               }
             });
           } else {
             obj.Respuesta = 'Correo electronico invalido';
             this.numbernofueposible++;
+            this.NumberTotal++;
             resolve(true);
           }
           this.ArrayRespuesta.push(obj);
