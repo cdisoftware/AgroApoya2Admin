@@ -127,6 +127,7 @@ export class EnviosmanychatComponent implements OnInit {
         ID_MANYCHAT: "0"
       }
       this.ServiciosValorar.ConsultaUsersAdminManychat('1', Body).subscribe(Resultado => {
+        console.log(Resultado)
         this.DataQuery = Resultado;
         this.IdManychatUser = '';
       })
@@ -265,5 +266,22 @@ export class EnviosmanychatComponent implements OnInit {
     }
   }
 
+  async AsignaEtiquetaManyChat() {
+    
+      for (var i = 0; i < this.DataQuery.length; i++) {
+        await new Promise((resolve, reject) => {
+          const body = {
+            subscriber_id: this.DataQuery[i].ID_MANYCHAT.trim(),
+            field_id: 9844106,
+            field_value: "AA2"
+          }
+          console.log(body)
+          this.publicidadService.AsignarCampoUserManyChat(body).subscribe(async Respu => {
+            console.log(this.DataQuery[i].USUARIO + " " + Respu)
+            resolve(true);
+          });
+        });
+      }
 
+  }
 }
