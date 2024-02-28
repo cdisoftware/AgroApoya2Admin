@@ -2841,6 +2841,10 @@ export class ValoracionComponent implements OnInit {
   }
 
 
+  AbrirModalLinks(modalmensaje: any) {
+    this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
+  }
+
 
 
 

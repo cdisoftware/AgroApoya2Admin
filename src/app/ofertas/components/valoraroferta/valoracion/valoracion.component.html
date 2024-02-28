@@ -680,7 +680,7 @@
                                 (click)="CrearEditarproduct(templateEditar)">
                                 Crear/Editar Producto</button>
                         </div>
-                        <div class="col-sm-3 col-12" >
+                        <div class="col-sm-3 col-12">
                             <button class="btn btn-agro-prin col-sm-12 w-100"
                                 (click)="AbreModalOrden(AdminOrdenProd)">Organizar productos</button>
                         </div>
@@ -1038,11 +1038,12 @@
                         </div>
                     </div>
 
-                     <div class="row br">
+                    <div class="row br">
                         <div class="col-sm-12">
                             <label class="col-sm-12 Llave">Link corto oferta por registros </label>
                             <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UrlRegistroCompra" disabled>
-                            <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UrlRegistroCompraC" disabled>
+                            <input class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="UrlRegistroCompraC"
+                                disabled>
                         </div>
                     </div>
 
@@ -1353,6 +1354,10 @@
                                 (click)="visualizaImagenProducto(ModalImagenProduct, producto)">
                                 <img src="./../../../../../assets/ImagenesAgroApoya2Adm/imagen.png">
                             </button>
+
+                            <button class="SinEstilo" title="Links" (click)="AbrirModalLinks(templateRecetas)">
+                                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/url.png">
+                            </button>
                         </td>
                     </tr>
                 </table>
@@ -1360,6 +1365,109 @@
         </div>
     </div>
 </ng-template>
+
+<!-- AGREGAR RECETAS -->
+<ng-template #templateRecetas let-modal>
+    <div class="modal-header">
+        <h1 class="modal-title" id="modal-basic-title">Recetas</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <h5 class="SubTituloForm">Recetas</h5>
+                <div class="row">
+                    <div class="col-sm-4 mt-2">
+                        <label class="col-sm-12 Llave">Descripción</label>
+                        <input type="text" title="Descripción máximo 150 caracteres"
+                            class="col-sm-12 form-control mt-1 textBox" maxlength="150" [(ngModel)]="DesProduct"
+                            [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="col-sm-4 mt-2">
+                        <label class="col-sm-12 Llave">Prefijo</label>
+                        <input type="text" title="Prefijo máximo 3 caracteres"
+                            class="col-sm-12 form-control mt-1 textBox" maxlength="3" [(ngModel)]="PrfjoProduct"
+                            [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="col-sm-4 mt-2">
+                        <label class="col-sm-12 Llave"></label> 
+                        <button class="btn btn-agro-prin col-sm-12" 
+                       >Guardar</button>                       
+                    </div>
+                </div>
+                <br>
+                <div class="table-responsive">
+                    <table class="table col-sm-12 TableAgro">
+                        <tr id="TablaValoracion">
+                            <th>Descripción</th>
+                            <th colspan="3">Link</th>
+                            <th>Acciones</th>
+                        </tr>
+                        <tr >
+                            <td style="word-wrap: break-word;">Tomate</td>
+                            <td colspan="3" style="word-wrap: break-word;">https://www.youtube.com/watch?v=qC8PCfq5ossadsdadassadasdasdasdasdasdsdadsasdasdasdasdasdasadsdasdasdaQc</td>
+                            <td>
+                                <button class="SinEstilo" title="Editar producto">
+                                    <img src="../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
+                                        class="BtnimgTamanoPeque" />
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <h5 class="SubTituloForm">Caracteristicas</h5>
+                <div class="row">
+                    <div class="col-sm-4 mt-2">
+                        <label class="col-sm-12 Llave">Descripción</label>
+                        <input type="text" title="Descripción máximo 150 caracteres"
+                            class="col-sm-12 form-control mt-1 textBox" maxlength="150" [(ngModel)]="DesProduct"
+                            [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="col-sm-4 mt-2">
+                        <label class="col-sm-12 Llave">Prefijo</label>
+                        <input type="text" title="Prefijo máximo 3 caracteres"
+                            class="col-sm-12 form-control mt-1 textBox" maxlength="3" [(ngModel)]="PrfjoProduct"
+                            [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <div class="col-sm-4 mt-2">
+                        <label class="col-sm-12 Llave"></label> 
+                        <button class="btn btn-agro-prin col-sm-12" 
+                       >Guardar</button>                       
+                    </div>
+                </div>
+                <br>
+                <div class="table-responsive">
+                    <table class="table col-sm-12 TableAgro">
+                        <tr id="TablaValoracion">
+                            <th>Descripción</th>
+                            <th colspan="3">Link</th>
+                            <th>Acciones</th>
+                        </tr>
+                        <tr >
+                            <td style="word-wrap: break-word;">Tomate</td>
+                            <td colspan="3" style="word-wrap: break-word;">https://www.youtube.com/watch?v=qC8PCfq5oQcsdasdasadDSFADFSSDGFSDGAGSDFGSDFSGDAFsaddsasdasdasa</td>
+                            <td>
+                                <button class="SinEstilo" title="Editar producto">
+                                    <img src="../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
+                                        class="BtnimgTamanoPeque" />
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</ng-template>
+
+
+
 <!--Añade o quita presentaciones-->
 <ng-template #Presentaciones let-modal>
     <div class="modal-header">
