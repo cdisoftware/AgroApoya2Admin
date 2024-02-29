@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbAccordionConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
@@ -16,6 +16,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   styleUrls: ['./valoracion.component.css']
 })
 export class ValoracionComponent implements OnInit {
+  @ViewChild('ModalRespuesta', { static: false }) ModalMensaje: any;
 
   SessionOferta: any;
   DataOferta: any[] = [];
@@ -2508,7 +2509,11 @@ export class ValoracionComponent implements OnInit {
 
   //#region AÑADEPRODUCTOS
   banderaAgregar: string = '1';
+  BAddReceta: string = '1';
+  BAddCrctrstca: string = '1';
   DataProducts: any[];
+  DataReceta: any[];
+  DataCnsvcion: any[];
   cerrarModal: NgbModalRef;
   ArregloEliminaProduct: any;
 
@@ -2840,12 +2845,170 @@ export class ValoracionComponent implements OnInit {
     this.modalService.open(ModalImagen, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
   }
 
+  // ================ RECETAS / CONSERVACION ==============================
 
-  AbrirModalLinks(modalmensaje: any) {
+  INDescReceta: string = '';
+  INLinkReceta: string = '';
+
+  INDesConsrv: string = '';
+  INLinkConsrv: string = '';
+
+  CodeProduct: string = '';
+  NombProducto: string = '';
+
+  AbrirModalLinks(modalmensaje: any, producto: any) {
     this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
+    this.CodeProduct = producto.CD_PRDCTO;
+    this.NombProducto = producto.DSCRPCION;
+    this.consultaRecetas();
+    this.consultaConservacion();
+  }
+
+  consultaRecetas() {    
+    this.serviciosvaloracion.ConsultaEnlaces('1', '1', this.CodeProduct).subscribe(Resultcons => {
+      if (Resultcons.length > 0) {
+        this.DataReceta = Resultcons;
+      }
+      else {
+        this.DataReceta = [];
+      }
+    })
+  }
+
+  consultaConservacion() {
+
+    this.serviciosvaloracion.ConsultaEnlaces('1', '2', this.CodeProduct).subscribe(Resultcons => {
+      if (Resultcons.length > 0) {
+        this.DataCnsvcion = Resultcons;
+      }
+      else {
+        this.DataCnsvcion = [];
+      }
+    })
   }
 
 
+  AgregarReceta(bandera: string) {
+    if (this.INDescReceta == null || this.INDescReceta == '') {
+      this.Respuesta = 'El campo Descripción receta es obligatorio.';
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    } else if (this.INLinkReceta == null || this.INLinkReceta == '') {
+      this.Respuesta = 'El campo Link receta es obligatorio.';
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    } else {
+
+      if (bandera == '3') {
+        const Body = {
+          IdLinkProducto: 0,
+          cd_prdcto: this.CodeProduct,
+          Descripcion: this.INDescReceta,
+          Link: this.INLinkReceta,
+          TipoLink: 1
+        }
+        this.serviciosvaloracion.AgregaEnlaces(bandera, Body).subscribe(ResultOper => {
+          this.consultaRecetas();
+          this.INDescReceta = '';
+          this.INLinkReceta = '';
+        })
+      } else if (bandera == '2') {
+        const Body = {
+          IdLinkProducto: this.auxIdEnlace,
+          cd_prdcto: this.CodeProduct,
+          Descripcion: this.INDescReceta,
+          Link: this.INLinkReceta,
+          TipoLink: 1
+        }
+        this.serviciosvaloracion.AgregaEnlaces(bandera, Body).subscribe(ResultOper => {
+          this.consultaRecetas();
+          this.INDescReceta = '';
+          this.INLinkReceta = '';
+          this.BAddReceta = '1';
+        })
+      }
+    }
+  }
+
+  auxIdEnlace: string = '';
+  EditaReceta(enlace: any) {
+    this.auxIdEnlace = enlace.IdLinkProducto;
+    this.INDescReceta = enlace.Descripcion;
+    this.INLinkReceta = enlace.Link;
+    this.BAddReceta = '2';
+  }
+
+  EliminaReceta(enlace: any) {
+    const Body = {
+      IdLinkProducto: enlace.IdLinkProducto,
+      cd_prdcto: enlace.cd_prdcto,
+      Descripcion: enlace.Descripcion,
+      Link: enlace.Link,
+      TipoLink: 1
+    }
+    this.serviciosvaloracion.AgregaEnlaces('4', Body).subscribe(ResultOper => {
+      this.consultaRecetas();
+    })
+  }
+
+  AgregarConservacion(bandera: string) {
+    if (this.INDesConsrv == null || this.INDesConsrv == '') {
+      this.Respuesta = 'El campo Descripción conservación es obligatorio.';
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    } else if (this.INLinkConsrv == null || this.INLinkConsrv == '') {
+      this.Respuesta = 'El campo Link conservación es obligatorio.';
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    } else {
+
+      if (bandera == '3') {
+        const Body = {
+          IdLinkProducto: 0,
+          cd_prdcto: this.CodeProduct,
+          Descripcion: this.INDesConsrv,
+          Link: this.INLinkConsrv,
+          TipoLink: 2
+        }
+        this.serviciosvaloracion.AgregaEnlaces(bandera, Body).subscribe(ResultOper => {       
+          this.consultaConservacion();
+          this.INDesConsrv = '';
+          this.INLinkConsrv = '';
+        })
+      } else if (bandera == '2') {
+        const Body = {
+          IdLinkProducto: this.auxIdCnsvcion,
+          cd_prdcto: this.CodeProduct,
+          Descripcion: this.INDesConsrv,
+          Link: this.INLinkConsrv,
+          TipoLink: 2
+        }
+        this.serviciosvaloracion.AgregaEnlaces(bandera, Body).subscribe(ResultOper => {        
+          this.consultaConservacion();
+          this.INDesConsrv = '';
+          this.INLinkConsrv = '';
+          this.BAddCrctrstca = '1';
+        })
+      }
+    }
+  }
+
+  auxIdCnsvcion: string = '';
+  EditaConservacion(enlace: any) {
+    this.auxIdCnsvcion = enlace.IdLinkProducto;
+    this.INDesConsrv = enlace.Descripcion;
+    this.INLinkConsrv = enlace.Link;
+    this.BAddCrctrstca = '2';
+  }
+
+  EliminaConservacion(enlace: any) {
+    const Body = {
+      IdLinkProducto: enlace.IdLinkProducto,
+      cd_prdcto: enlace.cd_prdcto,
+      Descripcion: enlace.Descripcion,
+      Link: enlace.Link,
+      TipoLink: 2
+    }
+    this.serviciosvaloracion.AgregaEnlaces('4', Body).subscribe(ResultOper => {
+      this.consultaConservacion();
+    })
+  }
 
 
   //#endregion AÑADEPRODUCTOS

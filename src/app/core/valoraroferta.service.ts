@@ -547,4 +547,12 @@ export class ValorarofertaService {
     return this.http.get<any>(this.url_servidor + 'consAdTipoRegistro/' + Bandera)
   }
 
+  ConsultaEnlaces(Bandera: string, TipoLink: string, cd_prdcto: string) {
+    return this.http.get<any>(this.url_servidor + 'consAdProductosLinks/' + Bandera + '/' + TipoLink+ '/' + cd_prdcto)
+  }
+
+  AgregaEnlaces(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modAdProductoLinks/' + Bandera, Body);
+  }
+
 }
