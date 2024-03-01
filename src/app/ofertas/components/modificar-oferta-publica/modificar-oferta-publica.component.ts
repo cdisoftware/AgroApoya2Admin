@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ValorarofertaService } from './../../../core/valoraroferta.service';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
@@ -22,7 +22,7 @@ import {
   styleUrls: ['./modificar-oferta-publica.component.css']
 })
 export class ModificarOfertaPublicaComponent implements OnInit {
-
+  @ViewChild('ModalRespuesta', { static: false }) ModalMensaje: any;
   //VariablesFiltro Oferta
   ArrayOferta: any = [];
   keywordOferta: string = '';
@@ -719,9 +719,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         ID_SECTOR: this.SectModif,
         NOMBRE_IMG: this.NomImagenSector
       }
-      console.log(datos)
       this.sectoresservices.ModificarImagenSector('3', datos).subscribe(Resultado => {
-        console.log(Resultado)
         this.modalService.dismissAll();
         this.ConsultaSectoresOferta();
       })
@@ -1680,6 +1678,180 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     // Abre el modal
     this.modalService.open(ModalImagen, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
   }
+
+
+  // ================ RECETAS / CONSERVACION ==============================
+  DataReceta: any[];
+  DataCnsvcion: any[];
+  BAddReceta: string = '1';
+  BAddCrctrstca: string = '1';
+  INDescReceta: string = '';
+  INLinkReceta: string = '';
+  INDesConsrv: string = '';
+  INLinkConsrv: string = '';
+  CodeProduct: string = '';
+  NombProducto: string = '';
+
+  AbrirModalLinks(modalmensaje: any, producto: any) {
+    this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
+    this.CodeProduct = producto.CD_PRDCTO;
+    this.NombProducto = producto.DSCRPCION;
+    this.consultaRecetas();
+    this.consultaConservacion();
+  }
+
+  consultaRecetas() {
+    this.serviciosvaloracion.ConsultaEnlaces('1', '1', this.CodeProduct).subscribe(Resultcons => {
+      if (Resultcons.length > 0) {
+        this.DataReceta = Resultcons;
+      }
+      else {
+        this.DataReceta = [];
+      }
+    })
+  }
+
+  consultaConservacion() {
+
+    this.serviciosvaloracion.ConsultaEnlaces('1', '2', this.CodeProduct).subscribe(Resultcons => {
+      if (Resultcons.length > 0) {
+        this.DataCnsvcion = Resultcons;
+      }
+      else {
+        this.DataCnsvcion = [];
+      }
+    })
+  }
+
+
+  AgregarReceta(bandera: string) {
+    if (this.INDescReceta == null || this.INDescReceta == '') {
+      this.Respuesta = 'El campo Descripción receta es obligatorio.';
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    } else if (this.INLinkReceta == null || this.INLinkReceta == '') {
+      this.Respuesta = 'El campo Link receta es obligatorio.';
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    } else {
+
+      if (bandera == '3') {
+        const Body = {
+          IdLinkProducto: 0,
+          cd_prdcto: this.CodeProduct,
+          Descripcion: this.INDescReceta,
+          Link: this.INLinkReceta,
+          TipoLink: 1
+        }
+        this.serviciosvaloracion.AgregaEnlaces(bandera, Body).subscribe(ResultOper => {
+          this.consultaRecetas();
+          this.INDescReceta = '';
+          this.INLinkReceta = '';
+        })
+      } else if (bandera == '2') {
+        const Body = {
+          IdLinkProducto: this.auxIdEnlace,
+          cd_prdcto: this.CodeProduct,
+          Descripcion: this.INDescReceta,
+          Link: this.INLinkReceta,
+          TipoLink: 1
+        }
+        this.serviciosvaloracion.AgregaEnlaces(bandera, Body).subscribe(ResultOper => {
+          this.consultaRecetas();
+          this.INDescReceta = '';
+          this.INLinkReceta = '';
+          this.BAddReceta = '1';
+        })
+      }
+    }
+  }
+
+  auxIdEnlace: string = '';
+  EditaReceta(enlace: any) {
+    this.auxIdEnlace = enlace.IdLinkProducto;
+    this.INDescReceta = enlace.Descripcion;
+    this.INLinkReceta = enlace.Link;
+    this.BAddReceta = '2';
+  }
+
+  EliminaReceta(enlace: any) {
+    const Body = {
+      IdLinkProducto: enlace.IdLinkProducto,
+      cd_prdcto: enlace.cd_prdcto,
+      Descripcion: enlace.Descripcion,
+      Link: enlace.Link,
+      TipoLink: 1
+    }
+    this.serviciosvaloracion.AgregaEnlaces('4', Body).subscribe(ResultOper => {
+      this.consultaRecetas();
+    })
+  }
+
+  AgregarConservacion(bandera: string) {
+    if (this.INDesConsrv == null || this.INDesConsrv == '') {
+      this.Respuesta = 'El campo Descripción conservación es obligatorio.';
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    } else if (this.INLinkConsrv == null || this.INLinkConsrv == '') {
+      this.Respuesta = 'El campo Link conservación es obligatorio.';
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    } else {
+
+      if (bandera == '3') {
+        const Body = {
+          IdLinkProducto: 0,
+          cd_prdcto: this.CodeProduct,
+          Descripcion: this.INDesConsrv,
+          Link: this.INLinkConsrv,
+          TipoLink: 2
+        }
+        this.serviciosvaloracion.AgregaEnlaces(bandera, Body).subscribe(ResultOper => {
+          this.consultaConservacion();
+          this.INDesConsrv = '';
+          this.INLinkConsrv = '';
+        })
+      } else if (bandera == '2') {
+        const Body = {
+          IdLinkProducto: this.auxIdCnsvcion,
+          cd_prdcto: this.CodeProduct,
+          Descripcion: this.INDesConsrv,
+          Link: this.INLinkConsrv,
+          TipoLink: 2
+        }
+        this.serviciosvaloracion.AgregaEnlaces(bandera, Body).subscribe(ResultOper => {
+          this.consultaConservacion();
+          this.INDesConsrv = '';
+          this.INLinkConsrv = '';
+          this.BAddCrctrstca = '1';
+        })
+      }
+    }
+  }
+
+  auxIdCnsvcion: string = '';
+  EditaConservacion(enlace: any) {
+    this.auxIdCnsvcion = enlace.IdLinkProducto;
+    this.INDesConsrv = enlace.Descripcion;
+    this.INLinkConsrv = enlace.Link;
+    this.BAddCrctrstca = '2';
+  }
+
+  EliminaConservacion(enlace: any) {
+    const Body = {
+      IdLinkProducto: enlace.IdLinkProducto,
+      cd_prdcto: enlace.cd_prdcto,
+      Descripcion: enlace.Descripcion,
+      Link: enlace.Link,
+      TipoLink: 2
+    }
+    this.serviciosvaloracion.AgregaEnlaces('4', Body).subscribe(ResultOper => {
+      this.consultaConservacion();
+    })
+  }
+
+
+
+
+
+
+
   //#endregion AÑADEPRODUCTOS
 
 
@@ -1801,7 +1973,9 @@ export class ModificarOfertaPublicaComponent implements OnInit {
           UnidadesOferta: this.UnidadesOferta,
           MximoUnidades: this.MaximoUnidades,
           Id_Sector: this.SessionSectorSel,
-          PesoUnidad: this.PesoPresentacionTopping
+          PesoUnidad: this.PesoPresentacionTopping,
+          UnidadesPeso: this.UniProdTpp,
+          DefectoUnidadesPeso: this.DefectoUniProdTpp,
         }
         this.serviciosvaloracion.modCRelacionProductoTopping('2', body).subscribe(Respu => {
           var split = Respu.toString().split("|");
@@ -1822,7 +1996,9 @@ export class ModificarOfertaPublicaComponent implements OnInit {
           UnidadesOferta: this.UnidadesOferta,
           MximoUnidades: this.MaximoUnidades,
           Id_Sector: this.SessionSectorSel,
-          PesoUnidad: this.PesoPresentacionTopping
+          PesoUnidad: this.PesoPresentacionTopping,
+          UnidadesPeso: this.UniProdTpp,
+          DefectoUnidadesPeso: this.DefectoUniProdTpp,
         }
         this.serviciosvaloracion.modCRelacionProductoTopping('3', body).subscribe(Respu => {
           var split = Respu.toString().split("|");
@@ -3247,9 +3423,10 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         IdTipoTopingVenta: this.SessionTipoToppVenta,
         IdProdTopin: AuxIdProdTopping,
         PresentacionProd: Auxpresentacion,
-        IdCampesino: this.IdCampesino
+        IdCampesino: this.IdCampesino,
+        UnidadesPeso: this.UnidadesPeso,
+        DefectoUnidadesPeso: this.DefectoUndPeso
       }
-      console.log(Body)
       this.serviciosvaloracion.ModificaTopping('2', Body).subscribe(ResultOper => {
         this.Respuesta = ResultOper;
         this.consultaToppingsOferta();
@@ -3555,6 +3732,8 @@ export class ModificarOfertaPublicaComponent implements OnInit {
 
   //#endregion Textosparaoferta
 
+  UnidadesPeso: string = '';
+  DefectoUndPeso: string = '';
 
   //Topping principal
   CargaListaPresentaciones(IdProd: string) {
@@ -3566,6 +3745,9 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.PresentacionSelect = item.des_empaque;
     this.PesoPresentacion = item.PESO;
     this.Presentacion = item.des_empaque;
+    this.UnidadesPeso = item.unidades;
+    this.DefectoUndPeso = item.defecto;
+
   }
   LimpiaPresentacion() {
     this.PresentacionSelect = "";
@@ -3591,6 +3773,9 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.IndexPresentacionProdAncla_ = -1;
   }
 
+
+  UniProdTpp: string = '';
+  DefectoUniProdTpp: string = '';
   //Toping
   CargaListaPresentacionesTopping() {
     this.serviciosvaloracion.ConsultaPresentaciones(this.IdProductoTopping_).subscribe(Respu => {
@@ -3601,6 +3786,8 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.PresentacionToppingSelect = item.des_empaque;
     this.PesoPresentacionTopping = item.PESO;
     this.PresentacionTopping = item.des_empaque;
+    this.UniProdTpp = item.UniProd;
+    this.DefectoUniProdTpp = item.DefectoUniProd;
   }
   LimpiaPresentacionTopping() {
     this.PresentacionToppingSelect = "";
@@ -3663,7 +3850,6 @@ export class ModificarOfertaPublicaComponent implements OnInit {
       CadenaOrden: cadenaorden
     }
     this.serviciosvaloracion.ModOrdenProductos('1', body).subscribe(Respu => {
-      console.log(Respu)
       this.consultaToppingsOferta();
     });
   }
@@ -3687,14 +3873,12 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   ListPresentacionesProdAnclaSelect(IdProd: string) {
     this.ArrayPresentacionesProdSelect = [];
     this.serviciosvaloracion.consCRelacionProducTopping('4', IdProd, this.SessionSectorSel).subscribe(Respu => {
-      console.log(Respu)
       this.ArrayPresentacionesProdSelect = Respu;
     });
   }
   ListPresentacionesToopingSelect(IdProd: string) {
     this.ArrayPresentacionesProdSelect = [];
     this.serviciosvaloracion.consCRelacionProducTopping('1', IdProd, this.SessionSectorSel).subscribe(Respu => {
-      console.log(Respu)
       this.ArrayPresentacionesProdSelect = Respu;
     });
   }
@@ -3712,7 +3896,6 @@ export class ModificarOfertaPublicaComponent implements OnInit {
       CadenaOrden: cadenaorden
     }
     this.serviciosvaloracion.ModOrdenPresentaciones('1', body).subscribe(Respu => {
-      console.log(Respu)
     });
   }
 
