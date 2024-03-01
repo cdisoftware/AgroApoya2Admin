@@ -722,10 +722,11 @@ export class ValoracionComponent implements OnInit {
         ImgTres: this.NomImagen3,
         VlorRefencia: this.ValorRefAdd,
         IdTipoTopingVenta: this.SessionTipoToppVenta,
-
         IdProdTopin: AuxIdProdTopping,
         PresentacionProd: Auxpresentacion,
-        IdCampesino: this.IdCampesino
+        IdCampesino: this.IdCampesino,
+        UnidadesPeso: this.UnidadesPeso,
+        DefectoUnidadesPeso: this.DefectoUndPeso
       }
       console.log("====INSERTA====")
       console.log(Body)
@@ -3133,7 +3134,9 @@ export class ValoracionComponent implements OnInit {
           UnidadesOferta: this.UnidadesOferta,
           MximoUnidades: this.MaximoUnidades,
           Id_Sector: this.SessionSectorSel,
-          PesoUnidad: this.PesoPresentacionTopping
+          PesoUnidad: this.PesoPresentacionTopping,
+          UnidadesPeso: this.UniProdTpp,
+          DefectoUnidadesPeso: this.DefectoUniProdTpp,
         }
         this.serviciosvaloracion.modCRelacionProductoTopping('2', body).subscribe(Respu => {
           var split = Respu.toString().split("|");
@@ -3154,7 +3157,9 @@ export class ValoracionComponent implements OnInit {
           UnidadesOferta: this.UnidadesOferta,
           MximoUnidades: this.MaximoUnidades,
           Id_Sector: this.SessionSectorSel,
-          PesoUnidad: this.PesoPresentacionTopping
+          PesoUnidad: this.PesoPresentacionTopping,
+          UnidadesPeso: this.UniProdTpp,
+          DefectoUnidadesPeso: this.DefectoUniProdTpp,
         }
         this.serviciosvaloracion.modCRelacionProductoTopping('3', body).subscribe(Respu => {
           var split = Respu.toString().split("|");
@@ -3571,7 +3576,8 @@ export class ValoracionComponent implements OnInit {
   //#endregion Textosparaoferta
 
   //#region ListaPresentaciones
-
+  UnidadesPeso: string = '';
+  DefectoUndPeso: string = '';
   //Topping principal
   CargaListaPresentaciones(IdProd: string) {
     this.serviciosvaloracion.ConsultaPresentaciones(IdProd).subscribe(Respu => {
@@ -3582,6 +3588,8 @@ export class ValoracionComponent implements OnInit {
     this.PresentacionSelect = item.des_empaque;
     this.PesoPresentacion = item.PESO;
     this.Presentacion = item.des_empaque;
+    this.UnidadesPeso = item.unidades;
+    this.DefectoUndPeso = item.defecto;
   }
   LimpiaPresentacion() {
     this.PresentacionSelect = "";
@@ -3607,6 +3615,8 @@ export class ValoracionComponent implements OnInit {
     this.IndexPresentacionProdAncla_ = -1;
   }
 
+  UniProdTpp: string = '';
+  DefectoUniProdTpp: string = '';
   //Toping
   CargaListaPresentacionesTopping() {
     this.serviciosvaloracion.ConsultaPresentaciones(this.IdProductoTopping_).subscribe(Respu => {
@@ -3617,6 +3627,8 @@ export class ValoracionComponent implements OnInit {
     this.PresentacionToppingSelect = item.des_empaque;
     this.PesoPresentacionTopping = item.PESO;
     this.PresentacionTopping = item.des_empaque;
+    this.UniProdTpp = item.UniProd;
+    this.DefectoUniProdTpp = item.DefectoUniProd;
   }
   LimpiaPresentacionTopping() {
     this.PresentacionToppingSelect = "";

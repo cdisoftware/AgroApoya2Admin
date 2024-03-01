@@ -719,9 +719,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         ID_SECTOR: this.SectModif,
         NOMBRE_IMG: this.NomImagenSector
       }
-      console.log(datos)
       this.sectoresservices.ModificarImagenSector('3', datos).subscribe(Resultado => {
-        console.log(Resultado)
         this.modalService.dismissAll();
         this.ConsultaSectoresOferta();
       })
@@ -1975,7 +1973,9 @@ export class ModificarOfertaPublicaComponent implements OnInit {
           UnidadesOferta: this.UnidadesOferta,
           MximoUnidades: this.MaximoUnidades,
           Id_Sector: this.SessionSectorSel,
-          PesoUnidad: this.PesoPresentacionTopping
+          PesoUnidad: this.PesoPresentacionTopping,
+          UnidadesPeso: this.UniProdTpp,
+          DefectoUnidadesPeso: this.DefectoUniProdTpp,
         }
         this.serviciosvaloracion.modCRelacionProductoTopping('2', body).subscribe(Respu => {
           var split = Respu.toString().split("|");
@@ -1996,7 +1996,9 @@ export class ModificarOfertaPublicaComponent implements OnInit {
           UnidadesOferta: this.UnidadesOferta,
           MximoUnidades: this.MaximoUnidades,
           Id_Sector: this.SessionSectorSel,
-          PesoUnidad: this.PesoPresentacionTopping
+          PesoUnidad: this.PesoPresentacionTopping,
+          UnidadesPeso: this.UniProdTpp,
+          DefectoUnidadesPeso: this.DefectoUniProdTpp,
         }
         this.serviciosvaloracion.modCRelacionProductoTopping('3', body).subscribe(Respu => {
           var split = Respu.toString().split("|");
@@ -3421,9 +3423,10 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         IdTipoTopingVenta: this.SessionTipoToppVenta,
         IdProdTopin: AuxIdProdTopping,
         PresentacionProd: Auxpresentacion,
-        IdCampesino: this.IdCampesino
+        IdCampesino: this.IdCampesino,
+        UnidadesPeso: this.UnidadesPeso,
+        DefectoUnidadesPeso: this.DefectoUndPeso
       }
-      console.log(Body)
       this.serviciosvaloracion.ModificaTopping('2', Body).subscribe(ResultOper => {
         this.Respuesta = ResultOper;
         this.consultaToppingsOferta();
@@ -3729,6 +3732,8 @@ export class ModificarOfertaPublicaComponent implements OnInit {
 
   //#endregion Textosparaoferta
 
+  UnidadesPeso: string = '';
+  DefectoUndPeso: string = '';
 
   //Topping principal
   CargaListaPresentaciones(IdProd: string) {
@@ -3740,6 +3745,9 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.PresentacionSelect = item.des_empaque;
     this.PesoPresentacion = item.PESO;
     this.Presentacion = item.des_empaque;
+    this.UnidadesPeso = item.unidades;
+    this.DefectoUndPeso = item.defecto;
+
   }
   LimpiaPresentacion() {
     this.PresentacionSelect = "";
@@ -3765,6 +3773,9 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.IndexPresentacionProdAncla_ = -1;
   }
 
+
+  UniProdTpp: string = '';
+  DefectoUniProdTpp: string = '';
   //Toping
   CargaListaPresentacionesTopping() {
     this.serviciosvaloracion.ConsultaPresentaciones(this.IdProductoTopping_).subscribe(Respu => {
@@ -3775,6 +3786,8 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.PresentacionToppingSelect = item.des_empaque;
     this.PesoPresentacionTopping = item.PESO;
     this.PresentacionTopping = item.des_empaque;
+    this.UniProdTpp = item.UniProd;
+    this.DefectoUniProdTpp = item.DefectoUniProd;
   }
   LimpiaPresentacionTopping() {
     this.PresentacionToppingSelect = "";
@@ -3837,7 +3850,6 @@ export class ModificarOfertaPublicaComponent implements OnInit {
       CadenaOrden: cadenaorden
     }
     this.serviciosvaloracion.ModOrdenProductos('1', body).subscribe(Respu => {
-      console.log(Respu)
       this.consultaToppingsOferta();
     });
   }
@@ -3861,14 +3873,12 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   ListPresentacionesProdAnclaSelect(IdProd: string) {
     this.ArrayPresentacionesProdSelect = [];
     this.serviciosvaloracion.consCRelacionProducTopping('4', IdProd, this.SessionSectorSel).subscribe(Respu => {
-      console.log(Respu)
       this.ArrayPresentacionesProdSelect = Respu;
     });
   }
   ListPresentacionesToopingSelect(IdProd: string) {
     this.ArrayPresentacionesProdSelect = [];
     this.serviciosvaloracion.consCRelacionProducTopping('1', IdProd, this.SessionSectorSel).subscribe(Respu => {
-      console.log(Respu)
       this.ArrayPresentacionesProdSelect = Respu;
     });
   }
@@ -3886,7 +3896,6 @@ export class ModificarOfertaPublicaComponent implements OnInit {
       CadenaOrden: cadenaorden
     }
     this.serviciosvaloracion.ModOrdenPresentaciones('1', body).subscribe(Respu => {
-      console.log(Respu)
     });
   }
 
