@@ -3626,9 +3626,9 @@ export class ValoracionComponent implements OnInit {
   SelectPresentacionTopping(item: any) {
     this.PresentacionToppingSelect = item.des_empaque;
     this.PesoPresentacionTopping = item.PESO;
-    this.PresentacionTopping = item.des_empaque;
-    this.UniProdTpp = item.UniProd;
-    this.DefectoUniProdTpp = item.DefectoUniProd;
+    this.PresentacionTopping = item.des_empaque;  
+    this.UniProdTpp = item.unidades;
+    this.DefectoUniProdTpp = item.defecto;
   }
   LimpiaPresentacionTopping() {
     this.PresentacionToppingSelect = "";

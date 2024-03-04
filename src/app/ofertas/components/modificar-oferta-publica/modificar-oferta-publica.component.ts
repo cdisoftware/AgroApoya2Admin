@@ -1960,7 +1960,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
       this.SmsError = "Define su valor referencia";
     } else if (Number(this.ValorReal) > Number(this.ValorReferencia)) {
       this.SmsError = "El valor real no puede ser mayor que el valor referencia";
-    } else {
+    } else {  
       this.SmsError = "";
       //Agrega la presentacion
       if (bandera == '2') {
@@ -1977,6 +1977,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
           UnidadesPeso: this.UniProdTpp,
           DefectoUnidadesPeso: this.DefectoUniProdTpp,
         }
+    
         this.serviciosvaloracion.modCRelacionProductoTopping('2', body).subscribe(Respu => {
           var split = Respu.toString().split("|");
           if (split[0] == "1") {
@@ -3786,8 +3787,9 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.PresentacionToppingSelect = item.des_empaque;
     this.PesoPresentacionTopping = item.PESO;
     this.PresentacionTopping = item.des_empaque;
-    this.UniProdTpp = item.UniProd;
-    this.DefectoUniProdTpp = item.DefectoUniProd;
+    this.UniProdTpp = item.unidades;
+    this.DefectoUniProdTpp = item.defecto;
+  
   }
   LimpiaPresentacionTopping() {
     this.PresentacionToppingSelect = "";
