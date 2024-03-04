@@ -314,27 +314,39 @@ export class RepComprasComponent implements OnInit {
   }
 
   ProdTotal: number;
-  LibrasUndTotales: number;
   LibrasTotalTotales: number;
+  ArregloLibrasOferta: any = [];
 
-  ProductoTotal(modaldetalle: any, ModalProductos:any) {
+  ProductoTotal(modaldetalle: any, ModalProductos: any) {
     if (this.OferFiltro == null || this.OferFiltro == undefined
       || this.OferFiltro == 'undefined' || this.OferFiltro == '' || this.OferFiltro == ' ') {
-        this.Respuesta = 'El id de la oferta es obligatorio para la consulta';
-        this.modalservices.open(modaldetalle, { size: "lg" })
+      this.Respuesta = 'El id de la oferta es obligatorio para la consulta';
+      this.modalservices.open(modaldetalle, { size: "lg" })
     } else {
       this.ProdTotal = 0;
-      this.LibrasUndTotales = 0;
       this.LibrasTotalTotales = 0;
 
-      this.serviciosreportes.consAdminReporteCantTotal('1', this.OferFiltro).subscribe(Resultcons => {
-        this.ArregloUnidadesOferta = Resultcons;
-        for(var i = 0; this.ArregloUnidadesOferta.length > i; i++){
-          this.ProdTotal = this.ProdTotal + parseInt(this.ArregloUnidadesOferta[i].CantidadTotal);
-          this.LibrasUndTotales = this.LibrasUndTotales + parseInt(this.ArregloUnidadesOferta[i].PesoUnid);
-          this.LibrasTotalTotales = this.LibrasTotalTotales + parseInt(this.ArregloUnidadesOferta[i].PesoTotal);
+      this.serviciosreportes.consAdminReporteCantTotal('1', this.OferFiltro).subscribe(Resultado => {
+        this.ArregloUnidadesOferta = [];
+        console.log(Resultado)
+        for (var i = 0; i < Resultado.length; i++) {
+          this.ArregloUnidadesOferta.push(
+            {
+              position: i, Producto: Resultado[i].Producto, CantidadTotal: Resultado[i].CantidadTotal,
+              PesoUnid: Resultado[i].PesoUnid,
+              PesoTotal: Resultado[i].PesoTotal,
+              idProducto: Resultado[i].idProducto,
+            });
+          this.ProdTotal = this.ProdTotal + Resultado[i].CantidadTotal;
+          this.LibrasTotalTotales = this.LibrasTotalTotales + parseInt(Resultado[i].PesoTotal)
         }
       })
+
+      this.serviciosreportes.consAdReporteCantTotalxLibras('1', this.OferFiltro).subscribe(Resultado => {
+        this.ArregloLibrasOferta = Resultado;
+        console.log(this.ArregloLibrasOferta)
+      })
+
       this.modalservices.open(ModalProductos, { size: "lg" })
     }
   }
