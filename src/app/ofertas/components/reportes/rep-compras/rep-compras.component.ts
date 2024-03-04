@@ -316,20 +316,69 @@ export class RepComprasComponent implements OnInit {
   ProdTotal: number;
   LibrasUndTotales: number;
   LibrasTotalTotales: number;
+  ArregloLibrasOferta: any = [];
 
-  ProductoTotal(modaldetalle: any, ModalProductos:any) {
+  ProductoTotal(modaldetalle: any, ModalProductos: any) {
     if (this.OferFiltro == null || this.OferFiltro == undefined
       || this.OferFiltro == 'undefined' || this.OferFiltro == '' || this.OferFiltro == ' ') {
-        this.Respuesta = 'El id de la oferta es obligatorio para la consulta';
-        this.modalservices.open(modaldetalle, { size: "lg" })
+      this.Respuesta = 'El id de la oferta es obligatorio para la consulta';
+      this.modalservices.open(modaldetalle, { size: "lg" })
     } else {
       this.ProdTotal = 0;
       this.LibrasUndTotales = 0;
       this.LibrasTotalTotales = 0;
 
-      this.serviciosreportes.consAdminReporteCantTotal('1', this.OferFiltro).subscribe(Resultcons => {
-        this.ArregloUnidadesOferta = Resultcons;
-        for(var i = 0; this.ArregloUnidadesOferta.length > i; i++){
+      this.serviciosreportes.consAdminReporteCantTotal('1', this.OferFiltro).subscribe(Resultado => {
+        this.ArregloUnidadesOferta = [];
+        console.log(Resultado)
+        for (var i = 0; i < Resultado.length; i++) {
+          this.ArregloUnidadesOferta.push(
+            {
+              position: i, Producto: Resultado[i].Producto, CantidadTotal: Resultado[i].CantidadTotal,
+              PesoUnid: Resultado[i].PesoUnid,
+              PesoTotal: Resultado[i].PesoTotal,
+              idProducto: Resultado[i].idProducto,
+            });
+        }
+
+        for (var e = 0; e < this.ArregloUnidadesOferta.length; e++) {
+
+          //SUMA TODAS LAS LIBRAS
+          var AuxSum: number = 0;
+          for (var tol = 0; tol < this.ArregloUnidadesOferta.length; tol++) {
+            if (this.ArregloUnidadesOferta[e].idProducto == this.ArregloUnidadesOferta[tol].idProducto) {
+              AuxSum = AuxSum + parseInt(this.ArregloUnidadesOferta[tol].PesoTotal);
+            }
+          }
+
+          //Valida si ese producto ya esta en el arreglo de la libras
+          var aux: boolean = false;
+          var idAux: number = 0;
+
+          for (var g = 0; g < this.ArregloLibrasOferta.length; g++) {
+            if (this.ArregloLibrasOferta[g].idProducto == this.ArregloUnidadesOferta[e].idProducto) {
+              aux= true;
+              idAux = g;
+            }
+          }
+
+          var splitAux = this.ArregloUnidadesOferta[e].Producto.split(' X ');
+          if(aux == true){
+            this.ArregloLibrasOferta[0].PesoLibras = AuxSum + ' Libras';
+          }else{
+            this.ArregloLibrasOferta.push({
+              position: i,
+              PesoLibras: AuxSum + ' Libras',
+              Producto: splitAux[0],
+              idProducto: this.ArregloUnidadesOferta[e].idProducto,
+            });
+          }
+
+        }
+
+        console.log(this.ArregloUnidadesOferta)
+
+        for (var i = 0; this.ArregloUnidadesOferta.length > i; i++) {
           this.ProdTotal = this.ProdTotal + parseInt(this.ArregloUnidadesOferta[i].CantidadTotal);
           this.LibrasUndTotales = this.LibrasUndTotales + parseInt(this.ArregloUnidadesOferta[i].PesoUnid);
           this.LibrasTotalTotales = this.LibrasTotalTotales + parseInt(this.ArregloUnidadesOferta[i].PesoTotal);
