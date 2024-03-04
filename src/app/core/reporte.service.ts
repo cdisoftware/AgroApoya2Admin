@@ -142,6 +142,10 @@ export class ReporteService {
     return this.http.get<any[]>(this.url_servidor + 'consAdminReporteCantTotal/' + Bandera + '/' + IdOferta)
   }
 
+  consAdReporteCantTotalxLibras(Bandera: string, IdOferta: any) {
+    return this.http.get<any[]>(this.url_servidor + 'consAdReporteCantTotalxLibras/' + Bandera + '/' + IdOferta)
+  }
+
   ConsultaUsers(Bandera: string, TipoUser: string, Body: any) {
     return this.http.post<any>(this.url_servidor + 'ConsCUsersAA2/' + Bandera + '/' + TipoUser, Body);
   }
