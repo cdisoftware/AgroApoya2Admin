@@ -81,6 +81,10 @@ export class ReporteComponent implements OnInit {
   emailreferidor: string = "";
   CodIngresado: string = "";
 
+  ArrayHistorialCompras: any = [];
+  valorTotalRecaudo: number = 0;
+  numTotalRegalo: number = 0;
+
   ngOnInit() {
     this.cargarListas();
   }
@@ -89,7 +93,6 @@ export class ReporteComponent implements OnInit {
     this.ReporteService.ConsultaUsuario('1').subscribe(Resultado => {
       this.ArrayTipoUsuario = Resultado;
     })
-
   }
 
   buscar() {
@@ -172,7 +175,7 @@ export class ReporteComponent implements OnInit {
         this.coordenadas = this.arrayC[0].COORDENADAS_ENTR;
         this.descripcion = this.arrayC[0].DescTipoCliente;
         this.tipoC = this.arrayC[0].CD_TIPO_CLIENTE;
-        this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+        this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'lg', backdrop: 'static' });
       })
     }
     else if (Usuario.IdTipoPersona == 3) {
@@ -340,8 +343,6 @@ export class ReporteComponent implements OnInit {
     this.ArrayUsuarios = []
   }
 
-
-  //William
   //#region UpdateMenyChat
   UpdateManyChatUsers() {
     try {
@@ -485,4 +486,51 @@ export class ReporteComponent implements OnInit {
     });
   }
   //#endregion UpdateMenyChat
+
+
+
+  //#region HistorialCompra
+  consulta_historial_Mtd() {
+    let Historial: any = [];
+    this.ArrayHistorialCompras = [];
+    this.valorTotalRecaudo = 0;
+    this.numTotalRegalo = 0;
+    this.ReporteService.conschistorialcompras('3', this.codigoM.toString(), '0').subscribe(Resultado => {
+      console.log(Resultado)
+      if (Resultado.length > 0) {
+        let arrayTempo: any;
+        let arrayregalo: any;
+
+        for (var i = 0; i < Resultado.length; i++) {
+
+          if (Resultado[i].DescToppings != null && Resultado[i].DescToppings.toString().trim() != "") {
+            arrayTempo = Resultado[i].DescToppings.split('|');
+            for (var t = 0; t < arrayTempo.length; t++) {
+              arrayTempo[t] = arrayTempo[t].toString().trim();
+            }
+          }
+          if (Resultado[i].RegalosCompra != null && Resultado[i].RegalosCompra.toString().trim() != "") {
+            arrayregalo = Resultado[i].RegalosCompra.split('|');
+            for (var r = 0; r < arrayregalo.length; r++) {
+              arrayregalo[r] = arrayregalo[r].toString().trim();
+              if (arrayregalo[r].toString().trim() != "") {
+                this.numTotalRegalo++;
+              }
+            }
+          }
+          if (Resultado[i].ValorPagar && Resultado[i].ValorPagar != "0") {
+            this.valorTotalRecaudo += Number(Resultado[i].ValorPagar);
+          }
+          Historial.push({ Cd_cnsctivo: Resultado[i].Cd_cnsctivo, DSCRPCION_SCTOR: Resultado[i].DSCRPCION_SCTOR, DesEstdoCarrito: Resultado[i].DesEstdoCarrito, Producto: Resultado[i].Producto, Unidades: Resultado[i].Unidades, ValorPagar: Resultado[i].ValorPagar, Empaque: Resultado[i].Empaque, Toppings: arrayTempo, RegalosCompra: arrayregalo, ValorPagarPrin: Resultado[i].ValorPagarPrin });
+        }
+        this.ArrayHistorialCompras = Historial;
+      }
+    });
+  }
+  cerrarModalrespuesta(){
+    this.ArrayHistorialCompras = [];
+    this.valorTotalRecaudo = 0;
+    this.numTotalRegalo = 0;
+  }
+  //#endregion HistorialCompra
 }

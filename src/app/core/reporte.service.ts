@@ -150,12 +150,15 @@ export class ReporteService {
     return this.http.post<any>(this.url_servidor + 'ConsCUsersAA2/' + Bandera + '/' + TipoUser, Body);
   }
 
-  ListaLocalidades(Bandera: string){
+  ListaLocalidades(Bandera: string) {
     return this.http.get<any[]>(this.url_servidor + 'consLocalidades/' + Bandera)
   }
 
-  UsuariosRegistrados(Bandera: string, IdLocalidad: any, Body: any){
+  UsuariosRegistrados(Bandera: string, IdLocalidad: any, Body: any) {
     return this.http.post<any>(this.url_servidor + 'consReporteUsuarios/' + Bandera + '/' + IdLocalidad, Body);
   }
 
+  conschistorialcompras(Bandera: string, Usucodig: string, ID_CARRO: string) {
+    return this.http.get<any[]>(this.url_servidor + 'conschistorialcompras/' + Bandera + '/' + Usucodig + '/' + ID_CARRO)
+  }
 }
