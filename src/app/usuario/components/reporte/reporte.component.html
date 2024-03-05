@@ -97,21 +97,24 @@
 <ng-template #ModalRespuesta let-modal>
   <div class="modal-header">
     <h1>Información</h1>
-    <button (keyup.enter)="modal.close()" type="button" class="btn-close" aria-label="Close"
-      (click)="modal.dismiss()"></button>
+    <button (keyup.enter)="modal.close()" (keyup.enter)="cerrarModalrespuesta()" type="button" class="btn-close" aria-label="Close"
+      (click)="modal.dismiss()"  (click)="cerrarModalrespuesta()"></button>
   </div>
   <div class="modal-body text-start mb-0">
     <div class="row justify-content-start ">
       <div class="col-12 text-center mb-2">
-        <p class="textoConductor m-0 p-0 "> Nombre: <span class="textoConductorTit" style="font-weight: bold;"> {{nombreM}} </span></p>
+        <p class="textoConductor m-0 p-0 "> Nombre: <span class="textoConductorTit" style="font-weight: bold;">
+            {{nombreM}} </span></p>
       </div>
     </div>
     <div class="row justify-content-start text-s">
       <div class="col-6">
-        <p class="textoConductorS m-0 p-0 "> Fecha de creación: <span class="textoConductorTit"> {{FechaDesdeM}} </span></p>
+        <p class="textoConductorS m-0 p-0 "> Fecha de creación: <span class="textoConductorTit"> {{FechaDesdeM}} </span>
+        </p>
       </div>
       <div class="col-6">
-        <p class="textoConductorS m-0 p-0 "> Tipo de usuario: <span class="textoConductorTit"> {{tipoUsuarioM}} </span></p>
+        <p class="textoConductorS m-0 p-0 "> Tipo de usuario: <span class="textoConductorTit"> {{tipoUsuarioM}} </span>
+        </p>
       </div>
       <div class="col-6">
         <p class="textoConductorS m-0 p-0 "> Código: <span class="textoConductorTit"> {{codigoM}} </span></p>
@@ -128,15 +131,17 @@
     </div>
     <div class="row">
       <div class="col-6">
-        <p class="textoConductorS m-0 p-0 "> Tipo de documento: <span class="textoConductorTit"> {{tipoDocumento}} </span></p>
+        <p class="textoConductorS m-0 p-0 "> Tipo de documento: <span class="textoConductorTit"> {{tipoDocumento}}
+          </span></p>
       </div>
       <div class="col-6">
-        <p class="textoConductorS m-0 p-0 "> Número de documento: <span class="textoConductorTit"> {{numDoc}} </span></p>
+        <p class="textoConductorS m-0 p-0 "> Número de documento: <span class="textoConductorTit"> {{numDoc}} </span>
+        </p>
       </div>
     </div>
     <div class="row">
       <div class="col-6">
-        <p class="textoConductorS m-0 p-0 "> Número de celular: <span class="textoConductorTit"> {{celular}} </span></p> 
+        <p class="textoConductorS m-0 p-0 "> Número de celular: <span class="textoConductorTit"> {{celular}} </span></p>
       </div>
       <div class="col-6">
         <p class="textoConductorS m-0 p-0 "> Dirección: <span class="textoConductorTit"> {{direccion}} </span></p>
@@ -152,7 +157,8 @@
     </div>
     <div class="row">
       <div class="col-12">
-        <p class="textoConductorS m-0 p-0"> Observaciones: <span class="textoConductorTit"> {{observaciones}} </span></p>
+        <p class="textoConductorS m-0 p-0"> Observaciones: <span class="textoConductorTit"> {{observaciones}} </span>
+        </p>
       </div>
     </div>
     <hr>
@@ -184,7 +190,7 @@
       </div>
     </div>
 
-    <hr class="mt-2 mb-2"  *ngIf="referidor != null && referidor != ''">
+    <hr class="mt-2 mb-2" *ngIf="referidor != null && referidor != ''">
   </div>
   <div class="m-0 pt-0 text-start modal-body" *ngIf="cliente">
     <!--<div class="row">
@@ -204,7 +210,7 @@
     </div>
     <div class="row">
       <div class="col-6">
-        <p class="textoConductorS m-0 p-0"> Tipo cliente: <span class="textoConductorTit"> {{tipoC}} </span></p> 
+        <p class="textoConductorS m-0 p-0"> Tipo cliente: <span class="textoConductorTit"> {{tipoC}} </span></p>
       </div>
       <div class="col-6">
         <p class="textoConductorS m-0 p-0"> Coordenadas: <span class="textoConductorTit"> {{coordenadas}} </span></p>
@@ -217,54 +223,64 @@
       <div *ngFor="let con of arrayConductores" class="conductores mb-1 ">
         <div class="row">
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Descripción: <span class="textoConductorTit"> {{con.IdConductor}} </span></p> 
+            <p class="textoConductorS m-0 p-0"> Descripción: <span class="textoConductorTit"> {{con.IdConductor}}
+              </span></p>
           </div>
           <div class="col-6">
           </div>
         </div>
         <div class="row">
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Nombre: <span class="textoConductorTit"> {{con.NombreConductor}} </span></p> 
+            <p class="textoConductorS m-0 p-0"> Nombre: <span class="textoConductorTit"> {{con.NombreConductor}} </span>
+            </p>
           </div>
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Correo electrónico: <span class="textoConductorTit"> {{con.CorreoPersona}} </span></p> 
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Tipo de documento: <span class="textoConductorTit"> {{con.DescTipoDocumento}} </span></p> 
-          </div>
-          <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Número: <span class="textoConductorTit"> {{con.NumeroDocumento}} </span></p> 
+            <p class="textoConductorS m-0 p-0"> Correo electrónico: <span class="textoConductorTit">
+                {{con.CorreoPersona}} </span></p>
           </div>
         </div>
         <div class="row">
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Teléfono: <span class="textoConductorTit"> {{con.Telefono}} </span></p> 
+            <p class="textoConductorS m-0 p-0"> Tipo de documento: <span class="textoConductorTit">
+                {{con.DescTipoDocumento}} </span></p>
           </div>
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Dirección: <span class="textoConductorTit"> {{con.Direccion}} </span></p> 
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Departamento: <span class="textoConductorTit"> {{con.DescDepa}} </span></p> 
-          </div>
-          <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Ciudad: <span class="textoConductorTit"> {{con.DesCiudad}} </span></p> 
+            <p class="textoConductorS m-0 p-0"> Número: <span class="textoConductorTit"> {{con.NumeroDocumento}} </span>
+            </p>
           </div>
         </div>
         <div class="row">
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Coordinadas: <span class="textoConductorTit"> {{con.Coordenadas}} </span></p>
+            <p class="textoConductorS m-0 p-0"> Teléfono: <span class="textoConductorTit"> {{con.Telefono}} </span></p>
           </div>
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Placa del vehículo: <span class="textoConductorTit"> {{con.Placa}} </span></p> 
+            <p class="textoConductorS m-0 p-0"> Dirección: <span class="textoConductorTit"> {{con.Direccion}} </span>
+            </p>
           </div>
         </div>
         <div class="row">
           <div class="col-6">
-            <p class="textoConductorS m-0 p-0"> Carrocería: <span class="textoConductorTit"> {{con.DesCarroceria}} </span></p> 
+            <p class="textoConductorS m-0 p-0"> Departamento: <span class="textoConductorTit"> {{con.DescDepa}} </span>
+            </p>
+          </div>
+          <div class="col-6">
+            <p class="textoConductorS m-0 p-0"> Ciudad: <span class="textoConductorTit"> {{con.DesCiudad}} </span></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <p class="textoConductorS m-0 p-0"> Coordinadas: <span class="textoConductorTit"> {{con.Coordenadas}}
+              </span></p>
+          </div>
+          <div class="col-6">
+            <p class="textoConductorS m-0 p-0"> Placa del vehículo: <span class="textoConductorTit"> {{con.Placa}}
+              </span></p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <p class="textoConductorS m-0 p-0"> Carrocería: <span class="textoConductorTit"> {{con.DesCarroceria}}
+              </span></p>
           </div>
           <div class="col-6">
             <p class="textoConductorS m-0 p-0"> Peso: <span class="textoConductorTit"> {{con.DesPesoCarro}} </span></p>
@@ -273,9 +289,78 @@
       </div>
     </div>
   </div>
+
+  <div class="modal-body text-start mb-0" *ngIf="cliente && ArrayHistorialCompras.length > 0">
+    <div class="row justify-content-start mb-5">
+      <div class="col-12 text-center mb-2">
+        <p class="primera m-0 p-0 ">
+          <span class="textoConductorTit" style="font-weight: bold; color: white;"> Total Compras </span>
+        </p>
+      </div>
+
+      <div class="col-sm-6">
+        <p class="textoConductorS m-0 p-0 text-center">Valor total:
+          <span class="textoConductorTit">{{valorTotalRecaudo | currency : 'USD' : 'symbol' :'1.0-0'}}</span>
+        </p>
+      </div>
+      <div class="col-sm-6">
+        <p class="textoConductorS m-0 p-0" *ngIf="numTotalRegalo > 0">
+          <span class="textoConductorTit">{{nombreM}} obtuvo {{numTotalRegalo}} obsequio(s) en total.</span>
+        </p>
+        <p class="textoConductorS m-0 p-0" *ngIf="numTotalRegalo == 0">
+          <span class="textoConductorTit">{{nombreM}} no a obtenido ningún obsequios</span>
+        </p>
+      </div>
+    </div>
+    <div class="row" *ngFor="let respu of ArrayHistorialCompras; let i = index">
+      <div class="row justify-content-start ">
+        <div class="col-12 text-center mb-2">
+          <p class="primera m-0 p-0 ">
+            <span class="textoConductorTit" style="font-weight: bold; color: white;"> {{respu.Cd_cnsctivo}} </span>
+          </p>
+        </div>
+      </div>
+      <div class="row justify-content-start text-s">
+        
+        <div class="col-sm-6">
+
+          <p class="textoConductorS m-0 p-0">Prodocuntos:</p>
+
+          <p class="textoConductorS m-0 p-0" *ngIf="respu.Unidades > 0">
+            <span class="textoConductorTit">{{respu.Producto}} - {{respu.Empaque}} : {{respu.Unidades}} x {{respu.ValorPagarPrin | currency : 'USD' : 'symbol' :'1.0-0'}} </span>
+          </p>
+          <p class="textoConductorS m-0 p-0" *ngFor="let top of respu.Toppings; let t = index"> 
+            <span class="textoConductorTit">{{top}}</span>
+          </p>
+
+          <hr class="mt-2 mb-2">
+
+          <p class="textoConductorS m-0 p-0 mb-3 textcenter">Total: 
+            <span class="textoConductorTit">{{respu.ValorPagar | currency : 'USD' : 'symbol' :'1.0-0'}}</span>
+          </p>
+        </div>
+
+
+        <div class="col-sm-6">
+
+          <p class="textoConductorS m-0 p-0">Obsequios:</p>
+          <p class="textoConductorS m-0 p-0" *ngFor="let regalo of respu.RegalosCompra; let r = index"> 
+            <span class="textoConductorTit">{{regalo}}</span>
+          </p>
+
+          <p class="textoConductorS m-0 p-0" *ngIf="respu.RegalosCompra == undefined || respu.RegalosCompra.length == 0"> 
+            <span class="textoConductorTit">{{nombreM}} No obtuvo obsequios en esta oferta.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="row justify-content-center">
-    <button (keyup.enter)="modal.close()" type="button" class="btn btn-agro-prin col-sm-2"
-      (click)="modal.close()">Aceptar</button>
+    <button (keyup.enter)="modal.close()" (keyup.enter)="cerrarModalrespuesta()" type="button" class="btn btn-agro-prin col-sm-2 m-2"
+      (click)="modal.close()" (click)="cerrarModalrespuesta()">Aceptar</button>
+
+    <button (keyup.enter)="consulta_historial_Mtd()" type="button" class="btn btn-agro-prin col-sm-2 m-2"
+      (click)="consulta_historial_Mtd()" *ngIf="ArrayHistorialCompras.length == 0">Ver historial</button>
   </div>
   <br>
 </ng-template>
