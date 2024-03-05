@@ -1,26 +1,6 @@
-/* .containerMain {
-    background-image: linear-gradient(-225deg, #397c97 0%, #509dbd 51%, #30D2BE 100%);
-    background-size: 1000% 1000%;
-    animation: GradientAnimation 5s ease infinite;
-}
-
-@keyframes GradientAnimation {
-    0%{background-position: 0 50%}
-    50%{background-position: 100% 50%}
-    100%{background-position: 0 50%}
-} */
-
-/* ::ng-deep .ngx-charts { 
-    float: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-} */
-
 * {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
-
 
 .ContenedorOpcionUno{
     display: flex;
@@ -44,29 +24,37 @@
     color: #397c97;
     font-size: 40px;
     font-weight: bold;
-    transition: 0.5s;
+    transition: 0.3s;
 }
 
 .OpcionUnoAfter { 
     color: #000000;
     font-size: 40px;
     font-weight: lighter;
-    transition: 0.5s;
+    transition: 0.3s;
 }
 
-.OpcionDos {
+.OpcionEstandar {
     color: black;
     font-size: 40px;
     font-weight: lighter;
-    transition: 0.5s;
+    transition: 0.3s;
 }
 
-.OpcionDosAfter {
-    color: black;
+.OpcionDosEstandarAfter {
+    color: #97394d;
     font-size: 40px;
     font-weight: bold;
-    transition: 0.5s;
+    transition: 0.3s;
 }
+
+.OpcionTresEstandarAfter {
+    color: #eec916;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
 
 .CartaTotal {
     height: 500px;
@@ -110,14 +98,14 @@
 }
 
 input:checked + .slideToggle {
-    background-color: #20096d;
+    background-color: #97394d;
 }
 
 input:checked + .slideToggle::before {
     transform: translateX(85px);
 }
 
-@media (max-width:600px) {
+@media (max-width:768px) {
     .ContenedorOpcionUno{
         display: flex;
         justify-content: center;
