@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { CookieService } from 'ngx-cookie-service'
+import { CookieService } from 'ngx-cookie-service';
+import * as CryptoJS from 'crypto-js';
 
 @Injectable({
   providedIn: 'root'
@@ -94,4 +95,12 @@ export class MetodosglobalesService {
     this.Cookies.set(Llave, Valor)
   }
 
+  encryptUsingTripleDES(res: string): string {
+    const data = res;
+    const keyHex = CryptoJS.enc.Utf8.parse(this.key);
+    const iv = CryptoJS.enc.Utf8.parse(this.IV);
+    const mode = CryptoJS.mode.CBC;
+    const encrypted = CryptoJS.TripleDES.encrypt(data, keyHex, { iv, mode });
+    return encrypted.toString();
+  }
 }

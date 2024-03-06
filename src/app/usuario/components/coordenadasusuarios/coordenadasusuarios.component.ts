@@ -22,23 +22,39 @@ export class CoordenadasusuariosComponent implements OnInit {
   VerOcultarCampos: string = '1';
   Respuesta: string = '';
 
+  EstadoFiltro: string = '';
+  IdEstado: string = '0';
+  TpRegistroFiltro: string = '';
+  RegistroDescripcion: string = '';
+  IdRegistro: string = '0';
+  ArrayTpRegistro: any = [];
+  keywordReg: string = 'Descripcion';
+
+  CoordenadaInpt: string = '';
+  DireccionInpt: string = '';
+  ComplementoInpt: string = '';
+
   //Variables Datos usuario
   DatosUser: any = [];
   ValidaInsertSec: string = '1';
+
+  ultimoUsuario: boolean = false;
+  primerUsuario: boolean = false;
+
 
   constructor(private serviciosvaloracion: ValorarofertaService,
     private modalService: NgbModal,) { }
 
   ngOnInit(): void {
     this.ConsultaUsuarios();
-
+    this.ConsultaTipoRegistro();
   }
 
   ConsultaUsuarios() {
     const body = {
       nombres_persona: this.NombreFiltro
     }
-    this.serviciosvaloracion.ConsultaListaPersonas('1', '2', '0', body).subscribe(Resultado => {
+    this.serviciosvaloracion.ConsultaListaPersonas('1', '2', '0', '0', '0', body).subscribe(Resultado => {
       this.ArrayUsucodig = Resultado;
     })
   }
@@ -54,30 +70,56 @@ export class CoordenadasusuariosComponent implements OnInit {
     this.Usucodig = '0';
   }
 
+  ConsultaTipoRegistro() {
+    this.serviciosvaloracion.ConsultaTipoRegistro('1').subscribe(Resultado => {
+      this.ArrayTpRegistro = Resultado;
+    })
+  }
+
+  selectTpRegistro(item: any) {
+    this.RegistroDescripcion = item.Descripcion;
+    this.IdRegistro = item.IdTipo;
+  }
+  LimpiaTpRegistro(campo: string) {
+    this.TpRegistroFiltro = campo;
+    this.RegistroDescripcion = campo;
+    this.IdRegistro = '0';
+  }
+
+  SelEstado(idestado: any) {
+    this.IdEstado = idestado;
+  }
+
   BuscarUsuarios() {
     const body = {
       nombres_persona: this.NombreFiltro
     }
-    this.serviciosvaloracion.ConsultaListaPersonas('1', '2', this.Usucodig, body).subscribe(Resultado => {
+    this.serviciosvaloracion.ConsultaListaPersonas('1', '2', this.Usucodig, this.IdRegistro, this.IdEstado, body).subscribe(Resultado => {
       this.DataUsuarios = Resultado;
       this.VerOcultarCampos = '2';
     })
   }
+
   LimpiarFiltros() {
     this.LimpiaUsucodig('');
+    this.LimpiaTpRegistro('');
     this.NombreFiltro = '';
     this.Usucodig = '0';
     this.VerOcultarCampos = '1';
+    this.IdEstado = '0';
+    this.EstadoFiltro = '';
   }
-
 
   AccionMapaUsuario(idValor: any) {
     this.VerOcultarCampos = '3';
     const body = {
       nombres_persona: idValor.nombres_persona
     }
-    this.serviciosvaloracion.ConsultaListaPersonas('1', '2', idValor.usucodig, body).subscribe(Resultado => {
+    this.serviciosvaloracion.ConsultaListaPersonas('1', '2', idValor.usucodig, this.IdRegistro, this.IdEstado, body).subscribe(Resultado => {
       this.DatosUser = Resultado;
+      this.DireccionInpt = this.DatosUser[0].DRCCION;
+      this.ComplementoInpt = this.DatosUser[0].CMPLMNTO_DRRCCION;
+      this.CoordenadaInpt = this.DatosUser[0].coordenadas_entr;
       this.Centramapa({ address: Resultado[0].DRCCION + ',' + 'Bogotá' })
     })
   }
@@ -129,21 +171,55 @@ export class CoordenadasusuariosComponent implements OnInit {
     });
     this.markers = [];
     this.markers.push(marker);
-    this.Coordenada = latLng.toString().replace('(', '').replace(')', '')  
+    this.Coordenada = latLng.toString().replace('(', '').replace(')', '')
   }
 
   // FIN REGION MAPA
-  GuardarCoordenada(user: any) {    
+  GuardarCoordenada(user: any) {
     const body = {
       Usucodig: user.usucodig,
-      Direccion: "",
-      CompleDirecc: "",
+      Direccion: this.DireccionInpt,
+      CompleDirecc: this.ComplementoInpt,
       Coordenadas: this.Coordenada
     }
-    this.serviciosvaloracion.ModAdDireccionUser('2', body).subscribe(Resultado => {
-      this.Respuesta = Resultado;
+    this.serviciosvaloracion.ModAdDireccionUser('3', body).subscribe(Resultado => {
+      this.Respuesta = Resultado.split('|')[1].trim();
       this.modalService.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-      this.AccionMapaUsuario(user);
+      this.AccionMapaUsuario(user);     
     })
   }
+
+  usuarioActualIndex: number = -1;
+  // Método para retroceder al usuario anterior
+  retrocederUsuarioAnterior(idValor: any) {
+    this.ultimoUsuario = false;
+    // Encuentra la posición del usuario actual
+    const indexActual = this.DataUsuarios.findIndex((usuario: any) => usuario.usucodig === idValor.usucodig);
+
+    if (indexActual > 0) {
+      // Retrocede a la posición anterior
+      const indexAnterior = indexActual - 1;
+      const usuarioAnterior = this.DataUsuarios[indexAnterior];
+      this.AccionMapaUsuario(usuarioAnterior);
+    } else {
+      this.primerUsuario = true;
+    }
+  }
+
+  // Método para avanzar al siguiente usuario
+  avanzarSiguienteUsuario(idValor: any) {
+    this.primerUsuario = false;
+    // Encuentra la posición del usuario actual
+    const indexActual = this.DataUsuarios.findIndex((usuario: any) => usuario.usucodig === idValor.usucodig);
+
+    if (indexActual < this.DataUsuarios.length - 1) {
+      // Avanza a la posición siguiente
+      const indexSiguiente = indexActual + 1;
+      const usuarioSiguiente = this.DataUsuarios[indexSiguiente];
+      this.AccionMapaUsuario(usuarioSiguiente);
+    } else {
+      this.ultimoUsuario = true;
+    }
+  }
+
 }

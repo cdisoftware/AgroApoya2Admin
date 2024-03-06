@@ -1,6 +1,7 @@
 import {
   Component, OnInit, ViewChild, HostListener, AfterContentInit
 } from '@angular/core';
+import { formatCurrency, getCurrencySymbol } from '@angular/common';
 import { ValorarofertaService } from './../../../core/valoraroferta.service';
 import { NgbModal, NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Color, ScaleType } from '@swimlane/ngx-charts';
@@ -9,6 +10,7 @@ import jsPDF from 'jspdf';
 import { Workbook } from 'exceljs';
 import * as fs from 'file-saver';
 import 'jspdf-autotable'
+import { auto } from '@popperjs/core';
 
 @Component({
   selector: 'app-seguimiento',
@@ -321,6 +323,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       FechaIncio: this.FechaInicio,
       FechaFin: this.FechaFin
     }
+
     this.ServiciosValorar.ConsultaSegNew('1', this.IdGrupo, this.OfertaSelect, BodyConsulta).subscribe(Resultado => {
       this.ArrayGruposSel = Resultado
       if (Resultado.length == 0) {
@@ -330,7 +333,6 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         // this.ValidaInsertSecs = '0';
       } else {
         this.modalService.open(this.ModalGrupos, { ariaLabelledBy: 'modal-basic-title' });
-
       }
     })
 
@@ -1027,7 +1029,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         CodigoOferta: this.ArrayConsultaSeg[e].ID,
         NombreClientet: this.ArrayConsultaSeg[e].NOMBRES_PERSONA,
         CelularCliente: this.ArrayConsultaSeg[e].CELULAR_PERSONA,
-        DireccionCliente: this.ArrayConsultaSeg[e].DRCCION + ' ' + this.ArrayConsultaSeg[e].CMPLMNTO_DRRCCION, 
+        DireccionCliente: this.ArrayConsultaSeg[e].DRCCION + ' ' + this.ArrayConsultaSeg[e].CMPLMNTO_DRRCCION,
         Productos: []
       });
     }
@@ -1038,14 +1040,32 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
 
   public downloadPDFDetalle(e: number, IdCarro: string) {
     this.ServiciosValorar.ConsultaDetalleEntregas('1', IdCarro).subscribe(Resultado => {
+      var auxValorTotla: number = 0;
+      var CantidadAux: number = 0;
+
       for (var j = 0; Resultado.length > j; j++) {
         this.ArregloPDFDetalleProd[e].Productos.push({
           NombreProducto: Resultado[j].Producto,
-          Cantidad: Resultado[j].Cantidad,
+          Cantidad: Resultado[j].Cantidad + ' Und(s) ',
           PesoProd: parseFloat(Resultado[j].PesoProd),
-          PesoProdTotal: (parseFloat(Resultado[j].PesoProd) * parseFloat(Resultado[j].Cantidad)).toString()
+          PesoProdTotal: (parseFloat(Resultado[j].PesoProd) * parseFloat(Resultado[j].Cantidad)).toString(),
+          valor: Resultado[j].valorForm
         });
+
+
+        auxValorTotla = parseInt(Resultado[j].valor) + auxValorTotla
+        CantidadAux = parseInt(Resultado[j].Cantidad) + CantidadAux
       }
+
+      this.ArregloPDFDetalleProd[e].Productos.push({
+        NombreProducto: 'Total ',
+        Cantidad: CantidadAux + ' Und(s) ',
+        PesoProd: 0,
+        PesoProdTotal: 0,
+        valor: formatCurrency(auxValorTotla, 'en-US', getCurrencySymbol('USD', 'wide')).replace('.00', ''),
+      });
+
+
       if (e == this.ArregloPDFDetalleProd.length - 1) {
         setTimeout(() => {
           this.DescargarPDF();
@@ -1054,9 +1074,11 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     })
   }
 
+
   public DescargarPDF(): void {
     const doc = new jsPDF()
 
+    //informacion del conductor
     autoTable(doc, {
       styles: { fillColor: [43, 70, 136] },
       head: [['Totalidad de producto para la entrega']]
@@ -1084,23 +1106,25 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     for (var e = 0; this.ArregloPDFDetalleProd.length > e; e++) {
       autoTable(doc, {
         styles: { fillColor: [43, 70, 136] },
-        head: [[this.ArregloPDFDetalleProd[e].CodigoOferta + ' || ' + this.ArregloPDFDetalleProd[e].NombreClientet 
-        + ' || ' + this.ArregloPDFDetalleProd[e].CelularCliente  + ' || ' + this.ArregloPDFDetalleProd[e].DireccionCliente]] })
+        head: [[this.ArregloPDFDetalleProd[e].CodigoOferta + ' || ' + this.ArregloPDFDetalleProd[e].NombreClientet
+          + ' || ' + this.ArregloPDFDetalleProd[e].CelularCliente + ' || ' + this.ArregloPDFDetalleProd[e].DireccionCliente]]
+      })
 
       var arrrayProdDetalle: any = [];
       for (var h = 0; this.ArregloPDFDetalleProd[e].Productos.length > h; h++) {
-        if (this.ArregloPDFDetalleProd[e].Productos[h].NombreProducto != 'Domicilio') {
-          arrrayProdDetalle.push(
-            [this.ArregloPDFDetalleProd[e].Productos[h].NombreProducto,
-            this.ArregloPDFDetalleProd[e].Productos[h].Cantidad,
-            this.ArregloPDFDetalleProd[e].Productos[h].PesoProd,
-            this.ArregloPDFDetalleProd[e].Productos[h].PesoProdTotal],
-          )
-        }
+        arrrayProdDetalle.push(
+          [this.ArregloPDFDetalleProd[e].Productos[h].NombreProducto,
+          this.ArregloPDFDetalleProd[e].Productos[h].Cantidad,
+          this.ArregloPDFDetalleProd[e].Productos[h].valor],
+        )
       }
 
       autoTable(doc, {
-        head: [['Producto', 'Cantidad', 'Peso und Libras', 'Peso total Libras']],
+        columnStyles: {
+          0: { cellWidth: 80 },
+          1: { cellWidth: auto },
+          2: { cellWidth: auto },
+        },
         body: arrrayProdDetalle,
       })
 

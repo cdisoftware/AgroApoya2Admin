@@ -42,6 +42,7 @@ import { CoordenadasusuariosComponent } from './usuario/components/coordenadasus
 import { AsignaTransCampoCiudadComponent } from './ofertas/components/asigna-trans-campo-ciudad/asigna-trans-campo-ciudad.component';
 import { RepusuariosComponent } from './ofertas/components/reportes/repusuarios/repusuarios.component';
 import { DashboardComponent } from './ofertas/components/reportes/dashboard/dashboard.component';
+import { RegistroUserexcelComponent } from './usuario/components/registro-userexcel/registro-userexcel.component';
 
 const routes: Routes = [
   {
@@ -218,6 +219,10 @@ const routes: Routes = [
       {
         path: 'DashboardAdmin',
         component: DashboardComponent
+      },
+      {
+        path: 'OperAutomatizadas',
+        component: RegistroUserexcelComponent
       }
     ]
   },

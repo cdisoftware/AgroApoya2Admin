@@ -45,12 +45,12 @@
                 {
                   "type": "initial",
                   "maximumWarning": "4mb",
-                  "maximumError": "5mb"
+                  "maximumError": "15mb"
                 },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "4mb",
-                  "maximumError": "5mb"
+                  "maximumError": "15mb"
                 }
               ],
               "fileReplacements": [

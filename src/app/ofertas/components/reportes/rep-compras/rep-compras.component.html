@@ -303,34 +303,37 @@
 
                 <table class="col-sm-12 ">
                     <tr class="TableAgro">
-                        <th></th>
+                        <th>Producto</th>
+                        <th>Peso Total </th>
+                    </tr>
+                    <tr *ngFor="let oferta of ArregloLibrasOferta">
+                        <th><label class="p-2">{{oferta.Producto}}</label> </th>
+                        <th style="text-align: center;">{{oferta.PesoTotal}} Libras</th>
+                    </tr>
+                </table>
+
+                <table class="col-sm-12 mt-2 ">
+                    <tr class="TableAgro">
                         <th>Producto</th>
                         <th>Cantidad total</th>
                         <th>Peso und</th>
-                        <th>Peso Total</th>
+                        <th>Peso Total unidad</th>
                     </tr>
                     <tr *ngFor="let oferta of ArregloUnidadesOferta">
-                        <th style="margin: auto;">
-                            <div style="width: 100%; margin: auto; text-align: center;">
-                                <img src="{{oferta.imagen}}" style="width: 100px; margin: auto;">
-                            </div>
-                        </th>
                         <th><label class="p-2">{{oferta.Producto}}</label> </th>
                         <th style="text-align: center;"><label class="p-2">{{oferta.CantidadTotal}}</label> </th>
-                        <th>{{oferta.PesoUnid}}</th>
-                        <th>{{oferta.PesoTotal}}</th>
+                        <th style="text-align: center;">{{oferta.PesoUnid}}</th>
+                        <th style="text-align: center;" >{{oferta.PesoTotal}}</th>
                     </tr>
                     <tr class="TableAgro">
-                      <br>
+                        <br>
                     </tr>
                     <tr class="TableAgro">
-                        <th></th>
                         <th>Totales</th>
                         <th>{{ProdTotal}}</th>
-                        <th>{{LibrasUndTotales}}</th>
+                        <th></th>
                         <th>{{LibrasTotalTotales}}</th>
                     </tr>
-
                 </table>
             </div>
         </div>

@@ -57,6 +57,7 @@ import { AsignaTransCampoCiudadComponent } from './ofertas/components/asigna-tra
 import { RepusuariosComponent } from './ofertas/components/reportes/repusuarios/repusuarios.component';
 import { ReportViewerModule } from 'ngx-ssrs-reportviewer-v2';
 import { DashboardComponent } from './ofertas/components/reportes/dashboard/dashboard.component';
+import { RegistroUserexcelComponent } from './usuario/components/registro-userexcel/registro-userexcel.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -101,7 +102,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     CoordenadasusuariosComponent,
     AsignaTransCampoCiudadComponent,
     RepusuariosComponent,
-    DashboardComponent
+    DashboardComponent,
+    RegistroUserexcelComponent
     ],
   imports: [
     NgxMaskModule.forRoot(options),
@@ -119,8 +121,7 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AngularEditorModule,
     GoogleMapsModule,
     NgxChartsModule,
-    BrowserAnimationsModule,
-    ReportViewerModule
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
