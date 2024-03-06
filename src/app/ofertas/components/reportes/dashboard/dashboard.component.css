@@ -1,0 +1,126 @@
+* {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.ContenedorOpcionUno{
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.ContenedorSlide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ContenedorOpcionDos{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.OpcionUno {
+    color: #397c97;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.OpcionUnoAfter { 
+    color: #000000;
+    font-size: 40px;
+    font-weight: lighter;
+    transition: 0.3s;
+}
+
+.OpcionEstandar {
+    color: black;
+    font-size: 40px;
+    font-weight: lighter;
+    transition: 0.3s;
+}
+
+.OpcionDosEstandarAfter {
+    color: #97394d;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.OpcionTresEstandarAfter {
+    color: #eec916;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+
+.CartaTotal {
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #cccccc;
+    border-radius: 10px; 
+    background-color: #f3f3f3;
+}
+
+.Carta {
+    width: 100%;
+    border: 2px solid #cccccc;
+    border-radius: 10px; 
+    background-color: #f3f3f3;
+}
+
+.CartaPie {
+    border-top: 2px solid #cccccc;
+}
+
+.slideToggle {
+    background-color: #397c97;
+    width: 120px;
+    height: 32px;
+    border-radius: 200px;
+    cursor: pointer;
+    position: relative;
+}
+
+.slideToggle::before {
+    position: absolute;
+    content: '';
+    background-color: #ffffff;
+    width: 27px;
+    height: 27px;
+    border-radius: 250px;
+    margin: 2.1px 0 0 3.5px;
+    transition: 0.5s;
+}
+
+input:checked + .slideToggle {
+    background-color: #97394d;
+}
+
+input:checked + .slideToggle::before {
+    transform: translateX(85px);
+}
+
+@media (max-width:768px) {
+    .ContenedorOpcionUno{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .ContenedorSlide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .ContenedorOpcionDos{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

@@ -151,14 +151,32 @@ export class ReporteService {
   }
 
   ListaLocalidades(Bandera: string) {
-    return this.http.get<any[]>(this.url_servidor + 'consLocalidades/' + Bandera)
+    return this.http.get<any[]>(this.url_servidor + 'consLocalidades/' + Bandera);
   }
 
   UsuariosRegistrados(Bandera: string, IdLocalidad: any, Body: any) {
     return this.http.post<any>(this.url_servidor + 'consReporteUsuarios/' + Bandera + '/' + IdLocalidad, Body);
   }
 
+
+  InfoUsuariosDash(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consCUserLocalidad/' + Bandera);
+  }
+
+  InfoUsuariosComprasDash(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consCUserLocalidadCompras/' + Bandera);
+  }
+
+  InfoVentasDash(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consAdDashVentas/' + Bandera);
+  }
+
+  InfoVentasProdDash(Bandera: string) {
+    return this.http.get<any[]>(this.url_servidor + 'consAdDashProducts/' + Bandera);
+  }
+
   conschistorialcompras(Bandera: string, Usucodig: string, ID_CARRO: string) {
     return this.http.get<any[]>(this.url_servidor + 'conschistorialcompras/' + Bandera + '/' + Usucodig + '/' + ID_CARRO)
   }
+
 }

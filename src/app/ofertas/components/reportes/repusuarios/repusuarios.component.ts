@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
+import { map } from 'rxjs';
 import { ReporteService } from 'src/app/core/reporte.service';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 
@@ -134,7 +135,7 @@ export class RepusuariosComponent implements OnInit {
       NumCompras: auxComprasUsuario
     }
 
-    this.ServicioReporteService.UsuariosRegistrados('1', auxLocalidadUsuario, body).subscribe(ResultadoUsuarios =>{
+    this.ServicioReporteService.UsuariosRegistrados('1', auxLocalidadUsuario, body).subscribe(ResultadoUsuarios =>{      
       this.UsuariosRegistrados = ResultadoUsuarios;
       if (this.UsuariosRegistrados.length > 0) {
         this.NumeroResgistros = this.UsuariosRegistrados.length;
