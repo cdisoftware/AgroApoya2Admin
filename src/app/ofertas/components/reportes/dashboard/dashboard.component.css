@@ -57,7 +57,17 @@
 
 
 .CartaTotal {
-    height: 500px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #cccccc;
+    border-radius: 10px; 
+    background-color: #f3f3f3;
+}
+
+.CartaTotalAux {
+    height: 480px;
     display: flex;
     justify-content: center;
     align-items: center;

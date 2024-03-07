@@ -1,5 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
+import * as fs from 'file-saver';
+import { Workbook } from 'exceljs';
 import { ReporteService } from 'src/app/core/reporte.service';
 
 @Component({
@@ -38,11 +40,17 @@ export class DashboardComponent implements OnInit {
   NumeroTotalVentas: number = 0;
   VentasTotales: any = [];
   NumeroTotalVentasProd: number = 0;
+  InfoVentasUno: any = []
+  InfoVentasDos: any = []
+  InfoVentasTres: any = []
 
   // VARIABLES PRODUCTOS
   VentasProdLocali: any = [];
   VentasProdFecha: any = [];
   VentasProdLocaliFecha: any = [];
+  InfoProductosUno: any = [];
+  InfoProductosDos: any = [];
+  InfoProductosTres: any = [];
 
   // VARIABLES GRAFICO PROMEDIO COMPRAS POR LOCALIDAD
   MedidasBarrasProm: [number, number] = [1290, 350];
@@ -281,7 +289,7 @@ export class DashboardComponent implements OnInit {
             }
           }
           this.MesesRegistrosUsers.push({
-            "name": this.FechasRegistrosUsers[i].Descripcion, "series": [{
+            "IdSector": this.FechasRegistrosUsers[i].IdSector, "Localidad": this.FechasRegistrosUsers[i].Descripcion, "series": [{
               "name": "Nov-23",
               "value": UsuariosMesUno
             },
@@ -303,7 +311,7 @@ export class DashboardComponent implements OnInit {
 
       // IMPRESION GRAFICA DE USUARIOS EN LOS ULTIMOS CUATRO MESES
       this.DatosBarrasUsuarios = this.MesesRegistrosUsers.map((item: any) => ({
-        "name": item.name,
+        "name": item.Localidad,
         "series": item.series
       }));
     });
@@ -363,7 +371,10 @@ export class DashboardComponent implements OnInit {
             }
           }
           this.PromCompras = AcumuladorDias / Contador
-          this.PromComprasLocalidad.push({ "Localidad": this.FechasCompras[i].Descripcion, "Promedio": this.PromCompras });
+          this.PromComprasLocalidad.push({
+            "IdSector": this.FechasCompras[i].IdSector, "Localidad": this.FechasCompras[i].Descripcion,
+            "Promedio": this.PromCompras
+          });
         }
       }
 
@@ -375,6 +386,109 @@ export class DashboardComponent implements OnInit {
 
     });
   }
+
+  // GenerarExcelUsuarios() {
+  //   let workbookUsuarios = new Workbook();
+  //   let worksheetUsuaUno = workbookUsuarios.addWorksheet("Numero Usuarios Localidad");
+  //   let worksheetUsuaDos = workbookUsuarios.addWorksheet("Promedio Compras Localidad");
+  //   let worksheetUsuaTres = workbookUsuarios.addWorksheet("Usuarios Localidad Ultimos Cuatro Meses");
+
+  //   let headerUsuaUno = ["Id Localidad", "Localidad", "Numero Total Usuarios"];
+  //   let headerUsuaDos = ["Id Localidad", "Localidad", "Promedio de Compra"];
+  //   let headerUsuaTres = ["Id Localidad", "Localidad", "Meses"];
+
+  //   worksheetUsuaUno.addRow(headerUsuaUno);
+  //   worksheetUsuaDos.addRow(headerUsuaDos);
+  //   worksheetUsuaTres.addRow(headerUsuaTres);
+
+  //   ['A1', 'B1', 'C1'].map(key => {
+  //     worksheetUsuaUno.getCell(key).fill = {
+  //       type: 'pattern',
+  //       pattern: 'darkTrellis',
+  //       fgColor: { argb: '397c97' },
+  //       bgColor: { argb: '397c97' }
+  //     };
+  //     worksheetUsuaUno.getCell(key).font = {
+  //       color: { argb: 'FFFFFF' }
+  //     };
+  //     worksheetUsuaDos.getCell(key).fill = {
+  //       type: 'pattern',
+  //       pattern: 'darkTrellis',
+  //       fgColor: { argb: '397c97' },
+  //       bgColor: { argb: '397c97' }
+  //     };
+  //     worksheetUsuaDos.getCell(key).font = {
+  //       color: { argb: 'FFFFFF' }
+  //     };
+  //     worksheetUsuaTres.getCell(key).fill = {
+  //       type: 'pattern',
+  //       pattern: 'darkTrellis',
+  //       fgColor: { argb: '397c97' },
+  //       bgColor: { argb: '397c97' }
+  //     };
+  //     worksheetUsuaTres.getCell(key).font = {
+  //       color: { argb: 'FFFFFF' }
+  //     };
+  //   });
+
+  //   worksheetUsuaUno.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }];
+  //   worksheetUsuaDos.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }];
+  //   worksheetUsuaTres.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }];
+
+  //   worksheetUsuaUno.autoFilter = 'A1:C1';
+  //   worksheetUsuaDos.autoFilter = 'A1:C1';
+  //   worksheetUsuaTres.autoFilter = 'A1:C1';
+
+  //   for (let FilaDatosUno of this.NumeroUsuariosLocalidad) {
+  //     let TempDatosUno = [];
+
+  //     TempDatosUno.push(FilaDatosUno['IdSector'])
+  //     TempDatosUno.push(FilaDatosUno['Descripcion'])
+  //     TempDatosUno.push(FilaDatosUno['NumeroUsuarios'])
+
+  //     worksheetUsuaUno.addRow(TempDatosUno);
+  //   }
+
+  //   for (let FilaDatosDos of this.PromComprasLocalidad) {
+  //     let TempDatosDos = [];
+
+  //     TempDatosDos.push(FilaDatosDos['IdSector'])
+  //     TempDatosDos.push(FilaDatosDos['Localidad'])
+  //     TempDatosDos.push(FilaDatosDos['Promedio'])
+
+  //     worksheetUsuaDos.addRow(TempDatosDos);
+  //   }
+
+  //   // for (let FilaDatosTres of this.MesesRegistrosUsers) {
+  //   //   let TempDatosTres = [];
+
+  //   //   TempDatosTres.push(FilaDatosTres['IdSector'])
+  //   //   TempDatosTres.push(FilaDatosTres['Localidad'])
+  //   //   TempDatosTres.push(FilaDatosTres['series'])
+
+  //   //   worksheetUsuaTres.addRow(TempDatosTres);
+  //   // }
+
+  //   let rowIndex = 1;
+
+  //   for (rowIndex; rowIndex <= worksheetUsuaUno.rowCount; rowIndex++) {
+  //     worksheetUsuaUno.getRow(rowIndex).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+  //   }
+  //   rowIndex = 1;
+  //   for (rowIndex; rowIndex <= worksheetUsuaDos.rowCount; rowIndex++) {
+  //     worksheetUsuaDos.getRow(rowIndex).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+  //   }
+  //   rowIndex = 1;
+  //   for (rowIndex; rowIndex <= worksheetUsuaTres.rowCount; rowIndex++) {
+  //     worksheetUsuaTres.getRow(rowIndex).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+  //   }
+
+  //   let NombreDocumento = "Usuarios Totales Registrados";
+  //   workbookUsuarios.xlsx.writeBuffer().then((data) => {
+  //     let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  //     fs.saveAs(blob, NombreDocumento + '.xlsx');
+  //   });
+  // }
 
   ConversionFechaString(Fecha: number) {
     let ConversionFecha: string = '';
@@ -406,6 +520,16 @@ export class DashboardComponent implements OnInit {
     return ConversionFecha;
   }
 
+  ConversionNull(Descripcion: any) {
+    let ConversionNull: any = '';
+    if (Descripcion == null) {
+      ConversionNull = 'No Encontrado';
+    } else {
+      ConversionNull = Descripcion;
+    }
+    return ConversionNull
+  }
+
   InfoVentas() {
     this.MostrarVentas = true;
     this.MostrarUsuarios = false;
@@ -425,6 +549,7 @@ export class DashboardComponent implements OnInit {
 
     // INFORMACION VENTAS GENERALES
     this.ServicioReporte.InfoVentasDash('1').subscribe(ResultObservableVentasTotales => {
+      this.InfoVentasUno = ResultObservableVentasTotales;
       for (let i = 0; i < ResultObservableVentasTotales.length; i++) {
         if (this.VentasTotales.length > 0) {
           for (let j = 0; j < i; j++) {
@@ -466,6 +591,7 @@ export class DashboardComponent implements OnInit {
     });
 
     this.ServicioReporte.InfoVentasDash('2').subscribe(ResultObservableVentas => {
+      this.InfoVentasDos = ResultObservableVentas;
       for (let i = 0; i < ResultObservableVentas.length; i++) {
         this.NumeroTotalVentas = this.NumeroTotalVentas + ResultObservableVentas[i].NumCompras;
       }
@@ -477,6 +603,7 @@ export class DashboardComponent implements OnInit {
     });
 
     this.ServicioReporte.InfoVentasDash('3').subscribe(ResultObservableVentasLocali => {
+      this.InfoVentasTres = ResultObservableVentasLocali;
       this.NumeroComprasLocalidad = ResultObservableVentasLocali.map((item: any) => ({
         "name": item.DescripcionSector,
         "value": item.NumCompras
@@ -484,14 +611,120 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  ConversionNull(Descripcion: string) {
-    let ConversionNull: string = '';
-    if (Descripcion == null) {
-      ConversionNull = 'No Encontrado';
-    } else {
-      ConversionNull = Descripcion;
+  GenerarExcelVentas() {
+    let workbookUno = new Workbook();
+    let worksheetUno = workbookUno.addWorksheet("Ventas Por Fecha y Localidad");
+    let worksheetDos = workbookUno.addWorksheet("Ventas Por Fecha");
+    let worksheetTres = workbookUno.addWorksheet("Ventas Por Localidad");
+
+    let headerUno = ["Id General", "Id Localidad", "Localidad", "Mes", "Año", "Numero de Compras"];
+    let headerDos = ["Id General", "Mes", "Año", "Numero de Compras"];
+    let headerTres = ["Id General", "Id Localidad", "Localidad", "Numero de Compras"];
+
+    worksheetUno.addRow(headerUno);
+    worksheetDos.addRow(headerDos);
+    worksheetTres.addRow(headerTres);
+
+    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1'].map(key => {
+      worksheetUno.getCell(key).fill = {
+        type: 'pattern',
+        pattern: 'darkTrellis',
+        fgColor: { argb: '397c97' },
+        bgColor: { argb: '397c97' }
+      };
+      worksheetUno.getCell(key).font = {
+        color: { argb: 'FFFFFF' }
+      };
+    });
+
+    ['A1', 'B1', 'C1', 'D1'].map(key => {
+      worksheetDos.getCell(key).fill = {
+        type: 'pattern',
+        pattern: 'darkTrellis',
+        fgColor: { argb: '397c97' },
+        bgColor: { argb: '397c97' }
+      };
+      worksheetDos.getCell(key).font = {
+        color: { argb: 'FFFFFF' }
+      };
+      worksheetTres.getCell(key).fill = {
+        type: 'pattern',
+        pattern: 'darkTrellis',
+        fgColor: { argb: '397c97' },
+        bgColor: { argb: '397c97' }
+      };
+      worksheetTres.getCell(key).font = {
+        color: { argb: 'FFFFFF' }
+      };
+    });
+
+    worksheetUno.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' },
+    { width: 30, key: 'E' }, { width: 30, key: 'F' }];
+
+    worksheetDos.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' }];
+
+    worksheetTres.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' }];
+
+    worksheetUno.autoFilter = 'A1:F1';
+    worksheetDos.autoFilter = 'A1:D1';
+    worksheetTres.autoFilter = 'A1:D1';
+
+
+    for (let FilaDatosUno of this.InfoVentasUno) {
+      let TempDatosUno = [];
+
+      TempDatosUno.push(FilaDatosUno['id'])
+      TempDatosUno.push(FilaDatosUno['IdSector'])
+      TempDatosUno.push(FilaDatosUno['DescripcionSector'])
+      TempDatosUno.push(this.ConversionFechaString(FilaDatosUno['IdMes']))
+      TempDatosUno.push(FilaDatosUno['IdAno'])
+      TempDatosUno.push(FilaDatosUno['NumCompras'])
+
+      worksheetUno.addRow(TempDatosUno);
     }
-    return ConversionNull
+
+    for (let FilaDatosDos of this.InfoVentasDos) {
+      let TempDatosDos = [];
+
+      TempDatosDos.push(FilaDatosDos['id'])
+      TempDatosDos.push(this.ConversionFechaString(FilaDatosDos['IdMes']))
+      TempDatosDos.push(FilaDatosDos['IdAno'])
+      TempDatosDos.push(FilaDatosDos['NumCompras'])
+
+      worksheetDos.addRow(TempDatosDos);
+    }
+
+    for (let FilaDatosTres of this.InfoVentasTres) {
+      let TempDatosTres = [];
+
+      TempDatosTres.push(FilaDatosTres['id'])
+      TempDatosTres.push(FilaDatosTres['IdSector'])
+      TempDatosTres.push(FilaDatosTres['DescripcionSector'])
+      TempDatosTres.push(FilaDatosTres['NumCompras'])
+
+      worksheetTres.addRow(TempDatosTres);
+    }
+
+    let rowIndex = 1;
+
+    for (rowIndex; rowIndex <= worksheetUno.rowCount; rowIndex++) {
+      worksheetUno.getRow(rowIndex).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
+    rowIndex = 1;
+    for (rowIndex; rowIndex <= worksheetDos.rowCount; rowIndex++) {
+      worksheetDos.getRow(rowIndex).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
+    rowIndex = 1;
+    for (rowIndex; rowIndex <= worksheetTres.rowCount; rowIndex++) {
+      worksheetTres.getRow(rowIndex).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
+
+    let NombreDocumento = "Ventas en los Ultimos 6 Meses";
+    workbookUno.xlsx.writeBuffer().then((data) => {
+      let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      fs.saveAs(blob, NombreDocumento + '.xlsx');
+    });
+
   }
 
   InfoProductos() {
@@ -515,6 +748,7 @@ export class DashboardComponent implements OnInit {
 
     // NUMERO DE PRODUCTOS VENDIDOS POR LCOALIDAD Y FECHA
     this.ServicioReporte.InfoVentasProdDash('1').subscribe(ResultObservableVentasProd => {
+      this.InfoProductosUno = ResultObservableVentasProd;
       for (let i = 0; i < ResultObservableVentasProd.length; i++) {
         if (this.VentasProdLocaliFecha.length > 0) {
           for (let j = 0; j < i; j++) {
@@ -561,6 +795,7 @@ export class DashboardComponent implements OnInit {
 
     // NUMERO DE PRODUCTOS VENDIDOS POR FECHA
     this.ServicioReporte.InfoVentasProdDash('2').subscribe(ResultObservableVentasProd => {
+      this.InfoProductosDos = ResultObservableVentasProd;
       for (let i = 0; i < ResultObservableVentasProd.length; i++) {
         this.NumeroTotalVentasProd = this.NumeroTotalVentasProd + ResultObservableVentasProd[i].Cantidad;
         if (this.VentasProdFecha.length > 0) {
@@ -595,6 +830,7 @@ export class DashboardComponent implements OnInit {
 
     // NUMERO DE PRODUCTOS VENDIDOS POR LOCALIDAD
     this.ServicioReporte.InfoVentasProdDash('3').subscribe(ResultObservableVentasProd => {
+      this.InfoProductosTres = ResultObservableVentasProd;
       for (let i = 0; i < ResultObservableVentasProd.length; i++) {
         if (this.VentasProdLocali.length > 0) {
           for (let j = 0; j < i; j++) {
@@ -627,6 +863,129 @@ export class DashboardComponent implements OnInit {
         "name": item.Localidad,
         "series": item.Producto
       }));
+    });
+  }
+
+  GenerarExcelProdutos() {
+    let workbookProductos = new Workbook();
+    let worksheetProdUno = workbookProductos.addWorksheet("Ventas de Productos Por Fecha y Localidad");
+    let worksheetProdDos = workbookProductos.addWorksheet("Ventas de Productos Por Fecha");
+    let worksheetProdTres = workbookProductos.addWorksheet("Ventas de Productos Por Localidad");
+
+    let headerProdUno = ["Id General", "Id Localidad", "Localidad", "Id Producto", "Producto", "Mes", "Año", "Numero de Compras"];
+    let headerProdDos = ["Id General", "Id Producto", "Producto", "Mes", "Año", "Numero de Compras"];
+    let headerProdTres = ["Id General", "Id Localidad", "Localidad", "Id Producto", "Producto", "Numero de Compras"];
+
+
+    worksheetProdUno.addRow(headerProdUno);
+    worksheetProdDos.addRow(headerProdDos);
+    worksheetProdTres.addRow(headerProdTres);
+
+    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1'].map(key => {
+      worksheetProdUno.getCell(key).fill = {
+        type: 'pattern',
+        pattern: 'darkTrellis',
+        fgColor: { argb: '397c97' },
+        bgColor: { argb: '397c97' }
+      };
+      worksheetProdUno.getCell(key).font = {
+        color: { argb: 'FFFFFF' }
+      };
+    });
+
+    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1'].map(key => {
+      worksheetProdDos.getCell(key).fill = {
+        type: 'pattern',
+        pattern: 'darkTrellis',
+        fgColor: { argb: '397c97' },
+        bgColor: { argb: '397c97' }
+      };
+      worksheetProdDos.getCell(key).font = {
+        color: { argb: 'FFFFFF' }
+      };
+      worksheetProdTres.getCell(key).fill = {
+        type: 'pattern',
+        pattern: 'darkTrellis',
+        fgColor: { argb: '397c97' },
+        bgColor: { argb: '397c97' }
+      };
+      worksheetProdTres.getCell(key).font = {
+        color: { argb: 'FFFFFF' }
+      };
+    });
+
+    worksheetProdUno.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' },
+    { width: 30, key: 'E' }, { width: 30, key: 'F' }, { width: 30, key: 'G' }, { width: 30, key: 'H' }];
+
+    worksheetProdDos.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' },
+    { width: 30, key: 'E' }, { width: 30, key: 'F' }];
+
+    worksheetProdTres.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' },
+    { width: 30, key: 'E' }, { width: 30, key: 'F' }];
+
+    worksheetProdUno.autoFilter = 'A1:F1';
+    worksheetProdDos.autoFilter = 'A1:F1';
+    worksheetProdTres.autoFilter = 'A1:F1';
+
+    for (let FilaDatosProdUno of this.InfoProductosUno) {
+      let TempDatosProdUno = [];
+
+      TempDatosProdUno.push(FilaDatosProdUno['Id'])
+      TempDatosProdUno.push(FilaDatosProdUno['IdSector'])
+      TempDatosProdUno.push(FilaDatosProdUno['DescripcionSector'])
+      TempDatosProdUno.push(this.ConversionNull(FilaDatosProdUno['idproducto']))
+      TempDatosProdUno.push(this.ConversionNull(FilaDatosProdUno['DSCRPCION']))
+      TempDatosProdUno.push(this.ConversionFechaString(FilaDatosProdUno['IdMes']))
+      TempDatosProdUno.push(FilaDatosProdUno['IdAno'])
+      TempDatosProdUno.push(FilaDatosProdUno['Cantidad'])
+
+      worksheetProdUno.addRow(TempDatosProdUno);
+    }
+
+    for (let FilaDatosProdDos of this.InfoProductosDos) {
+      let TempDatosProdDos = [];
+
+      TempDatosProdDos.push(FilaDatosProdDos['Id'])
+      TempDatosProdDos.push(this.ConversionNull(FilaDatosProdDos['idproducto']))
+      TempDatosProdDos.push(this.ConversionNull(FilaDatosProdDos['DSCRPCION']))
+      TempDatosProdDos.push(this.ConversionFechaString(FilaDatosProdDos['IdMes']))
+      TempDatosProdDos.push(FilaDatosProdDos['IdAno'])
+      TempDatosProdDos.push(FilaDatosProdDos['Cantidad'])
+
+      worksheetProdDos.addRow(TempDatosProdDos);
+    }
+
+    for (let FilaDatosProdTres of this.InfoProductosTres) {
+      let TempDatosProdTres = [];
+
+      TempDatosProdTres.push(FilaDatosProdTres['Id'])
+      TempDatosProdTres.push(FilaDatosProdTres['IdSector'])
+      TempDatosProdTres.push(FilaDatosProdTres['DescripcionSector'])
+      TempDatosProdTres.push(this.ConversionNull(FilaDatosProdTres['idproducto']))
+      TempDatosProdTres.push(this.ConversionNull(FilaDatosProdTres['DSCRPCION']))
+      TempDatosProdTres.push(FilaDatosProdTres['Cantidad'])
+
+      worksheetProdTres.addRow(TempDatosProdTres);
+    }
+
+    let rowIndexProd = 1
+
+    for (rowIndexProd; rowIndexProd <= worksheetProdUno.rowCount; rowIndexProd++) {
+      worksheetProdUno.getRow(rowIndexProd).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
+    rowIndexProd = 1
+    for (rowIndexProd; rowIndexProd <= worksheetProdDos.rowCount; rowIndexProd++) {
+      worksheetProdDos.getRow(rowIndexProd).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
+    rowIndexProd = 1
+    for (rowIndexProd; rowIndexProd <= worksheetProdTres.rowCount; rowIndexProd++) {
+      worksheetProdTres.getRow(rowIndexProd).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
+
+    let NombreXlsxProd = "Numero de Ventas Por Producto en los Ultimos Seis Meses"
+    workbookProductos.xlsx.writeBuffer().then((data) => {
+      let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      fs.saveAs(blob, NombreXlsxProd + '.xlsx');
     });
   }
 }
