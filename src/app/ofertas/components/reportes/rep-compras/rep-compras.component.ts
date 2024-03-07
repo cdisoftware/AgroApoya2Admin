@@ -208,7 +208,7 @@ export class RepComprasComponent implements OnInit {
   GeneraExcel() {
 
     if (this.DataConsulta.length > 0) {
-
+      
       for (var i = 0; this.DataConsulta.length > i; i++) {
         if (this.DataConsulta[i].ADICIONALES != undefined && this.DataConsulta[i].ADICIONALES != null) {
           var aux = this.DataConsulta[i].ADICIONALES.split('<br>');

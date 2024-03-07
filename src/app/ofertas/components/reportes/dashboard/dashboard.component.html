@@ -1,20 +1,43 @@
 <div class="container mb-5 mt-5">
   <nav class="nav nav-pills flex-column flex-sm-row">
-    <button class="flex-sm-fill text-center nav-link OpcionUno" id="OpcionUno" (click)="ngOnInit()">Usuarios</button>
-    <button class="flex-sm-fill text-center nav-link OpcionEstandar" id="OpcionDos" (click)="InfoVentas()">Ventas</button>
-    <button class="flex-sm-fill text-center nav-link OpcionEstandar" id="OpcionTres" (click)="InfoProductos()">Productos</button>
+    <button
+      class="flex-sm-fill text-center nav-link OpcionUno"
+      id="OpcionUno"
+      (click)="ngOnInit()"
+    >
+      Usuarios
+    </button>
+    <button
+      class="flex-sm-fill text-center nav-link OpcionEstandar"
+      id="OpcionDos"
+      (click)="InfoVentas()"
+    >
+      Ventas
+    </button>
+    <button
+      class="flex-sm-fill text-center nav-link OpcionEstandar"
+      id="OpcionTres"
+      (click)="InfoProductos()"
+    >
+      Productos
+    </button>
   </nav>
 </div>
 
 <div class="container" *ngIf="MostrarUsuarios == true">
   <div class="row justify-content-center align-items-center">
-    <div class="col-md-5 m-3 CartaTotal">
-      <div class="text-center" style="width: 100%">
-        <p class="display-1">
-          <strong>{{ DatosUsuarios.length }}</strong>
-        </p>
-        <hr style="border-top: 5px solid #397c97; opacity: 1" />
-        <p class="display-6">Número Total de Usuarios</p>
+    <div
+      class="col-md-5 m-3"
+      style="height: 500px; overflow-x: auto; overflow-y: none"
+    >
+      <div class="card CartaTotalAux">
+        <div class="text-center p-3" style="width: 100%">
+          <p class="display-1">
+            <strong>{{ DatosUsuarios.length }}</strong>
+          </p>
+          <hr style="border-top: 5px solid #397c97; opacity: 1" />
+          <p class="display-6">Número Total de Usuarios</p>
+        </div>
       </div>
     </div>
     <div
@@ -106,7 +129,9 @@
           <strong>{{ NumeroTotalVentas }}</strong>
         </p>
         <hr style="border-top: 5px solid #97394d; opacity: 1" />
-        <p class="display-6">Número Total de Ventas en los Ultimos Seis Meses</p>
+        <p class="display-6">
+          Número Total de Ventas en los Ultimos Seis Meses
+        </p>
       </div>
     </div>
     <div class="col-md-12 mt-4 mb-4" style="overflow-x: auto; overflow-y: none">
@@ -128,7 +153,9 @@
         >
         </ngx-charts-bar-vertical>
         <div class="card-body text-center CartaPie">
-          <h3 class="card-title">Numero de Ventas Mensuales en los Ultimos Seis Meses</h3>
+          <h3 class="card-title">
+            Numero de Ventas Mensuales en los Ultimos Seis Meses
+          </h3>
         </div>
       </div>
     </div>
@@ -151,7 +178,9 @@
         >
         </ngx-charts-bar-vertical>
         <div class="card-body text-center CartaPie">
-          <h3 class="card-title">Numero de Ventas por Localidad en los Ultimos Seis Meses</h3>
+          <h3 class="card-title">
+            Numero de Ventas por Localidad en los Ultimos Seis Meses
+          </h3>
         </div>
       </div>
     </div>
@@ -180,6 +209,13 @@
         </div>
       </div>
     </div>
+    <div class="col-md-12 mt-4 mb-4">
+      <div class="text-center">
+        <button class="btn btn-agro-prin w-25" (click)="GenerarExcelVentas()">
+          <p class="h5 mt-1">Descargar Informacion en Excel</p>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -191,82 +227,91 @@
           <strong>{{ NumeroTotalVentasProd }}</strong>
         </p>
         <hr style="border-top: 5px solid #eec916; opacity: 1" />
-        <p class="display-6">Número Total de Ventas Por Producto en los Ultimos Seis Meses</p>
+        <p class="display-6">
+          Número Total de Ventas Por Producto en los Ultimos Seis Meses
+        </p>
       </div>
     </div>
-  </div>
-  <div class="col-md-12 mt-4 mb-4">
-    <div class="card Carta">
-      <ngx-charts-bar-horizontal-stacked
-        class="card-img-top"
-        style="overflow-x: auto; overflow-y: none"
-        [view]="MedidasBarrasProdFecha"
-        [scheme]="ColoresBarrasProdFecha"
-        [results]="NumeroVentasProdFecha"
-        [xAxis]="MostrarEjeXProdFecha"
-        [yAxis]="MostrarEjeYProdFecha"
-        [legend]="MostrarLeyendaProdFecha"
-        [showXAxisLabel]="MostrarXLabelProdFecha"
-        [showYAxisLabel]="MostrarYLabelProdFecha"
-        [xAxisLabel]="LabelXProdFecha"
-        [yAxisLabel]="LabelYProdFecha"
-        [legendTitle]="LeyendaTituloProdFecha"
-      >
-      </ngx-charts-bar-horizontal-stacked>
-      <div class="card-body text-center CartaPie">
-        <h3 class="card-title">
-          Ventas de Productos en los Últimos Seis Meses
-        </h3>
+    <div class="col-md-12 mt-4 mb-4">
+      <div class="card Carta">
+        <ngx-charts-bar-horizontal-stacked
+          class="card-img-top"
+          style="overflow-x: auto; overflow-y: none"
+          [view]="MedidasBarrasProdFecha"
+          [scheme]="ColoresBarrasProdFecha"
+          [results]="NumeroVentasProdFecha"
+          [xAxis]="MostrarEjeXProdFecha"
+          [yAxis]="MostrarEjeYProdFecha"
+          [legend]="MostrarLeyendaProdFecha"
+          [showXAxisLabel]="MostrarXLabelProdFecha"
+          [showYAxisLabel]="MostrarYLabelProdFecha"
+          [xAxisLabel]="LabelXProdFecha"
+          [yAxisLabel]="LabelYProdFecha"
+          [legendTitle]="LeyendaTituloProdFecha"
+        >
+        </ngx-charts-bar-horizontal-stacked>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title">
+            Ventas de Productos en los Últimos Seis Meses
+          </h3>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="col-md-12 mt-4 mb-4">
-    <div class="card Carta">
-      <ngx-charts-bar-horizontal-stacked
-        class="card-img-top"
-        style="overflow-x: auto; overflow-y: none"
-        [view]="MedidasBarrasProdLocali"
-        [scheme]="ColoresBarrasProdLocali"
-        [results]="NumeroVentasProdLocali"
-        [xAxis]="MostrarEjeXProdLocali"
-        [yAxis]="MostrarEjeYProdLocali"
-        [legend]="MostrarLeyendaProdLocali"
-        [showXAxisLabel]="MostrarXLabelProdLocali"
-        [showYAxisLabel]="MostrarYLabelProdLocali"
-        [xAxisLabel]="LabelXProdLocali"
-        [yAxisLabel]="LabelYProdLocali"
-        [legendTitle]="LeyendaTituloProdLocali"
-      >
-      </ngx-charts-bar-horizontal-stacked>
-      <div class="card-body text-center CartaPie">
-        <h3 class="card-title">
-          Ventas de Productos por Localidad en los Últimos Seis Meses
-        </h3>
+    <div class="col-md-12 mt-4 mb-4">
+      <div class="card Carta">
+        <ngx-charts-bar-horizontal-stacked
+          class="card-img-top"
+          style="overflow-x: auto; overflow-y: none"
+          [view]="MedidasBarrasProdLocali"
+          [scheme]="ColoresBarrasProdLocali"
+          [results]="NumeroVentasProdLocali"
+          [xAxis]="MostrarEjeXProdLocali"
+          [yAxis]="MostrarEjeYProdLocali"
+          [legend]="MostrarLeyendaProdLocali"
+          [showXAxisLabel]="MostrarXLabelProdLocali"
+          [showYAxisLabel]="MostrarYLabelProdLocali"
+          [xAxisLabel]="LabelXProdLocali"
+          [yAxisLabel]="LabelYProdLocali"
+          [legendTitle]="LeyendaTituloProdLocali"
+        >
+        </ngx-charts-bar-horizontal-stacked>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title">
+            Ventas de Productos por Localidad en los Últimos Seis Meses
+          </h3>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="col-md-12 mt-4 mb-4">
-    <div class="card Carta">
-      <ngx-charts-bar-horizontal-stacked
-        class="card-img-top"
-        style="overflow-x: auto; overflow-y: none"
-        [view]="MedidasBarrasProdGene"
-        [scheme]="ColoresBarrasProdGene"
-        [results]="NumeroVentasProdGene"
-        [xAxis]="MostrarEjeXProdGene"
-        [yAxis]="MostrarEjeYProdGene"
-        [legend]="MostrarLeyendaProdGene"
-        [showXAxisLabel]="MostrarXLabelProdGene"
-        [showYAxisLabel]="MostrarYLabelProdGene"
-        [xAxisLabel]="LabelXProdGene"
-        [yAxisLabel]="LabelYProdGene"
-        [legendTitle]="LeyendaTituloProdGene"
-      >
-      </ngx-charts-bar-horizontal-stacked>
-      <div class="card-body text-center CartaPie">
-        <h3 class="card-title">
-          Ventas de Productos por Localidad y Fecha en los Últimos Seis Meses
-        </h3>
+    <div class="col-md-12 mt-4 mb-4">
+      <div class="card Carta">
+        <ngx-charts-bar-horizontal-stacked
+          class="card-img-top"
+          style="overflow-x: auto; overflow-y: none"
+          [view]="MedidasBarrasProdGene"
+          [scheme]="ColoresBarrasProdGene"
+          [results]="NumeroVentasProdGene"
+          [xAxis]="MostrarEjeXProdGene"
+          [yAxis]="MostrarEjeYProdGene"
+          [legend]="MostrarLeyendaProdGene"
+          [showXAxisLabel]="MostrarXLabelProdGene"
+          [showYAxisLabel]="MostrarYLabelProdGene"
+          [xAxisLabel]="LabelXProdGene"
+          [yAxisLabel]="LabelYProdGene"
+          [legendTitle]="LeyendaTituloProdGene"
+        >
+        </ngx-charts-bar-horizontal-stacked>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title">
+            Ventas de Productos por Localidad y Fecha en los Últimos Seis Meses
+          </h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 mt-4 mb-4">
+      <div class="text-center">
+        <button class="btn btn-agro-prin w-25" (click)="GenerarExcelProdutos()">
+          <p class="h5 mt-1">Descargar Informacion en Excel</p>
+        </button>
       </div>
     </div>
   </div>
