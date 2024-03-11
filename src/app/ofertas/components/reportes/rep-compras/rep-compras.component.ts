@@ -5,6 +5,8 @@ import * as fs from 'file-saver';
 import { Workbook } from 'exceljs'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
+import autoTable from 'jspdf-autotable';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-rep-compras',
@@ -208,7 +210,7 @@ export class RepComprasComponent implements OnInit {
   GeneraExcel() {
 
     if (this.DataConsulta.length > 0) {
-      
+
       for (var i = 0; this.DataConsulta.length > i; i++) {
         if (this.DataConsulta[i].ADICIONALES != undefined && this.DataConsulta[i].ADICIONALES != null) {
           var aux = this.DataConsulta[i].ADICIONALES.split('<br>');
@@ -312,6 +314,206 @@ export class RepComprasComponent implements OnInit {
       });
     }
   }
+
+
+
+  //BTN GENERAL EXCEL
+  DescargarExcelProductos() {
+
+    if (this.ArregloLibrasOferta.length > 0) {
+      let workbook = new Workbook();
+      // Hoja Productos Total
+      let worksheet = workbook.addWorksheet("Productos Total");
+      let header = ['Producto', 'Peso Total'];
+
+      worksheet.addRow(header);
+      ['A1', 'B1'].map(key => {
+        worksheet.getCell(key).fill = {
+          type: 'pattern',
+          pattern: 'darkTrellis',
+          fgColor: { argb: '397c97' },
+          bgColor: { argb: '397c97' }
+        };
+        worksheet.getCell(key).font = {
+          color: { argb: 'FFFFFF' }
+        };
+      });
+
+      worksheet.columns = [
+        { width: 25, key: 'A' }, { width: 15, key: 'B' }
+      ];
+
+      worksheet.autoFilter = 'A1:B1';
+
+
+      for (let x1 of this.ArregloLibrasOferta) {
+        let temp = []
+        temp.push(x1['Producto'])
+        temp.push(x1['PesoTotal'])
+
+        worksheet.addRow(temp)
+      }
+
+      // Hoja Productos X UND
+      if (this.ArregloUnidadesOferta.length > 0) {
+        let worksheet2 = workbook.addWorksheet("Productos X UND");
+        let header2 = ['Producto', 'Cantidad total', 'Peso und', 'Peso Total unidad'];
+        worksheet2.addRow(header2); // Utilizamos el mismo encabezado
+
+        ['A1', 'B1', 'C1', 'D1'].map(key => {
+          worksheet2.getCell(key).fill = {
+            type: 'pattern',
+            pattern: 'darkTrellis',
+            fgColor: { argb: '397c97' },
+            bgColor: { argb: '397c97' }
+          };
+          worksheet2.getCell(key).font = {
+            color: { argb: 'FFFFFF' }
+          };
+        });
+
+        worksheet2.columns = [
+          { width: 40, key: 'A' }, { width: 15, key: 'B' }, { width: 15, key: 'C' }, { width: 20, key: 'D' }
+        ];
+
+        worksheet2.autoFilter = 'A1:D1';
+
+        for (let x2 of this.ArregloUnidadesOferta) {
+          let temp = []
+          temp.push(x2['Producto'])
+          temp.push(x2['CantidadTotal'])
+          let pesoUnid = parseInt(x2['PesoUnid'], 10);
+          let pesoTotal = parseInt(x2['PesoTotal'], 10);
+          temp.push(pesoUnid);
+          temp.push(pesoTotal);
+          worksheet2.addRow(temp)
+        }
+        // Agregar fila de totales con el color especificado
+        worksheet2.addRow(['Totales', this.ProdTotal, '', this.LibrasTotalTotales]).eachCell((cell) => {
+          cell.fill = {
+            type: 'pattern',
+            pattern: 'darkTrellis',
+            fgColor: { argb: '397c97' },
+            bgColor: { argb: '397c97' }
+          };
+          cell.font = {
+            color: { argb: 'FFFFFF' }
+          };
+        });
+      }
+      let fname = "Reporte_Cantidad_Productos_" + this.OferFiltro;
+      workbook.xlsx.writeBuffer().then((data) => {
+        let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        fs.saveAs(blob, fname + '.xlsx');
+      });
+    }
+  }
+
+  //BTN GENERAL PDF
+  DescargarPdfProductos() {
+    const doc = new jsPDF('l', 'px', 'a3');
+    autoTable(doc, {
+      styles: { fillColor: [236, 240, 241] },
+      columnStyles: {
+        1: { cellWidth: 96 },
+        2: { cellWidth: 96 },
+      },
+      didParseCell: function (data) {
+        var rows = data.table.body;
+        if (data.row.index === 0) {
+          data.cell.styles.fillColor = [64, 124, 148];
+          data.cell.styles.textColor = [255, 255, 255];
+        }
+      },
+      margin: { top: 10 },
+      body: [
+        ['Producto', 'Peso Total'],
+      ]
+    })
+
+    if (this.ArregloLibrasOferta.length > 0) {
+      this.ArregloLibrasOferta.forEach(function (respuesta: any) {
+
+        var Res = [respuesta.Producto, respuesta.PesoTotal];
+
+        autoTable(doc, {
+          margin: { top: 0, bottom: 0 },
+          columnStyles: {
+            1: { cellWidth: 96 },
+            2: { cellWidth: 96 }
+          },
+          body:
+            [
+              Res
+            ]
+        })
+      });
+
+      // Hoja para ArregloUnidadesOferta
+      if (this.ArregloUnidadesOferta.length > 0) {
+        doc.addPage(); // Agregar nueva página para la segunda hoja
+        autoTable(doc, {
+          styles: { fillColor: [236, 240, 241] },
+          columnStyles: {
+            1: { cellWidth: 96 },
+            2: { cellWidth: 96 },
+            3: { cellWidth: 96 },
+            4: { cellWidth: 96 },
+          },
+          didParseCell: function (data) {
+            var rows = data.table.body;
+            if (data.row.index === 0) {
+              data.cell.styles.fillColor = [64, 124, 148];
+              data.cell.styles.textColor = [255, 255, 255];
+            }
+          },
+          margin: { top: 10 },
+          body: [
+            ['Producto', 'Cantidad Total', 'Peso Unid', 'Peso Total']
+          ]
+        });
+
+        this.ArregloUnidadesOferta.forEach(function (respuesta: any) {
+          var Res = [respuesta.Producto, respuesta.CantidadTotal, respuesta.PesoUnid, respuesta.PesoTotal];
+          autoTable(doc, {
+            margin: { top: 0, bottom: 0 },
+            columnStyles: {
+              1: { cellWidth: 96 },
+              2: { cellWidth: 96 },
+              3: { cellWidth: 96 },
+              4: { cellWidth: 96 },
+              // Agrega más columnStyles si es necesario
+            },
+            body: [Res]
+          });
+        });
+
+        autoTable(doc, {
+          styles: { fillColor: [236, 240, 241] },
+          columnStyles: {
+            1: { cellWidth: 96 },
+            2: { cellWidth: 96 },
+            3: { cellWidth: 96 },
+            4: { cellWidth: 96 },
+          },
+          didParseCell: function (data) {
+            var rows = data.table.body;
+            if (data.row.index === 0) {
+              data.cell.styles.fillColor = [64, 124, 148];
+              data.cell.styles.textColor = [255, 255, 255];
+            }
+          },
+          margin: { top: 10 },
+          body: [
+            ['Totales', this.ProdTotal, '', this.LibrasTotalTotales]
+          ]
+        });
+
+      }
+      doc.save('Reporte_Cantidad_Productos_' + this.OferFiltro + '.pdf')
+    }
+  }
+
 
   ProdTotal: number;
   LibrasTotalTotales: number;
