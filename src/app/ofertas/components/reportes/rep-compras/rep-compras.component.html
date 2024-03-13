@@ -295,9 +295,25 @@
 <ng-template #ModalProductos let-modal>
     <div class="modal-header ">
         <h1>Cantidad Productos</h1>
+
         <button type="button " class="btn-close " aria-label="Close " (click)="modal.dismiss() "></button>
     </div>
+
     <div class="modal-body ">
+        <div class="row justify-content-end">
+            <div class="col-sm-3 col-2">
+                <button class="btn btn-agro-prin col-sm-12" (click)="DescargarPdfProductos()"><img
+                        src="../../../../assets/ImagenesAgroApoya2Adm/pdf.png" alt="" width="25px" height="25px">
+                    Descargar
+                </button>
+            </div>
+            <div class="col-sm-3 col-2">
+                <button class="btn btn-agro-prin col-sm-12" (click)="DescargarExcelProductos()"><img
+                        src="../../../../assets/ImagenesAgroApoya2Adm/excel.png" alt="" width="25px" height="25px">
+                    Descargar
+                </button>
+            </div>
+        </div>
         <div class="row br ">
             <div class="col-sm-12 ">
 
@@ -323,7 +339,7 @@
                         <th><label class="p-2">{{oferta.Producto}}</label> </th>
                         <th style="text-align: center;"><label class="p-2">{{oferta.CantidadTotal}}</label> </th>
                         <th style="text-align: center;">{{oferta.PesoUnid}}</th>
-                        <th style="text-align: center;" >{{oferta.PesoTotal}}</th>
+                        <th style="text-align: center;">{{oferta.PesoTotal}}</th>
                     </tr>
                     <tr class="TableAgro">
                         <br>
