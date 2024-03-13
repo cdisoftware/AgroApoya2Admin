@@ -411,7 +411,7 @@ export class RepComprasComponent implements OnInit {
 
   //BTN GENERAL PDF
   DescargarPdfProductos() {
-    const doc = new jsPDF('l', 'px', 'a3');
+    const doc = new jsPDF('p', 'px', 'a3');
     autoTable(doc, {
       styles: { fillColor: [236, 240, 241] },
       columnStyles: {
