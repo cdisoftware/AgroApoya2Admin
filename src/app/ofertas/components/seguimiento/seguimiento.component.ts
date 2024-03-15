@@ -1022,6 +1022,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
 
   public GenerarPdfInformarcion(): void {
     console.log(this.ArrayConsultaSeg);
+    this.ArregloPDFDetalleProd = [];
     this.modalService.open(this.ModalCargando, { ariaLabelledBy: 'modal-basic-title', centered: true });
     for (var e = 0; this.ArrayConsultaSeg.length > e; e++) {
       this.ArregloPDFDetalleProd.push({
