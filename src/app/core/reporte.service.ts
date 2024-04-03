@@ -158,9 +158,12 @@ export class ReporteService {
     return this.http.post<any>(this.url_servidor + 'consReporteUsuarios/' + Bandera + '/' + IdLocalidad, Body);
   }
 
-
   InfoUsuariosDash(Bandera: string) {
     return this.http.get<any[]>(this.url_servidor + 'consCUserLocalidad/' + Bandera);
+  }
+
+  InfoDashUsuarios(Bandera: number) {
+    return this.http.get<any[]>(this.url_servidor + 'consAdDashUsuarios/' + Bandera);
   }
 
   InfoUsuariosComprasDash(Bandera: string) {
@@ -173,6 +176,14 @@ export class ReporteService {
 
   InfoVentasProdDash(Bandera: string) {
     return this.http.get<any[]>(this.url_servidor + 'consAdDashProducts/' + Bandera);
+  }
+
+  InfoDashProdLibras(Bandera: number) {
+    return this.http.get<any[]>(this.url_servidor + 'consadDashProductosLibras/' + Bandera)
+  }
+
+  InfoDashProdPesos(Bandera: number) {
+    return this.http.get<any[]>(this.url_servidor + 'consadDashProductosPesos/' + Bandera);
   }
 
   conschistorialcompras(Bandera: string, Usucodig: string, ID_CARRO: string) {

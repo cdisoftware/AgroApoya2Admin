@@ -16,25 +16,28 @@ export class DashboardComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document
   ) { }
 
-  // VARIABLE SELECTOR DE DASHBOARD
+  // VARIABLES SELECTORAS DENTRO DEL MODULO DASHBOARD
   SlideBoton: boolean = false;
+  MostrarSlideBoton: boolean = false;
   MostrarUsuarios: boolean = false;
   MostrarVentas: boolean = false;
   MostrarProductos: boolean = false;
+  MostrarProductosPesos: boolean = false;
+  MostrarProdLibrasUltimo: boolean = false;
+  MostrarProdPesosUltimo: boolean = false;
+  MostrarGrafiDinamiLibras: boolean = false;
+  MostrarGrafiDinamiPesos: boolean = false;
 
-  // VARIABLES NUMERO DE USUARIO Y NUMERO DE USUARIOS POR LOCALIDAD
+  // VARIABLES NUMERO DE USUARIOS TOTALES Y NUMERO DE USUARIOS POR LOCALIDAD
+  UsuariosTotales: any = [];
+  NumeroUsuariosTotales: any = [];
+  NumeroUsuariosSeisMeses: number = 0;
   NumeroUsuariosLocalidad: any = [];
-  DatosUsuarios: any = [];
-  CambioFormatoFechas: any = [];
-  FechasRegistrosUsers: any = [];
-  MesesRegistrosUsers: any = [];
-
-  // VARIABLES COMPRAS POR LOCALIDAD
-  CambioFormatoFechasCompras: any = [];
-  DatosCompras: any = [];
-  FechasCompras: any = [];
-  PromCompras: number = 0;
-  PromComprasLocalidad: any = [];
+  InfoUsuariosUno: any = [];
+  InfoUsuariosDos: any = [];
+  InfoUsuariosTres: any = [];
+  InfoUsuariosCuatro: any = [];
+  InfoUsuariosCinco: any = [];
 
   // VARIABLES VENTAS
   NumeroTotalVentas: number = 0;
@@ -52,27 +55,70 @@ export class DashboardComponent implements OnInit {
   InfoProductosDos: any = [];
   InfoProductosTres: any = [];
 
-  // VARIABLES GRAFICO PROMEDIO COMPRAS POR LOCALIDAD
-  MedidasBarrasProm: [number, number] = [1290, 350];
-  ColoresBarrasProm: any = {
-    domain: ['#ec7f44', '#397c97', '#67c04f', '#b1ec44', '#a84fc0', '#ecd444', '#042540', '#a9a487', '#c04f67', '#44ecd3', '#445dec', '#ec445d', '#978c39',
-      '#f4a460', '#836c79', '#3cb371', '#3d4d56', '#bc8f8f', ' #aea04b', '#737686'],
-  };
-  DatosBarrasUsuariosProm: any = [];
-  MostrarEjeXProm: boolean = true;
-  MostrarEjeYProm: boolean = true;
-  MostrarLeyendaProm: boolean = false;
-  MostrarXLabelProm: boolean = true;
-  MostrarYLabelProm: boolean = true;
-  LabelXProm: string = 'Localidades';
-  LabelYProm: string = 'Días';
-  LeyendaTituloProm: string = 'Localidades';
+  // VARIABLES PRODUCTOS LIBRAS Y PESOS
+  InfoProdLibrasUno: any = [];
+  InfoProdLibrasDos: any = [];
+  InfoProdLibrasTres: any = [];
 
-  // VARIABLES GRAFICO USUARIOS CUATRO MESES
-  MedidasBarras: [number, number] = [1290, 1000];
-  ColoresBarras: any = {
-    domain: ['#397c97', '#67c04f', '#ec445d', '#ecd444'],
+  InfoProdPesosUno: any = [];
+  InfoProdPesosDos: any = [];
+  InfoProdPesosTres: any = [];
+
+  TituloGraficoUno: any = [];
+  TituloGraficoDos: any = [];
+  TituloGraficoTres: any = [];
+  TituloGraficoCuatro: any = [];
+  TituloGraficoCinco: any = [];
+  TituloGraficoSeis: any = [];
+
+  // VARIABLES GRAFICOS DINAMICOS PRODUCTOS LIBRAS Y PESOS
+  DatosFiltradosMes: any = [];
+  DatosFiltradosLocali: any = [];
+  NombreTituloFiltrados: string = '';
+  FechaTituloFiltrados: string = '';
+
+  // ----------------- GRAFICAS USUARIOS -----------------
+
+  // VARIABLES GRAFICO FRECUENCIA DE COMPRA USUARIOS
+  MedidasTortaFrecu: [number, number] = [600, 400];
+  DatosFrecuUsuarios: any = [];
+  GradientFrecu: boolean = true;
+  ColoresFrecu: any = {
+    domain: ['#397c97', '#ecd444', '#a84fc0', '#ec7f44', '#042540', '#a9a487', '#c04f67', '#44ecd3', '#445dec', '#aea04b', '#3cb371',
+      '#aea04b', '#737686'],
   };
+
+  // VARIABLES GRAFICO FRECUENCIA DE COMPRA USUARIOS POR LOCALIDAD
+  MedidasTortaFrecuLocali: [number, number] = [600, 400];
+  DatosFrecuLocali: any = [];
+  GradientFrecuLocali: boolean = true;
+  ColoresFrecuLocali: any = {
+    domain: ['#ec445d', '#397c97', '#a84fc0', '#ec7f44', '#ecd444', '#042540', '#a9a487', '#c04f67', '#44ecd3', '#445dec', '#ec445d', '#aea04b', '#3cb371',
+      '#aea04b', '#737686'],
+  };
+
+  // VARIABLES GRAFICO USUARIOS POR LOCALIDAD
+  MedidasUsuLocalidad: [number, number] = [1250, 350];
+  ColoresUsuLocalidad: any = {
+    domain: ['#ec7f44', '#397c97', '#67c04f', '#b1ec44', '#a84fc0', '#ecd444', '#042540', '#a9a487', '#c04f67', '#44ecd3', '#445dec', '#ec445d', '#978c39',
+      '#f4a460', '#836c79', '#3cb371', '#3d4d56', '#bc8f8f', '#aea04b', '#737686'],
+  };
+  DatosUsuLocalidad: any = [];
+  MostrarEjeXUsuLocalidad: boolean = true;
+  MostrarEjeYUsuLocalidad: boolean = true;
+  MostrarLeyendaUsuLocalidad: boolean = false;
+  MostrarXLabelUsuLocalidad: boolean = true;
+  MostrarYLabelUsuLocalidad: boolean = true;
+  LabelXUsuLocalidad: string = 'Localidades';
+  LabelYUsuLocalidad: string = 'Días';
+  LeyendaTituloUsuLocalidad: string = 'Localidades';
+
+  // VARIABLES GRAFICO USUARIOS SEIS MESES POR LOCALIDAD
+  MedidasBarras: [number, number] = [1250, 1000];
+  ColoresBarras: any = {
+    domain: ['#397c97', '#67c04f', '#ec445d', '#ecd444', '#a84fc0', '#bc8f8f', '#ec7f44', '#b1ec44'],
+  };
+
   DatosBarrasUsuarios: any = [];
   MostrarEjeX: boolean = true;
   MostrarEjeY: boolean = true;
@@ -82,6 +128,16 @@ export class DashboardComponent implements OnInit {
   LabelX: string = 'Numero de Usuarios';
   LabelY: string = 'Localidades';
   LeyendaTitulo: string = 'Meses';
+
+  // ----------------- GRAFICAS VENTAS -----------------
+
+  // VARIABLES GRAFICO VENTAS POR SEIS MESES
+  MedidasTortaVentMensual: [number, number] = [600, 400];
+  NumeroVentasMensuales: any = [];
+  GradientVentMensual: boolean = true;
+  ColoresVentMensual: any = {
+    domain: ['#737686', '#aea04b', '#bc8f8f', '#3d4d56', '#3cb371', '#836c79', '#f4a460', '#978c39']
+  };
 
   // VARIABLES GRAFICO VENTAS POR LOCALIDAD
   MedidasBarrasVentLocali: [number, number] = [1290, 350];
@@ -99,22 +155,7 @@ export class DashboardComponent implements OnInit {
   LabelYVentLocali: string = 'Ventas';
   LeyendaTituloVentLocali: string = 'Localidades';
 
-  // VARIABLES GRAFICO VENTAS POR LOCALIDAD
-  MedidasBarrasVentMensual: [number, number] = [1290, 350];
-  ColoresVentMensual: any = {
-    domain: ['#737686', '#aea04b', '#bc8f8f', '#3d4d56', '#3cb371', '#836c79', '#f4a460', '#978c39']
-  };
-  NumeroVentasMensuales: any = [];
-  MostrarEjeXVentMensual: boolean = true;
-  MostrarEjeVentMensual: boolean = true;
-  MostrarLeyendaVentMensual: boolean = false;
-  MostrarXLabelVentMensual: boolean = true;
-  MostrarYLabelVentMensual: boolean = true;
-  LabelXVentMensual: string = 'Tiempo';
-  LabelYVentMensual: string = 'Ventas';
-  LeyendaTituloVentMensual: string = 'Localidades';
-
-  // VARIABLES GRAFICO VENTAS SEIS MESES
+  // VARIABLES GRAFICO VENTAS SEIS MESES POR LOCALIDAD
   MedidasBarrasVentas: [number, number] = [1290, 1000];
   ColoresBarrasVentas: any = {
     domain: ['#397c97', '#67c04f', '#ec445d', '#ecd444', '#39978a', '#a84fc0'],
@@ -129,368 +170,118 @@ export class DashboardComponent implements OnInit {
   LabelYVentas: string = 'Localidad';
   LeyendaTituloVentas: string = 'Tiempo';
 
-  // VARIABLES GRAFICO VENTAS PRODUCTOS POR LOCALIDAD
-  MedidasBarrasProdLocali: [number, number] = [5000, 1000];
-  ColoresBarrasProdLocali: any = {
-    domain: ['#ec7f44', '#397c97', '#67c04f', '#b1ec44', '#a84fc0', '#ecd444', '#042540', '#a9a487', '#c04f67', '#44ecd3', '#445dec', '#ec445d', '#978c39',
-      '#f4a460', '#836c79', '#3cb371', '#3d4d56', '#bc8f8f', ' #aea04b', '#737686'],
-  };
-  NumeroVentasProdLocali: any = [];
-  MostrarEjeXProdLocali: boolean = true;
-  MostrarEjeYProdLocali: boolean = true;
-  MostrarLeyendaProdLocali: boolean = false;
-  MostrarXLabelProdLocali: boolean = true;
-  MostrarYLabelProdLocali: boolean = true;
-  LabelXProdLocali: string = 'Numero de Ventas';
-  LabelYProdLocali: string = 'Localidad';
-  LeyendaTituloProdLocali: string = 'Tiempo';
+  // ----------------- GRAFICAS PRODUCTOS -----------------
 
-  // VARIABLES GRAFICO VENTAS PRODUCTOS POR FECHA
-  MedidasBarrasProdFecha: [number, number] = [1290, 1000];
-  ColoresBarrasProdFecha: any = {
-    domain: ['#ec7f44', '#397c97', '#67c04f', '#b1ec44', '#a84fc0', '#ecd444', '#042540', '#a9a487', '#c04f67', '#44ecd3', '#445dec', '#ec445d', '#978c39',
-      '#f4a460', '#836c79', '#3cb371', '#3d4d56', '#bc8f8f', ' #aea04b', '#737686'],
+  // VARIABLES GRAFICO TORTAS PRODUCTO MES UNO
+  MedidasTortaProdMesUno: [number, number] = [600, 330];
+  DatosProdMesUno: any = [];
+  GradientProdMesUno: boolean = true;
+  ColoresProdMesUno: any = {
+    domain: ['#ec7f44', '#397c97', '#ec445d', '#b1ec44', '#a84fc0', '#ecd444', '#67c04f', '#978c39', '#bc8f8f', '#3d4d56',
+      '#042540', '#a9a487', '#c04f67', '#44ecd3', '#445dec', '#aea04b', '#3cb371', '#737686', '#f4a460', '#39978a'
+    ]
   };
-  NumeroVentasProdFecha: any = [];
-  MostrarEjeXProdFecha: boolean = true;
-  MostrarEjeYProdFecha: boolean = true;
-  MostrarLeyendaProdFecha: boolean = false;
-  MostrarXLabelProdFecha: boolean = true;
-  MostrarYLabelProdFecha: boolean = true;
-  LabelXProdFecha: string = 'Numero de Ventas';
-  LabelYProdFecha: string = 'Localidad';
-  LeyendaTituloProdFecha: string = 'Tiempo';
 
-  // VARIABLES GRAFICO VENTAS PRODUCTOS POR FECHA Y LOCALIDAD
-  MedidasBarrasProdGene: [number, number] = [7000, 1000];
-  ColoresBarrasProdGene: any = {
-    domain: ['#ec7f44', '#397c97', '#67c04f', '#b1ec44', '#a84fc0', '#ecd444', '#042540', '#a9a487', '#c04f67', '#44ecd3', '#445dec', '#ec445d', '#978c39',
-      '#f4a460', '#836c79', '#3cb371', '#3d4d56', '#bc8f8f', ' #aea04b', '#737686'],
+  // VARIABLES GRAFICO TORTAS PRODUCTO MES DOS
+  MedidasTortaProdMesDos: [number, number] = [600, 330];
+  DatosProdMesDos: any = [];
+  GradientProdMesDos: boolean = true;
+  ColoresProdMesDos: any = {
+    domain: ['#5c6eca', '#cbe442', '#242740', '#dbd8bf', '#1e5945', '#5f9ea0', '#e51a4c', '#ffe65d', '#0096d2',
+      '#f59622', '#a9a487', '#c04f67', '#44ecd3', '#445dec', '#aea04b', '#3cb371', '#737686', '#f4a460', '#39978a']
   };
-  NumeroVentasProdGene: any = [];
-  MostrarEjeXProdGene: boolean = true;
-  MostrarEjeYProdGene: boolean = true;
-  MostrarLeyendaProdGene: boolean = false;
-  MostrarXLabelProdGene: boolean = true;
-  MostrarYLabelProdGene: boolean = true;
-  LabelXProdGene: string = 'Numero de Ventas';
-  LabelYProdGene: string = 'Localidad';
-  LeyendaTituloProdGene: string = 'Tiempo';
+
+  // VARIABLES GRAFICO TORTAS PRODUCTO MES TRES
+  MedidasTortaProdMesTres: [number, number] = [600, 330];
+  DatosProdMesTres: any = [];
+  GradientProdMesTres: boolean = true;
+  ColoresProdMesTres: any = {
+    domain: ['#0096d2', '#f3bd97', '#6c7156', '#ec7f44', '#042540', '#a9a487', '#b1ec44', '#e63244', '#445dec',
+      '#44ecd3', '#c04f67', '#397c97', '#ffe65d', '#aea04b', '#3cb371', '#737686', '#f4a460', '#39978a']
+  };
+
+  // VARIABLES GRAFICO TORTAS PRODUCTO MES CUATRO
+  MedidasTortaProdMesCuatro: [number, number] = [600, 330];
+  DatosProdMesCuatro: any = [];
+  GradientProdMesCuatro: boolean = true;
+  ColoresProdMesCuatro: any = {
+    domain: ['#397c97', '#ecd444', '#a84fc0', '#ec7f44', '#042540', '#a9a487', '#c04f67', '#44ecd3', '#445dec', '#aea04b', '#0096d2',
+      '#f3bd97', '#6c7156', '#67c04f', '#ffe65d', '#39978a', '#b1ec44', '#e63244', '#f4a460']
+  };
+
+  // VARIABLES GRAFICO TORTAS PRODUCTO MES CINCO
+  MedidasTortaProdMesCinco: [number, number] = [600, 330];
+  DatosProdMesCinco: any = [];
+  GradientProdMesCinco: boolean = true;
+  ColoresProdMesCinco: any = {
+    domain: ['#ec7f44', '#397c97', '#ec445d', '#b1ec44', '#a84fc0', '#ecd444', '#67c04f', '#978c39', '#bc8f8f', '#3d4d56',
+      '#042540', '#a9a487', '#c04f67', '#44ecd3', '#445dec', '#aea04b', '#3cb371', '#737686', '#f4a460', '#39978a']
+  };
+
+  // VARIABLES GRAFICO TORTAS PRODUCTO MES SEIS
+  MedidasTortaProdMesSeis: [number, number] = [600, 330];
+  DatosProdMesSeis: any = [];
+  GradientProdMesSeis: boolean = true;
+  ColoresProdMesSeis: any = {
+    domain: ['#5c6eca', '#cbe442', '#242740', '#dbd8bf', '#1e5945', '#5f9ea0', '#e51a4c', '#ffe65d', '#3d4d56',
+      '#f59622', '#a9a487', '#c04f67', '#44ecd3', '#445dec', '#aea04b', '#3cb371', '#737686', '#f4a460', '#39978a'],
+  };
+
+  //GRAFICO FILTRADOS MES
+  MedidasDatosFiltradosMes: [number, number] = [600, 450];
+  ColoresDatosFiltradosMes: any = {
+    domain: ['#ec445d', '#397c97', '#ec7f44', '#ecd444', '#042540', '#a9a487', '#c04f67', '#44ecd3', '#445dec'],
+  };
+  InfoDatosFiltradosMes: any[];
+  MostrarEjeXDatosFiltradosMes: boolean = true;
+  MostrarEjeYDatosFiltradosMes: boolean = true;
+  MostrarLeyendaDatosFiltradosMes: boolean = false;
+  MostrarXLabelDatosFiltradosMes: boolean = true;
+  MostrarYLabelDatosFiltradosMes: boolean = true;
+  LabelXDatosFiltradosMes: string = 'Libras';
+  LabelYDatosFiltradosMes: string = 'Presentación Producto';
+  LeyendaTituloDatosFiltradosMes: string = 'Localidades';
+
+  //GRAFICO FILTRADOS LOCALIDAD
+  MedidasDatosFiltradosLocali: [number, number] = [600, 450];
+  ColoresDatosFiltradosLocali: any = {
+    domain: ['#397c97', '#67c04f', '#ec445d', '#ecd444', '#39978a', '#a84fc0']
+  };
+  InfoDatosFiltradosLocali: any = [];
+  MostrarEjeXDatosFiltradosLocali: boolean = true;
+  MostrarEjeYDatosFiltradosLocali: boolean = true;
+  MostrarLeyendaDatosFiltradosLocali: boolean = false;
+  MostrarXLabelDatosFiltradosLocali: boolean = true;
+  MostrarYLabelDatosFiltradosLocali: boolean = true;
+  LabelXDatosFiltradosLocali: string = 'Libras';
+  LabelYDatosFiltradosLocali: string = 'Localidades';
+  LeyendaTituloDatosFiltradosLocali: string = 'Meses';
 
   ngOnInit(): void {
     this.InfoUsuarios();
   }
 
-  InfoUsuarios() {
-    this.MostrarUsuarios = true;
-    this.MostrarVentas = false;
-    this.MostrarProductos = false;
-
-    this.NumeroUsuariosLocalidad = [];
-    this.DatosUsuarios = [];
-    this.FechasRegistrosUsers = [];
-    this.MesesRegistrosUsers = [];
-    this.DatosCompras = [];
-    this.FechasCompras = [];
-    this.PromComprasLocalidad = [];
-
-    this.document.querySelector('#OpcionUno')?.classList.remove('OpcionUnoAfter');
-    this.document.querySelector('#OpcionDos')?.classList.remove('OpcionDosEstandarAfter');
-    this.document.querySelector('#OpcionTres')?.classList.remove('OpcionTresEstandarAfter');
-
-    let SplitUno: any = 0;
-    let SplitDos: any = 0;
-    let DiferenciasDias: number = 0;
-    let AcumuladorDias: number = 0;
-    let Contador: number = 0;
-    let Marcador: number = 0;
-    let UsuariosMesUno: number = 0;
-    let UsuariosMesDos: number = 0;
-    let UsuariosMesTres: number = 0;
-    let UsuariosMesCuatro: number = 0;
-
-    // SERVICIO USUARIOS
-    this.ServicioReporte.InfoUsuariosDash('1').subscribe(ResultObservable => {
-      // NUMERO DE USUARIOS TOTALES
-      for (let i = 0; i < ResultObservable.length; i++) {
-        if (this.NumeroUsuariosLocalidad.length > 0) {
-          for (let j = 0; j < i; j++) {
-            if (this.NumeroUsuariosLocalidad[j].IdSector == ResultObservable[i].IdSector) {
-              this.NumeroUsuariosLocalidad[j].NumeroUsuarios = this.NumeroUsuariosLocalidad[j].NumeroUsuarios + 1;
-              break;
-            } else {
-              Marcador = j + 1;
-              if (Marcador == this.NumeroUsuariosLocalidad.length) {
-                this.NumeroUsuariosLocalidad.push({ "IdSector": ResultObservable[i].IdSector, "Descripcion": ResultObservable[i].DSCRPCION_SCTOR, "NumeroUsuarios": 1 });
-                break;
-              }
-            }
-          }
-        } else {
-          this.NumeroUsuariosLocalidad.push({ "IdSector": ResultObservable[i].IdSector, "Descripcion": ResultObservable[i].DSCRPCION_SCTOR, "NumeroUsuarios": 1 });
-        }
-      }
-
-      // CONVERSION DE FECHA TIPO STRING A DATE
-      for (let i = 0; i < ResultObservable.length; i++) {
-        SplitUno = ResultObservable[i].FECHA_CREACION.split('-');
-        this.CambioFormatoFechas[i] = new Date(SplitUno[0], SplitUno[1] - 1, SplitUno[2]);
-        this.DatosUsuarios.push({
-          "IdSector": ResultObservable[i].IdSector, "Descripcion": ResultObservable[i].DSCRPCION_SCTOR,
-          "Fecha": this.CambioFormatoFechas[i]
-        });
-      }
-
-      // AGRUPACION DE FECHAS DE REGISTRO POR LOCALIDAD
-      for (let i = 0; i < this.DatosUsuarios.length; i++) {
-        if (this.FechasRegistrosUsers.length > 0) {
-          for (let j = 0; j < i; j++) {
-            if (this.FechasRegistrosUsers[j].IdSector == this.DatosUsuarios[i].IdSector) {
-              this.FechasRegistrosUsers[j].Fecha.push(this.DatosUsuarios[i].Fecha);
-              break;
-            } else {
-              Marcador = j + 1;
-              if (Marcador == this.FechasRegistrosUsers.length) {
-                this.FechasRegistrosUsers.push({
-                  "IdSector": this.DatosUsuarios[i].IdSector, "Descripcion": this.DatosUsuarios[i].Descripcion,
-                  "Fecha": [new Date(this.DatosUsuarios[i].Fecha)]
-                });
-                break;
-              }
-            }
-          }
-        } else {
-          this.FechasRegistrosUsers.push({
-            "IdSector": this.DatosUsuarios[i].IdSector, "Descripcion": this.DatosUsuarios[i].Descripcion,
-            "Fecha": [new Date(this.DatosUsuarios[i].Fecha)]
-          });
-        }
-      }
-
-      // NUMERO DE USUARIOS POR LOCALIDAD EN LOS ULTIMOS CUATRO MESES
-      for (let i = 0; i < this.FechasRegistrosUsers.length; i++) {
-        if (i < this.FechasRegistrosUsers.length) {
-          UsuariosMesUno = 0;
-          UsuariosMesDos = 0;
-          UsuariosMesTres = 0;
-          UsuariosMesCuatro = 0;
-          for (let j = 0; j < this.FechasRegistrosUsers[i].Fecha[j]; j++) {
-            if (this.FechasRegistrosUsers[i].Fecha[j] >= new Date('2023-11-1') && this.FechasRegistrosUsers[i].Fecha[j] < new Date('2023-12-1')) {
-              UsuariosMesUno = UsuariosMesUno + 1;
-            }
-            if (this.FechasRegistrosUsers[i].Fecha[j] >= new Date('2023-12-1') && this.FechasRegistrosUsers[i].Fecha[j] < new Date('2024-1-1')) {
-              UsuariosMesDos = UsuariosMesDos + 1;
-            }
-            if (this.FechasRegistrosUsers[i].Fecha[j] >= new Date('2024-1-1') && this.FechasRegistrosUsers[i].Fecha[j] < new Date('2024-2-1')) {
-              UsuariosMesTres = UsuariosMesTres + 1;
-            }
-            if (this.FechasRegistrosUsers[i].Fecha[j] >= new Date('2024-2-1') && this.FechasRegistrosUsers[i].Fecha[j] < new Date('2024-3-1')) {
-              UsuariosMesCuatro = UsuariosMesCuatro + 1;
-            }
-          }
-          this.MesesRegistrosUsers.push({
-            "IdSector": this.FechasRegistrosUsers[i].IdSector, "Localidad": this.FechasRegistrosUsers[i].Descripcion, "series": [{
-              "name": "Nov-23",
-              "value": UsuariosMesUno
-            },
-            {
-              "name": "Dic-23",
-              "value": UsuariosMesDos
-            },
-            {
-              "name": "Ene-2024",
-              "value": UsuariosMesTres
-            },
-            {
-              "name": "Feb-2024",
-              "value": UsuariosMesCuatro
-            }]
-          });
-        }
-      }
-
-      // IMPRESION GRAFICA DE USUARIOS EN LOS ULTIMOS CUATRO MESES
-      this.DatosBarrasUsuarios = this.MesesRegistrosUsers.map((item: any) => ({
-        "name": item.Localidad,
-        "series": item.series
-      }));
-    });
-
-    // SERVICIO COMPRAS
-    this.ServicioReporte.InfoUsuariosComprasDash('1').subscribe(ResultObservable => {
-      // CONVERSION DE FECHAS DE TIPO STRING A DATE EN COMPRAS
-      for (let i = 0; i < ResultObservable.length; i++) {
-        SplitDos = ResultObservable[i].FechaCompra.split('-');
-        this.CambioFormatoFechasCompras[i] = new Date(SplitDos[0], SplitDos[1] - 1, SplitDos[2]);
-        this.DatosCompras.push({
-          "IdSector": ResultObservable[i].IdSector, "Descripcion": ResultObservable[i].DSCRPCION_SCTOR,
-          "Fecha": this.CambioFormatoFechasCompras[i]
-        });
-      }
-
-      // AGRUPACION DE FECHAS DE COMPRAS POR LOCALIDAD
-      for (let i = 0; i < this.DatosCompras.length; i++) {
-        if (this.FechasCompras.length > 0) {
-          for (let j = 0; j < i; j++) {
-            if (this.FechasCompras[j].IdSector == this.DatosCompras[i].IdSector) {
-              this.FechasCompras[j].Fecha.push(this.DatosCompras[i].Fecha);
-              break;
-            } else {
-              Marcador = j + 1;
-              if (Marcador == this.FechasCompras.length) {
-                this.FechasCompras.push({
-                  "IdSector": this.DatosCompras[i].IdSector, "Descripcion": this.DatosCompras[i].Descripcion,
-                  "Fecha": [new Date(this.DatosCompras[i].Fecha)]
-                });
-                break;
-              }
-            }
-          }
-        } else {
-          this.FechasCompras.push({
-            "IdSector": this.DatosCompras[i].IdSector, "Descripcion": this.DatosCompras[i].Descripcion,
-            "Fecha": [new Date(this.DatosCompras[i].Fecha)]
-          });
-        }
-      }
-
-      // PROMEDIO DE COMPRA POR LOCALIDAD
-      for (let i = 0; i < this.FechasCompras.length; i++) {
-        if (i < this.FechasCompras.length) {
-          this.PromCompras = 0;
-          Contador = 0;
-          DiferenciasDias = 0;
-          AcumuladorDias = 0;
-          for (let j = 0; j < this.FechasCompras[i].Fecha[j]; j++) {
-            Contador = Contador + 1;
-            if (this.FechasCompras[i].Fecha[j + 1] != null) {
-              DiferenciasDias = (this.FechasCompras[i].Fecha[j] - this.FechasCompras[i].Fecha[j + 1]) / (1000 * 60 * 60 * 24);
-              AcumuladorDias = AcumuladorDias + DiferenciasDias;
-            } else {
-              break;
-            }
-          }
-          this.PromCompras = AcumuladorDias / Contador
-          this.PromComprasLocalidad.push({
-            "IdSector": this.FechasCompras[i].IdSector, "Localidad": this.FechasCompras[i].Descripcion,
-            "Promedio": this.PromCompras
-          });
-        }
-      }
-
-      // IMPRESION GRAFICO DE PROMEDIO DE COMPRA POR LOCALIDAD
-      this.DatosBarrasUsuariosProm = this.PromComprasLocalidad.map((item: any) => ({
-        "name": item.Localidad,
-        "value": item.Promedio
-      }));
-
-    });
+  // METODO UTILIZADO PARA CONTROLAR EL SLIDEBUTTON DE PRODUCTOS
+  OnChange(ValorSlide: boolean): void {
+    if (ValorSlide) {
+      this.MostrarProductos = false;
+      this.MostrarGrafiDinamiLibras = false
+      this.MostrarProductosPesos = true;
+      this.InfoProductosPesos();
+      this.document.querySelector('#SlideUno')?.classList.replace('OpcionEstandar', 'OpcionUnoAfter');
+      this.document.querySelector('#SlideDos')?.classList.add('OpcionEstandar');
+    } else {
+      this.MostrarProductosPesos = false;
+      this.MostrarGrafiDinamiPesos = false;
+      this.MostrarProductos = true;
+      this.InfoProductosLibras();
+      this.document.querySelector('#SlideUno')?.classList.add('OpcionEstandar');
+      this.document.querySelector('#SlideDos')?.classList.remove('OpcionEstandar');
+    }
   }
 
-  // GenerarExcelUsuarios() {
-  //   let workbookUsuarios = new Workbook();
-  //   let worksheetUsuaUno = workbookUsuarios.addWorksheet("Numero Usuarios Localidad");
-  //   let worksheetUsuaDos = workbookUsuarios.addWorksheet("Promedio Compras Localidad");
-  //   let worksheetUsuaTres = workbookUsuarios.addWorksheet("Usuarios Localidad Ultimos Cuatro Meses");
-
-  //   let headerUsuaUno = ["Id Localidad", "Localidad", "Numero Total Usuarios"];
-  //   let headerUsuaDos = ["Id Localidad", "Localidad", "Promedio de Compra"];
-  //   let headerUsuaTres = ["Id Localidad", "Localidad", "Meses"];
-
-  //   worksheetUsuaUno.addRow(headerUsuaUno);
-  //   worksheetUsuaDos.addRow(headerUsuaDos);
-  //   worksheetUsuaTres.addRow(headerUsuaTres);
-
-  //   ['A1', 'B1', 'C1'].map(key => {
-  //     worksheetUsuaUno.getCell(key).fill = {
-  //       type: 'pattern',
-  //       pattern: 'darkTrellis',
-  //       fgColor: { argb: '397c97' },
-  //       bgColor: { argb: '397c97' }
-  //     };
-  //     worksheetUsuaUno.getCell(key).font = {
-  //       color: { argb: 'FFFFFF' }
-  //     };
-  //     worksheetUsuaDos.getCell(key).fill = {
-  //       type: 'pattern',
-  //       pattern: 'darkTrellis',
-  //       fgColor: { argb: '397c97' },
-  //       bgColor: { argb: '397c97' }
-  //     };
-  //     worksheetUsuaDos.getCell(key).font = {
-  //       color: { argb: 'FFFFFF' }
-  //     };
-  //     worksheetUsuaTres.getCell(key).fill = {
-  //       type: 'pattern',
-  //       pattern: 'darkTrellis',
-  //       fgColor: { argb: '397c97' },
-  //       bgColor: { argb: '397c97' }
-  //     };
-  //     worksheetUsuaTres.getCell(key).font = {
-  //       color: { argb: 'FFFFFF' }
-  //     };
-  //   });
-
-  //   worksheetUsuaUno.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }];
-  //   worksheetUsuaDos.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }];
-  //   worksheetUsuaTres.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }];
-
-  //   worksheetUsuaUno.autoFilter = 'A1:C1';
-  //   worksheetUsuaDos.autoFilter = 'A1:C1';
-  //   worksheetUsuaTres.autoFilter = 'A1:C1';
-
-  //   for (let FilaDatosUno of this.NumeroUsuariosLocalidad) {
-  //     let TempDatosUno = [];
-
-  //     TempDatosUno.push(FilaDatosUno['IdSector'])
-  //     TempDatosUno.push(FilaDatosUno['Descripcion'])
-  //     TempDatosUno.push(FilaDatosUno['NumeroUsuarios'])
-
-  //     worksheetUsuaUno.addRow(TempDatosUno);
-  //   }
-
-  //   for (let FilaDatosDos of this.PromComprasLocalidad) {
-  //     let TempDatosDos = [];
-
-  //     TempDatosDos.push(FilaDatosDos['IdSector'])
-  //     TempDatosDos.push(FilaDatosDos['Localidad'])
-  //     TempDatosDos.push(FilaDatosDos['Promedio'])
-
-  //     worksheetUsuaDos.addRow(TempDatosDos);
-  //   }
-
-  //   // for (let FilaDatosTres of this.MesesRegistrosUsers) {
-  //   //   let TempDatosTres = [];
-
-  //   //   TempDatosTres.push(FilaDatosTres['IdSector'])
-  //   //   TempDatosTres.push(FilaDatosTres['Localidad'])
-  //   //   TempDatosTres.push(FilaDatosTres['series'])
-
-  //   //   worksheetUsuaTres.addRow(TempDatosTres);
-  //   // }
-
-  //   let rowIndex = 1;
-
-  //   for (rowIndex; rowIndex <= worksheetUsuaUno.rowCount; rowIndex++) {
-  //     worksheetUsuaUno.getRow(rowIndex).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-  //   }
-  //   rowIndex = 1;
-  //   for (rowIndex; rowIndex <= worksheetUsuaDos.rowCount; rowIndex++) {
-  //     worksheetUsuaDos.getRow(rowIndex).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-  //   }
-  //   rowIndex = 1;
-  //   for (rowIndex; rowIndex <= worksheetUsuaTres.rowCount; rowIndex++) {
-  //     worksheetUsuaTres.getRow(rowIndex).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-  //   }
-
-  //   let NombreDocumento = "Usuarios Totales Registrados";
-  //   workbookUsuarios.xlsx.writeBuffer().then((data) => {
-  //     let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  //     fs.saveAs(blob, NombreDocumento + '.xlsx');
-  //   });
-  // }
-
-  ConversionFechaString(Fecha: number) {
+  // METODO PARA CONVERTIR MES NUMERICO A MES TEXTO
+  ConversionFechaString(Fecha: any) {
     let ConversionFecha: string = '';
     if (Fecha == 1) {
       ConversionFecha = 'Enero';
@@ -520,6 +311,7 @@ export class DashboardComponent implements OnInit {
     return ConversionFecha;
   }
 
+  // METODO PARA CONVERTIR NULL A STRING
   ConversionNull(Descripcion: any) {
     let ConversionNull: any = '';
     if (Descripcion == null) {
@@ -530,10 +322,296 @@ export class DashboardComponent implements OnInit {
     return ConversionNull
   }
 
+  // METODO PARA CONVERTIR STRING A NUMEROS
+  ConversionStringNumeros(String: string) {
+    let ConversionNumero = Number(String);
+    return ConversionNumero;
+  }
+
+  // USUARIOS REGISTRADOS
+  InfoUsuarios() {
+    this.MostrarVentas = false;
+    this.MostrarProductos = false;
+    this.MostrarProductosPesos = false;
+    this.MostrarSlideBoton = false;
+    this.SlideBoton = false;
+    this.MostrarGrafiDinamiLibras = false;
+    this.MostrarGrafiDinamiPesos = false;
+    this.MostrarUsuarios = true;
+
+    this.UsuariosTotales = [];
+    this.NumeroUsuariosSeisMeses = 0;
+    this.NumeroUsuariosLocalidad = [];
+    this.DatosFrecuUsuarios = [];
+    this.DatosFrecuLocali = [];
+    this.NumeroUsuariosTotales = [];
+    this.DatosUsuLocalidad = [];
+
+    this.document.querySelector('#OpcionUno')?.classList.remove('OpcionUnoAfter');
+    this.document.querySelector('#OpcionDos')?.classList.remove('OpcionDosEstandarAfter');
+    this.document.querySelector('#OpcionTres')?.classList.remove('OpcionTresEstandarAfter');
+
+    let Marcador: number = 0;
+
+    this.ServicioReporte.InfoDashUsuarios(1).subscribe(ResultObservableUsuarios => {
+      this.InfoUsuariosUno = ResultObservableUsuarios;
+      for (let i = 0; i < ResultObservableUsuarios.length; i++) {
+        if (this.UsuariosTotales.length > 0) {
+          for (let j = 0; j < i; j++) {
+            if (this.UsuariosTotales[j].IdSector == ResultObservableUsuarios[i].IdSector) {
+              this.UsuariosTotales[j].Fecha.push({
+                "name": this.ConversionFechaString(ResultObservableUsuarios[i].IdMes) + " " + ResultObservableUsuarios[i].IdAno,
+                "value": ResultObservableUsuarios[i].NumUsuarios
+              });
+              break;
+            } else {
+              Marcador = j + 1;
+              if (Marcador == this.UsuariosTotales.length) {
+                this.UsuariosTotales.push({
+                  "IdSector": ResultObservableUsuarios[i].IdSector, "DescripcionSector": ResultObservableUsuarios[i].DescripcionSector,
+                  "Fecha": [{
+                    "name": this.ConversionFechaString(ResultObservableUsuarios[i].IdMes) + " " + ResultObservableUsuarios[i].IdAno,
+                    "value": ResultObservableUsuarios[i].NumUsuarios
+                  }]
+                });
+                break;
+              }
+            }
+          }
+        } else {
+          this.UsuariosTotales.push({
+            "IdSector": ResultObservableUsuarios[i].IdSector, "DescripcionSector": ResultObservableUsuarios[i].DescripcionSector,
+            "Fecha": [{
+              "name": this.ConversionFechaString(ResultObservableUsuarios[i].IdMes) + " " + ResultObservableUsuarios[i].IdAno,
+              "value": ResultObservableUsuarios[i].NumUsuarios
+            }]
+          });
+        }
+      }
+
+      this.NumeroUsuariosTotales = this.UsuariosTotales.map((item: any) => ({
+        "name": item.DescripcionSector,
+        "series": item.Fecha
+      }));
+    });
+
+    this.ServicioReporte.InfoDashUsuarios(2).subscribe(ResultObservableUsuarios => {
+      this.InfoUsuariosDos = ResultObservableUsuarios;
+      this.NumeroUsuariosSeisMeses = ResultObservableUsuarios.reduce((Acum, Elem) => Acum + Elem.NumUsuarios, 0)
+    });
+
+    this.ServicioReporte.InfoDashUsuarios(3).subscribe(ResultObservableUsuarios => {
+      this.NumeroUsuariosLocalidad = ResultObservableUsuarios;
+      this.InfoUsuariosTres = ResultObservableUsuarios;
+      this.DatosUsuLocalidad = ResultObservableUsuarios.map((item: any) => ({
+        "name": item.DescripcionSector,
+        "value": item.NumUsuarios
+      }));
+    });
+
+    this.ServicioReporte.InfoDashUsuarios(4).subscribe(ResultObservableUsuarios => {
+      this.InfoUsuariosCuatro = ResultObservableUsuarios;
+      this.DatosFrecuUsuarios = ResultObservableUsuarios.map((item: any) => ({
+        "name": "Usuarios con " + item.Id + " compras",
+        "value": item.NumUsuarios
+      }));
+    });
+
+    this.ServicioReporte.InfoDashUsuarios(5).subscribe(ResultObservableUsuarios => {
+      this.InfoUsuariosCinco = ResultObservableUsuarios;
+      this.DatosFrecuLocali = ResultObservableUsuarios.map((item: any) => ({
+        "name": item.DescripcionSector,
+        "value": item.NumUsuarios
+      }));
+    });
+  }
+
+  // GENERAR EXCEL USUARIOS
+  GenerarExcelUsuarios() {
+    let workbookUsuarios = new Workbook();
+    let worksheetUsuaUno = workbookUsuarios.addWorksheet("Numero Usuarios Totales");
+    let worksheetUsuaDos = workbookUsuarios.addWorksheet("Numero Usuarios Seis Meses");
+    let worksheetUsuaTres = workbookUsuarios.addWorksheet("Numero Usuarios Localidad");
+    let worksheetUsuaCuatro = workbookUsuarios.addWorksheet("Promedio Compras Usuarios");
+    let worksheetUsuaCinco = workbookUsuarios.addWorksheet("Promedio Compras Localidad");
+
+    let headerUsuaUno = ["Id General", "Id Localidad", "Localidad", "Mes", "Año", "Numero de Usuarios"];
+    let headerUsuaDos = ["Id General", "Mes", "Año", "Numero de Usuarios"];
+    let headerUsuaTres = ["Id General", "Id Localidad", "Localidad", "Numero de Usuarios"];
+    let headerUsuaCuatro = ["Numero de Compras", "Frecuencia de Compra"];
+
+    worksheetUsuaUno.addRow(headerUsuaUno);
+    worksheetUsuaDos.addRow(headerUsuaDos);
+    worksheetUsuaTres.addRow(headerUsuaTres);
+    worksheetUsuaCuatro.addRow(headerUsuaCuatro);
+    worksheetUsuaCinco.addRow(headerUsuaTres);
+
+    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1'].map(key => {
+      worksheetUsuaUno.getCell(key).fill = {
+        type: 'pattern',
+        pattern: 'darkTrellis',
+        fgColor: { argb: '397c97' },
+        bgColor: { argb: '397c97' }
+      };
+      worksheetUsuaUno.getCell(key).font = {
+        color: { argb: 'FFFFFF' }
+      };
+    });
+
+    ['A1', 'B1', 'C1', 'D1'].map(key => {
+      worksheetUsuaDos.getCell(key).fill = {
+        type: 'pattern',
+        pattern: 'darkTrellis',
+        fgColor: { argb: '397c97' },
+        bgColor: { argb: '397c97' }
+      };
+      worksheetUsuaDos.getCell(key).font = {
+        color: { argb: 'FFFFFF' }
+      };
+      worksheetUsuaTres.getCell(key).fill = {
+        type: 'pattern',
+        pattern: 'darkTrellis',
+        fgColor: { argb: '397c97' },
+        bgColor: { argb: '397c97' }
+      };
+      worksheetUsuaTres.getCell(key).font = {
+        color: { argb: 'FFFFFF' }
+      };
+      worksheetUsuaCinco.getCell(key).fill = {
+        type: 'pattern',
+        pattern: 'darkTrellis',
+        fgColor: { argb: '397c97' },
+        bgColor: { argb: '397c97' }
+      };
+      worksheetUsuaCinco.getCell(key).font = {
+        color: { argb: 'FFFFFF' }
+      };
+    });
+
+    ['A1', 'B1'].map(key => {
+      worksheetUsuaCuatro.getCell(key).fill = {
+        type: 'pattern',
+        pattern: 'darkTrellis',
+        fgColor: { argb: '397c97' },
+        bgColor: { argb: '397c97' }
+      };
+      worksheetUsuaCuatro.getCell(key).font = {
+        color: { argb: 'FFFFFF' }
+      };
+    });
+
+
+    worksheetUsuaUno.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' },
+    { width: 30, key: 'E' }, { width: 30, key: 'F' }];
+
+    worksheetUsuaDos.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' }];
+
+    worksheetUsuaTres.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' }];
+
+    worksheetUsuaCuatro.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }];
+
+    worksheetUsuaCinco.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' }];
+
+    worksheetUsuaUno.autoFilter = 'A1:F1';
+    worksheetUsuaDos.autoFilter = 'A1:D1';
+    worksheetUsuaTres.autoFilter = 'A1:D1';
+    worksheetUsuaCuatro.autoFilter = 'A1:B1';
+    worksheetUsuaCinco.autoFilter = 'A1:D1';
+
+    for (let FilaDatosUno of this.InfoUsuariosUno) {
+      let TempDatosUno = [];
+
+      TempDatosUno.push(FilaDatosUno['Id'])
+      TempDatosUno.push(this.ConversionStringNumeros(FilaDatosUno['IdSector']))
+      TempDatosUno.push(FilaDatosUno['DescripcionSector'])
+      TempDatosUno.push(this.ConversionFechaString(FilaDatosUno['IdMes']))
+      TempDatosUno.push(this.ConversionStringNumeros(FilaDatosUno['IdAno']))
+      TempDatosUno.push(FilaDatosUno['NumUsuarios'])
+
+      worksheetUsuaUno.addRow(TempDatosUno);
+    }
+
+    for (let FilaDatosDos of this.InfoUsuariosDos) {
+      let TempDatosDos = [];
+
+      TempDatosDos.push(FilaDatosDos['Id'])
+      TempDatosDos.push(this.ConversionFechaString(FilaDatosDos['IdMes']))
+      TempDatosDos.push(this.ConversionStringNumeros(FilaDatosDos['IdAno']))
+      TempDatosDos.push(FilaDatosDos['NumUsuarios'])
+
+      worksheetUsuaDos.addRow(TempDatosDos);
+    }
+
+    for (let FilaDatosTres of this.InfoUsuariosTres) {
+      let TempDatosTres = [];
+
+      TempDatosTres.push(this.ConversionStringNumeros(FilaDatosTres['Id']))
+      TempDatosTres.push(this.ConversionStringNumeros(FilaDatosTres['IdSector']))
+      TempDatosTres.push(FilaDatosTres['DescripcionSector'])
+      TempDatosTres.push(this.ConversionStringNumeros(FilaDatosTres['NumUsuarios']))
+
+      worksheetUsuaTres.addRow(TempDatosTres);
+    }
+
+    for (let FilaDatosCuatro of this.InfoUsuariosCuatro) {
+      let TempDatosCuatro = [];
+
+      TempDatosCuatro.push(this.ConversionStringNumeros(FilaDatosCuatro['Id']))
+      TempDatosCuatro.push(FilaDatosCuatro['NumUsuarios'])
+
+      worksheetUsuaCuatro.addRow(TempDatosCuatro);
+    }
+
+    for (let FilaDatosCinco of this.InfoUsuariosCinco) {
+      let TempDatosCinco = [];
+
+      TempDatosCinco.push(this.ConversionStringNumeros(FilaDatosCinco['Id']))
+      TempDatosCinco.push(this.ConversionStringNumeros(FilaDatosCinco['IdSector']))
+      TempDatosCinco.push(FilaDatosCinco['DescripcionSector'])
+      TempDatosCinco.push(FilaDatosCinco['NumUsuarios'])
+
+      worksheetUsuaCinco.addRow(TempDatosCinco);
+    }
+
+    let rowIndex = 1;
+
+    for (rowIndex; rowIndex <= worksheetUsuaUno.rowCount; rowIndex++) {
+      worksheetUsuaUno.getRow(rowIndex).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
+    rowIndex = 1;
+    for (rowIndex; rowIndex <= worksheetUsuaDos.rowCount; rowIndex++) {
+      worksheetUsuaDos.getRow(rowIndex).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
+    rowIndex = 1;
+    for (rowIndex; rowIndex <= worksheetUsuaTres.rowCount; rowIndex++) {
+      worksheetUsuaTres.getRow(rowIndex).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
+    rowIndex = 1;
+    for (rowIndex; rowIndex <= worksheetUsuaCuatro.rowCount; rowIndex++) {
+      worksheetUsuaCuatro.getRow(rowIndex).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
+    rowIndex = 1;
+    for (rowIndex; rowIndex <= worksheetUsuaCinco.rowCount; rowIndex++) {
+      worksheetUsuaCinco.getRow(rowIndex).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
+
+    let NombreDocumento = "Usuarios en los Ultimos 6 Meses";
+    workbookUsuarios.xlsx.writeBuffer().then((data) => {
+      let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      fs.saveAs(blob, NombreDocumento + '.xlsx');
+    });
+  }
+
+  // VENTAS TOTALES
   InfoVentas() {
-    this.MostrarVentas = true;
     this.MostrarUsuarios = false;
     this.MostrarProductos = false;
+    this.MostrarProductosPesos = false;
+    this.MostrarSlideBoton = false;
+    this.SlideBoton = false;
+    this.MostrarGrafiDinamiLibras = false;
+    this.MostrarGrafiDinamiPesos = false;
+    this.MostrarVentas = true;
 
     this.VentasTotales = [];
     this.NumeroVentasTotales = [];
@@ -544,6 +622,7 @@ export class DashboardComponent implements OnInit {
     this.document.querySelector('#OpcionUno')?.classList.add('OpcionUnoAfter');
     this.document.querySelector('#OpcionDos')?.classList.add('OpcionDosEstandarAfter');
     this.document.querySelector('#OpcionTres')?.classList.remove('OpcionTresEstandarAfter');
+
 
     let Marcador: number = 0;
 
@@ -592,9 +671,8 @@ export class DashboardComponent implements OnInit {
 
     this.ServicioReporte.InfoVentasDash('2').subscribe(ResultObservableVentas => {
       this.InfoVentasDos = ResultObservableVentas;
-      for (let i = 0; i < ResultObservableVentas.length; i++) {
-        this.NumeroTotalVentas = this.NumeroTotalVentas + ResultObservableVentas[i].NumCompras;
-      }
+
+      this.NumeroTotalVentas = ResultObservableVentas.reduce((Acum, Elem) => Acum + Elem.NumCompras, 0)
 
       this.NumeroVentasMensuales = ResultObservableVentas.map((item: any) => ({
         "name": this.ConversionFechaString(item.IdMes) + " " + item.IdAno,
@@ -611,6 +689,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  // GENERAR EXCEL VENTAS
   GenerarExcelVentas() {
     let workbookUno = new Workbook();
     let worksheetUno = workbookUno.addWorksheet("Ventas Por Fecha y Localidad");
@@ -697,7 +776,7 @@ export class DashboardComponent implements OnInit {
     for (let FilaDatosTres of this.InfoVentasTres) {
       let TempDatosTres = [];
 
-      TempDatosTres.push(FilaDatosTres['id'])
+      TempDatosTres.push(this.ConversionStringNumeros(FilaDatosTres['id']))
       TempDatosTres.push(FilaDatosTres['IdSector'])
       TempDatosTres.push(FilaDatosTres['DescripcionSector'])
       TempDatosTres.push(FilaDatosTres['NumCompras'])
@@ -727,265 +806,572 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  InfoProductos() {
-    this.MostrarProductos = true;
-    this.MostrarVentas = false;
+  // MODULO PRODUCTO LIBRAS
+  InfoProductosLibras() {
     this.MostrarUsuarios = false;
-
-    this.NumeroTotalVentasProd = 0;
-    this.VentasProdLocali = [];
-    this.NumeroVentasProdLocali = [];
-    this.VentasProdFecha = [];
-    this.NumeroVentasProdFecha = [];
-    this.VentasProdLocaliFecha = [];
-    this.NumeroVentasProdGene = [];
+    this.MostrarVentas = false;
+    this.SlideBoton = false;
+    this.MostrarGrafiDinamiLibras = false;
+    this.MostrarGrafiDinamiPesos = false;
+    this.MostrarSlideBoton = true;
+    this.MostrarProductos = true;
 
     this.document.querySelector('#OpcionUno')?.classList.add('OpcionUnoAfter');
     this.document.querySelector('#OpcionDos')?.classList.remove('OpcionDosEstandarAfter');
     this.document.querySelector('#OpcionTres')?.classList.add('OpcionTresEstandarAfter');
 
-    let Marcador: number = 0;
-
-    // NUMERO DE PRODUCTOS VENDIDOS POR LCOALIDAD Y FECHA
-    this.ServicioReporte.InfoVentasProdDash('1').subscribe(ResultObservableVentasProd => {
-      this.InfoProductosUno = ResultObservableVentasProd;
-      for (let i = 0; i < ResultObservableVentasProd.length; i++) {
-        if (this.VentasProdLocaliFecha.length > 0) {
-          for (let j = 0; j < i; j++) {
-            if (this.VentasProdLocaliFecha[j].IdLocalidad == ResultObservableVentasProd[i].IdSector) {
-              this.VentasProdLocaliFecha[j].serie.push({
-                "name": this.ConversionFechaString(ResultObservableVentasProd[i].IdMes) + " " +
-                  ResultObservableVentasProd[i].IdAno + " " +
-                  this.ConversionNull(ResultObservableVentasProd[i].DSCRPCION),
-                "value": ResultObservableVentasProd[i].Cantidad
-              })
-              break;
-            } else {
-              Marcador = j + 1;
-              if (Marcador == this.VentasProdLocaliFecha.length) {
-                this.VentasProdLocaliFecha.push({
-                  "IdLocalidad": ResultObservableVentasProd[i].IdSector, "Localidad": ResultObservableVentasProd[i].DescripcionSector,
-                  "serie": [{
-                    "name": this.ConversionFechaString(ResultObservableVentasProd[i].IdMes) + " " + ResultObservableVentasProd[i].IdAno + " " +
-                      this.ConversionNull(ResultObservableVentasProd[i].DSCRPCION),
-                    "value": ResultObservableVentasProd[i].Cantidad
-                  }]
-                });
-                break;
-              }
-            }
-          }
-        } else {
-          this.VentasProdLocaliFecha.push({
-            "IdLocalidad": ResultObservableVentasProd[i].IdSector, "Localidad": ResultObservableVentasProd[i].DescripcionSector,
-            "serie": [{
-              "name": this.ConversionFechaString(ResultObservableVentasProd[i].IdMes) + " " + ResultObservableVentasProd[i].IdAno + " " +
-                this.ConversionNull(ResultObservableVentasProd[i].DSCRPCION),
-              "value": ResultObservableVentasProd[i].Cantidad
-            }]
-          })
-        }
-      }
-
-      this.NumeroVentasProdGene = this.VentasProdLocaliFecha.map((item: any) => ({
-        "name": item.Localidad,
-        "series": item.serie
-      }));
+    this.ServicioReporte.InfoDashProdLibras(1).subscribe(ResultObservableProdLibras => {
+      this.InfoProdLibrasUno = ResultObservableProdLibras;
     });
 
-    // NUMERO DE PRODUCTOS VENDIDOS POR FECHA
-    this.ServicioReporte.InfoVentasProdDash('2').subscribe(ResultObservableVentasProd => {
-      this.InfoProductosDos = ResultObservableVentasProd;
-      for (let i = 0; i < ResultObservableVentasProd.length; i++) {
-        this.NumeroTotalVentasProd = this.NumeroTotalVentasProd + ResultObservableVentasProd[i].Cantidad;
-        if (this.VentasProdFecha.length > 0) {
-          for (let j = 0; j < i; j++) {
-            if (this.VentasProdFecha[j].Mes == ResultObservableVentasProd[i].IdMes) {
-              this.VentasProdFecha[j].Producto.push({ "name": this.ConversionNull(ResultObservableVentasProd[i].DSCRPCION), "value": ResultObservableVentasProd[i].Cantidad })
-              break;
-            } else {
-              Marcador = j + 1;
-              if (Marcador == this.VentasProdFecha.length) {
-                this.VentasProdFecha.push({
-                  "Mes": ResultObservableVentasProd[i].IdMes, "Año": ResultObservableVentasProd[i].IdAno,
-                  "Producto": [{ "name": this.ConversionNull(ResultObservableVentasProd[i].DSCRPCION), "value": ResultObservableVentasProd[i].Cantidad }]
-                });
-                break;
-              }
-            }
-          }
-        } else {
-          this.VentasProdFecha.push({
-            "Mes": ResultObservableVentasProd[i].IdMes, "Año": ResultObservableVentasProd[i].IdAno,
-            "Producto": [{ "name": this.ConversionNull(ResultObservableVentasProd[i].DSCRPCION), "value": ResultObservableVentasProd[i].Cantidad }]
-          });
-        }
-      }
-
-      this.NumeroVentasProdFecha = this.VentasProdFecha.map((item: any) => ({
-        "name": this.ConversionFechaString(item.Mes) + " " + item.Año,
-        "series": item.Producto
-      }));
+    this.ServicioReporte.InfoDashProdLibras(2).subscribe(ResultObservableProdLibras => {
+      this.InfoProdLibrasDos = ResultObservableProdLibras;
     });
 
-    // NUMERO DE PRODUCTOS VENDIDOS POR LOCALIDAD
-    this.ServicioReporte.InfoVentasProdDash('3').subscribe(ResultObservableVentasProd => {
-      this.InfoProductosTres = ResultObservableVentasProd;
-      for (let i = 0; i < ResultObservableVentasProd.length; i++) {
-        if (this.VentasProdLocali.length > 0) {
-          for (let j = 0; j < i; j++) {
-            if (this.VentasProdLocali[j].IdSector == ResultObservableVentasProd[i].IdSector) {
-              this.VentasProdLocali[j].Producto.push({
-                "name": this.ConversionNull(ResultObservableVentasProd[i].DSCRPCION),
-                "value": ResultObservableVentasProd[i].Cantidad
-              })
-              break;
-            } else {
-              Marcador = j + 1;
-              if (Marcador == this.VentasProdLocali.length) {
-                this.VentasProdLocali.push({
-                  "IdSector": ResultObservableVentasProd[i].IdSector, "Localidad": ResultObservableVentasProd[i].DescripcionSector,
-                  "Producto": [{ "name": this.ConversionNull(ResultObservableVentasProd[i].DSCRPCION), "value": ResultObservableVentasProd[i].Cantidad }]
-                });
-                break;
-              }
-            }
-          }
-        } else {
-          this.VentasProdLocali.push({
-            "IdSector": ResultObservableVentasProd[i].IdSector, "Localidad": ResultObservableVentasProd[i].DescripcionSector,
-            "Producto": [{ "name": this.ConversionNull(ResultObservableVentasProd[i].DSCRPCION), "value": ResultObservableVentasProd[i].Cantidad }]
-          });
-        }
-      }
+    this.ServicioReporte.InfoDashProdLibras(3).subscribe(ResultObservableProdLibras => {
+      this.InfoProdLibrasTres = ResultObservableProdLibras;
+    });
 
-      this.NumeroVentasProdLocali = this.VentasProdLocali.map((item: any) => ({
-        "name": item.Localidad,
-        "series": item.Producto
+    this.ServicioReporte.InfoDashProdLibras(4).subscribe(ResultObservableProdLibras => {
+      this.DatosProdMesUno = ResultObservableProdLibras.map((item: any) => ({
+        "name": item.DSCRPCION,
+        "value": this.ConversionStringNumeros(item.VentasLibras),
+        "extra": { "IdProducto": item.IdProducto, "IdMes": item.IdMes }
       }));
+
+      this.TituloGraficoUno = "Ventas en Libras por Presentación de Producto Mes de  " + this.ConversionFechaString(ResultObservableProdLibras[0].IdMes);
+    });
+
+    this.ServicioReporte.InfoDashProdLibras(5).subscribe(ResultObservableProdLibras => {
+      this.DatosProdMesDos = ResultObservableProdLibras.map((item: any) => ({
+        "name": item.DSCRPCION,
+        "value": this.ConversionStringNumeros(item.VentasLibras),
+        "extra": { "IdProducto": item.IdProducto, "IdMes": item.IdMes }
+      }));
+
+      this.TituloGraficoDos = "Ventas en Libras por Presentación de Producto Mes de " + this.ConversionFechaString(ResultObservableProdLibras[0].IdMes);
+    });
+
+    this.ServicioReporte.InfoDashProdLibras(6).subscribe(ResultObservableProdLibras => {
+      this.DatosProdMesTres = ResultObservableProdLibras.map((item: any) => ({
+        "name": item.DSCRPCION,
+        "value": this.ConversionStringNumeros(item.VentasLibras),
+        "extra": { "IdProducto": item.IdProducto, "IdMes": item.IdMes }
+      }));
+
+      this.TituloGraficoTres = "Ventas en Libras por Presentación de Producto Mes de " + this.ConversionFechaString(ResultObservableProdLibras[0].IdMes);
+    });
+
+    this.ServicioReporte.InfoDashProdLibras(7).subscribe(ResultObservableProdLibras => {
+      this.DatosProdMesCuatro = ResultObservableProdLibras.map((item: any) => ({
+        "name": item.DSCRPCION,
+        "value": this.ConversionStringNumeros(item.VentasLibras),
+        "extra": { "IdProducto": item.IdProducto, "IdMes": item.IdMes }
+      }));
+
+      this.TituloGraficoCuatro = "Ventas en Libras por Presentación de Producto Mes de  " + this.ConversionFechaString(ResultObservableProdLibras[0].IdMes);
+    });
+
+    this.ServicioReporte.InfoDashProdLibras(8).subscribe(ResultObservableProdLibras => {
+      this.DatosProdMesCinco = ResultObservableProdLibras.map((item: any) => ({
+        "name": item.DSCRPCION,
+        "value": this.ConversionStringNumeros(item.VentasLibras),
+        "extra": { "IdProducto": item.IdProducto, "IdMes": item.IdMes }
+      }));
+
+      this.TituloGraficoCinco = "Ventas en Libras por Presentación de Producto Mes de " + this.ConversionFechaString(ResultObservableProdLibras[0].IdMes);
+    });
+
+    this.ServicioReporte.InfoDashProdLibras(9).subscribe(ResultObservableProdLibras => {
+      if (ResultObservableProdLibras[0].IdMes == '') {
+        this.MostrarProdLibrasUltimo = false;
+      } else {
+        this.MostrarProdLibrasUltimo = true;
+
+        this.DatosProdMesSeis = ResultObservableProdLibras.map((item: any) => ({
+          "name": item.DSCRPCION,
+          "value": this.ConversionStringNumeros(item.VentasLibras),
+          "extra": { "IdProducto": item.IdProducto, "IdMes": item.IdMes }
+        }));
+
+        this.TituloGraficoSeis = "Ventas en Libras por Presentación de Producto Mes de " + this.ConversionFechaString(ResultObservableProdLibras[0].IdMes);
+      }
     });
   }
 
-  GenerarExcelProdutos() {
-    let workbookProductos = new Workbook();
-    let worksheetProdUno = workbookProductos.addWorksheet("Ventas de Productos Por Fecha y Localidad");
-    let worksheetProdDos = workbookProductos.addWorksheet("Ventas de Productos Por Fecha");
-    let worksheetProdTres = workbookProductos.addWorksheet("Ventas de Productos Por Localidad");
+  // GRAFICO DINAMICO PRODUCTO LIBRAS
+  AbrirGrafiDinamiLibras(data: any, ContenedorResultadosLibras: string): void {
 
-    let headerProdUno = ["Id General", "Id Localidad", "Localidad", "Id Producto", "Producto", "Mes", "Año", "Numero de Compras"];
-    let headerProdDos = ["Id General", "Id Producto", "Producto", "Mes", "Año", "Numero de Compras"];
-    let headerProdTres = ["Id General", "Id Localidad", "Localidad", "Id Producto", "Producto", "Numero de Compras"];
+    let Marcador: number = 0;
+    this.MostrarGrafiDinamiLibras = true;
+    this.DatosFiltradosMes = [];
+    this.DatosFiltradosLocali = [];
+    this.NombreTituloFiltrados = '';
+    this.FechaTituloFiltrados = '';
 
+    location.hash = "#" + ContenedorResultadosLibras;
 
-    worksheetProdUno.addRow(headerProdUno);
-    worksheetProdDos.addRow(headerProdDos);
-    worksheetProdTres.addRow(headerProdTres);
+    const FiltroClic = JSON.parse(JSON.stringify(data));
 
-    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1'].map(key => {
-      worksheetProdUno.getCell(key).fill = {
+    this.ServicioReporte.InfoDashProdLibras(2).subscribe(ResultObservableProdLibras => {
+      this.DatosFiltradosMes = ResultObservableProdLibras.filter(x => x.IdProducto == FiltroClic.extra.IdProducto && x.IdMes == FiltroClic.extra.IdMes);
+
+      this.NombreTituloFiltrados = this.DatosFiltradosMes[0].DSCRPCION;
+      this.FechaTituloFiltrados = this.ConversionFechaString(this.DatosFiltradosMes[0].IdMes);
+
+      this.InfoDatosFiltradosMes = this.DatosFiltradosMes.map((item: any) => ({
+        "name": item.DSCRPCION + " " + item.Presentacion,
+        "value": this.ConversionStringNumeros(item.VentasLibras)
+      }));
+    });
+
+    let DatosFiltro = this.InfoProdLibrasUno.filter((x: any) => x.IdProducto == FiltroClic.extra.IdProducto && x.IdMes == FiltroClic.extra.IdMes);
+
+    for (let i = 0; i < DatosFiltro.length; i++) {
+      if (this.DatosFiltradosLocali.length > 0) {
+        for (let j = 0; j < i; j++) {
+          if (this.DatosFiltradosLocali[j].IdLocalidad == DatosFiltro[i].IdSector) {
+            this.DatosFiltradosLocali[j].Grupo.push({
+              "name": DatosFiltro[i].DSCRPCION + " - " + DatosFiltro[i].Presentacion,
+              "value": this.ConversionStringNumeros(DatosFiltro[i].VentasLibras)
+            });
+            break;
+          } else {
+            Marcador = j + 1;
+            if (Marcador == this.DatosFiltradosLocali.length) {
+              this.DatosFiltradosLocali.push({
+                "IdLocalidad": DatosFiltro[i].IdSector, "Localidad": DatosFiltro[i].DescripcionSector,
+                "Grupo": [{ "name": DatosFiltro[i].DSCRPCION + " - " + DatosFiltro[i].Presentacion, "value": this.ConversionStringNumeros(DatosFiltro[i].VentasLibras) }]
+              });
+              break;
+            }
+          }
+        }
+      } else {
+        this.DatosFiltradosLocali.push({
+          "IdLocalidad": DatosFiltro[i].IdSector, "Localidad": DatosFiltro[i].DescripcionSector,
+          "Grupo": [{ "name": DatosFiltro[i].DSCRPCION + " - " + DatosFiltro[i].Presentacion, "value": this.ConversionStringNumeros(DatosFiltro[i].VentasLibras) }]
+        });
+      }
+    }
+
+    this.InfoDatosFiltradosLocali = this.DatosFiltradosLocali.map((item: any) => ({
+      "name": item.Localidad,
+      "series": item.Grupo
+    }));
+  }
+
+  // GENERAR EXCEL PRODUCTOS LIBRAS
+  GenerarExcelProdLibras() {
+    let workbookProdLibras = new Workbook();
+    let worksheetProdLibrasUno = workbookProdLibras.addWorksheet("Ventas en Libras Fecha y Localidad");
+    let worksheetProdLibrasDos = workbookProdLibras.addWorksheet("Ventas en Libras Por Fecha");
+    let worksheetProdLibrasTres = workbookProdLibras.addWorksheet("Ventas en Libras Por Localidad");
+
+    let headerProdLibrasUno = ["Id General", "Año", "Mes", "IdProducto", "Producto", "Presentacion", "IdLocalidad", "Localidad", "VentasEnLibras"];
+    let headerProdLibrasDos = ["Id General", "Año", "Mes", "IdProducto", "Producto", "Presentacion", "VentasEnPesos"];
+    let headerProdLibrasTres = ["Id General", "IdProducto", "Producto", "Presentacion", "IdLocalidad", "Localidad", "VentasEnPesos"];
+
+    worksheetProdLibrasUno.addRow(headerProdLibrasUno);
+    worksheetProdLibrasDos.addRow(headerProdLibrasDos);
+    worksheetProdLibrasTres.addRow(headerProdLibrasTres);
+
+    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1'].map(key => {
+      worksheetProdLibrasUno.getCell(key).fill = {
         type: 'pattern',
         pattern: 'darkTrellis',
         fgColor: { argb: '397c97' },
         bgColor: { argb: '397c97' }
       };
-      worksheetProdUno.getCell(key).font = {
+      worksheetProdLibrasUno.getCell(key).font = {
         color: { argb: 'FFFFFF' }
       };
     });
 
-    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1'].map(key => {
-      worksheetProdDos.getCell(key).fill = {
+    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1'].map(key => {
+      worksheetProdLibrasDos.getCell(key).fill = {
         type: 'pattern',
         pattern: 'darkTrellis',
         fgColor: { argb: '397c97' },
         bgColor: { argb: '397c97' }
       };
-      worksheetProdDos.getCell(key).font = {
+      worksheetProdLibrasDos.getCell(key).font = {
         color: { argb: 'FFFFFF' }
       };
-      worksheetProdTres.getCell(key).fill = {
+      worksheetProdLibrasTres.getCell(key).fill = {
         type: 'pattern',
         pattern: 'darkTrellis',
         fgColor: { argb: '397c97' },
         bgColor: { argb: '397c97' }
       };
-      worksheetProdTres.getCell(key).font = {
+      worksheetProdLibrasTres.getCell(key).font = {
         color: { argb: 'FFFFFF' }
       };
     });
 
-    worksheetProdUno.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' },
-    { width: 30, key: 'E' }, { width: 30, key: 'F' }, { width: 30, key: 'G' }, { width: 30, key: 'H' }];
+    worksheetProdLibrasUno.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' },
+    { width: 30, key: 'E' }, { width: 30, key: 'F' }, { width: 30, key: 'G' }, { width: 30, key: 'H' }, { width: 30, key: 'I' }];
 
-    worksheetProdDos.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' },
-    { width: 30, key: 'E' }, { width: 30, key: 'F' }];
+    worksheetProdLibrasDos.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' },
+    { width: 30, key: 'E' }, { width: 30, key: 'F' }, { width: 30, key: 'G' }];
 
-    worksheetProdTres.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' },
-    { width: 30, key: 'E' }, { width: 30, key: 'F' }];
+    worksheetProdLibrasTres.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' },
+    { width: 30, key: 'E' }, { width: 30, key: 'F' }, { width: 30, key: 'G' }];
 
-    worksheetProdUno.autoFilter = 'A1:F1';
-    worksheetProdDos.autoFilter = 'A1:F1';
-    worksheetProdTres.autoFilter = 'A1:F1';
+    worksheetProdLibrasUno.autoFilter = 'A1:I1';
+    worksheetProdLibrasDos.autoFilter = 'A1:G1';
+    worksheetProdLibrasTres.autoFilter = 'A1:G1';
 
-    for (let FilaDatosProdUno of this.InfoProductosUno) {
-      let TempDatosProdUno = [];
+    for (let FilaDatosProdLibrasUno of this.InfoProdLibrasUno) {
+      let TempDatosProdLibrasUno = [];
 
-      TempDatosProdUno.push(FilaDatosProdUno['Id'])
-      TempDatosProdUno.push(FilaDatosProdUno['IdSector'])
-      TempDatosProdUno.push(FilaDatosProdUno['DescripcionSector'])
-      TempDatosProdUno.push(this.ConversionNull(FilaDatosProdUno['idproducto']))
-      TempDatosProdUno.push(this.ConversionNull(FilaDatosProdUno['DSCRPCION']))
-      TempDatosProdUno.push(this.ConversionFechaString(FilaDatosProdUno['IdMes']))
-      TempDatosProdUno.push(FilaDatosProdUno['IdAno'])
-      TempDatosProdUno.push(FilaDatosProdUno['Cantidad'])
+      TempDatosProdLibrasUno.push(this.ConversionStringNumeros(FilaDatosProdLibrasUno['IdMain']))
+      TempDatosProdLibrasUno.push(this.ConversionStringNumeros(FilaDatosProdLibrasUno['IdAno']))
+      TempDatosProdLibrasUno.push(this.ConversionFechaString(FilaDatosProdLibrasUno['IdMes']))
+      TempDatosProdLibrasUno.push(this.ConversionNull(FilaDatosProdLibrasUno['IdProducto']))
+      TempDatosProdLibrasUno.push(this.ConversionNull(FilaDatosProdLibrasUno['DSCRPCION']))
+      TempDatosProdLibrasUno.push(this.ConversionNull(FilaDatosProdLibrasUno['Presentacion']))
+      TempDatosProdLibrasUno.push(FilaDatosProdLibrasUno['IdSector'])
+      TempDatosProdLibrasUno.push(FilaDatosProdLibrasUno['DescripcionSector'])
+      TempDatosProdLibrasUno.push(this.ConversionStringNumeros(FilaDatosProdLibrasUno['VentasLibras']))
 
-      worksheetProdUno.addRow(TempDatosProdUno);
+      worksheetProdLibrasUno.addRow(TempDatosProdLibrasUno);
     }
 
-    for (let FilaDatosProdDos of this.InfoProductosDos) {
-      let TempDatosProdDos = [];
+    for (let FilaDatosProdLibrasDos of this.InfoProdLibrasDos) {
+      let TempDatosProdLibrasDos = [];
 
-      TempDatosProdDos.push(FilaDatosProdDos['Id'])
-      TempDatosProdDos.push(this.ConversionNull(FilaDatosProdDos['idproducto']))
-      TempDatosProdDos.push(this.ConversionNull(FilaDatosProdDos['DSCRPCION']))
-      TempDatosProdDos.push(this.ConversionFechaString(FilaDatosProdDos['IdMes']))
-      TempDatosProdDos.push(FilaDatosProdDos['IdAno'])
-      TempDatosProdDos.push(FilaDatosProdDos['Cantidad'])
+      TempDatosProdLibrasDos.push(this.ConversionStringNumeros(FilaDatosProdLibrasDos['IdMain']))
+      TempDatosProdLibrasDos.push(this.ConversionStringNumeros(FilaDatosProdLibrasDos['IdAno']))
+      TempDatosProdLibrasDos.push(this.ConversionFechaString(FilaDatosProdLibrasDos['IdMes']))
+      TempDatosProdLibrasDos.push(this.ConversionNull(FilaDatosProdLibrasDos['IdProducto']))
+      TempDatosProdLibrasDos.push(this.ConversionNull(FilaDatosProdLibrasDos['DSCRPCION']))
+      TempDatosProdLibrasDos.push(this.ConversionNull(FilaDatosProdLibrasDos['Presentacion']))
+      TempDatosProdLibrasDos.push(this.ConversionStringNumeros(FilaDatosProdLibrasDos['VentasLibras']))
 
-      worksheetProdDos.addRow(TempDatosProdDos);
+      worksheetProdLibrasDos.addRow(TempDatosProdLibrasDos);
     }
 
-    for (let FilaDatosProdTres of this.InfoProductosTres) {
-      let TempDatosProdTres = [];
+    for (let FilaDatosProdLibrasTres of this.InfoProdLibrasTres) {
+      let TempDatosProdLibrasTres = [];
 
-      TempDatosProdTres.push(FilaDatosProdTres['Id'])
-      TempDatosProdTres.push(FilaDatosProdTres['IdSector'])
-      TempDatosProdTres.push(FilaDatosProdTres['DescripcionSector'])
-      TempDatosProdTres.push(this.ConversionNull(FilaDatosProdTres['idproducto']))
-      TempDatosProdTres.push(this.ConversionNull(FilaDatosProdTres['DSCRPCION']))
-      TempDatosProdTres.push(FilaDatosProdTres['Cantidad'])
+      TempDatosProdLibrasTres.push(this.ConversionStringNumeros(FilaDatosProdLibrasTres['IdMain']))
+      TempDatosProdLibrasTres.push(this.ConversionNull(FilaDatosProdLibrasTres['IdProducto']))
+      TempDatosProdLibrasTres.push(this.ConversionNull(FilaDatosProdLibrasTres['DSCRPCION']))
+      TempDatosProdLibrasTres.push(this.ConversionNull(FilaDatosProdLibrasTres['Presentacion']))
+      TempDatosProdLibrasTres.push(FilaDatosProdLibrasTres['IdSector'])
+      TempDatosProdLibrasTres.push(FilaDatosProdLibrasTres['DescripcionSector'])
+      TempDatosProdLibrasTres.push(this.ConversionStringNumeros(FilaDatosProdLibrasTres['VentasLibras']))
 
-      worksheetProdTres.addRow(TempDatosProdTres);
+      worksheetProdLibrasTres.addRow(TempDatosProdLibrasTres);
     }
 
-    let rowIndexProd = 1
+    let rowIndexProdLibras = 1
+    for (rowIndexProdLibras; rowIndexProdLibras <= worksheetProdLibrasUno.rowCount; rowIndexProdLibras++) {
+      worksheetProdLibrasUno.getRow(rowIndexProdLibras).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
+    rowIndexProdLibras = 1
+    for (rowIndexProdLibras; rowIndexProdLibras <= worksheetProdLibrasDos.rowCount; rowIndexProdLibras++) {
+      worksheetProdLibrasDos.getRow(rowIndexProdLibras).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
+    rowIndexProdLibras = 1
+    for (rowIndexProdLibras; rowIndexProdLibras <= worksheetProdLibrasTres.rowCount; rowIndexProdLibras++) {
+      worksheetProdLibrasTres.getRow(rowIndexProdLibras).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
 
-    for (rowIndexProd; rowIndexProd <= worksheetProdUno.rowCount; rowIndexProd++) {
-      worksheetProdUno.getRow(rowIndexProd).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-    }
-    rowIndexProd = 1
-    for (rowIndexProd; rowIndexProd <= worksheetProdDos.rowCount; rowIndexProd++) {
-      worksheetProdDos.getRow(rowIndexProd).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-    }
-    rowIndexProd = 1
-    for (rowIndexProd; rowIndexProd <= worksheetProdTres.rowCount; rowIndexProd++) {
-      worksheetProdTres.getRow(rowIndexProd).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-    }
-
-    let NombreXlsxProd = "Numero de Ventas Por Producto en los Ultimos Seis Meses"
-    workbookProductos.xlsx.writeBuffer().then((data) => {
+    let NombreXlsxProdLibras = "Numero de Ventas en Libras Durante los Ultimos Seis Meses"
+    workbookProdLibras.xlsx.writeBuffer().then((data) => {
       let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      fs.saveAs(blob, NombreXlsxProd + '.xlsx');
+      fs.saveAs(blob, NombreXlsxProdLibras + '.xlsx');
+    });
+
+  }
+
+  // PRODUCTO PESOS
+  InfoProductosPesos() {
+    this.MostrarProductos = false;
+    this.MostrarVentas = false;
+    this.MostrarUsuarios = false;
+    this.MostrarGrafiDinamiLibras = false;
+    this.MostrarGrafiDinamiPesos = false;
+    this.MostrarProductosPesos = true
+
+    this.ServicioReporte.InfoDashProdPesos(1).subscribe(ResultObserProdPesos => {
+      this.InfoProdPesosUno = ResultObserProdPesos;
+    });
+
+    this.ServicioReporte.InfoDashProdPesos(2).subscribe(ResultObserProdPesos => {
+      this.InfoProdPesosDos = ResultObserProdPesos;
+    });
+
+    this.ServicioReporte.InfoDashProdPesos(3).subscribe(ResultObserProdPesos => {
+      this.InfoProdPesosTres = ResultObserProdPesos;
+    });
+
+    this.ServicioReporte.InfoDashProdPesos(4).subscribe(ResultObserProdPesos => {
+      this.DatosProdMesUno = ResultObserProdPesos.map((item: any) => ({
+        "name": item.DSCRPCION,
+        "value": this.ConversionStringNumeros(item.VentasPesos),
+        "extra": { "IdProducto": item.IdProducto, "IdMes": item.IdMes }
+      }));
+
+      this.TituloGraficoUno = "Ventas en Pesos por Presentación de Producto Mes de " + this.ConversionFechaString(ResultObserProdPesos[0].IdMes);
+
+    });
+
+    this.ServicioReporte.InfoDashProdPesos(5).subscribe(ResultObserProdPesos => {
+      this.DatosProdMesDos = ResultObserProdPesos.map((item: any) => ({
+        "name": item.DSCRPCION,
+        "value": this.ConversionStringNumeros(item.VentasPesos),
+        "extra": { "IdProducto": item.IdProducto, "IdMes": item.IdMes }
+      }));
+
+      this.TituloGraficoDos = "Ventas en Pesos por Presentación de Producto Mes de " + this.ConversionFechaString(ResultObserProdPesos[0].IdMes);
+
+    });
+
+    this.ServicioReporte.InfoDashProdPesos(6).subscribe(ResultObserProdPesos => {
+      this.DatosProdMesTres = ResultObserProdPesos.map((item: any) => ({
+        "name": item.DSCRPCION,
+        "value": this.ConversionStringNumeros(item.VentasPesos),
+        "extra": { "IdProducto": item.IdProducto, "IdMes": item.IdMes }
+      }));
+
+      this.TituloGraficoTres = "Ventas en Pesos por Presentación de Producto Mes de " + this.ConversionFechaString(ResultObserProdPesos[0].IdMes);
+
+    });
+
+    this.ServicioReporte.InfoDashProdPesos(7).subscribe(ResultObserProdPesos => {
+      this.DatosProdMesCuatro = ResultObserProdPesos.map((item: any) => ({
+        "name": item.DSCRPCION,
+        "value": this.ConversionStringNumeros(item.VentasPesos),
+        "extra": { "IdProducto": item.IdProducto, "IdMes": item.IdMes }
+      }));
+
+      this.TituloGraficoCuatro = "Ventas en Pesos por Presentación de Producto Mes de " + this.ConversionFechaString(ResultObserProdPesos[0].IdMes);
+
+    });
+
+    this.ServicioReporte.InfoDashProdPesos(8).subscribe(ResultObserProdPesos => {
+      this.DatosProdMesCinco = ResultObserProdPesos.map((item: any) => ({
+        "name": item.DSCRPCION,
+        "value": this.ConversionStringNumeros(item.VentasPesos),
+        "extra": { "IdProducto": item.IdProducto, "IdMes": item.IdMes }
+      }));
+
+      this.TituloGraficoCinco = "Ventas en Pesos por Presentación de Producto Mes de " + this.ConversionFechaString(ResultObserProdPesos[0].IdMes);
+
+    });
+
+    this.ServicioReporte.InfoDashProdPesos(9).subscribe(ResultObserProdPesos => {
+      if (ResultObserProdPesos[0].IdMes == '') {
+        this.MostrarProdPesosUltimo = false;
+      } else {
+        this.MostrarProdPesosUltimo = true;
+
+        this.DatosProdMesSeis = ResultObserProdPesos.map((item: any) => ({
+          "name": item.DSCRPCION,
+          "value": this.ConversionStringNumeros(item.VentasPesos),
+          "extra": { "IdProducto": item.IdProducto, "IdMes": item.IdMes }
+        }));
+
+        this.TituloGraficoSeis = "Ventas en Pesos por Presentación de Producto Mes de " + this.ConversionFechaString(ResultObserProdPesos[0].IdMes);
+      }
+    });
+  }
+
+  // GRAFICAS DINAMICAS PRODUCTOS PESOS
+  AbrirGrafiDinamiPesos(DataClic: any, ContenedorResultadosPesos: string): void {
+
+    let Marcador: number = 0;
+    this.MostrarGrafiDinamiPesos = true;
+    this.DatosFiltradosMes = [];
+    this.InfoDatosFiltradosMes = [];
+    this.DatosFiltradosLocali = [];
+    this.InfoDatosFiltradosLocali = [];
+    this.NombreTituloFiltrados = '';
+    this.FechaTituloFiltrados = '';
+
+    location.hash = '#' + ContenedorResultadosPesos;
+
+    const FiltroClicPesos = JSON.parse(JSON.stringify(DataClic));
+
+    this.ServicioReporte.InfoDashProdPesos(2).subscribe(ResultObserProdPesos => {
+      this.DatosFiltradosMes = ResultObserProdPesos.filter(x => x.IdProducto == FiltroClicPesos.extra.IdProducto && x.IdMes == FiltroClicPesos.extra.IdMes);
+
+      this.NombreTituloFiltrados = this.DatosFiltradosMes[0].DSCRPCION;
+      this.FechaTituloFiltrados = this.ConversionFechaString(this.DatosFiltradosMes[0].IdMes);
+
+      this.InfoDatosFiltradosMes = this.DatosFiltradosMes.map((item: any) => ({
+        "name": item.DSCRPCION + " " + item.Presentacion,
+        "value": this.ConversionStringNumeros(item.VentasPesos)
+      }));
+    });
+
+    let DatosFiltroLocalidad = this.InfoProdPesosUno.filter((x: any) => x.IdProducto == FiltroClicPesos.extra.IdProducto && x.IdMes == FiltroClicPesos.extra.IdMes);
+
+    for (let i = 0; i < DatosFiltroLocalidad.length; i++) {
+      if (this.DatosFiltradosLocali.length > 0) {
+        for (let j = 0; j < i; j++) {
+          if (this.DatosFiltradosLocali[j].IdLocalidad == DatosFiltroLocalidad[i].IdSector) {
+            this.DatosFiltradosLocali[j].Grupo.push({
+              "name": DatosFiltroLocalidad[i].DSCRPCION + " - " + DatosFiltroLocalidad[i].Presentacion,
+              "value": this.ConversionStringNumeros(DatosFiltroLocalidad[i].VentasPesos)
+            });
+            break;
+          } else {
+            Marcador = j + 1;
+            if (Marcador == this.DatosFiltradosLocali.length) {
+              this.DatosFiltradosLocali.push({
+                "IdLocalidad": DatosFiltroLocalidad[i].IdSector, "Localidad": DatosFiltroLocalidad[i].DescripcionSector,
+                "Grupo": [{
+                  "name": DatosFiltroLocalidad[i].DSCRPCION + " - " + DatosFiltroLocalidad[i].Presentacion,
+                  "value": this.ConversionStringNumeros(DatosFiltroLocalidad[i].VentasPesos)
+                }]
+              });
+              break;
+            }
+          }
+        }
+      } else {
+        this.DatosFiltradosLocali.push({
+          "IdLocalidad": DatosFiltroLocalidad[i].IdSector, "Localidad": DatosFiltroLocalidad[i].DescripcionSector,
+          "Grupo": [{
+            "name": DatosFiltroLocalidad[i].DSCRPCION + " - " + DatosFiltroLocalidad[i].Presentacion,
+            "value": this.ConversionStringNumeros(DatosFiltroLocalidad[i].VentasPesos)
+          }]
+        });
+      }
+    }
+
+    this.InfoDatosFiltradosLocali = this.DatosFiltradosLocali.map((item: any) => ({
+      "name": item.Localidad,
+      "series": item.Grupo
+    }));
+  }
+
+  // GENERAR EXCEL PRODUCTOS PESOS
+  GenerarExcelProdPesos() {
+    let workbookProdPesos = new Workbook();
+    let worksheetProdPesosUno = workbookProdPesos.addWorksheet("Ventas en Pesos Fecha y Localidad");
+    let worksheetProdPesosDos = workbookProdPesos.addWorksheet("Ventas en Pesos Por Fecha");
+    let worksheetProdPesosTres = workbookProdPesos.addWorksheet("Ventas en Pesos Por Localidad");
+
+    let headerProdPesosUno = ["Id General", "Año", "Mes", "IdProducto", "Producto", "Presentacion", "IdLocalidad", "Localidad", "VentasEnPesos"];
+    let headerProdPesosDos = ["Id General", "Año", "Mes", "IdProducto", "Producto", "Presentacion", "VentasEnPesos"];
+    let headerProdPesosTres = ["Id General", "IdProducto", "Producto", "Presentacion", "IdLocalidad", "Localidad", "VentasEnPesos"];
+
+    worksheetProdPesosUno.addRow(headerProdPesosUno);
+    worksheetProdPesosDos.addRow(headerProdPesosDos);
+    worksheetProdPesosTres.addRow(headerProdPesosTres);
+
+    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1'].map(key => {
+      worksheetProdPesosUno.getCell(key).fill = {
+        type: 'pattern',
+        pattern: 'darkTrellis',
+        fgColor: { argb: '397c97' },
+        bgColor: { argb: '397c97' }
+      };
+      worksheetProdPesosUno.getCell(key).font = {
+        color: { argb: 'FFFFFF' }
+      };
+    });
+
+    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1'].map(key => {
+      worksheetProdPesosDos.getCell(key).fill = {
+        type: 'pattern',
+        pattern: 'darkTrellis',
+        fgColor: { argb: '397c97' },
+        bgColor: { argb: '397c97' }
+      };
+      worksheetProdPesosDos.getCell(key).font = {
+        color: { argb: 'FFFFFF' }
+      };
+      worksheetProdPesosTres.getCell(key).fill = {
+        type: 'pattern',
+        pattern: 'darkTrellis',
+        fgColor: { argb: '397c97' },
+        bgColor: { argb: '397c97' }
+      };
+      worksheetProdPesosTres.getCell(key).font = {
+        color: { argb: 'FFFFFF' }
+      };
+    });
+
+    worksheetProdPesosUno.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' },
+    { width: 30, key: 'E' }, { width: 30, key: 'F' }, { width: 30, key: 'G' }, { width: 30, key: 'H' }, { width: 30, key: 'I' }];
+
+    worksheetProdPesosDos.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' },
+    { width: 30, key: 'E' }, { width: 30, key: 'F' }, { width: 30, key: 'G' }];
+
+    worksheetProdPesosTres.columns = [{ width: 30, key: 'A' }, { width: 30, key: 'B' }, { width: 30, key: 'C' }, { width: 30, key: 'D' },
+    { width: 30, key: 'E' }, { width: 30, key: 'F' }, { width: 30, key: 'G' }];
+
+    worksheetProdPesosUno.autoFilter = 'A1:I1';
+    worksheetProdPesosDos.autoFilter = 'A1:G1';
+    worksheetProdPesosTres.autoFilter = 'A1:G1';
+
+    for (let FilaDatosProdPesosUno of this.InfoProdPesosUno) {
+      let TempDatosProdPesosUno = [];
+
+      TempDatosProdPesosUno.push(this.ConversionStringNumeros(FilaDatosProdPesosUno['IdMain']))
+      TempDatosProdPesosUno.push(this.ConversionStringNumeros(FilaDatosProdPesosUno['IdAno']))
+      TempDatosProdPesosUno.push(this.ConversionFechaString(FilaDatosProdPesosUno['IdMes']))
+      TempDatosProdPesosUno.push(this.ConversionNull(FilaDatosProdPesosUno['IdProducto']))
+      TempDatosProdPesosUno.push(this.ConversionNull(FilaDatosProdPesosUno['DSCRPCION']))
+      TempDatosProdPesosUno.push(this.ConversionNull(FilaDatosProdPesosUno['Presentacion']))
+      TempDatosProdPesosUno.push(FilaDatosProdPesosUno['IdSector'])
+      TempDatosProdPesosUno.push(FilaDatosProdPesosUno['DescripcionSector'])
+      TempDatosProdPesosUno.push(this.ConversionStringNumeros(FilaDatosProdPesosUno['VentasPesos']))
+
+      worksheetProdPesosUno.addRow(TempDatosProdPesosUno);
+    }
+
+    for (let FilaDatosProdPesosDos of this.InfoProdPesosDos) {
+      let TempDatosProdPesosDos = [];
+
+      TempDatosProdPesosDos.push(this.ConversionStringNumeros(FilaDatosProdPesosDos['IdMain']))
+      TempDatosProdPesosDos.push(this.ConversionStringNumeros(FilaDatosProdPesosDos['IdAno']))
+      TempDatosProdPesosDos.push(this.ConversionFechaString(FilaDatosProdPesosDos['IdMes']))
+      TempDatosProdPesosDos.push(this.ConversionNull(FilaDatosProdPesosDos['IdProducto']))
+      TempDatosProdPesosDos.push(this.ConversionNull(FilaDatosProdPesosDos['DSCRPCION']))
+      TempDatosProdPesosDos.push(this.ConversionNull(FilaDatosProdPesosDos['Presentacion']))
+      TempDatosProdPesosDos.push(this.ConversionStringNumeros(FilaDatosProdPesosDos['VentasPesos']))
+
+      worksheetProdPesosDos.addRow(TempDatosProdPesosDos);
+    }
+
+    for (let FilaDatosProdPesosTres of this.InfoProdPesosTres) {
+      let TempDatosProdPesosTres = [];
+
+      TempDatosProdPesosTres.push(this.ConversionStringNumeros(FilaDatosProdPesosTres['IdMain']))
+      TempDatosProdPesosTres.push(this.ConversionNull(FilaDatosProdPesosTres['IdProducto']))
+      TempDatosProdPesosTres.push(this.ConversionNull(FilaDatosProdPesosTres['DSCRPCION']))
+      TempDatosProdPesosTres.push(this.ConversionNull(FilaDatosProdPesosTres['Presentacion']))
+      TempDatosProdPesosTres.push(FilaDatosProdPesosTres['IdSector'])
+      TempDatosProdPesosTres.push(FilaDatosProdPesosTres['DescripcionSector'])
+      TempDatosProdPesosTres.push(this.ConversionStringNumeros(FilaDatosProdPesosTres['VentasPesos']))
+
+      worksheetProdPesosTres.addRow(TempDatosProdPesosTres);
+    }
+
+    let rowIndexProdPesos = 1
+    for (rowIndexProdPesos; rowIndexProdPesos <= worksheetProdPesosUno.rowCount; rowIndexProdPesos++) {
+      worksheetProdPesosUno.getRow(rowIndexProdPesos).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
+    rowIndexProdPesos = 1
+    for (rowIndexProdPesos; rowIndexProdPesos <= worksheetProdPesosDos.rowCount; rowIndexProdPesos++) {
+      worksheetProdPesosDos.getRow(rowIndexProdPesos).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
+    rowIndexProdPesos = 1
+    for (rowIndexProdPesos; rowIndexProdPesos <= worksheetProdPesosTres.rowCount; rowIndexProdPesos++) {
+      worksheetProdPesosTres.getRow(rowIndexProdPesos).alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+    }
+
+    let NombreXlsxProdPesos = "Numero de Ventas en Pesos Durante los Ultimos Seis Meses"
+    workbookProdPesos.xlsx.writeBuffer().then((data) => {
+      let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      fs.saveAs(blob, NombreXlsxProdPesos + '.xlsx');
     });
   }
 }

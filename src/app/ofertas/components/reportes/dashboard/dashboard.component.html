@@ -1,3 +1,4 @@
+<!-- SELECTOR DASHBOARD -->
 <div class="container mb-5 mt-5">
   <nav class="nav nav-pills flex-column flex-sm-row">
     <button
@@ -8,43 +9,38 @@
       Usuarios
     </button>
     <button
-      class="flex-sm-fill text-center nav-link OpcionEstandar"
+      class="flex-sm-fill text-center nav-link OpcionUnoAfter"
       id="OpcionDos"
       (click)="InfoVentas()"
     >
       Ventas
     </button>
     <button
-      class="flex-sm-fill text-center nav-link OpcionEstandar"
+      class="flex-sm-fill text-center nav-link OpcionUnoAfter"
       id="OpcionTres"
-      (click)="InfoProductos()"
+      (click)="InfoProductosLibras()"
     >
       Productos
     </button>
   </nav>
 </div>
 
+<!-- PARTE USUARIOS -->
 <div class="container" *ngIf="MostrarUsuarios == true">
   <div class="row justify-content-center align-items-center">
-    <div
-      class="col-md-5 m-3"
-      style="height: 500px; overflow-x: auto; overflow-y: none"
-    >
+    <div class="col-md-6 m-3" style="height: 500px; width: 550px">
       <div class="card CartaTotalAux">
         <div class="text-center p-3" style="width: 100%">
           <p class="display-1">
-            <strong>{{ DatosUsuarios.length }}</strong>
+            <strong>{{ NumeroUsuariosSeisMeses }}</strong>
           </p>
           <hr style="border-top: 5px solid #397c97; opacity: 1" />
-          <p class="display-6">Número Total de Usuarios</p>
+          <p class="display-6">Número Total de Usuarios en Seis Meses</p>
         </div>
       </div>
     </div>
-    <div
-      class="col-md-5 m-3"
-      style="height: 500px; overflow-x: auto; overflow-y: none"
-    >
-      <div class="card Carta">
+    <div class="col-md-6 m-3" style="height: 500px; width: 550px">
+      <div class="card CartaTotalAux">
         <div class="table-responsive m-2">
           <table class="table TableAgro">
             <tr>
@@ -57,39 +53,73 @@
                 {{ NumeroUsuariosLocalida.IdSector }}
               </td>
               <td class="text-center">
-                {{ NumeroUsuariosLocalida.Descripcion }}
+                {{ NumeroUsuariosLocalida.DescripcionSector }}
               </td>
               <td class="text-center">
-                {{ NumeroUsuariosLocalida.NumeroUsuarios }}
+                {{ NumeroUsuariosLocalida.NumUsuarios }}
               </td>
             </tr>
           </table>
         </div>
         <div class="card-body text-center CartaPie">
-          <h3 class="card-title h-3">Número de Usuarios por Localidad</h3>
+          <h3 class="card-title h4">
+            Numero de Usuarios por Localidad Durante los Últimos Seis Meses
+          </h3>
         </div>
       </div>
     </div>
-    <div class="col-md-12 mt-4 mb-4" style="overflow-x: auto; overflow-y: none">
+    <div class="col-md-6 m-3" style="height: 500px; width: 550px">
+      <div class="card Carta">
+        <ngx-charts-pie-chart
+          class="ConfigGraficos"
+          [view]="MedidasTortaFrecu"
+          [scheme]="ColoresFrecu"
+          [results]="DatosFrecuUsuarios"
+          [gradient]="GradientFrecu"
+        >
+        </ngx-charts-pie-chart>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title h4">Promedio de Compra por Usuarios</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 m-3" style="height: 500px; width: 550px">
+      <div class="card Carta">
+        <ngx-charts-pie-chart
+          class="ConfigGraficos"
+          [view]="MedidasTortaFrecuLocali"
+          [scheme]="ColoresFrecuLocali"
+          [results]="DatosFrecuLocali"
+          [gradient]="GradientFrecuLocali"
+        >
+        </ngx-charts-pie-chart>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title h4">Promedio de Compra por Localidades</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 mt-4 mb-4">
       <div class="card Carta">
         <ngx-charts-bar-vertical
           class="card-img-top"
           style="overflow-x: auto; overflow-y: none"
-          [view]="MedidasBarrasProm"
-          [scheme]="ColoresBarrasProm"
-          [results]="DatosBarrasUsuariosProm"
-          [xAxis]="MostrarEjeXProm"
-          [yAxis]="MostrarEjeYProm"
-          [legend]="MostrarLeyendaProm"
-          [showXAxisLabel]="MostrarXLabelProm"
-          [showYAxisLabel]="MostrarYLabelProm"
-          [xAxisLabel]="LabelXProm"
-          [yAxisLabel]="LabelYProm"
-          [legendTitle]="LeyendaTituloProm"
+          [view]="MedidasUsuLocalidad"
+          [scheme]="ColoresUsuLocalidad"
+          [results]="DatosUsuLocalidad"
+          [xAxis]="MostrarEjeXUsuLocalidad"
+          [yAxis]="MostrarEjeYUsuLocalidad"
+          [legend]="MostrarLeyendaUsuLocalidad"
+          [showXAxisLabel]="MostrarXLabelUsuLocalidad"
+          [showYAxisLabel]="MostrarYLabelUsuLocalidad"
+          [xAxisLabel]="LabelXUsuLocalidad"
+          [yAxisLabel]="LabelYUsuLocalidad"
+          [legendTitle]="LeyendaTituloUsuLocalidad"
         >
         </ngx-charts-bar-vertical>
         <div class="card-body text-center CartaPie">
-          <h3 class="card-title">Promedio de Compra por Localidad</h3>
+          <h3 class="card-title h4">
+            Usuarios por Localidad Durante los Últimos Seis Meses
+          </h3>
         </div>
       </div>
     </div>
@@ -100,7 +130,7 @@
           style="overflow-x: auto; overflow-y: none"
           [view]="MedidasBarras"
           [scheme]="ColoresBarras"
-          [results]="DatosBarrasUsuarios"
+          [results]="NumeroUsuariosTotales"
           [xAxis]="MostrarEjeX"
           [yAxis]="MostrarEjeY"
           [legend]="MostrarLeyenda"
@@ -112,54 +142,56 @@
         >
         </ngx-charts-bar-horizontal-stacked>
         <div class="card-body text-center CartaPie">
-          <h3 class="card-title">
-            Registros por Localidad Durante los Últimos Cuatro Meses
+          <h3 class="card-title h4">
+            Usuarios por Localidad y Fecha Durante los Últimos Seis Meses
           </h3>
         </div>
+      </div>
+    </div>
+    <div class="col-md-12 mt-4 mb-5">
+      <div class="text-center">
+        <button class="btn btn-agro-prin w-25" (click)="GenerarExcelUsuarios()">
+          <p class="h5 mt-1">Descargar Informacion en Excel</p>
+        </button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- PARTE VENTAS -->
 <div class="container" *ngIf="MostrarVentas == true">
   <div class="row justify-content-center align-items-center">
-    <div class="col-md-5 m-3 CartaTotal">
-      <div class="text-center" style="width: 100%">
-        <p class="display-1">
-          <strong>{{ NumeroTotalVentas }}</strong>
-        </p>
-        <hr style="border-top: 5px solid #97394d; opacity: 1" />
-        <p class="display-6">
-          Número Total de Ventas en los Ultimos Seis Meses
-        </p>
+    <div class="col-md-6 m-3" style="height: 500px; width: 550px">
+      <div class="card CartaTotalAux">
+        <div class="text-center p-3" style="width: 100%">
+          <p class="display-1">
+            <strong>{{ NumeroTotalVentas }}</strong>
+          </p>
+          <hr style="border-top: 5px solid #97394d; opacity: 1" />
+          <p class="display-6">
+            Número Total de Ventas en los Ultimos Seis Meses
+          </p>
+        </div>
       </div>
     </div>
-    <div class="col-md-12 mt-4 mb-4" style="overflow-x: auto; overflow-y: none">
+    <div class="col-md-6 m-3" style="height: 500px; width: 550px">
       <div class="card Carta">
-        <ngx-charts-bar-vertical
-          class="card-img-top"
-          style="overflow-x: auto; overflow-y: none"
-          [view]="MedidasBarrasVentMensual"
+        <ngx-charts-pie-chart
+          class="ConfigGraficos"
+          [view]="MedidasTortaVentMensual"
           [scheme]="ColoresVentMensual"
           [results]="NumeroVentasMensuales"
-          [xAxis]="MostrarEjeXVentMensual"
-          [yAxis]="MostrarEjeVentMensual"
-          [legend]="MostrarLeyendaVentMensual"
-          [showXAxisLabel]="MostrarXLabelVentMensual"
-          [showYAxisLabel]="MostrarYLabelVentMensual"
-          [xAxisLabel]="LabelXVentMensual"
-          [yAxisLabel]="LabelYVentMensual"
-          [legendTitle]="LeyendaTituloVentMensual"
+          [gradient]="GradientVentMensual"
         >
-        </ngx-charts-bar-vertical>
+        </ngx-charts-pie-chart>
         <div class="card-body text-center CartaPie">
-          <h3 class="card-title">
+          <h3 class="card-title h4">
             Numero de Ventas Mensuales en los Ultimos Seis Meses
           </h3>
         </div>
       </div>
     </div>
-    <div class="col-md-12 mt-4 mb-4" style="overflow-x: auto; overflow-y: none">
+    <div class="col-md-12 mt-4 mb-4">
       <div class="card Carta">
         <ngx-charts-bar-vertical
           class="card-img-top"
@@ -219,99 +251,375 @@
   </div>
 </div>
 
+<!-- PARTE PRODUCTOS -->
+<div class="container" *ngIf="MostrarSlideBoton == true">
+  <div class="row justify-content-center align-items-center">
+    <div class="ContenedorSlideButton mb-4">
+      <div class="col-md-4 ContenedorOpcionUno">
+        <span id="SlideUno" class="OpcionEstandar">Libras</span>
+      </div>
+      <div class="col-md-4 ContenedorSlide">
+        <input
+          type="checkbox"
+          id="check"
+          name="checkSlide"
+          style="display: none"
+          (ngModelChange)="OnChange($event)"
+          [(ngModel)]="SlideBoton"
+        />
+        <label for="check" class="slideToggle"></label>
+      </div>
+      <div class="col-md-4 ContenedorOpcionDos">
+        <span id="SlideDos" class="OpcionUnoAfter">Pesos</span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- LIBRAS -->
 <div class="container" *ngIf="MostrarProductos == true">
   <div class="row justify-content-center align-items-center">
-    <div class="col-md-5 m-3 CartaTotal">
-      <div class="text-center" style="width: 100%">
-        <p class="display-1">
-          <strong>{{ NumeroTotalVentasProd }}</strong>
-        </p>
-        <hr style="border-top: 5px solid #eec916; opacity: 1" />
-        <p class="display-6">
-          Número Total de Ventas Por Producto en los Ultimos Seis Meses
-        </p>
+    <div class="col-md-4 m-3" style="height: 415px; width: 400px">
+      <div class="card Carta">
+        <ngx-charts-pie-chart
+          class="ConfigGraficos"
+          [view]="MedidasTortaProdMesUno"
+          [scheme]="ColoresProdMesUno"
+          [results]="DatosProdMesUno"
+          [gradient]="GradientProdMesUno"
+          (select)="AbrirGrafiDinamiLibras($event, 'ResultadosDinamicosLibras')"
+        >
+        </ngx-charts-pie-chart>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title h5">{{ TituloGraficoUno }}</h3>
+        </div>
       </div>
     </div>
-    <div class="col-md-12 mt-4 mb-4">
+    <div class="col-md-4 m-3" style="height: 415px; width: 400px">
       <div class="card Carta">
-        <ngx-charts-bar-horizontal-stacked
+        <ngx-charts-pie-chart
+          class="ConfigGraficos"
+          [view]="MedidasTortaProdMesDos"
+          [scheme]="ColoresProdMesDos"
+          [results]="DatosProdMesDos"
+          [gradient]="GradientProdMesDos"
+          (select)="AbrirGrafiDinamiLibras($event, 'ResultadosDinamicosLibras')"
+        >
+        </ngx-charts-pie-chart>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title h5">{{ TituloGraficoDos }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 m-3" style="height: 415px; width: 400px">
+      <div class="card Carta">
+        <ngx-charts-pie-chart
+          class="ConfigGraficos"
+          [view]="MedidasTortaProdMesTres"
+          [scheme]="ColoresProdMesTres"
+          [results]="DatosProdMesTres"
+          [gradient]="GradientProdMesTres"
+          (select)="AbrirGrafiDinamiLibras($event, 'ResultadosDinamicosLibras')"
+        >
+        </ngx-charts-pie-chart>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title h5">{{ TituloGraficoTres }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 m-3" style="height: 415px; width: 400px">
+      <div class="card Carta">
+        <ngx-charts-pie-chart
+          class="ConfigGraficos"
+          [view]="MedidasTortaProdMesCuatro"
+          [scheme]="ColoresProdMesCuatro"
+          [results]="DatosProdMesCuatro"
+          [gradient]="GradientProdMesCuatro"
+          (select)="AbrirGrafiDinamiLibras($event, 'ResultadosDinamicosLibras')"
+        >
+        </ngx-charts-pie-chart>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title h5">{{ TituloGraficoCuatro }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 m-3" style="height: 415px; width: 400px">
+      <div class="card Carta">
+        <ngx-charts-pie-chart
+          class="ConfigGraficos"
+          [view]="MedidasTortaProdMesCinco"
+          [scheme]="ColoresProdMesCinco"
+          [results]="DatosProdMesCinco"
+          [gradient]="GradientProdMesCinco"
+          (select)="AbrirGrafiDinamiLibras($event, 'ResultadosDinamicosLibras')"
+        >
+        </ngx-charts-pie-chart>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title h5">{{ TituloGraficoCinco }}</h3>
+        </div>
+      </div>
+    </div>
+    <div
+      class="col-md-4 m-3"
+      style="height: 415px; width: 400px"
+      *ngIf="MostrarProdLibrasUltimo == true"
+    >
+      <div class="card Carta">
+        <ngx-charts-pie-chart
+          class="ConfigGraficos"
+          [view]="MedidasTortaProdMesSeis"
+          [scheme]="ColoresProdMesSeis"
+          [results]="DatosProdMesSeis"
+          [gradient]="GradientProdMesSeis"
+          (select)="AbrirGrafiDinamiLibras($event, 'ResultadosDinamicosLibras')"
+        >
+        </ngx-charts-pie-chart>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title h5">{{ TituloGraficoSeis }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="row justify-content-center align-items-center"
+    id="ResultadosDinamicosLibras"
+  >
+    <div class="col-md-6 mt-4 mb-4" *ngIf="MostrarGrafiDinamiLibras == true">
+      <div class="card Carta">
+        <ngx-charts-bar-horizontal
           class="card-img-top"
           style="overflow-x: auto; overflow-y: none"
-          [view]="MedidasBarrasProdFecha"
-          [scheme]="ColoresBarrasProdFecha"
-          [results]="NumeroVentasProdFecha"
-          [xAxis]="MostrarEjeXProdFecha"
-          [yAxis]="MostrarEjeYProdFecha"
-          [legend]="MostrarLeyendaProdFecha"
-          [showXAxisLabel]="MostrarXLabelProdFecha"
-          [showYAxisLabel]="MostrarYLabelProdFecha"
-          [xAxisLabel]="LabelXProdFecha"
-          [yAxisLabel]="LabelYProdFecha"
-          [legendTitle]="LeyendaTituloProdFecha"
+          [view]="MedidasDatosFiltradosMes"
+          [scheme]="ColoresDatosFiltradosMes"
+          [results]="InfoDatosFiltradosMes"
+          [xAxis]="MostrarEjeXDatosFiltradosMes"
+          [yAxis]="MostrarEjeYDatosFiltradosMes"
+          [legend]="MostrarLeyendaDatosFiltradosMes"
+          [showXAxisLabel]="MostrarXLabelDatosFiltradosMes"
+          [showYAxisLabel]="MostrarYLabelDatosFiltradosMes"
+          [xAxisLabel]="LabelXDatosFiltradosMes"
+          [yAxisLabel]="LabelYDatosFiltradosMes"
+          [legendTitle]="LeyendaTituloDatosFiltradosMes"
         >
-        </ngx-charts-bar-horizontal-stacked>
+        </ngx-charts-bar-horizontal>
         <div class="card-body text-center CartaPie">
-          <h3 class="card-title">
-            Ventas de Productos en los Últimos Seis Meses
+          <h3 class="card-title h4">
+            Ventas en Libras de {{ NombreTituloFiltrados }} Durante el mes de
+            {{ FechaTituloFiltrados }}
           </h3>
         </div>
       </div>
     </div>
-    <div class="col-md-12 mt-4 mb-4">
+    <div class="col-md-6 mt-4 mb-4" *ngIf="MostrarGrafiDinamiLibras == true">
       <div class="card Carta">
         <ngx-charts-bar-horizontal-stacked
           class="card-img-top"
           style="overflow-x: auto; overflow-y: none"
-          [view]="MedidasBarrasProdLocali"
-          [scheme]="ColoresBarrasProdLocali"
-          [results]="NumeroVentasProdLocali"
-          [xAxis]="MostrarEjeXProdLocali"
-          [yAxis]="MostrarEjeYProdLocali"
-          [legend]="MostrarLeyendaProdLocali"
-          [showXAxisLabel]="MostrarXLabelProdLocali"
-          [showYAxisLabel]="MostrarYLabelProdLocali"
-          [xAxisLabel]="LabelXProdLocali"
-          [yAxisLabel]="LabelYProdLocali"
-          [legendTitle]="LeyendaTituloProdLocali"
+          [view]="MedidasDatosFiltradosLocali"
+          [scheme]="ColoresDatosFiltradosLocali"
+          [results]="InfoDatosFiltradosLocali"
+          [xAxis]="MostrarEjeXDatosFiltradosLocali"
+          [yAxis]="MostrarEjeYDatosFiltradosLocali"
+          [legend]="MostrarLeyendaDatosFiltradosLocali"
+          [showXAxisLabel]="MostrarXLabelDatosFiltradosLocali"
+          [showYAxisLabel]="MostrarYLabelDatosFiltradosLocali"
+          [xAxisLabel]="LabelXDatosFiltradosLocali"
+          [yAxisLabel]="LabelYDatosFiltradosLocali"
+          [legendTitle]="LeyendaTituloDatosFiltradosLocali"
         >
         </ngx-charts-bar-horizontal-stacked>
         <div class="card-body text-center CartaPie">
-          <h3 class="card-title">
-            Ventas de Productos por Localidad en los Últimos Seis Meses
+          <h3 class="card-title h4">
+            Ventas en Libras de {{ NombreTituloFiltrados }} por Localidad
+            Durante el mes de {{ FechaTituloFiltrados }}
           </h3>
         </div>
       </div>
     </div>
-    <div class="col-md-12 mt-4 mb-4">
-      <div class="card Carta">
-        <ngx-charts-bar-horizontal-stacked
-          class="card-img-top"
-          style="overflow-x: auto; overflow-y: none"
-          [view]="MedidasBarrasProdGene"
-          [scheme]="ColoresBarrasProdGene"
-          [results]="NumeroVentasProdGene"
-          [xAxis]="MostrarEjeXProdGene"
-          [yAxis]="MostrarEjeYProdGene"
-          [legend]="MostrarLeyendaProdGene"
-          [showXAxisLabel]="MostrarXLabelProdGene"
-          [showYAxisLabel]="MostrarYLabelProdGene"
-          [xAxisLabel]="LabelXProdGene"
-          [yAxisLabel]="LabelYProdGene"
-          [legendTitle]="LeyendaTituloProdGene"
-        >
-        </ngx-charts-bar-horizontal-stacked>
-        <div class="card-body text-center CartaPie">
-          <h3 class="card-title">
-            Ventas de Productos por Localidad y Fecha en los Últimos Seis Meses
-          </h3>
-        </div>
-      </div>
-    </div>
+  </div>
+  <div class="row justify-content-center align-items-center">
     <div class="col-md-12 mt-4 mb-4">
       <div class="text-center">
-        <button class="btn btn-agro-prin w-25" (click)="GenerarExcelProdutos()">
+        <button
+          class="btn btn-agro-prin w-25"
+          (click)="GenerarExcelProdLibras()"
+        >
           <p class="h5 mt-1">Descargar Informacion en Excel</p>
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- PESOS -->
+<div class="container" *ngIf="MostrarProductosPesos == true">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-md-4 m-3" style="height: 415px; width: 400px">
+      <div class="card Carta">
+        <ngx-charts-pie-chart
+          class="ConfigGraficos"
+          [view]="MedidasTortaProdMesUno"
+          [scheme]="ColoresProdMesUno"
+          [results]="DatosProdMesUno"
+          [gradient]="GradientProdMesUno"
+          (select)="AbrirGrafiDinamiPesos($event, 'ResultadosDinamicosPesos')"
+        >
+        </ngx-charts-pie-chart>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title h5">{{ TituloGraficoUno }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 m-3" style="height: 415px; width: 400px">
+      <div class="card Carta">
+        <ngx-charts-pie-chart
+          class="ConfigGraficos"
+          [view]="MedidasTortaProdMesDos"
+          [scheme]="ColoresProdMesDos"
+          [results]="DatosProdMesDos"
+          [gradient]="GradientProdMesDos"
+          (select)="AbrirGrafiDinamiPesos($event, 'ResultadosDinamicosPesos')"
+        >
+        </ngx-charts-pie-chart>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title h5">{{ TituloGraficoDos }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 m-3" style="height: 415px; width: 400px">
+      <div class="card Carta">
+        <ngx-charts-pie-chart
+          class="ConfigGraficos"
+          [view]="MedidasTortaProdMesTres"
+          [scheme]="ColoresProdMesTres"
+          [results]="DatosProdMesTres"
+          [gradient]="GradientProdMesTres"
+          (select)="AbrirGrafiDinamiPesos($event, 'ResultadosDinamicosPesos')"
+        >
+        </ngx-charts-pie-chart>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title h5">{{ TituloGraficoTres }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 m-3" style="height: 415px; width: 400px">
+      <div class="card Carta">
+        <ngx-charts-pie-chart
+          class="ConfigGraficos"
+          [view]="MedidasTortaProdMesCuatro"
+          [scheme]="ColoresProdMesCuatro"
+          [results]="DatosProdMesCuatro"
+          [gradient]="GradientProdMesCuatro"
+          (select)="AbrirGrafiDinamiPesos($event, 'ResultadosDinamicosPesos')"
+        >
+        </ngx-charts-pie-chart>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title h5">{{ TituloGraficoCuatro }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 m-3" style="height: 415px; width: 400px">
+      <div class="card Carta">
+        <ngx-charts-pie-chart
+          class="ConfigGraficos"
+          [view]="MedidasTortaProdMesCinco"
+          [scheme]="ColoresProdMesCinco"
+          [results]="DatosProdMesCinco"
+          [gradient]="GradientProdMesCinco"
+          (select)="AbrirGrafiDinamiPesos($event, 'ResultadosDinamicosPesos')"
+        >
+        </ngx-charts-pie-chart>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title h5">{{ TituloGraficoCinco }}</h3>
+        </div>
+      </div>
+    </div>
+    <div
+      class="col-md-4 m-3"
+      style="height: 415px; width: 400px"
+      *ngIf="MostrarProdPesosUltimo == true"
+    >
+      <div class="card Carta">
+        <ngx-charts-pie-chart
+          class="ConfigGraficos"
+          [view]="MedidasTortaProdMesSeis"
+          [scheme]="ColoresProdMesSeis"
+          [results]="DatosProdMesSeis"
+          [gradient]="GradientProdMesSeis"
+          (select)="AbrirGrafiDinamiPesos($event, 'ResultadosDinamicosPesos')"
+        >
+        </ngx-charts-pie-chart>
+        <div class="card-body text-center CartaPie">
+          <h3 class="card-title h5">{{ TituloGraficoSeis }}</h3>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="row justify-content-center align-items-center"
+      id="ResultadosDinamicosPesos"
+    >
+      <div class="col-md-6 mt-4 mb-4" *ngIf="MostrarGrafiDinamiPesos == true">
+        <div class="card Carta">
+          <ngx-charts-bar-horizontal
+            class="card-img-top"
+            style="overflow-x: auto; overflow-y: none"
+            [view]="MedidasDatosFiltradosMes"
+            [scheme]="ColoresDatosFiltradosMes"
+            [results]="InfoDatosFiltradosMes"
+            [xAxis]="MostrarEjeXDatosFiltradosMes"
+            [yAxis]="MostrarEjeYDatosFiltradosMes"
+            [legend]="MostrarLeyendaDatosFiltradosMes"
+            [showXAxisLabel]="MostrarXLabelDatosFiltradosMes"
+            [showYAxisLabel]="MostrarYLabelDatosFiltradosMes"
+            [xAxisLabel]="LabelXDatosFiltradosMes"
+            [yAxisLabel]="LabelYDatosFiltradosMes"
+            [legendTitle]="LeyendaTituloDatosFiltradosMes"
+          >
+          </ngx-charts-bar-horizontal>
+          <div class="card-body text-center CartaPie">
+            <h3 class="card-title h4">
+              Ventas en Pesos de {{ NombreTituloFiltrados }} Durante el mes de
+              {{ FechaTituloFiltrados }}
+            </h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mt-4 mb-4" *ngIf="MostrarGrafiDinamiPesos == true">
+        <div class="card Carta">
+          <ngx-charts-bar-horizontal-stacked
+            class="card-img-top"
+            style="overflow-x: auto; overflow-y: none"
+            [view]="MedidasDatosFiltradosLocali"
+            [scheme]="ColoresDatosFiltradosLocali"
+            [results]="InfoDatosFiltradosLocali"
+            [xAxis]="MostrarEjeXDatosFiltradosLocali"
+            [yAxis]="MostrarEjeYDatosFiltradosLocali"
+            [legend]="MostrarLeyendaDatosFiltradosLocali"
+            [showXAxisLabel]="MostrarXLabelDatosFiltradosLocali"
+            [showYAxisLabel]="MostrarYLabelDatosFiltradosLocali"
+            [xAxisLabel]="LabelXDatosFiltradosLocali"
+            [yAxisLabel]="LabelYDatosFiltradosLocali"
+            [legendTitle]="LeyendaTituloDatosFiltradosLocali"
+          >
+          </ngx-charts-bar-horizontal-stacked>
+          <div class="card-body text-center CartaPie">
+            <h3 class="card-title h4">
+              Ventas en Pesos de {{ NombreTituloFiltrados }} por Localidad
+              Durante el mes de {{ FechaTituloFiltrados }}
+            </h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-center align-items-center">
+      <div class="col-md-12 mt-4 mb-4">
+        <div class="text-center">
+          <button
+            class="btn btn-agro-prin w-25"
+            (click)="GenerarExcelProdPesos()"
+          >
+            <p class="h5 mt-1">Descargar Informacion en Excel</p>
+          </button>
+        </div>
       </div>
     </div>
   </div>

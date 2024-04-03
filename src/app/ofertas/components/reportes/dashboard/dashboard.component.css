@@ -2,6 +2,10 @@
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
+.ContenedorSlideButton {
+    display: flex;
+}
+
 .ContenedorOpcionUno{
     display: flex;
     justify-content: right;
@@ -35,9 +39,9 @@
 }
 
 .OpcionEstandar {
-    color: black;
+    color: #000000;
     font-size: 40px;
-    font-weight: lighter;
+    font-weight: bold;
     transition: 0.3s;
 }
 
@@ -55,7 +59,6 @@
     transition: 0.3s;
 }
 
-
 .CartaTotal {
     height: 300px;
     display: flex;
@@ -67,7 +70,7 @@
 }
 
 .CartaTotalAux {
-    height: 480px;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -78,13 +81,23 @@
 
 .Carta {
     width: 100%;
+    height: 100%;
     border: 2px solid #cccccc;
     border-radius: 10px; 
     background-color: #f3f3f3;
 }
 
 .CartaPie {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-top: 2px solid #cccccc;
+}
+
+.ConfigGraficos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .slideToggle {
@@ -115,13 +128,19 @@ input:checked + .slideToggle::before {
     transform: translateX(85px);
 }
 
-@media (max-width:768px) {
+@media (max-width:767px) {
+    .ContenedorSlideButton {
+        display: inline;
+        margin: 0 auto;
+    }
+
     .ContenedorOpcionUno{
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-bottom: 10px;
     }
-    
+   
     .ContenedorSlide {
         display: flex;
         justify-content: center;
@@ -132,5 +151,18 @@ input:checked + .slideToggle::before {
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-top: 10px;
+    }
+
+    .ConfigGraficos {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        overflow-x: auto;
+        overflow-y: none;
+    }
+
+    .w-25 {
+        width: 75% !important;
     }
 }
