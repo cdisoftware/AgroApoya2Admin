@@ -371,6 +371,7 @@ export class ReporteComponent implements OnInit {
     }
   }
   async ConsultaUserMenyChat() {
+    let IdManyChat = "";
     let body = {};
     var respu: any;
 
@@ -380,14 +381,10 @@ export class ReporteComponent implements OnInit {
           body = {
             field_value: "57" + this.ArrayUserManyChat[i].NumeroCelular.toString().trim()
           }
-          console.log(this.ArrayUserManyChat[i].NumeroCelular.toString().trim())
           respu = await this.sercirvicemanychat.consulta_Mtd(body);
-          console.log(respu)
-
-          
           var splitrespu = respu.toString().trim().split("|");
 
-          if (splitrespu[0] == "-1") {
+          if (splitrespu[0].toString().trim() == "-1") {
             var auxNombre = this.ArrayUserManyChat[i].NombrePersona.toString().trim().split(" ");
             body = {
               first_name: auxNombre[0].toString().trim(),
@@ -398,39 +395,25 @@ export class ReporteComponent implements OnInit {
               consent_phrase: "string"
             }
             var respuinsert = await this.sercirvicemanychat.creaUserManyChat_Mtd(body);
-            console.log(respuinsert)
-
             var splitrespuinsert = respuinsert.split("|");
+            if (splitrespuinsert[0].toString().trim() != "-1") {
+              var respuBd = await this.updateManyChatBdSql(splitrespuinsert[1].toString().trim(), this.ArrayUserManyChat[i].NumeroCelular.toString().trim());
+              var res = await this.UsersActualizadosManyChat(this.ArrayUserManyChat[i], true);
+              resolve(true);
+            } else {
+              var res = await this.UsersActualizadosManyChat(this.ArrayUserManyChat[i], false);
+              resolve(true);
+            }
           } else {
+            IdManyChat = splitrespu[1].toString().trim();
+            var respuBd = await this.updateManyChatBdSql(IdManyChat, this.ArrayUserManyChat[i].NumeroCelular.toString().trim());
+            var res = await this.UsersActualizadosManyChat(this.ArrayUserManyChat[i], true);
             resolve(true);
           }
         } else {
           resolve(false);
         }
       });
-
-      /*if (this.ArrayUserManyChat[i].NumeroCelular.length == 10) {
-        await new Promise((resolve, reject) => {
-          const body = {
-            field_id: 9572495,
-            field_value: this.ArrayUserManyChat[i].Usucodig
-          }
-          this.InteraccionMenyChat.infoUserManyChat(body).subscribe(Resultado => {
-            if (Resultado.data.length == 0) {
-              if (this.ArrayUserManyChat[i] != undefined) {
-                this.InsertUserInMenyChat(this.ArrayUserManyChat[i]);
-              } else {
-                resolve(false);
-              }
-            } else {
-              this.UpdateIdManyChatUser(Resultado.data.id, this.ArrayUserManyChat[i]);
-            }
-            resolve(true);
-          });
-        });
-      } else {
-        this.UsersActualizadosManyChat(this.ArrayUserManyChat[i], false);
-      }*/
     }
     //Finaliza el recorido abre el modal con los users actualizados
     if (this.ArrayUsersActualizados.length > 0) {
@@ -441,61 +424,15 @@ export class ReporteComponent implements OnInit {
     this.Loader = false;
   }
 
-
-  async InsertUserInMenyChat(Item: any) {
-    await new Promise((resolve, reject) => {
-      const body = {
-        first_name: Item.NombrePersona,
-        last_name: Item.ApellidoPersona,
-        whatsapp_phone: "57" + Item.NumeroCelular,
-        has_opt_in_sms: true,
-        has_opt_in_email: true,
-        consent_phrase: "string"
-      }
-      this.InteraccionMenyChat.modmanychatcreateuser(body).subscribe(Resultado => {
-        this.GuardaLogManyChat(Resultado, Item);
-        var IdMenyChat: string = "";
-        if (Resultado.status == "success" && Resultado.data.id != "") {
-          IdMenyChat = Resultado.data.id;
-          const bodyUsuCod = {
-            subscriber_id: IdMenyChat,
-            field_id: 9572495,
-            field_value: Item.Usucodig
-          }
-          this.InteraccionMenyChat.AsignarUsucodigUserManyChat(bodyUsuCod).subscribe(Resultado => {
-          });
-          this.UpdateIdManyChatUser(IdMenyChat, Item);
-        } else {
-          this.UsersActualizadosManyChat(Item, false);
-        }
-        resolve(true);
-      });
-    });
+  async updateManyChatBdSql(IdManyChat: string, Telefono: string) {
+    const body = {
+      correo_persona: Telefono.toString().trim(),
+      ID_MANYCHAT: IdManyChat
+    }
+    var respuUpdateBdManyChat = await this.sercirvicemanychat.updateIdManyChatBDSqlServer(body);
+    return respuUpdateBdManyChat;
   }
-  //Actualiza el id de menychat en la bd
-  async UpdateIdManyChatUser(IdMenyChat: string, item: any) {
-    await new Promise((resolve, reject) => {
-      const bodyUsuCod = {
-        subscriber_id: IdMenyChat,
-        field_id: 9572495,
-        field_value: item.Usucodig
-      }
-      this.InteraccionMenyChat.AsignarUsucodigUserManyChat(bodyUsuCod).subscribe(Resultado => {
-      });
 
-      const body = {
-        correo_persona: item.CorreoPersona.toLowerCase().replace(' ', ''),
-        ID_MANYCHAT: IdMenyChat
-      }
-      this.InteraccionMenyChat.ActualizaIdManyChat('3', body).subscribe(Resultado => {
-        var respu: string = Resultado.split("|");
-        if (respu[0].trim() == "1") {
-          this.UsersActualizadosManyChat(item, true);
-        }
-        resolve(true);
-      });
-    });
-  }
   UsersActualizadosManyChat(item: any, Estado: boolean) {
     var AuxImg: string = "";
     if (Estado == true) {
@@ -511,18 +448,6 @@ export class ReporteComponent implements OnInit {
       img: AuxImg
     }
     this.ArrayUsersActualizados.push(ite);
-  }
-
-  GuardaLogManyChat(Respuesta: string, item: any) {
-    console.log(Respuesta)
-    const body = {
-      usucodig: item.Usucodig,
-      celular: item.NumeroCelular,
-      rta_manychat: Respuesta,
-      origen: 2
-    }
-    this.InteraccionMenyChat.modLogsRegManychat('3', body).subscribe(Resultado => {
-    });
   }
   //#endregion UpdateMenyChat
 

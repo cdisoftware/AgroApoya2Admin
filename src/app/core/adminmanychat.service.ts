@@ -48,4 +48,25 @@ export class AdminmanychatService {
     });
   }
   //#endregion CreaManyChat
+
+
+  //#region UpdateBDSql
+  async updateIdManyChatBDSqlServer(body: any) {
+    return new Promise<string>((resolve, reject) => {
+      const subscription = this.service.ActualizaIdManyChat('3', body).subscribe({
+        next: (data) => {
+          console.log(data);
+          resolve(data);
+        },
+        error: (err) => {
+          console.error(err);
+          reject(err);
+        },
+        complete: () => {
+
+        }
+      });
+    });
+  }
+  //#endregion UpdateBDSql
 }
