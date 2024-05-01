@@ -1,11 +1,16 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MetodosglobalesService } from './metodosglobales.service';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class InteraccionMenyChat {
+
+    private header = new HttpHeaders({
+        "Content-Type": "Application/json"
+      });
 
     constructor(private http: HttpClient, private metodosglobales: MetodosglobalesService) { }
 
@@ -35,4 +40,9 @@ export class InteraccionMenyChat {
     AsignaEtiquetaUser(Body: any) {
         return this.http.post<any>(this.url_servidor + 'AddTagUserManyChat', Body)
     }
+    ConsultaSubscriberId(Body: any): Observable<any> {
+        return this.http.post(this.url_servidor + 'ConsultaSubscriberId', Body, {
+          headers: this.header
+        })
+      }
 }

@@ -3,6 +3,7 @@ import { ReporteService } from 'src/app/core/reporte.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
 import { InteraccionMenyChat } from 'src/app/core/InteraccionMenyChat';
+import { AdminmanychatService } from 'src/app/core/adminmanychat.service';
 
 @Component({
   selector: 'app-reporte',
@@ -18,7 +19,8 @@ export class ReporteComponent implements OnInit {
     private ReporteService: ReporteService,
     private modalService: NgbModal,
     public cookies: CookieService,
-    public InteraccionMenyChat: InteraccionMenyChat
+    public InteraccionMenyChat: InteraccionMenyChat,
+    private sercirvicemanychat: AdminmanychatService
   ) { }
 
   mail: string = '';
@@ -369,8 +371,45 @@ export class ReporteComponent implements OnInit {
     }
   }
   async ConsultaUserMenyChat() {
+    let body = {};
+    var respu: any;
+
     for (var i = 0; i < this.ArrayUserManyChat.length; i++) {
-      if (this.ArrayUserManyChat[i].NumeroCelular.length == 10) {
+      await new Promise(async (resolve, reject) => {
+        if (this.ArrayUserManyChat[i].NumeroCelular.length == 10) {
+          body = {
+            field_value: "57" + this.ArrayUserManyChat[i].NumeroCelular.toString().trim()
+          }
+          console.log(this.ArrayUserManyChat[i].NumeroCelular.toString().trim())
+          respu = await this.sercirvicemanychat.consulta_Mtd(body);
+          console.log(respu)
+
+          
+          var splitrespu = respu.toString().trim().split("|");
+
+          if (splitrespu[0] == "-1") {
+            var auxNombre = this.ArrayUserManyChat[i].NombrePersona.toString().trim().split(" ");
+            body = {
+              first_name: auxNombre[0].toString().trim(),
+              last_name: "",
+              whatsapp_phone: "57" + this.ArrayUserManyChat[i].NumeroCelular.toString().trim(),
+              has_opt_in_sms: true,
+              has_opt_in_email: true,
+              consent_phrase: "string"
+            }
+            var respuinsert = await this.sercirvicemanychat.creaUserManyChat_Mtd(body);
+            console.log(respuinsert)
+
+            var splitrespuinsert = respuinsert.split("|");
+          } else {
+            resolve(true);
+          }
+        } else {
+          resolve(false);
+        }
+      });
+
+      /*if (this.ArrayUserManyChat[i].NumeroCelular.length == 10) {
         await new Promise((resolve, reject) => {
           const body = {
             field_id: 9572495,
@@ -391,7 +430,7 @@ export class ReporteComponent implements OnInit {
         });
       } else {
         this.UsersActualizadosManyChat(this.ArrayUserManyChat[i], false);
-      }
+      }*/
     }
     //Finaliza el recorido abre el modal con los users actualizados
     if (this.ArrayUsersActualizados.length > 0) {
@@ -527,7 +566,7 @@ export class ReporteComponent implements OnInit {
       }
     });
   }
-  cerrarModalrespuesta(){
+  cerrarModalrespuesta() {
     this.ArrayHistorialCompras = [];
     this.valorTotalRecaudo = 0;
     this.numTotalRegalo = 0;
