@@ -4,6 +4,7 @@ import { OperacionesDinamicas } from 'src/app/core/OperacionesDinamicas';
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 import * as XLSX from 'xlsx';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AdminmanychatService } from 'src/app/core/adminmanychat.service';
 
 @Component({
   selector: 'app-registro-userexcel',
@@ -12,7 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class RegistroUserexcelComponent implements OnInit {
 
-  constructor(private Modalservices: NgbModal, private service: OperacionesDinamicas, private http: HttpClient, private MetodosServicio: MetodosglobalesService) { }
+  constructor(private Modalservices: NgbModal, private service: OperacionesDinamicas, private http: HttpClient, private MetodosServicio: MetodosglobalesService, private servadminManyChat: AdminmanychatService) { }
 
   @ViewChild('templateemai', { static: false }) ModalEmail: any;
 
@@ -81,7 +82,7 @@ export class RegistroUserexcelComponent implements OnInit {
   async insertDataUser() {
     this.vercausa = true;
     this.ArrayRespuesta = [];
-    let obj: { Respuesta: any; Email?: any; Nombre?: any; Direccion?: any; Complemento?: any; Telefono?: any; Estado?: boolean; };
+    let obj: { Respuesta: any; Email?: any; Nombre?: any; Direccion?: any; Complemento?: any; Telefono?: any; Estado?: boolean; IdManyChat: string};
 
     var auxcorreo: string = "";
     var auxnombre: string = "";
@@ -156,6 +157,7 @@ export class RegistroUserexcelComponent implements OnInit {
           Direccion: auxdireccion,
           Complemento: auxcomplemento,
           Telefono: auxtelefono,
+          IdManyChat: "",
           Estado: false,
           Respuesta: ''
         }
@@ -213,11 +215,15 @@ export class RegistroUserexcelComponent implements OnInit {
                                   this.service.consLoginCliente('1', bodyPost).subscribe(async Resultado => {
                                     //await this.AsociaSector(Resultado[0].USUCODIG);
 
-                                    this.service.AsociarSectores('1', Resultado[0].USUCODIG).subscribe(Resultado => {
+                                    this.service.AsociarSectores('1', Resultado[0].USUCODIG).subscribe(async Resultado => {
                                       obj.Respuesta = auxrespu[1];
                                       this.numberinsertados++;
                                       this.NumberTotal++;
                                       obj.Estado = true;
+
+                                      var respuadmin = (await this.servadminManyChat.adminManyChat_Mtd(tel, this.ArrayDataInsert[i].Nombre.toString().trim())).toString().trim();
+                                      obj.IdManyChat = respuadmin[2];
+
                                       resolve(true);
                                     });
                                   })
