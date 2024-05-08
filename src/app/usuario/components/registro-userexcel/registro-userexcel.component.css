@@ -59,3 +59,10 @@
     background-color: #a2a8a5;
     border: solid 1px rgb(186, 184, 184);
   }
+  .textoConductorTit{
+    color: #000;
+    font-weight: bold;
+    font-size: smaller;
+    text-align: center;
+    font-size: 13px;
+  }

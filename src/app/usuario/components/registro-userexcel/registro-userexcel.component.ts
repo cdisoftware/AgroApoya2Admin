@@ -4,6 +4,7 @@ import { OperacionesDinamicas } from 'src/app/core/OperacionesDinamicas';
 import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 import * as XLSX from 'xlsx';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AdminmanychatService } from 'src/app/core/adminmanychat.service';
 
 @Component({
   selector: 'app-registro-userexcel',
@@ -12,7 +13,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class RegistroUserexcelComponent implements OnInit {
 
-  constructor(private Modalservices: NgbModal, private service: OperacionesDinamicas, private http: HttpClient, private MetodosServicio: MetodosglobalesService) { }
+  constructor(private Modalservices: NgbModal, private service: OperacionesDinamicas, private http: HttpClient, private MetodosServicio: MetodosglobalesService, private servadminManyChat: AdminmanychatService) { }
 
   @ViewChild('templateemai', { static: false }) ModalEmail: any;
 
@@ -25,7 +26,44 @@ export class RegistroUserexcelComponent implements OnInit {
   numberinsertados: number = 0;
   numbernofueposible: number = 0;
 
+  ArrInfoTotalCausaNoreguistro: any = [
+    {
+      name: "Correo electronico invalido",
+      value: 0
+    },
+    {
+      name: "Usuario ya registrado",
+      value: 0
+    },
+    {
+      name: "Nombre no registrado",
+      value: 0
+    },
+    {
+      name: "Dirección no registrada",
+      value: 0
+    },
+    {
+      name: "No fue posible encontrar la direccion",
+      value: 0
+    },
+    {
+      name: "Número de teléfono no válido",
+      value: 0
+    },
+    {
+      name: "Telefono ya existente",
+      value: 0
+    },
+    {
+      name: "Respuesta Servicio",
+      value: 0,
+    }
+  ];
+  vercausa: boolean = false;
   Operacion(event: any, bandera: number) {
+    console.log(this.ArrInfoTotalCausaNoreguistro)
+
     const file = event.target.files[0];
     const fileReader = new FileReader();
     fileReader.onload = (e: any) => {
@@ -42,9 +80,9 @@ export class RegistroUserexcelComponent implements OnInit {
 
 
   async insertDataUser() {
-
+    this.vercausa = true;
     this.ArrayRespuesta = [];
-    let obj: { Respuesta: any; Email?: any; Nombre?: any; Direccion?: any; Complemento?: any; Telefono?: any; Estado?: boolean; };
+    let obj: { Respuesta: any; Email?: any; Nombre?: any; Direccion?: any; Complemento?: any; Telefono?: any; Estado?: boolean; IdManyChat: string};
 
     var auxcorreo: string = "";
     var auxnombre: string = "";
@@ -119,6 +157,7 @@ export class RegistroUserexcelComponent implements OnInit {
           Direccion: auxdireccion,
           Complemento: auxcomplemento,
           Telefono: auxtelefono,
+          IdManyChat: "",
           Estado: false,
           Respuesta: ''
         }
@@ -176,16 +215,22 @@ export class RegistroUserexcelComponent implements OnInit {
                                   this.service.consLoginCliente('1', bodyPost).subscribe(async Resultado => {
                                     //await this.AsociaSector(Resultado[0].USUCODIG);
 
-                                    this.service.AsociarSectores('1', Resultado[0].USUCODIG).subscribe(Resultado => {
+                                    this.service.AsociarSectores('1', Resultado[0].USUCODIG).subscribe(async Resultado => {
                                       obj.Respuesta = auxrespu[1];
                                       this.numberinsertados++;
                                       this.NumberTotal++;
                                       obj.Estado = true;
+
+                                      var respuadmin = (await this.servadminManyChat.adminManyChat_Mtd(tel, this.ArrayDataInsert[i].Nombre.toString().trim())).toString().trim().split("|");
+                                      obj.IdManyChat = respuadmin[2];
+                                      
+
                                       resolve(true);
                                     });
                                   })
                                 } else {
                                   obj.Respuesta = auxrespu[1];
+                                  this.ArrInfoTotalCausaNoreguistro[7].value++;
                                   this.numbernofueposible++;
                                   this.NumberTotal++;
                                   resolve(true);
@@ -193,6 +238,7 @@ export class RegistroUserexcelComponent implements OnInit {
                               });
                             } else {
                               obj.Respuesta = 'Tu teléfono ya se encuentra registrado en AgroApoya2.';
+                              this.ArrInfoTotalCausaNoreguistro[6].value++;
                               this.numbernofueposible++;
                               this.NumberTotal++;
                               resolve(true);
@@ -200,12 +246,14 @@ export class RegistroUserexcelComponent implements OnInit {
                           });
                         } else {
                           obj.Respuesta = "Número de teléfono no válido: " + "'" + num + "'";
+                          this.ArrInfoTotalCausaNoreguistro[5].value++;
                           this.numbernofueposible++;
                           this.NumberTotal++;
                           resolve(true);
                         }
                       } else {
                         obj.Respuesta = "No fue posible encontrar la direccion : " + "'" + auxdireccion + "'";
+                        this.ArrInfoTotalCausaNoreguistro[4].value++;
                         this.numbernofueposible++;
                         this.NumberTotal++;
                         resolve(true);
@@ -213,6 +261,7 @@ export class RegistroUserexcelComponent implements OnInit {
                     });
                   } else {
                     obj.Respuesta = 'Dirección no registrada';
+                    this.ArrInfoTotalCausaNoreguistro[3].value++;
                     this.numbernofueposible++;
                     this.NumberTotal++;
                     resolve(true);
@@ -220,6 +269,7 @@ export class RegistroUserexcelComponent implements OnInit {
 
                 } else {
                   obj.Respuesta = 'Nombre no registrado';
+                  this.ArrInfoTotalCausaNoreguistro[2].value++;
                   this.numbernofueposible++;
                   this.NumberTotal++;
                   resolve(true);
@@ -227,6 +277,7 @@ export class RegistroUserexcelComponent implements OnInit {
 
               } else {
                 obj.Respuesta = 'Usuario ya registrado';
+                this.ArrInfoTotalCausaNoreguistro[1].value++;
                 this.numbernofueposible++;
                 this.NumberTotal++;
                 resolve(true);
@@ -234,6 +285,7 @@ export class RegistroUserexcelComponent implements OnInit {
             });
           } else {
             obj.Respuesta = 'Correo electronico invalido';
+            this.ArrInfoTotalCausaNoreguistro[0].value++;
             this.numbernofueposible++;
             this.NumberTotal++;
             resolve(true);
@@ -245,6 +297,7 @@ export class RegistroUserexcelComponent implements OnInit {
 
       }
     }
+    console.log(this.ArrInfoTotalCausaNoreguistro)
   }
 
 
