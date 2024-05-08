@@ -221,8 +221,9 @@ export class RegistroUserexcelComponent implements OnInit {
                                       this.NumberTotal++;
                                       obj.Estado = true;
 
-                                      var respuadmin = (await this.servadminManyChat.adminManyChat_Mtd(tel, this.ArrayDataInsert[i].Nombre.toString().trim())).toString().trim();
+                                      var respuadmin = (await this.servadminManyChat.adminManyChat_Mtd(tel, this.ArrayDataInsert[i].Nombre.toString().trim())).toString().trim().split("|");
                                       obj.IdManyChat = respuadmin[2];
+                                      
 
                                       resolve(true);
                                     });
