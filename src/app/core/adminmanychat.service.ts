@@ -43,6 +43,8 @@ export class AdminmanychatService {
             ID_MANYCHAT: respuInserManyChat[1].trim()
           };
           respu = (await this.updateIdManyChatBDSqlServer(body)).toString() + "|" + respuInserManyChat[1].trim();
+        }else{
+          respu = "-1|-1|-1";
         }
       }
   
