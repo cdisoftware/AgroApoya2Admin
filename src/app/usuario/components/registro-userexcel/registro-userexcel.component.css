@@ -1,68 +1,92 @@
 .file-input-wrapper {
-    position: relative;
-    display: inline-block;
-    overflow: hidden;
-    cursor: pointer;
-  }
-  
-  .custom-file-inputCiu {
-    background-color: #a0d972;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .text {
-    color: #333;
-    font-weight: bold;
-  }
-  
-  input[type="file"] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-  }
-  
-  
-  
-  .custom-file-inputProdAgri {
-    background-color: #2d7a54;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .custom-file-inputCIIU {
-    background-color: #2d7a54;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  
-  .image-upload>input {
-    display: none;
-  }
-  
-  .image-upload img {
-    width: 100%;
-    height: 114px;
-    cursor: pointer;
-    object-fit: cover;
-  }
-  .selectExcel{
-    border-radius: 20px;
-    background-color: #a2a8a5;
-    border: solid 1px rgb(186, 184, 184);
-  }
-  .textoConductorTit{
-    color: #000;
-    font-weight: bold;
-    font-size: smaller;
-    text-align: center;
-    font-size: 13px;
-  }
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.custom-file-inputCiu {
+  background-color: #a0d972;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.text {
+  color: #333;
+  font-weight: bold;
+}
+
+input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+
+
+.custom-file-inputProdAgri {
+  background-color: #2d7a54;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-file-inputCIIU {
+  background-color: #2d7a54;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+.image-upload>input {
+  display: none;
+}
+
+.image-upload img {
+  width: 100%;
+  height: 114px;
+  cursor: pointer;
+  object-fit: cover;
+}
+
+.selectExcel {
+  border-radius: 20px;
+  background-color: #a2a8a5;
+  border: solid 1px rgb(186, 184, 184);
+}
+
+.textoConductorTit {
+  color: #000;
+  font-weight: bold;
+  font-size: smaller;
+  text-align: center;
+  font-size: 13px;
+}
+
+.btn-agro-whats {
+  color: white;
+  border-color: #397c97;
+  background-color: #397c97;
+}
+
+.btn-agro-whats:hover {
+  color: white;
+  border-color: #04c204;
+  background-color: #04c204;
+}
+
+.divloader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.Opacity {
+  opacity: 0.1;
+}
