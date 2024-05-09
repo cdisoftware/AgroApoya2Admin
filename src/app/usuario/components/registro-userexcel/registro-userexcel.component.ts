@@ -5,6 +5,7 @@ import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 import * as XLSX from 'xlsx';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AdminmanychatService } from 'src/app/core/adminmanychat.service';
+import { PublicidadService } from 'src/app/core/publicidad.service';
 
 @Component({
   selector: 'app-registro-userexcel',
@@ -12,13 +13,24 @@ import { AdminmanychatService } from 'src/app/core/adminmanychat.service';
   styleUrls: ['./registro-userexcel.component.css']
 })
 export class RegistroUserexcelComponent implements OnInit {
-
-  constructor(private Modalservices: NgbModal, private service: OperacionesDinamicas, private http: HttpClient, private MetodosServicio: MetodosglobalesService, private servadminManyChat: AdminmanychatService) { }
+  @ViewChild('ModalRespuesta', { static: false }) ModalRespuesta: any;
+  constructor(private Modalservices: NgbModal,
+    private service: OperacionesDinamicas,
+    private http: HttpClient,
+    private MetodosServicio: MetodosglobalesService,
+    private servadminManyChat: AdminmanychatService,
+    private publicidadService: PublicidadService) { }
 
   @ViewChild('templateemai', { static: false }) ModalEmail: any;
 
   ngOnInit(): void {
+    
   }
+  Respuesta: string = '';
+  Loader = false;
+  BlockBtn: boolean = false;
+  NunMensajesEnviados: number = 0;
+  RespuePlantilla: string = '';
 
   ArrayDataInsert: any = [];
   ArrayRespuesta: any = [];
@@ -82,7 +94,7 @@ export class RegistroUserexcelComponent implements OnInit {
   async insertDataUser() {
     this.vercausa = true;
     this.ArrayRespuesta = [];
-    let obj: { Respuesta: any; Email?: any; Nombre?: any; Direccion?: any; Complemento?: any; Telefono?: any; Estado?: boolean; IdManyChat: string};
+    let obj: { Respuesta: any; Email?: any; Nombre?: any; Direccion?: any; Complemento?: any; Telefono?: any; Estado?: boolean; IdManyChat: string };
 
     var auxcorreo: string = "";
     var auxnombre: string = "";
@@ -223,7 +235,7 @@ export class RegistroUserexcelComponent implements OnInit {
 
                                       var respuadmin = (await this.servadminManyChat.adminManyChat_Mtd(tel, this.ArrayDataInsert[i].Nombre.toString().trim())).toString().trim().split("|");
                                       obj.IdManyChat = respuadmin[2];
-                                      
+
 
                                       resolve(true);
                                     });
@@ -298,6 +310,7 @@ export class RegistroUserexcelComponent implements OnInit {
       }
     }
     console.log(this.ArrInfoTotalCausaNoreguistro)
+    console.log(this.ArrayRespuesta)
   }
 
 
@@ -315,4 +328,60 @@ export class RegistroUserexcelComponent implements OnInit {
     this.service.AsociarSectores('1', usucodig).subscribe(Resultado => {
     })
   }
+
+
+  async EnvioManyChat() {
+      if (this.ArrayRespuesta.length > 0) {
+      const batchSize = 25;
+      for (let i = 0; i < this.ArrayRespuesta.length; i += batchSize) {
+        if(this.ArrayRespuesta[i].Estado == true && this.ArrayRespuesta[i].IdManyChat != "" && this.ArrayRespuesta[i].IdManyChat != -1){      
+          const batch = this.ArrayRespuesta.slice(i, i + batchSize);
+          this.Loader = true;
+          this.BlockBtn = false;
+          // Envío de plantillas para el lote actual
+          await Promise.all(batch.map(async (item: any) => {  
+            this.NunMensajesEnviados++;
+            await this.EnviaPlantilla(item.IdManyChat);
+          }));
+          // Espera de 1 segundo antes de enviar el siguiente lote
+          await this.sleep(1000);
+          this.NunMensajesEnviados = 0;
+          this.Loader = false;
+          this.BlockBtn = true;
+          this.Modalservices.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+          this.Respuesta = "Mensajes enviados."; 
+        }else{
+          this.BlockBtn = true;
+          this.Modalservices.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+          this.Respuesta = "Usuarios ya registrados."; 
+        }
+      }
+     
+    } else {
+      this.Respuesta = "Sin resultados.";
+      this.Modalservices.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    }
+  }
+
+  // Función para pausar la ejecución durante un período de tiempo
+  sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async EnviaPlantilla(IdMenyChat: string) {
+    await new Promise((resolve, reject) => {
+      const body = {
+        subscriber_id: IdMenyChat,
+        flow_ns: "content20240507212415_508591"
+      }
+      this.publicidadService.CManyChatFlows(body).subscribe(async Respu => {
+        console.log(Respu)
+        this.RespuePlantilla = JSON.stringify(Respu);
+        resolve(true);
+        return true;
+      });
+    });
+  }
+
+
 }
