@@ -24,7 +24,7 @@ export class RegistroUserexcelComponent implements OnInit {
   @ViewChild('templateemai', { static: false }) ModalEmail: any;
 
   ngOnInit(): void {
-    
+
   }
   Respuesta: string = '';
   Loader = false;
@@ -331,32 +331,44 @@ export class RegistroUserexcelComponent implements OnInit {
 
 
   async EnvioManyChat() {
-      if (this.ArrayRespuesta.length > 0) {
+    if (this.ArrayRespuesta.length > 0) {
       const batchSize = 25;
+      let messagesSent = false;
+  
       for (let i = 0; i < this.ArrayRespuesta.length; i += batchSize) {
-        if(this.ArrayRespuesta[i].Estado == true && this.ArrayRespuesta[i].IdManyChat != "" && this.ArrayRespuesta[i].IdManyChat != -1){      
-          const batch = this.ArrayRespuesta.slice(i, i + batchSize);
-          this.Loader = true;
-          this.BlockBtn = false;
-          // Envío de plantillas para el lote actual
-          await Promise.all(batch.map(async (item: any) => {  
+        const batch = this.ArrayRespuesta.slice(i, i + batchSize);
+        let batchMessagesSent = false;
+  
+        for (let item of batch) {
+          if (item.Estado === true && item.IdManyChat !== "" && item.IdManyChat !== -1) {
+            this.Loader = true;
+            this.BlockBtn = false;
             this.NunMensajesEnviados++;
             await this.EnviaPlantilla(item.IdManyChat);
-          }));
+            batchMessagesSent = true;
+          }
+        }
+  
+        if (batchMessagesSent) {
+          messagesSent = true;
           // Espera de 1 segundo antes de enviar el siguiente lote
           await this.sleep(1000);
-          this.NunMensajesEnviados = 0;
-          this.Loader = false;
+        } else {
           this.BlockBtn = true;
           this.Modalservices.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-          this.Respuesta = "Mensajes enviados."; 
-        }else{
-          this.BlockBtn = true;
-          this.Modalservices.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-          this.Respuesta = "Usuarios ya registrados."; 
+          this.Respuesta = "Usuarios ya registrados.";
+          break;
         }
       }
-     
+  
+      this.Loader = false;
+      this.BlockBtn = true;
+      this.NunMensajesEnviados = 0;
+  
+      if (messagesSent) {
+        this.Modalservices.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+        this.Respuesta = "Mensajes enviados.";
+      }
     } else {
       this.Respuesta = "Sin resultados.";
       this.Modalservices.open(this.ModalRespuesta, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
