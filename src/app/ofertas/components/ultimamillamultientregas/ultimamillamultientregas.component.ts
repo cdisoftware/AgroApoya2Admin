@@ -2,14 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { GrupoMillaServices } from 'src/app/core/GrupoMillaServices';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
-import {
-  CdkDragDrop,
-  CdkDrag,
-  CdkDropList,
-  CdkDropListGroup,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-ultimamillamultientregas',
