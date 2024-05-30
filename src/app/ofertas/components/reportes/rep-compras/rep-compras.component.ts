@@ -514,6 +514,10 @@ export class RepComprasComponent implements OnInit {
     }
   }
 
+  AbrirPaginaMapa(){
+    window.open('https://apoya2.co/AgroApoya2Admin/#/home/MapaCompras/'+this.OferFiltro+'/0', '_blank');
+  }
+
 
   ProdTotal: number;
   LibrasTotalTotales: number;

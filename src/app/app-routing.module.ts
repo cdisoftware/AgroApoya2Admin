@@ -43,6 +43,7 @@ import { AsignaTransCampoCiudadComponent } from './ofertas/components/asigna-tra
 import { RepusuariosComponent } from './ofertas/components/reportes/repusuarios/repusuarios.component';
 import { DashboardComponent } from './ofertas/components/reportes/dashboard/dashboard.component';
 import { RegistroUserexcelComponent } from './usuario/components/registro-userexcel/registro-userexcel.component';
+import { MapacompraofertasComponent } from './ofertas/components/reportes/mapacompraofertas/mapacompraofertas.component';
 
 const routes: Routes = [
   {
@@ -223,6 +224,10 @@ const routes: Routes = [
       {
         path: 'OperAutomatizadas',
         component: RegistroUserexcelComponent
+      },
+      {
+        path: 'MapaCompras/:cdcnsctivo/:IdOferta',
+        component: MapacompraofertasComponent
       }
     ]
   },
