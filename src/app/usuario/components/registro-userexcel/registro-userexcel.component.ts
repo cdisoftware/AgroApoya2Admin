@@ -56,6 +56,10 @@ export class RegistroUserexcelComponent implements OnInit {
       value: 0
     },
     {
+      name: "Tipo persona no espesificado",
+      value: 0
+    },
+    {
       name: "Respuesta Servicio",
       value: 0,
     }
@@ -82,7 +86,7 @@ export class RegistroUserexcelComponent implements OnInit {
   async insertDataUser() {
     this.vercausa = true;
     this.ArrayRespuesta = [];
-    let obj: { Respuesta: any; Email?: any; Nombre?: any; Direccion?: any; Complemento?: any; Telefono?: any; Estado?: boolean; IdManyChat: string};
+    let obj: { Respuesta: any; Email?: any; Nombre?: any; Direccion?: any; Complemento?: any; Telefono?: any; Estado?: boolean; IdManyChat: string, TipoP: string };
 
     var auxcorreo: string = "";
     var auxnombre: string = "";
@@ -90,6 +94,7 @@ export class RegistroUserexcelComponent implements OnInit {
     var auxdireccion: string = "";
     var auxcoordenadas: string = "";
     var auxcomplemento: string = "";
+    var auxTipoP: string = "";
     this.numberinsertados = 0;
     this.numbernofueposible = 0;
     this.NumberTotal = 0;
@@ -103,6 +108,7 @@ export class RegistroUserexcelComponent implements OnInit {
       auxdireccion = "";
       auxcoordenadas = "";
       auxcomplemento = "";
+      auxTipoP = "";
 
       try {
 
@@ -150,6 +156,12 @@ export class RegistroUserexcelComponent implements OnInit {
         else {
           auxnombre = "";
         }
+        if (this.ArrayDataInsert[i].TipoP != undefined) {
+          auxnombre = this.ArrayDataInsert[i].Nombre.toString().trim();
+        }
+        else {
+          auxnombre = "";
+        }
 
         obj = {
           Email: auxcorreo,
@@ -159,7 +171,8 @@ export class RegistroUserexcelComponent implements OnInit {
           Telefono: auxtelefono,
           IdManyChat: "",
           Estado: false,
-          Respuesta: ''
+          Respuesta: '',
+          TipoP: auxTipoP
         }
 
         await new Promise((resolve, reject) => {
@@ -185,57 +198,75 @@ export class RegistroUserexcelComponent implements OnInit {
                             var auxUno = Resultado.split('|');
                             var result = auxUno[0].replaceAll(' ', '');
                             if (result == '1') {
-                              const bodyPost =
-                              {
-                                codUsuario: '0',
-                                nombres: auxnombre,
-                                apellido: '',
-                                telefono: auxtelefono,
-                                correo: auxcorreo.toLowerCase().replace(' ', ''),
-                                tipo_identificacion: 1,
-                                numero_identificacion: '0',
-                                direccion: auxdireccion,
-                                CMNTRIO: "Registro operacion automatica",
-                                TOKEN: this.MetodosServicio.encryptUsingTripleDES('Temporal1'),
-                                dpto: '261',
-                                ciudad: '401',
-                                Complemento_direccion: auxcomplemento,
-                                RZON_SCIAL: '0',
-                                NIT: null,
-                                COORDENADAS: auxcoordenadas,
-                                TPO_CLNTEINST: 5
-                              }
-                              this.service.modcpersonacliente('4', '0', bodyPost).subscribe(Resultado => {
-                                var auxrespu = Resultado.toString().split("|");
-                                if (auxrespu[0].toString().trim() == "1") {
-                                  const bodyPost = {
-                                    'USUCODIG': 0,
-                                    'CorreoPersona': auxcorreo.toLowerCase().replace(' ', '')
-                                  }
-                                  this.service.consLoginCliente('1', bodyPost).subscribe(async Resultado => {
-                                    //await this.AsociaSector(Resultado[0].USUCODIG);
-
-                                    this.service.AsociarSectores('1', Resultado[0].USUCODIG).subscribe(async Resultado => {
-                                      obj.Respuesta = auxrespu[1];
-                                      this.numberinsertados++;
-                                      this.NumberTotal++;
-                                      obj.Estado = true;
-
-                                      var respuadmin = (await this.servadminManyChat.adminManyChat_Mtd(tel, this.ArrayDataInsert[i].Nombre.toString().trim())).toString().trim().split("|");
-                                      obj.IdManyChat = respuadmin[2];
-                                      
-
-                                      resolve(true);
-                                    });
-                                  })
+                              if (auxTipoP.toString().trim() != "") {
+                                var tipop: string = "";
+                                if (auxTipoP.toString().trim() == "2") {
+                                  tipop = "1";
                                 } else {
-                                  obj.Respuesta = auxrespu[1];
-                                  this.ArrInfoTotalCausaNoreguistro[7].value++;
-                                  this.numbernofueposible++;
-                                  this.NumberTotal++;
-                                  resolve(true);
+                                  tipop = "5";
                                 }
-                              });
+
+
+                                const bodyPost =
+                                {
+                                  codUsuario: '0',
+                                  nombres: auxnombre,
+                                  apellido: '',
+                                  telefono: auxtelefono,
+                                  correo: auxcorreo.toLowerCase().replace(' ', ''),
+                                  tipo_identificacion: 1,
+                                  numero_identificacion: '0',
+                                  direccion: auxdireccion,
+                                  CMNTRIO: "Registro operacion automatica",
+                                  TOKEN: this.MetodosServicio.encryptUsingTripleDES('Temporal1'),
+                                  dpto: '261',
+                                  ciudad: '401',
+                                  Complemento_direccion: auxcomplemento,
+                                  RZON_SCIAL: '0',
+                                  NIT: null,
+                                  COORDENADAS: auxcoordenadas,
+                                  TPO_CLNTEINST: tipop,
+                                  NombreEmpresa: auxnombre
+                                }
+                                this.service.modcpersonacliente('4', '0', bodyPost).subscribe(Resultado => {
+                                  var auxrespu = Resultado.toString().split("|");
+                                  if (auxrespu[0].toString().trim() == "1") {
+                                    const bodyPost = {
+                                      'USUCODIG': 0,
+                                      'CorreoPersona': auxcorreo.toLowerCase().replace(' ', '')
+                                    }
+                                    this.service.consLoginCliente('1', bodyPost).subscribe(async Resultado => {
+                                      //await this.AsociaSector(Resultado[0].USUCODIG);
+  
+                                      this.service.AsociarSectores('1', Resultado[0].USUCODIG).subscribe(async Resultado => {
+                                        obj.Respuesta = auxrespu[1];
+                                        this.numberinsertados++;
+                                        this.NumberTotal++;
+                                        obj.Estado = true;
+  
+                                        var respuadmin = (await this.servadminManyChat.adminManyChat_Mtd(tel, this.ArrayDataInsert[i].Nombre.toString().trim())).toString().trim().split("|");
+                                        obj.IdManyChat = respuadmin[2];
+  
+  
+                                        resolve(true);
+                                      });
+                                    })
+                                  } else {
+                                    obj.Respuesta = auxrespu[1];
+                                    this.ArrInfoTotalCausaNoreguistro[8].value++;
+                                    this.numbernofueposible++;
+                                    this.NumberTotal++;
+                                    resolve(true);
+                                  }
+                                });
+                              }else{
+                                obj.Respuesta = 'Tipo de persona no espedificado';
+                                this.ArrInfoTotalCausaNoreguistro[7].value++;
+                                this.numbernofueposible++;
+                                this.NumberTotal++;
+                                resolve(true);
+                              }
+                              
                             } else {
                               obj.Respuesta = 'Tu teléfono ya se encuentra registrado en AgroApoya2.';
                               this.ArrInfoTotalCausaNoreguistro[6].value++;

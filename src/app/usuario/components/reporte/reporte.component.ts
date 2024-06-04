@@ -359,11 +359,12 @@ export class ReporteComponent implements OnInit {
         NombrePersona: '0'
       }
       this.ReporteService.ReporteUsuarios("1", '0', '0', bodyPost).subscribe(Resultado => {
-        for (var i = 0; i < Resultado.length; i++) {
+        this.ArrayUserManyChat = Resultado;
+        /*for (var i = 0; i < Resultado.length; i++) {
           if (Resultado[i].Id_ManyChat == null || Resultado[i].Id_ManyChat == undefined || Resultado[i].Id_ManyChat == "" || Resultado[i].Id_ManyChat == "null") {
             this.ArrayUserManyChat.push(Resultado[i]);
           }
-        }
+        }*/
         this.ConsultaUserMenyChat();
       });
     } catch {
