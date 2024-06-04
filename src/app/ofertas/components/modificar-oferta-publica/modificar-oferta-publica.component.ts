@@ -1104,6 +1104,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
   selectTipOferta(item: any) {
 
     this.consultaValoresUni();
+    this.consultaDescuento()
     this.SessionTipoOferta = item.id;
     this.MuestraVigencial = '1';
     if (item.id == 1) {
@@ -2274,6 +2275,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
       this.SumaPrecios = parseInt(this.VlrDomiI) + parseInt(this.PreFinI);
       this.ValorUni = this.SumaPrecios.toString();
       this.consultaValoresUni();
+      this.consultaDescuento();
     }
   }
 
@@ -3012,6 +3014,62 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.banderaAgregarAncla = '1';
   }
   //#endregion AgregaPresentacionesProdAncla
+
+  ValorDesc: string = '';
+  PorcentajeDesc: string = '';
+  DataValDesc: any[];
+
+  AgregarDescuento() {
+    if (this.ValorDesc == null || this.ValorDesc == '' || this.ValorDesc == undefined) {
+      this.Respuesta = 'El campo Valor es obligatorio.';
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    } else if (this.PorcentajeDesc == null || this.PorcentajeDesc == '' || this.PorcentajeDesc == undefined) {
+      this.Respuesta = 'El campo Porcentaje es obligatorio.';
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    } else {
+      const Body = {
+        Cd_cnsctvo: this.SelectorOferta,
+        Id_sector: this.SessionSectorSel,
+        ValorDesde: this.ValorDesc,
+        PorceDescuento: this.PorcentajeDesc
+      }
+      this.serviciosvaloracion.ModDescuento("1", Body).subscribe(ResultOper => {
+        this.Respuesta = ResultOper;
+        console.log(ResultOper);
+        this.ValorDesc = '';
+        this.PorcentajeDesc = '';
+        this.consultaDescuento();
+      })
+
+    }
+  }
+  
+  EliminaDescuento(idValor: any) {
+    const Body = {
+      Cd_cnsctvo: idValor.Cd_cnsctvo,
+      Id_sector: idValor.id_sctor,
+      ValorDesde: idValor.ValorDesde,
+      PorceDescuento: idValor.Descuento
+    }
+    this.serviciosvaloracion.ModDescuento("2", Body).subscribe(ResultOper => {
+      this.Respuesta = '';     
+      var respuesta = ResultOper.split('|')
+      this.Respuesta = respuesta[1];
+      this.consultaDescuento();
+    })
+  }
+
+  consultaDescuento() {
+    this.serviciosvaloracion.ConsultaDescuento('1', this.SelectorOferta, this.SessionSectorSel).subscribe(Resultcons => {
+      if (Resultcons.length > 0) {
+        this.DataValDesc = Resultcons;
+      }
+      else {
+        this.DataValDesc = [];
+      }
+    })
+  }
+
 
   AgregaValorUni(templateMensaje: any) {
     var auxmaxunidades: number = 0;
