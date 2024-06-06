@@ -593,6 +593,56 @@
             </ngb-panel>
         </ngb-accordion>
     </div>
+
+    <div class="row br" *ngIf="ValidaToppings=='1' || ValidaTipoOfer=='1'">
+        <ngb-accordion #acc="ngbAccordion" activeIds="config-panel-three">
+            <ngb-panel title="DESCUENTO" id="config-panel-three">
+                <ng-template ngbPanelContent>
+                    <div class="row br">
+                        <div class="col-sm-5">
+                            <label class="col-sm-12 Llave">Valor</label>
+                            <input mask="separator" thousandSeparator="." type="number" [(ngModel)]="ValorDesc"
+                                class="col-sm-12 form-control mt-1 textBox">
+                        </div>
+                        <div class="col-sm-5">
+                            <label class="col-sm-12 Llave">Porcentaje</label>
+                            <input type="number" [(ngModel)]="PorcentajeDesc"
+                                class="col-sm-12 form-control mt-1 textBox">
+                        </div>
+                        <div class="col-sm-1 position-relative">
+                            <button class="SinEstilo position-absolute bottom-0 start-0" title="Agregar unidades"
+                                (click)="AgregarDescuento()">
+                                <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/mas.png" width="30px"
+                                    height="30px">
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center br">
+                        <div class="table-responsive">
+                            <table class="table col-sm-12 TableAgro">
+                                <tr id="TablaValores">
+                                    <th>Valor</th>
+                                    <th>Porcentaje</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                <tr *ngFor="let val of DataValDesc">
+                                    <td>{{val.ValorDesde | currency}}</td>
+                                    <td>{{val.Descuento}}%</td>
+                                    <td>
+                                        <button class="SinEstilo" title="Eliminar amparado"
+                                            (click)="EliminaDescuento(val)">
+                                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+    </div>
+
     <div class="row br" *ngIf="ValidaToppings=='1' || ValidaTipoOfer=='1'">
         <h5 class="SubTituloForm">Definición valor de las unidades</h5>
     </div>

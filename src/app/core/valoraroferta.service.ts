@@ -555,4 +555,12 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'modAdProductoLinks/' + Bandera, Body);
   }
 
+  ConsultaDescuento(Bandera: string, Cd_cnsctvo: string, Id_sector: string) {
+    return this.http.get<any>(this.url_servidor + 'consagroDescuentoConsulta/' + Bandera + '/' + Cd_cnsctvo+ '/' + Id_sector)
+  }
+
+  ModDescuento(Bandera: string, Body: any) {
+    return this.http.post<any>(this.url_servidor + 'modAgroDescuento/' + Bandera, Body);
+  }
+
 }

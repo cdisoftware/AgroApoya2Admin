@@ -379,6 +379,62 @@ export class ValoracionComponent implements OnInit {
     })
   }
 
+  ValorDesc: string = '';
+  PorcentajeDesc: string = '';
+  DataValDesc: any[];
+
+  AgregarDescuento() {
+    if (this.ValorDesc == null || this.ValorDesc == '' || this.ValorDesc == undefined) {
+      this.Respuesta = 'El campo Valor es obligatorio.';
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    } else if (this.PorcentajeDesc == null || this.PorcentajeDesc == '' || this.PorcentajeDesc == undefined) {
+      this.Respuesta = 'El campo Porcentaje es obligatorio.';
+      this.modalService.open(this.ModalMensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
+    } else {
+      const Body = {
+        Cd_cnsctvo: this.SessionOferta,
+        Id_sector: this.SessionSectorSel,
+        ValorDesde: this.ValorDesc,
+        PorceDescuento: this.PorcentajeDesc
+      }
+      this.serviciosvaloracion.ModDescuento("1", Body).subscribe(ResultOper => {
+        this.Respuesta = ResultOper;
+        console.log(ResultOper);
+        this.ValorDesc = '';
+        this.PorcentajeDesc = '';
+        this.consultaDescuento();
+      })
+
+    }
+  }
+  
+  EliminaDescuento(idValor: any) {
+    const Body = {
+      Cd_cnsctvo: idValor.Cd_cnsctvo,
+      Id_sector: idValor.id_sctor,
+      ValorDesde: idValor.ValorDesde,
+      PorceDescuento: idValor.Descuento
+    }
+    this.serviciosvaloracion.ModDescuento("2", Body).subscribe(ResultOper => {
+      this.Respuesta = '';     
+      var respuesta = ResultOper.split('|')
+      this.Respuesta = respuesta[1];
+      this.consultaDescuento();
+    })
+  }
+
+  consultaDescuento() {
+    this.serviciosvaloracion.ConsultaDescuento('1', this.SessionOferta, this.SessionSectorSel).subscribe(Resultcons => {
+      if (Resultcons.length > 0) {
+        this.DataValDesc = Resultcons;
+      }
+      else {
+        this.DataValDesc = [];
+      }
+    })
+  }
+
+
   AgregaValorUni(templateMensaje: any) {
     var auxmaxunidades: number = 0;
 
@@ -387,9 +443,6 @@ export class ValoracionComponent implements OnInit {
     } else if (this.MuestraIndividual == '1') {
       auxmaxunidades = parseInt(this.MaxUnidI)
     }
-
-
-
     if (this.DataValores.length < auxmaxunidades) {
       this.Respuesta = ''
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' });
@@ -1221,6 +1274,7 @@ export class ValoracionComponent implements OnInit {
   selectTipOferta(item: any) {
 
     this.consultaValoresUni();
+    this.consultaDescuento();
     this.SessionTipoOferta = item.id;
     this.MuestraVigencial = '1';
     if (item.id == 1) {
@@ -1532,6 +1586,7 @@ export class ValoracionComponent implements OnInit {
       this.SumaPrecios = parseInt(this.VlrDomiI) + parseInt(this.PreFinI);
       this.ValorUni = this.SumaPrecios.toString();
       this.consultaValoresUni();
+      this.consultaDescuento();
     }
   }
 
@@ -2865,7 +2920,7 @@ export class ValoracionComponent implements OnInit {
     this.consultaConservacion();
   }
 
-  consultaRecetas() {    
+  consultaRecetas() {
     this.serviciosvaloracion.ConsultaEnlaces('1', '1', this.CodeProduct).subscribe(Resultcons => {
       if (Resultcons.length > 0) {
         this.DataReceta = Resultcons;
@@ -2967,7 +3022,7 @@ export class ValoracionComponent implements OnInit {
           Link: this.INLinkConsrv,
           TipoLink: 2
         }
-        this.serviciosvaloracion.AgregaEnlaces(bandera, Body).subscribe(ResultOper => {       
+        this.serviciosvaloracion.AgregaEnlaces(bandera, Body).subscribe(ResultOper => {
           this.consultaConservacion();
           this.INDesConsrv = '';
           this.INLinkConsrv = '';
@@ -2980,7 +3035,7 @@ export class ValoracionComponent implements OnInit {
           Link: this.INLinkConsrv,
           TipoLink: 2
         }
-        this.serviciosvaloracion.AgregaEnlaces(bandera, Body).subscribe(ResultOper => {        
+        this.serviciosvaloracion.AgregaEnlaces(bandera, Body).subscribe(ResultOper => {
           this.consultaConservacion();
           this.INDesConsrv = '';
           this.INLinkConsrv = '';
@@ -3626,7 +3681,7 @@ export class ValoracionComponent implements OnInit {
   SelectPresentacionTopping(item: any) {
     this.PresentacionToppingSelect = item.des_empaque;
     this.PesoPresentacionTopping = item.PESO;
-    this.PresentacionTopping = item.des_empaque;  
+    this.PresentacionTopping = item.des_empaque;
     this.UniProdTpp = item.unidades;
     this.DefectoUniProdTpp = item.defecto;
   }
