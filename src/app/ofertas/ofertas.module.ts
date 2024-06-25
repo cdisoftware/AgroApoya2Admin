@@ -7,8 +7,7 @@ import { MapacompraofertasComponent } from './components/reportes/mapacompraofer
 @NgModule({
   declarations: [
     CarruselofertasComponent,
-    MapacompraofertasComponent,
-  
+    MapacompraofertasComponent
   ],
 
   imports: [
