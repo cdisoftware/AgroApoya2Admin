@@ -44,6 +44,7 @@ import { RepusuariosComponent } from './ofertas/components/reportes/repusuarios/
 import { DashboardComponent } from './ofertas/components/reportes/dashboard/dashboard.component';
 import { RegistroUserexcelComponent } from './usuario/components/registro-userexcel/registro-userexcel.component';
 import { MapacompraofertasComponent } from './ofertas/components/reportes/mapacompraofertas/mapacompraofertas.component';
+import { EnviosmsofertaComponent } from './ofertas/components/sms-envio/enviosmsoferta/enviosmsoferta.component';
 
 const routes: Routes = [
   {
@@ -52,6 +53,10 @@ const routes: Routes = [
   }, {
     path: 'rep-ofertas',
     component: RepOfertasComponent
+  },
+  {
+    path: 'Enviosmsoferta',
+    component: EnviosmsofertaComponent
   },
   {
     path: 'home',

@@ -58,6 +58,7 @@ import { RepusuariosComponent } from './ofertas/components/reportes/repusuarios/
 import { ReportViewerModule } from 'ngx-ssrs-reportviewer-v2';
 import { DashboardComponent } from './ofertas/components/reportes/dashboard/dashboard.component';
 import { RegistroUserexcelComponent } from './usuario/components/registro-userexcel/registro-userexcel.component';
+import { EnviosmsofertaComponent } from './ofertas/components/sms-envio/enviosmsoferta/enviosmsoferta.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -103,7 +104,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     AsignaTransCampoCiudadComponent,
     RepusuariosComponent,
     DashboardComponent,
-    RegistroUserexcelComponent
+    RegistroUserexcelComponent,
+    EnviosmsofertaComponent
     ],
   imports: [
     NgxMaskModule.forRoot(options),

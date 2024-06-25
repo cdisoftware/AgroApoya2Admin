@@ -563,4 +563,10 @@ export class ValorarofertaService {
     return this.http.post<any>(this.url_servidor + 'modAgroDescuento/' + Bandera, Body);
   }
 
+  consAdminEnvioSMS(Bandera: string,IdSectror: string) {
+    return this.http.get<any>(this.url_servidor + 'consAdminEnvioSMS/' + Bandera + '/'+ IdSectror);
+  }
+  EnvioSMSIndv(Body:any) {
+    return this.http.post<any>(this.url_servidor + 'EnvioSMSIndv', Body);
+  }
 }
