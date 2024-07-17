@@ -1,13 +1,13 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbAccordionConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ngx-cookie-service';
-import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
-import { Router } from '@angular/router'
-import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
-import { DatePipe } from '@angular/common';
 import { CrearofertaService } from 'src/app/core/crearoferta.service';
+import { MetodosglobalesService } from 'src/app/core/metodosglobales.service';
 import { ReporteService } from 'src/app/core/reporte.service';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { ValorarofertaService } from 'src/app/core/valoraroferta.service';
 
 
 @Component({
@@ -152,6 +152,8 @@ export class ValoracionComponent implements OnInit {
   //#endregion Cupon
   IndexTipoDescuento: number = -1;
   IndexTipoCupon: number = -1;
+  PorcentajeCuponxCupon: string = "";
+  Maximo_PorcentajeCuponxCupon: string = "";
 
 
   //Cupones
@@ -407,7 +409,7 @@ export class ValoracionComponent implements OnInit {
 
     }
   }
-  
+
   EliminaDescuento(idValor: any) {
     const Body = {
       Cd_cnsctvo: idValor.Cd_cnsctvo,
@@ -416,7 +418,7 @@ export class ValoracionComponent implements OnInit {
       PorceDescuento: idValor.Descuento
     }
     this.serviciosvaloracion.ModDescuento("2", Body).subscribe(ResultOper => {
-      this.Respuesta = '';     
+      this.Respuesta = '';
       var respuesta = ResultOper.split('|')
       this.Respuesta = respuesta[1];
       this.consultaDescuento();
@@ -1577,7 +1579,9 @@ export class ValoracionComponent implements OnInit {
         IDTIPODOMICILIO: this.IdDomicilio,
         VLORAPRTRDMCLIO: AuxValorApartirde,
         NumUsuaCupo: 0,
-        DirigidaRegiVent: this.IdOfertaDirigidaA
+        DirigidaRegiVent: this.IdOfertaDirigidaA,
+        PorcentajeCuponxCupon: "0",
+        Maximo_PorcentajeCuponxCupon: "0"
       }
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
         var arreglores = ResultUpdate.split('|')
@@ -1658,8 +1662,22 @@ export class ValoracionComponent implements OnInit {
         } else {
           auxres = true;
         }
-      } else {
+      } else if (this.IdTipoCupon == "2") {
         if ((this.PorcDescLider == '' || this.PorcDescLider == null) || (this.UnidXGrupos == "" || this.UnidXGrupos == null)) {
+          auxres = false;
+        } else {
+          auxres = true;
+        }
+      }
+      else if (this.IdTipoCupon == "3") {
+        if ((this.DescripcionRegalo == '' || this.DescripcionRegalo == null)) {
+          auxres = false;
+        } else {
+          auxres = true;
+        }
+      }
+      else if (this.IdTipoCupon == "4") {
+        if ((this.DescripcionRegalo == '' || this.DescripcionRegalo == null)) {
           auxres = false;
         } else {
           auxres = true;
@@ -1669,12 +1687,12 @@ export class ValoracionComponent implements OnInit {
     } else {
       auxres = false;
     }
-    var auxIdOfertDirigidA: string = "0";
     if (this.OfertaDirigidaA == 'Ventas') {
       this.IdOfertaDirigidaA = '2'
     } else if (this.OfertaDirigidaA == 'Registros') {
       this.IdOfertaDirigidaA = '1'
     }
+
     if (
       (this.SessionTipoComG == '' || this.SessionTipoComG == null) ||
       (validacomisionG == '' || validacomisionG == null) ||
@@ -1826,6 +1844,10 @@ export class ValoracionComponent implements OnInit {
               this.ArrayCamposValida[i].class = 'TextFine'
               this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
             }
+          } if (this.IdTipoCupon == '3' || this.IdTipoCupon == '4') {
+            this.ArrayCamposValida[i].campof = 'Campos regalo'
+            this.ArrayCamposValida[i].class = 'TextFine'
+            this.ArrayCamposValida[i].imagen = '../../../../../assets/ImagenesAgroApoya2Adm/aprobar.png'
           } else if (Number(this.IdTipoCupon) < 1) {
             this.ArrayCamposValida[i].campof = 'Descripcion tipo regalo'
             this.ArrayCamposValida[i].class = 'TextAlert'
@@ -1874,6 +1896,7 @@ export class ValoracionComponent implements OnInit {
           }
         }
       }
+      alert("1")
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     }
     else {
@@ -1926,6 +1949,14 @@ export class ValoracionComponent implements OnInit {
           DES_CUPONREGALO: this.DescripcionRegalo,
           IMG_CUPONREGALO: this.NomImgRegalo
         }
+      } if(Number(this.IdTipoCupon) == 3 || Number(this.IdTipoCupon) == 4){
+        SelectTipoCupon = {
+          PRCNTJE_DCTO_LIDER: "0",
+          MNMO_PRSNAS_XGRUPO: "0",
+
+          DES_CUPONREGALO: this.DescripcionRegalo,
+          IMG_CUPONREGALO: "0"
+        }
       } else {
         SelectTipoCupon = {
           PRCNTJE_DCTO_LIDER: this.PorcDescLider,
@@ -1967,9 +1998,13 @@ export class ValoracionComponent implements OnInit {
         IDTIPODOMICILIO: this.IdDomicilio,
         VLORAPRTRDMCLIO: AuxValorApartirde,
         NumUsuaCupo: this.NumeroUsuariosCupon,
-        DirigidaRegiVent: this.IdOfertaDirigidaA
+        DirigidaRegiVent: this.IdOfertaDirigidaA,
+        PorcentajeCuponxCupon: this.PorcentajeCuponxCupon,
+        Maximo_PorcentajeCuponxCupon: this.Maximo_PorcentajeCuponxCupon
       }
+      console.log(Body)
       this.serviciosvaloracion.ActualizarOfertaValoracion('3', Body).subscribe(ResultUpdate => {
+        console.log(ResultUpdate)
         this.Respuesta = '';
         var arreglores = ResultUpdate.split('|')
         this.Respuesta = arreglores[1];
@@ -1987,6 +2022,7 @@ export class ValoracionComponent implements OnInit {
 
       })
       this.MuestraValUnidades = '0';
+      alert("2")
       this.modalService.open(templateMensaje, { ariaLabelledBy: 'modal-basic-title' })
     }
   }
@@ -2548,7 +2584,9 @@ export class ValoracionComponent implements OnInit {
         IMG_CUPONREGALO: "0",
         IDTIPODOMICILIO: "0",
         VLORAPRTRDMCLIO: "0",
-        NumUsuaCupo: 0
+        NumUsuaCupo: 0,
+        PorcentajeCuponxCupon: "0",
+        Maximo_PorcentajeCuponxCupon: "0"
       }
       this.serviciosvaloracion.ActualizarOfertaValoracion('6', Body).subscribe(ResultUpdate => {
         var arreglores = ResultUpdate.split('|');
