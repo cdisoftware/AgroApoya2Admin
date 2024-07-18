@@ -484,7 +484,7 @@
                         </div>
                     </div>
 
-                    <div class="row br" *ngIf="IdTipoCupon == '1'">
+                    <div class="row br" *ngIf="IdTipoCupon == '1' ">
                         <div class="col-sm-6">
                             <label class="col-sm-12 Llave">Descripción</label>
                             <input type="text" class="col-sm-12 form-control mt-1 textBox"
@@ -510,6 +510,23 @@
                         </div>
                     </div>
 
+                    <div class="row br" *ngIf="IdTipoCupon == '3' || IdTipoCupon == '4' ">
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Descripción</label>
+                            <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                placeholder="Descripción (Obligatorio)" [(ngModel)]="DescripcionRegalo" />
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-sm-12 Llave">Porcentaje aplicar</label>
+                            <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                placeholder="Descripción (Obligatorio)" [(ngModel)]="PorcentajeCuponxCupon" />
+                        </div>
+                        <div class="col-sm-6 br">
+                            <label class="col-sm-12 Llave">Maximo valor/porcentaje aplicar</label>
+                            <input type="text" class="col-sm-12 form-control mt-1 textBox"
+                                placeholder="Descripción (Obligatorio)" [(ngModel)]="Maximo_PorcentajeCuponxCupon" />
+                        </div>
+                    </div>
 
 
 
