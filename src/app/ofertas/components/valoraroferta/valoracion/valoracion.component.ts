@@ -406,7 +406,6 @@ export class ValoracionComponent implements OnInit {
         this.PorcentajeDesc = '';
         this.consultaDescuento();
       })
-
     }
   }
 
