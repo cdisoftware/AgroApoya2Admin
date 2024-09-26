@@ -1034,6 +1034,8 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         Productos: []
       });
     }
+
+    console.log(this.ArregloPDFDetalleProd)
     for (var t = 0; this.ArregloPDFDetalleProd.length > t; t++) {
       this.downloadPDFDetalle(t, this.ArregloPDFDetalleProd[t].CodigoOferta);
     }

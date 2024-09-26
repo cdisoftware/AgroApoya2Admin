@@ -1,0 +1,134 @@
+.TituloAgro {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    color: #c644a0;
+}
+
+.SubTituloAgro {
+    text-align: center;
+    font-size: 17px;
+    font-weight: 650;
+    color: #920f6c;
+}
+
+.TextoAgroSmall {
+    font-size: 12px;
+    color: #181D23;
+    font-weight: 600;
+}
+
+.TextoAgroMedium {
+    font-size: 14px;
+    color: #181D23;
+    font-weight: 600;
+}
+
+.TextoAgroSmallDos {
+    font-size: 12px;
+    color: #181D23;
+    font-weight: 400;
+    line-height: 14px;
+}
+
+.CentrarTexto {
+    text-align: center;
+}
+
+.Btn-AgroPrin {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+    background-color: #c644a0;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+}
+
+.Btn-AgroPrin:hover {
+    background-color: #920f6c;
+}
+
+.Btn-AgroDesc {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: white;
+    background-color: #b2b2b2;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+}
+
+.Btn-AgroDesc:hover {
+    background-color: #959595;
+}
+
+.CursorPointer {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.Btn-AgroAux {
+    width: 35px;
+    height: 35px;
+    background-color: #b2b2b2;
+    border-radius: 5px;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.Btn-AgroAux {
+    width: 35px;
+    height: 35px;
+    background-color: #959595;
+    border-radius: 5px;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.imgpresentacion {
+    width: 24px !important;
+    height: 24px !important;
+    cursor: pointer;
+}
+
+.contenedorImagenes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.ImgProducto {
+    height: 110px;
+    width: 100px;
+    text-align: center;
+}
+
+.ImgProducto img {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    object-fit: cover;
+    border-radius: 18px;
+}
+
+.tableSimple {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.tableSimple th,
+td {
+    padding: 8px;
+    text-align: left;
+    border: none;
+    font-size: 13px;
+}

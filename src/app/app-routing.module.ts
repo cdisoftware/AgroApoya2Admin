@@ -46,6 +46,11 @@ import { RegistroUserexcelComponent } from './usuario/components/registro-userex
 import { MapacompraofertasComponent } from './ofertas/components/reportes/mapacompraofertas/mapacompraofertas.component';
 import { EnviosmsofertaComponent } from './ofertas/components/sms-envio/enviosmsoferta/enviosmsoferta.component';
 
+
+
+//Version 3 AgroApoyados
+import { CreacionofertaComponent } from './AgroVersionTres/Oferta/creacionoferta/creacionoferta.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -239,6 +244,11 @@ const routes: Routes = [
   {
     path: 'admincod',
     component: AdminCodigosComponent
+  },
+  //Version tres AgroApoyados
+  {
+    path: 'Home3',
+    component: CreacionofertaComponent
   }
 ];
 

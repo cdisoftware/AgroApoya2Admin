@@ -1,0 +1,577 @@
+<div class="container mt-3 mb-5">
+    <div class="CentrarTexto">
+        <label class="TituloAgro">CREACIÓN DE LA OFERTA</label>
+    </div>
+
+    <div class="m-0 p-0 ">
+        <!--FECHAS PARA LA OFERTA-->
+        <div class="row m-0 p-0">
+            <div class="col-12 mb-1">
+                <label class="SubTituloAgro">Fechas para la oferta</label>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Fecha Incio</label>
+                <input type="date" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Fecha Fin</label>
+                <input type="date" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Fecha Entrega</label>
+                <input type="date" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-12">
+                <label class="TextoAgroSmall CursorPointer" (click)="BtnModalFechasAnteriores()">
+                    Click aquí para validar fechas de ofertas anteriores
+                </label>
+            </div>
+        </div>
+        <hr>
+        <!--LOCALIDAD PARA LA OFERTA-->
+        <div class="row m-0 p-0">
+            <div class="col-12 mb-1">
+                <label class="SubTituloAgro">Localidad oferta</label>
+            </div>
+            <div style="display: flex;">
+                <label class="TextoAgroSmall CursorPointer" (click)="BtnModalImagenSector()">
+                    Seleccionar imagen sector
+                </label>
+            </div>
+            <div class="col-12">
+                <div class="col-sm-4">
+                    <label class="col-sm-12 TextoAgroSmall">Mascara del sector</label>
+                    <input type="text" class="form-control form-control-sm textBox">
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Localidad</label>
+                <select class="form-control form-control-sm textBox">
+                    <option value="0">Seleccionar</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Sector</label>
+                <select class="form-control form-control-sm textBox">
+                    <option value="0">Seleccionar</option>
+                </select>
+            </div>
+            <div class="col-sm-4 mt-3">
+                <img src="https://cdn-icons-png.flaticon.com/128/8387/8387527.png"
+                    style="width: 35px; height: 35px; margin-top: 10px; cursor: pointer;">
+            </div>
+        </div>
+        <hr>
+        <!--DETALLE DE LA OFERTA-->
+        <div class="row m-0 p-0">
+            <div class="col-12 mb-1">
+                <label class="SubTituloAgro">Detalle de para la oferta</label>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Tipo de oferta</label>
+                <select class="form-control form-control-sm textBox">
+                    <option value="0">Seleccionar</option>
+                    <option value="1">Individual</option>
+                    <option value="2">Referidos</option>
+                </select>
+            </div>
+            <div class="col-12">
+
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Tipo referidor</label>
+                <select class="form-control form-control-sm textBox">
+                    <option value="0">Seleccionar</option>
+                    <option value="1">Regalo</option>
+                    <option value="2">Cupon por dinero</option>
+                    <option value="2">Cupon por % descuento</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Valor referidor</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Descripción referidor</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Tipo referido</label>
+                <select class="form-control form-control-sm textBox">
+                    <option value="0">Seleccionar</option>
+                    <option value="1">Regalo</option>
+                    <option value="2">Cupon por dinero</option>
+                    <option value="2">Cupon por % descuento</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Valor referido</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Descripcion referido</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Tipo domicilio</label>
+                <select class="form-control form-control-sm textBox">
+                    <option value="0">Seleccionar</option>
+                    <option value="1">Por valor de la compra</option>
+                    <option value="2">Domicilio gratis</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Valor de la compra</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Valor domicilio</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+        </div>
+        <hr>
+        <!--CUPONES DE LA OFERTA-->
+        <div class="row m-0 p-0">
+            <div class="col-12 mb-1">
+                <label class="SubTituloAgro">Descuentos para la oferta</label>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Tipo de descuento</label>
+                <select class="form-control form-control-sm textBox">
+                    <option value="0">Seleccionar</option>
+                    <option value="2">Descuento dinero</option>
+                    <option value="2">Descuento %</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Aplicable a</label>
+                <select class="form-control form-control-sm textBox">
+                    <option value="0">Seleccionar</option>
+                    <option value="2">Todos</option>
+                    <option value="2">Nuevos compradores</option>
+                    <option value="2">Antiguos compradores</option>
+                </select>
+            </div>
+            <div class="col-sm-4" style="display:flex">
+                <div class="w-100">
+                    <label class="col-sm-12 TextoAgroSmall">Valor</label>
+                    <input type="text" class="form-control form-control-sm textBox">
+                </div>
+                <img src="https://cdn-icons-png.flaticon.com/128/8387/8387527.png"
+                    style="width: 35px; height: 35px; margin-top: 28px; margin-left: 10px; cursor: pointer;">
+            </div>
+        </div>
+        <hr>
+        <!--FILTRO PRODUCTOS-->
+        <div class="row m-0 p-0">
+            <div class="col-12 mb-1" style="display: flex;">
+                <label class="SubTituloAgro">Productos</label>
+                <img src="https://cdn-icons-png.flaticon.com/128/8387/8387527.png" (click)="BtnModalNuevoProducto()"
+                    style="width: 30px; height: 30px; cursor: pointer; margin-left: 10px;">
+            </div>
+            <div class="col-sm-4" style="display: flex;">
+                <div class="m-0 p-0 w-100">
+                    <label class="col-sm-12 TextoAgroSmall">Nombre producto</label>
+                    <input type="text" class="form-control form-control-sm textBox">
+                </div>
+                <img src="https://cdn-icons-png.flaticon.com/128/7088/7088387.png"
+                    style="width: 35px; height: 35px; margin-top: 25px; margin-left: 10px; cursor: pointer;">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Tipo producto</label>
+                <select class="form-control form-control-sm textBox">
+                    <option value="0">Todos los productos</option>
+                    <option value="2">Productos tradicionales</option>
+                    <option value="1">Productos especiales</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Ordenar</label>
+                <select class="form-control form-control-sm textBox">
+                    <option value="0">Tipo producto</option>
+                    <option value="2">Activos e inactivos</option>
+                    <option value="1">Alfabeticamente</option>
+                </select>
+            </div>
+        </div>
+        <!--TARJETAS PRODUCTOS-->
+        <div class="row m-0 p-0 mt-3">
+            <div class="col-md-4 m-0 p-1">
+                <div class="m-0 p-2"
+                    style="background-color: #f5f5f5; border: 1px solid gainsboro; border-radius: 5px;">
+                    <div class="m-0 p-0" style="text-align: center;">
+                        <label class="Llave" style="font-size: 12px;">
+                            MANZANA ROJA
+                        </label>
+                    </div>
+                    <div style="display: flex; background-color: #f5f5f5; padding: 5px;">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRldpWhsKOViqNGgIMgenZVbxWhu7OjWQTdMg&s"
+                            style="height: 130px; width: 130px; border-radius: 5px;">
+                        <div style="width:100%;" class="row m-0 p-0 justify-content-center">
+                            <div class="col-5">
+                                <img src="https://cdn-icons-png.flaticon.com/128/785/785822.png"
+                                    (click)="BtnModalDetalleInfoProducto()" style="cursor: pointer; width: 100%;"
+                                    title="Información general">
+                            </div>
+                            <div class="col-5">
+                                <img src="https://cdn-icons-png.flaticon.com/128/4413/4413142.png"
+                                    (click)="BtnModalDetallePresentaciones()" style="cursor: pointer; width: 100%;"
+                                    title="Presentaciones">
+                            </div>
+                            <div class="col-5">
+                                <img src="https://cdn-icons-png.flaticon.com/128/1040/1040219.png"
+                                    style="cursor: pointer; width: 100%;" title="Activar">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 m-0 p-1">
+                <div class="m-0 p-2"
+                    style="background-color: #ffffff; border: 1px solid gainsboro; border-radius: 5px;">
+                    <label class="Llave" style="font-size: 12px; color: #45ab1b !important;">
+                        REGALO X REGISTRASE Y COMPRAR
+                    </label>
+                    <div style="display: flex; background-color: #ffffff; padding: 5px;">
+                        <img src="https://cdn-icons-png.flaticon.com/128/1140/1140033.png"
+                            style="height: 130px; width: 130px;">
+                        <div style="width: 100%; padding: 10px;">
+                            <div class="w-100 mt-3" style=" text-align: center;">
+                                <label class="Btn-AgroPrin" style="margin: auto;">
+                                    Presentaciones
+                                </label>
+                            </div>
+                            <div class="w-100 mt-3" style=" text-align: center;">
+                                <label class="Btn-AgroPrin" style="margin: auto;">
+                                    Desactivar producto
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 m-0 p-1">
+                <div class="m-0 p-2"
+                    style="background-color: #ffffff; border: 1px solid gainsboro; border-radius: 5px;">
+                    <label class="Llave" style="font-size: 12px; color: #45ab1b !important;">
+                        REGALO X CUALQUIER COMPRA
+                    </label>
+                    <div style="display: flex; background-color: #ffffff; padding: 5px;">
+                        <img src="https://cdn-icons-png.flaticon.com/128/1140/1140033.png"
+                            style="height: 130px; width: 130px;">
+                        <div style="width: 100%; padding: 10px;">
+                            <div class="w-100 mt-3" style=" text-align: center;">
+                                <label class="Btn-AgroPrin" style="margin: auto;">
+                                    Presentaciones
+                                </label>
+                            </div>
+                            <div class="w-100 mt-3" style=" text-align: center;">
+                                <label class="Btn-AgroPrin" style="margin: auto;">
+                                    Desactivar producto
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 m-0 p-1">
+                <div class="m-0 p-2"
+                    style="background-color: #ffffff; border: 1px solid gainsboro; border-radius: 5px;">
+                    <label class="Llave" style="font-size: 12px; color: #45ab1b !important;">
+                        REGALO LIDER
+                    </label>
+                    <div style="display: flex; background-color: #ffffff; padding: 5px;">
+                        <img src="https://cdn-icons-png.flaticon.com/128/1140/1140033.png"
+                            style="height: 130px; width: 130px;">
+                        <div style="width: 100%; padding: 10px;">
+                            <div class="w-100 mt-3" style=" text-align: center;">
+                                <label class="Btn-AgroPrin" style="margin: auto;">
+                                    Presentaciones
+                                </label>
+                            </div>
+                            <div class="w-100 mt-3" style=" text-align: center;">
+                                <label class="Btn-AgroPrin" style="margin: auto;">
+                                    Desactivar producto
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 m-0 p-1">
+                <div class="m-0 p-2"
+                    style="background-color: #ffffff; border: 1px solid gainsboro; border-radius: 5px;">
+                    <label class="Llave" style="font-size: 12px; color: #45ab1b !important;">
+                        REGALO PARTICIPANTE
+                    </label>
+                    <div style="display: flex; background-color: #ffffff; padding: 5px;">
+                        <img src="https://cdn-icons-png.flaticon.com/128/1140/1140033.png"
+                            style="height: 130px; width: 130px;">
+                        <div style="width: 100%; padding: 10px;">
+                            <div class="w-100 mt-3" style=" text-align: center;">
+                                <label class="Btn-AgroPrin" style="margin: auto;">
+                                    Presentaciones
+                                </label>
+                            </div>
+                            <div class="w-100 mt-3" style=" text-align: center;">
+                                <label class="Btn-AgroPrin" style="margin: auto;">
+                                    Desactivar producto
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--AREA MODALES-->
+<ng-template #ModalRespuesta let-modal>
+    <div class="modal-header">
+        <h1>Respuesta</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">Respuesta</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalPresentaciones let-modal>
+    <div class="modal-header">
+        <h1>AgroApoya2</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>Presentaciones del producto</h2>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Nombre producto</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Maximo unidades x compra</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Presentacion</label>
+                <select class="form-control form-control-sm textBox">
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Valor real</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Valor referencia</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">% Descuento</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-12 mt-4">
+                <div class="row justify-content-center">
+                    <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()"
+                        style="margin-right: 5px;">Guardar</button>
+                    <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()"
+                        style="margin-left: 5px;">Limpiar</button>
+                </div>
+            </div>
+            <div class="col-12 mt-4">
+                <div class="table-responsive">
+                    <table class="table col-sm-12 TableAgro">
+                        <tr id="TablaValoracion">
+                            <th>Unidades</th>
+                            <th>Maximo Unidades</th>
+                            <th>Presentación</th>
+                            <th>Peso (Lb)</th>
+                            <th>Valor</th>
+                            <th>Valor Referencia</th>
+                            <th>Acciones</th>
+                        </tr>
+                        <tr>
+                            <td>1 Lb</td>
+                            <td>
+                                30 und
+                            </td>
+                            <td>x 3 Libras</td>
+                            <td>3</td>
+                            <td>$12.000</td>
+                            <td>$14.500</td>
+                            <td>
+                                <button class="SinEstilo" title="Eliminar presentación">
+                                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basura.png"
+                                        class="imgpresentacion">
+                                </button>
+                                <button class="SinEstilo" title="Editar presentación">
+                                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
+                                        class="imgpresentacion">
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalFechasOferta let-modal>
+    <div class="modal-header">
+        <h1>AgroApoya2</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">Fechas de anteriores ofertas</h2>
+            </div>
+            <div class="mt-3 mb-4">
+                <table class="tableSimple">
+                    <tr>
+                        <th>Oferta</th>
+                        <th>Fecha inicio</th>
+                        <th>Fecha fin</th>
+                        <th>Fecha Entrega</th>
+                    </tr>
+                    <tr>
+                        <td>2255</td>
+                        <td>12 septiembre</td>
+                        <td>13 septiembre</td>
+                        <td>15 septiembre</td>
+                    </tr>
+                    <tr>
+                        <td>2255</td>
+                        <td>12 septiembre</td>
+                        <td>13 septiembre</td>
+                        <td>15 septiembre</td>
+                    </tr>
+                    <tr>
+                        <td>2255</td>
+                        <td>12 septiembre</td>
+                        <td>13 septiembre</td>
+                        <td>15 septiembre</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalImfOfertaSector let-modal>
+    <div class="modal-header">
+        <h1>AgroApoya2</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">Seleccionar las imagenes para el sector</h2>
+            </div>
+
+            <div class="mt-3 contenedorImagenes">
+                <div class="ImgProducto">
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
+                </div>
+                <div class="ImgProducto">
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
+                </div>
+                <div class="ImgProducto">
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
+                    <label class="TextoAgroSmall"
+                        style="font-size: 10px !important; background-color:rgb(24, 114, 117); color: white; width: 100%; border-radius: 5px;">
+                        Imagen principal
+                    </label>
+                </div>
+                <div class="ImgProducto">
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
+                </div>
+                <div class="ImgProducto">
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
+                </div>
+                <div class="ImgProducto">
+                    <img src="https://cdn-icons-png.flaticon.com/128/8191/8191568.png">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalNuevoProducto let-modal>
+    <div class="modal-header">
+        <h1>AgroApoya2</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">Añadir un producto nuevo</h2>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Nombre producto</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Descripción corta</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Descripción larga</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4" style="display: flex;">
+                <div class="w-100">
+                    <label class="col-sm-12 TextoAgroSmall">Prensentaciones asociadas</label>
+                    <input type="text" class="form-control form-control-sm textBox">
+                </div>
+                <img src="https://cdn-icons-png.flaticon.com/128/8387/8387527.png"
+                    style="width: 30px; height: 30px; cursor: pointer; margin-left: 10px; margin-top: 30px;">
+            </div>
+            <div class="col-12 mt-3">
+                <div class="col-3 p-1" style="display: flex;">
+                    <div class="w-100"
+                        style="border: 1px solid #b9b9b9; border-radius: 5px; text-align: center; background-color: #e1e1e1;">
+                        <label>X 2 Libras</label>
+                    </div>
+                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basura.png" class="imgpresentacion"
+                        style="margin-left: 10px;">
+                </div>
+            </div>
+
+            <div class="contenedorImagenes mt-3">
+                <div class="ImgProducto">
+                    <img src="https://cdn-icons-png.flaticon.com/128/8191/8191568.png">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>

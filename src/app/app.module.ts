@@ -59,6 +59,7 @@ import { ReportViewerModule } from 'ngx-ssrs-reportviewer-v2';
 import { DashboardComponent } from './ofertas/components/reportes/dashboard/dashboard.component';
 import { RegistroUserexcelComponent } from './usuario/components/registro-userexcel/registro-userexcel.component';
 import { EnviosmsofertaComponent } from './ofertas/components/sms-envio/enviosmsoferta/enviosmsoferta.component';
+import { CreacionofertaComponent } from './AgroVersionTres/Oferta/creacionoferta/creacionoferta.component';
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -105,7 +106,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     RepusuariosComponent,
     DashboardComponent,
     RegistroUserexcelComponent,
-    EnviosmsofertaComponent
+    EnviosmsofertaComponent,
+    CreacionofertaComponent
     ],
   imports: [
     NgxMaskModule.forRoot(options),

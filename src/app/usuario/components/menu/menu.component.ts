@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
-import { Sidebar } from 'ng-sidebar';
 import { CookieService } from 'ngx-cookie-service';
 import { LoginService } from './../../../core/login.service';
 
