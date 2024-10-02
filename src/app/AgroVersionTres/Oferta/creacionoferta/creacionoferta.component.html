@@ -1,5 +1,5 @@
-<div class="container mt-3 mb-5">
-    <div class="CentrarTexto">
+<div class="container mt-4 mb-5 card" style="background-color: white;">
+    <div class="CentrarTexto mt-4">
         <label class="TituloAgro">CREACIÓN DE LA OFERTA</label>
     </div>
 
@@ -7,7 +7,12 @@
         <!--FECHAS PARA LA OFERTA-->
         <div class="row m-0 p-0">
             <div class="col-12 mb-1">
-                <label class="SubTituloAgro">Fechas para la oferta</label>
+                <label class="SubTituloAgro">Informacion general para la oferta</label>
+            </div>
+            <div class="col-12">
+                <label class="TextoAgroSmall CursorPointer" (click)="BtnModalFechasAnteriores()">
+                    Click aquí para validar fechas de ofertas anteriores
+                </label>
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Fecha Incio</label>
@@ -21,10 +26,73 @@
                 <label class="col-sm-12 TextoAgroSmall">Fecha Entrega</label>
                 <input type="date" class="form-control form-control-sm textBox">
             </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Mascara del sector</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Tipo de oferta</label>
+                <select class="form-control form-control-sm textBox">
+                    <option value="0">Seleccionar</option>
+                    <option value="1">Individual</option>
+                    <option value="2">Referidos</option>
+                </select>
+            </div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Tipo domicilio</label>
+                <select class="form-control form-control-sm textBox">
+                    <option value="0">Seleccionar</option>
+                    <option value="1">Por valor de la compra</option>
+                    <option value="2">Domicilio gratis</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Valor de la compra</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Valor domicilio</label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
             <div class="col-12">
-                <label class="TextoAgroSmall CursorPointer" (click)="BtnModalFechasAnteriores()">
-                    Click aquí para validar fechas de ofertas anteriores
-                </label>
+                <div class="w-100 mt-3" style=" text-align: center;">
+                    <label class="Btn-AgroPrin" style="margin: auto;">
+                        Guardar informacion general
+                    </label>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <!--INFORMACION REFERIDOS DE LA OFERTA-->
+        <div class="row m-0 p-0">
+            <div class="col-12 mb-1">
+                <label class="SubTituloAgro">Información referidos</label>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Tipo referidor</label>
+                <select class="form-control form-control-sm textBox">
+                    <option value="0">Seleccionar</option>
+                    <option value="1">Regalo</option>
+                    <option value="2">Cupon por dinero</option>
+                    <option value="2">Cupon por % descuento</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Tipo referido</label>
+                <select class="form-control form-control-sm textBox">
+                    <option value="0">Seleccionar</option>
+                    <option value="1">Regalo</option>
+                    <option value="2">Cupon por dinero</option>
+                    <option value="2">Cupon por % descuento</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <div class="w-100 mt-3" style=" text-align: center;">
+                    <label class="Btn-AgroPrin" style="margin: auto;">
+                        Guardar informacion referidos
+                    </label>
+                </div>
             </div>
         </div>
         <hr>
@@ -37,12 +105,6 @@
                 <label class="TextoAgroSmall CursorPointer" (click)="BtnModalImagenSector()">
                     Seleccionar imagen sector
                 </label>
-            </div>
-            <div class="col-12">
-                <div class="col-sm-4">
-                    <label class="col-sm-12 TextoAgroSmall">Mascara del sector</label>
-                    <input type="text" class="form-control form-control-sm textBox">
-                </div>
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Localidad</label>
@@ -62,83 +124,16 @@
             </div>
         </div>
         <hr>
-        <!--DETALLE DE LA OFERTA-->
-        <div class="row m-0 p-0">
-            <div class="col-12 mb-1">
-                <label class="SubTituloAgro">Detalle de para la oferta</label>
-            </div>
-            <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Tipo de oferta</label>
-                <select class="form-control form-control-sm textBox">
-                    <option value="0">Seleccionar</option>
-                    <option value="1">Individual</option>
-                    <option value="2">Referidos</option>
-                </select>
-            </div>
-            <div class="col-12">
-
-            </div>
-            <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Tipo referidor</label>
-                <select class="form-control form-control-sm textBox">
-                    <option value="0">Seleccionar</option>
-                    <option value="1">Regalo</option>
-                    <option value="2">Cupon por dinero</option>
-                    <option value="2">Cupon por % descuento</option>
-                </select>
-            </div>
-            <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Valor referidor</label>
-                <input type="text" class="form-control form-control-sm textBox">
-            </div>
-            <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Descripción referidor</label>
-                <input type="text" class="form-control form-control-sm textBox">
-            </div>
-            <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Tipo referido</label>
-                <select class="form-control form-control-sm textBox">
-                    <option value="0">Seleccionar</option>
-                    <option value="1">Regalo</option>
-                    <option value="2">Cupon por dinero</option>
-                    <option value="2">Cupon por % descuento</option>
-                </select>
-            </div>
-            <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Valor referido</label>
-                <input type="text" class="form-control form-control-sm textBox">
-            </div>
-            <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Descripcion referido</label>
-                <input type="text" class="form-control form-control-sm textBox">
-            </div>
-            <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Tipo domicilio</label>
-                <select class="form-control form-control-sm textBox">
-                    <option value="0">Seleccionar</option>
-                    <option value="1">Por valor de la compra</option>
-                    <option value="2">Domicilio gratis</option>
-                </select>
-            </div>
-            <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Valor de la compra</label>
-                <input type="text" class="form-control form-control-sm textBox">
-            </div>
-            <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Valor domicilio</label>
-                <input type="text" class="form-control form-control-sm textBox">
-            </div>
-        </div>
-        <hr>
         <!--CUPONES DE LA OFERTA-->
         <div class="row m-0 p-0">
             <div class="col-12 mb-1">
-                <label class="SubTituloAgro">Descuentos para la oferta</label>
+                <label class="SubTituloAgro">Regalos para la oferta</label>
             </div>
             <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Tipo de descuento</label>
+                <label class="col-sm-12 TextoAgroSmall">Tipo de regalo</label>
                 <select class="form-control form-control-sm textBox">
                     <option value="0">Seleccionar</option>
+                    <option value="1">Regalo producto</option>
                     <option value="2">Descuento dinero</option>
                     <option value="2">Descuento %</option>
                 </select>
@@ -153,10 +148,6 @@
                 </select>
             </div>
             <div class="col-sm-4" style="display:flex">
-                <div class="w-100">
-                    <label class="col-sm-12 TextoAgroSmall">Valor</label>
-                    <input type="text" class="form-control form-control-sm textBox">
-                </div>
                 <img src="https://cdn-icons-png.flaticon.com/128/8387/8387527.png"
                     style="width: 35px; height: 35px; margin-top: 28px; margin-left: 10px; cursor: pointer;">
             </div>
