@@ -1,6 +1,6 @@
 <div class="container py-5" [ngClass]="Loader == true ? 'Opacity' : '' ">
   <div class="row">
-    <div class="col-12 col-sm-6 col-md-4">
+    <div class="col-12 col-sm-6 col-md-3">
       <label class="textoDir"> Seleccione tipo de usuario </label>
       <select class="form-control" [(ngModel)]="tipoUsuario">
         <option value="0">Seleccione tipo de usuario</option>
@@ -9,27 +9,29 @@
         </option>
       </select>
     </div>
-    <div class="col-12 col-sm-6 col-md-4">
+    <div class="col-12 col-sm-6 col-md-3">
       <label class="textoDir"> Correo persona </label>
       <input [(ngModel)]="mail" class="form-control" type="text" maxlength="50" placeholder="Correo persona">
     </div>
-    <div class="col-12 col-sm-6 col-md-4">
+    <div class="col-12 col-sm-6 col-md-3">
       <label class="textoDir"> Nombre Persona </label>
       <input [(ngModel)]="nombre" class="form-control" type="text" maxlength="20" placeholder="Nombre persona">
     </div>
-  </div>
-  <div class="row mt-2">
-    <div class="col-12 col-sm-6 col-md-4">
+    <div class="col-12 col-sm-6 col-md-3">
       <label class="textoDir"> Codigo de usuario </label>
       <input [(ngModel)]="codigo" #inputCodigo class="form-control" type="number" placeholder="Código persona">
     </div>
-    <div class="col-12 col-sm-6 col-md-4">
+    <div class="col-12 col-sm-6 col-md-3">
       <label class="textoDir"> Fecha de registro desde </label>
       <input [(ngModel)]="FechaDesde" class="form-control" type="date" maxlength="50">
     </div>
-    <div class="col-12 col-sm-6 col-md-4">
+    <div class="col-12 col-sm-6 col-md-3">
       <label class="textoDir"> Fecha de registro hasta </label>
       <input [(ngModel)]="FechaHasta" class="form-control" type="date">
+    </div>
+    <div class="col-12 col-sm-6 col-md-3">
+      <label class="textoDir"> Celular </label>
+      <input [(ngModel)]="CelularFiltro" class="form-control">
     </div>
   </div>
   <div class="row mt-3">
@@ -97,8 +99,8 @@
 <ng-template #ModalRespuesta let-modal>
   <div class="modal-header">
     <h1>Información</h1>
-    <button (keyup.enter)="modal.close()" (keyup.enter)="cerrarModalrespuesta()" type="button" class="btn-close" aria-label="Close"
-      (click)="modal.dismiss()"  (click)="cerrarModalrespuesta()"></button>
+    <button (keyup.enter)="modal.close()" (keyup.enter)="cerrarModalrespuesta()" type="button" class="btn-close"
+      aria-label="Close" (click)="modal.dismiss()" (click)="cerrarModalrespuesta()"></button>
   </div>
   <div class="modal-body text-start mb-0">
     <div class="row justify-content-start ">
@@ -321,21 +323,22 @@
         </div>
       </div>
       <div class="row justify-content-start text-s">
-        
+
         <div class="col-sm-6">
 
           <p class="textoConductorS m-0 p-0">Prodocuntos:</p>
 
           <p class="textoConductorS m-0 p-0" *ngIf="respu.Unidades > 0">
-            <span class="textoConductorTit">{{respu.Producto}} - {{respu.Empaque}} : {{respu.Unidades}} x {{respu.ValorPagarPrin | currency : 'USD' : 'symbol' :'1.0-0'}} </span>
+            <span class="textoConductorTit">{{respu.Producto}} - {{respu.Empaque}} : {{respu.Unidades}} x
+              {{respu.ValorPagarPrin | currency : 'USD' : 'symbol' :'1.0-0'}} </span>
           </p>
-          <p class="textoConductorS m-0 p-0" *ngFor="let top of respu.Toppings; let t = index"> 
+          <p class="textoConductorS m-0 p-0" *ngFor="let top of respu.Toppings; let t = index">
             <span class="textoConductorTit">{{top}}</span>
           </p>
 
           <hr class="mt-2 mb-2">
 
-          <p class="textoConductorS m-0 p-0 mb-3 textcenter">Total: 
+          <p class="textoConductorS m-0 p-0 mb-3 textcenter">Total:
             <span class="textoConductorTit">{{respu.ValorPagar | currency : 'USD' : 'symbol' :'1.0-0'}}</span>
           </p>
         </div>
@@ -344,11 +347,12 @@
         <div class="col-sm-6">
 
           <p class="textoConductorS m-0 p-0">Obsequios:</p>
-          <p class="textoConductorS m-0 p-0" *ngFor="let regalo of respu.RegalosCompra; let r = index"> 
+          <p class="textoConductorS m-0 p-0" *ngFor="let regalo of respu.RegalosCompra; let r = index">
             <span class="textoConductorTit">{{regalo}}</span>
           </p>
 
-          <p class="textoConductorS m-0 p-0" *ngIf="respu.RegalosCompra == undefined || respu.RegalosCompra.length == 0"> 
+          <p class="textoConductorS m-0 p-0"
+            *ngIf="respu.RegalosCompra == undefined || respu.RegalosCompra.length == 0">
             <span class="textoConductorTit">{{nombreM}} No obtuvo obsequios en esta oferta.</span>
           </p>
         </div>
@@ -356,8 +360,8 @@
     </div>
   </div>
   <div class="row justify-content-center">
-    <button (keyup.enter)="modal.close()" (keyup.enter)="cerrarModalrespuesta()" type="button" class="btn btn-agro-prin col-sm-2 m-2"
-      (click)="modal.close()" (click)="cerrarModalrespuesta()">Aceptar</button>
+    <button (keyup.enter)="modal.close()" (keyup.enter)="cerrarModalrespuesta()" type="button"
+      class="btn btn-agro-prin col-sm-2 m-2" (click)="modal.close()" (click)="cerrarModalrespuesta()">Aceptar</button>
 
     <button (keyup.enter)="consulta_historial_Mtd()" type="button" class="btn btn-agro-prin col-sm-2 m-2"
       (click)="consulta_historial_Mtd()" *ngIf="ArrayHistorialCompras.length == 0">Ver historial</button>

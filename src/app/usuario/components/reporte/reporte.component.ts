@@ -31,6 +31,7 @@ export class ReporteComponent implements OnInit {
   FechaDesdeB: string;
   FechaHasta: string = '';
   FechaHastaB: string;
+  CelularFiltro:string;
   ArrayTipoUsuario: any = [];
   ArrayUsuarios: any = [];
 
@@ -120,7 +121,8 @@ export class ReporteComponent implements OnInit {
       IdTipoPersona: this.tipoUsuario,
       Usucodig: auxUsuCod,
       CorreoPersona: this.mail,
-      NombrePersona: this.nombre
+      NombrePersona: this.nombre,
+      NumeroCelular : this.CelularFiltro
     }
     this.ReporteService.ReporteUsuarios("1", this.FechaDesde, this.FechaHasta, bodyPost).subscribe(Resultado => {
       console.log(Resultado)
@@ -356,7 +358,8 @@ export class ReporteComponent implements OnInit {
         IdTipoPersona: '0',
         Usucodig: '0',
         CorreoPersona: '0',
-        NombrePersona: '0'
+        NombrePersona: '0',
+        NumeroCelular: '0'
       }
       this.ReporteService.ReporteUsuarios("1", '0', '0', bodyPost).subscribe(Resultado => {
         for (var i = 0; i < Resultado.length; i++) {
