@@ -253,7 +253,7 @@ export class ReporteComponent implements OnInit {
     if (this.ascendenteM) {
       this.ArrayUsuarios.sort((a: {
         CorreoPersona: string;
-      }, b: {
+      }, b: { 
         CorreoPersona: string;
       }) =>
         a.CorreoPersona.localeCompare(b.CorreoPersona));
