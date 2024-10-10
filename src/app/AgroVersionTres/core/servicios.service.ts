@@ -20,4 +20,10 @@ export class ServiciosService {
         return this.http.post<any>(this.url_servidor + 'EjemploPost/' + bandera, body);
     }
 
+    //subir imagenen del sector al servidor
+    public postFileImagen(imagenParaSubir: File) {
+        const formData = new FormData();
+        formData.append('file', imagenParaSubir, imagenParaSubir.name);
+        return this.http.post(this.url_servidor + 'uploadFile', formData);
+      }
 }

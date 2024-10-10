@@ -1,4 +1,4 @@
-<div class="container mt-4 mb-5 card" style="background-color: white;">
+<div class="container mt-4 mb-5 pb-5 card" style="background-color: white;">
     <div class="CentrarTexto mt-4">
         <label class="TituloAgro">CREACIÓN DE LA OFERTA</label>
     </div>
@@ -7,7 +7,7 @@
         <!--FECHAS PARA LA OFERTA-->
         <div class="row m-0 p-0">
             <div class="col-12 mb-1">
-                <label class="SubTituloAgro">Informacion general para la oferta</label>
+                <label class="SubTituloAgro">INFORMACIÓN GENERAL PARA LA OFERTA</label>
             </div>
             <div class="col-12">
                 <label class="TextoAgroSmall CursorPointer" (click)="BtnModalFechasAnteriores()">
@@ -16,23 +16,23 @@
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Fecha Incio</label>
-                <input type="date" class="form-control form-control-sm textBox">
+                <input type="date" class="form-control form-control-sm textBox" [(ngModel)]="FechaInicio">
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Fecha Fin</label>
-                <input type="date" class="form-control form-control-sm textBox">
+                <input type="date" class="form-control form-control-sm textBox" [(ngModel)]="FechaFin">
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Fecha Entrega</label>
-                <input type="date" class="form-control form-control-sm textBox">
+                <input type="date" class="form-control form-control-sm textBox" [(ngModel)]="FechaEntrega">
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Mascara del sector</label>
-                <input type="text" class="form-control form-control-sm textBox">
+                <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="MascaraSector">
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Tipo de oferta</label>
-                <select class="form-control form-control-sm textBox">
+                <select class="form-control form-control-sm textBox" [(ngModel)]="IdTipoOfertaSelect">
                     <option value="0">Seleccionar</option>
                     <option value="1">Individual</option>
                     <option value="2">Referidos</option>
@@ -41,31 +41,32 @@
             <div class="col-sm-4"></div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Tipo domicilio</label>
-                <select class="form-control form-control-sm textBox">
+                <select class="form-control form-control-sm textBox" [(ngModel)]="IdTipoDomicilio">
                     <option value="0">Seleccionar</option>
-                    <option value="1">Por valor de la compra</option>
-                    <option value="2">Domicilio gratis</option>
+                    <option value="1">Apartir de un valor</option>
+                    <option value="2">Sin Domicilio</option>
+                    <option value="3">Valor fijo Domicilio</option>
                 </select>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4" *ngIf="IdTipoDomicilio == '1'">
                 <label class="col-sm-12 TextoAgroSmall">Valor de la compra</label>
-                <input type="text" class="form-control form-control-sm textBox">
+                <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="ValorCompraDomicilio">
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-4" *ngIf="IdTipoDomicilio == '1' || IdTipoDomicilio == '3'">
                 <label class="col-sm-12 TextoAgroSmall">Valor domicilio</label>
-                <input type="text" class="form-control form-control-sm textBox">
+                <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="ValorDomicilio">
             </div>
             <div class="col-12">
                 <div class="w-100 mt-3" style=" text-align: center;">
-                    <label class="Btn-AgroPrin" style="margin: auto;">
+                    <label class="Btn-AgroPrin" style="margin: auto;" (click)="BtnGuardarNuevaOferta()">
                         Guardar informacion general
                     </label>
                 </div>
             </div>
         </div>
-        <hr>
+        <hr *ngIf="VerOcultarModulos == '2' && IdTipoOfertaSelect == '2'">
         <!--INFORMACION REFERIDOS DE LA OFERTA-->
-        <div class="row m-0 p-0">
+        <div class="row m-0 p-0" *ngIf="VerOcultarModulos == '2' && IdTipoOfertaSelect == '2'">
             <div class="col-12 mb-1">
                 <label class="SubTituloAgro">Información referidos</label>
             </div>
@@ -95,9 +96,9 @@
                 </div>
             </div>
         </div>
-        <hr>
+        <hr *ngIf="VerOcultarModulos == '2'">
         <!--LOCALIDAD PARA LA OFERTA-->
-        <div class="row m-0 p-0">
+        <div class="row m-0 p-0" *ngIf="VerOcultarModulos == '2'">
             <div class="col-12 mb-1">
                 <label class="SubTituloAgro">Localidad oferta</label>
             </div>
@@ -123,9 +124,9 @@
                     style="width: 35px; height: 35px; margin-top: 10px; cursor: pointer;">
             </div>
         </div>
-        <hr>
+        <hr *ngIf="VerOcultarModulos == '2'">
         <!--CUPONES DE LA OFERTA-->
-        <div class="row m-0 p-0">
+        <div class="row m-0 p-0" *ngIf="VerOcultarModulos == '2'">
             <div class="col-12 mb-1">
                 <label class="SubTituloAgro">Regalos para la oferta</label>
             </div>
@@ -152,9 +153,9 @@
                     style="width: 35px; height: 35px; margin-top: 28px; margin-left: 10px; cursor: pointer;">
             </div>
         </div>
-        <hr>
+        <hr *ngIf="VerOcultarModulos == '2'">
         <!--FILTRO PRODUCTOS-->
-        <div class="row m-0 p-0">
+        <div class="row m-0 p-0" *ngIf="VerOcultarModulos == '2'">
             <div class="col-12 mb-1" style="display: flex;">
                 <label class="SubTituloAgro">Productos</label>
                 <img src="https://cdn-icons-png.flaticon.com/128/8387/8387527.png" (click)="BtnModalNuevoProducto()"
@@ -186,7 +187,7 @@
             </div>
         </div>
         <!--TARJETAS PRODUCTOS-->
-        <div class="row m-0 p-0 mt-3">
+        <div class="row m-0 p-0 mt-3" *ngIf="VerOcultarModulos == '2'">
             <div class="col-md-4 m-0 p-1">
                 <div class="m-0 p-2"
                     style="background-color: #f5f5f5; border: 1px solid gainsboro; border-radius: 5px;">
@@ -318,6 +319,104 @@
 </div>
 
 <!--AREA MODALES-->
+<ng-template #ModalFechasOferta let-modal>
+    <div class="modal-header">
+        <h1 class="TituloAgro">AgroApoya2</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="SubTituloAgro">Fechas de anteriores ofertas</h2>
+            </div>
+            <div class="mt-3 mb-4">
+                <table class="tableSimple">
+                    <tr>
+                        <th>Oferta</th>
+                        <th>Fecha inicio</th>
+                        <th>Fecha fin</th>
+                        <th>Fecha Entrega</th>
+                        <th>Tipo Oferta</th>
+                    </tr>
+                    <tr>
+                        <td>2255</td>
+                        <td>12 septiembre</td>
+                        <td>13 septiembre</td>
+                        <td>15 septiembre</td>
+                        <td>Individual</td>
+                    </tr>
+                    <tr>
+                        <td>2255</td>
+                        <td>12 septiembre</td>
+                        <td>13 septiembre</td>
+                        <td>15 septiembre</td>
+                        <td>Individual</td>
+                    </tr>
+                    <tr>
+                        <td>2255</td>
+                        <td>12 septiembre</td>
+                        <td>13 septiembre</td>
+                        <td>15 septiembre</td>
+                        <td>Individual</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn Btn-AgroPrin col-sm-2 col-6" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalImfOfertaSector let-modal>
+    <div class="modal-header">
+        <h1 class="TituloAgro">AgroApoya2</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="SubTituloAgro">Seleccionar las imagenes para el sector</h2>
+            </div>
+
+            <div class="mt-3 contenedorImagenes">
+                <div class="ImgProducto">
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
+                </div>
+                <div class="ImgProducto">
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
+                </div>
+                <div class="ImgProducto">
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
+                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/z_check.png" class="imgpresentacion mt-2">
+                </div>
+                <div class="ImgProducto">
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
+                </div>
+                <div class="ImgProducto">
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
+                </div>
+                <div class="image-upload">
+                    <label for="file-input1">
+                        <img id="ImgSec" title="Selecciona una imagen" src="./../../../../../assets/ImagenesAgroApoya2Adm/z_subirImagen.png">
+                    </label>
+                    <input name="file-input1" id="file-input1" type="file" (change)="SubirImgMapa($event)" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <button type="button" class="btn Btn-AgroPrin col-sm-2 col-6" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
 <ng-template #ModalRespuesta let-modal>
     <div class="modal-header">
         <h1>Respuesta</h1>
@@ -415,100 +514,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <br>
-</ng-template>
-
-<ng-template #ModalFechasOferta let-modal>
-    <div class="modal-header">
-        <h1>AgroApoya2</h1>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
-    </div>
-    <div class="modal-body">
-        <div class="row">
-            <div class="col-sm-12">
-                <h2 class="TituloDetalle">Fechas de anteriores ofertas</h2>
-            </div>
-            <div class="mt-3 mb-4">
-                <table class="tableSimple">
-                    <tr>
-                        <th>Oferta</th>
-                        <th>Fecha inicio</th>
-                        <th>Fecha fin</th>
-                        <th>Fecha Entrega</th>
-                    </tr>
-                    <tr>
-                        <td>2255</td>
-                        <td>12 septiembre</td>
-                        <td>13 septiembre</td>
-                        <td>15 septiembre</td>
-                    </tr>
-                    <tr>
-                        <td>2255</td>
-                        <td>12 septiembre</td>
-                        <td>13 septiembre</td>
-                        <td>15 septiembre</td>
-                    </tr>
-                    <tr>
-                        <td>2255</td>
-                        <td>12 septiembre</td>
-                        <td>13 septiembre</td>
-                        <td>15 septiembre</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()">Aceptar</button>
-    </div>
-    <br>
-</ng-template>
-
-<ng-template #ModalImfOfertaSector let-modal>
-    <div class="modal-header">
-        <h1>AgroApoya2</h1>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
-    </div>
-    <div class="modal-body">
-        <div class="row">
-            <div class="col-sm-12">
-                <h2 class="TituloDetalle">Seleccionar las imagenes para el sector</h2>
-            </div>
-
-            <div class="mt-3 contenedorImagenes">
-                <div class="ImgProducto">
-                    <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
-                </div>
-                <div class="ImgProducto">
-                    <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
-                </div>
-                <div class="ImgProducto">
-                    <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
-                    <label class="TextoAgroSmall"
-                        style="font-size: 10px !important; background-color:rgb(24, 114, 117); color: white; width: 100%; border-radius: 5px;">
-                        Imagen principal
-                    </label>
-                </div>
-                <div class="ImgProducto">
-                    <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
-                </div>
-                <div class="ImgProducto">
-                    <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
-                </div>
-                <div class="ImgProducto">
-                    <img src="https://cdn-icons-png.flaticon.com/128/8191/8191568.png">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-center mt-4">
-        <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()">Aceptar</button>
     </div>
     <br>
 </ng-template>
