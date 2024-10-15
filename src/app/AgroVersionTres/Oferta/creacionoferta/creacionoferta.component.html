@@ -34,8 +34,9 @@
                 <label class="col-sm-12 TextoAgroSmall">Tipo de oferta</label>
                 <select class="form-control form-control-sm textBox" [(ngModel)]="IdTipoOfertaSelect">
                     <option value="0">Seleccionar</option>
-                    <option value="1">Individual</option>
-                    <option value="2">Referidos</option>
+                    <option *ngFor="let respu of ArrayTipoOferta" value="{{respu.idtipo}}">
+                        {{respu.DescOferta}}
+                    </option>
                 </select>
             </div>
             <div class="col-sm-4"></div>
@@ -43,9 +44,9 @@
                 <label class="col-sm-12 TextoAgroSmall">Tipo domicilio</label>
                 <select class="form-control form-control-sm textBox" [(ngModel)]="IdTipoDomicilio">
                     <option value="0">Seleccionar</option>
-                    <option value="1">Apartir de un valor</option>
-                    <option value="2">Sin Domicilio</option>
-                    <option value="3">Valor fijo Domicilio</option>
+                    <option *ngFor="let respu of ArrayTipoDomicilio" value="{{respu.IdTipo}}">
+                        {{respu.DescDomicilio}}
+                    </option>
                 </select>
             </div>
             <div class="col-sm-4" *ngIf="IdTipoDomicilio == '1'">
@@ -59,7 +60,7 @@
             <div class="col-12">
                 <div class="w-100 mt-3" style=" text-align: center;">
                     <label class="Btn-AgroPrin" style="margin: auto;" (click)="BtnGuardarNuevaOferta()">
-                        Guardar informacion general
+                        Crear nueva oferta
                     </label>
                 </div>
             </div>
@@ -338,26 +339,12 @@
                         <th>Fecha Entrega</th>
                         <th>Tipo Oferta</th>
                     </tr>
-                    <tr>
-                        <td>2255</td>
-                        <td>12 septiembre</td>
-                        <td>13 septiembre</td>
-                        <td>15 septiembre</td>
-                        <td>Individual</td>
-                    </tr>
-                    <tr>
-                        <td>2255</td>
-                        <td>12 septiembre</td>
-                        <td>13 septiembre</td>
-                        <td>15 septiembre</td>
-                        <td>Individual</td>
-                    </tr>
-                    <tr>
-                        <td>2255</td>
-                        <td>12 septiembre</td>
-                        <td>13 septiembre</td>
-                        <td>15 septiembre</td>
-                        <td>Individual</td>
+                    <tr *ngFor="let respu of ArrayFechasOferta">
+                        <td>{{respu.id}}</td>
+                        <td>{{respu.FechaCreacion}}</td>
+                        <td>{{respu.FechaFin}}</td>
+                        <td>{{respu.FechaEntrega}}</td>
+                        <td>{{respu.DesTipoOferta}}</td>
                     </tr>
                 </table>
             </div>
@@ -404,7 +391,8 @@
                 </div>
                 <div class="image-upload">
                     <label for="file-input1">
-                        <img id="ImgSec" title="Selecciona una imagen" src="./../../../../../assets/ImagenesAgroApoya2Adm/z_subirImagen.png">
+                        <img id="ImgSec" title="Selecciona una imagen"
+                            src="./../../../../../assets/ImagenesAgroApoya2Adm/z_subirImagen.png">
                     </label>
                     <input name="file-input1" id="file-input1" type="file" (change)="SubirImgMapa($event)" />
                 </div>

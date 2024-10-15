@@ -1,6 +1,7 @@
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CrearofertaService } from 'src/app/core/crearoferta.service'
+import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service'
 
 @Component({
   selector: 'app-creacionoferta',
@@ -11,7 +12,8 @@ export class CreacionofertaComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private ServiciosOferta: CrearofertaService
+    private ServiciosOferta: CrearofertaService,
+    private ServiciosService: ServiciosService,
   ) { }
 
   @ViewChild('ModalRespuesta', { static: false }) ModalRespuesta: any;
@@ -32,31 +34,40 @@ export class CreacionofertaComponent implements OnInit {
   ValorCompraDomicilio: string = '';
   ValorDomicilio: string = '';
 
+  ArrayTipoOferta: any[];
+  ArrayTipoDomicilio: any[];
+  ArrayFechasOferta: any[];
+
   file: FileList | undefined;
 
-  ImgMapaSec:string
+  ImgMapaSec: string
   ngOnInit(): void {
     this.CargaIncialCrearOferta();
   }
 
   CargaIncialCrearOferta() {
-    this.VerOcultarModulos = "2";
+    this.VerOcultarModulos = "1";
     this.IdTipoOfertaSelect = "0";
     this.IdTipoDomicilio = "0";
-    this.ImgMapaSec = 'https://cdn-icons-png.flaticon.com/128/8191/8191568.png'
+    this.CargarListasIniciales();
+  }
 
-    //TODO Cargar Informacion de la lista tipo de oferta
-    //exec z_TipoOferta_cons 1
+  CargarListasIniciales() {
+    this.ServiciosService.consTipoOferta('1').subscribe(Resultado => {
+      this.ArrayTipoOferta = Resultado;
+    })
 
-    //TODO Cargar Informacion de la lista tipo domicilio
-    //exec z_TipoDomicilio_Cons 1
+    this.ServiciosService.consZTipoDomicilio('1').subscribe(Resultado => {
+      this.ArrayTipoDomicilio = Resultado;
+    })
   }
 
   /*AREA INFORMACIÓN GENERAL PARA LA OFERTA */
   BtnModalFechasAnteriores() {
-    //TODO Cargar informacion de la fechas de las ofertas
-    //exec z_OfertaActivaProductos_Cons 1
-    this.modalService.open(this.ModalFechasOferta, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+    this.ServiciosService.conszOfertaActivaProductosCo('1').subscribe(Resultado => {
+      this.ArrayFechasOferta = Resultado;
+      this.modalService.open(this.ModalFechasOferta, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+    })
   }
 
   BtnGuardarNuevaOferta() {
@@ -80,12 +91,36 @@ export class CreacionofertaComponent implements OnInit {
       alert("El valor domicilio son obligatorios")
     }
     else {
-      //TODO Guardar nueva oferta
-      //EXEC Z_OfertaActivaInfoMod 1,0, '2024-10-03', '2024-10-15', '2024-10-20', 1, 'Engativa suba y usaquen', 1, 13000, 10000 ,''
       this.VerOcultarModulos = "2";
-    }
 
-    this.VerOcultarModulos = "2";
+      const body = {
+        IdOferta: 0,
+        FechaInicio: this.FechaInicio,
+        FechaFin: this.FechaFin,
+        FechaEntrega: this.FechaEntrega,
+        TipoOfeta: 1,
+        MascaraLocali: "Engativa suba y usaquen",
+        TipoDomicilio: 1,
+        ValorDomicilio: 13000,
+        ValorInicialDomicilio: 10000
+      }
+      console.log(body)
+     /* const body = {
+        IdOferta: 8,
+        FechaInicio: "2024-09-26",
+        FechaFin: "2024-09-26",
+        FechaEntrega: "2024-09-26",
+        TipoOfeta: 1,
+        MascaraLocali: "Engativa suba y usaquen",
+        TipoDomicilio: 1,
+        ValorDomicilio: 13000,
+        ValorInicialDomicilio: 10000
+      }*/
+
+     /* this.ServiciosService.conszOfertaActivaProductosCo('1').subscribe(Resultado => {
+        alert(Resultado.toString())
+      })*/
+    }
   }
 
   /*AREA ASOCIACION DE SECTORES */
@@ -94,7 +129,7 @@ export class CreacionofertaComponent implements OnInit {
     this.ServiciosOferta.postFileImagen(event.target.files[0]).subscribe(
       response => {
         if (response == 'Archivo Subido Correctamente') {
-            this.ImgMapaSec = 'https://api.apptotrip.com/ImagenesAgroapoya2/ImagenesOfertas/' + event.target.files[0].name;
+          this.ImgMapaSec = 'https://api.apptotrip.com/ImagenesAgroapoya2/ImagenesOfertas/' + event.target.files[0].name;
         } else {
           console.log(response);
         }
