@@ -110,18 +110,25 @@
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Localidad</label>
-                <select class="form-control form-control-sm textBox">
+                <select class="form-control form-control-sm textBox" (change)="changeSelectLocalidad()"
+                    [(ngModel)]="IdLocalidad">
                     <option value="0">Seleccionar</option>
+                    <option *ngFor="let respu of ArrayLocalidadesTipo" value="{{respu.IdTipo}}">
+                        {{respu.Descripcion}}
+                    </option>
                 </select>
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Sector</label>
-                <select class="form-control form-control-sm textBox">
+                <select class="form-control form-control-sm textBox" [(ngModel)]="IdSector">
                     <option value="0">Seleccionar</option>
+                    <option *ngFor="let respu of ArraySectorTipo" value="{{respu.IdTipoZona}}">
+                        {{respu.Descripcion}}
+                    </option>
                 </select>
             </div>
             <div class="col-sm-4 mt-3">
-                <img src="https://cdn-icons-png.flaticon.com/128/8387/8387527.png"
+                <img src="https://cdn-icons-png.flaticon.com/128/8387/8387527.png" (click)="BtnAgregarLocalidadOferta()"
                     style="width: 35px; height: 35px; margin-top: 10px; cursor: pointer;">
             </div>
         </div>
@@ -129,28 +136,28 @@
         <!--CUPONES DE LA OFERTA-->
         <div class="row m-0 p-0" *ngIf="VerOcultarModulos == '2'">
             <div class="col-12 mb-1">
-                <label class="SubTituloAgro">Regalos para la oferta</label>
+                <label class="SubTituloAgro">Regalos para la oferta (Estos aplican solamente para compras de la oferta actual)</label>
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Tipo de regalo</label>
-                <select class="form-control form-control-sm textBox">
+                <select class="form-control form-control-sm textBox" [(ngModel)]="IdTipoRegalo">
                     <option value="0">Seleccionar</option>
-                    <option value="1">Regalo producto</option>
-                    <option value="2">Descuento dinero</option>
-                    <option value="2">Descuento %</option>
+                    <option value="{{respu.IdTipo}}" *ngFor="let respu of ArrayRegalosTipo">
+                        {{respu.Descripcion}}
+                    </option>
                 </select>
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Aplicable a</label>
-                <select class="form-control form-control-sm textBox">
-                    <option value="0">Seleccionar</option>
-                    <option value="2">Todos</option>
-                    <option value="2">Nuevos compradores</option>
-                    <option value="2">Antiguos compradores</option>
+                <select class="form-control form-control-sm textBox" [(ngModel)]="IdTipoRegaloPersona">
+                    <option value="0" >Seleccionar</option>
+                    <option value="{{respu.IdTipo}}" *ngFor="let respu of ArrayRegalosPersonaTipo">
+                        {{respu.Descripcion}}
+                    </option>
                 </select>
             </div>
             <div class="col-sm-4" style="display:flex">
-                <img src="https://cdn-icons-png.flaticon.com/128/8387/8387527.png"
+                <img src="https://cdn-icons-png.flaticon.com/128/8387/8387527.png" (click)="BtnAgregarRegaloDefecto()"
                     style="width: 35px; height: 35px; margin-top: 28px; margin-left: 10px; cursor: pointer;">
             </div>
         </div>
@@ -364,30 +371,14 @@
     <div class="modal-body">
         <div class="row">
             <div class="col-sm-12">
-                <h2 class="SubTituloAgro">Seleccionar las imagenes para el sector</h2>
+                <h2 class="SubTituloAgro">Selecciona la imagen para el sector</h2>
             </div>
 
             <div class="mt-3 contenedorImagenes">
-                <div class="ImgProducto">
-                    <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
-                </div>
-                <div class="ImgProducto">
-                    <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
-                </div>
-                <div class="ImgProducto">
-                    <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
-                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/z_check.png" class="imgpresentacion mt-2">
-                </div>
-                <div class="ImgProducto">
-                    <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
-                </div>
-                <div class="ImgProducto">
-                    <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHj3XtfuJdBZvnqvTbi0mYNMuQ8StP-jYwxg&s">
+                <div class="ImgProducto" *ngFor="let respu of ArrayImagenesSector">
+                    <img src="{{RutaImagenSector}}{{respu.Nombre}}" (click)="ImgSeleccionarImgSector(respu)">
+                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/z_check.png" class="imgpresentacion mt-2"
+                        *ngIf="respu.Relacion == '1'">
                 </div>
                 <div class="image-upload">
                     <label for="file-input1">
