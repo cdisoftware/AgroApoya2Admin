@@ -132,3 +132,8 @@ td {
     border: none;
     font-size: 13px;
 }
+
+.spObl {
+    color: red;
+    font-weight: bold;
+}

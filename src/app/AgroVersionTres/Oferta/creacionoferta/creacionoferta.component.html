@@ -15,23 +15,23 @@
                 </label>
             </div>
             <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Fecha Incio</label>
+                <label class="col-sm-12 TextoAgroSmall">Fecha Inicio<span class="spObl">*</span></label>
                 <input type="date" class="form-control form-control-sm textBox" [(ngModel)]="FechaInicio">
             </div>
             <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Fecha Fin</label>
+                <label class="col-sm-12 TextoAgroSmall">Fecha Fin<span class="spObl">*</span></label>
                 <input type="date" class="form-control form-control-sm textBox" [(ngModel)]="FechaFin">
             </div>
             <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Fecha Entrega</label>
+                <label class="col-sm-12 TextoAgroSmall">Fecha Entrega<span class="spObl">*</span></label>
                 <input type="date" class="form-control form-control-sm textBox" [(ngModel)]="FechaEntrega">
             </div>
             <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Mascara del sector</label>
+                <label class="col-sm-12 TextoAgroSmall">Mascara del sector<span class="spObl">*</span></label>
                 <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="MascaraSector">
             </div>
             <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Tipo de oferta</label>
+                <label class="col-sm-12 TextoAgroSmall">Tipo de oferta<span class="spObl">*</span></label>
                 <select class="form-control form-control-sm textBox" [(ngModel)]="IdTipoOfertaSelect">
                     <option value="0">Seleccionar</option>
                     <option *ngFor="let respu of ArrayTipoOferta" value="{{respu.idtipo}}">
@@ -39,9 +39,8 @@
                     </option>
                 </select>
             </div>
-            <div class="col-sm-4"></div>
             <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Tipo domicilio</label>
+                <label class="col-sm-12 TextoAgroSmall">Tipo domicilio<span class="spObl">*</span></label>
                 <select class="form-control form-control-sm textBox" [(ngModel)]="IdTipoDomicilio">
                     <option value="0">Seleccionar</option>
                     <option *ngFor="let respu of ArrayTipoDomicilio" value="{{respu.IdTipo}}">
@@ -50,17 +49,22 @@
                 </select>
             </div>
             <div class="col-sm-4" *ngIf="IdTipoDomicilio == '1'">
-                <label class="col-sm-12 TextoAgroSmall">Valor de la compra</label>
+                <label class="col-sm-12 TextoAgroSmall">Valor de la compra<span class="spObl">*</span></label>
                 <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="ValorCompraDomicilio">
             </div>
             <div class="col-sm-4" *ngIf="IdTipoDomicilio == '1' || IdTipoDomicilio == '3'">
-                <label class="col-sm-12 TextoAgroSmall">Valor domicilio</label>
+                <label class="col-sm-12 TextoAgroSmall">Valor domicilio<span class="spObl">*</span></label>
                 <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="ValorDomicilio">
             </div>
             <div class="col-12">
                 <div class="w-100 mt-3" style=" text-align: center;">
-                    <label class="Btn-AgroPrin" style="margin: auto;" (click)="BtnGuardarNuevaOferta()">
+                    <label class="Btn-AgroPrin" style="margin: auto;" (click)="BtnGuardarNuevaOferta()"
+                        *ngIf="VerOcultarModulos == '1'">
                         Crear nueva oferta
+                    </label>
+                    <label class="Btn-AgroPrin" style="margin: auto;" (click)="BtnActualizarOferta()"
+                        *ngIf="VerOcultarModulos == '2'">
+                        Actualizar información
                     </label>
                 </div>
             </div>
@@ -72,27 +76,154 @@
                 <label class="SubTituloAgro">Información referidos</label>
             </div>
             <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Tipo referidor</label>
-                <select class="form-control form-control-sm textBox">
+                <label class="col-sm-12 TextoAgroSmall">Reglaje para la obtener el regalo<span
+                        class="spObl">*</span></label>
+                <select class="form-control form-control-sm textBox" [(ngModel)]="IdParticioanteRegalos">
                     <option value="0">Seleccionar</option>
-                    <option value="1">Regalo</option>
-                    <option value="2">Cupon por dinero</option>
-                    <option value="2">Cupon por % descuento</option>
+                    <option value="1">Solo Regitro</option>
+                    <option value="2">Solo compra</option>
+                    <option value="3">Compra y/o registro</option>
+                    <option value="4">Compra y registro</option>
                 </select>
             </div>
+            <!--LIDER-->
             <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Tipo referido</label>
-                <select class="form-control form-control-sm textBox">
+                <label class="col-sm-12 TextoAgroSmall">Tipo referidor(Líder)<span class="spObl">*</span> </label>
+                <select class="form-control form-control-sm textBox" (change)="ChangeRegaloLiderReferidor()"
+                    [(ngModel)]="IdLiderRegalos">
                     <option value="0">Seleccionar</option>
-                    <option value="1">Regalo</option>
-                    <option value="2">Cupon por dinero</option>
-                    <option value="2">Cupon por % descuento</option>
+                    <option value="{{respu.IdTipo}}" *ngFor="let respu of ArrayRegalosLider">
+                        {{respu.Descripcion}}
+                    </option>
                 </select>
+            </div>
+            <div class="col-sm-4" *ngIf="IdLiderRegalos == '1'">
+                <label class="col-sm-12 TextoAgroSmall">Producto regalo<span class="spObl">*</span>
+                </label>
+                <select class="form-control form-control-sm textBox" (change)="changeProductosRegaloDisponiblesLider()"
+                    [(ngModel)]="IdProdRegaloLider">
+                    <option value="0">Seleccionar</option>
+                    <option value="{{respu.IdOferta}}" *ngFor="let respu of ArregloProductosRegaloLider">
+                        {{respu.NombreProducto}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-sm-4" *ngIf="IdLiderRegalos == '1'">
+                <label class="col-sm-12 TextoAgroSmall">Maximo de regalos a obtener<span class="spObl">*</span>
+                </label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4" *ngIf="IdLiderRegalos == '1'">
+                <label class="col-sm-12 TextoAgroSmall">Registros para cada regalo<span class="spObl">*</span>
+                </label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-md-6 m-0 p-1 mt-2" *ngIf="IdLiderRegalos == '1' && IdProdRegaloLider != '0'">
+                <div class="m-0 p-2" *ngFor="let respu of  ArregloInfoRegaloLider"
+                    style="background-color: #ffffff; border: 1px solid gainsboro; border-radius: 5px;">
+                    <label class="Llave" style="font-size: 12px; color: #45ab1b !important;">
+                        {{respu.NombreProducto}}
+                    </label>
+                    <label class="Llave" style="font-size: 12px; color: red !important;">
+                        &nbsp; - {{respu.DescrTipoVentaProducto}}
+                    </label>
+                    <div style="display: flex; background-color: #ffffff; padding: 5px;">
+                        <img src="{{RutaImagenProducto}}{{respu.ImagenOferta}}" style="height: 130px; width: 130px;">
+                        <div style="width: 100%; padding: 10px;">
+                            <label><small><strong>{{respu.DescripcionCorta}}</strong> </small></label>
+                            <br>
+                            <label><small>{{respu.DescripcionLarga}}</small></label>
+                            <div style="width: 100%; padding: 10px; display: flex; justify-content: space-between;">
+                                <div class="mt-3" style=" text-align: center;" *ngIf="respu.IdEstado != '0'">
+                                    <label class="Btn-AgroPrin" style="margin: auto;"
+                                        (click)="BtnModalDetallePresentaciones(respu)">
+                                        Presentaciones
+                                    </label>
+                                </div>
+                                <div class="mt-3" style=" text-align: center;" *ngIf="respu.IdEstado != '0'">
+                                    <label class="Btn-AgroPrin" style="margin: auto;"
+                                        (click)="BtnInformacionGeneral(respu)">
+                                        Información general
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 mb-3">
+            </div>
+            <div class="col-12">
+                <div class="w-100 mt-3" style=" text-align: center;">
+                    <label style="margin: auto;">
+                        <small><strong>*IMPORTANTE: Primero guardar la configuracion del Líder, para que la informacion
+                                disponible para el participante cargue correctamente</strong> </small>
+                    </label>
+                    <br>
+                    <label class="Btn-AgroPrin" style="margin: auto;">
+                        Guardar informacion Referidor(Líder)
+                    </label>
+                </div>
+            </div>
+            <!--PARTICIPANTE-->
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Tipo referido(Participante)<span class="spObl">*</span></label>
+                <select class="form-control form-control-sm textBox" [(ngModel)]="IdParticioanteRegalos"
+                    (change)="ChangeRegaloParticipanteReferido()">
+                    <option value="0">Seleccionar</option>
+                    <option value="{{respu.IdTipo}}" *ngFor="let respu of ArrayRegalosParticipante">
+                        {{respu.Descripcion}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-sm-4" *ngIf="IdParticioanteRegalos == '1'">
+                <label class="col-sm-12 TextoAgroSmall">Producto regalo<span class="spObl">*</span>
+                </label>
+                <select class="form-control form-control-sm textBox"
+                    (change)="changeProductosRegaloDisponiblesParticipante()" [(ngModel)]="IdProdRegaloParti">
+                    <option value="0">Seleccionar</option>
+                    <option value="{{respu.IdOferta}}" *ngFor="let respu of ArregloProductosRegaloParti">
+                        {{respu.NombreProducto}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-6 m-0 p-1 mt-2" *ngIf="IdParticioanteRegalos == '1' && IdProdRegaloParti != '0'">
+                <div class="m-0 p-2" *ngFor="let respu of  ArregloInfoRegaloParti"
+                    style="background-color: #ffffff; border: 1px solid gainsboro; border-radius: 5px;">
+                    <label class="Llave" style="font-size: 12px; color: #45ab1b !important;">
+                        {{respu.NombreProducto}}
+                    </label>
+                    <label class="Llave" style="font-size: 12px; color: red !important;">
+                        &nbsp; - {{respu.DescrTipoVentaProducto}}
+                    </label>
+                    <div style="display: flex; background-color: #ffffff; padding: 5px;">
+                        <img src="{{RutaImagenProducto}}{{respu.ImagenOferta}}" style="height: 130px; width: 130px;">
+                        <div style="width: 100%; padding: 10px;">
+                            <label><small><strong>{{respu.DescripcionCorta}}</strong> </small></label>
+                            <br>
+                            <label><small>{{respu.DescripcionLarga}}</small></label>
+                            <div style="width: 100%; padding: 10px; display: flex; justify-content: space-between;">
+                                <div class="mt-3" style=" text-align: center;" *ngIf="respu.IdEstado != '0'">
+                                    <label class="Btn-AgroPrin" style="margin: auto;"
+                                        (click)="BtnModalDetallePresentaciones(respu)">
+                                        Presentaciones
+                                    </label>
+                                </div>
+                                <div class="mt-3" style=" text-align: center;" *ngIf="respu.IdEstado != '0'">
+                                    <label class="Btn-AgroPrin" style="margin: auto;"
+                                        (click)="BtnInformacionGeneral(respu)">
+                                        Información general
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="col-12">
                 <div class="w-100 mt-3" style=" text-align: center;">
                     <label class="Btn-AgroPrin" style="margin: auto;">
-                        Guardar informacion referidos
+                        Guardar informacion Referidor(Participante)
                     </label>
                 </div>
             </div>
@@ -109,7 +240,7 @@
                 </label>
             </div>
             <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Localidad</label>
+                <label class="col-sm-12 TextoAgroSmall">Localidad<span class="spObl">*</span></label>
                 <select class="form-control form-control-sm textBox" (change)="changeSelectLocalidad()"
                     [(ngModel)]="IdLocalidad">
                     <option value="0">Seleccionar</option>
@@ -119,7 +250,7 @@
                 </select>
             </div>
             <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Sector</label>
+                <label class="col-sm-12 TextoAgroSmall">Sector<span class="spObl">*</span></label>
                 <select class="form-control form-control-sm textBox" [(ngModel)]="IdSector">
                     <option value="0">Seleccionar</option>
                     <option *ngFor="let respu of ArraySectorTipo" value="{{respu.IdTipoZona}}">
@@ -131,12 +262,22 @@
                 <img src="https://cdn-icons-png.flaticon.com/128/8387/8387527.png" (click)="BtnAgregarLocalidadOferta()"
                     style="width: 35px; height: 35px; margin-top: 10px; cursor: pointer;">
             </div>
+            <div class="row mt-3" *ngFor="let respu of ArraySectoresOferta">
+                <div class="col-8">
+                    <label class="form-control form-control-sm ">{{respu.Descripcion}}</label>
+                </div>
+                <div class="col-sm-4" style="display:flex">
+                    <img src="https://cdn-icons-png.flaticon.com/128/5974/5974771.png"
+                        style="width: 25px; height: 25px; cursor: pointer;" (click)="EliminarSectorOferta(respu)">
+                </div>
+            </div>
         </div>
         <hr *ngIf="VerOcultarModulos == '2'">
         <!--CUPONES DE LA OFERTA-->
-        <div class="row m-0 p-0" *ngIf="VerOcultarModulos == '2'">
+        <div class="row m-0 p-0" *ngIf="VerOcultarModulos == '2'" style="display: none;">
             <div class="col-12 mb-1">
-                <label class="SubTituloAgro">Regalos para la oferta (Estos aplican solamente para compras de la oferta actual)</label>
+                <label class="SubTituloAgro">Regalos para la oferta (Estos aplican solamente para compras de la oferta
+                    actual)</label>
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Tipo de regalo</label>
@@ -150,7 +291,7 @@
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Aplicable a</label>
                 <select class="form-control form-control-sm textBox" [(ngModel)]="IdTipoRegaloPersona">
-                    <option value="0" >Seleccionar</option>
+                    <option value="0">Seleccionar</option>
                     <option value="{{respu.IdTipo}}" *ngFor="let respu of ArrayRegalosPersonaTipo">
                         {{respu.Descripcion}}
                     </option>
@@ -159,6 +300,18 @@
             <div class="col-sm-4" style="display:flex">
                 <img src="https://cdn-icons-png.flaticon.com/128/8387/8387527.png" (click)="BtnAgregarRegaloDefecto()"
                     style="width: 35px; height: 35px; margin-top: 28px; margin-left: 10px; cursor: pointer;">
+            </div>
+            <div class="row mt-3" *ngFor="let respu of ArrayRegalosOferta">
+                <div class="col-8">
+                    <label
+                        class="form-control form-control-sm "><strong>{{respu.DesTipoRegalo}}:&nbsp;</strong>{{respu.DesAplicablePer}}</label>
+                </div>
+                <div class="col-sm-4" style="display:flex">
+                    <img src="https://cdn-icons-png.flaticon.com/128/5974/5974771.png"
+                        style="width: 25px; height: 25px; cursor: pointer;">
+                    <img src="https://cdn-icons-png.flaticon.com/128/1265/1265907.png"
+                        style="width: 25px; height: 25px; cursor: pointer; margin-left: 10px;">
+                </div>
             </div>
         </div>
         <hr *ngIf="VerOcultarModulos == '2'">
@@ -172,150 +325,57 @@
             <div class="col-sm-4" style="display: flex;">
                 <div class="m-0 p-0 w-100">
                     <label class="col-sm-12 TextoAgroSmall">Nombre producto</label>
-                    <input type="text" class="form-control form-control-sm textBox">
+                    <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="nombreFiltroProducto">
                 </div>
-                <img src="https://cdn-icons-png.flaticon.com/128/7088/7088387.png"
+                <img src="https://cdn-icons-png.flaticon.com/128/7088/7088387.png" (click)="FiltrosGeneralProducto()"
                     style="width: 35px; height: 35px; margin-top: 25px; margin-left: 10px; cursor: pointer;">
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Tipo producto</label>
-                <select class="form-control form-control-sm textBox">
+                <select class="form-control form-control-sm textBox" [(ngModel)]="TipoProductoFiltro"
+                    (change)="FiltrosGeneralProducto()">
                     <option value="0">Todos los productos</option>
-                    <option value="2">Productos tradicionales</option>
-                    <option value="1">Productos especiales</option>
-                </select>
-            </div>
-            <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Ordenar</label>
-                <select class="form-control form-control-sm textBox">
-                    <option value="0">Tipo producto</option>
-                    <option value="2">Activos e inactivos</option>
-                    <option value="1">Alfabeticamente</option>
+                    <option value="1">Productos tradicionales</option>
+                    <option value="2">Productos especiales</option>
                 </select>
             </div>
         </div>
         <!--TARJETAS PRODUCTOS-->
         <div class="row m-0 p-0 mt-3" *ngIf="VerOcultarModulos == '2'">
-            <div class="col-md-4 m-0 p-1">
-                <div class="m-0 p-2"
-                    style="background-color: #f5f5f5; border: 1px solid gainsboro; border-radius: 5px;">
-                    <div class="m-0 p-0" style="text-align: center;">
-                        <label class="Llave" style="font-size: 12px;">
-                            MANZANA ROJA
-                        </label>
-                    </div>
-                    <div style="display: flex; background-color: #f5f5f5; padding: 5px;">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRldpWhsKOViqNGgIMgenZVbxWhu7OjWQTdMg&s"
-                            style="height: 130px; width: 130px; border-radius: 5px;">
-                        <div style="width:100%;" class="row m-0 p-0 justify-content-center">
-                            <div class="col-5">
-                                <img src="https://cdn-icons-png.flaticon.com/128/785/785822.png"
-                                    (click)="BtnModalDetalleInfoProducto()" style="cursor: pointer; width: 100%;"
-                                    title="Información general">
-                            </div>
-                            <div class="col-5">
-                                <img src="https://cdn-icons-png.flaticon.com/128/4413/4413142.png"
-                                    (click)="BtnModalDetallePresentaciones()" style="cursor: pointer; width: 100%;"
-                                    title="Presentaciones">
-                            </div>
-                            <div class="col-5">
-                                <img src="https://cdn-icons-png.flaticon.com/128/1040/1040219.png"
-                                    style="cursor: pointer; width: 100%;" title="Activar">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 m-0 p-1">
-                <div class="m-0 p-2"
+            <div class="col-md-4 m-0 p-1" *ngFor="let respu of  ArrayProductosGeneralesOferta">
+                <div class="m-0 p-2" *ngIf="respu.TipoVentaProducto == '1'"
                     style="background-color: #ffffff; border: 1px solid gainsboro; border-radius: 5px;">
                     <label class="Llave" style="font-size: 12px; color: #45ab1b !important;">
-                        REGALO X REGISTRASE Y COMPRAR
+                        {{respu.NombreProducto}}
+                    </label>
+                    <label class="Llave" style="font-size: 12px; color: red !important;">
+                        &nbsp; - {{respu.DescrTipoVentaProducto}}
                     </label>
                     <div style="display: flex; background-color: #ffffff; padding: 5px;">
-                        <img src="https://cdn-icons-png.flaticon.com/128/1140/1140033.png"
-                            style="height: 130px; width: 130px;">
+                        <img src="{{RutaImagenProducto}}{{respu.ImagenOferta}}" style="height: 130px; width: 130px;">
                         <div style="width: 100%; padding: 10px;">
-                            <div class="w-100 mt-3" style=" text-align: center;">
-                                <label class="Btn-AgroPrin" style="margin: auto;">
+                            <div class="w-100 mt-3" style=" text-align: center;" *ngIf="respu.IdEstado != '0'">
+                                <label class="Btn-AgroPrin" style="margin: auto;"
+                                    (click)="BtnModalDetallePresentaciones(respu)">
                                     Presentaciones
                                 </label>
                             </div>
-                            <div class="w-100 mt-3" style=" text-align: center;">
-                                <label class="Btn-AgroPrin" style="margin: auto;">
-                                    Desactivar producto
+                            <div class="w-100 mt-3" style=" text-align: center;" *ngIf="respu.IdEstado != '0'">
+                                <label class="Btn-AgroPrin" style="margin: auto;"
+                                    (click)="BtnInformacionGeneral(respu)">
+                                    Información general
                                 </label>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 m-0 p-1">
-                <div class="m-0 p-2"
-                    style="background-color: #ffffff; border: 1px solid gainsboro; border-radius: 5px;">
-                    <label class="Llave" style="font-size: 12px; color: #45ab1b !important;">
-                        REGALO X CUALQUIER COMPRA
-                    </label>
-                    <div style="display: flex; background-color: #ffffff; padding: 5px;">
-                        <img src="https://cdn-icons-png.flaticon.com/128/1140/1140033.png"
-                            style="height: 130px; width: 130px;">
-                        <div style="width: 100%; padding: 10px;">
-                            <div class="w-100 mt-3" style=" text-align: center;">
-                                <label class="Btn-AgroPrin" style="margin: auto;">
-                                    Presentaciones
+                            <div class="w-100 mt-3" style=" text-align: center;" *ngIf="respu.IdEstado != '0'">
+                                <label class="Btn-AgroPrin" style="margin: auto;"
+                                    (click)="DesActivarProductoOferta(respu)">
+                                    Eliminar producto
                                 </label>
                             </div>
-                            <div class="w-100 mt-3" style=" text-align: center;">
-                                <label class="Btn-AgroPrin" style="margin: auto;">
-                                    Desactivar producto
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 m-0 p-1">
-                <div class="m-0 p-2"
-                    style="background-color: #ffffff; border: 1px solid gainsboro; border-radius: 5px;">
-                    <label class="Llave" style="font-size: 12px; color: #45ab1b !important;">
-                        REGALO LIDER
-                    </label>
-                    <div style="display: flex; background-color: #ffffff; padding: 5px;">
-                        <img src="https://cdn-icons-png.flaticon.com/128/1140/1140033.png"
-                            style="height: 130px; width: 130px;">
-                        <div style="width: 100%; padding: 10px;">
-                            <div class="w-100 mt-3" style=" text-align: center;">
-                                <label class="Btn-AgroPrin" style="margin: auto;">
-                                    Presentaciones
-                                </label>
-                            </div>
-                            <div class="w-100 mt-3" style=" text-align: center;">
-                                <label class="Btn-AgroPrin" style="margin: auto;">
-                                    Desactivar producto
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 m-0 p-1">
-                <div class="m-0 p-2"
-                    style="background-color: #ffffff; border: 1px solid gainsboro; border-radius: 5px;">
-                    <label class="Llave" style="font-size: 12px; color: #45ab1b !important;">
-                        REGALO PARTICIPANTE
-                    </label>
-                    <div style="display: flex; background-color: #ffffff; padding: 5px;">
-                        <img src="https://cdn-icons-png.flaticon.com/128/1140/1140033.png"
-                            style="height: 130px; width: 130px;">
-                        <div style="width: 100%; padding: 10px;">
-                            <div class="w-100 mt-3" style=" text-align: center;">
-                                <label class="Btn-AgroPrin" style="margin: auto;">
-                                    Presentaciones
-                                </label>
-                            </div>
-                            <div class="w-100 mt-3" style=" text-align: center;">
-                                <label class="Btn-AgroPrin" style="margin: auto;">
-                                    Desactivar producto
+                            <div class="w-100 mt-3" style=" text-align: center;" *ngIf="respu.IdEstado == '0'">
+                                <label class="Btn-AgroPrin" style="margin: auto;"
+                                    (click)="ActivarProductoOferta(respu.IdOferta)">
+                                    Agregar producto
                                 </label>
                             </div>
                         </div>
@@ -327,6 +387,24 @@
 </div>
 
 <!--AREA MODALES-->
+<ng-template #ModalRespuesta let-modal>
+    <div class="modal-header">
+        <h1>Respuesta</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">Respuesta</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
 <ng-template #ModalFechasOferta let-modal>
     <div class="modal-header">
         <h1 class="TituloAgro">AgroApoya2</h1>
@@ -396,64 +474,58 @@
     <br>
 </ng-template>
 
-<ng-template #ModalRespuesta let-modal>
-    <div class="modal-header">
-        <h1>Respuesta</h1>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
-    </div>
-    <div class="modal-body">
-        <div class="row br">
-            <div class="col-sm-12">
-                <h2 class="TituloDetalle">Respuesta</h2>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()">Aceptar</button>
-    </div>
-    <br>
-</ng-template>
-
 <ng-template #ModalPresentaciones let-modal>
     <div class="modal-header">
-        <h1>AgroApoya2</h1>
+        <h2>Presentaciones del producto</h2>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
         <div class="row">
             <div class="col-sm-12">
-                <h2>Presentaciones del producto</h2>
+                <h2><strong>{{NombreProducto}}</strong></h2>
             </div>
             <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Nombre producto</label>
-                <input type="text" class="form-control form-control-sm textBox">
-            </div>
-            <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Maximo unidades x compra</label>
-                <input type="text" class="form-control form-control-sm textBox">
-            </div>
-            <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Presentacion</label>
-                <select class="form-control form-control-sm textBox">
+                <label class="col-sm-12 TextoAgroSmall">Presentacion<span class="spObl">*</span></label>
+                <select class="form-control form-control-sm textBox" [(ngModel)]="IdPresentacionPres"
+                    [disabled]="BanderaInserActu == '2'">
+                    <option value="0">Seleccionar</option>
+                    <option value="{{respu.IdTipo}}" *ngFor="let respu of ArrayPresentacionProd">
+                        {{respu.Descripcion}}
+                    </option>
                 </select>
             </div>
             <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Valor real</label>
-                <input type="text" class="form-control form-control-sm textBox">
+                <label class="col-sm-12 TextoAgroSmall">Unidades totales disponibles<span class="spObl">*</span></label>
+                <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="UndTotalPress">
             </div>
             <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Valor referencia</label>
-                <input type="text" class="form-control form-control-sm textBox">
+                <label class="col-sm-12 TextoAgroSmall">Maximo unidades x compra <span class="spObl">*</span></label>
+                <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="MaximoUndPres">
             </div>
             <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">% Descuento</label>
-                <input type="text" class="form-control form-control-sm textBox">
+                <label class="col-sm-12 TextoAgroSmall">Valor real<span class="spObl">*</span></label>
+                <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="ValorRealPres">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Valor referencia<span class="spObl">*</span></label>
+                <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="ValorReferenciaPres"
+                    (input)="KeyPressRFeferencia($event)">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">% Descuento<span class="spObl">*</span></label>
+                <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="PorcentajePres"
+                    (input)="KeyPressDescu($event)">
             </div>
             <div class="col-12 mt-4">
                 <div class="row justify-content-center">
-                    <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()"
-                        style="margin-right: 5px;">Guardar</button>
-                    <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()"
+                    <button type="button" class="btn btn-agro-prin col-sm-2 col-6"
+                        (click)="BtnGuardarDetallePresentaciones()" style="margin-right: 5px;"
+                        *ngIf="BanderaInserActu == '1'">Guardar</button>
+                    <button type="button" class="btn btn-agro-prin col-sm-2 col-6"
+                        (click)="BtnActualizarDetallePresentaciones()" style="margin-right: 5px;"
+                        *ngIf="BanderaInserActu == '2'">Actualizar</button>
+
+                    <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="BtnLimpiar()"
                         style="margin-left: 5px;">Limpiar</button>
                 </div>
             </div>
@@ -464,28 +536,27 @@
                             <th>Unidades</th>
                             <th>Maximo Unidades</th>
                             <th>Presentación</th>
-                            <th>Peso (Lb)</th>
                             <th>Valor</th>
                             <th>Valor Referencia</th>
                             <th>Acciones</th>
                         </tr>
-                        <tr>
-                            <td>1 Lb</td>
+                        <tr *ngFor="let respu of ArrayDetalleProdPres">
+                            <td>{{respu.UnidadesDisponibles}}</td>
                             <td>
-                                30 und
+                                {{respu.MaximoUnidades}}
                             </td>
-                            <td>x 3 Libras</td>
-                            <td>3</td>
-                            <td>$12.000</td>
-                            <td>$14.500</td>
+                            <td>{{respu.DescPresentacion}}</td>
+                            <td>{{ respu.ValorReal | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+                            <td>{{ respu.ValorReferencia | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+
                             <td>
                                 <button class="SinEstilo" title="Eliminar presentación">
                                     <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basura.png"
-                                        class="imgpresentacion">
+                                        class="imgpresentacion" (click)="BtnEliminarRegistro(respu)">
                                 </button>
                                 <button class="SinEstilo" title="Editar presentación">
                                     <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
-                                        class="imgpresentacion">
+                                        class="imgpresentacion" (click)="BtnSubirActualizarRegistro(respu)">
                                 </button>
                             </td>
                         </tr>
@@ -542,6 +613,57 @@
                 <div class="ImgProducto">
                     <img src="https://cdn-icons-png.flaticon.com/128/8191/8191568.png">
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #ModalInfoGeneralProducto let-modal>
+    <div class="modal-header">
+        <h1>Información general del producto</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="col-sm-12">
+            <h2 class="TituloDetalle">Nombre del producto</h2>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Nombre del producto<span class="spObl">*</span>
+                </label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Descripcion corta<span class="spObl">*</span>
+                </label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Descripcion larga<span class="spObl">*</span>
+                </label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Prefijo<span class="spObl">*</span>
+                </label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Tipo venta producto<span class="spObl">*</span>
+                </label>
+                <select class="form-control form-control-sm textBox" disabled>
+                    <option value="0">Seleccionar</option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Estado<span class="spObl">*</span>
+                </label>
+                <input type="text" class="form-control form-control-sm textBox" disabled>
             </div>
         </div>
     </div>

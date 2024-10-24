@@ -12,19 +12,13 @@ export class ServiciosService {
 
     url_servidor = this.metodosglobales.SeleccionAmbiente();
 
+
     EjemploGet(IdSector: string, CdCons: string) {
         return this.http.get<any>(this.url_servidor + 'EjemploGet/' + IdSector + '/' + CdCons);
     }
 
     EjemploPost(bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'EjemploPost/' + bandera, body);
-    }
-
-    //subir imagenen del sector al servidor
-    public uploadFile(imagenParaSubir: File) {
-        const formData = new FormData();
-        formData.append('file', imagenParaSubir, imagenParaSubir.name);
-        return this.http.post(this.url_servidor + 'uploadFile', formData);
     }
 
     //Subir imagenes al servidor para sectores o localidades
@@ -34,9 +28,36 @@ export class ServiciosService {
         return this.http.post(this.url_servidor + 'uploadImgSector', formData);
     }
 
+    public postImgToppings(imagenParaSubir: File) {
+        const formData = new FormData();
+        formData.append('file', imagenParaSubir, imagenParaSubir.name);
+        return this.http.post(this.url_servidor + 'uploadImgToppings', formData);
+      }
+
+    public RecuperarRutasOtrasImagenes(tipoimagen: string): string {
+        const rutaBase = 'https://api.apptotrip.com/ImagenesAgroapoya2/';
+        switch (tipoimagen) {
+            case '1':
+                return rutaBase + 'ImagenesEvidencia/';
+            case '2':
+                return rutaBase + 'ImagenesConductores/';
+            case '3':
+                return rutaBase + 'ImagenesPlantillaCorreo/';
+            case '4':
+                return rutaBase + 'ImagenesToppings/';
+            case '5':
+                return rutaBase + 'ImagenesPublicidad/';
+            case '6':
+                return rutaBase + 'ImagenesUsuarios/';
+            case '7':
+                return rutaBase + 'ImagenesSectores/';
+            default:
+                return 'no se encontro la imagen';
+        }
+    }
+
 
     // CREACION DE LA OFERTA
-
     consTipoOferta(Bandera: string) {
         return this.http.get<any>(this.url_servidor + 'consTipoOferta/' + Bandera);
     }
@@ -45,8 +66,8 @@ export class ServiciosService {
         return this.http.get<any>(this.url_servidor + 'consZTipoDomicilio/' + Bandera);
     }
 
-    conszOfertaActivaProductosCo(Bandera: string) {
-        return this.http.get<any>(this.url_servidor + 'conszOfertaActivaProductosCo/' + Bandera);
+    conszOfertaActivaProductosCo(Bandera: string, IdOferta: string) {
+        return this.http.get<any>(this.url_servidor + 'conszOfertaActivaProductosCo/' + Bandera + '/' + IdOferta);
     }
 
     modOfertaActivaInfo(bandera: string, body: any) {
@@ -84,5 +105,34 @@ export class ServiciosService {
     modOfertaRegalos(Bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'modOfertaRegalos/' + Bandera, body);
     }
+
+    consOfertaRegalos(Bandera: string, IdOferta: string) {
+        return this.http.get<any>(this.url_servidor + 'consOfertaRegalos/' + Bandera + '/' + IdOferta);
+    }
+
+    consProductosActivosOferta(Bandera: string, IdOferta: string) {
+        return this.http.get<any>(this.url_servidor + 'consProductosActivosOferta/' + Bandera + '/' + IdOferta);
+    }
+
+    consOfertaActivaZonas(Bandera: string, IdOferta: string) {
+        return this.http.get<any>(this.url_servidor + 'consOfertaActivaZonas/' + Bandera + '/' + IdOferta);
+    }
+
+    modProductosActivosOferta(Bandera: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'modProductosActivosOferta/' + Bandera, body);
+    }
+
+    consRelacionProductoPresentacion(Bandera: string, IdProducto: string) {
+        return this.http.get<any>(this.url_servidor + 'consRelacionProductoPresentacion/' + Bandera + '/' + IdProducto);
+    }
+
+    consOfertaActivaProductosDetalles(Bandera: string, IdProducto: string, IdOferta: string) {
+        return this.http.get<any>(this.url_servidor + 'consOfertaActivaProductosDetalles/' + Bandera + '/' + IdProducto + '/' + IdOferta);
+    }
+
+    modOfertaActivaProductosDetalles(Bandera: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'modOfertaActivaProductosDetalles/' + Bandera, body);
+    }
+
 }
 
