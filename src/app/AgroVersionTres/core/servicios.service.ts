@@ -22,19 +22,19 @@ export class ServiciosService {
     }
 
     //Subir imagenes al servidor para sectores o localidades
-    public uploadImgSector(imagenParaSubir: File) {
+    uploadImgSector(imagenParaSubir: File) {
         const formData = new FormData();
         formData.append('file', imagenParaSubir, imagenParaSubir.name);
         return this.http.post(this.url_servidor + 'uploadImgSector', formData);
     }
 
-    public postImgToppings(imagenParaSubir: File) {
+    postImgToppings(imagenParaSubir: File) {
         const formData = new FormData();
         formData.append('file', imagenParaSubir, imagenParaSubir.name);
         return this.http.post(this.url_servidor + 'uploadImgToppings', formData);
     }
 
-    public RecuperarRutasOtrasImagenes(tipoimagen: string): string {
+    RecuperarRutasOtrasImagenes(tipoimagen: string): string {
         const rutaBase = 'https://api.apptotrip.com/ImagenesAgroapoya2/';
         switch (tipoimagen) {
             case '1':
@@ -55,7 +55,6 @@ export class ServiciosService {
                 return 'no se encontro la imagen';
         }
     }
-
 
     // CREACION DE LA OFERTA
     consTipoOferta(Bandera: string) {
@@ -160,6 +159,22 @@ export class ServiciosService {
 
     modTipoImagenOferta(Bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'modTipoImagenOferta/' + Bandera, body);
+    }
+
+    consTipoPresentacion(Bandera: string, Parametro: string) {
+        return this.http.get<any>(this.url_servidor + 'consTipoPresentacion/' + Bandera + '/' + Parametro);
+    }
+
+    modTipoPresentacion(Bandera: string,  body: any) {
+        return this.http.post<any>(this.url_servidor + 'modTipoPresentacion/' + Bandera, body);
+    }
+    
+    modRelacionProductoPresentacion(Bandera: string,  body: any) {
+        return this.http.post<any>(this.url_servidor + 'modRelacionProductoPresentacion/' + Bandera, body);
+    }
+
+    modEstadoOferta(Bandera: string,  body: any) {
+        return this.http.post<any>(this.url_servidor + 'modEstadoOferta/' + Bandera, body);
     }
 }
 

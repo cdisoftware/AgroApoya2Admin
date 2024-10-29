@@ -14,13 +14,16 @@ export class CreacionofertaComponent implements OnInit {
     private modalService: NgbModal,
     private ServiciosService: ServiciosService,
   ) { }
-
+  
+  @ViewChild('ModalCupones', { static: false }) ModalCupones: any;
   @ViewChild('ModalRespuesta', { static: false }) ModalRespuesta: any;
   @ViewChild('ModalFechasOferta', { static: false }) ModalFechasOferta: any;
   @ViewChild('ModalNuevoProducto', { static: false }) ModalNuevoProducto: any;
   @ViewChild('ModalPresentaciones', { static: false }) ModalPresentaciones: any;
   @ViewChild('ModalImfOfertaSector', { static: false }) ModalImfOfertaSector: any;
   @ViewChild('ModalInfoGeneralProducto', { static: false }) ModalInfoGeneralProducto: any;
+  @ViewChild('ModalRelacionPrecentacion', { static: false }) ModalRelacionPrecentacion: any;
+
 
   //Parametros tranversales para la oferta
   IdOferta: string;
@@ -76,6 +79,8 @@ export class CreacionofertaComponent implements OnInit {
   ArrayPresentacionProd: any[];
   ArrayDetalleProdPres: any[];
   BanderaInserActu: string = '';
+  ArrayPresentacionesModl: any[];
+  IdRelaPresenModl: string = '0';
 
   //Referidos
   ArrayReglajeReferidos: any[];
@@ -92,6 +97,10 @@ export class CreacionofertaComponent implements OnInit {
   ArregloProductosRegaloParti: any[];
   IdProdRegaloParti: string = '';
   ArregloInfoRegaloParti: any[];
+  IdCuponRegaloRefLider: string = '0';
+  IdCuponRegaloRefParti: string = '0';
+  TextCuponRegaloRefLider: string = '0';
+  TextCuponRegaloRefParti: string = '0';
 
   //Informacion General del producto
   IdProductoDet: string = '';
@@ -490,6 +499,24 @@ export class CreacionofertaComponent implements OnInit {
     })
   }
 
+  BtnEliminarImagen(Resultados: any) {
+    const body = {
+      IdImagen: Resultados.IdTipo,
+      IdProducto: Resultados.IdProducto,
+      Nombre: '',
+      Orden: 0,
+      TipoEstado: 1
+    }
+    console.log(body)
+    this.ServiciosService.modTipoImagenOferta('2', body).subscribe(ResultadoCuatro => {
+      alert(ResultadoCuatro)
+      this.ArrayImagenesProducto = [];
+      this.ServiciosService.consTipoImagenOferta('1', this.IdProductoDet).subscribe(ResultadoTres => {
+        this.ArrayImagenesProducto = ResultadoTres;
+      })
+    })
+  }
+
   GuardarInformacionProducto() {
     if (this.NombreProductoDet == undefined || this.NombreProductoDet == '') {
       alert('El nombre del producto es obligatorio')
@@ -668,7 +695,48 @@ export class CreacionofertaComponent implements OnInit {
       this.InformacionInicalModalPres();
       this.BuscarDetallePrecentaciones();
     })
+  }
 
+  BtnAgregarRelacionPrecentacion() {
+    this.IdRelaPresenModl = '0';
+    this.ServiciosService.consTipoPresentacion('1', '0').subscribe(ResultadoDos => {
+      this.ArrayPresentacionesModl = ResultadoDos;
+    })
+    this.PresentacionesActualesProducto();
+    this.modalService.open(this.ModalRelacionPrecentacion, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+  }
+
+  PresentacionesActualesProducto() {
+    this.ArrayPresentacionProd = [];
+    this.ServiciosService.consRelacionProductoPresentacion('1', this.IdProductoPres).subscribe(ResultadoDos => {
+      this.ArrayPresentacionProd = ResultadoDos;
+    })
+  }
+
+  BtnAdicionarPrecentacion() {
+    if (this.IdRelaPresenModl != '0') {
+      const body = {
+        TipoPresentacion: this.IdRelaPresenModl,
+        TipoProducto: this.IdProductoPres
+      }
+      this.ServiciosService.modRelacionProductoPresentacion('1', body).subscribe(ResultadoDos => {
+        alert(ResultadoDos)
+        this.PresentacionesActualesProducto();
+      })
+    } else {
+      alert('El campo presentación es obligatorio')
+    }
+  }
+
+  BtnEliminarRelaconPresenta(Array: any) {
+    const body = {
+      TipoPresentacion: Array.TipoPresentacion,
+      TipoProducto: this.IdProductoPres
+    }
+    this.ServiciosService.modRelacionProductoPresentacion('2', body).subscribe(ResultadoDos => {
+      alert(ResultadoDos)
+      this.PresentacionesActualesProducto();
+    })
   }
 
   /*AREA DE REFERIDOS */
@@ -717,10 +785,15 @@ export class CreacionofertaComponent implements OnInit {
     })
   }
 
-  //regalo --> Seleccion de regalo para el lider <3
+  //regalo --> Seleccion de regalo para el lider 
   ChangeRegaloLiderReferidor() {
     if (this.IdLiderRegalos != '0') {
-      this.ListaProductosRegaloDisponiblesLider();
+      if (this.IdLiderRegalos == '1') {
+        this.ListaProductosRegaloDisponiblesLider();
+      } else if (this.IdLiderRegalos == '2' || this.IdLiderRegalos == '3') {
+        this.IdCuponRegaloRefLider = '0';
+        this.TextCuponRegaloRefLider = 'Seleccionar';
+      }
     }
   }
 
@@ -741,50 +814,20 @@ export class CreacionofertaComponent implements OnInit {
     }
   }
 
-  BtnGuardarInformacionReferidos() {
-    if (this.IdRegaljeReferidos == '0') {
-      alert('El reglaje para referidos es obligatorio')
-    }  // Informacion lider
-    else if (this.IdLiderRegalos == '0') {
-      alert('Tipo referidor(Líder) es obligatorio')
-    } else if (this.IdLiderRegalos == '1' && this.IdProdRegaloLider == '0') {
-      alert('Producto regalo es obligatorio')
-    } else if (this.IdLiderRegalos == '1' && (this.MaxiRegaloLider == '' || this.MaxiRegaloLider == undefined)) {
-      alert('El maximo de regalos es obligatorio')
-    } else if (this.IdLiderRegalos == '1' && (this.RegistroxRegalo == '' || this.RegistroxRegalo == undefined)) {
-      alert('El numero de registros para cada regalo es obligatorio')
-    }
-    // Informacion participante
-    else if (this.IdParticioanteRegalos == '0') {
-      alert('El Tipo referido(Participante) es obligatorio')
-    } else if (this.IdParticioanteRegalos != '0' && this.IdProdRegaloParti == '0') {
-      alert('El Producto regalo es obligatorio')
-    } else {
+  //Cupones --> Seccion regalo líder 
+  BtnAbrirModalModificarCupon() {
+    this.modalService.open(this.ModalCupones, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
 
-      const body = {
-        IdOferta: this.IdOferta,
-        TipoRegaloRegla: this.IdRegaljeReferidos,
-        TipoRegaloParti: this.IdParticioanteRegalos,
-        TipoRegaloLider: this.IdLiderRegalos,
-        MaximoRegaloLider: this.MaxiRegaloLider,
-        RegistroRegaloLider: this.RegistroxRegalo,
-        IdRegaloLider: this.IdProdRegaloLider,
-        IdRegaloParti: this.IdProdRegaloParti,
-        IdCupon: 0
-      }
-
-      this.ServiciosService.modOfertaActivaInfoAdicional('1', body).subscribe(ResultadoDos => {
-        alert(ResultadoDos);
-        this.CargarInformacionInicialReferidos();
-      })
-    }
   }
 
-  //regalo --> Seleccion de regalo para el participante <3
+  //regalo --> Seleccion de regalo para el participante 
   ChangeRegaloParticipanteReferido() {
     this.IdProdRegaloParti = '0';
-    if (this.IdParticioanteRegalos != '0') {
+    if (this.IdParticioanteRegalos == '1') {
       this.ListaProductosRegaloDisponiblesParticipante();
+    } else if (this.IdParticioanteRegalos == '2' || this.IdParticioanteRegalos == '3') {
+      this.IdCuponRegaloRefParti = '0';
+      this.TextCuponRegaloRefParti = 'Seleccionar';
     }
   }
 
@@ -802,6 +845,48 @@ export class CreacionofertaComponent implements OnInit {
           this.ArregloInfoRegaloParti.push(this.ArregloProductosRegaloParti[i]);
         }
       }
+    }
+  }
+
+  BtnGuardarInformacionReferidos() {
+    if (this.IdRegaljeReferidos == '0') {
+      alert('El reglaje para referidos es obligatorio')
+    }  // Informacion lider
+    else if (this.IdLiderRegalos == '0') {
+      alert('Tipo referidor(Líder) es obligatorio')
+    } else if (this.IdLiderRegalos == '1' && this.IdProdRegaloLider == '0') {
+      alert('Producto regalo es obligatorio')
+    } else if (this.IdLiderRegalos == '1' && (this.MaxiRegaloLider == '' || this.MaxiRegaloLider == undefined)) {
+      alert('El maximo de regalos es obligatorio')
+    } else if (this.IdLiderRegalos == '1' && (this.RegistroxRegalo == '' || this.RegistroxRegalo == undefined)) {
+      alert('El numero de registros para cada regalo es obligatorio')
+    } else if ((this.IdLiderRegalos == '2' || this.IdLiderRegalos == '3') && this.IdCuponRegaloRefLider == '0') {
+      alert('El cupon de regalo para el líder es obligatorio')
+    }
+    // Informacion participante
+    else if (this.IdParticioanteRegalos == '0') {
+      alert('El Tipo referido(Participante) es obligatorio')
+    } else if (this.IdParticioanteRegalos == '1' && this.IdProdRegaloParti == '0') {
+      alert('El Producto regalo es obligatorio')
+    } else if ((this.IdParticioanteRegalos == '2' || this.IdParticioanteRegalos == '3') && this.IdCuponRegaloRefParti == '0') {
+      alert('El cupon de regalo para el participante es obligatorio')
+    }
+    else {
+      const body = {
+        IdOferta: this.IdOferta,
+        TipoRegaloRegla: this.IdRegaljeReferidos,
+        TipoRegaloParti: this.IdParticioanteRegalos,
+        TipoRegaloLider: this.IdLiderRegalos,
+        MaximoRegaloLider: this.MaxiRegaloLider,
+        RegistroRegaloLider: this.RegistroxRegalo,
+        IdRegaloLider: this.IdProdRegaloLider,
+        IdRegaloParti: this.IdProdRegaloParti,
+        IdCupon: 0
+      }
+      this.ServiciosService.modOfertaActivaInfoAdicional('1', body).subscribe(ResultadoDos => {
+        alert(ResultadoDos);
+        this.CargarInformacionInicialReferidos();
+      })
     }
   }
 
@@ -825,5 +910,28 @@ export class CreacionofertaComponent implements OnInit {
     }
   }
 
+  /*AREA PUBLICAR Y CERRAR OFERTA */
+  BtnPublicarOferta() {
+    const body = {
+      IdOferta: this.IdOferta,
+      Estado: 2,
+      Parametro: "0"
+    }
+    this.ServiciosService.modEstadoOferta('1', body).subscribe(Resultado => {
+      alert(Resultado)
+    })
+  }
+
+  BtnCerrarOferta() {
+    const body = {
+      IdOferta: this.IdOferta,
+      Estado: 3,
+      Parametro: "0"
+    }
+    this.ServiciosService.modEstadoOferta('1', body).subscribe(Resultado => {
+      alert(Resultado)
+    })
+  }
 
 }
+
