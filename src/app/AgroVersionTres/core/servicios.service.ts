@@ -32,7 +32,7 @@ export class ServiciosService {
         const formData = new FormData();
         formData.append('file', imagenParaSubir, imagenParaSubir.name);
         return this.http.post(this.url_servidor + 'uploadImgToppings', formData);
-      }
+    }
 
     public RecuperarRutasOtrasImagenes(tipoimagen: string): string {
         const rutaBase = 'https://api.apptotrip.com/ImagenesAgroapoya2/';
@@ -134,5 +134,34 @@ export class ServiciosService {
         return this.http.post<any>(this.url_servidor + 'modOfertaActivaProductosDetalles/' + Bandera, body);
     }
 
+    consTipoRegaloReglaje(Bandera: string) {
+        return this.http.get<any>(this.url_servidor + 'consTipoRegaloReglaje/' + Bandera);
+    }
+
+    modOfertaActivaInfoAdicional(Bandera: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'modOfertaActivaInfoAdicional/' + Bandera, body);
+    }
+
+    consOfertaActivaInfoAdicional(Bandera: string, IdOferta: string) {
+        return this.http.get<any>(this.url_servidor + 'consOfertaActivaInfoAdicional/' + Bandera + '/' + IdOferta);
+    }
+
+    consTipoVentaProducto(Bandera: string) {
+        return this.http.get<any>(this.url_servidor + 'consTipoVentaProducto/' + Bandera);
+    }
+
+    modTipoProducto(Bandera: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'modTipoProducto/' + Bandera, body);
+    }
+
+    consTipoImagenOferta(Bandera: string, IdProducto: any) {
+        return this.http.get<any>(this.url_servidor + 'consTipoImagenOferta/' + Bandera + '/' + IdProducto);
+    }
+
+    modTipoImagenOferta(Bandera: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'modTipoImagenOferta/' + Bandera, body);
+    }
 }
+
+
 

@@ -78,12 +78,11 @@
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Reglaje para la obtener el regalo<span
                         class="spObl">*</span></label>
-                <select class="form-control form-control-sm textBox" [(ngModel)]="IdParticioanteRegalos">
+                <select class="form-control form-control-sm textBox" [(ngModel)]="IdRegaljeReferidos">
                     <option value="0">Seleccionar</option>
-                    <option value="1">Solo Regitro</option>
-                    <option value="2">Solo compra</option>
-                    <option value="3">Compra y/o registro</option>
-                    <option value="4">Compra y registro</option>
+                    <option value="{{respu.IdTipo}}" *ngFor="let respu of ArrayReglajeReferidos">
+                        {{respu.Nombre}}
+                    </option>
                 </select>
             </div>
             <!--LIDER-->
@@ -111,12 +110,12 @@
             <div class="col-sm-4" *ngIf="IdLiderRegalos == '1'">
                 <label class="col-sm-12 TextoAgroSmall">Maximo de regalos a obtener<span class="spObl">*</span>
                 </label>
-                <input type="text" class="form-control form-control-sm textBox">
+                <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="MaxiRegaloLider">
             </div>
             <div class="col-sm-4" *ngIf="IdLiderRegalos == '1'">
                 <label class="col-sm-12 TextoAgroSmall">Registros para cada regalo<span class="spObl">*</span>
                 </label>
-                <input type="text" class="form-control form-control-sm textBox">
+                <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="RegistroxRegalo">
             </div>
             <div class="col-md-6 m-0 p-1 mt-2" *ngIf="IdLiderRegalos == '1' && IdProdRegaloLider != '0'">
                 <div class="m-0 p-2" *ngFor="let respu of  ArregloInfoRegaloLider"
@@ -152,18 +151,6 @@
                 </div>
             </div>
             <div class="col-12 mb-3">
-            </div>
-            <div class="col-12">
-                <div class="w-100 mt-3" style=" text-align: center;">
-                    <label style="margin: auto;">
-                        <small><strong>*IMPORTANTE: Primero guardar la configuracion del Líder, para que la informacion
-                                disponible para el participante cargue correctamente</strong> </small>
-                    </label>
-                    <br>
-                    <label class="Btn-AgroPrin" style="margin: auto;">
-                        Guardar informacion Referidor(Líder)
-                    </label>
-                </div>
             </div>
             <!--PARTICIPANTE-->
             <div class="col-sm-4">
@@ -222,8 +209,8 @@
             </div>
             <div class="col-12">
                 <div class="w-100 mt-3" style=" text-align: center;">
-                    <label class="Btn-AgroPrin" style="margin: auto;">
-                        Guardar informacion Referidor(Participante)
+                    <label class="Btn-AgroPrin" style="margin: auto;" (click)="BtnGuardarInformacionReferidos()">
+                        Guardar informacion referidos
                     </label>
                 </div>
             </div>
@@ -322,22 +309,13 @@
                 <img src="https://cdn-icons-png.flaticon.com/128/8387/8387527.png" (click)="BtnModalNuevoProducto()"
                     style="width: 30px; height: 30px; cursor: pointer; margin-left: 10px;">
             </div>
-            <div class="col-sm-4" style="display: flex;">
+            <div class="col-sm-6" style="display: flex;">
                 <div class="m-0 p-0 w-100">
                     <label class="col-sm-12 TextoAgroSmall">Nombre producto</label>
                     <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="nombreFiltroProducto">
                 </div>
                 <img src="https://cdn-icons-png.flaticon.com/128/7088/7088387.png" (click)="FiltrosGeneralProducto()"
                     style="width: 35px; height: 35px; margin-top: 25px; margin-left: 10px; cursor: pointer;">
-            </div>
-            <div class="col-sm-4">
-                <label class="col-sm-12 TextoAgroSmall">Tipo producto</label>
-                <select class="form-control form-control-sm textBox" [(ngModel)]="TipoProductoFiltro"
-                    (change)="FiltrosGeneralProducto()">
-                    <option value="0">Todos los productos</option>
-                    <option value="1">Productos tradicionales</option>
-                    <option value="2">Productos especiales</option>
-                </select>
             </div>
         </div>
         <!--TARJETAS PRODUCTOS-->
@@ -636,39 +614,62 @@
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Nombre del producto<span class="spObl">*</span>
                 </label>
-                <input type="text" class="form-control form-control-sm textBox">
+                <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="NombreProductoDet">
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Descripcion corta<span class="spObl">*</span>
                 </label>
-                <input type="text" class="form-control form-control-sm textBox">
+                <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="DescripCortaDet">
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Descripcion larga<span class="spObl">*</span>
                 </label>
-                <input type="text" class="form-control form-control-sm textBox">
+                <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="DescripLargaDet">
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Prefijo<span class="spObl">*</span>
                 </label>
-                <input type="text" class="form-control form-control-sm textBox">
+                <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="PrefijoDet">
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Tipo venta producto<span class="spObl">*</span>
                 </label>
-                <select class="form-control form-control-sm textBox" disabled>
-                    <option value="0">Seleccionar</option>
+                <select class="form-control form-control-sm textBox" [(ngModel)]="TipoVentaProdDet" disabled>
+                    <option value="{{respu.IdTipo}}" *ngFor="let respu of ArrayTipoVentaProd">
+                        {{respu.Descripcion}}
+                    </option>
                 </select>
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Estado<span class="spObl">*</span>
                 </label>
-                <input type="text" class="form-control form-control-sm textBox" disabled>
+                <input type="text" class="form-control form-control-sm textBox" [(ngModel)]="EstadoDet" disabled>
             </div>
         </div>
     </div>
     <div class="row justify-content-center">
-        <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()">Aceptar</button>
+        <button type="button" class="btn btn-agro-prin col-sm-3 col-6" (click)="GuardarInformacionProducto()">Guardar
+            información</button>
+    </div>
+
+    <div class="row m-2 mt-3 ">
+        <div class="col-sm-12">
+            <h2 class="SubTituloAgro">Imagen asociadas al producto</h2>
+        </div>
+        <div class="mt-3 contenedorImagenes">
+            <div class="ImgProducto" *ngFor="let respu of ArrayImagenesProducto">
+                <img src="{{RutaImagenProducto}}{{respu.Nombre}}" (click)="ImgSeleccionarImgProducto(respu)">
+                <img src="./../../../../../assets/ImagenesAgroApoya2Adm/z_check.png" class="imgpresentacion mt-2"
+                    *ngIf="respu.Orden == '1'">
+            </div>
+            <div class="image-upload">
+                <label for="file-input1">
+                    <img id="ImgSec" title="Selecciona una imagen"
+                        src="./../../../../../assets/ImagenesAgroApoya2Adm/z_subirImagen.png">
+                </label>
+                <input name="file-input1" id="file-input1" type="file" (change)="SubirImgProducto($event)" />
+            </div>
+        </div>
     </div>
     <br>
 </ng-template>

@@ -42,7 +42,6 @@ export class CreacionofertaComponent implements OnInit {
   ArrayTipoDomicilio: any[];
   ArrayFechasOferta: any[];
 
-
   //Sectorizacion
   IdLocalidad: string = '0';
   IdSector: string = '0';
@@ -64,7 +63,6 @@ export class CreacionofertaComponent implements OnInit {
   ArrayProductosGeneralesOferta: any[];
   ArrayProductosGeneralesAUX: any[];
   nombreFiltroProducto: string = '';
-  TipoProductoFiltro: string = '0';
 
   //Presentaciones productos
   IdProductoPres: string = '';
@@ -78,6 +76,34 @@ export class CreacionofertaComponent implements OnInit {
   ArrayPresentacionProd: any[];
   ArrayDetalleProdPres: any[];
   BanderaInserActu: string = '';
+
+  //Referidos
+  ArrayReglajeReferidos: any[];
+  IdRegaljeReferidos: string = '0';
+  ArrayRegalosLider: any[];
+  IdLiderRegalos: string = '0';
+  ArregloProductosRegaloLider: any[];
+  IdProdRegaloLider: string = '';
+  ArregloInfoRegaloLider: any[];
+  MaxiRegaloLider: string = '';
+  RegistroxRegalo: string = '';
+  ArrayRegalosParticipante: any[];
+  IdParticioanteRegalos: string = '0';
+  ArregloProductosRegaloParti: any[];
+  IdProdRegaloParti: string = '';
+  ArregloInfoRegaloParti: any[];
+
+  //Informacion General del producto
+  IdProductoDet: string = '';
+  NombreProductoDet: string = '';
+  DescripCortaDet: string = '';
+  DescripLargaDet: string = '';
+  PrefijoDet: string = '';
+  TipoVentaProdDet: string = ''
+  EstadoDet: string = '';
+  ArrayEstadoDet: any[];
+  ArrayTipoVentaProd: any[];
+  ArrayImagenesProducto: any[];
 
   ngOnInit(): void {
     this.CargaInicialActualizacionOferta()
@@ -118,6 +144,11 @@ export class CreacionofertaComponent implements OnInit {
       this.IdTipoDomicilio = Resultado[0].TipoDomicilio;
       this.ValorCompraDomicilio = Resultado[0].ValorInicialDomicilio;
       this.ValorDomicilio = Resultado[0].ValorDomicilio;
+
+      //Cargar informacion adicional de referidos
+      if (this.IdTipoOfertaSelect == '2') {
+        this.CargarInformacionInicialReferidos();
+      }
     })
 
   }
@@ -144,6 +175,17 @@ export class CreacionofertaComponent implements OnInit {
     this.ServiciosService.consPersonasAplicaRegalo('1').subscribe(Resultado => {
       this.ArrayRegalosPersonaTipo = Resultado;
     })
+
+    this.ServiciosService.consTipoRegaloReglaje('1').subscribe(Resultado => {
+      this.ArrayReglajeReferidos = Resultado;
+    })
+
+    this.ServiciosService.consTipoVentaProducto('1').subscribe(Resultado => {
+      this.ArrayTipoVentaProd = Resultado;
+    })
+
+    //TODO LISTA DEL ESTADO
+    /*  ArrayEstadoDet: any[];*/
   }
 
   /*AREA INFORMACIÓN GENERAL PARA LA OFERTA */
@@ -333,60 +375,18 @@ export class CreacionofertaComponent implements OnInit {
 
   FiltrosGeneralProducto() {
     this.ArrayProductosGeneralesOferta = [];
-    if ((this.nombreFiltroProducto == '' || this.nombreFiltroProducto == null || this.nombreFiltroProducto == undefined)
-      && this.TipoProductoFiltro == '0') {
+    if ((this.nombreFiltroProducto == '' || this.nombreFiltroProducto == null || this.nombreFiltroProducto == undefined)) {
       //Sin filtros
       for (let i = 0; i < this.ArrayProductosGeneralesAUX.length; i++) {
         this.ArrayProductosGeneralesOferta.push(this.ArrayProductosGeneralesAUX[i]);
       }
-    } else if ((this.nombreFiltroProducto != '' || this.nombreFiltroProducto != null || this.nombreFiltroProducto != undefined)
-      && this.TipoProductoFiltro == '0') {
-      //Solamente el filtro de nombre
+    } else { //Solamente el filtro de nombre
       for (let i = 0; i < this.ArrayProductosGeneralesAUX.length; i++) {
         if (this.ArrayProductosGeneralesAUX[i].NombreProducto.toLowerCase().includes(this.nombreFiltroProducto.toLowerCase())) {
           this.ArrayProductosGeneralesOferta.push(this.ArrayProductosGeneralesAUX[i]);
         }
       }
-    } else if ((this.nombreFiltroProducto == '' || this.nombreFiltroProducto == null || this.nombreFiltroProducto == undefined)
-      && this.TipoProductoFiltro != '0') {
-      //Solamente el filtro de tipo de producto
-      for (let i = 0; i < this.ArrayProductosGeneralesAUX.length; i++) {
-        //Tradicional
-        if (this.TipoProductoFiltro == "1") {
-          if (this.ArrayProductosGeneralesAUX[i].TipoVentaProducto == "1") {
-            this.ArrayProductosGeneralesOferta.push(this.ArrayProductosGeneralesAUX[i]);
-          }
-        }
-        //Especial
-        if (this.TipoProductoFiltro == "2") {
-          if (this.ArrayProductosGeneralesAUX[i].TipoVentaProducto != "1") {
-            this.ArrayProductosGeneralesOferta.push(this.ArrayProductosGeneralesAUX[i]);
-          }
-        }
-      }
-    } else {
-      //Todos los filtros
-      for (let i = 0; i < this.ArrayProductosGeneralesAUX.length; i++) {
-        if (this.ArrayProductosGeneralesAUX[i].NombreProducto.toLowerCase().includes(this.nombreFiltroProducto.toLowerCase())) {
-          //Tradicional
-          if (this.TipoProductoFiltro == "1") {
-            if (this.ArrayProductosGeneralesAUX[i].TipoVentaProducto == "1") {
-              this.ArrayProductosGeneralesOferta.push(this.ArrayProductosGeneralesAUX[i]);
-            }
-          }
-          //Especial
-          if (this.TipoProductoFiltro == "2") {
-            if (this.ArrayProductosGeneralesAUX[i].TipoVentaProducto != "1") {
-              this.ArrayProductosGeneralesOferta.push(this.ArrayProductosGeneralesAUX[i]);
-            }
-          }
-        }
-      }
     }
-
-
-
-
   }
 
   ActivarProductoOferta(IdOferta: string) {
@@ -434,7 +434,91 @@ export class CreacionofertaComponent implements OnInit {
   }
 
   BtnInformacionGeneral(Arreglo: any) {
+    this.IdProductoDet = Arreglo.IdOferta;
+    this.TipoVentaProdDet = Arreglo.TipoVentaProducto;
+    this.NombreProductoDet = Arreglo.NombreProducto;
+    this.DescripCortaDet = Arreglo.DescripcionCorta;
+    this.DescripLargaDet = Arreglo.DescripcionLarga;
+    this.PrefijoDet = Arreglo.Prefijo;
+    this.EstadoDet = Arreglo.DescEstado;
+
+    this.ServiciosService.consTipoImagenOferta('1', Arreglo.IdOferta).subscribe(ResultadoTres => {
+      this.ArrayImagenesProducto = ResultadoTres;
+    })
+
     this.modalService.open(this.ModalInfoGeneralProducto, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
+  }
+
+  SubirImgProducto(event: any) {
+    this.ServiciosService.postImgToppings(event.target.files[0]).subscribe(
+      response => {
+        alert(response)
+        const body = {
+          IdImagen: 0,
+          IdProducto: this.IdProductoDet,
+          Nombre: event.target.files[0].name,
+          Orden: 0,
+          TipoEstado: 1
+        }
+        this.ServiciosService.modTipoImagenOferta('1', body).subscribe(ResultadoCuatro => {
+          this.ArrayImagenesProducto = [];
+          this.ServiciosService.consTipoImagenOferta('1', this.IdProductoDet).subscribe(ResultadoTres => {
+            this.ArrayImagenesProducto = ResultadoTres;
+          })
+        })
+      },
+      error => {
+        console.log(error)
+      }
+    );
+  }
+
+  ImgSeleccionarImgProducto(Resultados: any) {
+    const body = {
+      IdImagen: Resultados.IdTipo,
+      IdProducto: Resultados.IdProducto,
+      Nombre: '',
+      Orden: 0,
+      TipoEstado: 1
+    }
+    console.log(body)
+    this.ServiciosService.modTipoImagenOferta('3', body).subscribe(ResultadoCuatro => {
+      this.ArrayImagenesProducto = [];
+      this.ServiciosService.consTipoImagenOferta('1', this.IdProductoDet).subscribe(ResultadoTres => {
+        this.ArrayImagenesProducto = ResultadoTres;
+      })
+    })
+  }
+
+  GuardarInformacionProducto() {
+    if (this.NombreProductoDet == undefined || this.NombreProductoDet == '') {
+      alert('El nombre del producto es obligatorio')
+    } else if (this.DescripCortaDet == undefined || this.DescripCortaDet == '') {
+      alert('La descripción corta es obligatoria')
+    } else if (this.DescripLargaDet == undefined || this.DescripLargaDet == '') {
+      alert('La descripción larga es obligatoria')
+    } else if (this.PrefijoDet == undefined || this.PrefijoDet == '') {
+      alert('El prefijo es obligatorio')
+    } else if (this.TipoVentaProdDet == undefined || this.TipoVentaProdDet == '') {
+      alert('El tipo venta es obligatorio')
+    } else if (this.TipoVentaProdDet == undefined || this.TipoVentaProdDet == '') {
+      alert('El estado es obligatorio')
+    } else {
+      const body = {
+        IdTipo: this.IdProductoDet,
+        Nombre: this.NombreProductoDet,
+        DescripcionLarga: this.DescripLargaDet,
+        DescripcionCorta: this.DescripCortaDet,
+        Prefijo: this.PrefijoDet,
+        TipoEstado: 0,
+        TipoVentaProducto: 0
+      }
+
+      this.ServiciosService.modTipoProducto('1', body).subscribe(ResultadoDos => {
+        alert(ResultadoDos)
+        this.CargarProductosOferta();
+      })
+    }
   }
 
   /*PRESENTACIONES PRODUCTO*/
@@ -587,34 +671,54 @@ export class CreacionofertaComponent implements OnInit {
 
   }
 
-  SubirImgProducto(event: any) {
-    this.ServiciosService.postImgToppings(event.target.files[0]).subscribe(
-      response => {
-        console.log(response);
-        //Todo validar subir y mostrar imagen
-      },
-      error => {
-        console.log(error)
+  /*AREA DE REFERIDOS */
+  CargarInformacionInicialReferidos() {
+    this.IdRegaljeReferidos = '0';
+
+    this.IdLiderRegalos = '0';
+    this.ArregloProductosRegaloLider = [];
+    this.IdProdRegaloLider = '';
+    this.ArregloInfoRegaloLider = [];
+    this.MaxiRegaloLider = '';
+    this.RegistroxRegalo = '';
+
+    this.IdParticioanteRegalos = '0';
+    this.ArregloProductosRegaloParti = [];
+    this.IdProdRegaloParti = '';
+    this.ArregloInfoRegaloParti = [];
+
+    this.ServiciosService.consOfertaActivaInfoAdicional('1', this.IdOferta).subscribe(ResultadoDos => {
+      if (ResultadoDos.length > 0) {
+
+        //INFORMACION PARA EL LIDER O REFERIDOR
+        this.IdRegaljeReferidos = ResultadoDos[0].TipoReglaRegalo;
+        this.IdLiderRegalos = ResultadoDos[0].TipoRegaloLider;
+        this.IdProdRegaloLider = ResultadoDos[0].IdRegaloLider;
+        this.MaxiRegaloLider = ResultadoDos[0].MaximoRegaloLider;
+        this.RegistroxRegalo = ResultadoDos[0].RegistrosParaRegaloLider;
+
+        if (this.IdLiderRegalos == '1') {
+          this.ServiciosService.consProductosActivosOferta('2', this.IdOferta).subscribe(ResultadoDos => {
+            this.ArregloProductosRegaloLider = ResultadoDos;
+            this.changeProductosRegaloDisponiblesLider();
+          })
+        }
+
+        //INFORMACION PARA EL PARTICIPANTE O REFERIDOR
+        this.IdParticioanteRegalos = ResultadoDos[0].TipoRegaloParti;
+        this.IdProdRegaloParti = ResultadoDos[0].IdRegaloParticipante;
+        if (this.IdParticioanteRegalos == '1') {
+          this.ServiciosService.consProductosActivosOferta('2', this.IdOferta).subscribe(ResultadoDos => {
+            this.ArregloProductosRegaloParti = ResultadoDos;
+            this.changeProductosRegaloDisponiblesParticipante();
+          })
+        }
       }
-    );
+    })
   }
 
-  //Referidos
-  ArrayRegalosLider: any[];
-  IdLiderRegalos: string = '0';
-  ArregloProductosRegaloLider: any[];
-  IdProdRegaloLider: string = '';
-  ArregloInfoRegaloLider: any[];
-
-  ArrayRegalosParticipante: any[];
-  IdParticioanteRegalos: string = '0';
-  ArregloProductosRegaloParti: any[];
-  IdProdRegaloParti: string = '';
-  ArregloInfoRegaloParti: any[];
-
-  /*AREA DE REFERIDOS */
+  //regalo --> Seleccion de regalo para el lider <3
   ChangeRegaloLiderReferidor() {
-    this.IdProdRegaloLider = '0';
     if (this.IdLiderRegalos != '0') {
       this.ListaProductosRegaloDisponiblesLider();
     }
@@ -622,28 +726,61 @@ export class CreacionofertaComponent implements OnInit {
 
   ListaProductosRegaloDisponiblesLider() {
     this.ServiciosService.consProductosActivosOferta('2', this.IdOferta).subscribe(ResultadoDos => {
-      console.log(ResultadoDos);
       this.ArregloProductosRegaloLider = ResultadoDos;
     })
   }
 
   changeProductosRegaloDisponiblesLider() {
-    this.ArregloInfoRegaloLider = [];  // Asegúrate de inicializar el array
+    this.ArregloInfoRegaloLider = [];
     if (this.IdProdRegaloLider != '0') {
       for (let i = 0; i < this.ArregloProductosRegaloLider.length; i++) {
         if (this.ArregloProductosRegaloLider[i].IdOferta == this.IdProdRegaloLider) {
           this.ArregloInfoRegaloLider.push(this.ArregloProductosRegaloLider[i]);
-          console.log(this.ArregloProductosRegaloLider[i])
         }
       }
     }
   }
 
-  BtnGuardarInformacionLider(){
+  BtnGuardarInformacionReferidos() {
+    if (this.IdRegaljeReferidos == '0') {
+      alert('El reglaje para referidos es obligatorio')
+    }  // Informacion lider
+    else if (this.IdLiderRegalos == '0') {
+      alert('Tipo referidor(Líder) es obligatorio')
+    } else if (this.IdLiderRegalos == '1' && this.IdProdRegaloLider == '0') {
+      alert('Producto regalo es obligatorio')
+    } else if (this.IdLiderRegalos == '1' && (this.MaxiRegaloLider == '' || this.MaxiRegaloLider == undefined)) {
+      alert('El maximo de regalos es obligatorio')
+    } else if (this.IdLiderRegalos == '1' && (this.RegistroxRegalo == '' || this.RegistroxRegalo == undefined)) {
+      alert('El numero de registros para cada regalo es obligatorio')
+    }
+    // Informacion participante
+    else if (this.IdParticioanteRegalos == '0') {
+      alert('El Tipo referido(Participante) es obligatorio')
+    } else if (this.IdParticioanteRegalos != '0' && this.IdProdRegaloParti == '0') {
+      alert('El Producto regalo es obligatorio')
+    } else {
 
+      const body = {
+        IdOferta: this.IdOferta,
+        TipoRegaloRegla: this.IdRegaljeReferidos,
+        TipoRegaloParti: this.IdParticioanteRegalos,
+        TipoRegaloLider: this.IdLiderRegalos,
+        MaximoRegaloLider: this.MaxiRegaloLider,
+        RegistroRegaloLider: this.RegistroxRegalo,
+        IdRegaloLider: this.IdProdRegaloLider,
+        IdRegaloParti: this.IdProdRegaloParti,
+        IdCupon: 0
+      }
+
+      this.ServiciosService.modOfertaActivaInfoAdicional('1', body).subscribe(ResultadoDos => {
+        alert(ResultadoDos);
+        this.CargarInformacionInicialReferidos();
+      })
+    }
   }
 
-  //ActivarProductoOferta
+  //regalo --> Seleccion de regalo para el participante <3
   ChangeRegaloParticipanteReferido() {
     this.IdProdRegaloParti = '0';
     if (this.IdParticioanteRegalos != '0') {
@@ -653,7 +790,6 @@ export class CreacionofertaComponent implements OnInit {
 
   ListaProductosRegaloDisponiblesParticipante() {
     this.ServiciosService.consProductosActivosOferta('2', this.IdOferta).subscribe(ResultadoDos => {
-      console.log(ResultadoDos);
       this.ArregloProductosRegaloParti = ResultadoDos;
     })
   }
@@ -664,7 +800,6 @@ export class CreacionofertaComponent implements OnInit {
       for (let i = 0; i < this.ArregloProductosRegaloParti.length; i++) {
         if (this.ArregloProductosRegaloParti[i].IdOferta == this.IdProdRegaloParti) {
           this.ArregloInfoRegaloParti.push(this.ArregloProductosRegaloParti[i]);
-          console.log(this.ArregloProductosRegaloParti[i])
         }
       }
     }
