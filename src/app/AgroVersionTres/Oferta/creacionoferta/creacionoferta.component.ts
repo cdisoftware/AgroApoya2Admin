@@ -14,7 +14,7 @@ export class CreacionofertaComponent implements OnInit {
     private modalService: NgbModal,
     private ServiciosService: ServiciosService,
   ) { }
-  
+
   @ViewChild('ModalCupones', { static: false }) ModalCupones: any;
   @ViewChild('ModalRespuesta', { static: false }) ModalRespuesta: any;
   @ViewChild('ModalFechasOferta', { static: false }) ModalFechasOferta: any;
@@ -814,10 +814,14 @@ export class CreacionofertaComponent implements OnInit {
     }
   }
 
+  ArrayCuponesDisponibles: any[];
   //Cupones --> Seccion regalo líder 
   BtnAbrirModalModificarCupon() {
+    this.ServiciosService.consCuponesDescuento('1', '1', this.IdOferta).subscribe(ResultadoDos => {
+      this.ArrayCuponesDisponibles = ResultadoDos;
+      console.log(ResultadoDos)
+    })
     this.modalService.open(this.ModalCupones, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
-
   }
 
   //regalo --> Seleccion de regalo para el participante 

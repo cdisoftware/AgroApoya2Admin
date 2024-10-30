@@ -805,15 +805,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="TextoAgroSmall">Data 1</td>
-                        <td class="TextoAgroSmall">Data 2</td>
-                        <td class="TextoAgroSmall">Data 3</td>
-                        <td class="TextoAgroSmall">Data 4</td>
-                        <td class="TextoAgroSmall">Data 5</td>
-                        <td class="TextoAgroSmall">Data 6</td>
+                    <tr *ngFor="let respu of ArrayCuponesDisponibles">
+                        <td class="TextoAgroSmall">{{respu.DescTipoCupon}}</td>
+                        <td class="TextoAgroSmall">{{respu.codigo_Mostrar}}</td>
+                        <td class="TextoAgroSmall">{{respu.Decripcion}}</td>
+                        <td class="TextoAgroSmall">{{respu.DescuentoAplicable}}</td>
+                        <td class="TextoAgroSmall">{{respu.ApartirValor}}</td>
+                        <td class="TextoAgroSmall">{{respu.DescTipoPersonaAplic}}</td>
                         <td class="TextoAgroSmall" style="display: flex; justify-content: space-around;">
                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/z_check.png"
+                                class="imgpresentacion mt-2">
+                            <img src="./../../../../../assets/ImagenesAgroApoya2Adm/Editar.png"
                                 class="imgpresentacion mt-2">
                             <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basura.png"
                                 class="imgpresentacion mt-2">

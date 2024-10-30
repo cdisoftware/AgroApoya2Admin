@@ -176,6 +176,10 @@ export class ServiciosService {
     modEstadoOferta(Bandera: string,  body: any) {
         return this.http.post<any>(this.url_servidor + 'modEstadoOferta/' + Bandera, body);
     }
+
+    consCuponesDescuento(Bandera: string, IdTipoCupon: string, IdOferta:string) {
+        return this.http.get<any>(this.url_servidor + 'consCuponesDescuento/' + Bandera + '/' + IdTipoCupon+ '/' + IdOferta);
+    }
 }
 
 
