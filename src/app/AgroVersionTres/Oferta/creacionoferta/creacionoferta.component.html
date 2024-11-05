@@ -97,11 +97,19 @@
                 </select>
             </div>
             <div class="col-sm-4" *ngIf="IdLiderRegalos == '2' || IdLiderRegalos == '3'">
-                <label class="col-sm-12 TextoAgroSmall">Cupon a cargar<span class="spObl">*</span>
+                <label class="col-sm-12 TextoAgroSmall">Maximo de valor y/o porcentaje a obtener<span class="spObl">*</span>
                 </label>
-                <label class="form-control form-control-sm textBox" (click)="BtnAbrirModalModificarCupon()">
-                    {{TextCuponRegaloRefLider}}
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4" *ngIf="IdLiderRegalos == '2' || IdLiderRegalos == '3'">
+                <label class="col-sm-12 TextoAgroSmall">Numero de registros para obtener valor y/o porcentaje<span class="spObl">*</span>
                 </label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4" *ngIf="IdLiderRegalos == '2' || IdLiderRegalos == '3'">
+                <label class="col-sm-12 TextoAgroSmall">Valor y/o porcentaje a obtener<span class="spObl">*</span>
+                </label>
+                <input type="text" class="form-control form-control-sm textBox">
             </div>
             <div class="col-sm-4" *ngIf="IdLiderRegalos == '1'">
                 <label class="col-sm-12 TextoAgroSmall">Producto regalo<span class="spObl">*</span>
@@ -171,11 +179,19 @@
                 </select>
             </div>
             <div class="col-sm-4" *ngIf="IdParticioanteRegalos == '2' || IdParticioanteRegalos == '3'">
-                <label class="col-sm-12 TextoAgroSmall">Cupon a cargar<span class="spObl">*</span>
+                <label class="col-sm-12 TextoAgroSmall">Maximo de valor y/o porcentaje a obtener<span class="spObl">*</span>
                 </label>
-                <label class="form-control form-control-sm textBox" (click)="BtnAbrirModalModificarCupon()">
-                    Seleccionar
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4" *ngIf="IdParticioanteRegalos == '2' || IdParticioanteRegalos == '3'">
+                <label class="col-sm-12 TextoAgroSmall">Numero de registros para obtener valor y/o porcentaje<span class="spObl">*</span>
                 </label>
+                <input type="text" class="form-control form-control-sm textBox">
+            </div>
+            <div class="col-sm-4" *ngIf="IdParticioanteRegalos == '2' || IdParticioanteRegalos == '3'">
+                <label class="col-sm-12 TextoAgroSmall">Valor y/o porcentaje a obtener<span class="spObl">*</span>
+                </label>
+                <input type="text" class="form-control form-control-sm textBox">
             </div>
             <div class="col-sm-4" *ngIf="IdParticioanteRegalos == '1'">
                 <label class="col-sm-12 TextoAgroSmall">Producto regalo<span class="spObl">*</span>
@@ -232,8 +248,10 @@
         <hr *ngIf="VerOcultarModulos == '2'">
         <!--LOCALIDAD PARA LA OFERTA-->
         <div class="row m-0 p-0" *ngIf="VerOcultarModulos == '2'">
-            <div class="col-12 mb-1">
+            <div class="col-12 mb-1" style="display: flex;">
                 <label class="SubTituloAgro">Localidad oferta</label>
+                <img src="https://cdn-icons-png.flaticon.com/128/8387/8387527.png" (click)="BtnAgregarLocalidad()"
+                style="width: 30px; height: 30px; cursor: pointer; margin-left: 10px;">
             </div>
             <div style="display: flex;">
                 <label class="TextoAgroSmall CursorPointer" (click)="BtnModalImagenSector()">
@@ -823,6 +841,24 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()">Aceptar</button>
+    </div>
+    <br>
+</ng-template>
+
+<ng-template #AgregarLocalidad let-modal>
+    <div class="modal-header">
+        <h1>Respuesta</h1>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body">
+        <div class="row br">
+            <div class="col-sm-12">
+                <h2 class="TituloDetalle">Respuesta</h2>
+            </div>
         </div>
     </div>
     <div class="row justify-content-center">

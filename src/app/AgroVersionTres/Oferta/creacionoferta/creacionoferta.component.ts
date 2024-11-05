@@ -17,6 +17,7 @@ export class CreacionofertaComponent implements OnInit {
 
   @ViewChild('ModalCupones', { static: false }) ModalCupones: any;
   @ViewChild('ModalRespuesta', { static: false }) ModalRespuesta: any;
+  @ViewChild('AgregarLocalidad', { static: false }) AgregarLocalidad: any;
   @ViewChild('ModalFechasOferta', { static: false }) ModalFechasOferta: any;
   @ViewChild('ModalNuevoProducto', { static: false }) ModalNuevoProducto: any;
   @ViewChild('ModalPresentaciones', { static: false }) ModalPresentaciones: any;
@@ -372,6 +373,10 @@ export class CreacionofertaComponent implements OnInit {
       alert(Resultado)
       this.ListaSectoresOferta();
     })
+  }
+
+  BtnAgregarLocalidad() {
+    this.modalService.open(this.AgregarLocalidad, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
   }
 
   /*PRODUCTOS PARA LA OFERTA*/
@@ -814,16 +819,6 @@ export class CreacionofertaComponent implements OnInit {
     }
   }
 
-  ArrayCuponesDisponibles: any[];
-  //Cupones --> Seccion regalo líder 
-  BtnAbrirModalModificarCupon() {
-    this.ServiciosService.consCuponesDescuento('1', '1', this.IdOferta).subscribe(ResultadoDos => {
-      this.ArrayCuponesDisponibles = ResultadoDos;
-      console.log(ResultadoDos)
-    })
-    this.modalService.open(this.ModalCupones, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
-  }
-
   //regalo --> Seleccion de regalo para el participante 
   ChangeRegaloParticipanteReferido() {
     this.IdProdRegaloParti = '0';
@@ -851,6 +846,8 @@ export class CreacionofertaComponent implements OnInit {
       }
     }
   }
+
+  //Cupones --> Seccion regalo líder 
 
   BtnGuardarInformacionReferidos() {
     if (this.IdRegaljeReferidos == '0') {
@@ -935,6 +932,17 @@ export class CreacionofertaComponent implements OnInit {
     this.ServiciosService.modEstadoOferta('1', body).subscribe(Resultado => {
       alert(Resultado)
     })
+  }
+
+  ArrayCuponesDisponibles: any[];
+
+
+  BtnAbrirModalModificarCupon() {
+    this.ServiciosService.consCuponesDescuento('1', '1', this.IdOferta).subscribe(ResultadoDos => {
+      this.ArrayCuponesDisponibles = ResultadoDos;
+      console.log(ResultadoDos)
+    })
+    this.modalService.open(this.ModalCupones, { ariaLabelledBy: 'modal-basic-title', size: 'xl' })
   }
 
 }
