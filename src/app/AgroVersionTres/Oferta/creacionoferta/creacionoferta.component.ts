@@ -376,8 +376,45 @@ export class CreacionofertaComponent implements OnInit {
   }
 
   BtnAgregarLocalidad() {
+    this.CreaMapa('mapInsertSector');
     this.modalService.open(this.AgregarLocalidad, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
   }
+
+  //mapa
+  map: google.maps.Map;
+  geocoder = new google.maps.Geocoder();
+  markers: google.maps.Marker[] = [];
+  AreaPolygon: google.maps.Polygon;
+  DataCoor: any[] = [];
+  BtnCrearZonaModa() {
+
+  }
+
+  CreaMapa(IdMapa: string) {
+    this.geocoder.geocode({ address: 'Bogotá' }).then((result) => {
+      const { results } = result;
+      var lati = results[0].geometry.location.lat();
+      var longi = results[0].geometry.location.lng();
+      this.map = new google.maps.Map(
+        document.getElementById(IdMapa) as HTMLElement,
+        {
+          zoom: 13,
+          center: {
+            lat: lati,
+            lng: longi
+          },
+        }
+      );
+   /*   this.map.addListener("click", (e: any) => {
+        this.AgregarMarcador(e.latLng, this.map);
+        this.LatitudeCoordenadas = e.latLng.toString()
+        this.LatitudeCoordenadas = this.LatitudeCoordenadas.substring(1, 15)
+        this.LongitudeCoordenadas = e.latLng.toString()
+        this.LongitudeCoordenadas = this.LongitudeCoordenadas.substring(this.LongitudeCoordenadas.indexOf('-'), this.LongitudeCoordenadas.length - 1)
+      });*/
+    })
+  }
+
 
   /*PRODUCTOS PARA LA OFERTA*/
   CargarProductosOferta() {

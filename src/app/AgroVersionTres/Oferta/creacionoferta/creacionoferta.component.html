@@ -97,12 +97,14 @@
                 </select>
             </div>
             <div class="col-sm-4" *ngIf="IdLiderRegalos == '2' || IdLiderRegalos == '3'">
-                <label class="col-sm-12 TextoAgroSmall">Maximo de valor y/o porcentaje a obtener<span class="spObl">*</span>
+                <label class="col-sm-12 TextoAgroSmall">Maximo de valor y/o porcentaje a obtener<span
+                        class="spObl">*</span>
                 </label>
                 <input type="text" class="form-control form-control-sm textBox">
             </div>
             <div class="col-sm-4" *ngIf="IdLiderRegalos == '2' || IdLiderRegalos == '3'">
-                <label class="col-sm-12 TextoAgroSmall">Numero de registros para obtener valor y/o porcentaje<span class="spObl">*</span>
+                <label class="col-sm-12 TextoAgroSmall">Numero de registros para obtener valor y/o porcentaje<span
+                        class="spObl">*</span>
                 </label>
                 <input type="text" class="form-control form-control-sm textBox">
             </div>
@@ -179,12 +181,14 @@
                 </select>
             </div>
             <div class="col-sm-4" *ngIf="IdParticioanteRegalos == '2' || IdParticioanteRegalos == '3'">
-                <label class="col-sm-12 TextoAgroSmall">Maximo de valor y/o porcentaje a obtener<span class="spObl">*</span>
+                <label class="col-sm-12 TextoAgroSmall">Maximo de valor y/o porcentaje a obtener<span
+                        class="spObl">*</span>
                 </label>
                 <input type="text" class="form-control form-control-sm textBox">
             </div>
             <div class="col-sm-4" *ngIf="IdParticioanteRegalos == '2' || IdParticioanteRegalos == '3'">
-                <label class="col-sm-12 TextoAgroSmall">Numero de registros para obtener valor y/o porcentaje<span class="spObl">*</span>
+                <label class="col-sm-12 TextoAgroSmall">Numero de registros para obtener valor y/o porcentaje<span
+                        class="spObl">*</span>
                 </label>
                 <input type="text" class="form-control form-control-sm textBox">
             </div>
@@ -251,7 +255,7 @@
             <div class="col-12 mb-1" style="display: flex;">
                 <label class="SubTituloAgro">Localidad oferta</label>
                 <img src="https://cdn-icons-png.flaticon.com/128/8387/8387527.png" (click)="BtnAgregarLocalidad()"
-                style="width: 30px; height: 30px; cursor: pointer; margin-left: 10px;">
+                    style="width: 30px; height: 30px; cursor: pointer; margin-left: 10px;">
             </div>
             <div style="display: flex;">
                 <label class="TextoAgroSmall CursorPointer" (click)="BtnModalImagenSector()">
@@ -851,14 +855,22 @@
 
 <ng-template #AgregarLocalidad let-modal>
     <div class="modal-header">
-        <h1>Respuesta</h1>
+        <h1>Agregar zona</h1>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
         <div class="row br">
-            <div class="col-sm-12">
-                <h2 class="TituloDetalle">Respuesta</h2>
+            <div class="col-sm-8">
+                <label class="col-sm-12 TextoAgroSmall">Nombre zona<span class="spObl">*</span></label>
+                <input class="form-control form-control-sm textBox">
             </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall"></label>
+                <button type="button" class="btn btn-agro-prin w-100">Crear</button>
+            </div>
+        </div>
+        <div class="mt-2">
+            <div id="mapInsertSector" class="ShowMap col-12"></div>
         </div>
     </div>
     <div class="row justify-content-center">
