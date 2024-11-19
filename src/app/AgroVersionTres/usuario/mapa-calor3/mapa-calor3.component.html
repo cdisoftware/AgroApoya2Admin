@@ -1,0 +1,93 @@
+<div class="container d-flex flex-column align-items-center min-vh-100 justify-content-center">
+  <div class="p-4 w-100" style="max-width: 100%;">
+    <h1 class="text-primary mb-4 text-center custom-title">Mapa de calor</h1>
+
+    <!-- Contenedor de Filtros -->
+    <div class="d-flex flex-row flex-wrap justify-content-center align-items-center">
+      <!-- Filtro por Fecha de Inicio de Compra -->
+      <div class="mb-2 me-2">
+        <label for="fechaInicioCompra" class="form-label" style="font-size: 0.75rem;">Fecha de Inicio de Compra</label>
+        <input
+          type="text"
+          class="form-control"
+          id="fechaInicioCompra"
+          name="fechaInicioCompra"
+          placeholder="Fecha de Inicio de Compra"
+          onfocus="(this.type='date')"
+          onblur="if(this.value==''){this.type='text'}"
+          style="font-size: 0.85rem; padding: 0.4rem 0.5rem; height: calc(1.5em + 0.8rem + 2px);"
+        />
+      </div>
+
+      <!-- Filtro por Fecha de Fin de Compra -->
+      <div class="mb-2 me-2">
+        <label for="fechaFinCompra" class="form-label" style="font-size: 0.75rem;">Fecha de Fin de Compra</label>
+        <input
+          type="text"
+          class="form-control"
+          id="fechaFinCompra"
+          name="fechaFinCompra"
+          placeholder="Fecha de Fin de Compra"
+          onfocus="(this.type='date')"
+          onblur="if(this.value==''){this.type='text'}"
+          style="font-size: 0.85rem; padding: 0.4rem 0.5rem; height: calc(1.5em + 0.8rem + 2px);"
+        />
+      </div>
+
+      <!-- Filtro por Fecha de Registro -->
+      <div class="mb-2 me-2">
+        <label for="fechaRegistro" class="form-label" style="font-size: 0.75rem;">Fecha de Registro</label>
+        <input
+          type="text"
+          class="form-control"
+          id="fechaRegistro"
+          name="fechaRegistro"
+          placeholder="Fecha de Registro"
+          onfocus="(this.type='date')"
+          onblur="if(this.value==''){this.type='text'}"
+          style="font-size: 0.85rem; padding: 0.4rem 0.5rem; height: calc(1.5em + 0.8rem + 2px);"
+        />
+      </div>
+
+      <!-- Filtro por Localidades -->
+      <div class="mb-2 me-2">
+        <label for="localidades" class="form-label" style="font-size: 0.75rem;">Localidades</label>
+        <select
+          class="form-select"
+          id="localidades"
+          name="localidades"
+          style="font-size: 0.85rem; padding: 0.4rem 0.5rem; height: calc(1.5em + 0.8rem + 2px);">
+          <option selected disabled>Seleccione Localidad</option>
+          <option value="localidad1">Localidad 1</option>
+          <option value="localidad2">Localidad 2</option>
+          <option value="localidad3">Localidad 3</option>
+        </select>
+      </div>
+
+      <!-- Filtro de Número de Compras -->
+      <div class="mb-2 me-2">
+        <label for="numeroCompras" class="form-label" style="font-size: 0.75rem;">Número de Compras</label>
+        <input
+          type="number"
+          class="form-control"
+          id="numeroCompras"
+          name="numeroCompras"
+          placeholder="Número de Compras"
+          style="font-size: 0.85rem; padding: 0.4rem 0.5rem; height: calc(1.5em + 0.8rem + 2px);"
+        />
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="d-flex justify-content-center mb-4">
+      <button type="submit" class="btn btn-primary me-3" style="width: 20%;">Buscar <i class="bi bi-search"></i></button>
+      <button type="button" class="btn btn-primary me-3" style="width: 20%;">Descargar <i class="bi bi-download"></i></button>
+      <button type="reset" class="btn btn-secondary" style="width: 20%;">Limpiar <i class="bi bi-x-circle"></i></button>
+    </div>
+
+    <!-- Mapa -->
+    <div class="d-flex justify-content-center mb-4">
+      <div id="map" class="ShowMapaCalor" style="width: 98%; height: 500px;"></div>
+    </div>
+  </div>
+</div>
