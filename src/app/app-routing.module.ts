@@ -50,6 +50,9 @@ import { EnviosmsofertaComponent } from './ofertas/components/sms-envio/enviosms
 
 //Version 3 AgroApoyados
 import { CreacionofertaComponent } from './AgroVersionTres/Oferta/creacionoferta/creacionoferta.component';
+import { ReporteVentasComponent } from './AgroVersionTres/reportes/reporte-ventas/reporte-ventas.component';
+import { ReporteUsuarioComponent } from './AgroVersionTres/reportes/reporte-usuario/reporte-usuario.component';
+import { MapaCalor3Component } from './AgroVersionTres/usuario/mapa-calor3/mapa-calor3.component';
 
 const routes: Routes = [
   {
@@ -249,6 +252,16 @@ const routes: Routes = [
   {
     path: 'Home3',
     component: CreacionofertaComponent
+  },
+  {
+    path: 'mapa-calor3',
+    component: MapaCalor3Component
+  }, {
+    path: 'reporte-usuario',
+    component: ReporteUsuarioComponent
+  }, {
+    path: 'reporte-ventas',
+    component: ReporteVentasComponent
   }
 ];
 
