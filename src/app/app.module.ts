@@ -11,7 +11,7 @@ import { LoginComponent } from './usuario/components/login/login.component';
 import { CommonModule, HashLocationStrategy, LocationStrategy, DatePipe } from "@angular/common";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgDragDropModule } from 'ng-drag-drop';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BuscarofertaComponent } from './ofertas/components/valoraroferta/buscaroferta/buscaroferta.component';
 import { AutocompleteLibModule } from 'angular-ng-autocomplete';
 import { SidebarModule } from 'ng-sidebar';
@@ -61,9 +61,9 @@ import { RegistroUserexcelComponent } from './usuario/components/registro-userex
 import { EnviosmsofertaComponent } from './ofertas/components/sms-envio/enviosmsoferta/enviosmsoferta.component';
 import { CreacionofertaComponent } from './AgroVersionTres/Oferta/creacionoferta/creacionoferta.component';
 
-import { MapaCalor3Component} from './AgroVersionTres/usuario/mapa-calor3/mapa-calor3.component';
-import { ReporteUsuarioComponent} from './AgroVersionTres/reportes/reporte-usuario/reporte-usuario.component'
-import { ReporteVentasComponent} from './AgroVersionTres/reportes/reporte-ventas/reporte-ventas.component'
+import { MapaCalor3Component } from './AgroVersionTres/usuario/mapa-calor3/mapa-calor3.component';
+import { ReporteUsuarioComponent } from './AgroVersionTres/reportes/reporte-usuario/reporte-usuario.component'
+import { ReporteVentasComponent } from './AgroVersionTres/reportes/reporte-ventas/reporte-ventas.component'
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -111,9 +111,9 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     DashboardComponent,
     RegistroUserexcelComponent,
     EnviosmsofertaComponent,
-    CreacionofertaComponent
-    
-    ],
+    CreacionofertaComponent,
+    MapaCalor3Component
+  ],
   imports: [
     NgxMaskModule.forRoot(options),
     BrowserModule,
@@ -138,6 +138,6 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     DatePipe
   ],
   bootstrap: [AppComponent],
-  schemas:[CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }
