@@ -14,6 +14,10 @@ export class MapaCalor3Component implements OnInit {
   //Variables para los filtros
   ArrayLocalidadesFiltro: any = [];
 
+  Comprasfiltros: any = []
+
+  
+
   constructor(public ServiciosGenerales: ServiciosService) { }
 
   ngOnInit(): void {
@@ -22,6 +26,8 @@ export class MapaCalor3Component implements OnInit {
   }
 
   CargaIncialListas() {
+
+   
     /*
     en caso de que el servicio sea post, me va a solicitar un cuerpoo
     EJEMPLO
@@ -31,11 +37,15 @@ export class MapaCalor3Component implements OnInit {
       FechaRegistro: "2023-05-02"
       }
     */
-
     this.ServiciosGenerales.consTipoLocalidad('2').subscribe(Resultado => {
       console.log(Resultado)
       this.ArrayLocalidadesFiltro = Resultado;
     })
+    this.ServiciosGenerales.consMultilistas('id').subscribe(Resultado => {
+      console.log(Resultado)
+      this.Comprasfiltros = Resultado;
+    })
+    
   }
 
   Centramapa(request: google.maps.GeocoderRequest): void {

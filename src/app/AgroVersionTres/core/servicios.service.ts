@@ -180,6 +180,10 @@ export class ServiciosService {
     consCuponesDescuento(Bandera: string, IdTipoCupon: string, IdOferta:string) {
         return this.http.get<any>(this.url_servidor + 'consCuponesDescuento/' + Bandera + '/' + IdTipoCupon+ '/' + IdOferta);
     }
+
+    consMultilistas(Bandera: string) {
+        return this.http.get<any>(this.url_servidor + 'consMultilistas/' + Bandera);
+    }
 }
 
 

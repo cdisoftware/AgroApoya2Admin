@@ -15,18 +15,16 @@
       <!-- Filtro por Fecha de Fin de Compra -->
       <div class="mb-2 me-2">
         <label for="fechaFinCompra" class="form-label" style="font-size: 0.75rem;">Fecha de Fin de Compra</label>
-        <input type="text" class="form-control" id="fechaFinCompra" name="fechaFinCompra"
+        <input type="text" class="form-control form-select-sm" id="fechaFinCompra" name="fechaFinCompra"
           placeholder="Fecha de Fin de Compra" onfocus="(this.type='date')"
-          onblur="if(this.value==''){this.type='text'}"
-          style="font-size: 0.85rem; padding: 0.4rem 0.5rem; height: calc(1.5em + 0.8rem + 2px);" />
+          onblur="if(this.value==''){this.type='text'}" />
       </div>
 
       <!-- Filtro por Fecha de Registro -->
       <div class="mb-2 me-2">
         <label for="fechaRegistro" class="form-label" style="font-size: 0.75rem;">Fecha de Registro</label>
-        <input type="text" class="form-control" id="fechaRegistro" name="fechaRegistro" placeholder="Fecha de Registro"
-          onfocus="(this.type='date')" onblur="if(this.value==''){this.type='text'}"
-          style="font-size: 0.85rem; padding: 0.4rem 0.5rem; height: calc(1.5em + 0.8rem + 2px);" />
+        <input type="text" class="form-control form-select-sm" id="fechaRegistro" name="fechaRegistro" placeholder="Fecha de Registro"
+          onfocus="(this.type='date')" onblur="if(this.value==''){this.type='text'}" />
       </div>
 
       <!-- Filtro por Localidades -->
@@ -40,11 +38,13 @@
 
       <!-- Filtro de Número de Compras -->
       <div class="mb-2 me-2">
-        <label for="numeroCompras" class="form-label" style="font-size: 0.75rem;">Número de Compras</label>
-        <input type="number" class="form-control" id="numeroCompras" name="numeroCompras"
-          placeholder="Número de Compras"
-          style="font-size: 0.85rem; padding: 0.4rem 0.5rem; height: calc(1.5em + 0.8rem + 2px);" />
-      </div>
+          <label for="numeroCompras" class="form-label" style="font-size: 0.75rem;">Número de Compras</label>
+          <select class="form-control form-select-sm" id="numeroCompras" name="numeroCompras">
+            <option value="" disabled selected>Número de compras</option>
+            <option *ngfor="lef comprasNum of Comprasfiltros" value="{{Comprasfiltros.IdTipo}}"></option>
+          </select>
+        </div>
+        
     </div>
 
     <!-- Botones de acción -->

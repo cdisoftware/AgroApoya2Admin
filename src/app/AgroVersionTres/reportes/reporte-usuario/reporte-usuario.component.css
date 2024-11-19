@@ -18,5 +18,5 @@
     padding: 0.4rem 0.5rem; /* Reduce el padding interno */
     font-size: 0.85rem; /* Ajusta el tamaño de la fuente */
     height: calc(1.5em + 0.8rem + 2px); /* Ajusta la altura del campo */
-    width: 300px;
+    width: 300px; /* Ajusta ancho cmapo*/
   }
