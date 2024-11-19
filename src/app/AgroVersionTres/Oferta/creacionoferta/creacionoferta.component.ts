@@ -391,7 +391,7 @@ export class CreacionofertaComponent implements OnInit {
   }
 
   CreaMapa(IdMapa: string) {
-    this.geocoder.geocode({ address: 'Bogotá' }).then((result) => {
+ /*   this.geocoder.geocode({ address: this.NombreCiudad }).then((result) => {
       const { results } = result;
       var lati = results[0].geometry.location.lat();
       var longi = results[0].geometry.location.lng();
@@ -405,16 +405,108 @@ export class CreacionofertaComponent implements OnInit {
           },
         }
       );
-   /*   this.map.addListener("click", (e: any) => {
+      this.map.addListener("click", (e: any) => {
         this.AgregarMarcador(e.latLng, this.map);
         this.LatitudeCoordenadas = e.latLng.toString()
         this.LatitudeCoordenadas = this.LatitudeCoordenadas.substring(1, 15)
         this.LongitudeCoordenadas = e.latLng.toString()
         this.LongitudeCoordenadas = this.LongitudeCoordenadas.substring(this.LongitudeCoordenadas.indexOf('-'), this.LongitudeCoordenadas.length - 1)
-      });*/
+      });
+    })*/
+  }
+  /*
+  AgregarMarcador(latLng: google.maps.LatLng, map: google.maps.Map) {
+    if (this.markers.length > 0) {
+      this.markers[0].setMap(null)
+    }
+    const marker = new google.maps.Marker({
+      position: latLng,
+      map: map,
+    });
+    this.markers = [];
+    this.markers.push(marker);
+  }
+  AgregarCoordenada(templateRespuesta: any) {
+    if (this.LatitudeCoordenadas != '' && this.LongitudeCoordenadas != '') {
+      const BodyInsertCoo = {
+        ID: 0,
+        ID_SCTOR_OFRTA: Number(this.IdSectorCreado),
+        LTTUD: this.LatitudeCoordenadas,
+        LNGTUD: this.LongitudeCoordenadas
+      }
+      this.sectoresservices.InsertarCoordenadas('3', BodyInsertCoo).subscribe(Resultado => {
+        const arrayRes = Resultado.split('|')
+        this.Respuesta = arrayRes[1];
+        this.LatitudeCoordenadas = '';
+        this.LongitudeCoordenadas = '';
+        this.ConsultaCoordenadas();
+      })
+    }
+    else {
+      this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
+      this.Respuesta = "Los campos coordenadas son obligatorios, recuerda dar click en el mapa para recuperar las coordenadas.";
+    }
+  }
+  ConsultaCoordenadas() {
+    this.sectoresservices.ConsultaCoordenada('1', this.IdSectorCreado).subscribe(Result => {
+      if (Result.length > 0) {
+        if (this.AreaPolygon != undefined) {
+          this.AreaPolygon.setMap(null)
+          console.log(this.AreaPolygon)
+        }
+        this.DataCoor = Result;
+        var coordenadas = '';
+        for (var i = 0; i < this.DataCoor.length; i++) {
+          coordenadas += this.DataCoor[i].Latitud.trim() + ',' + this.DataCoor[i].Longitud.trim() + '|';
+        }
+        var nuevaCoord = coordenadas.substring(0, coordenadas.length - 1)
+        //var nuevaCoord = "4.711719820895,-74.11319514221|4.712746307730,-74.10924693054|4.709923465287,-74.10795947022|4.708554810281,-74.11036272949|4.711719820895,-74.11319514221";
+        var bounds = new google.maps.LatLngBounds;
+        var coords = nuevaCoord.split('|').map(function (data: string) {
+          var info = data.split(','), // Separamos por coma
+            coord = { // Creamos el obj de coordenada
+              lat: parseFloat(info[0]),
+              lng: parseFloat(info[1])
+            };
+          // Agregamos la coordenada al bounds
+          bounds.extend(coord);
+          return coord;
+        });
+        this.AreaPolygon = new google.maps.Polygon({
+          paths: coords,
+          strokeColor: '#397c97',
+          strokeOpacity: 0.8,
+          strokeWeight: 3,
+          fillColor: '#B1B0B0',
+          fillOpacity: 0.35,
+        });
+        this.AreaPolygon.setMap(this.map);
+        console.log(this.AreaPolygon)
+      }
+      else {
+        this.DataCoor = [];
+      }
+      this.ConsultaUsuariosSectr(this.IdSectorCreado);
     })
   }
+  ConsultaUsuariosSectr(IdSector: string) {
+    if (this.DataCoor.length < 3) {
+      this.NumUserSector = '0'
+    } else {
+      this.ConsultaSectorPoligono(IdSector);
+    }
+  }
+  ConsultaSectorPoligono(idsector: string) {
 
+    this.sectoresservices.ModificaSectorPoligono('3', idsector).subscribe(ResultadoCons => {
+      var aux = ResultadoCons.split('|');
+      this.sectoresservices.ConsultaUsuarioSector('3', aux[0]).subscribe(ResultadoCons => {
+        this.sectoresservices.ConsultaNumUsuariosSector('3', aux[0]).subscribe(ResultadoCons => {
+          this.NumUserSector = ResultadoCons.toString();
+        })
+      })
+    })
+  }*/
 
   /*PRODUCTOS PARA LA OFERTA*/
   CargarProductosOferta() {

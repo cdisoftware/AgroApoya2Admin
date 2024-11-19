@@ -315,6 +315,111 @@ export class RepComprasComponent implements OnInit {
     }
   }
 
+  ArrayTopinsExistentes: any = [];
+
+  GeneraExcelDos() {
+    this.ArrayTopinsExistentes = [];
+
+    for (let i = 0; i < this.DataConsulta.length; i++) {
+      if (this.DataConsulta[i].ADICIONALES != undefined && this.DataConsulta[i].ADICIONALES != null) {
+        const ArrregloAux = this.DataConsulta[i].ADICIONALES.split('<br>');
+        console.log(ArrregloAux);
+        for (let j = 0; j < ArrregloAux.length; j++) {
+          const AuxCantidad = ArrregloAux[j].split('$cantidad$');
+          const NombreProducto = AuxCantidad[0].trim();
+          console.log(NombreProducto);
+          if (
+            NombreProducto !== '' &&
+            !this.ArrayTopinsExistentes.some((item: { NombreProducto: string }) => item.NombreProducto === NombreProducto)
+          ) {
+            this.ArrayTopinsExistentes.push({
+              NombreProducto: NombreProducto
+            });
+          }
+        }
+      }
+    }
+
+    console.log(this.ArrayTopinsExistentes);
+
+    if (this.DataConsulta.length > 0) {
+      let workbook = new Workbook();
+      let worksheet = workbook.addWorksheet("Reporte compras");
+
+      let header = [
+        "Código de compra",
+        "id oferta",
+        "Nombre completo",
+        "Direccion entrega",
+        "Celular",
+        "Email",
+        "sector",
+        "Fecha compra",
+        "Estado compra"
+      ];
+
+      // Agregar campos adicionales desde this.ArrayTopinsExistentes
+      this.ArrayTopinsExistentes.forEach((item: { NombreProducto: string }) => {
+        header.push(item.NombreProducto);
+      });
+
+      worksheet.addRow(header);
+
+      for (let fila of this.DataConsulta) {
+        let temp = [
+          fila['id'],
+          fila['IdOferta'],
+          fila['NombrePesona'],
+          fila['DireccionEntrega'],
+          fila['CelularPersona'],
+          fila['CorreoPersona'],
+          fila['SECTOR'],
+          fila['FechaCompra'],
+          fila['DescEstadoCompra']
+        ];
+
+        // Inicializar valores vacíos para las columnas adicionales
+        for (let k = header.length - this.ArrayTopinsExistentes.length; k < header.length; k++) {
+          temp.push('');
+        }
+
+        if (fila['ADICIONALES'] != undefined && fila['ADICIONALES'] != null && fila['ADICIONALES'] != '') {
+          const ArrregloAux = fila['ADICIONALES'].split('<br>');
+          for (let j = 0; j < ArrregloAux.length; j++) {
+            const AuxCantidad = ArrregloAux[j].split('$cantidad$');
+            if (AuxCantidad.length > 1) {
+              const NombreProducto = AuxCantidad[0].trim();
+              const AuxCantidadDos = AuxCantidad[1].split('$Valor$');
+              console.log(NombreProducto);
+              console.log(AuxCantidadDos[0]);
+
+              // Buscar el índice de la columna correspondiente al producto
+              const columnIndex = header.indexOf(NombreProducto);
+
+              // Asignar el valor de AuxCantidadDos[0] a la posición correspondiente en temp
+              if (columnIndex > -1) {
+                temp[columnIndex] = AuxCantidadDos[0].trim();
+              }
+            }
+          }
+        }
+
+        worksheet.addRow(temp);
+      }
+
+      let rowIndex = 1;
+      for (rowIndex; rowIndex <= worksheet.rowCount; rowIndex++) {
+        worksheet.getRow(rowIndex).alignment = { vertical: 'middle', wrapText: true };
+      }
+
+      let fname = "Reporte compras";
+      workbook.xlsx.writeBuffer().then((data) => {
+        let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        fs.saveAs(blob, fname + '.xlsx');
+      });
+    }
+  }
+
 
 
   //BTN GENERAL EXCEL
@@ -514,8 +619,8 @@ export class RepComprasComponent implements OnInit {
     }
   }
 
-  AbrirPaginaMapa(){
-    window.open('https://apoya2.co/AgroApoya2Admin/#/home/MapaCompras/'+this.OferFiltro+'/0', '_blank');
+  AbrirPaginaMapa() {
+    window.open('https://apoya2.co/AgroApoya2Admin/#/home/MapaCompras/' + this.OferFiltro + '/0', '_blank');
   }
 
 
