@@ -181,8 +181,12 @@ export class ServiciosService {
         return this.http.get<any>(this.url_servidor + 'consCuponesDescuento/' + Bandera + '/' + IdTipoCupon+ '/' + IdOferta);
     }
 
-    consMultilistas(Bandera: string) {
-        return this.http.get<any>(this.url_servidor + 'consMultilistas/' + Bandera);
+    consMultilistas(Bandera: string, filtrouno: string, filtrodos: string) {
+        return this.http.get<any>(this.url_servidor + 'consMultilistas/' + Bandera + '/' + filtrouno + '/' + filtrodos);
+    }
+    
+    consMapaCalor(p0: number, Bandera: string, IdLocalidad: string, NumCompras: string) {
+        return this.http.get<any>(this.url_servidor + 'consMapaCalor/' + Bandera + '/' + IdLocalidad + '/' + NumCompras);
     }
 }
 

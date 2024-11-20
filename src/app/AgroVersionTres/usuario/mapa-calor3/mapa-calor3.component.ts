@@ -16,18 +16,14 @@ export class MapaCalor3Component implements OnInit {
 
   Comprasfiltros: any = []
 
-  
+  PinsFiltro: any = []
 
   constructor(public ServiciosGenerales: ServiciosService) { }
-
   ngOnInit(): void {
     this.CargaIncialListas();
     this.Centramapa({ address: 'Bogotá, Colombia' });
   }
-
   CargaIncialListas() {
-
-   
     /*
     en caso de que el servicio sea post, me va a solicitar un cuerpoo
     EJEMPLO
@@ -41,11 +37,14 @@ export class MapaCalor3Component implements OnInit {
       console.log(Resultado)
       this.ArrayLocalidadesFiltro = Resultado;
     })
-    this.ServiciosGenerales.consMultilistas('id').subscribe(Resultado => {
+    this.ServiciosGenerales.consMultilistas('1','0','0').subscribe(Resultado => {
       console.log(Resultado)
       this.Comprasfiltros = Resultado;
     })
-    
+    // this.ServiciosGenerales.consMapaCalor('1','0','0').subscribe(Rest =>{ 
+    //   console.log(Rest)
+    // this.PinsFiltro = Rest;
+    // })
   }
 
   Centramapa(request: google.maps.GeocoderRequest): void {
