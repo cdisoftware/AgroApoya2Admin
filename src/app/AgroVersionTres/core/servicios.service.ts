@@ -185,8 +185,8 @@ export class ServiciosService {
         return this.http.get<any>(this.url_servidor + 'consMultilistas/' + Bandera + '/' + filtrouno + '/' + filtrodos);
     }
     
-    consMapaCalor(p0: number, Bandera: string, IdLocalidad: string, NumCompras: string) {
-        return this.http.get<any>(this.url_servidor + 'consMapaCalor/' + Bandera + '/' + IdLocalidad + '/' + NumCompras);
+    consMapaCalor(Bandera: string, IdLocalidad: string, NumCompras: string, body :any) {
+        return this.http.post<any>(this.url_servidor + 'consMapaCalor/' + Bandera + '/' + IdLocalidad + '/' + NumCompras, body);
     }
 }
 

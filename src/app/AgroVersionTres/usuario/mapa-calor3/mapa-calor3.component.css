@@ -1,10 +1,5 @@
-.form-control, .form-select {
-    width: 200px; 
-    height: 38px; 
- }
-
- .form-label {
-  font-size: 0.65rem; /* Ajusta el tamaño de la fuente */
-  margin-bottom: 0.1rem; /* Reduce el margen inferior */
+.form-label {
+ font-size: 0.75rem !important;
+  margin-bottom: 0.1rem;
   margin-left: 5px;
 }

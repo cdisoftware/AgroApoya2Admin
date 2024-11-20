@@ -12,39 +12,38 @@ export class MapaCalor3Component implements OnInit {
   geocoder = new google.maps.Geocoder();
 
   //Variables para los filtros
-  ArrayLocalidadesFiltro: any = [];
-
   Comprasfiltros: any = []
+  ArrayLocalidadesFiltro: any = [];
+  FiltroFechaIncioCompra: string = '';
 
-  PinsFiltro: any = []
+
+  //Variables para el mapa
+  PinsMapa: any = []
 
   constructor(public ServiciosGenerales: ServiciosService) { }
   ngOnInit(): void {
     this.CargaIncialListas();
-    this.Centramapa({ address: 'Bogotá, Colombia' });
   }
+
   CargaIncialListas() {
-    /*
-    en caso de que el servicio sea post, me va a solicitar un cuerpoo
-    EJEMPLO
-    const body = {
-      FechaIncioCompra: "2023-05-02",
-      FechaFinCompra: "2023-05-02",
-      FechaRegistro: "2023-05-02"
-      }
-    */
     this.ServiciosGenerales.consTipoLocalidad('2').subscribe(Resultado => {
       console.log(Resultado)
       this.ArrayLocalidadesFiltro = Resultado;
     })
-    this.ServiciosGenerales.consMultilistas('1','0','0').subscribe(Resultado => {
+    this.ServiciosGenerales.consMultilistas('1', '0', '0').subscribe(Resultado => {
       console.log(Resultado)
       this.Comprasfiltros = Resultado;
     })
-    // this.ServiciosGenerales.consMapaCalor('1','0','0').subscribe(Rest =>{ 
-    //   console.log(Rest)
-    // this.PinsFiltro = Rest;
-    // })
+  }
+
+
+  BtnBuscar() {
+    this.Centramapa({ address: 'Bogotá, Colombia' });
+  }
+
+  BtnLimpiar() {
+    //  ejemplo para validar el dato de la fecha
+    alert(this.FiltroFechaIncioCompra)
   }
 
   Centramapa(request: google.maps.GeocoderRequest): void {
@@ -55,13 +54,20 @@ export class MapaCalor3Component implements OnInit {
         { zoom: 13 }
       );
       this.map.setCenter(results[0].geometry.location);
-      const heatmapData: google.maps.LatLng[] = [];
       // Crea la capa de mapa de calor
-      const heatmap = new google.maps.visualization.HeatmapLayer({
-        data: heatmapData,
-        map: this.map,
-        radius: 20 // Ajusta el radio
-      });
+
+      const body = {
+        FechaIncioCompra: "2023-05-02",
+        FechaFinCompra: "2023-05-02",
+        FechaRegistro: "2023-05-02"
+      }
+
+      this.ServiciosGenerales.consMapaCalor('1', '0', '0', body).subscribe(Rest => {
+        console.log(Rest)
+        this.PinsMapa = Rest;
+
+        //TODO VALIDAR LAS CORDENADAS QUE TRAE EL MICRO, PARA PINTARLAS EN EL MAPA
+      })
 
       return results;
     })
@@ -69,4 +75,6 @@ export class MapaCalor3Component implements OnInit {
         console.log("Geocode was not successful for the following reason: " + e);
       });
   }
+
+
 }
