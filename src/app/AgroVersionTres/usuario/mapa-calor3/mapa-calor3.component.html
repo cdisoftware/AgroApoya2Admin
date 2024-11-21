@@ -1,37 +1,31 @@
-<div class="container " >
-  <div class="w-100 mt-3" >
+<div class="container">
+  <div class="w-100 mt-3">
     <h1 class="text-primary mb-4 text-center custom-title">Mapa de calor</h1>
-
     <!-- Contenedor de Filtros -->
-    <div class="d-flex flex-row flex-wrap justify-content-center align-items-center" style="margin-bottom: 1rem;">
+    <div class="d-flex flex-row flex-wrap justify-content-center align-items-center mb-3">
       <!-- Filtro por Fecha de Inicio de Compra -->
       <div class="mb-2 me-2">
-        <label for="fechaInicioCompra" class="form-label ">Fecha de Inicio de Compra</label>
-        <input type="text" class="form-control" id="fechaInicioCompra" name="fechaInicioCompra"
-          placeholder="Fecha Inicio de Compra" onfocus="(this.type='date')"
-          onblur="if(this.value==''){this.type='text'}" [(ngModel)]="FiltroFechaIncioCompra" />
+        <label for="fechaInicioCompra" class="form-label ">Fecha inicio compras</label>
+        <input type="date" class="form-control labelFiltros" id="fechaInicioCompra" [(ngModel)]="FiltroFechaIncioCompra" />
       </div>
 
       <!-- Filtro por Fecha de Fin de Compra -->
       <div class="mb-2 me-2">
-        <label for="fechaFinCompra" class="form-label ">Fecha de Fin de Compra</label>
-        <input type="text" class="form-control" id="fechaFinCompra" name="fechaFinCompra"
-          placeholder="Fecha Fin de Compra" onfocus="(this.type='date')"
-          onblur="if(this.value==''){this.type='text'}" />
+        <label for="fechaFinCompra" class="form-label ">Fecha fin compras</label>
+        <input type="date" class="form-control labelFiltros" id="fechaFinCompra" [(ngModel)]="FiltroFechaFinCompra" />
       </div>
 
       <!-- Filtro por Fecha de Registro -->
       <div class="mb-2 me-2">
-        <label for="fechaRegistro" class="form-label ">Fecha de Registro</label>
-        <input type="text" class="form-control" id="fechaRegistro" name="fechaRegistro"
-          placeholder="Fecha de Registro" onfocus="(this.type='date')" onblur="if(this.value==''){this.type='text'}" />
+        <label for="fechaRegistro" class="form-label ">Fecha registro</label>
+        <input type="date" class="form-control labelFiltros" id="fechaRegistro" [(ngModel)]="FiltroFechaRegistro" />
       </div>
 
       <!-- Filtro por Localidades -->
       <div class="mb-2 me-2">
-        <label for="localidades" class="form-label ">Localidades</label>
-        <select class="form-select" id="localidades" name="localidades">
-          <option selected disabled>Seleccione Localidad</option>
+        <label for="localidades" class="form-label ">Localidad</label>
+        <select class="form-select labelFiltros" id="localidades" name="localidades" [(ngModel)]="FiltroLocalidad">
+          <option selected value="0">Seleccione</option>
           <option *ngFor="let ArrayRespu of ArrayLocalidadesFiltro" value="{{ArrayRespu.IdTipo}}">
             {{ArrayRespu.Descripcion}}</option>
         </select>
@@ -39,25 +33,24 @@
 
       <!-- Filtro de Número de Compras -->
       <div class="mb-2 me-2">
-        <label for="numeroCompras" class="form-label ">Número de Compras</label>
-        <select class="form-control" id="numeroCompras" name="numeroCompras">
-          <option value="" disabled selected>Número de compras</option>
-          <option *ngFor="let Compranum of Comprasfiltros" value="{{Compranum.IdTipo}}">{{Compranum.Descripcion}}
+        <label for="numeroCompras" class="form-label ">Número compras</label>
+        <select class="form-control labelFiltros" id="numeroCompras" name="numeroCompras" [(ngModel)]="FiltroNumeroCompras">
+          <option selected value="0">Seleccione</option>
+          <option *ngFor="let Compranum of ArrayComprasfiltros" value="{{Compranum.Id}}">{{Compranum.Descripcion}}
           </option>
         </select>
       </div>
 
     </div>
-
     <!-- Botones de acción -->
     <div class="d-flex justify-content-center mb-3">
-      <button class="btn btn-primary me-3 col-3" (click)="BtnBuscar()">Buscar</button>
-      <button type="button" class="btn btn-primary me-3 col-3">Descargar</button>
-      <button type="reset" class="btn btn-secondary col-3" (click)="BtnLimpiar()">Limpiar</button>
+      <button class="btn btn-primary btn-sm me-3 col-3" (click)="BtnBuscar()">Buscar</button>
+      <button class="btn btn-primary btn-sm me-3 col-3" (click)="BtnDescargarExcel()">Descargar</button>
+      <button class="btn btn-secondary btn-sm col-3" (click)="BtnLimpiar()">Limpiar</button>
     </div>
-
     <!-- Mapa -->
-    <div class="d-flex justify-content-center mb-4">
-      <div id="map" class="ShowMapaCalor" style="width: 98%; height: 500px;"></div>
+    <div class="d-flex justify-content-center mb-4" *ngIf="AuxMostrarMapa != '0'">
+      <div id="map" class="ShowMapaCalor" style="width: 100%; height: 650px;"></div>
+    </div>
   </div>
 </div>
