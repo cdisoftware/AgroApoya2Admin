@@ -1,114 +1,58 @@
-<div class="mt-">
-  <form class="p-4  ">
-    <h3 class="text-center mb-4" style="color: blue;">Reporte ventas</h3>
+<div class="mt-4">
+  <form class="p-4">
+    <h3 class="text-center mb-4 text-primary">Reporte ventas</h3>
 
-    <div class="d-grid gap-3" style="grid-template-columns: repeat(4, 1fr);">
-      <!-- Primera fila de 4 columnas -->
+    <div class="row row-cols-1 row-cols-md-4 g-3">
+
+      <!-- localida filtro -->
       <div>
-        <label for="localidad" class="form-label" style="font-size: 0.75rem;">
-          Localidad
-        </label>
-        <select
-          class="form-control"
-          id="localidad"
-          name="localidad"
-          style="font-size: 0.85rem; padding: 0.4rem 0.5rem; height: calc(1.5em + 0.8rem + 2px);">
+        <label for="localidad" class="form-label">Localidad</label>
+        <select class="form-control" id="localidad">
           <option value="">Seleccione Localidad</option>
           <option value="localidad1">Localidad 1</option>
           <option value="localidad2">Localidad 2</option>
           <option value="localidad3">Localidad 3</option>
-          <!-- Agrega más opciones según sea necesario -->
         </select>
       </div>
+         <!-- localida filtro -->
       <div>
-        <label for="codigoUsuario" class="form-label" style="font-size: 0.75rem;">
-          Código de usuario
-        </label>
-        <input
-          type="number"
-          class="form-control"
-          id="codigoUsuario"
-          name="codigoUsuario"
-          placeholder="Código de Usuario"
-          style="font-size: 0.85rem; padding: 0.4rem 0.5rem; height: calc(1.5em + 0.8rem + 2px);"
-        />
+        <label for="codigoUsuario" class="form-label">Código de usuario</label>
+        <input type="number" class="form-control" id="codigoUsuario" placeholder="Código de Usuario" />
       </div>
+         <!-- localida filtro -->
       <div>
-        <label for="correo" class="form-label" style="font-size: 0.75rem;">
-          Correo
-        </label>
-        <input
-          type="text"
-          class="form-control"
-          id="correo"
-          name="correo"
-          placeholder="Correo"
-          style="font-size: 0.85rem; padding: 0.4rem 0.5rem; height: calc(1.5em + 0.8rem + 2px);"
-        />
+        <label for="correo" class="form-label">Correo</label>
+        <input type="text" class="form-control" id="correo" placeholder="Correo" />
       </div>
+         <!-- localida filtro -->
       <div>
-        <label for="telefono" class="form-label" style="font-size: 0.75rem;">
-          Teléfono
-        </label>
-        <input
-          type="number"
-          class="form-control"
-          id="telefono"
-          name="telefono"
-          placeholder="Teléfono"
-          style="font-size: 0.85rem; padding: 0.4rem 0.5rem; height: calc(1.5em + 0.8rem + 2px);"
-        />
+        <label for="telefono" class="form-label">Teléfono</label>
+        <input type="number" class="form-control" id="telefono" placeholder="Teléfono" />
       </div>
 
-      <!-- Segunda fila de 4 columnas -->
+         <!-- localida filtro -->
       <div>
-        <label for="nombreApellido" class="form-label" style="font-size: 0.75rem;">
-          Nombre y Apellido
-        </label>
-        <input
-          type="text"
-          class="form-control"
-          id="nombreApellido"
-          name="nombreApellido"
-          placeholder="Nombre y Apellido"
-          style="font-size: 0.85rem; padding: 0.4rem 0.5rem; height: calc(1.5em + 0.8rem + 2px);"
-        />
+        <label for="nombreApellido" class="form-label">Nombre y Apellido</label>
+        <input type="text" class="form-control" id="nombreApellido" placeholder="Nombre y Apellido" />
       </div>
       <div>
-        <label for="fechaRegistroInicio" class="form-label" style="font-size: 0.75rem;">
-          Fecha de registro inicio
-        </label>
-        <input
-          type="date"
-          class="form-control"
-          id="fechaRegistroInicio"
-          name="fechaRegistroInicio"
-          style="font-size: 0.85rem; padding: 0.4rem 0.5rem; height: calc(1.5em + 0.8rem + 2px);"
-        />
+        <label for="fechaRegistroInicio" class="form-label">Fecha de registro inicio</label>
+        <input type="date" class="form-control" id="fechaRegistroInicio" />
       </div>
       <div>
-        <label for="fechaRegistroFin" class="form-label" style="font-size: 0.75rem;">
-          Fecha de registro fin
-        </label>
-        <input
-          type="date"
-          class="form-control"
-          id="fechaRegistroFin"
-          name="fechaRegistroFin"
-          style="font-size: 0.85rem; padding: 0.4rem 0.5rem; height: calc(1.5em + 0.8rem + 2px);"
-        />
+        <label for="fechaRegistroFin" class="form-label">Fecha de registro fin</label>
+        <input type="date" class="form-control" id="fechaRegistroFin" />
       </div>
       <div>
-        <!-- Espacio vacío o campo adicional si es necesario -->
+           <!-- localida filtro -->
       </div>
     </div>
 
-    <!-- Botones de Acción -->
-    <div class="text-center mt-4">
-      
-      <button type="submit" class="btn btn-primary me-3" style="width: 25%;">Buscar</button>
-      <button type="button" class="btn btn-primary me-3" style="width: 25%;">Descargar</button>
-      <button type="reset" class="btn btn-secondary" style="width: 25%;">Limpiar</button>
+       <!-- Botones de Acción -->
+    <div class="d-flex justify-content-center mt-4">
+      <button  class="btn btn-primary me-3">Buscar</button>
+      <button  class="btn btn-primary me-3">Descargar</button>
+      <button  class="btn btn-secondary  me-3 col-md-3">Limpiar</button>
     </div>
   </form>
 </div>
