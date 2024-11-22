@@ -2,26 +2,11 @@
   <h3 class="text-center mb-4 text-primary">Reporte usuario</h3>
 
   <div class="row">
-
-    <div class="col-md-3 mb-3">
-      <!-- Filtro de Localidad (Lista) -->
-      <div class="form-group">
-        <label class="form-label">Localidad</label>
-        <select class="form-control">
-          <option value="">Seleccione Localidad</option>
-          <option value="localidad1">Localidad 1</option>
-          <option value="localidad2">Localidad 2</option>
-          <option value="localidad3">Localidad 3</option>
-        </select>
-      </div>
-    </div>
-
-
     <div class="col-md-3 mb-3">
       <!-- Filtro de Código de Usuario (Número) -->
       <div class="form-group">
         <label class="form-label"><small>Código de usuario</small></label>
-        <input type="number" class="form-control" placeholder="Código de Usuario" />
+        <input type="number" class="form-control" placeholder="Código de Usuario"/>
       </div>
     </div>
 
@@ -34,12 +19,20 @@
       </div>
     </div>
 
+    <!-- Filtro de Número de Compras -->
+   <div class="col-md-3 mb-3">
+    <label class="form-label">Número compras</label>
+    <select class="form-control labelFiltros">
+      <option selected value="0">Seleccione</option><option *ngFor="let NumerosFli of NumeroFil" value="{{NumerosFli.Id}}">{{NumerosFli.Descripcion}}</option>
+    </select>
+  </div>
+
 
     <div class="col-md-3 mb-3">
       <!-- Filtro de Teléfono (Texto) -->
       <div class="form-group">
         <label class="form-label"><small>Teléfono</small></label>
-        <input type="text" class="form-control" placeholder="Teléfono" />
+        <input type="text" class="form-control" placeholder="Teléfono"/>
       </div>
     </div>
   </div>
@@ -50,7 +43,7 @@
       <!-- Filtro de Nombre y Apellido (Texto) -->
       <div class="form-group">
         <label class="form-label"><small>Nombre y apellido</small></label>
-        <input type="text" class="form-control" placeholder="Nombre y Apellido" />
+        <input type="text" class="form-control" placeholder="Nombre y Apellido"/>
       </div>
     </div>
 
@@ -59,16 +52,24 @@
       <!-- Filtro de Fecha de Registro Inicio (Fecha) -->
       <div class="form-group">
         <label class="form-label"><small>Fecha de registro inicio</small></label>
-        <input type="date" class="form-control" />
+        <input type="date" class="form-control"/>
       </div>
     </div>
+    <!-- Filtro por Localidades -->
+   <div class="col-md-3 mb-3">
+    <label class="form-gru ">Localidad</label>
+    <select class="form-select labelFiltros">
+      <option selected value="0">Seleccione</option>
+      <option *ngFor="let Arrangementlocali of LocalidadesFiltro" value="{{Arrangementlocali.IdTipo}}">{{Arrangementlocali.Descripcion}}</option>
+    </select>
+  </div>
 
 
     <div class="col-md-3 mb-3">
       <!-- Filtro de Fecha de Registro Fin (Fecha) -->
       <div class="form-group">
         <label class="form-label"><small>Fecha de registro fin</small></label>
-        <input type="date" class="form-control" />
+        <input type="date" class="form-control"/>
       </div>
     </div>
   </div>

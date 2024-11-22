@@ -4,16 +4,14 @@
 
     <div class="row row-cols-1 row-cols-md-4 g-3">
 
-      <!-- localida filtro -->
-      <div>
-        <label for="localidad" class="form-label">Localidad</label>
-        <select class="form-control" id="localidad">
-          <option value="">Seleccione Localidad</option>
-          <option value="localidad1">Localidad 1</option>
-          <option value="localidad2">Localidad 2</option>
-          <option value="localidad3">Localidad 3</option>
-        </select>
-      </div>
+      <!-- Filtro por Localidades -->
+   <div class="col-md-3 mb-3">
+    <label class="form-gru ">Localidad</label>
+    <select class="form-select labelFiltros">
+      <option selected value="0">Seleccione</option>
+      <option *ngFor="let Arraylocali of LocaliFiltro" value="{{Arraylocali.IdTipo}}">{{Arraylocali.Descripcion}}</option>
+    </select>
+  </div>
          <!-- localida filtro -->
       <div>
         <label for="codigoUsuario" class="form-label">Código de usuario</label>
@@ -24,6 +22,7 @@
         <label for="correo" class="form-label">Correo</label>
         <input type="text" class="form-control" id="correo" placeholder="Correo" />
       </div>
+
          <!-- localida filtro -->
       <div>
         <label for="telefono" class="form-label">Teléfono</label>
@@ -35,10 +34,20 @@
         <label for="nombreApellido" class="form-label">Nombre y Apellido</label>
         <input type="text" class="form-control" id="nombreApellido" placeholder="Nombre y Apellido" />
       </div>
+
       <div>
         <label for="fechaRegistroInicio" class="form-label">Fecha de registro inicio</label>
         <input type="date" class="form-control" id="fechaRegistroInicio" />
       </div>
+
+      <div class="col-md-3 mb-3">
+        <label class="form-label">Número compras</label>
+        <select class="form-control labelFiltros">
+          <option selected value="0">Seleccione</option><option 
+          *ngFor="let ComprasFli of ComprasFil" value="{{ComprasFli.Id}}">{{ComprasFli.Descripcion}}</option>
+        </select>
+      </div>
+
       <div>
         <label for="fechaRegistroFin" class="form-label">Fecha de registro fin</label>
         <input type="date" class="form-control" id="fechaRegistroFin" />

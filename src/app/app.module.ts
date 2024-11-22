@@ -55,7 +55,6 @@ import { AdminmanychatComponent } from './ofertas/components/adminmanychat/admin
 import { CoordenadasusuariosComponent } from './usuario/components/coordenadasusuarios/coordenadasusuarios.component';
 import { AsignaTransCampoCiudadComponent } from './ofertas/components/asigna-trans-campo-ciudad/asigna-trans-campo-ciudad.component';
 import { RepusuariosComponent } from './ofertas/components/reportes/repusuarios/repusuarios.component';
-import { ReportViewerModule } from 'ngx-ssrs-reportviewer-v2';
 import { DashboardComponent } from './ofertas/components/reportes/dashboard/dashboard.component';
 import { RegistroUserexcelComponent } from './usuario/components/registro-userexcel/registro-userexcel.component';
 import { EnviosmsofertaComponent } from './ofertas/components/sms-envio/enviosmsoferta/enviosmsoferta.component';
@@ -63,7 +62,6 @@ import { CreacionofertaComponent } from './AgroVersionTres/Oferta/creacionoferta
 
 import { MapaCalor3Component } from './AgroVersionTres/usuario/mapa-calor3/mapa-calor3.component';
 import { ReporteUsuarioComponent } from './AgroVersionTres/reportes/reporte-usuario/reporte-usuario.component'
-import { ReporteVentasComponent } from './AgroVersionTres/reportes/reporte-ventas/reporte-ventas.component'
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
@@ -112,7 +110,9 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     RegistroUserexcelComponent,
     EnviosmsofertaComponent,
     CreacionofertaComponent,
-    MapaCalor3Component
+    MapaCalor3Component,
+    ReporteUsuarioComponent
+    
   ],
   imports: [
     NgxMaskModule.forRoot(options),

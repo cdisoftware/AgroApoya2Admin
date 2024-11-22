@@ -26,8 +26,7 @@
         <label for="localidades" class="form-label ">Localidad</label>
         <select class="form-select labelFiltros" id="localidades" name="localidades" [(ngModel)]="FiltroLocalidad">
           <option selected value="0">Seleccione</option>
-          <option *ngFor="let ArrayRespu of ArrayLocalidadesFiltro" value="{{ArrayRespu.IdTipo}}">
-            {{ArrayRespu.Descripcion}}</option>
+          <option *ngFor="let ArrayRespu of ArrayLocalidadesFiltro" value="{{ArrayRespu.IdTipo}}">{{ArrayRespu.Descripcion}}</option>
         </select>
       </div>
 
@@ -36,7 +35,7 @@
         <label for="numeroCompras" class="form-label ">Número compras</label>
         <select class="form-control labelFiltros" id="numeroCompras" name="numeroCompras" [(ngModel)]="FiltroNumeroCompras">
           <option selected value="0">Seleccione</option>
-          <option *ngFor="let Compranum of ArrayComprasfiltros" value="{{Compranum.Id}}">{{Compranum.Descripcion}}
+          <option *ngFor="let Compranum of Comprasfiltros" value="{{Compranum.Id}}">{{Compranum.Descripcion}}
           </option>
         </select>
       </div>
