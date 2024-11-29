@@ -1,75 +1,74 @@
-<form class="p-4">
+<form [formGroup]="filtroForm" class="p-4">
   <h3 class="text-center mb-4 text-primary">Reporte usuario</h3>
 
   <div class="row">
+    <!-- Filtro de Código de Usuario -->
     <div class="col-md-3 mb-3">
-      <!-- Filtro de Código de Usuario (Número) -->
       <div class="form-group">
         <label class="form-label"><small>Código de usuario</small></label>
-        <input type="number" class="form-control" placeholder="Código de Usuario"/>
+        <input type="number" class="form-control" placeholder="Código de Usuario" formControlName="CódigoUsuario" />
       </div>
     </div>
 
-
+    <!-- Filtro de Correo -->
     <div class="col-md-3 mb-3">
-      <!-- Filtro de Correo (Texto) -->
       <div class="form-group">
         <label class="form-label"><small>Correo</small></label>
-        <input type="text" class="form-control" placeholder="Correo" />
+        <input type="text" class="form-control" placeholder="Correo" formControlName="FiltroCorreo" />
       </div>
     </div>
 
     <!-- Filtro de Número de Compras -->
-   <div class="col-md-3 mb-3">
-    <label class="form-label">Número compras</label>
-    <select class="form-control labelFiltros">
-      <option selected value="0">Seleccione</option><option *ngFor="let NumerosFli of NumeroFil" value="{{NumerosFli.Id}}">{{NumerosFli.Descripcion}}</option>
-    </select>
-  </div>
-
-
     <div class="col-md-3 mb-3">
-      <!-- Filtro de Teléfono (Texto) -->
+      <label class="form-label">Número compras</label>
+      <select class="form-control" formControlName="NumeroCompras">
+        <option value="0">Seleccione</option> <!-- **Cambio: Valor inicial del select** -->
+        <option *ngFor="let NumerosFli of NumeroFil" [value]="NumerosFli.Id">{{ NumerosFli.Descripcion }}</option>
+      </select>
+    </div>
+
+    <!-- Filtro de Teléfono -->
+    <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Teléfono</small></label>
-        <input type="text" class="form-control" placeholder="Teléfono"/>
+        <input type="text" class="form-control" placeholder="Teléfono" formControlName="FiltroTelefo" />
       </div>
     </div>
   </div>
 
   <div class="row">
-
+    <!-- Filtro de Nombre y Apellido -->
     <div class="col-md-3 mb-3">
-      <!-- Filtro de Nombre y Apellido (Texto) -->
       <div class="form-group">
         <label class="form-label"><small>Nombre y apellido</small></label>
-        <input type="text" class="form-control" placeholder="Nombre y Apellido"/>
+        <input type="text" class="form-control" placeholder="Nombre y Apellido" formControlName="NomApellidoFiltro" />
       </div>
     </div>
 
-
+    <!-- Filtro de Fecha de Registro Inicio -->
     <div class="col-md-3 mb-3">
-      <!-- Filtro de Fecha de Registro Inicio (Fecha) -->
       <div class="form-group">
         <label class="form-label"><small>Fecha de registro inicio</small></label>
-        <input type="date" class="form-control"/>
+        <input type="date" class="form-control" formControlName="FechaIncioCompra" />
       </div>
     </div>
-    <!-- Filtro por Localidades -->
-   <div class="col-md-3 mb-3">
-    <label class="form-gru ">Localidad</label>
-    <select class="form-select labelFiltros">
-      <option selected value="0">Seleccione</option>
-      <option *ngFor="let Arrangementlocali of LocalidadesFiltro" value="{{Arrangementlocali.IdTipo}}">{{Arrangementlocali.Descripcion}}</option>
-    </select>
-  </div>
 
-
+    <!-- Filtro de Localidad -->
     <div class="col-md-3 mb-3">
-      <!-- Filtro de Fecha de Registro Fin (Fecha) -->
+      <label class="form-label">Localidad</label>
+      <select class="form-control" formControlName="Localidad">
+        <option value="0">Seleccione</option> <!-- **Cambio: Valor inicial del select** -->
+        <option *ngFor="let Arrangementlocali of LocalidadesFiltro" [value]="Arrangementlocali.IdTipo">
+          {{ Arrangementlocali.Descripcion }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Filtro de Fecha de Registro Fin -->
+    <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Fecha de registro fin</small></label>
-        <input type="date" class="form-control"/>
+        <input type="date" class="form-control" formControlName="FechaFinCompra" />
       </div>
     </div>
   </div>
@@ -78,6 +77,6 @@
   <div class="d-flex justify-content-center">
     <button class="btn btn-primary me-3">Buscar</button>
     <button class="btn btn-primary me-3">Descargar</button>
-    <button class="btn btn-secondary me-3 col-md-3">Limpiar</button>
+    <button class="btn btn-secondary me-3 col-md-3" (click)="limpiarFiltros()">Limpiar</button>
   </div>
 </form>

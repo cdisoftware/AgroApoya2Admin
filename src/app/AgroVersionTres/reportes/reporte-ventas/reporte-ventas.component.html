@@ -1,67 +1,77 @@
 <div class="mt-4">
-  <form class="p-4">
+  <form [formGroup]="limpiarFiltros" class="p-4">
     <h3 class="text-center mb-4 text-primary">Reporte ventas</h3>
 
     <div class="row row-cols-1 row-cols-md-4 g-3">
-
       <!-- Filtro por Localidades -->
-   <div class="col-md-3 mb-3">
-    <label class="form-gru ">Localidad</label>
-    <select class="form-select labelFiltros">
-      <option selected value="0">Seleccione</option>
-      <option *ngFor="let Arraylocali of LocaliFiltro" value="{{Arraylocali.IdTipo}}">{{Arraylocali.Descripcion}}</option>
-    </select>
-  </div>
-         <!-- localida filtro -->
-      <div>
-        <label for="codigoUsuario" class="form-label">Código de usuario</label>
-        <input type="number" class="form-control" id="codigoUsuario" placeholder="Código de Usuario" />
-      </div>
-         <!-- localida filtro -->
-      <div>
-        <label for="correo" class="form-label">Correo</label>
-        <input type="text" class="form-control" id="correo" placeholder="Correo" />
-      </div>
-
-         <!-- localida filtro -->
-      <div>
-        <label for="telefono" class="form-label">Teléfono</label>
-        <input type="number" class="form-control" id="telefono" placeholder="Teléfono" />
-      </div>
-
-         <!-- localida filtro -->
-      <div>
-        <label for="nombreApellido" class="form-label">Nombre y Apellido</label>
-        <input type="text" class="form-control" id="nombreApellido" placeholder="Nombre y Apellido" />
-      </div>
-
-      <div>
-        <label for="fechaRegistroInicio" class="form-label">Fecha de registro inicio</label>
-        <input type="date" class="form-control" id="fechaRegistroInicio" />
-      </div>
-
       <div class="col-md-3 mb-3">
-        <label class="form-label">Número compras</label>
-        <select class="form-control labelFiltros">
-          <option selected value="0">Seleccione</option><option 
-          *ngFor="let ComprasFli of ComprasFil" value="{{ComprasFli.Id}}">{{ComprasFli.Descripcion}}</option>
+        <label class="form-label">Localidad</label>
+        <select class="form-select labelFiltros"formControlName="localidad"
+        >
+          <option selected value="0">Seleccione</option>
+          <option *ngFor="let Arraylocali of LocaliFiltro"[value]="Arraylocali.IdTipo" > {{ Arraylocali.Descripcion }}
+          </option>
         </select>
       </div>
 
+      <!-- Código de Usuario -->
+      <div>
+        <label for="codigoUsuario" class="form-label">Código de usuario</label>
+        <input type="number" class="form-control" id="codigoUsuario" placeholder="Código de Usuario" formControlName="codigoUsuario"
+        />
+      </div>
+      <!-- Correo -->
+      <div>
+        <label for="correo" class="form-label">Correo</label>
+        <input type="text" class="form-control" id="correo" placeholder="Correo" formControlName="correo"
+        />
+      </div>
+      <!-- Teléfono -->
+      <div>
+        <label for="telefono" class="form-label">Teléfono</label>
+        <input type="number" class="form-control" id="telefono" placeholder="Teléfono" formControlName="telefono"
+        />
+      </div>
+
+      <!-- Nombre y Apellido -->
+      <div>
+        <label for="nombreApellido" class="form-label">Nombre y Apellido</label>
+        <input type="text" class="form-control" id="nombreApellido" placeholder="Nombre y Apellido" formControlName="nombreApellido"
+        />
+      </div>
+
+      <!-- Fecha de Registro Inicio -->
+      <div>
+        <label for="fechaRegistroInicio" class="form-label"
+          >Fecha de registro inicio</label
+        >
+        <input type="date" class="form-control" id="fechaRegistroInicio" formControlName="fechaRegistroInicio"
+        />
+      </div>
+
+      <!-- Filtro Número de Compras -->
+      <div class="col-md-3 mb-3">
+        <label class="form-label">Número compras</label>
+        <select class="form-control labelFiltros" formControlName="numeroCompras" >
+          <option selected value="0">Seleccione</option>
+          <option *ngFor="let ComprasFli of ComprasFil" [value]="ComprasFli.Id" > {{ ComprasFli.Descripcion }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Fecha de Registro Fin -->
       <div>
         <label for="fechaRegistroFin" class="form-label">Fecha de registro fin</label>
-        <input type="date" class="form-control" id="fechaRegistroFin" />
-      </div>
-      <div>
-           <!-- localida filtro -->
+        <input type="date" class="form-control" id="fechaRegistroFin" formControlName="fechaRegistroFin"
+        />
       </div>
     </div>
 
-       <!-- Botones de Acción -->
-    <div class="d-flex justify-content-center mt-4">
-      <button  class="btn btn-primary me-3">Buscar</button>
-      <button  class="btn btn-primary me-3">Descargar</button>
-      <button  class="btn btn-secondary  me-3 col-md-3">Limpiar</button>
-    </div>
+   <!-- Botones de acción -->
+  <div class="d-flex justify-content-center">
+    <button class="btn btn-primary me-3">Buscar</button>
+    <button class="btn btn-primary me-3">Descargar</button>
+    <button class="btn btn-secondary me-3 col-md-3" (click)="filtrosLimpios()">Limpiar</button>
+  </div>
   </form>
 </div>

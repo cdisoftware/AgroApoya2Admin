@@ -53,6 +53,8 @@ import { CreacionofertaComponent } from './AgroVersionTres/Oferta/creacionoferta
 import { ReporteVentasComponent } from './AgroVersionTres/reportes/reporte-ventas/reporte-ventas.component';
 import { ReporteUsuarioComponent } from './AgroVersionTres/reportes/reporte-usuario/reporte-usuario.component';
 import { MapaCalor3Component } from './AgroVersionTres/usuario/mapa-calor3/mapa-calor3.component';
+import { UsomanychatComponent } from './AgroVersionTres/documentacion/usomanychat/usomanychat.component';
+import { IndexComponent } from './AgroVersionTres/documentacion/index/index.component';
 
 const routes: Routes = [
   {
@@ -259,9 +261,18 @@ const routes: Routes = [
   }, {
     path: 'reporte-usuario',
     component: ReporteUsuarioComponent
-  }, {
+  }, 
+  {
     path: 'reporte-ventas',
     component: ReporteVentasComponent
+  },
+  {
+    path: 'Index',
+    component: IndexComponent
+  },
+  {
+    path: 'UsoMany',
+    component: UsomanychatComponent
   }
 ];
 

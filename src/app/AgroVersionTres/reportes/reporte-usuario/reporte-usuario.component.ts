@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service'
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service';
 
 @Component({
   selector: 'app-reporte-usuario',
@@ -8,26 +9,47 @@ import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service
 })
 export class ReporteUsuarioComponent implements OnInit {
 
-  // VARIABLES DE FILTROS NUMCOP-LOCALI 
-  NumeroFil: any =  []
-  LocalidadesFiltro: any = []
-  // FechaIncioCompra: string = '';
-  // FechaFinCompra: string = '';
-  // FechaRegistro: string = '';
-  // Localidad: string = '';
-  // NumeroCompras: string = '';
-  // CódigoUsuario: string = '';
-  // FiltroCorreo: string = '';
-  // FiltroTelefo: string = '';
-  // NomApellidoFiltro: string = '';
+  // Variables para los filtros
+  NumeroFil: any = [];
+  LocalidadesFiltro: any = [];
+  filtroForm: FormGroup;
 
-  constructor(public ServiciosGenerales: ServiciosService) {}
-
+  constructor(public ServiciosGenerales: ServiciosService, private fb: FormBuilder) {
+    // Inicialización del formulario reactivo
+    this.filtroForm = this.fb.group({
+      FechaIncioCompra: [''],
+      FechaFinCompra: [''],
+      FechaRegistro: [''],
+      Localidad: ['0'], // **Cambio: Valor inicial configurado para select**
+      NumeroCompras: ['0'], // **Cambio: Valor inicial configurado para select**
+      CódigoUsuario: [''],
+      FiltroCorreo: [''],
+      FiltroTelefo: [''],
+      NomApellidoFiltro: ['']
+    });
+  }
 
   ngOnInit(): void {
     this.CargasIniciales();
   }
-  CargasIniciales(): void { 
+
+  // Método para limpiar filtros
+  limpiarFiltros(): void {
+    this.filtroForm.reset({
+      FechaIncioCompra: '',
+      FechaFinCompra: '',
+      FechaRegistro: '',
+      Localidad: '0', // **Cambio: Restablecer select a "Seleccione"**
+      NumeroCompras: '0', // **Cambio: Restablecer select a "Seleccione"**
+      CódigoUsuario: '',
+      FiltroCorreo: '',
+      FiltroTelefo: '',
+      NomApellidoFiltro: ''
+    });
+  }
+
+  // Método para cargar datos iniciales
+  CargasIniciales(): void {
     this.ServiciosGenerales.consTipoLocalidad('2').subscribe(Resultado => {
       this.LocalidadesFiltro = Resultado;
     });
