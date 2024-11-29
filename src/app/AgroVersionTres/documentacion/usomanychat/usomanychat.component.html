@@ -1,256 +1,267 @@
-<h1 class="text-center py-5">Uso de plataforma ManyChat</h1>
-
 <div class="container">
+
+  <h1 class="text-center py-5">Uso de plataforma ManyChat</h1>
+
   <!-- Pestañas de navegación -->
   <ul class="nav nav-tabs " role="tablist">
     <li class="nav-item">
-      <a class="nav-link" [class.active]="Auxmenu === '1'" id="contenido-tab" (click)="BtnEncontrarUsuario()">Encontrar usuario</a>
+      <a class="nav-link cursorPonter" [class.active]="Auxmenu === '1'" (click)="BtnEncontrarUsuario()">
+        Encontrar usuario
+      </a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [class.active]="Auxmenu === '2'" id="otra-tab" (click)="BtnEnvioMensajes()">Envio Mensajes</a>
+      <a class="nav-link cursorPonter" [class.active]="Auxmenu === '2'" (click)="BtnEnvioMensajes()">
+        Envio Mensajes
+      </a>
     </li>
   </ul>
-  <div class="tab-content">
-    <div class="card mb-4" *ngIf="Auxmenu === '1'">
-      <!-- Guia Login -->
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <h3 class="card-title">Login</h3>
-          <p class="card-text">¡Hola! En esta página encontrará cómo iniciar sesión. Simplemente selecciona algunas de estas opciones: Facebook, Google, Telegram o Apple.</p>
-          <img src="../../../../assets/ducument-imagenes/Imagen de WhatsApp 2024-11-25 a las 14.53.57_67d50b9a.jpg" alt="Imagen 1" class="img-fluid">
-        </div>
-      </div>
 
-      <!-- Guia Dashboard -->
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <h3 class="card-title">Proyectos</h3>
-          <p class="card-text">¡Continúa dandole al proyecto!</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-25 142902.png" alt="Imagen 2" class="img-fluid">
-        </div>
-      </div>
-
-      <!-- Contactos -->
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <h3 class="card-title">Dasboard</h3>
-          <p class="card-text">Accede a tu lista de contactos. Haz clic en el icono <img src="../../../../assets/ducument-imagenes/image.png" alt=""> para ver todos tus contactos actuales.</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-25 143024.png" alt="Imagen 3" class="img-fluid">
-        </div>
-      </div>
-
-      <!-- Condición y Campos del sistema -->
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <p class="card-text">Ahora bien, dale al botón de (CONDICIÓN), después (CAMPOS DEL SISTEMA) y por último a la opción de (WhatsApp).</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-25 143708.png" alt="Imagen 4" class="img-fluid">
-        </div>
-      </div>
-
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <p class="card-text">Después de que hagas los pasos anteriores, le das a la siguiente opción (WhatsApp ID).</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-25 143729.png" alt="Imagen 4" class="img-fluid">
-        </div>
-      </div>
-
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <p class="card-text">Después debes buscar por el número de teléfono a la persona a la que deseas encontrar en (WhatsApp ID is unknown).</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-25 143750.png" alt="Imagen 4" class="img-fluid">
-        </div>
-      </div>
-
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <p class="card-text">Encuentras a la persona y la seleccionas.</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-25 143846.png" alt="Imagen 4" class="img-fluid">
-        </div>
-      </div>
-
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <p class="card-text">Por último encontrarás la información personal e importante. Lo que está subrayado es el (ID MINYCHAT).</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-25 143936.png" alt="Imagen 4" class="img-fluid">
-        </div>
+  <div class="tab-content" *ngIf="Auxmenu === '1'">
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Encontrar usuario por medio de su celular</h5>
+        <p class="card-text">
+          En este documento explicaremos cómo buscar un usuario
+          utilizando su número de celular. De esta forma, podremos obtener el id_manychat, la información del usuario y
+          el historial de conversaciones que hemos tenido con él.</p>
       </div>
     </div>
-</div>
-
-
-
-
-<div class="container">
-  
-  <!-- Pestaña Vacía -->
-    <div class="tab-content" >
-      <div class="card shadow mb-4" *ngIf="Auxmenu === '2'">
-        <div class="card-body">
-          <h3 class="card-title">Login</h3>
-          <p class="card-text">¡Hola! En esta página encontrará cómo iniciar sesión. Simplemente selecciona algunas de estas opciones: Facebook, Google, Telegram o Apple.</p>
-          <img src="../../../../assets/ducument-imagenes/Imagen de WhatsApp 2024-11-25 a las 14.53.57_67d50b9a.jpg" alt="Imagen 1" class="img-fluid">
-        </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Login</h3>
+        <p class="card-text">¡Hola! En esta página encontrará cómo iniciar sesión. Simplemente selecciona algunas de
+          estas opciones: Facebook, Google, Telegram o Apple.</p>
+        <img src="../../../../assets/ducument-imagenes/Imagen de WhatsApp 2024-11-25 a las 14.53.57_67d50b9a.jpg"
+          alt="Imagen 1" class="img-fluid">
       </div>
-      <!-- Guia Dashboard -->
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <h3 class="card-title">Proyectos</h3>
-          <p class="card-text">¡Continúa dandole al proyecto!</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-25 142902.png" alt="Imagen 2" class="img-fluid">
-        </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Proyectos</h3>
+        <p class="card-text">¡Continúa dandole al proyecto!</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-25 142902.png" alt="Imagen 2"
+          class="img-fluid">
       </div>
-       <!-- Ajustes --> 
-       <div class="card shadow mb-4">
-        <div class="card-body">
-          <h3 class="card-title">Ajustes</h3>
-          <p class="card-text">Haz clic en el icono de configuracion, ir a WhatsApp</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 152457.png" alt="Imagen 3" class="img-fluid">
-        </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Dasboard</h3>
+        <p class="card-text">Accede a tu lista de contactos. Haz clic en el icono <img
+            src="../../../../assets/ducument-imagenes/image.png" alt=""> para ver todos tus contactos actuales.</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-25 143024.png" alt="Imagen 3"
+          class="img-fluid">
       </div>
-
-
-       <div class="card shadow mb-4">
-        <div class="card-body">
-          <p class="card-text">Despues le da a (PLANTILLAS DE MENSAJES) despues (PLANTILLA NUEVA)</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 152515.png" alt="Imagen 3" class="img-fluid">
-        </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <p class="card-text">Ahora bien, dale al botón de (CONDICIÓN), después (CAMPOS DEL SISTEMA) y por último a la
+          opción de (WhatsApp).</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-25 143708.png" alt="Imagen 4"
+          class="img-fluid">
       </div>
-
- 
-       <div class="card shadow mb-4">
-        <div class="card-body">
-          <h3 class="card-title">Plantillas</h3>
-          <p class="card-text">Despues (NOMBRE DE LA PLANTILLA) Despues (MARKETING) Y (IDIOMA).</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 152602.png" alt="Imagen 3" class="img-fluid">
-        </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <p class="card-text">Después de que hagas los pasos anteriores, le das a la siguiente opción (WhatsApp ID).
+        </p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-25 143729.png" alt="Imagen 4"
+          class="img-fluid">
       </div>
-
- 
-       <div class="card shadow mb-4">
-        <div class="card-body">
-          <h3 class="card-title">Prueba Plantillas</h3>
-          <p class="card-text">Poner el mensaje como se muestra en la imagen.</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 152944.png" alt="Imagen 3" class="img-fluid">
-        </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <p class="card-text">Después debes buscar por el número de teléfono a la persona a la que deseas encontrar en
+          (WhatsApp ID is unknown).</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-25 143750.png" alt="Imagen 4"
+          class="img-fluid">
       </div>
-
-
-       <div class="card shadow mb-4">
-        <div class="card-body">
-          <h3 class="card-title">Proporcionar Muestra de variables</h3>
-          <p class="card-text">Llenar los campos de las variables (NOMBRE) Y (REGISTROAA2) los demas son opcionales.</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153009.png" alt="Imagen 3" class="img-fluid">
-        </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <p class="card-text">Encuentras a la persona y la seleccionas.</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-25 143846.png" alt="Imagen 4"
+          class="img-fluid">
       </div>
-
-
-       <div class="card shadow mb-4">
-        <div class="card-body">
-          <h3 class="card-title">Enviar</h3>
-          <p class="card-text">Despues vamos hacia arriba para enviar la plantilla a revision.</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153102.png" alt="Imagen 3" class="img-fluid">
-        </div>
-      </div>
-
-  
-       <div class="card shadow mb-4">
-        <div class="card-body">
-          <p class="card-text">Despues le dira (REVISAR) donde esta subrayado</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153134.png" alt="Imagen 3" class="img-fluid">
-        </div>
-      </div>
-
- 
-       <div class="card shadow mb-4">
-        <div class="card-body">
-          <p class="card-text">Despues de revisado le dira (APROBADO) podra hacer dos opciones (EDITAR O ELIMINAR) </p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153239.png" alt="Imagen 3" class="img-fluid">
-        </div>
-      </div>
-
-
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <h3 class="card-title">Dasboard</h3>
-          <p class="card-text">Despues nos devolvemos al Dasboard para ir a la (AUTOMATIZACION) despues hacia la carpeta de (CDI)</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153333.png" alt="Imagen 3" class="img-fluid">
-        </div>
-      </div>
-
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <h3 class="card-title">Automatizacion</h3>
-          <p class="card-text">Le damos al botton (NUEVA AUTOMATIZACION) lo que esta subrayado </p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153423.png" alt="Imagen 3" class="img-fluid">
-        </div>
-      </div>
-
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <p class="card-text">Aparecera una interfas y le da donde esta el icono de (WhatsApp)</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153529.png" alt="Imagen 3" class="img-fluid">
-        </div>
-      </div>
-
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <p class="card-text">Elegir una plantilla de mensajes </p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153623.png" alt="Imagen 3" class="img-fluid">
-        </div>
-      </div>
-
-      
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <p class="card-text">Elige la subrayada.</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153558.png" alt="Imagen 3" class="img-fluid">
-        </div>
-      </div>
-
-       
-         <div class="card shadow mb-4">
-          <div class="card-body">
-            <p class="card-text">Selecciona la planitilla que creo</p>
-            <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153731.png" alt="Imagen 3" class="img-fluid">
-          </div>
-        </div>
-
- 
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <p class="card-text">Despues le debe de dar un nombre que dice (SIN TITULO) preferible el mismo de la plantilla o si no opcional, por ultimo le da <br> clik en el botton subrayado (PUBLICAR EN VIVO)</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153657.png" alt="Imagen 3" class="img-fluid">
-        </div>
-      </div>
-
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <p class="card-text">Despues de publicar le aparecera en la URl como esta subrayado en la imagen de ejemplo</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153826.png" alt="Imagen 3" class="img-fluid">
-        </div>
-      </div>
-
-   
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <h3 class="card-title">Postman</h3>
-          <p class="card-text">Aqui podra ver que es un metodo (POST) para enviar un cuerpo (BODY) lo que contiene (ID, de minichat como lo vimos en la documentacion anterior) y la URL que mostramos mas arriba en esta documentacion <br>
-          cuuando le demos los parametros del BODY y se le de en el botton de SEND le aparecera un mensaje de (status: success)</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 154251.png" alt="Imagen 3" class="img-fluid">
-        </div>
-      </div>
-
-    
-      <div class="card shadow mb-4">
-        <div class="card-body">
-          <h3 class="card-title">WhatsApp</h3>
-          <p class="card-text">Por ultimo le llegara un mensaje de WhatsApp el mismo que escribimos mas arriba</p>
-          <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 154426.png" alt="Imagen 3" class="img-fluid">
-        </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <p class="card-text">Por último encontrarás la información personal e importante. Lo que está subrayado es el
+          (ID MINYCHAT).</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-25 143936.png" alt="Imagen 4"
+          class="img-fluid">
       </div>
     </div>
   </div>
+
+  <!-- Envio Mensajes  -->
+  <div class="tab-content" *ngIf="Auxmenu === '2'">
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <h5 class="card-title">Envio Mensajes masivos</h5>
+        <p class="card-text">
+          En este documento se explica cómo crear una plantilla con un mensaje predeterminado y configurarla para su
+          envío automatizado, ya sea a través de la plataforma o mediante la API de ManyChat.</p>
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Login</h3>
+        <p class="card-text">¡Hola! En esta página encontrará cómo iniciar sesión. Simplemente selecciona algunas de
+          estas opciones: Facebook, Google, Telegram o Apple.</p>
+        <img src="../../../../assets/ducument-imagenes/Imagen de WhatsApp 2024-11-25 a las 14.53.57_67d50b9a.jpg"
+          alt="Imagen 1" class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Proyectos</h3>
+        <p class="card-text">¡Continúa dandole al proyecto!</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-25 142902.png" alt="Imagen 2"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Ajustes</h3>
+        <p class="card-text">Haz clic en el icono de configuracion, ir a WhatsApp</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 152457.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <p class="card-text">Despues le da a (PLANTILLAS DE MENSAJES) despues (PLANTILLA NUEVA)</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 152515.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Plantillas</h3>
+        <p class="card-text">Despues (NOMBRE DE LA PLANTILLA) Despues (MARKETING) Y (IDIOMA).</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 152602.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Prueba Plantillas</h3>
+        <p class="card-text">Poner el mensaje como se muestra en la imagen.</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 152944.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Proporcionar Muestra de variables</h3>
+        <p class="card-text">Llenar los campos de las variables (NOMBRE) Y (REGISTROAA2) los demas son opcionales.</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153009.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Enviar</h3>
+        <p class="card-text">Despues vamos hacia arriba para enviar la plantilla a revision.</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153102.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <p class="card-text">Despues le dira (REVISAR) donde esta subrayado</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153134.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <p class="card-text">Despues de revisado le dira (APROBADO) podra hacer dos opciones (EDITAR O ELIMINAR) </p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153239.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Dasboard</h3>
+        <p class="card-text">Despues nos devolvemos al Dasboard para ir a la (AUTOMATIZACION) despues hacia la carpeta
+          de (CDI)</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153333.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Automatizacion</h3>
+        <p class="card-text">Le damos al botton (NUEVA AUTOMATIZACION) lo que esta subrayado </p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153423.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <p class="card-text">Aparecera una interfas y le da donde esta el icono de (WhatsApp)</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153529.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <p class="card-text">Elegir una plantilla de mensajes </p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153623.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <p class="card-text">Elige la subrayada.</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153558.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <p class="card-text">Selecciona la planitilla que creo</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153731.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <p class="card-text">Despues le debe de dar un nombre que dice (SIN TITULO) preferible el mismo de la
+          plantilla o si no opcional, por ultimo le da <br> clik en el botton subrayado (PUBLICAR EN VIVO)</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153657.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <p class="card-text">Despues de publicar le aparecera en la URl como esta subrayado en la imagen de ejemplo
+        </p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 153826.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Postman</h3>
+        <p class="card-text">Aqui podra ver que es un metodo (POST) para enviar un cuerpo (BODY) lo que contiene (ID,
+          de minichat como lo vimos en la documentacion anterior) y la URL que mostramos mas arriba en esta
+          documentacion <br>
+          cuuando le demos los parametros del BODY y se le de en el botton de SEND le aparecera un mensaje de (status:
+          success)</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 154251.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <h3 class="card-title">WhatsApp</h3>
+        <p class="card-text">Por ultimo le llegara un mensaje de WhatsApp el mismo que escribimos mas arriba</p>
+        <img src="../../../../assets/ducument-imagenes/Captura de pantalla 2024-11-28 154426.png" alt="Imagen 3"
+          class="img-fluid">
+      </div>
+    </div>
+  </div>
+
 </div>
-    
-
-
