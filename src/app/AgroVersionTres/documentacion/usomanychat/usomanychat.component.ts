@@ -11,16 +11,18 @@ export class UsomanychatComponent implements OnInit {
   }
 
   Auxmenu: string = '1';
+ 
 
   ngOnInit(): void {
-  }
 
-  BtnEncontrarUsuario() {
+  }
+  BtnEncontrarUsuario (){
     this.Auxmenu = '1';
   }
-
-  BtnEnvioMensajes() {
+  BtnEnvioMensajes (){
     this.Auxmenu = '2';
   }
-
+  BtnVariables(){
+    this.Auxmenu = '3';
+  }
 }
