@@ -165,30 +165,45 @@ export class ServiciosService {
         return this.http.get<any>(this.url_servidor + 'consTipoPresentacion/' + Bandera + '/' + Parametro);
     }
 
-    modTipoPresentacion(Bandera: string,  body: any) {
+    modTipoPresentacion(Bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'modTipoPresentacion/' + Bandera, body);
     }
-    
-    modRelacionProductoPresentacion(Bandera: string,  body: any) {
+
+    modRelacionProductoPresentacion(Bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'modRelacionProductoPresentacion/' + Bandera, body);
     }
 
-    modEstadoOferta(Bandera: string,  body: any) {
+    modEstadoOferta(Bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'modEstadoOferta/' + Bandera, body);
     }
 
-    consCuponesDescuento(Bandera: string, IdTipoCupon: string, IdOferta:string) {
-        return this.http.get<any>(this.url_servidor + 'consCuponesDescuento/' + Bandera + '/' + IdTipoCupon+ '/' + IdOferta);
+    consCuponesDescuento(Bandera: string, IdTipoCupon: string, IdOferta: string) {
+        return this.http.get<any>(this.url_servidor + 'consCuponesDescuento/' + Bandera + '/' + IdTipoCupon + '/' + IdOferta);
     }
 
     consMultilistas(Bandera: string, filtrouno: string, filtrodos: string) {
         return this.http.get<any>(this.url_servidor + 'consMultilistas/' + Bandera + '/' + filtrouno + '/' + filtrodos);
     }
-    
-    consMapaCalor(Bandera: string, IdLocalidad: string, NumCompras: string, body :any) {
+
+    consMapaCalor(Bandera: string, IdLocalidad: string, NumCompras: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'consMapaCalor/' + Bandera + '/' + IdLocalidad + '/' + NumCompras, body);
     }
 }
 
 
 
+/*
+    COMO CONSUMIR LOS MICRO SERVICIOS EN POST
+
+    1. Nombre del metodo, con sus parametros de entrada, estos parametros los puedo mirara
+    en la malla dispuesta en el drive, y el nombre del metodo debe ser el mismo que el nombre 
+    del microservicio.
+
+    2. En los parametros de entrada del metodo, adiciono un parametro tipo ANY que va a hacer el cuerpo
+    de la solicitud del microservisio
+
+    3. Siguiendo la estrutura armo la url y le envio el cuerpo
+      return this.http.post<any>(this.url_servidor + 'consMapaCalor/' + Bandera + '/' + IdLocalidad + '/' + NumCompras, body);
+
+
+*/

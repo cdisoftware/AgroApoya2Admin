@@ -276,7 +276,7 @@ const routes: Routes = [
     component: UsomanychatComponent
   },
   {
-    path: 'Embajador',
+    path: 'reporte-Embajador',
     component: ReporteEmbajadorComponent
   }
 ];
