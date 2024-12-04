@@ -64,7 +64,8 @@ import { MapaCalor3Component } from './AgroVersionTres/usuario/mapa-calor3/mapa-
 import { ReporteUsuarioComponent } from './AgroVersionTres/reportes/reporte-usuario/reporte-usuario.component'
 import { ReporteVentasComponent } from './AgroVersionTres/reportes/reporte-ventas/reporte-ventas.component';
 import { UsomanychatComponent } from './AgroVersionTres/documentacion/usomanychat/usomanychat.component';
-import { IndexComponent } from './AgroVersionTres/documentacion/index/index.component'
+import { IndexComponent } from './AgroVersionTres/documentacion/index/index.component';
+import { ReporteEmbajadorComponent } from './AgroVersionTres/reportes2/reporte-embajador/reporte-embajador.component'
 
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
@@ -118,7 +119,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     ReporteUsuarioComponent,
     ReporteVentasComponent,
     UsomanychatComponent,
-    IndexComponent
+    IndexComponent,
+    ReporteEmbajadorComponent
   ],
   imports: [
     NgxMaskModule.forRoot(options),

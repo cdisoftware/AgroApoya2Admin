@@ -1,0 +1,137 @@
+<form [formGroup]="filtroReset" class="p-4">
+    <h3 class="text-center mb-4 text-primary">Reporte Embajador</h3>
+  
+      <div class="row">
+      <!-- Filtro de Fecha Inicio -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label class="form-label"><small>Fecha inicio</small></label>
+          <input type="date" class="form-control" placeholder="Fecha inicio" />
+        </div>
+      </div>
+
+      <!-- Filtro de Fecha Fin -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label class="form-label"><small>Fecha fin</small></label>
+          <input type="date" class="form-control" placeholder="Fecha fin" />
+        </div>
+      </div>
+  
+      <!-- Filtro de Código Usuario Embajador -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label class="form-label"><small>Código usuario embajador</small></label>
+          <input type="number" class="form-control" placeholder="Código usuario embajador" />
+        </div>
+      </div>
+  
+      <!-- Filtro de Correo Embajador -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label class="form-label"><small>Correo embajador</small></label>
+          <input type="text" class="form-control" placeholder="Correo embajador" />
+        </div>
+      </div>
+    </div>
+  
+    <div class="row">
+      <!-- Filtro de Teléfono Embajador -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label class="form-label"><small>Teléfono embajador</small></label>
+          <input type="text" class="form-control" placeholder="Teléfono embajador" />
+        </div>
+      </div>
+  
+      <!-- Filtro de Código Usuario Embajador Vecino -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label class="form-label"><small>Código usuario embajador vecino</small></label>
+          <input type="number" class="form-control" placeholder="Código usuario vecino" />
+        </div>
+      </div>
+  
+      <!-- Filtro de Correo Vecino -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label class="form-label"><small>Correo vecino</small></label>
+          <input type="text" class="form-control" placeholder="Correo vecino" />
+        </div>
+      </div>
+  
+      <!-- Filtro de Teléfono Vecino -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label class="form-label"><small>Teléfono vecino</small></label>
+          <input type="text" class="form-control" placeholder="Teléfono vecino" />
+        </div>
+      </div>
+    </div>
+  
+    <div class="row">
+      <!-- Filtro de Localidad -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label class="form-label"><small>Localidad</small></label>
+          <select class="form-control">
+            <option value="0">Seleccione</option>
+            <option *ngFor="let locali of localidad" [value]="locali.IdTipo"> {{locali.Descripcion }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="d-flex justify-content-center">
+      <button type="button" class="btn btn-primary me-3"  (click)="btnBuscar()">Buscar</button>
+      <button type="reset" class="btn btn-secondary me-3" (click)="Filtroslimpios()">Limpiar</button>
+    </div>
+
+    <!-- tabla con encabezados -->
+    <div *ngIf="mostraTabla == '1'" class="table-responsive p-4 cursorPonter">
+        <table class="table table-striped table-bordered text-center">
+          <thead class="table-primary">
+            <tr>
+              <th>Fecha Creación</th>
+              <th>Nombre Embajador</th>
+              <th>ID Embajador</th>
+              <th>Número Vecino</th>
+              <th>Localidad</th>
+              <th>Conjunto</th>
+              <th>Dirección</th>
+              <th>Complemento Dirección</th>
+              <th>Accion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2024-12-01</td>
+              <td>Juan Pérez</td>
+              <td>12345</td>
+              <td>67890</td>
+              <td>Localidad 1</td>
+              <td>Conjunto A</td>
+              <td>Calle 123</td>
+              <td>Apto 4B</td>
+            </tr>
+            <tr>
+              <td>2024-12-02</td>
+              <td>María Gómez</td>
+              <td>67890</td>
+              <td>12345</td>
+              <td>Localidad 2</td>
+              <td>Conjunto B</td>
+              <td>Carrera 45</td>
+              <td>Torre 2</td>
+            </tr>
+            <!-- Agrega más filas aquí -->
+          </tbody>
+        </table>
+      </div>
+      
+  
+    
+  </form>
+  

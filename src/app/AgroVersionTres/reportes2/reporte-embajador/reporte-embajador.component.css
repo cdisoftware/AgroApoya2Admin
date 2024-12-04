@@ -1,0 +1,19 @@
+.form-label {
+    font-size: 0.65rem; /* Ajusta el tamaño de la fuente */
+    margin-bottom: 0.1rem; /* Reduce el margen inferior */
+    margin-left: 5px;
+  }
+  .form-control {
+    padding: 0.4rem 0.5rem; /* Reduce el padding interno */
+    font-size: 0.85rem; /* Ajusta el tamaño de la fuente */
+    height: calc(1.5em + 0.8rem + 2px); /* Ajusta la altura del campo */
+    width: 300px; /* Ajusta ancho cmapo*/
+  }
+
+  .btn-primary {
+    width: 25%; /* Center and make the button wider */
+}
+
+.btn-secondary{
+    width: 25%;
+}

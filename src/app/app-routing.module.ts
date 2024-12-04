@@ -55,6 +55,7 @@ import { ReporteUsuarioComponent } from './AgroVersionTres/reportes/reporte-usua
 import { MapaCalor3Component } from './AgroVersionTres/usuario/mapa-calor3/mapa-calor3.component';
 import { UsomanychatComponent } from './AgroVersionTres/documentacion/usomanychat/usomanychat.component';
 import { IndexComponent } from './AgroVersionTres/documentacion/index/index.component';
+import { ReporteEmbajadorComponent } from './AgroVersionTres/reportes2/reporte-embajador/reporte-embajador.component';
 
 const routes: Routes = [
   {
@@ -273,6 +274,10 @@ const routes: Routes = [
   {
     path: 'UsoMany',
     component: UsomanychatComponent
+  },
+  {
+    path: 'Embajador',
+    component: ReporteEmbajadorComponent
   }
 ];
 
