@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class ReporteEmbajadorComponent implements OnInit {
   mostrarTabla: string = '0'; //por defecto esta oculta , 1--> Muestra, 0--> Oculta
   ListaLocalidad: any = [];
   ListaTabla: any = [];
-  mostrarModal: boolean = false; 
+  mostrarModal: boolean = false;
 
   FechaInicioEmba: string
   FechaFinEmba: string
@@ -22,7 +22,7 @@ export class ReporteEmbajadorComponent implements OnInit {
   telefonoEmbajador: string
   CodigoUsuarioVecino: string
   CorreoVeci: string
-  TelefonoVeci:string
+  TelefonoVeci: string
   localidad: string
 
   constructor(public ServiciosGenerales: ServiciosService, private fb: FormBuilder) {
@@ -41,7 +41,6 @@ export class ReporteEmbajadorComponent implements OnInit {
 
   ngOnInit(): void {
     this.CargasIniciales();
-    this.ConjuntosReporte();
   }
 
   CargasIniciales(): void {
@@ -50,7 +49,9 @@ export class ReporteEmbajadorComponent implements OnInit {
     });
   }
 
-  ConjuntosReporte(): void {
+  //Metodos accion botones filtros
+  btnBuscar() {
+    this.mostrarTabla = '1';
     const body = {
       Fechainicio: "0",
       Fechafin: "0"
@@ -61,20 +62,6 @@ export class ReporteEmbajadorComponent implements OnInit {
     });
   }
 
-  btnBuscar() {
-    this.mostrarTabla = '1';
-  }
-
-  // Métodos para manejar el modal
-  abrirModal(): void {
-    this.mostrarModal = true;
-  }
-
-  cerrarModal(): void {
-    this.mostrarModal = false;
-  }
-
-  // Métodos para limpiar filtros
   BtnLimpiar(): void {
     this.filtroReset.patchValue({
       FechaInicioEmba: '',
@@ -89,4 +76,7 @@ export class ReporteEmbajadorComponent implements OnInit {
     });
     this.mostrarTabla = '0';
   }
+
+
+
 }

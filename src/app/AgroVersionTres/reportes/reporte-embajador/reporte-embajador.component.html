@@ -6,7 +6,8 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Fecha inicio</small></label>
-        <input type="date" class="form-control" formControlName="FechaInicioEmba" placeholder="Fecha inicio" [(ngModel)]="FechaInicioEmba" />
+        <input type="date" class="form-control" formControlName="FechaInicioEmba" placeholder="Fecha inicio"
+          [(ngModel)]="FechaInicioEmba" />
       </div>
     </div>
 
@@ -14,7 +15,8 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Fecha fin</small></label>
-        <input type="date" class="form-control" formControlName="FechaFinEmba" placeholder="Fecha fin" [(ngModel)]="FechaFinEmba" />
+        <input type="date" class="form-control" formControlName="FechaFinEmba" placeholder="Fecha fin"
+          [(ngModel)]="FechaFinEmba" />
       </div>
     </div>
 
@@ -22,7 +24,8 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Código usuario embajador</small></label>
-        <input type="number" class="form-control" formControlName="CodigoUsuarioEmba" placeholder="Código usuario embajador" [(ngModel)]="CodigoUsuarioEmba"/>
+        <input type="number" class="form-control" formControlName="CodigoUsuarioEmba"
+          placeholder="Código usuario embajador" [(ngModel)]="CodigoUsuarioEmba" />
       </div>
     </div>
 
@@ -30,17 +33,17 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Correo embajador</small></label>
-        <input type="text" class="form-control" formControlName="CorreoEmba" placeholder="Correo embajador" [(ngModel)]="CorreoEmba"/>
+        <input type="text" class="form-control" formControlName="CorreoEmba" placeholder="Correo embajador"
+          [(ngModel)]="CorreoEmba" />
       </div>
     </div>
-  </div>
 
-  <div class="row">
     <!-- Filtro de Teléfono Embajador -->
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Teléfono embajador</small></label>
-        <input type="text" class="form-control" formControlName="TelefonoVeci" placeholder="Teléfono" [(ngModel)]="telefonoEmbajador"/>
+        <input type="text" class="form-control" formControlName="TelefonoVeci" placeholder="Teléfono"
+          [(ngModel)]="telefonoEmbajador" />
       </div>
     </div>
 
@@ -48,7 +51,8 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Código usuario embajador vecino</small></label>
-        <input type="number" class="form-control" formControlName="CodigoUsuarioVecino" placeholder="Código usuario vecino" [(ngModel)]="CodigoUsuarioVecino" />
+        <input type="number" class="form-control" formControlName="CodigoUsuarioVecino"
+          placeholder="Código usuario vecino" [(ngModel)]="CodigoUsuarioVecino" />
       </div>
     </div>
 
@@ -56,7 +60,8 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Correo vecino</small></label>
-        <input type="text" class="form-control" formControlName="CorreoVeci" placeholder="Correo vecino"[(ngModel)]="CorreoVeci"/>
+        <input type="text" class="form-control" formControlName="CorreoVeci" placeholder="Correo vecino"
+          [(ngModel)]="CorreoVeci" />
       </div>
     </div>
 
@@ -64,12 +69,11 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Teléfono vecino</small></label>
-        <input type="text" class="form-control" formControlName="TelefonoVeci" placeholder="Teléfono vecino" [(ngModel)]="TelefonoVeci"/>
+        <input type="text" class="form-control" formControlName="TelefonoVeci" placeholder="Teléfono vecino"
+          [(ngModel)]="TelefonoVeci" />
       </div>
     </div>
-  </div>
 
-  <div class="row">
     <!-- Filtro de Localidad -->
     <div class="col-md-3 mb-3">
       <div class="form-group">
@@ -86,23 +90,7 @@
   <div class="d-flex justify-content-center">
     <button type="button" class="btn btn-primary me-3" (click)="btnBuscar()">Buscar</button>
     <button type="reset" class="btn btn-secondary me-3" (click)="BtnLimpiar()">Limpiar</button>
-
-    <!-- Botón para abrir el modal -->
-<button class="btn btn-info btn-primary" (click)="abrirModal()">Abrir Modal</button>
   </div>
-
-  
-
-
-<!-- Modal -->
-<div *ngIf="mostrarModal" class="modal-overlay">
-  <div class="modal-content">
-    <span class="close" (click)="cerrarModal()">&times;</span>
-    <h2>Título del Modal</h2>
-    <p>.</p>
-  </div>
-</div>
-
 
   <!-- tabla con encabezados -->
   <div *ngIf="mostrarTabla == '1'" class="table-responsive p-4 cursorPonter">
@@ -136,4 +124,8 @@
     </table>
   </div>
 </form>
+
+
+
+<!-- AREA MODALES -->
 
