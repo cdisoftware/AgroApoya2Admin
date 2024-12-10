@@ -13,7 +13,17 @@ export class ReporteEmbajadorComponent implements OnInit {
   mostrarTabla: string = '0'; //por defecto esta oculta , 1--> Muestra, 0--> Oculta
   ListaLocalidad: any = [];
   ListaTabla: any = [];
-  mostrarModal: boolean = false; // Controla la visibilidad del modal
+  mostrarModal: boolean = false; 
+
+  FechaInicioEmba: string
+  FechaFinEmba: string
+  CodigoUsuarioEmba: string
+  CorreoEmba: string
+  telefonoEmbajador: string
+  CodigoUsuarioVecino: string
+  CorreoVeci: string
+  TelefonoVeci:string
+  localidad: string
 
   constructor(public ServiciosGenerales: ServiciosService, private fb: FormBuilder) {
     this.filtroReset = this.fb.group({
@@ -22,6 +32,7 @@ export class ReporteEmbajadorComponent implements OnInit {
       CodigoUsuarioEmba: [''],
       CorreoEmba: [''],
       CodigoUsuarioVecino: [''],
+      telefonoEmbajador: [''],
       CorreoVeci: [''],
       TelefonoVeci: [''],
       localidad: ['0']
@@ -70,6 +81,7 @@ export class ReporteEmbajadorComponent implements OnInit {
       FechaFinEmba: '',
       CodigoUsuarioEmba: '',
       CorreoEmba: '',
+      telefonoEmbajador: '',
       TelefonoVeci: '',
       CodigoUsuarioVecino: '',
       CorreoVeci: '',
