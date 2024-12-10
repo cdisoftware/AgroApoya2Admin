@@ -22,10 +22,7 @@ export class ReporteUsuarioComponent implements OnInit {
       FechaRegistro: [''],
       Localidad: ['0'], // **Cambio: Valor inicial configurado para select**
       NumeroCompras: ['0'], // **Cambio: Valor inicial configurado para select**
-      CódigoUsuario: [''],
-      FiltroCorreo: [''],
-      FiltroTelefo: [''],
-      NomApellidoFiltro: ['']
+      
     });
   }
 
@@ -41,10 +38,7 @@ export class ReporteUsuarioComponent implements OnInit {
       FechaRegistro: '',
       Localidad: '0', // **Cambio: Restablecer select a "Seleccione"**
       NumeroCompras: '0', // **Cambio: Restablecer select a "Seleccione"**
-      CódigoUsuario: '',
-      FiltroCorreo: '',
-      FiltroTelefo: '',
-      NomApellidoFiltro: ''
+      
     });
   }
 

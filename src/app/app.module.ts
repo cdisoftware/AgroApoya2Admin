@@ -65,14 +65,14 @@ import { ReporteUsuarioComponent } from './AgroVersionTres/reportes/reporte-usua
 import { ReporteVentasComponent } from './AgroVersionTres/reportes/reporte-ventas/reporte-ventas.component';
 import { UsomanychatComponent } from './AgroVersionTres/documentacion/usomanychat/usomanychat.component';
 import { IndexComponent } from './AgroVersionTres/documentacion/index/index.component';
-import { ReporteEmbajadorComponent } from './AgroVersionTres/reportes2/reporte-embajador/reporte-embajador.component'
+import { ReporteEmbajadorComponent } from './AgroVersionTres/reportes/reporte-embajador/reporte-embajador.component'
 
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent,ReporteEmbajadorComponent,
     CrearofertaComponent,
     BuscarofertaComponent,
     SectorizacionComponent,

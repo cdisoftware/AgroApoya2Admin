@@ -188,6 +188,12 @@ export class ServiciosService {
     consMapaCalor(Bandera: string, IdLocalidad: string, NumCompras: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'consMapaCalor/' + Bandera + '/' + IdLocalidad + '/' + NumCompras, body);
     }
+
+    consEmbajadorConjuntosReporte (Bandera: string, UsucodigEmbajador: string, CorreoEmbajador: string, TelefonoEmbajador: string,
+        UsucodigVecino: string, CorreoVecino: string, TelefonoVecino: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'consEmbajadorConjuntosReporte/' + Bandera + '/' + UsucodigEmbajador + '/' + CorreoEmbajador + '/' + TelefonoEmbajador + '/'+
+        UsucodigVecino + '/' + CorreoVecino + '/' + TelefonoVecino, body);
+    }
 }
 
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service'
+import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service';
 
 @Component({
   selector: 'app-reporte-embajador',
@@ -10,11 +10,12 @@ import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service
 export class ReporteEmbajadorComponent implements OnInit {
 
   filtroReset: FormGroup;
-  mostraTabla: string = '0'; //por defecto esta oculta , 1--> Muestra, 0--> Oculta
+  mostrarTabla: string = '0'; //por defecto esta oculta , 1--> Muestra, 0--> Oculta
   ListaLocalidad: any = [];
+  ListaTabla: any = [];
+  mostrarModal: boolean = false; // Controla la visibilidad del modal
 
   constructor(public ServiciosGenerales: ServiciosService, private fb: FormBuilder) {
-
     this.filtroReset = this.fb.group({
       FechaInicioEmba: [''],
       FechaFinEmba: [''],
@@ -28,7 +29,8 @@ export class ReporteEmbajadorComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.CargasIniciales()
+    this.CargasIniciales();
+    this.ConjuntosReporte();
   }
 
   CargasIniciales(): void {
@@ -37,26 +39,42 @@ export class ReporteEmbajadorComponent implements OnInit {
     });
   }
 
-  btnBuscar() {
-    this.mostraTabla = '1';
-    
+  ConjuntosReporte(): void {
+    const body = {
+      Fechainicio: "0",
+      Fechafin: "0"
+    };
+    this.ServiciosGenerales.consEmbajadorConjuntosReporte('1', '0', '0', '0', '0', '0', '0', body).subscribe(Rest => {
+      this.ListaTabla = Rest;
+      console.log(Rest);
+    });
   }
 
-  // metodos Filtros limpos
+  btnBuscar() {
+    this.mostrarTabla = '1';
+  }
+
+  // Métodos para manejar el modal
+  abrirModal(): void {
+    this.mostrarModal = true;
+  }
+
+  cerrarModal(): void {
+    this.mostrarModal = false;
+  }
+
+  // Métodos para limpiar filtros
   BtnLimpiar(): void {
-    this.filtroReset.reset({
+    this.filtroReset.patchValue({
       FechaInicioEmba: '',
       FechaFinEmba: '',
       CodigoUsuarioEmba: '',
       CorreoEmba: '',
-      TelefonoEmba: '',
+      TelefonoVeci: '',
       CodigoUsuarioVecino: '',
       CorreoVeci: '',
-      TelefonoVeci: '',
       localidad: '0'
     });
-
-    this.mostraTabla = '0';
+    this.mostrarTabla = '0';
   }
-
 }
