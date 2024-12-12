@@ -1,7 +1,8 @@
+import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service'
-import { BoundElementProperty } from '@angular/compiler';
+
 
 @Component({
   selector: 'app-creacionoferta',
@@ -11,6 +12,7 @@ import { BoundElementProperty } from '@angular/compiler';
 export class CreacionofertaComponent implements OnInit {
 
   constructor(
+    private route: ActivatedRoute,
     private modalService: NgbModal,
     private ServiciosService: ServiciosService,
   ) { }
@@ -115,8 +117,16 @@ export class CreacionofertaComponent implements OnInit {
   ArrayTipoVentaProd: any[];
   ArrayImagenesProducto: any[];
 
+  /* INCIALIZACION DE LA PAGINA*/
   ngOnInit(): void {
-    this.CargaInicialActualizacionOferta()
+    this.route.queryParams.subscribe(params => {
+      this.IdOferta = params['IdOferta']; // Acceder al valor del parámetro "id"
+      if (this.IdOferta != undefined && this.IdOferta != null) {
+        this.CargaInicialActualizacionOferta();
+      } else {
+        this.CargaIncialCrearOferta();
+      }
+    });
   }
 
   CargaIncialCrearOferta() {
@@ -130,8 +140,6 @@ export class CreacionofertaComponent implements OnInit {
   }
 
   CargaInicialActualizacionOferta() {
-
-    this.IdOferta = '11';
     this.VerOcultarModulos = "2";
 
     this.ListaSectoresOferta();
@@ -391,28 +399,28 @@ export class CreacionofertaComponent implements OnInit {
   }
 
   CreaMapa(IdMapa: string) {
- /*   this.geocoder.geocode({ address: this.NombreCiudad }).then((result) => {
-      const { results } = result;
-      var lati = results[0].geometry.location.lat();
-      var longi = results[0].geometry.location.lng();
-      this.map = new google.maps.Map(
-        document.getElementById(IdMapa) as HTMLElement,
-        {
-          zoom: 13,
-          center: {
-            lat: lati,
-            lng: longi
-          },
-        }
-      );
-      this.map.addListener("click", (e: any) => {
-        this.AgregarMarcador(e.latLng, this.map);
-        this.LatitudeCoordenadas = e.latLng.toString()
-        this.LatitudeCoordenadas = this.LatitudeCoordenadas.substring(1, 15)
-        this.LongitudeCoordenadas = e.latLng.toString()
-        this.LongitudeCoordenadas = this.LongitudeCoordenadas.substring(this.LongitudeCoordenadas.indexOf('-'), this.LongitudeCoordenadas.length - 1)
-      });
-    })*/
+    /*   this.geocoder.geocode({ address: this.NombreCiudad }).then((result) => {
+         const { results } = result;
+         var lati = results[0].geometry.location.lat();
+         var longi = results[0].geometry.location.lng();
+         this.map = new google.maps.Map(
+           document.getElementById(IdMapa) as HTMLElement,
+           {
+             zoom: 13,
+             center: {
+               lat: lati,
+               lng: longi
+             },
+           }
+         );
+         this.map.addListener("click", (e: any) => {
+           this.AgregarMarcador(e.latLng, this.map);
+           this.LatitudeCoordenadas = e.latLng.toString()
+           this.LatitudeCoordenadas = this.LatitudeCoordenadas.substring(1, 15)
+           this.LongitudeCoordenadas = e.latLng.toString()
+           this.LongitudeCoordenadas = this.LongitudeCoordenadas.substring(this.LongitudeCoordenadas.indexOf('-'), this.LongitudeCoordenadas.length - 1)
+         });
+       })*/
   }
   /*
   AgregarMarcador(latLng: google.maps.LatLng, map: google.maps.Map) {
