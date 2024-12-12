@@ -194,6 +194,10 @@ export class ServiciosService {
         return this.http.post<any>(this.url_servidor + 'consEmbajadorConjuntosReporte/' + Bandera + '/' + UsucodigEmbajador + '/' + CorreoEmbajador + '/' + TelefonoEmbajador + '/'+
         UsucodigVecino + '/' + CorreoVecino + '/' + TelefonoVecino, body);
     }
+    
+    consEmbajadorVecinosReporte(Bandera: string, UsucodigEmbajador: string) {
+        return this.http.get<any>(this.url_servidor + 'consEmbajadorVecinosReporte/' + Bandera + '/' + UsucodigEmbajador);
+    }
 }
 
 
