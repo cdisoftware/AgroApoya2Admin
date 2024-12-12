@@ -6,13 +6,8 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Fecha inicio</small></label>
-        <input
-          type="date"
-          class="form-control"
-          formControlName="FechaInicioEmba"
-          placeholder="Fecha inicio"
-          [(ngModel)]="FechaInicioEmba"
-        />
+        <input type="date" class="form-control" formControlName="FechaInicioEmba" placeholder="Fecha inicio"
+          [(ngModel)]="FechaInicioEmba" />
       </div>
     </div>
 
@@ -20,29 +15,17 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Fecha fin</small></label>
-        <input
-          type="date"
-          class="form-control"
-          formControlName="FechaFinEmba"
-          placeholder="Fecha fin"
-          [(ngModel)]="FechaFinEmba"
-        />
+        <input type="date" class="form-control" formControlName="FechaFinEmba" placeholder="Fecha fin"
+          [(ngModel)]="FechaFinEmba" />
       </div>
     </div>
 
     <!-- Filtro de Código Usuario Embajador -->
     <div class="col-md-3 mb-3">
       <div class="form-group">
-        <label class="form-label"
-          ><small>Código usuario embajador</small></label
-        >
-        <input
-          type="number"
-          class="form-control"
-          formControlName="CodigoUsuarioEmba"
-          placeholder="Código usuario embajador"
-          [(ngModel)]="CodigoUsuarioEmba"
-        />
+        <label class="form-label"><small>Código usuario embajador</small></label>
+        <input type="number" class="form-control" formControlName="CodigoUsuarioEmba"
+          placeholder="Código usuario embajador" [(ngModel)]="CodigoUsuarioEmba" />
       </div>
     </div>
 
@@ -50,13 +33,8 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Correo embajador</small></label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="CorreoEmba"
-          placeholder="Correo embajador"
-          [(ngModel)]="CorreoEmba"
-        />
+        <input type="text" class="form-control" formControlName="CorreoEmba" placeholder="Correo embajador"
+          [(ngModel)]="CorreoEmba" />
       </div>
     </div>
 
@@ -64,29 +42,17 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Teléfono embajador</small></label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="TelefonoVeci"
-          placeholder="Teléfono"
-          [(ngModel)]="telefonoEmbajador"
-        />
+        <input type="text" class="form-control" formControlName="TelefonoVeci" placeholder="Teléfono"
+          [(ngModel)]="telefonoEmbajador" />
       </div>
     </div>
 
     <!-- Filtro de Código Usuario Embajador Vecino -->
     <div class="col-md-3 mb-3">
       <div class="form-group">
-        <label class="form-label"
-          ><small>Código usuario embajador vecino</small></label
-        >
-        <input
-          type="number"
-          class="form-control"
-          formControlName="CodigoUsuarioVecino"
-          placeholder="Código usuario vecino"
-          [(ngModel)]="CodigoUsuarioVecino"
-        />
+        <label class="form-label"><small>Código usuario embajador vecino</small></label>
+        <input type="number" class="form-control" formControlName="CodigoUsuarioVecino"
+          placeholder="Código usuario vecino" [(ngModel)]="CodigoUsuarioVecino" />
       </div>
     </div>
 
@@ -94,13 +60,8 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Correo vecino</small></label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="CorreoVeci"
-          placeholder="Correo vecino"
-          [(ngModel)]="CorreoVeci"
-        />
+        <input type="text" class="form-control" formControlName="CorreoVeci" placeholder="Correo vecino"
+          [(ngModel)]="CorreoVeci" />
       </div>
     </div>
 
@@ -108,13 +69,8 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Teléfono vecino</small></label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="TelefonoVeci"
-          placeholder="Teléfono vecino"
-          [(ngModel)]="TelefonoVeci"
-        />
+        <input type="text" class="form-control" formControlName="TelefonoVeci" placeholder="Teléfono vecino"
+          [(ngModel)]="TelefonoVeci" />
       </div>
     </div>
 
@@ -124,10 +80,7 @@
         <label class="form-label"><small>Localidad</small></label>
         <select class="form-control" formControlName="localidad">
           <option value="0">Seleccione</option>
-          <option
-            *ngFor="let localida of ListaLocalidad"
-            [value]="localida.IdTipo"
-          >
+          <option *ngFor="let localida of ListaLocalidad" [value]="localida.IdTipo">
             {{ localida.Descripcion }}
           </option>
         </select>
@@ -172,7 +125,8 @@
           <td>{{ Tablalista.DRCCION }}</td>
           <td>{{ Tablalista.CMPLMNTO_DRRCCION }}</td>
           <td>
-            <img src="../../../../assets/ImagenesAgroApoya2Adm/vista.png" width="35" height="35" (click)="AbrirModal(Tablalista)"/>
+            <img src="../../../../assets/ImagenesAgroApoya2Adm/vista.png" width="35" height="35"
+              (click)="AbrirModal(Tablalista)" />
           </td>
         </tr>
       </tbody>
@@ -184,12 +138,7 @@
 <ng-template #ModalVecino let-modal>
   <div class="modal-header bg-secundary text-white">
     <h1 class="modal-title fs-5">Detalle</h1>
-    <button
-      type="button"
-      class="btn-close"
-      aria-label="Close"
-      (click)="modal.dismiss()"
-    ></button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
   </div>
   <div class="modal-body">
     <div class="container">
@@ -239,10 +188,10 @@
     <table class="table table-striped table-bordered text-center">
       <thead class="table-primary">
         <tr>
-          <th >Nombre</th>
-          <th >Celular</th>
-          <th >Direccion</th>
-          <th >Complemento direccion</th>
+          <th>Nombre</th>
+          <th>Celular</th>
+          <th>Direccion</th>
+          <th>Complemento direccion</th>
           <th>Desplegar</th>
         </tr>
       </thead>
