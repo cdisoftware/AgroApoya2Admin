@@ -1,4 +1,4 @@
-<form [formGroup]="filtroReset" class="p-4">
+<form  class="p-4">
   <h3 class="text-center mb-4 text-primary">Reporte Embajador</h3>
 
   <div class="row">
@@ -69,8 +69,7 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Teléfono vecino</small></label>
-        <input type="text" class="form-control" formControlName="TelefonoVeci" placeholder="Teléfono vecino"
-          [(ngModel)]="TelefonoVeci" />
+        <input type="text" class="form-control" formControlName="TelefonoVeci" placeholder="Teléfono vecino" [(ngModel)]="TelefonoVeci" />
       </div>
     </div>
 
@@ -78,10 +77,9 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Localidad</small></label>
-        <select class="form-control" formControlName="localidad">
+        <select class="form-control" formControlName="localidad" [(ngModel)]="localidad">
           <option value="0">Seleccione</option>
-          <option *ngFor="let localida of ListaLocalidad" [value]="localida.IdTipo">
-            {{ localida.Descripcion }}
+          <option *ngFor="let localida of ListaLocalidad" value="{{localida.IdTipo}}">{{localida.Descripcion }}
           </option>
         </select>
       </div>
@@ -201,11 +199,14 @@
           <td>{{ VecinosReporte.CelularVecino }}</td>
           <td>{{ VecinosReporte.DireccionVecino }}</td>
           <td>{{ VecinosReporte.ComplementoVecino }}</td>
+          <td>
+            <img src="../../../../assets/ImagenesAgroApoya2Adm/abajo.png" alt="" width="35" height="35">
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
-  <div class="text-center my-4">
-    <button type="button" class="btn btn-primary">Exportar Excel</button>
+  <div class="text-center my-4" *ngIf="ExelVecino != '0'">
+    <button type="button" class="btn btn-primary" (click)="DescargarExcelEmbajadorVecinos()">Exportar Excel</button>
   </div>
 </ng-template>

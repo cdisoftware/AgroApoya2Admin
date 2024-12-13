@@ -4,6 +4,10 @@ import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ViewChild } from '@angular/core';
 
+import * as fs from 'file-saver';
+import { Workbook } from 'exceljs'
+
+
 @Component({
   selector: 'app-reporte-embajador',
   templateUrl: './reporte-embajador.component.html',
@@ -11,22 +15,22 @@ import { ViewChild } from '@angular/core';
 })
 export class ReporteEmbajadorComponent implements OnInit {
 
-  filtroReset: FormGroup;
+ 
   mostrarTabla: string = '0'; //por defecto esta oculta , 1--> Muestra, 0--> Oculta
   ListaLocalidad: any = [];
   ListaTabla: any = [];
   ReporteVecinos: any = [];
 
   //VARIABLES DE LOS FILTROS
-  FechaInicioEmba: string
-  FechaFinEmba: string
-  CodigoUsuarioEmba: string
-  CorreoEmba: string
-  telefonoEmbajador: string
-  CodigoUsuarioVecino: string
-  CorreoVeci: string
-  TelefonoVeci: string
-  localidad: string
+  FechaInicioEmba: string = '';
+  FechaFinEmba: string = '';
+  CodigoUsuarioEmba: string = '';
+  CorreoEmba: string = '';
+  telefonoEmbajador: string = '';
+  CodigoUsuarioVecino: string = '';
+  CorreoVeci: string = '';
+  TelefonoVeci: string = '';
+  localidad: any = [];
 
   //VARIABLES DEL MODAL VECINOS
   Idusuario: any;
@@ -41,22 +45,12 @@ export class ReporteEmbajadorComponent implements OnInit {
   Linkrelacionvecinos: any;
   Numerovecinos: any;
   Fechaincioembajador: any;
+  ExelVecino: string;
 
 
   @ViewChild('ModalVecino', { static: false }) ModalVecino: any;
 
-  constructor(public ServiciosGenerales: ServiciosService, private fb: FormBuilder, private modalService: NgbModal) {
-    this.filtroReset = this.fb.group({
-      FechaInicioEmba: [''],
-      FechaFinEmba: [''],
-      CodigoUsuarioEmba: [''],
-      CorreoEmba: [''],
-      CodigoUsuarioVecino: [''],
-      telefonoEmbajador: [''],
-      CorreoVeci: [''],
-      TelefonoVeci: [''],
-      localidad: ['0']
-    });
+  constructor(public ServiciosGenerales: ServiciosService, private modalService: NgbModal) {
   }
 
   ngOnInit(): void {
@@ -83,17 +77,15 @@ export class ReporteEmbajadorComponent implements OnInit {
   }
 
   BtnLimpiar(): void {
-    this.filtroReset.patchValue({
-      FechaInicioEmba: '',
-      FechaFinEmba: '',
-      CodigoUsuarioEmba: '',
-      CorreoEmba: '',
-      telefonoEmbajador: '',
-      TelefonoVeci: '',
-      CodigoUsuarioVecino: '',
-      CorreoVeci: '',
-      localidad: '0'
-    });
+    this.FechaInicioEmba = '';
+    this.FechaFinEmba ='';
+    this.CodigoUsuarioEmba= '';
+    this.CorreoEmba= '';
+    this.telefonoEmbajador= '';
+    this.CodigoUsuarioVecino= '';
+    this.CorreoVeci = '';
+    this.TelefonoVeci ='';
+    this.localidad ='0';
     this.mostrarTabla = '0';
   }
   AbrirModal(ListaTabla: any): void {
@@ -120,23 +112,30 @@ export class ReporteEmbajadorComponent implements OnInit {
     this.ServiciosGenerales.consEmbajadorVecinosReporte('1', UsucodigEmbajador).subscribe(Rest => {
       this.ReporteVecinos = Rest;
       console.log(Rest);
+
+      if(this.ReporteVecinos.length == 0){
+        this.ExelVecino = '0';
+      }else{
+        this.ExelVecino = '1';
+      }
     },
       (error) => {
         console.error('Error al obtener los datos:', error);
       });
   }
 
-  /*  DescargarExcelEmbajadorVecinos(){
+  DescargarExcelEmbajadorVecinos(){
         //Crear nuevo archiv
         let workbook = new Workbook();
   
         // crear una nueva hoja dentro del excel
-        let worksheet = workbook.addWorksheet("Productos Total"); //Nombre de la hoja
-        let header = ['Producto', 'Peso Total']; //Encabezado y se dejan las columnas que corresponden 
+        let worksheet = workbook.addWorksheet("Reporte Vecinos"); //Nombre de la hoja
+        let header = ['IdUsuarioEmbajador','Nombre','Correo','FechaCreacion','Celular','id_manychat','DRCCION',
+          'CMPLMNTO_DRRCCION','id']; //Encabezado y se dejan las columnas que corresponden 
   
   
         worksheet.addRow(header); //le da los estilos a  header de la tabla
-        ['A1', 'B1'].map(key => {
+        ['A1', 'B1', 'C1', 'D1', 'E1', 'G1', 'F1', 'H1', 'I1', 'J1', 'K1', 'L1'].map(key => {
           worksheet.getCell(key).fill = {
             type: 'pattern',
             pattern: 'darkTrellis',
@@ -149,28 +148,33 @@ export class ReporteEmbajadorComponent implements OnInit {
         });
   
         worksheet.columns = [ // le dan el tamaño a las columnas
-          { width: 25, key: 'A' }, { width: 15, key: 'B' }
-        ];
-  
-        worksheet.autoFilter = 'A1:B1';
-  
-  
+          { width: 25 }, { width: 30 }, { width: 30 }, { width: 20 }, { width: 20 },
+        { width: 20 }, { width: 25 }, { width: 30 }, { width: 30 }, { width: 20 },
+        { width: 15 }, { width: 25 }
+        ];  
         //PARTE DINAMINCA!!
         //Recorre el arreglo que quiero poner en el excel
-        for (let x1 of this.ArregloLibrasOferta) {
+        for (let x1 of this.ReporteVecinos) {
           let temp = []
           // EN EL ORDERN QUE LOS PONGAS ACA SE VAN A VER EN LA HOJA DEL EXCEL
-          temp.push(x1['Producto'])
-          temp.push(x1['PesoTotal'])
-  
+          
+          temp.push(x1['UsucodigEmbajador'])
+          temp.push(x1['NombreVecino'])
+          temp.push(x1['CorreoVecino'])
+          temp.push(x1['FechaCreacionVecino'])
+          temp.push(x1['CelularVecino'])
+          temp.push(x1['IdManychatVecino'])
+          temp.push(x1['DireccionVecino'])
+          temp.push(x1['ComplementoVecino'])
+          temp.push(x1['Id'])
+          
           worksheet.addRow(temp)
         }
   
-        let fname = "NombreReporte";
+        let fname = "Reporte-Embajador";
         workbook.xlsx.writeBuffer().then((data) => {
           let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
           fs.saveAs(blob, fname + '.xlsx');
         });
-      }
-    */
-}
+      } 
+    }
