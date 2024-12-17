@@ -1,4 +1,4 @@
-import { FormGroup, FormBuilder } from '@angular/forms';
+
 import { Component, OnInit } from '@angular/core';
 import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -14,12 +14,15 @@ import { Workbook } from 'exceljs'
   styleUrls: ['./reporte-embajador.component.css']
 })
 export class ReporteEmbajadorComponent implements OnInit {
+[x: string]: any;
 
  
   mostrarTabla: string = '0'; //por defecto esta oculta , 1--> Muestra, 0--> Oculta
   ListaLocalidad: any = [];
   ListaTabla: any = [];
   ReporteVecinos: any = [];
+  MostrarTablaModal : string = '0';
+
 
   //VARIABLES DE LOS FILTROS
   FechaInicioEmba: string = '';
@@ -65,17 +68,30 @@ export class ReporteEmbajadorComponent implements OnInit {
 
   //Metodos accion botones filtros
   btnBuscar() {
+    // CREAR VARIABLES LOCALES 
+    var codigo: string = '0';
+    var auxCorreo: string= '0';
+
+    if(this.CodigoUsuarioVecino != '' && this.CodigoUsuarioVecino != undefined && this.CodigoUsuarioVecino != null ){
+      codigo = this.CodigoUsuarioVecino;
+    }
+    if(this.Correo != '' && this.Correo != undefined && this.Correo != null ){
+      auxCorreo = this.Correo;
+    }
     this.mostrarTabla = '1';
     const body = {
       Fechainicio: "0",
       Fechafin: "0"
     };
-    this.ServiciosGenerales.consEmbajadorConjuntosReporte('1', '0', '0', '0', '0', '0', '0', body).subscribe(Rest => {
+    this.ServiciosGenerales.consEmbajadorConjuntosReporte('1', codigo, auxCorreo, '0', '0', '0', '0', body)
+    .subscribe(Rest => {
+      console.log('Respuesta del Servicio:', Rest); 
       this.ListaTabla = Rest;
-      console.log(Rest);
+    }, error => {
+      console.error('Error en el servicio:', error);
     });
+  
   }
-
   BtnLimpiar(): void {
     this.FechaInicioEmba = '';
     this.FechaFinEmba ='';
@@ -135,7 +151,7 @@ export class ReporteEmbajadorComponent implements OnInit {
   
   
         worksheet.addRow(header); //le da los estilos a  header de la tabla
-        ['A1', 'B1', 'C1', 'D1', 'E1', 'G1', 'F1', 'H1', 'I1', 'J1', 'K1', 'L1'].map(key => {
+        ['A1', 'B1', 'C1', 'D1', 'E1', 'G1', 'F1', 'H1', 'I1'].map(key => {
           worksheet.getCell(key).fill = {
             type: 'pattern',
             pattern: 'darkTrellis',
