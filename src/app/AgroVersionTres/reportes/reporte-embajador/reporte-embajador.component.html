@@ -1,13 +1,12 @@
-<div  class="p-4">
+<div class="p-4">
   <h3 class="text-center mb-4 text-primary">Reporte Embajador</h3>
-
   <div class="row">
+
     <!-- Filtro de Fecha Inicio -->
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Fecha inicio</small></label>
-        <input type="date" class="form-control"  placeholder="Fecha inicio"
-          [(ngModel)]="FechaInicioEmba" />
+        <input type="date" class="form-control" placeholder="Fecha inicio" [(ngModel)]="FechaInicioEmba" />
       </div>
     </div>
 
@@ -15,8 +14,7 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Fecha fin</small></label>
-        <input type="date" class="form-control"  placeholder="Fecha fin"
-          [(ngModel)]="FechaFinEmba" />
+        <input type="date" class="form-control" placeholder="Fecha fin" [(ngModel)]="FechaFinEmba" />
       </div>
     </div>
 
@@ -24,8 +22,8 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Código usuario embajador</small></label>
-        <input type="number" class="form-control" 
-          placeholder="Código usuario embajador" [(ngModel)]="CodigoUsuarioEmba" />
+        <input type="number" class="form-control" placeholder="Código usuario embajador"
+          [(ngModel)]="CodigoUsuarioEmba" />
       </div>
     </div>
 
@@ -33,8 +31,7 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Correo embajador</small></label>
-        <input type="text" class="form-control"  placeholder="Correo embajador"
-          [(ngModel)]="CorreoEmba" />
+        <input type="text" class="form-control" placeholder="Correo embajador" [(ngModel)]="CorreoEmba" />
       </div>
     </div>
 
@@ -42,8 +39,7 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Teléfono embajador</small></label>
-        <input type="text" class="form-control"  placeholder="Teléfono"
-          [(ngModel)]="telefonoEmbajador" />
+        <input type="text" class="form-control" placeholder="Teléfono" [(ngModel)]="telefonoEmbajador" />
       </div>
     </div>
 
@@ -51,8 +47,8 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Código usuario embajador vecino</small></label>
-        <input type="number" class="form-control" 
-          placeholder="Código usuario vecino" [(ngModel)]="CodigoUsuarioVecino" />
+        <input type="number" class="form-control" placeholder="Código usuario vecino"
+          [(ngModel)]="CodigoUsuarioVecino" />
       </div>
     </div>
 
@@ -60,8 +56,7 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Correo vecino</small></label>
-        <input type="text" class="form-control"  placeholder="Correo vecino"
-          [(ngModel)]="CorreoVeci" />
+        <input type="text" class="form-control" placeholder="Correo vecino" [(ngModel)]="CorreoVeci" />
       </div>
     </div>
 
@@ -69,7 +64,7 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Teléfono vecino</small></label>
-        <input type="text" class="form-control"  placeholder="Teléfono vecino" [(ngModel)]="TelefonoVeci" />
+        <input type="text" class="form-control" placeholder="Teléfono vecino" [(ngModel)]="TelefonoVeci" />
       </div>
     </div>
 
@@ -77,9 +72,10 @@
     <div class="col-md-3 mb-3">
       <div class="form-group">
         <label class="form-label"><small>Localidad</small></label>
-        <select class="form-control"  [(ngModel)]="localidad">
+        <select class="form-control" [(ngModel)]="localidad">
           <option value="0">Seleccione</option>
-          <option *ngFor="let localida of ListaLocalidad" value="{{localida.IdTipo}}">{{localida.Descripcion }}
+          <option *ngFor="let localida of ListaLocalidad" value="{{localida.IdTipo}}">
+            {{localida.Descripcion }}
           </option>
         </select>
       </div>
@@ -88,7 +84,7 @@
 
   <!-- Botones de acción -->
   <div class="d-flex justify-content-center">
-    <button type="button" class="btn btn-primary me-3" (click)="btnBuscar()">
+    <button type="button" class="btn btn-primary me-3" (click)="BtnBuscar()">
       Buscar
     </button>
     <button type="reset" class="btn btn-secondary me-3" (click)="BtnLimpiar()">
@@ -182,37 +178,47 @@
     </div>
   </div>
 
-  <div class="table-responsive p-4 cursorPonter">
-    <table class="table table-striped table-bordered text-center">
-      <thead class="table-primary">
-        <tr>
-          <th>Nombre</th>
-          <th>Celular</th>
-          <th>Direccion</th>
-          <th>Complemento direccion</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let VecinosReporte of ReporteVecinos">
-          <td>{{ VecinosReporte.NombreVecino }}</td>
-          <td>{{ VecinosReporte.CelularVecino }}</td>
-          <td>{{ VecinosReporte.DireccionVecino }}</td>
-          <td>{{ VecinosReporte.ComplementoVecino }}</td>
-        </tr>
-        <tr *ngIf="MostrarTablaModal == '1'">
-          <td><strong>Id Usuario</strong></td>
-          <td><strong>Correo:</strong></td>
-          <td><strong>Fecha Creación:</strong></td>
-        </tr>
-        <tr>
-          <td><strong>Id MinyChat:</strong></td>
-          <td><strong>Número De Compras:</strong></td>
-          <td><strong>Promedio De Compras:</strong></td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="row p-4" *ngIf="ExelVecino == '1'">
+    <div class="col-12 mb-3" *ngFor="let VecinosReporte of ListaVecinos">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ VecinosReporte.NombreVecino }}</h5>
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <strong>ID:</strong> {{ VecinosReporte.Id }}
+            </div>
+            <div class="col-md-6 mb-2">
+              <strong>Celular:</strong> {{ VecinosReporte.CelularVecino }}
+            </div>
+            <div class="col-md-6 mb-2">
+              <strong>Dirección:</strong> {{ VecinosReporte.DireccionVecino }}
+            </div>
+            <div class="col-md-6 mb-2">
+              <strong>Complemento Dirección:</strong> {{ VecinosReporte.ComplementoVecino }}
+            </div>
+            <div class="col-md-6 mb-2">
+              <strong>Correo:</strong> {{ VecinosReporte.CorreoVecino }}
+            </div>
+            <div class="col-md-6 mb-2">
+              <strong>Fecha Creación:</strong> {{ VecinosReporte.FechaCreacionVecino }}
+            </div>
+            <div class="col-md-6 mb-2">
+              <strong>Fecha Relación:</strong> {{ VecinosReporte.FechaRelacion }}
+            </div>
+
+            <div class="col-md-6 mb-2">
+              <strong>ID ManyChat:</strong> {{ VecinosReporte.IdManychatVecino }}
+            </div>
+            <div class="col-md-12 mb-2">
+              <strong>Observación:</strong> {{ VecinosReporte.ObservacionRegistroVecino }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="text-center my-4" *ngIf="ExelVecino !== '0'">
+
+  <div class="text-center my-4" *ngIf="ExelVecino == '1'">
     <button type="button" class="btn btn-primary" (click)="DescargarExcelEmbajadorVecinos()">Exportar Excel</button>
   </div>
 </ng-template>
