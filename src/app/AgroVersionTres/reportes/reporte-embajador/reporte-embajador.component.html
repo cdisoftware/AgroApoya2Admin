@@ -131,11 +131,11 @@
 <!-- AREA MODALES -->
 <ng-template #ModalVecino let-modal>
   <div class="modal-header bg-secundary text-white">
-    <h1 class="modal-title fs-5">Detalle</h1>
+    <h1 class="text-center">Detalle</h1>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
   </div>
-  <div class="modal-body">
-    <div class="container">
+  <div class="modal-body cunston-fil">
+    <div class="container ">
       <!-- Estructura en 4 columnas y 3 filas -->
       <div class="row mb-2">
         <div class="col-3 fw-bold">Usuario:</div>
@@ -179,10 +179,12 @@
   </div>
 
   <div class="row p-4" *ngIf="ExelVecino == '1'">
-    <div class="col-12 mb-3" *ngFor="let VecinosReporte of ListaVecinos">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">{{ VecinosReporte.NombreVecino }}</h5>
+    <div class="col-12 mb-4" *ngFor="let VecinosReporte of ListaVecinos">
+      <div class="card shadow-sm border-0 rounded">
+        <div class="card-header bg-white text-primary text-center fw-bold shadow-sm">
+          {{ VecinosReporte.NombreVecino }}
+        </div>
+        <div class="card-body card-custom-bg">
           <div class="row">
             <div class="col-md-6 mb-2">
               <strong>ID:</strong> {{ VecinosReporte.Id }}
@@ -205,7 +207,6 @@
             <div class="col-md-6 mb-2">
               <strong>Fecha Relación:</strong> {{ VecinosReporte.FechaRelacion }}
             </div>
-
             <div class="col-md-6 mb-2">
               <strong>ID ManyChat:</strong> {{ VecinosReporte.IdManychatVecino }}
             </div>
@@ -217,7 +218,6 @@
       </div>
     </div>
   </div>
-
   <div class="text-center my-4" *ngIf="ExelVecino == '1'">
     <button type="button" class="btn btn-primary" (click)="DescargarExcelEmbajadorVecinos()">Exportar Excel</button>
   </div>

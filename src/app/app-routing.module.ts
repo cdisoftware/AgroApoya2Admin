@@ -56,6 +56,7 @@ import { MapaCalor3Component } from './AgroVersionTres/usuario/mapa-calor3/mapa-
 import { UsomanychatComponent } from './AgroVersionTres/documentacion/usomanychat/usomanychat.component';
 import { IndexComponent } from './AgroVersionTres/documentacion/index/index.component';
 import { ReporteEmbajadorComponent } from './AgroVersionTres/reportes/reporte-embajador/reporte-embajador.component';
+import { ReporteYoFioComponent } from './AgroVersionTres/reportes/reporte-yo-fio/reporte-yo-fio.component';
 
 const routes: Routes = [
   {
@@ -278,6 +279,10 @@ const routes: Routes = [
   {
     path: 'reporte-Embajador',
     component: ReporteEmbajadorComponent
+  },
+  {
+    path: 'reporteYoFio',
+    component: ReporteYoFioComponent
   }
 ];
 

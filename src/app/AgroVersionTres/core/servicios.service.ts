@@ -198,6 +198,12 @@ export class ServiciosService {
     consEmbajadorVecinosReporte(Bandera: string, UsucodigEmbajador: string) {
         return this.http.get<any>(this.url_servidor + 'consEmbajadorVecinosReporte/' + Bandera + '/' + UsucodigEmbajador);
     }
+    consEstadosPagosFiado(Bandera: string ) {
+        return this.http.get<any>(this.url_servidor + 'consEstadosPagosFiado/' + Bandera);
+    }
+    consPagosFiado( CodigoUsuario: string,   Correo: string,   Telefono: string,   IDEstadoPago: string,   IdLocalidad: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'consPagosFiado/'+ CodigoUsuario +'/' + Correo  +'/' + Telefono +'/' +IDEstadoPago +'/' +IdLocalidad, body);
+    }
 }
 
 

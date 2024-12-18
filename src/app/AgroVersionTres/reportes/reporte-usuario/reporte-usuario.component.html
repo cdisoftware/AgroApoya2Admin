@@ -58,8 +58,7 @@
       <label class="form-label">Localidad</label>
       <select class="form-control" formControlName="Localidad">
         <option value="0">Seleccione</option> <!-- **Cambio: Valor inicial del select** -->
-        <option *ngFor="let Arrangementlocali of LocalidadesFiltro" [value]="Arrangementlocali.IdTipo">
-          {{ Arrangementlocali.Descripcion }}
+        <option *ngFor="let Arrangementlocali of LocalidadesFiltro" [value]="Arrangementlocali.IdTipo">{{ Arrangementlocali.Descripcion }}
         </option>
       </select>
     </div>

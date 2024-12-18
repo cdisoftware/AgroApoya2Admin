@@ -1,0 +1,105 @@
+<div class="p-4">
+    <h3 class="text-center mb-4 text-primary">Reporte Yo Fio</h3>
+    <div class="row">
+  
+      <!-- Filtro de Fecha Inicio -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label class="form-label"><small>Fecha inicio</small></label>
+          <input type="date" class="form-control" placeholder="Fecha inicio" [(ngModel)]="FechaInicioYoFio" />
+        </div>
+      </div>
+  
+      <!-- Filtro de Fecha Fin -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label class="form-label"><small>Fecha fin</small></label>
+          <input type="date" class="form-control" placeholder="Fecha fin" [(ngModel)]="FechaFinYoFio" />
+        </div>
+      </div>
+  
+      <!-- Filtro de Código Usuario Embajador -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label class="form-label"><small>Código usuario</small></label>
+          <input type="number" class="form-control" placeholder="Código usuario embajador"
+            [(ngModel)]="IdUsuarioYoFio" />
+        </div>
+      </div>
+  
+      <!-- Filtro de Correo Embajador -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label class="form-label"><small>Correo</small></label>
+          <input type="text" class="form-control" placeholder="Correo embajador" [(ngModel)]="CorreoYoFio" />
+        </div>
+      </div>
+  
+      <!-- Filtro de Teléfono Embajador -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label class="form-label"><small>Teléfono</small></label>
+          <input type="text" class="form-control" placeholder="Teléfono" [(ngModel)]="telefonoYoFio" />
+        </div>
+      </div>
+      <!-- Filtro de Localidad -->
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label class="form-label"><small>Lista Estado Pago</small></label>
+          <select class="form-control" [(ngModel)]="ListaEstadoPago">
+            <option value="0">Seleccione</option>
+            <option></option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="form-group">
+          <label class="form-label"><small>Localida</small></label>
+          <select class="form-control" [(ngModel)]="localidad">
+            <option value="0">Seleccione</option>
+            <option *ngFor="let localida of ListaLocalidad" value="{{localida.IdTipo}}">
+              {{localida.Descripcion }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Botones de acción -->
+    <div class="d-flex justify-content-center">
+      <button type="button" class="btn btn-primary me-3" (click)="BtnBuscar()">
+        Buscar
+      </button>
+      <button type="reset" class="btn btn-secondary me-3" (click)="BtnLimpiar()">
+        Limpiar
+      </button>
+        <button type="button" class="btn btn-primary" (click)="BtnDEscargarExel()">Exportar Excel</button>
+    </div>
+  
+    <!-- tabla con encabezados -->
+    <div class="table-responsive p-4 cursorPonter">
+      <table class="table table-striped table-bordered text-center">
+        <thead class="table-primary">
+          <tr>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Estado Pago</th>
+            <th>Valor deuda</th>
+            <th>Localidad</th>
+            <th>Accion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let PagosDeuda of PagosFiados">
+            <td>{{PagosDeuda.NOMBRES_PERSONA}}</td>
+            <td>{{PagosDeuda.CORREO_PERSONA}}</td>
+            <td>{{PagosDeuda.Descripcion}}</td>
+            <td>{{PagosDeuda.TotalDeuda}}</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+   
+  </div>
