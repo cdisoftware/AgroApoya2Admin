@@ -46,9 +46,11 @@
       <div class="col-md-3 mb-3">
         <div class="form-group">
           <label class="form-label"><small>Lista Estado Pago</small></label>
-          <select class="form-control" [(ngModel)]="ListaEstadoPago">
+          <select class="form-control" [(ngModel)]="FiltroEstadoPago">
             <option value="0">Seleccione</option>
-            <option></option>
+            <option *ngFor="let Pagos of ListadoPagosFiados" value="{{Pagos.IdTipo}}">
+              {{Pagos.Descripcion }}
+            </option>
           </select>
         </div>
       </div>
@@ -90,7 +92,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let PagosDeuda of PagosFiados">
+          <tr *ngFor="let PagosDeuda of ListaYoFio">
             <td>{{PagosDeuda.NOMBRES_PERSONA}}</td>
             <td>{{PagosDeuda.CORREO_PERSONA}}</td>
             <td>{{PagosDeuda.Descripcion}}</td>
