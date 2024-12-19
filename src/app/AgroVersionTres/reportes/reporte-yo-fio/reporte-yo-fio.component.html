@@ -6,7 +6,7 @@
       <div class="col-md-3 mb-3">
         <div class="form-group">
           <label class="form-label"><small>Fecha inicio</small></label>
-          <input type="date" class="form-control" placeholder="Fecha inicio" [(ngModel)]="FechaInicioYoFio" />
+          <input type="date" class="form-control" placeholder="Fecha inicio" [(ngModel)]="FiltroFechaInicioYoFio" />
         </div>
       </div>
   
@@ -14,7 +14,7 @@
       <div class="col-md-3 mb-3">
         <div class="form-group">
           <label class="form-label"><small>Fecha fin</small></label>
-          <input type="date" class="form-control" placeholder="Fecha fin" [(ngModel)]="FechaFinYoFio" />
+          <input type="date" class="form-control" placeholder="Fecha fin" [(ngModel)]="FiltroFechaFinYoFio" />
         </div>
       </div>
   
@@ -23,7 +23,7 @@
         <div class="form-group">
           <label class="form-label"><small>Código usuario</small></label>
           <input type="number" class="form-control" placeholder="Código usuario embajador"
-            [(ngModel)]="IdUsuarioYoFio" />
+            [(ngModel)]="FiltroIdUsuarioYoFio" />
         </div>
       </div>
   
@@ -31,7 +31,7 @@
       <div class="col-md-3 mb-3">
         <div class="form-group">
           <label class="form-label"><small>Correo</small></label>
-          <input type="text" class="form-control" placeholder="Correo embajador" [(ngModel)]="CorreoYoFio" />
+          <input type="text" class="form-control" placeholder="Correo embajador" [(ngModel)]="FiltroCorreoYoFio" />
         </div>
       </div>
   
@@ -39,14 +39,14 @@
       <div class="col-md-3 mb-3">
         <div class="form-group">
           <label class="form-label"><small>Teléfono</small></label>
-          <input type="text" class="form-control" placeholder="Teléfono" [(ngModel)]="telefonoYoFio" />
+          <input type="text" class="form-control" placeholder="Teléfono" [(ngModel)]="FiltrotelefonoYoFio" />
         </div>
       </div>
       <!-- Filtro de Localidad -->
       <div class="col-md-3 mb-3">
         <div class="form-group">
           <label class="form-label"><small>Lista Estado Pago</small></label>
-          <select class="form-control" [(ngModel)]="FiltroEstadoPago">
+          <select class="form-control" [(ngModel)]="FiltroListaEstadoPago">
             <option value="0">Seleccione</option>
             <option *ngFor="let Pagos of ListadoPagosFiados" value="{{Pagos.IdTipo}}">
               {{Pagos.Descripcion }}
@@ -92,10 +92,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let PagosDeuda of ListaYoFio">
+          <tr *ngFor="let PagosDeuda of ListadoPagosFiados">
             <td>{{PagosDeuda.NOMBRES_PERSONA}}</td>
             <td>{{PagosDeuda.CORREO_PERSONA}}</td>
-            <td>{{PagosDeuda.Descripcion}}</td>
+            <td></td>
             <td>{{PagosDeuda.TotalDeuda}}</td>
             <td></td>
             <td></td>

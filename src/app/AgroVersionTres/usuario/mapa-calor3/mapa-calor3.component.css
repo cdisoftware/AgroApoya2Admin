@@ -2,8 +2,21 @@
  font-size: 0.75rem !important;
   margin-bottom: 0.1rem;
   margin-left: 5px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .labelFiltros{
   font-size: 14px !important;
 }
+.filtros-container {
+  width: 100%;
+  max-width: 1200px; /* Ajusta al ancho deseado */
+  margin: 0 auto;
+  flex: 1; /* Cada filtro ocupa el mismo ancho */
+  min-width: 150px; /* Evita que los filtros sean demasiado pequeños */
+}
+
+
