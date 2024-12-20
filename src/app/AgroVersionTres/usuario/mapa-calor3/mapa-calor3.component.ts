@@ -1,3 +1,5 @@
+import { ChangeDetectorRef } from '@angular/core';
+
 import * as fs from 'file-saver';
 import { Component, OnInit } from '@angular/core';
 import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service';
@@ -27,7 +29,7 @@ export class MapaCalor3Component implements OnInit {
   // variable para mostra el mapa
   AuxMostrarMapa: string = '0';
 
-  constructor(public ServiciosGenerales: ServiciosService) {}
+  constructor(private cdRef: ChangeDetectorRef, public ServiciosGenerales: ServiciosService) {}
 
   ngOnInit(): void {
     this.CargaIncialListas();
@@ -97,16 +99,12 @@ export class MapaCalor3Component implements OnInit {
   
     console.log('Filtros enviados:', filtros);
   
-    this.ServiciosGenerales.consMapaCalor(
-      '1',
-      filtros.FiltroLocalidad || '0',
-      filtros.FiltroNumeroCompras || '0',
-      filtros
+    this.ServiciosGenerales.consMapaCalor('1',filtros.FiltroLocalidad || '0',filtros.FiltroNumeroCompras || '0',filtros
     ).subscribe((Rest) => {
       if (Rest && Rest.length > 0) {
         console.log('Datos recibidos del servicio:', Rest);
         this.AuxMostrarMapa = '1'; // Asegura que el contenedor se muestra
-  
+        this.cdRef.detectChanges();
         // Una vez que el mapa se muestre, inicializa o centra
         this.Centramapa({ address: 'Bogotá, Colombia' });
         this.renderizarMapaConMarcadores(Rest);
