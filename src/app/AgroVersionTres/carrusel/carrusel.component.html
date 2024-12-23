@@ -1,0 +1,36 @@
+<div class="card custom-card m">
+  <div class="card-body">
+    <div id="personajesCarousel" class="carousel position-relative">
+      <div class="carousel-inner">
+        <div
+          class="carousel-item"
+          *ngFor="let personaje of Personajes; let i = index"
+          [class.active]="i === currentIndex"
+        >
+          <img
+            [src]="personaje.image"
+            class="d-block mx-auto custom-img"
+            alt="{{ personaje.name }}"
+          />
+          <div class="carousel-caption d-none d-md-block">
+            <h5>{{ personaje.name }}</h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones para cambiar de imagen -->
+      <button
+        class="carousel-control-prev custom-btn"
+        (click)="btnCarrusel('prev')"
+      >
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button
+        class="carousel-control-next custom-btn"
+        (click)="btnCarrusel('next')"
+      >
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
+</div>

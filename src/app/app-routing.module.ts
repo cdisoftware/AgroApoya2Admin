@@ -57,6 +57,7 @@ import { UsomanychatComponent } from './AgroVersionTres/documentacion/usomanycha
 import { IndexComponent } from './AgroVersionTres/documentacion/index/index.component';
 import { ReporteEmbajadorComponent } from './AgroVersionTres/reportes/reporte-embajador/reporte-embajador.component';
 import { ReporteYoFioComponent } from './AgroVersionTres/reportes/reporte-yo-fio/reporte-yo-fio.component';
+import { CarruselComponent } from './AgroVersionTres/carrusel/carrusel.component';
 
 const routes: Routes = [
   {
@@ -283,7 +284,12 @@ const routes: Routes = [
   {
     path: 'reporteYoFio',
     component: ReporteYoFioComponent
+  },
+  {
+    path: 'carrusel',
+    component: CarruselComponent
   }
+  
 ];
 
 @NgModule({

@@ -66,7 +66,8 @@ import { ReporteVentasComponent } from './AgroVersionTres/reportes/reporte-venta
 import { UsomanychatComponent } from './AgroVersionTres/documentacion/usomanychat/usomanychat.component';
 import { IndexComponent } from './AgroVersionTres/documentacion/index/index.component';
 import { ReporteEmbajadorComponent } from './AgroVersionTres/reportes/reporte-embajador/reporte-embajador.component';
-import { ReporteYoFioComponent } from './AgroVersionTres/reportes/reporte-yo-fio/reporte-yo-fio.component'
+import { ReporteYoFioComponent } from './AgroVersionTres/reportes/reporte-yo-fio/reporte-yo-fio.component';
+import { CarruselComponent } from './AgroVersionTres/carrusel/carrusel.component'
 
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
@@ -122,7 +123,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     UsomanychatComponent,
     IndexComponent,
     ReporteEmbajadorComponent,
-    ReporteYoFioComponent
+    ReporteYoFioComponent,
+    CarruselComponent
   ],
   imports: [
     NgxMaskModule.forRoot(options),

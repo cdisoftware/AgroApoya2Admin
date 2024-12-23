@@ -1,0 +1,59 @@
+/* Ajustar el tamaño de las imágenes */
+.custom-img {
+    max-width: 500px; /* Ancho máximo para las imágenes */
+    height: 300px; /* Altura fija */
+    box-shadow: 8px 8px 10px rgba(255, 0, 0, 0.77);
+    object-fit: cover; /* Mantiene las proporciones */
+    margin: 5rem;
+    border-radius: 15px; /* Bordes redondeados */
+  }
+  
+  /* Estilizar la tarjeta */
+  .custom-card {
+    border-radius: 20px; /* Bordes redondeados de la card */
+    box-shadow: 8px 8px 10px rgba(255, 0, 0, 0.77); /* Sombra para estética */
+    max-width: 600px;
+    margin: auto;
+    margin-top:5rem;
+    background-color: #000000; /* Fondo blanco */
+  }
+  
+  /* Personalización de los botones */
+  .custom-btn {
+    background-color: rgb(255, 255, 255); /* Fondo semitransparente */
+    border: none;
+    color: rgb(0, 0, 0);
+    width: 40px; /* Tamaño reducido */
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+  }
+  
+  .custom-btn:hover {
+    background-color: rgba(237, 0, 0, 0.8); /* Fondo más oscuro al pasar el mouse */
+  }
+  
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    filter: invert(1); /* Hace los íconos visibles en fondo oscuro */
+  }
+  
+  /* Posición de los botones */
+  .carousel-control-prev {
+    left: -10px; /* Más cerca del carrusel */
+  }
+  
+  .carousel-control-next {
+    right: -10px; /* Más cerca del carrusel */
+  }
+  
+  /* Centrar los botones verticalmente */
+  .carousel .carousel-control-prev,
+  .carousel .carousel-control-next {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  

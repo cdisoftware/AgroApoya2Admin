@@ -22,6 +22,8 @@ export class MapaCalor3Component implements OnInit {
   FiltroNumeroCompras: string = '0';
 
   // Datos para el mapa
+  InfoConsMapa: any = [];
+
   markers: google.maps.Marker[] = [];
   AuxMostrarMapa: string = '0';
 
@@ -64,7 +66,8 @@ export class MapaCalor3Component implements OnInit {
 
     console.log('Filtros enviados:', filtros);
 
-    this.ServiciosGenerales.consMapaCalor('1', FiltroLocalidad, FiltroNumeroCompras, filtros).subscribe((Rest) => {
+    this.ServiciosGenerales.consMapaCalor('1', FiltroLocalidad, FiltroNumeroCompras, filtros).subscribe(Rest =>{
+      this.InfoConsMapa = Rest
         if (Rest && Rest.length > 0) {
           console.log('Datos recibidos del servicio:', Rest);
           this.AuxMostrarMapa = '1'; // Asegura que el contenedor se muestra
@@ -142,16 +145,14 @@ export class MapaCalor3Component implements OnInit {
 
     // Crear una nueva hoja dentro del Excel
     let worksheet = workbook.addWorksheet("Reporte Vecinos"); // Nombre de la hoja
-    let header = [
-      'FechaInicioCompra',
-      'FechaFinCompra',
-      'FechaRegistro',
-      'Localidad',
-      'NumeroCompras'
+    let header = ['Direccion Completa','Cordenadas','correo','Destino Departamento','Localidad','cuidad','Documento','Registro',
+      'Direccion','FechaCreacion','MinyChat','Nombre','Observaccion','Telefono','Tipo Cuidad','Tipo Departamento','Tipo Ducumento',
+      'Tipo Notificacion','Tipo Persona','Descripcion Persona','Uso Codigo'
     ]; // Encabezados según las variables del componente
 
     worksheet.addRow(header); // Añade los estilos al encabezado
-    ['A1', 'B1', 'C1', 'D1', 'E1'].map(key => {
+    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1', 
+      'K1', 'L1', 'M1', 'N1', 'O1', 'P1', 'Q1', 'R1', 'S1', 'T1','U1'].map(key => {
       worksheet.getCell(key).fill = {
         type: 'pattern',
         pattern: 'darkTrellis',
@@ -164,25 +165,38 @@ export class MapaCalor3Component implements OnInit {
     });
 
     worksheet.columns = [ // Define el tamaño de las columnas
-      { width: 25 },
-      { width: 25 },
-      { width: 25 },
-      { width: 20 },
-      { width: 20 }
+      { width: 25 }, { width: 25 }, { width: 25 }, { width: 20 }, { width: 20 }, { width: 25 }, 
+      { width: 25 }, { width: 25 },{ width: 25 }, { width: 20 }, { width: 20 },{ width: 25 }, { width: 25 },
+      { width: 25 },{ width: 20 }, { width: 20 },{ width: 25 }, { width: 25 }, { width: 25 },
+      { width: 20 }, {width: 20}
     ];
 
     // Parte dinámica: Recorrer los datos para el Excel
-    if (this.Comprasfiltros && this.Comprasfiltros.length > 0) {
-      for (let item of this.Comprasfiltros) {
+    if (this.InfoConsMapa && this.InfoConsMapa.length > 0) {
+      for (let x1 of this.InfoConsMapa) {
         let temp = [];
 
         // Orden de las variables a incluir en cada fila del Excel
-        temp.push(this.FiltroFechaIncioCompra || 'N/A');
-        temp.push(this.FiltroFechaFinCompra || 'N/A');
-        temp.push(this.FiltroFechaRegistro || 'N/A');
-        temp.push(this.FiltroLocalidad !== '0' ? this.FiltroLocalidad : 'Sin localidad');
-        temp.push(this.FiltroNumeroCompras !== '0' ? this.FiltroNumeroCompras : 'Sin compras');
-
+        temp.push(x1['CompleDireccion'])
+        temp.push(x1['Coordenadas'])
+        temp.push(x1['Correo'])
+        temp.push(x1['DesTipoDepto'])
+        temp.push(x1['DescTipoCiudad'])
+        temp.push(x1['DescTipoDocumento'])
+        temp.push(x1['DescTipoRegistro'])
+        temp.push(x1['Direccion'])
+        temp.push(x1['FechaCreacion'])
+        temp.push(x1['Id_manychat'])
+        temp.push(x1['Nombre'])
+        temp.push(x1['Observacion'])
+        temp.push(x1['Telefono'])
+        temp.push(x1['TipoCiudad'])
+        temp.push(x1['TipoDepto'])
+        temp.push(x1['TipoDocumento'])
+        temp.push(x1['TipoNotificacion'])
+        temp.push(x1['TipoPersona'])
+        temp.push(x1['desTipoPersona'])
+        temp.push(x1['usucodig'])
         worksheet.addRow(temp);
       }
     }
