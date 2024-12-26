@@ -1,0 +1,54 @@
+.hamburger-btn {
+    position: fixed;
+    top: 15px;
+    z-index: 1100;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 30px;
+    margin: 0px ;
+
+}
+
+.menu-icon {
+    width: 24px;
+    height: 24px;
+    display: block; /*visible*/
+}
+.menu-open {
+    width: 22rem; /* Ajusta este valor al nuevo ancho del menú */
+}
+.menu-closed {
+    width: 0;
+    overflow: hidden;
+}
+.logo {
+    width: 18rem; 
+    height: 90px;
+    
+}
+.collapse {
+    margin-left: 20px;
+
+}
+.collapse.show {
+    display: block;
+}
+.abajo {
+    width: 15px;
+    height: 15px; 
+    color: white;
+}
+.menu-custom {  
+    background-color: #397c97; /* Color principal del menú */
+    color: white; /* Asegura texto legible */
+}
+.title-menu {
+    background-color: white;
+    text-align: right; /* Alinea el título del menú a la derecha */
+    padding-right: 1rem; /* Espaciado entre el texto y el borde */
+}
+.main-content {
+    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1); /* Sombra izquierda */
+}
+

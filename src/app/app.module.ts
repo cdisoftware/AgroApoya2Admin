@@ -67,10 +67,20 @@ import { UsomanychatComponent } from './AgroVersionTres/documentacion/usomanycha
 import { IndexComponent } from './AgroVersionTres/documentacion/index/index.component';
 import { ReporteEmbajadorComponent } from './AgroVersionTres/reportes/reporte-embajador/reporte-embajador.component';
 import { ReporteYoFioComponent } from './AgroVersionTres/reportes/reporte-yo-fio/reporte-yo-fio.component';
-import { CarruselComponent } from './AgroVersionTres/carrusel/carrusel.component'
+import { CarruselComponent } from './AgroVersionTres/carrusel/carrusel.component';
+import { MenuLateralComponent } from './AgroVersionTres/menu-lateral/menu-lateral.component'
+import { Routes } from '@angular/router';
 
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
+
+const routes: Routes = [
+  { path: 'reporte-ventas', component: ReporteVentasComponent },
+  { path: 'reporte-usuario', component: ReporteUsuarioComponent },
+  // Agrega más rutas según lo necesario
+  { path: '', redirectTo: '/reporte-ventas', pathMatch: 'full' },
+  { path: '**', redirectTo: '/reporte-ventas' },
+];
 
 @NgModule({
   declarations: [
@@ -124,7 +134,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     IndexComponent,
     ReporteEmbajadorComponent,
     ReporteYoFioComponent,
-    CarruselComponent
+    CarruselComponent,
+    MenuLateralComponent
   ],
   imports: [
     NgxMaskModule.forRoot(options),
