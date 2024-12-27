@@ -1,3 +1,9 @@
+
+.container-fluid {
+    padding: 0; 
+    margin: 0; 
+    overflow-x: hidden; 
+}
 .hamburger-btn {
     position: fixed;
     top: 15px;
@@ -6,10 +12,8 @@
     border: none;
     cursor: pointer;
     margin-right: 30px;
-    margin: 0px ;
-
+    margin-top: 28px;
 }
-
 .menu-icon {
     width: 24px;
     height: 24px;
@@ -17,6 +21,7 @@
 }
 .menu-open {
     width: 22rem; /* Ajusta este valor al nuevo ancho del menú */
+    right: 50rem;
 }
 .menu-closed {
     width: 0;
@@ -37,7 +42,7 @@
 .abajo {
     width: 15px;
     height: 15px; 
-    color: white;
+    fill: rgb(255, 255, 255);
 }
 .menu-custom {  
     background-color: #397c97; /* Color principal del menú */
@@ -50,5 +55,20 @@
 }
 .main-content {
     box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1); /* Sombra izquierda */
+    display: flex;
 }
 
+@media (max-width: 720px) {
+    .menu-open {
+        width: 100%; /* En móvil, el menú ocupa toda la pantalla */
+    }
+
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .menu-custom {
+        z-index: 1050; /* Asegura que el menú esté por encima del contenido */
+    }
+}

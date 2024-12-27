@@ -11,6 +11,8 @@ export class MenuLateralComponent implements OnInit {
   subMenuVisible: number | null = null;
   isMobileView: boolean = false;
 
+  componenteActivo: string = ''; // Inicialmente vacío
+
   constructor(private router: Router) {}
 
   ngOnInit() {
@@ -34,6 +36,11 @@ export class MenuLateralComponent implements OnInit {
   alternarVisibilidadSubMenu(index: number) {
     this.subMenuVisible = this.subMenuVisible === index ? null : index;
   }
+
+  mostrarComponente(nombreComponente: string): void {
+    this.componenteActivo = nombreComponente;
+  }
+
   navegarA(ruta: string) {
     this.router.navigate([ruta]);
     if (this.isMobileView) {

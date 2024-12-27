@@ -1,9 +1,8 @@
 <div class="container-fluid d-flex">
-    <!-- Botón de menú -->
-    <button class="hamburger-btn" (click)="alternarMenuLateral()">
+  <!-- Botón de menú -->
+  <button class="hamburger-btn" (click)="alternarMenuLateral()">
       <img src="../../../assets/ImagenesAgroApoya2Adm/menu.png" alt="menu" class="menu-icon">
-    </button>
-  
+  </button>
     <!-- Menú lateral -->
     <div class="menu-custom vh-100 shadow-sm "
       [ngClass]="{'menu-open': isMenuOpen, 'menu-closed': !isMenuOpen}">
@@ -15,10 +14,10 @@
       <!-- Opciones del menú -->
       <nav class="flex-grow-1 mt-4">
         <!-- Reportes -->
-        <div class="px-3">
+        <div class="px-3  mt-4">
           <button class="btn menu-custom w-100 text-start text-white mb-2" (click)="alternarVisibilidadSubMenu(1)">
             <strong>Reportes</strong>
-            <img src="../../../assets/ImagenesAgroApoya2Adm/abajo.png" alt="" class="abajo">
+            <img src="../../../assets/ImagenesAgroApoya2Adm/chevron-abajo.png" alt="" class="abajo">
           </button>
           <div class="collapse" [ngClass]="{'show': subMenuVisible === 1}">
             <a routerLink="/reporte-ventas" routerLinkActive="active" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Reportes de Ventas</strong></a>
@@ -32,7 +31,7 @@
         <div class="px-3 mt-3">
           <button class="btn menu-custom w-100 text-start text-white" (click)="alternarVisibilidadSubMenu(2)">
             <strong>Oferta</strong>
-            <img src="../../../assets/ImagenesAgroApoya2Adm/abajo.png" alt="" class="abajo">
+            <img src="../../../assets/ImagenesAgroApoya2Adm/chevron-abajo.png" alt="" class="abajo">
           </button>
           <div class="collapse" [ngClass]="{'show': subMenuVisible === 2}">
             <a href="#" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Creación de la Oferta</strong></a>
@@ -46,7 +45,7 @@
         <div class="px-3 mt-3">
           <button class="btn menu-custom w-100 text-start text-white" (click)="alternarVisibilidadSubMenu(3)">
             <strong>Transportista</strong>
-            <img src="../../../assets/ImagenesAgroApoya2Adm/abajo.png" alt="" class="abajo">
+            <img src="../../../assets/ImagenesAgroApoya2Adm/chevron-abajo.png" alt="" class="abajo">
           </button>
           <div class="collapse" [ngClass]="{'show': subMenuVisible === 3}">
             <a href="#" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Seguimiento del Transporte</strong></a>
@@ -58,7 +57,7 @@
         <div class="px-3 mt-3">
           <button class="btn menu-custom w-100 text-start text-white" (click)="alternarVisibilidadSubMenu(4)">
             <strong>Comunicaciones</strong>
-            <img src="../../../assets/ImagenesAgroApoya2Adm/abajo.png" alt="" class="abajo">
+            <img src="../../../assets/ImagenesAgroApoya2Adm/chevron-abajo.png" alt="" class="abajo">
           </button>
           <div class="collapse" [ngClass]="{'show': subMenuVisible === 4}">
             <a href="#" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Envío Manychat</strong></a>
@@ -66,20 +65,9 @@
             <a href="#" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Envío SMS</strong></a>
           </div>
         </div>
-        <!-- Info General -->
-        <div class="px-3 mt-3">
-          <button class="btn menu-custom w-100 text-white mb-2" (click)="alternarVisibilidadSubMenu(6)">
-             <strong> Info General</strong> <img src="../../../assets/ImagenesAgroApoya2Adm/abajo.png" alt="" class="abajo">
-          </button>
-          <div class="collapse" [ngClass]="{'show': subMenuVisible === 6}">
-            <a  routerLink="/Index" class="d-block ps-0 py-2 text-white text-decoration-none"><strong>Documentación</strong></a>
-          </div>
+         <!-- Contenido principal -->
+        <div class="main-content">
+          <router-outlet></router-outlet>
         </div>
       </nav>
-    </div>
-  
-    <!-- Contenido principal, contenido dinámico -->
-    <div class="main-content">
-      <router-outlet></router-outlet>
-    </div>
 </div>

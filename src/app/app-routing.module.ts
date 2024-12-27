@@ -292,7 +292,8 @@ const routes: Routes = [
   {
     path: 'Menu-Lateral',
     component: MenuLateralComponent
-  }
+  },
+  
   
 ];
 
