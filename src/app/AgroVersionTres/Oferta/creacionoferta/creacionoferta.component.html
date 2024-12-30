@@ -297,7 +297,7 @@
         </div>
         <hr *ngIf="VerOcultarModulos == '2'">
         <!--CUPONES DE LA OFERTA-->
-        <div class="row m-0 p-0" *ngIf="VerOcultarModulos == '2'" style="display: none;">
+        <div class="row m-0 p-0" *ngIf="VerOcultarModulos == '2'">
             <div class="col-12 mb-1">
                 <label class="SubTituloAgro">Regalos para la oferta (Estos aplican solamente para compras de la oferta
                     actual)</label>
@@ -331,7 +331,7 @@
                 </div>
                 <div class="col-sm-4" style="display:flex">
                     <img src="https://cdn-icons-png.flaticon.com/128/5974/5974771.png"
-                        style="width: 25px; height: 25px; cursor: pointer;">
+                        style="width: 25px; height: 25px; cursor: pointer;" (click)="EliminarRegaloOferta(respu.IdTipoRegalo, respu.AplicablePersona)">
                     <img src="https://cdn-icons-png.flaticon.com/128/1265/1265907.png"
                         style="width: 25px; height: 25px; cursor: pointer; margin-left: 10px;">
                 </div>
@@ -344,6 +344,8 @@
                 <label class="SubTituloAgro">Productos</label>
                 <img src="https://cdn-icons-png.flaticon.com/128/8387/8387527.png" (click)="BtnModalNuevoProducto()"
                     style="width: 30px; height: 30px; cursor: pointer; margin-left: 10px;">
+                <img src="https://cdn-icons-png.flaticon.com/128/6874/6874038.png"
+                    style="width: 26px; height: 26px; cursor: pointer; margin-left: 10px; display: none;">
             </div>
             <div class="col-sm-6" style="display: flex;">
                 <div class="m-0 p-0 w-100">
@@ -397,6 +399,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row justify-content-center mt-5" style="display: none;">
             <button type="button" class="btn btn-agro-prin col-sm-3 col-6" (click)="BtnPublicarOferta()">
                 Publicar oferta</button>
@@ -507,7 +510,7 @@
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall">Presentacion<span class="spObl">*</span></label>
-                <div style="display: flex;">
+                <div style="display: flex;" >
                     <select class="form-control form-control-sm textBox" [(ngModel)]="IdPresentacionPres"
                         [disabled]="BanderaInserActu == '2'">
                         <option value="0">Seleccionar</option>
@@ -855,26 +858,38 @@
 
 <ng-template #AgregarLocalidad let-modal>
     <div class="modal-header">
-        <h1>Agregar zona</h1>
+        <h1>Agregar sector</h1>
         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
     </div>
     <div class="modal-body">
-        <div class="row br">
-            <div class="col-sm-8">
-                <label class="col-sm-12 TextoAgroSmall">Nombre zona<span class="spObl">*</span></label>
-                <input class="form-control form-control-sm textBox">
+        <div class="row br" *ngIf="AuxMostrarMapa == '0'">
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Localidad<span class="spObl">*</span></label>
+                <select class="form-control form-control-sm textBox" [(ngModel)]="IdLocalidadModal">
+                    <option value="0">Seleccionar</option>
+                    <option *ngFor="let respu of ArrayLocalidadesTipo" value="{{respu.IdTipo}}">
+                        {{respu.Descripcion}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 TextoAgroSmall">Nombre Nuevo Sector<span class="spObl">*</span></label>
+                <input class="form-control form-control-sm textBox" [(ngModel)]="NombreSectorModal">
             </div>
             <div class="col-sm-4">
                 <label class="col-sm-12 TextoAgroSmall"></label>
-                <button type="button" class="btn btn-agro-prin w-100">Crear</button>
+                <button type="button" class="btn btn-agro-prin w-100" (click)="BtnCrearZonaModa()">Crear</button>
             </div>
         </div>
-        <div class="mt-2">
+        <div class="mt-2 mb-3" style="display: flex; justify-content: center;" *ngIf="AuxMostrarMapa == '1'">
+            <div class="col-md-4">
+                <button class="col-12 btn btn-agro-prin" (click)="AgregarCoordenada()">Agregar Coordenada</button>
+            </div>
+            <hr class="mb-2">
+        </div>
+        <div *ngIf="AuxMostrarMapa == '1'">
             <div id="mapInsertSector" class="ShowMap col-12"></div>
         </div>
-    </div>
-    <div class="row justify-content-center">
-        <button type="button" class="btn btn-agro-prin col-sm-2 col-6" (click)="modal.close()">Aceptar</button>
     </div>
     <br>
 </ng-template>

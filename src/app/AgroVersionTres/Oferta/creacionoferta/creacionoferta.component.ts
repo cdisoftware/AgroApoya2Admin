@@ -1,8 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service'
-
 
 @Component({
   selector: 'app-creacionoferta',
@@ -15,6 +14,7 @@ export class CreacionofertaComponent implements OnInit {
     private route: ActivatedRoute,
     private modalService: NgbModal,
     private ServiciosService: ServiciosService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   @ViewChild('ModalCupones', { static: false }) ModalCupones: any;
@@ -56,6 +56,19 @@ export class CreacionofertaComponent implements OnInit {
   ArraySectorTipo: any[];
   ArraySectoresOferta: any[];
   file: FileList | undefined;
+
+  //Modal crear nuevo sector
+  IdLocalidadModal: string = '0';
+  NombreSectorModal: string = '';
+  map: google.maps.Map;
+  geocoder = new google.maps.Geocoder();
+  markers: google.maps.Marker[] = [];
+  AreaPolygon: google.maps.Polygon;
+  DataCoor: any[] = [];
+  AuxMostrarMapa: string = "0";
+  IdSectorCreado: string = "0";
+  LatitudeCoordenadas: string = "";
+  LongitudeCoordenadas: string = "";
 
   //Regalos por defecto para la oferta
   IdTipoRegalo: string = "0";
@@ -117,6 +130,8 @@ export class CreacionofertaComponent implements OnInit {
   ArrayTipoVentaProd: any[];
   ArrayImagenesProducto: any[];
 
+
+
   /* INCIALIZACION DE LA PAGINA*/
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -145,6 +160,7 @@ export class CreacionofertaComponent implements OnInit {
     this.ListaSectoresOferta();
     this.CargarListasIniciales();
     this.CargarProductosOferta();
+    this.RegalosAsociadosOferta();
 
     this.RutaImagenProducto = this.ServiciosService.RecuperarRutasOtrasImagenes('4');
     this.RutaImagenSector = this.ServiciosService.RecuperarRutasOtrasImagenes('7');
@@ -383,46 +399,64 @@ export class CreacionofertaComponent implements OnInit {
     })
   }
 
+  //agregar nuevo sector mapa
   BtnAgregarLocalidad() {
-    this.CreaMapa('mapInsertSector');
+    this.AuxMostrarMapa = '0';
+    this.IdLocalidadModal = '0';
+    this.NombreSectorModal = '';
+    this.LatitudeCoordenadas = '';
+    this.LongitudeCoordenadas = '';
     this.modalService.open(this.AgregarLocalidad, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
   }
 
-  //mapa
-  map: google.maps.Map;
-  geocoder = new google.maps.Geocoder();
-  markers: google.maps.Marker[] = [];
-  AreaPolygon: google.maps.Polygon;
-  DataCoor: any[] = [];
   BtnCrearZonaModa() {
-
+    if (this.IdLocalidadModal == '0') {
+      alert('La localidad es obligatoria para la zona');
+    } else if (this.NombreSectorModal == '') {
+      alert('El nombre del sector es obligatorio');
+    } else {
+      const body = {
+        IdSector: 0,
+        IdLocalidad: this.IdLocalidadModal,
+        Descripcion: this.NombreSectorModal,
+        TipoEstado: 1
+      }
+      this.ServiciosService.modTipoZona('2', body).subscribe(Resultado => {
+        alert(Resultado)
+        var spliAux = Resultado.split('|');
+        if (spliAux.length == 2) {
+          if (spliAux[0] != '-1') {
+            this.IdSectorCreado = spliAux[0];
+            this.CreaMapa('Bogotá, Colombia');
+          }
+        }
+      })
+    }
   }
 
-  CreaMapa(IdMapa: string) {
-    /*   this.geocoder.geocode({ address: this.NombreCiudad }).then((result) => {
-         const { results } = result;
-         var lati = results[0].geometry.location.lat();
-         var longi = results[0].geometry.location.lng();
-         this.map = new google.maps.Map(
-           document.getElementById(IdMapa) as HTMLElement,
-           {
-             zoom: 13,
-             center: {
-               lat: lati,
-               lng: longi
-             },
-           }
-         );
-         this.map.addListener("click", (e: any) => {
-           this.AgregarMarcador(e.latLng, this.map);
-           this.LatitudeCoordenadas = e.latLng.toString()
-           this.LatitudeCoordenadas = this.LatitudeCoordenadas.substring(1, 15)
-           this.LongitudeCoordenadas = e.latLng.toString()
-           this.LongitudeCoordenadas = this.LongitudeCoordenadas.substring(this.LongitudeCoordenadas.indexOf('-'), this.LongitudeCoordenadas.length - 1)
-         });
-       })*/
+  CreaMapa(NombreCiudad: string) {
+    this.AuxMostrarMapa = "1";
+    this.geocoder.geocode({ address: NombreCiudad }).then((result) => {
+      const { results } = result;
+      var lati = results[0].geometry.location.lat();
+      var longi = results[0].geometry.location.lng();
+      this.map = new google.maps.Map(
+        document.getElementById('mapInsertSector') as HTMLElement,
+        {
+          zoom: 13,
+          center: { lat: lati, lng: longi },
+        }
+      );
+      this.map.addListener("click", (e: any) => {
+        const lat = e.latLng.lat();
+        const lng = e.latLng.lng();
+        this.LatitudeCoordenadas = lat.toString();
+        this.LongitudeCoordenadas = lng.toString();
+        this.AgregarMarcador(e.latLng, this.map);
+      });
+    })
   }
-  /*
+
   AgregarMarcador(latLng: google.maps.LatLng, map: google.maps.Map) {
     if (this.markers.length > 0) {
       this.markers[0].setMap(null)
@@ -434,49 +468,40 @@ export class CreacionofertaComponent implements OnInit {
     this.markers = [];
     this.markers.push(marker);
   }
-  AgregarCoordenada(templateRespuesta: any) {
+
+  AgregarCoordenada() {
     if (this.LatitudeCoordenadas != '' && this.LongitudeCoordenadas != '') {
-      const BodyInsertCoo = {
-        ID: 0,
-        ID_SCTOR_OFRTA: Number(this.IdSectorCreado),
-        LTTUD: this.LatitudeCoordenadas,
-        LNGTUD: this.LongitudeCoordenadas
+      const body = {
+        Id: 0,
+        IdZona: this.IdSectorCreado,
+        Latitud: this.LatitudeCoordenadas,
+        Longitud: this.LongitudeCoordenadas
       }
-      this.sectoresservices.InsertarCoordenadas('3', BodyInsertCoo).subscribe(Resultado => {
-        const arrayRes = Resultado.split('|')
-        this.Respuesta = arrayRes[1];
+      this.ServiciosService.modTipoCoordenadasZona('3', body).subscribe(Resultado => {
+        console.log(Resultado);
         this.LatitudeCoordenadas = '';
         this.LongitudeCoordenadas = '';
         this.ConsultaCoordenadas();
       })
     }
     else {
-      this.modalService.open(templateRespuesta, { ariaLabelledBy: 'modal-basic-title' })
-      this.Respuesta = "Los campos coordenadas son obligatorios, recuerda dar click en el mapa para recuperar las coordenadas.";
+      alert("Los campos coordenadas son obligatorios, recuerda dar click en el mapa para recuperar las coordenadas.")
     }
   }
+
   ConsultaCoordenadas() {
-    this.sectoresservices.ConsultaCoordenada('1', this.IdSectorCreado).subscribe(Result => {
+    this.ServiciosService.cODNSL('1', this.IdSectorCreado).subscribe(Result => {
       if (Result.length > 0) {
-        if (this.AreaPolygon != undefined) {
-          this.AreaPolygon.setMap(null)
-          console.log(this.AreaPolygon)
+        if (this.AreaPolygon) {
+          this.AreaPolygon.setMap(null);
         }
         this.DataCoor = Result;
-        var coordenadas = '';
-        for (var i = 0; i < this.DataCoor.length; i++) {
-          coordenadas += this.DataCoor[i].Latitud.trim() + ',' + this.DataCoor[i].Longitud.trim() + '|';
-        }
-        var nuevaCoord = coordenadas.substring(0, coordenadas.length - 1)
-        //var nuevaCoord = "4.711719820895,-74.11319514221|4.712746307730,-74.10924693054|4.709923465287,-74.10795947022|4.708554810281,-74.11036272949|4.711719820895,-74.11319514221";
-        var bounds = new google.maps.LatLngBounds;
-        var coords = nuevaCoord.split('|').map(function (data: string) {
-          var info = data.split(','), // Separamos por coma
-            coord = { // Creamos el obj de coordenada
-              lat: parseFloat(info[0]),
-              lng: parseFloat(info[1])
-            };
-          // Agregamos la coordenada al bounds
+        const bounds = new google.maps.LatLngBounds();
+        const coords = this.DataCoor.map(data => {
+          const coord = {
+            lat: parseFloat(data.Latitud.trim()),
+            lng: parseFloat(data.Longitud.trim())
+          };
           bounds.extend(coord);
           return coord;
         });
@@ -489,32 +514,21 @@ export class CreacionofertaComponent implements OnInit {
           fillOpacity: 0.35,
         });
         this.AreaPolygon.setMap(this.map);
-        console.log(this.AreaPolygon)
-      }
-      else {
+        this.CreacionPoligoSectorBd();
+      } else {
         this.DataCoor = [];
       }
-      this.ConsultaUsuariosSectr(this.IdSectorCreado);
-    })
+    });
   }
-  ConsultaUsuariosSectr(IdSector: string) {
-    if (this.DataCoor.length < 3) {
-      this.NumUserSector = '0'
-    } else {
-      this.ConsultaSectorPoligono(IdSector);
-    }
-  }
-  ConsultaSectorPoligono(idsector: string) {
 
-    this.sectoresservices.ModificaSectorPoligono('3', idsector).subscribe(ResultadoCons => {
-      var aux = ResultadoCons.split('|');
-      this.sectoresservices.ConsultaUsuarioSector('3', aux[0]).subscribe(ResultadoCons => {
-        this.sectoresservices.ConsultaNumUsuariosSector('3', aux[0]).subscribe(ResultadoCons => {
-          this.NumUserSector = ResultadoCons.toString();
-        })
-      })
+  CreacionPoligoSectorBd() {
+    const body = {
+      IdZona: this.IdSectorCreado
+    }
+    this.ServiciosService.modTipoCoordenadasZonaDos('3', body).subscribe(ResultadoCons => {
+      console.log(ResultadoCons)
     })
-  }*/
+  }
 
   /*PRODUCTOS PARA LA OFERTA*/
   CargarProductosOferta() {
@@ -985,7 +999,6 @@ export class CreacionofertaComponent implements OnInit {
   }
 
   //Cupones --> Seccion regalo líder 
-
   BtnGuardarInformacionReferidos() {
     if (this.IdRegaljeReferidos == '0') {
       alert('El reglaje para referidos es obligatorio')
@@ -1041,11 +1054,29 @@ export class CreacionofertaComponent implements OnInit {
       }
       this.ServiciosService.modOfertaRegalos('1', body).subscribe(Resultado => {
         alert(Resultado)
-        this.ServiciosService.consOfertaRegalos('1', this.IdOferta).subscribe(Resultado => {
-          this.ArrayRegalosOferta = Resultado;
-        })
+        this.RegalosAsociadosOferta();
       })
     }
+  }
+
+  EliminarRegaloOferta(IdTipoRegalo: string, IdTipoRegaloPersona: string) {
+    const body = {
+      IdOferta: this.IdOferta,
+      IdTipoRegalo: IdTipoRegalo,
+      AplicablePersona: IdTipoRegaloPersona,
+      TipoEstado: "1"
+    }
+    this.ServiciosService.modOfertaRegalos('3', body).subscribe(Resultado => {
+      alert(Resultado)
+      this.RegalosAsociadosOferta();
+    })
+  }
+
+  RegalosAsociadosOferta() {
+    this.ServiciosService.consOfertaRegalos('1', this.IdOferta).subscribe(Resultado => {
+      this.ArrayRegalosOferta = Resultado;
+      console.log(Resultado)
+    })
   }
 
   /*AREA PUBLICAR Y CERRAR OFERTA */

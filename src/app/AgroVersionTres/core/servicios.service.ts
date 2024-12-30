@@ -189,20 +189,36 @@ export class ServiciosService {
         return this.http.post<any>(this.url_servidor + 'consMapaCalor/' + Bandera + '/' + IdLocalidad + '/' + NumCompras, body);
     }
 
-    consEmbajadorConjuntosReporte (Bandera: string, UsucodigEmbajador: string, CorreoEmbajador: string, TelefonoEmbajador: string,
+    consEmbajadorConjuntosReporte(Bandera: string, UsucodigEmbajador: string, CorreoEmbajador: string, TelefonoEmbajador: string,
         UsucodigVecino: string, CorreoVecino: string, TelefonoVecino: string, body: any) {
-        return this.http.post<any>(this.url_servidor + 'consEmbajadorConjuntosReporte/' + Bandera + '/' + UsucodigEmbajador + '/' + CorreoEmbajador + '/' + TelefonoEmbajador + '/'+
-        UsucodigVecino + '/' + CorreoVecino + '/' + TelefonoVecino, body);
+        return this.http.post<any>(this.url_servidor + 'consEmbajadorConjuntosReporte/' + Bandera + '/' + UsucodigEmbajador + '/' + CorreoEmbajador + '/' + TelefonoEmbajador + '/' +
+            UsucodigVecino + '/' + CorreoVecino + '/' + TelefonoVecino, body);
     }
-    
+
     consEmbajadorVecinosReporte(Bandera: string, UsucodigEmbajador: string) {
         return this.http.get<any>(this.url_servidor + 'consEmbajadorVecinosReporte/' + Bandera + '/' + UsucodigEmbajador);
     }
-    consEstadosPagosFiado(Bandera: string ) {
+    consEstadosPagosFiado(Bandera: string) {
         return this.http.get<any>(this.url_servidor + 'consEstadosPagosFiado/' + Bandera);
     }
-    consPagosFiado( CodigoUsuario: string,   Correo: string,   Telefono: string,   IDEstadoPago: string,   IdLocalidad: string, body: any) {
-        return this.http.post<any>(this.url_servidor + 'consPagosFiado/'+ CodigoUsuario +'/' + Correo  +'/' + Telefono +'/' +IDEstadoPago +'/' +IdLocalidad, body);
+    consPagosFiado(CodigoUsuario: string, Correo: string, Telefono: string, IDEstadoPago: string, IdLocalidad: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'consPagosFiado/' + CodigoUsuario + '/' + Correo + '/' + Telefono + '/' + IDEstadoPago + '/' + IdLocalidad, body);
+    }
+
+    modTipoZona(Bandera: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'modTipoZona/' + Bandera, body);
+    }
+
+    modTipoCoordenadasZona(Bandera: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'modTipoZona/' + Bandera, body);
+    }
+
+    cODNSL(Bandera: string, idZona: string) {
+        return this.http.get<any>(this.url_servidor + 'consEstadosPagosFiado/' + Bandera + '/' + idZona);
+    }
+
+    modTipoCoordenadasZonaDos(Bandera: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'modTipoCoordenadasZonaDos/' + Bandera, body);
     }
 }
 
