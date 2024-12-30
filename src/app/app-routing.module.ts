@@ -58,6 +58,7 @@ import { ReporteEmbajadorComponent } from './AgroVersionTres/reportes/reporte-em
 import { ReporteYoFioComponent } from './AgroVersionTres/reportes/reporte-yo-fio/reporte-yo-fio.component';
 import { CarruselComponent } from './AgroVersionTres/carrusel/carrusel.component';
 import { MenuLateralComponent } from './AgroVersionTres/menu-lateral/menu-lateral.component';
+import { InicioComponent } from './AgroVersionTres/inicio/inicio.component';
 
 const routes: Routes = [
   {
@@ -293,7 +294,10 @@ const routes: Routes = [
     path: 'Menu-Lateral',
     component: MenuLateralComponent
   },
-  
+  {
+    path: 'Inicio',
+    component: InicioComponent
+  },
   
 ];
 
