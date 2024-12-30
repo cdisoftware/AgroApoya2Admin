@@ -164,8 +164,9 @@ export class ReporteEmbajadorComponent implements OnInit {
 
     // crear una nueva hoja dentro del excel
     let worksheet = workbook.addWorksheet("Reporte Vecinos"); //Nombre de la hoja
+     //Encabezado y se dejan las columnas que corresponden 
     let header = ['IdUsuarioEmbajador', 'Nombre', 'Correo', 'FechaCreacion', 'Celular', 'id_manychat', 'DRCCION',
-      'CMPLMNTO_DRRCCION', 'id']; //Encabezado y se dejan las columnas que corresponden 
+      'CMPLMNTO_DRRCCION', 'id'];
 
 
     worksheet.addRow(header); //le da los estilos a  header de la tabla

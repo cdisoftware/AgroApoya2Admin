@@ -47,7 +47,6 @@ import { MapacompraofertasComponent } from './ofertas/components/reportes/mapaco
 import { EnviosmsofertaComponent } from './ofertas/components/sms-envio/enviosmsoferta/enviosmsoferta.component';
 
 
-
 //Version 3 AgroApoyados
 import { CreacionofertaComponent } from './AgroVersionTres/Oferta/creacionoferta/creacionoferta.component';
 import { ReporteVentasComponent } from './AgroVersionTres/reportes/reporte-ventas/reporte-ventas.component';
@@ -58,6 +57,7 @@ import { IndexComponent } from './AgroVersionTres/documentacion/index/index.comp
 import { ReporteEmbajadorComponent } from './AgroVersionTres/reportes/reporte-embajador/reporte-embajador.component';
 import { ReporteYoFioComponent } from './AgroVersionTres/reportes/reporte-yo-fio/reporte-yo-fio.component';
 import { CarruselComponent } from './AgroVersionTres/carrusel/carrusel.component';
+import { MenuLateralComponent } from './AgroVersionTres/menu-lateral/menu-lateral.component';
 
 const routes: Routes = [
   {
@@ -288,7 +288,12 @@ const routes: Routes = [
   {
     path: 'carrusel',
     component: CarruselComponent
-  }
+  },
+  {
+    path: 'Menu-Lateral',
+    component: MenuLateralComponent
+  },
+  
   
 ];
 

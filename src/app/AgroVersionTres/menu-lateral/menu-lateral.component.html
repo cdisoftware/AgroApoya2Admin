@@ -1,0 +1,73 @@
+<div class="container-fluid d-flex">
+  <!-- Botón de menú -->
+  <button class="hamburger-btn" (click)="alternarMenuLateral()">
+      <img src="../../../assets/ImagenesAgroApoya2Adm/menu.png" alt="menu" class="menu-icon">
+  </button>
+    <!-- Menú lateral -->
+    <div class="menu-custom vh-100 shadow-sm "
+      [ngClass]="{'menu-open': isMenuOpen, 'menu-closed': !isMenuOpen}">
+      <!-- Encabezado del menú -->
+      <div class="p-3 title-menu border-bottom">
+        <img src="../../../assets/ImagenesAgroApoya2Adm/logoAgroNuevo.png" alt="Logo AgroApoya" class="logo">
+      </div>
+  
+      <!-- Opciones del menú -->
+      <nav class="flex-grow-1 mt-4">
+        <!-- Reportes -->
+        <div class="px-3  mt-4">
+          <button class="btn menu-custom w-100 text-start text-white mb-2" (click)="alternarVisibilidadSubMenu(1)">
+            <strong>Reportes</strong>
+            <img src="../../../assets/ImagenesAgroApoya2Adm/chevron-abajo.png" alt="" class="abajo">
+          </button>
+          <div class="collapse" [ngClass]="{'show': subMenuVisible === 1}">
+            <a routerLink="/reporte-ventas" routerLinkActive="active" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Reportes de Ventas</strong></a>
+            <a routerLink="/reporte-usuario" routerLinkActive="active" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Reportes de Usuarios</strong></a>
+            <a routerLink="/reporte-Embajador" routerLinkActive="active" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Reportes de Embajador</strong></a>
+            <a routerLink="/reporteYoFio" routerLinkActive="active" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Reportes de Yo Fío</strong></a>
+          </div>
+        </div>
+  
+        <!-- Oferta -->
+        <div class="px-3 mt-3">
+          <button class="btn menu-custom w-100 text-start text-white" (click)="alternarVisibilidadSubMenu(2)">
+            <strong>Oferta</strong>
+            <img src="../../../assets/ImagenesAgroApoya2Adm/chevron-abajo.png" alt="" class="abajo">
+          </button>
+          <div class="collapse" [ngClass]="{'show': subMenuVisible === 2}">
+            <a href="#" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Creación de la Oferta</strong></a>
+            <a href="#" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Modificación de la Oferta</strong></a>
+            <a href="#" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Duplicar una Oferta</strong></a>
+            <a href="#" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Creación/Modificación del Sector</strong></a>
+          </div>
+        </div>
+  
+        <!-- Transportista -->
+        <div class="px-3 mt-3">
+          <button class="btn menu-custom w-100 text-start text-white" (click)="alternarVisibilidadSubMenu(3)">
+            <strong>Transportista</strong>
+            <img src="../../../assets/ImagenesAgroApoya2Adm/chevron-abajo.png" alt="" class="abajo">
+          </button>
+          <div class="collapse" [ngClass]="{'show': subMenuVisible === 3}">
+            <a href="#" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Seguimiento del Transporte</strong></a>
+            <a href="#" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Transporte Última Milla</strong></a>
+          </div>
+        </div>
+  
+        <!-- Comunicaciones -->
+        <div class="px-3 mt-3">
+          <button class="btn menu-custom w-100 text-start text-white" (click)="alternarVisibilidadSubMenu(4)">
+            <strong>Comunicaciones</strong>
+            <img src="../../../assets/ImagenesAgroApoya2Adm/chevron-abajo.png" alt="" class="abajo">
+          </button>
+          <div class="collapse" [ngClass]="{'show': subMenuVisible === 4}">
+            <a href="#" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Envío Manychat</strong></a>
+            <a href="#" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Envío Correo</strong></a>
+            <a href="#" class="d-block ps-4 py-2 text-white text-decoration-none"><strong>Envío SMS</strong></a>
+          </div>
+        </div>
+         <!-- Contenido principal -->
+        <div class="main-content">
+          <router-outlet></router-outlet>
+        </div>
+      </nav>
+</div>
