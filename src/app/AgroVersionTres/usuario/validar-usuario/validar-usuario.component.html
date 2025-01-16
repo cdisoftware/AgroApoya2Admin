@@ -5,59 +5,43 @@
   <div class="row">
     <!-- Lista sectores -->
     <div class="col-md-3 mb-3">
-      <div class="form-group">
-        <label class="form-label"><small>Lista sectores</small></label>
-        <select class="form-control">
-          <option value="0">Seleccione</option>
-          <option
-            *ngFor="let Persona of ArrayPersona"
-            value="{{ Persona.DescripEstasdo }}"
-          >
-            {{ Persona.tipoEstado }}
-          </option>
-          <option></option>
-        </select>
-      </div>
+      <label class="form-label"><small><strong>Lista sectores</strong> </small></label>
+      <select class="form-control" [(ngModel)]="FiltroLocalidad">
+        <option value="0">Seleccione</option>
+        <option *ngFor="let Persona of ArrayLocalidadesFiltro" value="{{ Persona.IdTipo }}">
+          {{ Persona.Descripcion }}
+        </option>
+      </select>
     </div>
 
     <!-- Lista de probados -->
     <div class="col-md-3 mb-3">
-      <div class="form-group">
-        <label class="form-label"><small>Lista de probados</small></label>
-        <select class="form-control">
-          <option value="0">Seleccione</option>
-          <option
-            *ngFor="let Validador of ArrayValidar"
-            value="{{ Validador.Id }}"
-          >
-            {{ Validador.Nombre }}
-          </option>
-          <option></option>
-        </select>
-      </div>
+      <label class="form-label"><small><strong>Lista de probados</strong> </small></label>
+      <select class="form-control" [(ngModel)]="FiltroPersona">
+        <option value="0">Seleccione</option>
+        <option *ngFor="let Validador of ArrayPersona" value="{{ Validador.Id }}">
+          {{ Validador.Nombre }}
+        </option>
+      </select>
     </div>
 
     <!-- Teléfono -->
     <div class="col-md-3 mb-3">
-      <div class="form-group">
-        <label class="form-label"><small>Teléfono</small></label>
-        <input type="text" class="form-control" placeholder="Teléfono" />
-      </div>
+      <label class="form-label"><small><strong>Teléfono</strong></small></label>
+      <input type="text" class="form-control" placeholder="Teléfono" [(ngModel)]="FiltroTelefono" />
     </div>
 
     <!-- UsuCodig -->
     <div class="col-md-3 mb-3">
-      <div class="form-group">
-        <label class="form-label"><small>UsuCodig</small></label>
-        <input type="text" class="form-control" placeholder="UsuCodig" />
-      </div>
+      <label class="form-label"><small><strong>UsuCodig</strong></small></label>
+      <input type="text" class="form-control" placeholder="UsuCodig" [(ngModel)]="FiltroUsucodig" />
     </div>
   </div>
 
   <!-- Botones -->
   <div class="d-flex justify-content-center mb-4">
-    <button type="button" class="btn btn-primary me-3">Buscar</button>
-    <button type="button" class="btn btn-secondary">Limpiar</button>
+    <button type="button" class="btn btn-primary w-25 me-3" (click)="BtnBuscar()">Buscar</button>
+    <button type="button" class="btn btn-secondary w-25" (click)="BtnLimpiarClick()">Limpiar</button>
   </div>
 
   <!-- Tabla -->
@@ -74,19 +58,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let Validar of ArrayValidar">
+        <tr *ngFor="let Validar of ArrayResultadosPersona">
           <td>{{ Validar.IdUsuario }}</td>
           <td>{{ Validar.NombrePersona }}</td>
           <td>{{ Validar.Direccion }}</td>
           <td>{{ Validar.ComplementoDireccion }}</td>
           <td>{{ Validar.Coordenadas }}</td>
           <td>
-            <img
-              src="../../../../assets/ImagenesAgroApoya2Adm/vista.png"
-              alt=""
-              class="Vermas"
-              (click)="ModalValidacionUsuario()"
-            />
+            <img src="../../../../assets/ImagenesAgroApoya2Adm/vista.png" class="Vermas"
+              (click)="ModalValidacionUsuario(Validar)" />
           </td>
         </tr>
       </tbody>
@@ -98,27 +78,15 @@
 <ng-template #ModalValidarUsuario let-modal>
   <div class="modal-header bg-primary text-white">
     <h5 class="modal-title">Detalle</h5>
-    <button
-      type="button"
-      class="btn-close btn-close-white"
-      (click)="modal.dismiss()"
-    ></button>
+    <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss()"></button>
   </div>
 
   <div class="botones-container">
     <button type="button" class="star">
-      <img
-        src="../../../../assets/ImagenesAgroApoya2Adm/ic_FlechaIzquier.png"
-        alt=""
-        (click)="BtnFlechas('prev')"
-      />
+      <img src="../../../../assets/ImagenesAgroApoya2Adm/ic_FlechaIzquier.png" (click)="BtnFlechas('prev')" />
     </button>
-    <button type="button" class="end">
-      <img
-        src="../../../../assets/ImagenesAgroApoya2Adm/ic_Flecha.png"
-        alt=""
-        (click)="BtnFlechas('next')"
-      />
+    <button type="button" class="star">
+      <img src="../../../../assets/ImagenesAgroApoya2Adm/ic_Flecha.png" (click)="BtnFlechas('next')" />
     </button>
   </div>
 
@@ -127,6 +95,7 @@
       <!-- Form Fields Grid -->
       <div class="row form-grid mb-4">
         <div class="col-md-3">
+<<<<<<< HEAD
           <div class="form-group">
             <label class="form-label">Usocodigo:</label>
             <input type="text" class="form-control form-control-sm" [(ngModel)]="ArrayValidar.IdUsuario"/>
@@ -145,69 +114,58 @@
             <label class="form-label">Nombre:</label>
             <input type="text" class="form-control form-control-sm" />
           </div>
+=======
+          <label class="form-label">Usucodig:</label>
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.IdUsuario" disabled="disabled" />
+>>>>>>> master
         </div>
         <div class="col-md-3">
-          <div class="form-group">
-            <label class="form-label">Correo:</label>
-            <input type="text" class="form-control form-control-sm" />
-          </div>
+          <label class="form-label">Fecha de Registro:</label>
+          <input type="text" class="form-control form-control-sm" disabled="disabled"  />
         </div>
         <div class="col-md-3">
-          <div class="form-group">
-            <label class="form-label">Fecha de Registro:</label>
-            <input type="text" class="form-control form-control-sm" />
-          </div>
+          <label class="form-label">Nombre:</label>
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.NombrePersona" disabled="disabled"  />
         </div>
         <div class="col-md-3">
-          <div class="form-group">
-            <label class="form-label">Celular:</label>
-            <input type="text" class="form-control form-control-sm" />
-          </div>
+          <label class="form-label">Correo:</label>
+          <input type="text" class="form-control form-control-sm" disabled="disabled"  />
         </div>
         <div class="col-md-3">
-          <div class="form-group">
-            <label class="form-label">Dirección:</label>
-            <input type="text" class="form-control form-control-sm" />
-          </div>
+          <label class="form-label">Celular:</label>
+          <input type="text" class="form-control form-control-sm" disabled="disabled"  />
         </div>
         <div class="col-md-3">
-          <div class="form-group">
-            <label class="form-label">Complemento dirección:</label>
-            <input type="text" class="form-control form-control-sm" />
-          </div>
+          <label class="form-label">Dirección:</label>
+          <input type="text" class="form-control form-control-sm" />
         </div>
         <div class="col-md-3">
-          <div class="form-group">
-            <label class="form-label">Observacion:</label>
-            <input type="text" class="form-control form-control-sm" />
-          </div>
+          <label class="form-label">Complemento dirección:</label>
+          <input type="text" class="form-control form-control-sm" />
         </div>
         <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">Localidad Principal:</label>
-              <input type="text" class="form-control form-control-sm" />
-            </div>
-          </div>
-          <!-- Update Button -->
-      <div class="row mt-3">
-        <div class="col-12 text-end">
-          <button type="button" class="btn btn-primary">Actualizar</button>
+          <label class="form-label">Coordenadas:</label>
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.Coordenadas" />
         </div>
-      </div>
+        <div class="col-md-3">
+          <label class="form-label">Localidad Principal:</label>
+          <input type="text" class="form-control form-control-sm" disabled="disabled"  />
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Observacion:</label>
+          <input type="text" class="form-control form-control-sm" />
+        </div>
+        <!-- Update Button -->
+        <div class="row mt-3  justify-content-center">
+          <button type="button" class="btn btn-primary w-25">Actualizar</button>
+        </div>
       </div>
 
       <!-- Map Container -->
-        <div class="row justify-content-center">
-            <div class="col-12 d-flex justify-content-center">
-            <div class="custom-map" id="mapaModal"></div>
-            </div>
-        </div>
+      <div class="row justify-content-center">
+        <div class="custom-map" id="mapaModal"></div>
+      </div>
+
     </div>
   </div>
 </ng-template>
-
-
-
-
-
-
