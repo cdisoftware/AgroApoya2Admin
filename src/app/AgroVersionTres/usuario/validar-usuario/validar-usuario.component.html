@@ -1,0 +1,214 @@
+<div class="p-4">
+  <h3 class="text-center mb-4 text-primary">Valida Usuario</h3>
+
+  <!-- Filtros -->
+  <div class="row">
+    <!-- Lista sectores -->
+    <div class="col-md-3 mb-3">
+      <div class="form-group">
+        <label class="form-label"><small>Lista sectores</small></label>
+        <select class="form-control">
+          <option value="0">Seleccione</option>
+          <option
+            *ngFor="let Persona of ArrayPersona"
+            value="{{ Persona.DescripEstasdo }}"
+          >
+            {{ Persona.tipoEstado }}
+          </option>
+          <option></option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Lista de probados -->
+    <div class="col-md-3 mb-3">
+      <div class="form-group">
+        <label class="form-label"><small>Lista de probados</small></label>
+        <select class="form-control">
+          <option value="0">Seleccione</option>
+          <option
+            *ngFor="let Validador of ArrayValidar"
+            value="{{ Validador.Id }}"
+          >
+            {{ Validador.Nombre }}
+          </option>
+          <option></option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Teléfono -->
+    <div class="col-md-3 mb-3">
+      <div class="form-group">
+        <label class="form-label"><small>Teléfono</small></label>
+        <input type="text" class="form-control" placeholder="Teléfono" />
+      </div>
+    </div>
+
+    <!-- UsuCodig -->
+    <div class="col-md-3 mb-3">
+      <div class="form-group">
+        <label class="form-label"><small>UsuCodig</small></label>
+        <input type="text" class="form-control" placeholder="UsuCodig" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Botones -->
+  <div class="d-flex justify-content-center mb-4">
+    <button type="button" class="btn btn-primary me-3">Buscar</button>
+    <button type="button" class="btn btn-secondary">Limpiar</button>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-responsive">
+    <table class="table table-bordered text-center">
+      <thead class="table-primary">
+        <tr>
+          <th>UsuCodig</th>
+          <th>Nombre</th>
+          <th>Dirección</th>
+          <th>Complemento Dirección</th>
+          <th>Coordenadas</th>
+          <th>Ver Más</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let Validar of ArrayValidar">
+          <td>{{ Validar.IdUsuario }}</td>
+          <td>{{ Validar.NombrePersona }}</td>
+          <td>{{ Validar.Direccion }}</td>
+          <td>{{ Validar.ComplementoDireccion }}</td>
+          <td>{{ Validar.Coordenadas }}</td>
+          <td>
+            <img
+              src="../../../../assets/ImagenesAgroApoya2Adm/vista.png"
+              alt=""
+              class="Vermas"
+              (click)="ModalValidacionUsuario()"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- modal -->
+<ng-template #ModalValidarUsuario let-modal>
+  <div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">Detalle</h5>
+    <button
+      type="button"
+      class="btn-close btn-close-white"
+      (click)="modal.dismiss()"
+    ></button>
+  </div>
+
+  <div class="botones-container">
+    <button type="button" class="star">
+      <img
+        src="../../../../assets/ImagenesAgroApoya2Adm/ic_FlechaIzquier.png"
+        alt=""
+        (click)="BtnFlechas('prev')"
+      />
+    </button>
+    <button type="button" class="end">
+      <img
+        src="../../../../assets/ImagenesAgroApoya2Adm/ic_Flecha.png"
+        alt=""
+        (click)="BtnFlechas('next')"
+      />
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="container-fluid">
+      <!-- Form Fields Grid -->
+      <div class="row form-grid mb-4">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="form-label">Usocodigo:</label>
+            <input type="text" class="form-control form-control-sm"
+             class="col-3"{{ IdUsuario }}/>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">coordenadas:</label>
+              <input type="text" class="form-control form-control-sm"  />
+            </div>
+          </div>
+        
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="form-label">Nombre:</label>
+            <input type="text" class="form-control form-control-sm" />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="form-label">Correo:</label>
+            <input type="text" class="form-control form-control-sm" />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="form-label">Fecha de Registro:</label>
+            <input type="text" class="form-control form-control-sm" />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="form-label">Celular:</label>
+            <input type="text" class="form-control form-control-sm" />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="form-label">Dirección:</label>
+            <input type="text" class="form-control form-control-sm" />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="form-label">Complemento dirección:</label>
+            <input type="text" class="form-control form-control-sm" />
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="form-label">Observacion:</label>
+            <input type="text" class="form-control form-control-sm" />
+          </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+              <label class="form-label">Localidad Principal:</label>
+              <input type="text" class="form-control form-control-sm" />
+            </div>
+          </div>
+          <!-- Update Button -->
+      <div class="row mt-3">
+        <div class="col-12 text-end">
+          <button type="button" class="btn btn-primary">Actualizar</button>
+        </div>
+      </div>
+      </div>
+
+      <!-- Map Container -->
+        <div class="row justify-content-center">
+            <div class="col-12 d-flex justify-content-center">
+            <div class="custom-map" id="mapaModal"></div>
+            </div>
+        </div>
+    </div>
+  </div>
+</ng-template>
+
+
+
+
+
+

@@ -220,6 +220,12 @@ export class ServiciosService {
     modTipoCoordenadasZonaDos(Bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'modTipoCoordenadasZonaDos/' + Bandera, body);
     }
+    consValidaUsuario(Bandera: string, IdSector: string, Provado: string, Telefono: string, Usucodig: string) {
+        return this.http.get<any>(this.url_servidor + 'consValidaUsuario/' + Bandera + '/' + IdSector + '/' + Provado + '/' + Telefono + '/' + Usucodig);
+    }
+    consPersonaValidador(Bandera: string) {
+        return this.http.get<any>(this.url_servidor + 'consPersonaValidador/' + Bandera);
+    }
 }
 
 
