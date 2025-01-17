@@ -226,6 +226,10 @@ export class ServiciosService {
     consPersonaValidador(Bandera: string) {
         return this.http.get<any>(this.url_servidor + 'consPersonaValidador/' + Bandera);
     }
+
+    modActualizaInfoUsuario(Bandera: string, body: any) {
+        return this.http.post<any>(this.url_servidor + 'modActualizaInfoUsuario/' + Bandera, body);
+    }
 }
 
 
