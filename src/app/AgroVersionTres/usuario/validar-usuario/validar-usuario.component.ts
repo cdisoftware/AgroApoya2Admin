@@ -1,3 +1,5 @@
+import * as fs from 'file-saver';
+import { Workbook } from 'exceljs'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Component, ViewChild, NgZone } from '@angular/core';
 import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service';
@@ -213,4 +215,57 @@ export class ValidarUsuarioComponent {
     }
   }
 
+  DescargarExcelValidarUsuario() {
+    // Crear nuevo archivo
+    let workbook = new Workbook();
+  
+    // Crear una nueva hoja dentro del Excel
+    let worksheet = workbook.addWorksheet("Validar Usuario"); // Nombre de la hoja
+    let header = [
+      'IdUsuario', 'FechaCreacion', 'Nombre', 'Correo', 
+      'Celular', 'LocalidadPrincipal', 'Direccion', 
+      'Complementos', 'Coordenadas', 'ObservacionUsuario'
+    ];
+  
+    worksheet.addRow(header); 
+    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1'].map(key => {
+      worksheet.getCell(key).fill = {
+        type: 'pattern',
+        pattern: 'darkTrellis',
+        fgColor: { argb: '397c97' },
+        bgColor: { argb: '397c97' }
+      };
+      worksheet.getCell(key).font = {
+        color: { argb: 'FFFFFF' }
+      };
+    });
+    worksheet.columns = [
+      { width: 20 }, { width: 20 }, { width: 25 }, { width: 30 }, 
+      { width: 15 }, { width: 25 }, { width: 30 }, 
+      { width: 20 }, { width: 40 }, { width: 30 }
+    ];
+    for (let x1 of this.ArrayResultadosPersona) {
+      let temp = [];
+      temp.push(x1['IdUsuario']);
+      temp.push(x1['fechaRegistro']);
+      temp.push(x1['NombrePersona']);
+      temp.push(x1['Correo']);
+      temp.push(x1['Celular']);
+      temp.push(x1['LocalidadPrincipal']);
+      temp.push(x1['Direccion']);
+      temp.push(x1['ComplementoDireccion']);
+      temp.push(x1['Coordenadas']);
+      temp.push(x1['Observacion']);
+  
+      worksheet.addRow(temp);
+    }
+  
+    // Guardar archivo Excel
+    let fname = "Reporte-ValidarUsuario";
+    workbook.xlsx.writeBuffer().then((data) => {
+      let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      fs.saveAs(blob, fname + '.xlsx');
+    });
+  }
+  
 }
