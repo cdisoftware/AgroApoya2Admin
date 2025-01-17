@@ -22,17 +22,17 @@
     padding: 0.5rem 1rem;
     border-bottom: 1px solid #dee2e6;
   }
-
+  
   .star {
     border: none;
     background: none;
     cursor: pointer;
     padding: 0;
   }
-
   .star img {
     width: 29px;
     height: 29px;
+    cursor: pointer;
   }
 
   @media (max-width: 768px) {

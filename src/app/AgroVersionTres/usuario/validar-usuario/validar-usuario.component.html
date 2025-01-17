@@ -45,7 +45,7 @@
   </div>
 
   <!-- Tabla -->
-  <div class="table-responsive">
+  <div *ngIf="MostrasTabla == '1'" class="table-responsive">
     <table class="table table-bordered text-center">
       <thead class="table-primary">
         <tr>
@@ -82,10 +82,10 @@
   </div>
 
   <div class="botones-container">
-    <button type="button" class="star">
+    <button   *ngIf="DelanteAtras > 0" type="button" class="star">
       <img src="../../../../assets/ImagenesAgroApoya2Adm/ic_FlechaIzquier.png" (click)="BtnFlechas('prev')" />
     </button>
-    <button type="button" class="star">
+    <button *ngIf="DelanteAtras < CountTabla - 1" type="button" class="star">
       <img src="../../../../assets/ImagenesAgroApoya2Adm/ic_Flecha.png" (click)="BtnFlechas('next')" />
     </button>
   </div>
@@ -95,37 +95,16 @@
       <!-- Form Fields Grid -->
       <div class="row form-grid mb-4">
         <div class="col-md-3">
-<<<<<<< HEAD
-          <div class="form-group">
-            <label class="form-label">Usocodigo:</label>
-            <input type="text" class="form-control form-control-sm" [(ngModel)]="ArrayValidar.IdUsuario"/>
-          </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="form-group">
-              <label class="form-label">coordenadas:</label>
-              <input type="text" class="form-control form-control-sm"  />
-            </div>
-          </div>
-        
-        <div class="col-md-3">
-          <div class="form-group">
             <label class="form-label">Nombre:</label>
-            <input type="text" class="form-control form-control-sm" />
+            <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.NombrePersona" disabled="disabled"  />
           </div>
-=======
+        <div class="col-md-3">
           <label class="form-label">Usucodig:</label>
           <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.IdUsuario" disabled="disabled" />
->>>>>>> master
         </div>
         <div class="col-md-3">
           <label class="form-label">Fecha de Registro:</label>
           <input type="text" class="form-control form-control-sm" disabled="disabled"  />
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">Nombre:</label>
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.NombrePersona" disabled="disabled"  />
         </div>
         <div class="col-md-3">
           <label class="form-label">Correo:</label>
@@ -133,39 +112,43 @@
         </div>
         <div class="col-md-3">
           <label class="form-label">Celular:</label>
-          <input type="text" class="form-control form-control-sm" disabled="disabled"  />
+          <input type="text" class="form-control form-control-sm" disabled="disabled" />
         </div>
         <div class="col-md-3">
           <label class="form-label">Dirección:</label>
-          <input type="text" class="form-control form-control-sm" />
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.Direccion" />
         </div>
         <div class="col-md-3">
           <label class="form-label">Complemento dirección:</label>
-          <input type="text" class="form-control form-control-sm" />
+          <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.ComplementoDireccion"/>
         </div>
         <div class="col-md-3">
-          <label class="form-label">Coordenadas:</label>
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.Coordenadas" />
-        </div>
+            <label class="form-label">Coordenadas:</label>
+            <input 
+              type="text" 
+              readonly 
+              class="form-control form-control-sm" 
+              [(ngModel)]="ItemAuxModal.Coordenadas" 
+            />
+          </div>
         <div class="col-md-3">
           <label class="form-label">Localidad Principal:</label>
-          <input type="text" class="form-control form-control-sm" disabled="disabled"  />
+          <input type="text" class="form-control form-control-sm" disabled="disabled" [(ngModel)]="ItemAuxModal.LocalidadPrincipal"  />
         </div>
-        <div class="col-md-3">
-          <label class="form-label">Observacion:</label>
-          <input type="text" class="form-control form-control-sm" />
-        </div>
+            <div class="col-md-3">
+            <label class="form-label">Observacion:</label>
+            <input type="text" class="form-control form-control-sm" />
+            </div>
         <!-- Update Button -->
-        <div class="row mt-3  justify-content-center">
-          <button type="button" class="btn btn-primary w-25">Actualizar</button>
+            <div class="row mt-3  justify-content-center">
+            <button type="button" class="btn btn-primary w-25">Actualizar</button>
+            </div>
         </div>
-      </div>
 
-      <!-- Map Container -->
-      <div class="row justify-content-center">
-        <div class="custom-map" id="mapaModal"></div>
-      </div>
-
+        <!-- Map Container -->
+        <div class="row justify-content-center">
+            <div class="custom-map" id="mapaModal"></div>
+        </div>
     </div>
   </div>
 </ng-template>
