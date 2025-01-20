@@ -228,6 +228,8 @@ export class ServiciosService {
     }
 
     modActualizaInfoUsuario(Bandera: string, body: any) {
+        console.log(body)
+        console.log(this.url_servidor + 'modActualizaInfoUsuario/' + Bandera)
         return this.http.post<any>(this.url_servidor + 'modActualizaInfoUsuario/' + Bandera, body);
     }
 }

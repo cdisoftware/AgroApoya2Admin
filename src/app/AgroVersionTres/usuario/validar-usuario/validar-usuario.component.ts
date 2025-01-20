@@ -60,6 +60,7 @@ export class ValidarUsuarioComponent {
     this.FiltroLocalidad = '0';
     this.FiltroPersona = '0';
     this.MostrasTabla = '0';
+    this.ArrayResultadosPersona = [];
   }
 
   BtnBuscar() {
@@ -78,7 +79,6 @@ export class ValidarUsuarioComponent {
 
     this.ServiciosGenerales.consValidaUsuario('1', this.FiltroLocalidad, this.FiltroPersona, auxFiltroTelefono, auxFiltroUsucodig).subscribe(Rest => {
       this.ArrayResultadosPersona = Rest;
-      console.log(Rest)
       this.CountTabla = this.ArrayResultadosPersona.length;
     });
   }
@@ -86,7 +86,6 @@ export class ValidarUsuarioComponent {
   //Acciones de la tabla
   ModalValidacionUsuario(ItemConsulta: any) {
     this.ItemAuxModal = ItemConsulta;
-    console.log(this.ItemAuxModal)
 
     for (var i = 0; i <= this.ArrayResultadosPersona.length; i++) {
       if (this.ArrayResultadosPersona[i].IdUsuario == ItemConsulta.IdUsuario) {
@@ -160,6 +159,7 @@ export class ValidarUsuarioComponent {
       if (this.mapa != undefined) {
         const latLng = new google.maps.LatLng(lati, longi);
         this.AgregarMarcador(latLng, this.mapa);
+        this.ItemAuxModal.Coordenadas = `${lati.toFixed(6)}, ${longi.toFixed(6)}`;
       }
     });
   }
@@ -169,13 +169,11 @@ export class ValidarUsuarioComponent {
       if (this.PosicionArreglo > 0) {
         this.PosicionArreglo -= 1;
         this.ItemAuxModal = this.ArrayResultadosPersona[this.PosicionArreglo];
-        console.log(this.ItemAuxModal)
       }
     } else if (direction === 'next') {
       if (this.PosicionArreglo < this.CountTabla - 1) {
         this.PosicionArreglo += 1;
         this.ItemAuxModal = this.ArrayResultadosPersona[this.PosicionArreglo];
-        console.log(this.ItemAuxModal)
       }
     }
     this.InicializarMapa(this.ItemAuxModal.Coordenadas);
@@ -199,14 +197,14 @@ export class ValidarUsuarioComponent {
         id_manychat: this.ItemAuxModal.id_manychat,
         Observacion: this.ItemAuxModal.Observacion
       }
-      console.log(body)
       this.ServiciosGenerales.modActualizaInfoUsuario('1', body).subscribe(Rest => {
         alert(Rest)
-        this.ServiciosGenerales.consValidaUsuario(this.ItemAuxModal.IdUsuario, '0', '0', '0', '0').subscribe(RestUsuario => {
+        this.ServiciosGenerales.consValidaUsuario('1', '0', '0', '0', this.ItemAuxModal.IdUsuario).subscribe(RestUsuario => {
+          console.log(RestUsuario)
           for (var i = 0; i <= RestUsuario.length; i++) {
             if (RestUsuario[i].IdUsuario == this.ItemAuxModal.IdUsuario) {
+              console.log(RestUsuario[i].IdUsuario)
               this.ItemAuxModal = RestUsuario[i];
-              console.log(this.ItemAuxModal)
               break;
             }
           }
@@ -216,56 +214,61 @@ export class ValidarUsuarioComponent {
   }
 
   DescargarExcelValidarUsuario() {
-    // Crear nuevo archivo
-    let workbook = new Workbook();
-  
-    // Crear una nueva hoja dentro del Excel
-    let worksheet = workbook.addWorksheet("Validar Usuario"); // Nombre de la hoja
-    let header = [
-      'IdUsuario', 'FechaCreacion', 'Nombre', 'Correo', 
-      'Celular', 'LocalidadPrincipal', 'Direccion', 
-      'Complementos', 'Coordenadas', 'ObservacionUsuario'
-    ];
-  
-    worksheet.addRow(header); 
-    ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1'].map(key => {
-      worksheet.getCell(key).fill = {
-        type: 'pattern',
-        pattern: 'darkTrellis',
-        fgColor: { argb: '397c97' },
-        bgColor: { argb: '397c97' }
-      };
-      worksheet.getCell(key).font = {
-        color: { argb: 'FFFFFF' }
-      };
-    });
-    worksheet.columns = [
-      { width: 20 }, { width: 20 }, { width: 25 }, { width: 30 }, 
-      { width: 15 }, { width: 25 }, { width: 30 }, 
-      { width: 20 }, { width: 40 }, { width: 30 }
-    ];
-    for (let x1 of this.ArrayResultadosPersona) {
-      let temp = [];
-      temp.push(x1['IdUsuario']);
-      temp.push(x1['fechaRegistro']);
-      temp.push(x1['NombrePersona']);
-      temp.push(x1['Correo']);
-      temp.push(x1['Celular']);
-      temp.push(x1['LocalidadPrincipal']);
-      temp.push(x1['Direccion']);
-      temp.push(x1['ComplementoDireccion']);
-      temp.push(x1['Coordenadas']);
-      temp.push(x1['Observacion']);
-  
-      worksheet.addRow(temp);
+    if (this.ArrayResultadosPersona.length == 0) {
+      alert('No se encontraron registros para descargar el excel')
+    } else {
+      // Crear nuevo archivo
+      let workbook = new Workbook();
+
+      // Crear una nueva hoja dentro del Excel
+      let worksheet = workbook.addWorksheet("Validar Usuario"); // Nombre de la hoja
+      let header = [
+        'IdUsuario', 'FechaCreacion', 'Nombre', 'Correo',
+        'Celular', 'LocalidadPrincipal', 'Direccion',
+        'Complementos', 'Coordenadas', 'ObservacionUsuario'
+      ];
+
+      worksheet.addRow(header);
+      ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1'].map(key => {
+        worksheet.getCell(key).fill = {
+          type: 'pattern',
+          pattern: 'darkTrellis',
+          fgColor: { argb: '397c97' },
+          bgColor: { argb: '397c97' }
+        };
+        worksheet.getCell(key).font = {
+          color: { argb: 'FFFFFF' }
+        };
+      });
+      worksheet.columns = [
+        { width: 20 }, { width: 20 }, { width: 25 }, { width: 30 },
+        { width: 15 }, { width: 25 }, { width: 30 },
+        { width: 20 }, { width: 40 }, { width: 30 }
+      ];
+      for (let x1 of this.ArrayResultadosPersona) {
+        let temp = [];
+        temp.push(x1['IdUsuario']);
+        temp.push(x1['fechaRegistro']);
+        temp.push(x1['NombrePersona']);
+        temp.push(x1['Correo']);
+        temp.push(x1['Celular']);
+        temp.push(x1['LocalidadPrincipal']);
+        temp.push(x1['Direccion']);
+        temp.push(x1['ComplementoDireccion']);
+        temp.push(x1['Coordenadas']);
+        temp.push(x1['Observacion']);
+
+        worksheet.addRow(temp);
+      }
+
+      // Guardar archivo Excel
+      let fname = "Reporte-ValidarUsuario";
+      workbook.xlsx.writeBuffer().then((data) => {
+        let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        fs.saveAs(blob, fname + '.xlsx');
+      });
     }
-  
-    // Guardar archivo Excel
-    let fname = "Reporte-ValidarUsuario";
-    workbook.xlsx.writeBuffer().then((data) => {
-      let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      fs.saveAs(blob, fname + '.xlsx');
-    });
+
   }
-  
+
 }

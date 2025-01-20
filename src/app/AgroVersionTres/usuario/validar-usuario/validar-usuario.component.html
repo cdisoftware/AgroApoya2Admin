@@ -41,8 +41,8 @@
   <!-- Botones -->
   <div class="d-flex justify-content-center mb-4">
     <button type="button" class="btn btn-primary w-25 me-3" (click)="BtnBuscar()">Buscar</button>
-    <button type="button" class="btn btn-secondary w-25" (click)="BtnLimpiarClick()">Limpiar</button>
-    <button type="button" class="btn btn-primary w-25" (click)="DescargarExcelValidarUsuario()">Descargar Exel</button>
+    <button type="button" class="btn btn-secondary w-25 me-3" (click)="BtnLimpiarClick()">Limpiar</button>
+    <button type="button" class="btn btn-primary w-25 me-3" (click)="DescargarExcelValidarUsuario()">Descargar Exel</button>
   </div>
 
   <!-- Tabla -->
@@ -96,7 +96,7 @@
   </div>
 
   <div class="modal-body">
-    <div class="container-fluid" *ngFor="let Validar of ArrayResultadosPersona">
+    <div class="container-fluid">
       <!-- Form Fields Grid -->
       <div class="row form-grid mb-4">
         <div class="col-md-2">
@@ -151,11 +151,11 @@
           <label class="form-label lblPeque">Observacion usuario:</label>
           <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.Observacion" />
         </div>
-        
+
         <!-- Update Button -->
         <div class="row mt-3  justify-content-center">
           <button type="button" class="btn btn-primary w-25" (click)="BtnActualizarUsuario()">Actualizar</button>
-         
+
         </div>
       </div>
 
