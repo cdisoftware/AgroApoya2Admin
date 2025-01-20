@@ -5,10 +5,15 @@
   <div class="row">
     <!-- Lista sectores -->
     <div class="col-md-3 mb-3">
-      <label class="form-label"><small><strong>Lista sectores</strong> </small></label>
+      <label class="form-label"
+        ><small><strong>Lista sectores</strong> </small></label
+      >
       <select class="form-control" [(ngModel)]="FiltroLocalidad">
         <option value="0">Seleccione</option>
-        <option *ngFor="let Persona of ArrayLocalidadesFiltro" value="{{ Persona.IdTipo }}">
+        <option
+          *ngFor="let Persona of ArrayLocalidadesFiltro"
+          value="{{ Persona.IdTipo }}"
+        >
           {{ Persona.Descripcion }}
         </option>
       </select>
@@ -16,10 +21,15 @@
 
     <!-- Lista de probados -->
     <div class="col-md-3 mb-3">
-      <label class="form-label"><small><strong>Lista de probados</strong> </small></label>
+      <label class="form-label"
+        ><small><strong>Lista de probados</strong> </small></label
+      >
       <select class="form-control" [(ngModel)]="FiltroPersona">
         <option value="0">Seleccione</option>
-        <option *ngFor="let Validador of ArrayPersona" value="{{ Validador.Nombre }}">
+        <option
+          *ngFor="let Validador of ArrayPersona"
+          value="{{ Validador.Nombre }}"
+        >
           {{ Validador.Nombre }}
         </option>
       </select>
@@ -27,22 +37,54 @@
 
     <!-- Teléfono -->
     <div class="col-md-3 mb-3">
-      <label class="form-label"><small><strong>Teléfono</strong></small></label>
-      <input type="text" class="form-control" placeholder="Teléfono" [(ngModel)]="FiltroTelefono" />
+      <label class="form-label"
+        ><small><strong>Teléfono</strong></small></label
+      >
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Teléfono"
+        [(ngModel)]="FiltroTelefono"
+      />
     </div>
 
     <!-- UsuCodig -->
     <div class="col-md-3 mb-3">
-      <label class="form-label"><small><strong>UsuCodig</strong></small></label>
-      <input type="text" class="form-control" placeholder="UsuCodig" [(ngModel)]="FiltroUsucodig" />
+      <label class="form-label"
+        ><small><strong>UsuCodig</strong></small></label
+      >
+      <input
+        type="text"
+        class="form-control"
+        placeholder="UsuCodig"
+        [(ngModel)]="FiltroUsucodig"
+      />
     </div>
   </div>
 
   <!-- Botones -->
   <div class="d-flex justify-content-center mb-4">
-    <button type="button" class="btn btn-primary w-25 me-3" (click)="BtnBuscar()">Buscar</button>
-    <button type="button" class="btn btn-secondary w-25" (click)="BtnLimpiarClick()">Limpiar</button>
-    <button type="button" class="btn btn-primary w-25" (click)="DescargarExcelValidarUsuario()">Descargar Exel</button>
+    <button
+      type="button"
+      class="btn btn-primary w-25 me-3"
+      (click)="BtnBuscar()"
+    >
+      Buscar
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary w-25"
+      (click)="BtnLimpiarClick()"
+    >
+      Limpiar
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary w-25 me-3"
+      (click)="DescargarExcelValidarUsuario()"
+    >
+      Descargar Exel
+    </button>
   </div>
 
   <!-- Tabla -->
@@ -66,8 +108,11 @@
           <td>{{ Validar.ComplementoDireccion }}</td>
           <td>{{ Validar.Coordenadas }}</td>
           <td>
-            <img src="../../../../assets/ImagenesAgroApoya2Adm/vista.png" class="Vermas"
-              (click)="ModalValidacionUsuario(Validar)" />
+            <img
+              src="../../../../assets/ImagenesAgroApoya2Adm/vista.png"
+              class="Vermas"
+              (click)="ModalValidacionUsuario(Validar)"
+            />
           </td>
         </tr>
       </tbody>
@@ -79,83 +124,146 @@
 <ng-template #ModalValidarUsuario let-modal>
   <div class="modal-header bg-primary text-white">
     <h5 class="modal-title">Detalle</h5>
-    <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss()"></button>
+    <button
+      type="button"
+      class="btn-close btn-close-white"
+      (click)="modal.dismiss()"
+    ></button>
   </div>
 
   <div class="botones-container">
     <div>
       <button type="button" class="star" *ngIf="PosicionArreglo != 0">
-        <img src="../../../../assets/ImagenesAgroApoya2Adm/ic_FlechaIzquier.png" (click)="BtnFlechas('prev')" />
+        <img
+          src="../../../../assets/ImagenesAgroApoya2Adm/ic_FlechaIzquier.png"
+          (click)="BtnFlechas('prev')"
+        />
       </button>
     </div>
     <div>
-      <button type="button" class="star" *ngIf="PosicionArreglo != (CountTabla - 1)">
-        <img src="../../../../assets/ImagenesAgroApoya2Adm/ic_Flecha.png" (click)="BtnFlechas('next')" />
+      <button
+        type="button"
+        class="star"
+        *ngIf="PosicionArreglo != CountTabla - 1"
+      >
+        <img
+          src="../../../../assets/ImagenesAgroApoya2Adm/ic_Flecha.png"
+          (click)="BtnFlechas('next')"
+        />
       </button>
     </div>
   </div>
 
   <div class="modal-body">
-    <div class="container-fluid" *ngFor="let Validar of ArrayResultadosPersona">
+    <div class="container-fluid">
       <!-- Form Fields Grid -->
       <div class="row form-grid mb-4">
         <div class="col-md-2">
           <label class="form-label lblPeque">Usucodig:</label>
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.IdUsuario"
-            disabled="disabled" />
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            [(ngModel)]="ItemAuxModal.IdUsuario"
+            disabled="disabled"
+          />
         </div>
         <div class="col-md-2">
           <label class="form-label lblPeque">Fecha de Registro:</label>
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.fechaRegistro"
-            disabled="disabled" />
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            [(ngModel)]="ItemAuxModal.fechaRegistro"
+            disabled="disabled"
+          />
         </div>
         <div class="col-md-2">
           <label class="form-label lblPeque">Nombre:</label>
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.NombrePersona"
-            disabled="disabled" />
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            [(ngModel)]="ItemAuxModal.NombrePersona"
+            disabled="disabled"
+          />
         </div>
 
-        <div class="col-md-2 ">
+        <div class="col-md-2">
           <label class="form-label lblPeque">Correo:</label>
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.Correo"
-            disabled="disabled" />
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            [(ngModel)]="ItemAuxModal.Correo"
+            disabled="disabled"
+          />
         </div>
-        <div class="col-md-2 ">
+        <div class="col-md-2">
           <label class="form-label lblPeque">Celular:</label>
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.Celular"
-            disabled="disabled" />
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            [(ngModel)]="ItemAuxModal.Celular"
+            disabled="disabled"
+          />
         </div>
-        <div class="col-md-2 ">
+        <div class="col-md-2">
           <label class="form-label lblPeque">Localidad Principal:</label>
-          <input type="text" class="form-control form-control-sm" disabled="disabled"
-            [(ngModel)]="ItemAuxModal.LocalidadPrincipal" />
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            disabled="disabled"
+            [(ngModel)]="ItemAuxModal.LocalidadPrincipal"
+          />
         </div>
-        <div class="col-md-2 ">
+        <div class="col-md-2">
           <label class="form-label lblPeque">Dirección:</label>
-          <div style="display: flex;">
-            <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.Direccion" />
-            <img src="../../../../assets/ImagenesAgroApoya2Adm/buscar.png" width="25px" height="25px"
-              (click)="BuscarMapaDireccion()" />
+          <div style="display: flex">
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              [(ngModel)]="ItemAuxModal.Direccion"
+            />
+            <img
+              src="../../../../assets/ImagenesAgroApoya2Adm/buscar.png"
+              width="25px"
+              height="25px"
+              (click)="BuscarMapaDireccion()"
+            />
           </div>
         </div>
-        <div class="col-md-2 ">
+        <div class="col-md-2">
           <label class="form-label lblPeque">Complemento:</label>
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.ComplementoDireccion" />
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            [(ngModel)]="ItemAuxModal.ComplementoDireccion"
+          />
         </div>
-        <div class="col-md-2 ">
+        <div class="col-md-2">
           <label class="form-label lblPeque">Coordenadas:</label>
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.Coordenadas"
-            disabled="disabled" />
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            [(ngModel)]="ItemAuxModal.Coordenadas"
+            disabled="disabled"
+          />
         </div>
-        <div class="col-md-2 ">
+        <div class="col-md-2">
           <label class="form-label lblPeque">Observacion usuario:</label>
-          <input type="text" class="form-control form-control-sm" [(ngModel)]="ItemAuxModal.Observacion" />
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            [(ngModel)]="ItemAuxModal.Observacion"
+          />
         </div>
-        
+
         <!-- Update Button -->
-        <div class="row mt-3  justify-content-center">
-          <button type="button" class="btn btn-primary w-25" (click)="BtnActualizarUsuario()">Actualizar</button>
-         
+        <div class="row mt-3 justify-content-center">
+          <button
+            type="button"
+            class="btn btn-primary w-25"
+            (click)="BtnActualizarUsuario()"
+          >
+            Actualizar
+          </button>
         </div>
       </div>
 
