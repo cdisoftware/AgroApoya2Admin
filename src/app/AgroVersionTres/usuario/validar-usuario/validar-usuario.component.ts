@@ -47,6 +47,7 @@ export class ValidarUsuarioComponent {
   cargasIniciales(): void {
     this.ServiciosGenerales.consTipoLocalidad('3').subscribe(Resultado => {
       this.ArrayLocalidadesFiltro = Resultado;
+      console.log(Resultado)
     });
     this.ServiciosGenerales.consPersonaValidador('1').subscribe(Rest => {
       this.ArrayPersona = Rest;
