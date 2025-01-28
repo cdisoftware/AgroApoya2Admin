@@ -39,7 +39,6 @@ export class ValidarUsuarioComponent {
   AuxPestanas: string = '1';
   ArrayLocalidaDefinidos: any = [];
   ArrayLocalidadesOferta: any = [];
-  Atualizar: string;
 
   IdSector: string;
 
@@ -87,7 +86,6 @@ BotonAtualizar(IdSector: string): void {
   this.loadingSectors.add(IdSector); // Activa solo este botón
   this.ServiciosGenerales.conscvalidaususector('1', IdSector).subscribe(
     (Rest) => {
-      this.Atualizar = Rest;
       alert(Rest);
       this.loadingSectors.delete(IdSector); // Desactiva solo este botón
     },
