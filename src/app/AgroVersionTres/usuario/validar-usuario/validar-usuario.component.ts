@@ -13,7 +13,7 @@ export class ValidarUsuarioComponent {
 
   @ViewChild('ModalValidarUsuario') ModalValidarUsuario!: any;
   @ViewChild('ModalAtualizarSector') ModalAtualizarSector!: any;
-  
+
   //Variables para los filtros
   ArrayLocalidadesFiltro: any = []
   ArrayPersona: any = []
@@ -26,7 +26,7 @@ export class ValidarUsuarioComponent {
   ArrayResultadosPersona: any = []
   MostrasTabla: string = '0';
 
-  // Variables en el modal
+  // Variables en el modal para actualizar la direccion de la persona
   ItemAuxModal: any = [];
   mapa: google.maps.Map | undefined;
   geocoder = new google.maps.Geocoder();
@@ -36,12 +36,10 @@ export class ValidarUsuarioComponent {
   MostrarFlecha: string = '0';
   ModalPersona: string = '0';
 
-
-//Variables De sectores Modal 
+  //Variables De sectores Modal 
   AuxPestanas: string = '1'
   ArrayLocalidaDefinidos: any = []
   ArrayLocalidadesOferta: any = []
-  Atualizar: string   
 
   constructor(
     private ngZone: NgZone,
@@ -55,32 +53,15 @@ export class ValidarUsuarioComponent {
   cargasIniciales(): void {
     this.ServiciosGenerales.consTipoLocalidad('3').subscribe(Resultado => {
       this.ArrayLocalidadesFiltro = Resultado;
-      console.log(Resultado)
     });
     this.ServiciosGenerales.consPersonaValidador('1').subscribe(Rest => {
       this.ArrayPersona = Rest;
     });
     this.ServiciosGenerales.consTipoLocalidad('4').subscribe(Resultado => {
       this.ArrayLocalidaDefinidos = Resultado;
-      console.log(Resultado, 'Definidos')
     });
     this.ServiciosGenerales.consTipoLocalidad('5').subscribe(Resultado => {
       this.ArrayLocalidadesOferta = Resultado;
-      console.log(Resultado, 'Oferta')
-    })
-  }
-
-  BtnSectoresDefinidos(): void{
-    this.AuxPestanas = '1'
-  }
-  BtnSectoresOferta(): void{
-    this.AuxPestanas = '2'
-  }
-
-  BotonAtualizar(): void{
-    this.ServiciosGenerales.conscvalidaususector('1', '350').subscribe(Rest =>{
-      this.Atualizar = Rest;
-      alert(Rest)
     })
   }
 
@@ -111,7 +92,6 @@ export class ValidarUsuarioComponent {
     this.ServiciosGenerales.consValidaUsuario('1', this.FiltroLocalidad, this.FiltroPersona, auxFiltroTelefono, auxFiltroUsucodig).subscribe(Rest => {
       this.ArrayResultadosPersona = Rest;
       this.CountTabla = this.ArrayResultadosPersona.length;
-      console.log(Rest, 'LEER')
     });
   }
 
@@ -134,7 +114,7 @@ export class ValidarUsuarioComponent {
     this.InicializarMapa(ItemConsulta.Coordenadas)
   }
 
-  //Acciones Modal
+  //Acciones Modal para actualizar la dirección del usuario
   InicializarMapa(positcion: string) {
     this.geocoder.geocode({ address: 'Bogotá, Colombia' }).then((result) => {
       const { results } = result;
@@ -245,14 +225,6 @@ export class ValidarUsuarioComponent {
     }
   }
 
-
-  AbrirModalAtualizar(): void{
-    this.modalService.open(this.ModalAtualizarSector, {
-      ariaLabelledBy: 'modal-basic-title',
-      size: 'xl',
-    });
-  }
-
   DescargarExcelValidarUsuario() {
     if (this.ArrayResultadosPersona.length == 0) {
       alert('No se encontraron registros para descargar el excel')
@@ -309,6 +281,28 @@ export class ValidarUsuarioComponent {
       });
     }
 
+  }
+
+  //Secccion para actualizar el sector con las personas correspondientes
+  AbrirModalAtualizar(): void {
+    this.modalService.open(this.ModalAtualizarSector, {
+      ariaLabelledBy: 'modal-basic-title',
+      size: 'xl',
+    });
+  }
+
+  BtnSectoresDefinidos(): void {
+    this.AuxPestanas = '1'
+  }
+
+  BtnSectoresOferta(): void {
+    this.AuxPestanas = '2'
+  }
+
+  BotonAtualizar(): void {
+    this.ServiciosGenerales.conscvalidaususector('1', '350').subscribe(Rest => {
+      alert(Rest)
+    })
   }
 
 }
