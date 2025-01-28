@@ -1,5 +1,5 @@
 import * as fs from 'file-saver';
-import { Workbook } from 'exceljs'
+import { Workbook } from 'exceljs';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Component, ViewChild, NgZone } from '@angular/core';
 import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service';
@@ -7,26 +7,25 @@ import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service
 @Component({
   selector: 'app-validar-usuario',
   templateUrl: './validar-usuario.component.html',
-  styleUrls: ['./validar-usuario.component.css']
+  styleUrls: ['./validar-usuario.component.css'],
 })
 export class ValidarUsuarioComponent {
-
   @ViewChild('ModalValidarUsuario') ModalValidarUsuario!: any;
   @ViewChild('ModalAtualizarSector') ModalAtualizarSector!: any;
 
   //Variables para los filtros
-  ArrayLocalidadesFiltro: any = []
-  ArrayPersona: any = []
+  ArrayLocalidadesFiltro: any = [];
+  ArrayPersona: any = [];
   FiltroTelefono: string = '';
   FiltroUsucodig: string = '';
   FiltroLocalidad: string = '0';
   FiltroPersona: string = '0';
 
-  //Informacion de Usuario En la tabla 
-  ArrayResultadosPersona: any = []
+  //Informacion de Usuario En la tabla
+  ArrayResultadosPersona: any = [];
   MostrasTabla: string = '0';
 
-  // Variables en el modal para actualizar la direccion de la persona
+  // Variables en el modal
   ItemAuxModal: any = [];
   mapa: google.maps.Map | undefined;
   geocoder = new google.maps.Geocoder();
@@ -36,34 +35,69 @@ export class ValidarUsuarioComponent {
   MostrarFlecha: string = '0';
   ModalPersona: string = '0';
 
-  //Variables De sectores Modal 
-  AuxPestanas: string = '1'
-  ArrayLocalidaDefinidos: any = []
-  ArrayLocalidadesOferta: any = []
+  //Variables De sectores Modal
+  AuxPestanas: string = '1';
+  ArrayLocalidaDefinidos: any = [];
+  ArrayLocalidadesOferta: any = [];
+  Atualizar: string;
+
+  IdSector: string;
+
+  loadingSectors = new Set<string>(); // Para rastrear los botones en carg
 
   constructor(
     private ngZone: NgZone,
     private modalService: NgbModal,
-    public ServiciosGenerales: ServiciosService) { }
+    public ServiciosGenerales: ServiciosService
+  ) {}
 
   ngOnInit(): void {
-    this.cargasIniciales()
+    this.cargasIniciales();
   }
 
   cargasIniciales(): void {
-    this.ServiciosGenerales.consTipoLocalidad('3').subscribe(Resultado => {
+    this.ServiciosGenerales.consTipoLocalidad('3').subscribe((Resultado) => {
       this.ArrayLocalidadesFiltro = Resultado;
+      console.log(Resultado);
     });
-    this.ServiciosGenerales.consPersonaValidador('1').subscribe(Rest => {
+    this.ServiciosGenerales.consPersonaValidador('1').subscribe((Rest) => {
       this.ArrayPersona = Rest;
     });
-    this.ServiciosGenerales.consTipoLocalidad('4').subscribe(Resultado => {
+    this.ServiciosGenerales.consTipoLocalidad('4').subscribe((Resultado) => {
       this.ArrayLocalidaDefinidos = Resultado;
+      console.log(Resultado, 'Definidos');
     });
-    this.ServiciosGenerales.consTipoLocalidad('5').subscribe(Resultado => {
+    this.ServiciosGenerales.consTipoLocalidad('5').subscribe((Resultado) => {
       this.ArrayLocalidadesOferta = Resultado;
-    })
+      console.log(Resultado, 'Oferta');
+    });
   }
+
+  BtnSectoresDefinidos(): void {
+    this.AuxPestanas = '1';
+  }
+  BtnSectoresOferta(): void {
+    this.AuxPestanas = '2';
+  }
+//metodo de atulizar dentro del modal 
+ 
+BotonAtualizar(IdSector: string): void {
+  if (this.loadingSectors.has(IdSector)) return; // Evita doble ejecución
+  
+  this.loadingSectors.add(IdSector); // Activa solo este botón
+  this.ServiciosGenerales.conscvalidaususector('1', IdSector).subscribe(
+    (Rest) => {
+      this.Atualizar = Rest;
+      alert(Rest);
+      this.loadingSectors.delete(IdSector); // Desactiva solo este botón
+    },
+    (error) => {
+      console.error('Error al llamar al servicio:', error);
+      this.loadingSectors.delete(IdSector); // Desactiva el loader en caso de error
+      alert('Ocurrió un error. Intenta nuevamente.');
+    }
+  );
+}
 
   //Accion Bontones filtros
   BtnLimpiarClick() {
@@ -89,9 +123,16 @@ export class ValidarUsuarioComponent {
       auxFiltroUsucodig = this.FiltroUsucodig;
     }
 
-    this.ServiciosGenerales.consValidaUsuario('1', this.FiltroLocalidad, this.FiltroPersona, auxFiltroTelefono, auxFiltroUsucodig).subscribe(Rest => {
+    this.ServiciosGenerales.consValidaUsuario(
+      '1',
+      this.FiltroLocalidad,
+      this.FiltroPersona,
+      auxFiltroTelefono,
+      auxFiltroUsucodig
+    ).subscribe((Rest) => {
       this.ArrayResultadosPersona = Rest;
       this.CountTabla = this.ArrayResultadosPersona.length;
+      console.log(Rest, 'LEER');
     });
   }
 
@@ -111,10 +152,10 @@ export class ValidarUsuarioComponent {
       size: 'xl',
     });
 
-    this.InicializarMapa(ItemConsulta.Coordenadas)
+    this.InicializarMapa(ItemConsulta.Coordenadas);
   }
 
-  //Acciones Modal para actualizar la dirección del usuario
+  //Acciones Modal
   InicializarMapa(positcion: string) {
     this.geocoder.geocode({ address: 'Bogotá, Colombia' }).then((result) => {
       const { results } = result;
@@ -129,30 +170,37 @@ export class ValidarUsuarioComponent {
       );
 
       if (this.mapa != undefined) {
-        const [lat, lng] = positcion.split(',').map(coord => parseFloat(coord.trim()));
+        const [lat, lng] = positcion
+          .split(',')
+          .map((coord) => parseFloat(coord.trim()));
         const latLng = new google.maps.LatLng(lat, lng);
         this.AgregarMarcador(latLng, this.mapa);
       }
 
       // capturar clik en el mapa
-      this.mapa.addListener('click', (marcadores: google.maps.MapMouseEvent) => {
-        if (marcadores.latLng) {
-          const lat = marcadores.latLng.lat();
-          const lng = marcadores.latLng.lng();
-          this.ngZone.run(() => {
-            this.ItemAuxModal.Coordenadas = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-          })
-          if (this.mapa != undefined) {
-            this.AgregarMarcador(marcadores.latLng, this.mapa);
+      this.mapa.addListener(
+        'click',
+        (marcadores: google.maps.MapMouseEvent) => {
+          if (marcadores.latLng) {
+            const lat = marcadores.latLng.lat();
+            const lng = marcadores.latLng.lng();
+            this.ngZone.run(() => {
+              this.ItemAuxModal.Coordenadas = `${lat.toFixed(6)}, ${lng.toFixed(
+                6
+              )}`;
+            });
+            if (this.mapa != undefined) {
+              this.AgregarMarcador(marcadores.latLng, this.mapa);
+            }
           }
         }
-      });
+      );
     });
   }
 
   AgregarMarcador(latLng: google.maps.LatLng, map: google.maps.Map) {
     if (this.markers.length > 0) {
-      this.markers[0].setMap(null)
+      this.markers[0].setMap(null);
     }
     const marker = new google.maps.Marker({
       position: latLng,
@@ -163,17 +211,21 @@ export class ValidarUsuarioComponent {
   }
 
   BuscarMapaDireccion() {
-    this.geocoder.geocode({ address: 'Bogotá ' + this.ItemAuxModal.Direccion }).then((result) => {
-      const { results } = result;
-      var lati = results[0].geometry.location.lat();
-      var longi = results[0].geometry.location.lng();
+    this.geocoder
+      .geocode({ address: 'Bogotá ' + this.ItemAuxModal.Direccion })
+      .then((result) => {
+        const { results } = result;
+        var lati = results[0].geometry.location.lat();
+        var longi = results[0].geometry.location.lng();
 
-      if (this.mapa != undefined) {
-        const latLng = new google.maps.LatLng(lati, longi);
-        this.AgregarMarcador(latLng, this.mapa);
-        this.ItemAuxModal.Coordenadas = `${lati.toFixed(6)}, ${longi.toFixed(6)}`;
-      }
-    });
+        if (this.mapa != undefined) {
+          const latLng = new google.maps.LatLng(lati, longi);
+          this.AgregarMarcador(latLng, this.mapa);
+          this.ItemAuxModal.Coordenadas = `${lati.toFixed(6)}, ${longi.toFixed(
+            6
+          )}`;
+        }
+      });
   }
 
   BtnFlechas(direction: 'prev' | 'next'): void {
@@ -192,10 +244,16 @@ export class ValidarUsuarioComponent {
   }
 
   BtnActualizarUsuario() {
-    if (this.ItemAuxModal.Direccion == '' || this.ItemAuxModal.Direccion == undefined) {
-      alert('El campo Dirección es obligatorio')
-    } else if (this.ItemAuxModal.Coordenadas == '' || this.ItemAuxModal.Coordenadas == undefined) {
-      alert('El campo Coordenadas es obligatorio')
+    if (
+      this.ItemAuxModal.Direccion == '' ||
+      this.ItemAuxModal.Direccion == undefined
+    ) {
+      alert('El campo Dirección es obligatorio');
+    } else if (
+      this.ItemAuxModal.Coordenadas == '' ||
+      this.ItemAuxModal.Coordenadas == undefined
+    ) {
+      alert('El campo Coordenadas es obligatorio');
     } else {
       const body = {
         IdUsuario: this.ItemAuxModal.IdUsuario,
@@ -203,59 +261,90 @@ export class ValidarUsuarioComponent {
         Direccion: this.ItemAuxModal.Direccion,
         ComplementoDireccion: this.ItemAuxModal.ComplementoDireccion,
         Coordenadas: this.ItemAuxModal.Coordenadas,
-        UsuarioTraza: "Juan M",
+        UsuarioTraza: 'Juan M',
         Correo: this.ItemAuxModal.Correo,
         Celular: this.ItemAuxModal.Celular,
         id_manychat: this.ItemAuxModal.id_manychat,
-        Observacion: this.ItemAuxModal.Observacion
-      }
-      this.ServiciosGenerales.modActualizaInfoUsuario('1', body).subscribe(Rest => {
-        alert(Rest)
-        this.ServiciosGenerales.consValidaUsuario('1', '0', '0', '0', this.ItemAuxModal.IdUsuario).subscribe(RestUsuario => {
-          console.log(RestUsuario)
-          for (var i = 0; i <= RestUsuario.length; i++) {
-            if (RestUsuario[i].IdUsuario == this.ItemAuxModal.IdUsuario) {
-              console.log(RestUsuario[i].IdUsuario)
-              this.ItemAuxModal = RestUsuario[i];
-              break;
+        Observacion: this.ItemAuxModal.Observacion,
+      };
+      this.ServiciosGenerales.modActualizaInfoUsuario('1', body).subscribe(
+        (Rest) => {
+          alert(Rest);
+          this.ServiciosGenerales.consValidaUsuario(
+            '1',
+            '0',
+            '0',
+            '0',
+            this.ItemAuxModal.IdUsuario
+          ).subscribe((RestUsuario) => {
+            console.log(RestUsuario);
+            for (var i = 0; i <= RestUsuario.length; i++) {
+              if (RestUsuario[i].IdUsuario == this.ItemAuxModal.IdUsuario) {
+                console.log(RestUsuario[i].IdUsuario);
+                this.ItemAuxModal = RestUsuario[i];
+                break;
+              }
             }
-          }
-        });
-      });
+          });
+        }
+      );
     }
+  }
+//boton de atulizar al inicio de la pagina 
+  AbrirModalAtualizar(): void {
+    this.modalService.open(this.ModalAtualizarSector, {
+      ariaLabelledBy: 'modal-basic-title',
+      size: 'xl',
+    });
   }
 
   DescargarExcelValidarUsuario() {
     if (this.ArrayResultadosPersona.length == 0) {
-      alert('No se encontraron registros para descargar el excel')
+      alert('No se encontraron registros para descargar el excel');
     } else {
       // Crear nuevo archivo
       let workbook = new Workbook();
 
       // Crear una nueva hoja dentro del Excel
-      let worksheet = workbook.addWorksheet("Validar Usuario"); // Nombre de la hoja
+      let worksheet = workbook.addWorksheet('Validar Usuario'); // Nombre de la hoja
       let header = [
-        'IdUsuario', 'FechaCreacion', 'Nombre', 'Correo',
-        'Celular', 'LocalidadPrincipal', 'Direccion',
-        'Complementos', 'Coordenadas', 'ObservacionUsuario'
+        'IdUsuario',
+        'FechaCreacion',
+        'Nombre',
+        'Correo',
+        'Celular',
+        'LocalidadPrincipal',
+        'Direccion',
+        'Complementos',
+        'Coordenadas',
+        'ObservacionUsuario',
       ];
 
       worksheet.addRow(header);
-      ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1'].map(key => {
-        worksheet.getCell(key).fill = {
-          type: 'pattern',
-          pattern: 'darkTrellis',
-          fgColor: { argb: '397c97' },
-          bgColor: { argb: '397c97' }
-        };
-        worksheet.getCell(key).font = {
-          color: { argb: 'FFFFFF' }
-        };
-      });
+      ['A1', 'B1', 'C1', 'D1', 'E1', 'F1', 'G1', 'H1', 'I1', 'J1'].map(
+        (key) => {
+          worksheet.getCell(key).fill = {
+            type: 'pattern',
+            pattern: 'darkTrellis',
+            fgColor: { argb: '397c97' },
+            bgColor: { argb: '397c97' },
+          };
+          worksheet.getCell(key).font = {
+            color: { argb: 'FFFFFF' },
+          };
+        }
+      );
       worksheet.columns = [
-        { width: 20 }, { width: 20 }, { width: 25 }, { width: 30 },
-        { width: 15 }, { width: 25 }, { width: 30 },
-        { width: 20 }, { width: 40 }, { width: 30 }
+        { width: 20 },
+        { width: 20 },
+        { width: 25 },
+        { width: 30 },
+        { width: 15 },
+        { width: 25 },
+        { width: 30 },
+        { width: 20 },
+        { width: 40 },
+        { width: 30 },
       ];
       for (let x1 of this.ArrayResultadosPersona) {
         let temp = [];
@@ -274,35 +363,13 @@ export class ValidarUsuarioComponent {
       }
 
       // Guardar archivo Excel
-      let fname = "Reporte-ValidarUsuario";
+      let fname = 'Reporte-ValidarUsuario';
       workbook.xlsx.writeBuffer().then((data) => {
-        let blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        let blob = new Blob([data], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        });
         fs.saveAs(blob, fname + '.xlsx');
       });
     }
-
   }
-
-  //Secccion para actualizar el sector con las personas correspondientes
-  AbrirModalAtualizar(): void {
-    this.modalService.open(this.ModalAtualizarSector, {
-      ariaLabelledBy: 'modal-basic-title',
-      size: 'xl',
-    });
-  }
-
-  BtnSectoresDefinidos(): void {
-    this.AuxPestanas = '1'
-  }
-
-  BtnSectoresOferta(): void {
-    this.AuxPestanas = '2'
-  }
-
-  BotonAtualizar(): void {
-    this.ServiciosGenerales.conscvalidaususector('1', '350').subscribe(Rest => {
-      alert(Rest)
-    })
-  }
-
 }
