@@ -230,6 +230,10 @@ export class ServiciosService {
     modActualizaInfoUsuario(Bandera: string, body: any) {
         return this.http.post<any>(this.url_servidor + 'modActualizaInfoUsuario/' + Bandera, body);
     }
+
+    conscvalidaususector(Bandera: string, IdSector: string) {
+        return this.http.get<any>(this.url_servidor + 'conscvalidaususector/' + Bandera + '/' + IdSector);
+    }
 }
 
 

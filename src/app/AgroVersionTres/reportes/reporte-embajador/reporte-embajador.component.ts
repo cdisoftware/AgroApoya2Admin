@@ -212,5 +212,4 @@ export class ReporteEmbajadorComponent implements OnInit {
       fs.saveAs(blob, fname + '.xlsx');
     });
   }
-
 }

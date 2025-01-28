@@ -12,7 +12,8 @@ import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service
 export class ValidarUsuarioComponent {
 
   @ViewChild('ModalValidarUsuario') ModalValidarUsuario!: any;
-
+  @ViewChild('ModalAtualizarSector') ModalAtualizarSector!: any;
+  
   //Variables para los filtros
   ArrayLocalidadesFiltro: any = []
   ArrayPersona: any = []
@@ -35,6 +36,13 @@ export class ValidarUsuarioComponent {
   MostrarFlecha: string = '0';
   ModalPersona: string = '0';
 
+
+//Variables De sectores Modal 
+  AuxPestanas: string = '1'
+  ArrayLocalidaDefinidos: any = []
+  ArrayLocalidadesOferta: any = []
+  Atualizar: string   
+
   constructor(
     private ngZone: NgZone,
     private modalService: NgbModal,
@@ -51,6 +59,28 @@ export class ValidarUsuarioComponent {
     });
     this.ServiciosGenerales.consPersonaValidador('1').subscribe(Rest => {
       this.ArrayPersona = Rest;
+    });
+    this.ServiciosGenerales.consTipoLocalidad('4').subscribe(Resultado => {
+      this.ArrayLocalidaDefinidos = Resultado;
+      console.log(Resultado, 'Definidos')
+    });
+    this.ServiciosGenerales.consTipoLocalidad('5').subscribe(Resultado => {
+      this.ArrayLocalidadesOferta = Resultado;
+      console.log(Resultado, 'Oferta')
+    })
+  }
+
+  BtnSectoresDefinidos(): void{
+    this.AuxPestanas = '1'
+  }
+  BtnSectoresOferta(): void{
+    this.AuxPestanas = '2'
+  }
+
+  BotonAtualizar(): void{
+    this.ServiciosGenerales.conscvalidaususector('1', '350').subscribe(Rest =>{
+      this.Atualizar = Rest;
+      alert(Rest)
     })
   }
 
@@ -81,6 +111,7 @@ export class ValidarUsuarioComponent {
     this.ServiciosGenerales.consValidaUsuario('1', this.FiltroLocalidad, this.FiltroPersona, auxFiltroTelefono, auxFiltroUsucodig).subscribe(Rest => {
       this.ArrayResultadosPersona = Rest;
       this.CountTabla = this.ArrayResultadosPersona.length;
+      console.log(Rest, 'LEER')
     });
   }
 
@@ -212,6 +243,14 @@ export class ValidarUsuarioComponent {
         });
       });
     }
+  }
+
+
+  AbrirModalAtualizar(): void{
+    this.modalService.open(this.ModalAtualizarSector, {
+      ariaLabelledBy: 'modal-basic-title',
+      size: 'xl',
+    });
   }
 
   DescargarExcelValidarUsuario() {
