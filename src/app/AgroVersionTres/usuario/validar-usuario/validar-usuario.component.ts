@@ -12,6 +12,7 @@ import { ServiciosService } from 'src/app/AgroVersionTres/core/servicios.service
 export class ValidarUsuarioComponent {
   @ViewChild('ModalValidarUsuario') ModalValidarUsuario!: any;
   @ViewChild('ModalAtualizarSector') ModalAtualizarSector!: any;
+  @ViewChild('modalMapa') modalMapa!: any;
 
   //Variables para los filtros
   ArrayLocalidadesFiltro: any = [];
@@ -27,7 +28,7 @@ export class ValidarUsuarioComponent {
 
   // Variables en el modal que actuliza la informacion de los usuarios
   ItemAuxModal: any = [];
-  mapa: google.maps.Map | undefined;
+  mapa: google.maps.Map ;
   geocoder = new google.maps.Geocoder();
   markers: google.maps.Marker[] = [];
   CountTabla: number = 0; // Guardar la cantidad de items de la tabla
@@ -40,6 +41,10 @@ export class ValidarUsuarioComponent {
   ArrayLocalidaDefinidos: any = [];
   ArrayLocalidadesOferta: any = [];
   AuxMotrarLoder: string = '1';
+
+  AbrirMapa: google.maps.Map ;
+
+  ArrayZonaPoli: any = [];
 
   constructor(
     private ngZone: NgZone,
@@ -59,6 +64,7 @@ export class ValidarUsuarioComponent {
     this.ServiciosGenerales.consPersonaValidador('1').subscribe((Rest) => {
       this.ArrayPersona = Rest;
     });
+    
   }
 
   //Accion Bontones filtros
@@ -340,6 +346,7 @@ export class ValidarUsuarioComponent {
 
   BtnSectoresDefinidos(): void {
     this.AuxPestanas = '1';
+    
     this.ServiciosGenerales.consTipoLocalidad('4').subscribe((Resultado) => {
       this.ArrayLocalidaDefinidos = Resultado;
       console.log(Resultado, 'Definidos');
@@ -370,6 +377,55 @@ export class ValidarUsuarioComponent {
     });
   }
 
-  
+  VisaulizarSectorMapa(): void{
+    this.modalService.open(this.modalMapa, {
+      ariaLabelledBy: 'modal-basic-title',
+      size: 'xl',
+    });
+    this.MapaSectores()
+  }
 
-}
+  MapaSectores(): void {
+    this.geocoder.geocode({ address: 'Bogota, Colombia' }).then((result) => {
+      const { results } = result;
+      const lati = results[0].geometry.location.lat();
+      const longi = results[0].geometry.location.lng();
+  
+      this.AbrirMapa = new google.maps.Map(
+        document.getElementById('MapaSectores') as HTMLElement,
+        {
+          zoom: 12,
+          center: { lat: lati, lng: longi }
+        }
+      );
+      this.obtenerPoligono();
+    });
+  }
+  
+  obtenerPoligono(): void {
+    this.ServiciosGenerales.consTipoCoordenadasZona('1', '1').subscribe((rest: any[]) => {
+      this.ArrayZonaPoli = rest;
+      console.log(rest, 'Zona')
+      const coordenadas = Array.isArray(rest) ? rest.map(punto => ({
+        lat: parseFloat(punto.Latitud.trim()),
+        lng: parseFloat(punto.Longitud.trim())
+      })) : [];
+  
+      this.dibujarPoligono(coordenadas);
+    });
+  }
+  
+  dibujarPoligono(coordenadas: { lat: number; lng: number }[]): void {
+    const poligono = new google.maps.Polygon({
+      paths: coordenadas,
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#FF0000',
+      fillOpacity: 0.35
+    });
+  
+    poligono.setMap(this.ArrayZonaPoli);
+  }
+  
+ }

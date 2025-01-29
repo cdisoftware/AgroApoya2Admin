@@ -7,6 +7,9 @@ import { MetodosglobalesService } from './metodosglobales.service';
 })
 
 export class ServiciosService {
+    obtenerCoordenadas() {
+      throw new Error('Method not implemented.');
+    }
 
     constructor(private http: HttpClient, private metodosglobales: MetodosglobalesService) { }
 
@@ -233,6 +236,10 @@ export class ServiciosService {
 
     conscvalidaususector(Bandera: string, IdSector: string) {
         return this.http.get<any>(this.url_servidor + 'conscvalidaususector/' + Bandera + '/' + IdSector);
+    }
+
+    consTipoCoordenadasZona(Bandera: string, IdZona: string) {
+        return this.http.get<any>(this.url_servidor + 'conscvalidaususector/' + Bandera + '/' + IdZona);
     }
 }
 

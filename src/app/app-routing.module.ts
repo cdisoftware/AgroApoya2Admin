@@ -302,8 +302,7 @@ const routes: Routes = [
   {
     path: 'ValidarUsuaro',
     component: ValidarUsuarioComponent
-  },
-  
+  }
 ];
 
 @NgModule({

@@ -77,7 +77,7 @@
           <td>{{ Validar.Direccion }}</td>
           <td>{{ Validar.ComplementoDireccion }}</td>
           <td>{{ Validar.Coordenadas }}</td>
-          <td>
+        <td>
             <img src="../../../../assets/ImagenesAgroApoya2Adm/vista.png" class="Vermas"
               (click)="ModalValidacionUsuario(Validar)" />
           </td>
@@ -218,6 +218,7 @@
           <th>Nombre Sector</th>
           <th>Cantidad de Usuario</th>
           <th>Atualizar</th>
+          <th>Mapa</th>
         </thead>
         <tbody *ngFor="let Definidos of ArrayLocalidaDefinidos">
           <tr>
@@ -227,6 +228,10 @@
               <button type="button" class="btn btn-primary me-3" (click)="BtnActualizar(Definidos.IdTipo)">
                 Atualizar
               </button>
+            </td>
+            <td >
+            <img src="../../../../assets/ImagenesAgroApoya2Adm/ic_ubicacion.png"width="30px" height="30px"
+            (click)="VisaulizarSectorMapa()">
             </td>
           </tr>
         </tbody>
@@ -245,7 +250,7 @@
             <td>{{ Oferta.Descripcion }}</td>
             <td>{{ Oferta.CantidadUsu }}</td>
             <td>
-              <button type="button" class="btn btn-primary me-3">
+              <button type="button" class="btn btn-primary me-3" (click)="BtnActualizar(Oferta.IdTipo)">
                 Atualizar
               </button>
             </td>
@@ -260,5 +265,20 @@
       <img src="../../../../assets/ImagenesAgroApoya2Adm/loder_seguimiento.gif" alt="Cargando..." width="200" height="200" />
       Cargando...
     </span>
+  </div>
+</ng-template>
+
+<!-- Modal Mapa -->
+<ng-template #modalMapa let-modal>
+  <div class="modal-header bg-primary text-white">
+    <h5 class="modal-title">
+      Sectores en el Mapa 
+    </h5>
+    <button type="button" class="btn-close btn-close-white" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+     <div class="row justify-content-center">
+      <div class="custom-map" id="MapaSectores"></div>
+    </div>
   </div>
 </ng-template>
