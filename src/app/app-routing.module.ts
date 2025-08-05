@@ -60,6 +60,8 @@ import { CarruselComponent } from './AgroVersionTres/carrusel/carrusel.component
 import { MenuLateralComponent } from './AgroVersionTres/menu-lateral/menu-lateral.component';
 import { InicioComponent } from './AgroVersionTres/inicio/inicio.component';
 import { ValidarUsuarioComponent } from './AgroVersionTres/usuario/validar-usuario/validar-usuario.component';
+import { MinimocompratotalComponent } from './ofertas/components/minimocompratotal/minimocompratotal.component';
+
 
 const routes: Routes = [
   {
@@ -77,6 +79,10 @@ const routes: Routes = [
     path: 'home',
     component: LayoutprincipalComponent,
     children: [
+      {
+        path: 'minimoTotal',
+        component: MinimocompratotalComponent
+      },
       {
         path: 'buscar',
         component: BuscarofertaComponent

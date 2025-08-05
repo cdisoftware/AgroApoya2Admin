@@ -1,0 +1,136 @@
+<div class="container mt-5">
+  <!-- Título -->
+  <h2 class="text-primary mb-4 text-center" style="font-size: 22px !important;">Mínimo de compra total por oferta</h2>
+
+  <!-- Filtro de ID -->
+  <div class="row mb-3 justify-content-center">
+    <div class="col-md-4">
+      <input type="number" class="form-control form-control-sm" [(ngModel)]="IdOferta" id="ofertaId"
+        placeholder="Ingrese un id de la oferta">
+    </div>
+  </div>
+
+  <!-- Botón de búsqueda -->
+  <div class="row mb-4 justify-content-center">
+    <div class="col-md-2 col-sm-4 text-center">
+      <button class="btn btn-primary w-100  btn-sm" (click)="BusquedaGeneral()">Buscar</button>
+    </div>
+    <div class="col-md-2 col-sm-4  text-center">
+      <button class="btn btn-secondary w-100 btn-sm">Limpiar</button>
+    </div>
+  </div>
+
+  <!-- Tabla de resultados -->
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle text-center">
+      <thead class="table-primary">
+        <tr>
+          <th class="fontPeque">cd_cnsctivo</th>
+          <th class="fontPeque">Descripción de la relación</th>
+          <th class="fontPeque">Editar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of ArrayCompraGeneral">
+          <td>{{ item.cd_cnsctivo }}</td>
+          <td>{{ item.descripcionRelacion }}</td>
+          <td>
+            <img alt="Imagen 2" class="img-thumbnail" width="50">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!--Area modales-->
+<ng-template #ModalEditarGeneral let-modal>
+  <div class="modal-header">
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row br">
+      <div class="col-sm-12">
+        <h2 class="text-primary mb-4 text-center" style="font-size: 20px !important;">Editar Mínimo de compra total por
+          oferta</h2>
+      </div>
+      <br>
+      <!-- Vista tabla y edidicon general-->
+      <div>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <div class="form-group">
+              <label class="form-label"><small>Id Oferta</small></label>
+              <input type="text" class="form-control" placeholder="Consecutivo de la oferta" />
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="form-group">
+              <label class="form-label"><small>Tipo Relación</small></label>
+              <select class="form-control">
+                <option value="0">Seleccione</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="form-group">
+              <label class="form-label"><small>.</small></label>
+              <button class="btn btn-primary w-100 btn-sm" (click)="BusquedaGeneral()">Guardar</button>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle text-center">
+              <thead class="table-primary">
+                <tr>
+                  <th class="fontPeque">Tipo Carga</th>
+                  <th class="fontPeque">Peso</th>
+                  <th class="fontPeque">Compras</th>
+                  <th class="fontPeque">Estado</th>
+                  <th class="fontPeque">Editar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of ArrayCompraGeneral">
+                  <td>{{ item.cd_cnsctivo }}</td>
+                  <td>{{ item.descripcionRelacion }}</td>
+                  <td>
+                    <img alt="Imagen 2" class="img-thumbnail" width="50">
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edicion especifica-->
+      <div>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <div class="form-group">
+              <label class="form-label"><small>Tipo Carga</small></label>
+              <input type="text" class="form-control" placeholder="Tipo carga" />
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="form-group">
+              <label class="form-label"><small>Peso/compras mínima </small></label>
+              <input type="text" class="form-control" placeholder="Peso/compras mínima" />
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="form-group">
+              <label class="form-label"><small>.</small></label>
+              <button class="btn btn-primary w-100 btn-sm" (click)="BusquedaGeneral()">Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <br>
+  <br>
+</ng-template>
