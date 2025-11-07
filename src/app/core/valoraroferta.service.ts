@@ -548,7 +548,7 @@ export class ValorarofertaService {
   }
 
   ConsultaEnlaces(Bandera: string, TipoLink: string, cd_prdcto: string) {
-    return this.http.get<any>(this.url_servidor + 'consAdProductosLinks/' + Bandera + '/' + TipoLink+ '/' + cd_prdcto)
+    return this.http.get<any>(this.url_servidor + 'consAdProductosLinks/' + Bandera + '/' + TipoLink + '/' + cd_prdcto)
   }
 
   AgregaEnlaces(Bandera: string, Body: any) {
@@ -556,17 +556,23 @@ export class ValorarofertaService {
   }
 
   ConsultaDescuento(Bandera: string, Cd_cnsctvo: string, Id_sector: string) {
-    return this.http.get<any>(this.url_servidor + 'consagroDescuentoConsulta/' + Bandera + '/' + Cd_cnsctvo+ '/' + Id_sector)
+    return this.http.get<any>(this.url_servidor + 'consagroDescuentoConsulta/' + Bandera + '/' + Cd_cnsctvo + '/' + Id_sector)
   }
 
   ModDescuento(Bandera: string, Body: any) {
     return this.http.post<any>(this.url_servidor + 'modAgroDescuento/' + Bandera, Body);
   }
 
-  consAdminEnvioSMS(Bandera: string,IdSectror: string) {
-    return this.http.get<any>(this.url_servidor + 'consAdminEnvioSMS/' + Bandera + '/'+ IdSectror);
+  consAdminEnvioSMS(Bandera: string, IdSectror: string, TamanoLote: string, numeroLote: string) {
+    return this.http.get<any>(this.url_servidor + 'consAdminEnvioSMS/' + Bandera + '/' + IdSectror + '/' + TamanoLote + '/' + numeroLote);
   }
-  EnvioSMSIndv(Body:any) {
+
+  EnvioSMSIndv(Body: any) {
     return this.http.post<any>(this.url_servidor + 'EnvioSMSIndv', Body);
   }
+
+  EnvioSmsDirectoApi(body: any) {
+    return this.http.post<any>("https://contacto-virtual.com/a/api/send/sms/json", body);
+  }
+
 }

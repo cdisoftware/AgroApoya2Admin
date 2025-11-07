@@ -1,17 +1,76 @@
-<div class="container" style="background-color: lavender;">
-    <br><br>
-    <p>Escribe el numero del sector para el envio de mensajes de texto</p>
-    <br>
-    <div style="display: flex; " class="mt-3">
-        <div class="col-9">
-            <input class="form-control"  [(ngModel)]="ValorUni">
-        </div>
-        <div class="col-1">
+<div class="container mt-4">
+    <form class="card p-4 shadow-sm" (ngSubmit)="consultar()">
+        <h2 class="mb-3 text-center text-primary">📱 Envío Masivo de SMS por Sector</h2>
 
+        <!-- ID Sector -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Id Sector</label>
+            <input type="number" class="form-control" [(ngModel)]="idSector" name="idSector" required>
+            <small class="text-muted">El sector al cual se van a enviar los SMS de texto.</small>
         </div>
-        <div class="col-2">
-            <button class="btn btn-agro-prin " (click)="EnviarSms()"> Enviar</button>
+
+        <!-- Tamaño Lote -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Tamaño Lote</label>
+            <input type="number" class="form-control" [(ngModel)]="tamanoLote" name="tamanoLote">
+            <small class="text-muted">Cantidad de registros que devolverá por lote.</small>
+        </div>
+
+        <!-- Número Lote -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Número Lote</label>
+            <input type="number" class="form-control" [(ngModel)]="numeroLote" name="numeroLote">
+            <small class="text-muted">Número del lote que se desea consultar.</small>
+        </div>
+
+        <!-- Cadena de texto -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Cadena de Texto</label>
+            <textarea class="form-control" rows="3" [(ngModel)]="cadenaTexto" name="cadenaTexto"
+                placeholder="Ejemplo: Hola @nombre, tu pedido ya está listo para entrega."></textarea>
+            <small class="text-muted">
+                Texto que se enviará en los SMS. Si quieres personalizar con el nombre, usa <b>@nombre</b>.
+            </small>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary px-4" [disabled]="cargando">
+                {{ cargando ? 'Consultando...' : 'Consultar' }}
+            </button>
+        </div>
+    </form>
+
+    <!-- Tabla de resultados -->
+    <div *ngIf="resultados.length > 0" class="card mt-4 shadow-sm">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Resultados del Lote</h5>
+            <button class="btn btn-success btn-sm" (click)="enviarSMS()">📤 Enviar SMS</button>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-primary">
+                    <tr>
+                        <th>#</th>
+                        <th>ID Usuario</th>
+                        <th>Celular</th>
+                        <th>Nombre</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let r of resultados; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ r.USUCODIG }}</td>
+                        <td>{{ r.CELULAR_PERSONA }}</td>
+                        <td>{{ r.NOMBRES_PERSONA }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
-    <br>
+
+    <div *ngIf="!cargando && resultados.length === 0" class="text-center text-muted mt-4">
+        <p>No hay resultados aún. Realiza una consulta.</p>
+    </div>
+
 </div>
