@@ -477,18 +477,12 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       this.ValorDomicilio += Number(this.ArrayConsultaSeg[i].ValorDomicilio);
     }
     this.TotalCosolidado = this.TotalCosolidado + this.ValorDomicilio;
+
     for (let i = 0; i < features.length; i++) {
       var icon;
-      var LabelOption;
-      //alert(features[i].Estado)
+
       if (features[i].Estado == '1') {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/Entregado.png';
-        // LabelOption = {
-        //   text: "" + (i + 1),
-        //   color: "#D35400",
-        //   fontSize: "15px",
-        //   fontWeight: "bold"
-        // }
       } else if (features[i].Estado == '2') {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png';
       } else if (features[i].Estado == '4') {
@@ -504,12 +498,11 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         map: this.map,
         icon: icon,
         zIndex: i,
-        label: LabelOption
       });
+
       this.markers.push(marker);
-      const infoWindow = new google.maps.InfoWindow();
-      this.markers[i].addListener("click", () => {
-        this.InfoWindow(this.markers[i].getZIndex());
+      marker.addListener("click", () => {
+        this.InfoWindow(i);
       });
     }
 
@@ -552,11 +545,11 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       this.NumProductos = 0;
 
       let listadoProductos = '';
-      for (var i = 0; i < Resultado.length; i++) {
-        this.NumProductos = this.NumProductos + Resultado[i].Cantidad;
-        this.TotalEsperado = this.TotalEsperado + Number(Resultado[i].valor);
-        this.TotalReal = this.TotalReal + Number(Resultado[i].ValorReal);
-        listadoProductos += `<li>${Resultado[i].Cantidad} &nbsp; ${Resultado[i].Producto} &nbsp; ${Resultado[i].valor}</li>`;
+      for (let k = 0; k < Resultado.length; k++) {
+        this.NumProductos = this.NumProductos + Resultado[k].Cantidad;
+        this.TotalEsperado = this.TotalEsperado + Number(Resultado[k].valor);
+        this.TotalReal = this.TotalReal + Number(Resultado[k].ValorReal);
+        listadoProductos += `<li>${Resultado[k].Cantidad} &nbsp; ${Resultado[k].Producto} &nbsp;${this.FormatoValores('USD', Resultado[k].valor)} </li>`;
       }
 
       let Html = `
@@ -576,12 +569,10 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
           </ul>
         </div> `;
 
-      for (var x = 0; x < this.markers.length; x++) {
-        if (i == x) {
-          this.infoWindow.close();
-          this.infoWindow.setContent(Html);
-          this.infoWindow.open(this.markers[i].getMap(), this.markers[i]);
-        }
+      if (this.markers[i]) {
+        this.infoWindow.close();
+        this.infoWindow.setContent(Html);
+        this.infoWindow.open(this.markers[i].getMap(), this.markers[i]);
       }
     });
 
