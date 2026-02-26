@@ -556,7 +556,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         this.NumProductos = this.NumProductos + Resultado[i].Cantidad;
         this.TotalEsperado = this.TotalEsperado + Number(Resultado[i].valor);
         this.TotalReal = this.TotalReal + Number(Resultado[i].ValorReal);
-        listadoProductos += `<li>${Resultado[i].Producto}</li>`;
+        listadoProductos += `<li>${Resultado[i].Cantidad} &nbsp; ${Resultado[i].Producto} &nbsp; ${Resultado[i].valor}</li>`;
       }
 
       let Html = `
@@ -574,8 +574,7 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
           <ul style="padding-left: 20px; font-size: 12px; margin-top: 5px;">
             ${listadoProductos}
           </ul>
-        </div>
-      `;
+        </div> `;
 
       for (var x = 0; x < this.markers.length; x++) {
         if (i == x) {
