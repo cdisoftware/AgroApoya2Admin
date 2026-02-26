@@ -539,93 +539,26 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   InfoWindow(i: any) {
 
     this.infoWindow.close();
+    console.log(this.ArrayConsultaSeg[i])
+
     var NomCliente: string = '' + this.ArrayConsultaSeg[i].NOMBRES_PERSONA + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_PERSONA;
-    var FechaEntrega: string = '' + this.ArrayConsultaSeg[i].fecha_entrega + ' : ' + this.ArrayConsultaSeg[i].hora_entrega;
-    var Direccion: string = '' + this.ArrayConsultaSeg[i].DRCCION;
+    var DRCCION : string = this.ArrayConsultaSeg[i].DRCCION;
+    var CELULAR_PERSONA : string = this.ArrayConsultaSeg[i].CELULAR_PERSONA;
 
-    var Producto: string = '';
-    if (this.ArrayConsultaSeg[i].unidadesEntregar > 0) {
-      Producto = '' + this.ArrayConsultaSeg[i].Producto_ppal + ': ' + this.ArrayConsultaSeg[i].unidadesEntregar + ' und x ' + this.ArrayConsultaSeg[i].VlorProductoPrincipal;
-    }
-
-    var toppings: string = "";
-    if (this.ArrayConsultaSeg[i].producto_add != '' && this.ArrayConsultaSeg[i].producto_add != null && this.ArrayConsultaSeg[i].producto_add != undefined) {
-      toppings = '' + this.ArrayConsultaSeg[i].producto_addBr.replaceAll("|", "<br>");
-    }
-
-    var Img: string = '';
-    if (this.ArrayConsultaSeg[i].imagen_evidencia != null && this.ArrayConsultaSeg[i].imagen_evidencia != '' && this.ArrayConsultaSeg[i].imagen_evidencia != undefined) {
-      Img = this.ArrayConsultaSeg[i].imagen_evidencia;
-    } else {
-      Img = '../../../../assets/ImagenesAgroApoya2Adm/PendienteEntrega.jpg';
-    }
-
-    var TotalPagar: string = this.ArrayConsultaSeg[i].Vlor_PagarForm;
-
-
-    var Pago: string = this.ArrayConsultaSeg[i].descTipoPago
-    var Telefono: string = '' + this.ArrayConsultaSeg[i].CELULAR_PERSONA;
-    var ValorAPagar: string = '' + this.ArrayConsultaSeg[i].Vlor_PagarForm;
-    var Estado: string = '' + this.ArrayConsultaSeg[i].descEstado;
-
-    var Observaciones: string = '';
-
-    if (this.ArrayConsultaSeg[i].observacionesCliente != null && this.ArrayConsultaSeg[i].observacionesCliente != '' && this.ArrayConsultaSeg[i].observacionesCliente != undefined) {
-      Observaciones = this.ArrayConsultaSeg[i].observacionesCliente;
-    } else {
-      Observaciones = 'Pendiente';
-    }
+    this.ServiciosValorar.ConsultaDetalleEntregas('1', this.ArrayConsultaSeg[i].ID).subscribe(Resultado => {
+      console.log(Resultado)
+      this.ArrayDetalle = Resultado;//Producto
+      this.TotalEsperado = 0;
+      this.TotalReal = 0;
+      for (var i = 0; i < this.ArrayDetalle.length; i++) {
+        this.NumProductos = this.NumProductos + this.ArrayDetalle[i].Cantidad
+        this.TotalEsperado = this.TotalEsperado + Number(this.ArrayDetalle[i].valor)
+        this.TotalReal = this.TotalReal + Number(this.ArrayDetalle[i].ValorReal)
+      }
+    })
 
     let Html =
-      '<div>' +
-      '<div class="row col-12" style="overflow: auto; max-height: 320px; width: 630px;">' +
-      '<div class="col-sm-12">' +
-      '<h1 id="firstHeading" class="firstHeading">' + NomCliente + '</h1>' +
-      '<h2 id="firstHeading" class="firstHeading">' + Estado + '</h2>' +
-      '</div>' +
-      '<hr>' +
-      '<div class="col-sm-6">' +
-      '<div id="content">' +
-      '<div id="bodyContent">' +
-      '<p style="font-size: 14px;">' +
-      '<b>Dirección: </b> ' + Direccion + '' +
-      '<br>' +
-      '<b>Valor A Pagar: </b>' + ValorAPagar + '' +
-      '<br>' +
-      '<b>Fecha Entrega: </b>' + FechaEntrega + '' +
-      '<br>' +
-      '<b>Metodo de pago: </b>' + Pago + '' +
-      '<br>' +
-      '<b>Productos: </b>';
-    if (this.ArrayConsultaSeg[i].unidadesEntregar > 0) {
-      Html = Html + '<br>' + Producto + '';
-    }
-    if (this.ArrayConsultaSeg[i].producto_add != '' && this.ArrayConsultaSeg[i].producto_add != null && this.ArrayConsultaSeg[i].producto_add != undefined) {
-      Html = Html + '<br>' + toppings + '';
-    }
-
-    Html = Html +
-      '<br>' +
-      '<b style="font-weight: bold; font-size: 15px;">Total pago: </b> <span style="color: forestgreen; font-weight: bold; font-size: 15px;">' + TotalPagar + '</span>' +
-      '<br>' +
-      '<b>Numero de telefono: </b>' + Telefono + '';
-
-    if (this.ArrayConsultaSeg[i].observacionesCliente != null && this.ArrayConsultaSeg[i].observacionesCliente != '' && this.ArrayConsultaSeg[i].observacionesCliente != undefined) {
-      Html = Html + '<b>Observación: </b>' + Observaciones + '' +
-        '<br>';
-    }
-
-
-    Html = Html + '</p>' +
-      '</div>' +
-      '</div>' +
-      '</div>' +
-      '<div class="col-sm-6" style="height: 50%;">' +
-      '<img src="' + Img + '" style="width: 70%; height:200px; object-fit: cover;">' +
-      '</div>' +
-      '</div>' +
-      '</div>';
-
+      '<div>';
 
 
     for (var x = 0; x < this.markers.length; x++) {
