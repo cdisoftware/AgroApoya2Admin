@@ -542,33 +542,50 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
     console.log(this.ArrayConsultaSeg[i])
 
     var NomCliente: string = '' + this.ArrayConsultaSeg[i].NOMBRES_PERSONA + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_PERSONA;
-    var DRCCION : string = this.ArrayConsultaSeg[i].DRCCION;
-    var CELULAR_PERSONA : string = this.ArrayConsultaSeg[i].CELULAR_PERSONA;
+    var DRCCION: string = this.ArrayConsultaSeg[i].DRCCION;
+    var CELULAR_PERSONA: string = this.ArrayConsultaSeg[i].CELULAR_PERSONA;
 
     this.ServiciosValorar.ConsultaDetalleEntregas('1', this.ArrayConsultaSeg[i].ID).subscribe(Resultado => {
-      console.log(Resultado)
-      this.ArrayDetalle = Resultado;//Producto
+      console.log(Resultado);
       this.TotalEsperado = 0;
       this.TotalReal = 0;
-      for (var i = 0; i < this.ArrayDetalle.length; i++) {
-        this.NumProductos = this.NumProductos + this.ArrayDetalle[i].Cantidad
-        this.TotalEsperado = this.TotalEsperado + Number(this.ArrayDetalle[i].valor)
-        this.TotalReal = this.TotalReal + Number(this.ArrayDetalle[i].ValorReal)
+      this.NumProductos = 0;
+
+      let listadoProductos = '';
+      for (var i = 0; i < Resultado.length; i++) {
+        this.NumProductos = this.NumProductos + Resultado[i].Cantidad;
+        this.TotalEsperado = this.TotalEsperado + Number(Resultado[i].valor);
+        this.TotalReal = this.TotalReal + Number(Resultado[i].ValorReal);
+        listadoProductos += `<li>${Resultado[i].Producto}</li>`;
       }
-    })
 
-    let Html =
-      '<div>';
+      let Html = `
+        <div style="font-family: Arial, sans-serif; padding: 10px; width: 500px;">
+          <h5 style="margin: 0 0 10px 0; color: #397c97;">Detalle de Entrega</h5>
+          <p style="margin: 5px 0;"><strong>Cliente:</strong> ${NomCliente}</p>
+          <p style="margin: 5px 0;"><strong>Dirección:</strong> ${DRCCION}</p>
+          <p style="margin: 5px 0;"><strong>Celular:</strong> ${CELULAR_PERSONA}</p>
+          <hr style="border: 0; border-top: 1px solid #ccc; margin: 10px 0;">
+          <p style="margin: 5px 0;"><strong>Num. Productos:</strong> ${this.NumProductos}</p>
+          <p style="margin: 5px 0;"><strong>Total Esperado:</strong> ${this.FormatoValores('USD', this.TotalEsperado)}</p>
+          <p style="margin: 5px 0;"><strong>Total Real:</strong> ${this.FormatoValores('USD', this.TotalReal)}</p>
+          <hr style="border: 0; border-top: 1px solid #ccc; margin: 10px 0;">
+          <p style="margin: 5px 0;"><strong>Productos:</strong></p>
+          <ul style="padding-left: 20px; font-size: 12px; margin-top: 5px;">
+            ${listadoProductos}
+          </ul>
+        </div>
+      `;
 
-
-    for (var x = 0; x < this.markers.length; x++) {
-      if (i == x) {
-
-        this.infoWindow.close();
-        this.infoWindow.setContent(Html);
-        this.infoWindow.open(this.markers[i].getMap(), this.markers[i]);
+      for (var x = 0; x < this.markers.length; x++) {
+        if (i == x) {
+          this.infoWindow.close();
+          this.infoWindow.setContent(Html);
+          this.infoWindow.open(this.markers[i].getMap(), this.markers[i]);
+        }
       }
-    }
+    });
+
   }
 
 
