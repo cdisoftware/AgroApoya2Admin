@@ -13,13 +13,15 @@ export class MapacalorComponent implements OnInit {
   markers: google.maps.Marker[] = [];
   numeroUsuarios: number = 0;
   usuariosEnRadio: number = 0;
+  compradoresEnRadio: number = 0;
+  noCompradoresEnRadio: number = 0;
   isCalculating: boolean = false;
-  compradoresChecked: boolean = false;
+  tipoComprador: string = '0';
 
-  metrosRedonda: number = 0;
+  metrosRedonda: number = 800;
   sectorSeleccionado: string = '0';
   circuloActual: google.maps.Circle | null = null;
-  
+
   sectores = [
     { id: '0', nombre: 'Seleccione' },
     { id: '354', nombre: 'Usaquén' },
@@ -85,29 +87,39 @@ export class MapacalorComponent implements OnInit {
 
           // Usamos un pequeño delay para permitir que el DOM repinte y muestre el "Cargando..."
           setTimeout(() => {
-            let conteo = 0;
+            let conteoCompradores = 0;
+            let conteoNoCompradores = 0;
+            let conteoTotal = 0;
+
             for (let i = 0; i < this.markers.length; i++) {
               const markerPos = this.markers[i].getPosition();
               if (markerPos) {
                 const distance = google.maps.geometry.spherical.computeDistanceBetween(e.latLng, markerPos);
                 if (distance <= this.metrosRedonda) {
-                  conteo++;
+                  conteoTotal++;
+                  const valComprador = this.markers[i].get('comprador');
+                  if (valComprador && valComprador !== '0') {
+                    conteoCompradores++;
+                  } else {
+                    conteoNoCompradores++;
+                  }
                 }
               }
             }
             // Devolver los resultados dentro de la zona de Angular
             this.ngZone.run(() => {
-              this.usuariosEnRadio = conteo;
+              this.usuariosEnRadio = conteoTotal;
+              this.compradoresEnRadio = conteoCompradores;
+              this.noCompradoresEnRadio = conteoNoCompradores;
               this.isCalculating = false;
             });
           }, 50);
         }
       });
 
-      const paramCompradores = this.compradoresChecked ? '1' : '0';
-      this.sevicesmilla.consAdUserMapCalor(this.sectorSeleccionado, paramCompradores).subscribe(Resultado => {
+      this.sevicesmilla.consAdUserMapCalor(this.sectorSeleccionado, this.tipoComprador).subscribe(Resultado => {
         const features = [];
-        
+
         // Limpiamos marcadores previos para evitar conteos erróneos de otras consultas
         for (let i = 0; i < this.markers.length; i++) {
           this.markers[i].setMap(null);
@@ -124,11 +136,14 @@ export class MapacalorComponent implements OnInit {
           var auxsplit = Resultado[i].CoordenadaPersona.split(',');
           var lat = parseFloat(auxsplit[0]);
           var long = parseFloat(auxsplit[1]);
-          features.push({ position: new google.maps.LatLng(lat, long) });
+          features.push({
+            position: new google.maps.LatLng(lat, long),
+            comprador: Resultado[i].comprador
+          });
         }
 
         for (let i = 0; i < features.length; i++) {
-          this.AgregarMarcador(features[i].position, this.map);
+          this.AgregarMarcador(features[i].position, this.map, features[i].comprador);
         }
         this.numeroUsuarios = features.length;
       });
@@ -140,11 +155,20 @@ export class MapacalorComponent implements OnInit {
       });
   }
 
-  AgregarMarcador(latLng: google.maps.LatLng, map: google.maps.Map) {
+  AgregarMarcador(latLng: google.maps.LatLng, map: google.maps.Map, comprador: string) {
+    let icon = '';
+    if (comprador !== '0') {
+      icon = '../../../../assets/ImagenesAgroApoya2Adm/Entregado.png';
+    } else {
+      icon = '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png';
+    }
     const marker = new google.maps.Marker({
       position: latLng,
       map: map,
+      icon: icon
     });
+    // Guardamos la propiedad nativamente en el marcador de Google Maps
+    marker.set('comprador', comprador);
     this.markers.push(marker);
   }
 

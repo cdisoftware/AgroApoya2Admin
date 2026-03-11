@@ -12,13 +12,13 @@
                     <option *ngFor="let sector of sectores" [value]="sector.id">{{sector.nombre}}</option>
                 </select>
             </div>
-            <div class="col-sm-3 d-flex align-items-center">
-                <div class="form-check mt-4">
-                    <input class="form-check-input" type="checkbox" id="checkCompradores" [(ngModel)]="compradoresChecked">
-                    <label class="form-check-label" for="checkCompradores">
-                        Compradores
-                    </label>
-                </div>
+            <div class="col-sm-3">
+                <label>Filtro Compradores:</label>
+                <select class="form-control" [(ngModel)]="tipoComprador">
+                    <option value="0">Seleccionar</option>
+                    <option value="1">Compradores</option>
+                    <option value="2">No Compradores</option>
+                </select>
             </div>
             <div class="col-sm-3 d-flex align-items-end">
                 <button class="btn btn-primary w-100" (click)="Buscar()">Buscar</button>
@@ -27,14 +27,22 @@
         <br>
         <label>Número de usuarios en el mapa de calor: {{numeroUsuarios}}</label>
         <br>
-        <label>
-            Número de usuarios en el radio seleccionado: 
-            <strong *ngIf="!isCalculating" style="color: blue;">{{usuariosEnRadio}}</strong>
-            <strong *ngIf="isCalculating" style="color: grey; font-style: italic;">
-               <i class="fa fa-spinner fa-spin"></i> Calculando...
-            </strong>
-        </label>
-        <br><br>
+        <div *ngIf="!isCalculating">
+            <label>Usuarios en el radio seleccionado: <strong style="color: blue;">{{usuariosEnRadio}}</strong></label>
+            <ul style="list-style: none; padding-left: 20px;">
+                <li><strong style="color: green;">Compradores:</strong> {{compradoresEnRadio}}</li>
+                <li><strong style="color: red;">No Compradores:</strong> {{noCompradoresEnRadio}}</li>
+            </ul>
+        </div>
+        <div *ngIf="isCalculating">
+            <label>
+               Número de usuarios en el radio seleccionado: 
+               <strong style="color: grey; font-style: italic;">
+                  <i class="fa fa-spinner fa-spin"></i> Calculando...
+               </strong>
+            </label>
+        </div>
+        <br>
         <div id="map" class="ShowMapaCalor"></div>
     </div>
 </div>

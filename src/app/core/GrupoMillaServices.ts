@@ -72,6 +72,7 @@ export class GrupoMillaServices {
         return this.http.get<any>(this.url_servidor + 'consAdMillaComprasSector/' + bandera + '/' + IdSector);
     }
     consAdUserMapCalor(Bandera: string, parametro: string) {
+        console.log(this.url_servidor + 'consAdUserMapCalor/' + Bandera + '/' + parametro)
         return this.http.get<any>(this.url_servidor + 'consAdUserMapCalor/' + Bandera + '/' + parametro);
     }
     ConsSectoresMilla(bandera: string, IdSector: string) {

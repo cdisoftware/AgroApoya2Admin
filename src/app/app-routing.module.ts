@@ -76,6 +76,10 @@ const routes: Routes = [
     component: EnviosmsofertaComponent
   },
   {
+    path: 'MapaCalorDos',
+    component: MapacalorComponent
+  },
+  {
     path: 'home',
     component: LayoutprincipalComponent,
     children: [
@@ -226,7 +230,7 @@ const routes: Routes = [
       {
         path: 'ReporteEntregas',
         component: RepEntregasComponent
-       },
+      },
       {
         path: 'AdminManyChat',
         component: AdminmanychatComponent
@@ -272,7 +276,7 @@ const routes: Routes = [
   }, {
     path: 'reporte-usuario',
     component: ReporteUsuarioComponent
-  }, 
+  },
   {
     path: 'reporte-ventas',
     component: ReporteVentasComponent
