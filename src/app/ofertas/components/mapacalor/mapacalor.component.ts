@@ -21,6 +21,8 @@ export class MapacalorComponent implements OnInit {
   metrosRedonda: number = 800;
   sectorSeleccionado: string = '0';
   circuloActual: google.maps.Circle | null = null;
+  activeTab: number = 1;
+  autoSearchMarkers: google.maps.Marker[] = [];
 
   sectores = [
     { id: '0', nombre: 'Seleccione' },
@@ -56,64 +58,108 @@ export class MapacalorComponent implements OnInit {
     this.Centramapa({ address: 'Bogotá, Colombia' });
   }
 
+  changeTab(tab: number): void {
+    this.activeTab = tab;
+    if (tab === 1) {
+      this.LimpiarMapa();
+      this.metrosRedonda = 800;
+      this.sectorSeleccionado = '0';
+      this.tipoComprador = '0';
+      this.Buscar();
+    } else if (tab === 3) {
+      this.LimpiarMapa();
+    }
+  }
+
+  LimpiarMapa(): void {
+    for (let i = 0; i < this.markers.length; i++) {
+      this.markers[i].setMap(null);
+    }
+    this.markers = [];
+    if (this.circuloActual) {
+      this.circuloActual.setMap(null);
+      this.circuloActual = null;
+    }
+    for (let i = 0; i < this.autoSearchMarkers.length; i++) {
+      this.autoSearchMarkers[i].setMap(null);
+    }
+    this.autoSearchMarkers = [];
+    this.usuariosEnRadio = 0;
+    this.compradoresEnRadio = 0;
+    this.noCompradoresEnRadio = 0;
+  }
+
   Centramapa(request: google.maps.GeocoderRequest): void {
     this.geocoder.geocode(request).then((result) => {
       const { results } = result;
       this.map = new google.maps.Map(
         document.getElementById("map") as HTMLElement,
-        { zoom: 15 }
+        { zoom: 12 }
       );
       this.map.setCenter(results[0].geometry.location);
 
       this.map.addListener('click', (e: any) => {
-        if (this.metrosRedonda && this.metrosRedonda > 0) {
-          if (this.circuloActual) {
-            this.circuloActual.setMap(null);
-          }
-          this.circuloActual = new google.maps.Circle({
-            strokeColor: "#0000FF",
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: "#0000FF",
-            fillOpacity: 0.35,
-            map: this.map,
-            center: e.latLng,
-            radius: this.metrosRedonda,
-          });
+        if (this.activeTab === 1) {
+          if (this.metrosRedonda && this.metrosRedonda > 0) {
+            if (this.circuloActual) {
+              this.circuloActual.setMap(null);
+            }
+            this.circuloActual = new google.maps.Circle({
+              strokeColor: "#0000FF",
+              strokeOpacity: 0.8,
+              strokeWeight: 2,
+              fillColor: "#0000FF",
+              fillOpacity: 0.35,
+              map: this.map,
+              center: e.latLng,
+              radius: this.metrosRedonda,
+            });
 
-          this.ngZone.run(() => {
-            this.isCalculating = true;
-          });
+            // Centrar el mapa en el clic y ajustar el zoom para que se vea todo el círculo
+            this.map.panTo(e.latLng);
+            if (this.circuloActual) {
+              const bounds = this.circuloActual.getBounds();
+              if (bounds) {
+                this.map.fitBounds(bounds);
+              }
+            }
 
-          // Usamos un pequeño delay para permitir que el DOM repinte y muestre el "Cargando..."
-          setTimeout(() => {
-            let conteoCompradores = 0;
-            let conteoNoCompradores = 0;
-            let conteoTotal = 0;
+            this.ngZone.run(() => {
+              this.isCalculating = true;
+            });
 
-            for (let i = 0; i < this.markers.length; i++) {
-              const markerPos = this.markers[i].getPosition();
-              if (markerPos) {
-                const distance = google.maps.geometry.spherical.computeDistanceBetween(e.latLng, markerPos);
-                if (distance <= this.metrosRedonda) {
-                  conteoTotal++;
-                  const valComprador = this.markers[i].get('comprador');
-                  if (valComprador && valComprador !== '0') {
-                    conteoCompradores++;
-                  } else {
-                    conteoNoCompradores++;
+            // Usamos un pequeño delay para permitir que el DOM repinte y muestre el "Cargando..."
+            setTimeout(() => {
+              let conteoCompradores = 0;
+              let conteoNoCompradores = 0;
+              let conteoTotal = 0;
+
+              for (let i = 0; i < this.markers.length; i++) {
+                const markerPos = this.markers[i].getPosition();
+                if (markerPos) {
+                  const distance = google.maps.geometry.spherical.computeDistanceBetween(e.latLng, markerPos);
+                  if (distance <= this.metrosRedonda) {
+                    conteoTotal++;
+                    const valComprador = this.markers[i].get('comprador');
+                    if (valComprador && valComprador !== '0') {
+                      conteoCompradores++;
+                    } else {
+                      conteoNoCompradores++;
+                    }
                   }
                 }
               }
-            }
-            // Devolver los resultados dentro de la zona de Angular
-            this.ngZone.run(() => {
-              this.usuariosEnRadio = conteoTotal;
-              this.compradoresEnRadio = conteoCompradores;
-              this.noCompradoresEnRadio = conteoNoCompradores;
-              this.isCalculating = false;
-            });
-          }, 50);
+              // Devolver los resultados dentro de la zona de Angular
+              this.ngZone.run(() => {
+                this.usuariosEnRadio = conteoTotal;
+                this.compradoresEnRadio = conteoCompradores;
+                this.noCompradoresEnRadio = conteoNoCompradores;
+                this.isCalculating = false;
+              });
+            }, 50);
+          }
+        } else if (this.activeTab === 3) {
+          this.AgregarBanderaAuto(e.latLng);
         }
       });
 
@@ -165,11 +211,26 @@ export class MapacalorComponent implements OnInit {
     const marker = new google.maps.Marker({
       position: latLng,
       map: map,
-      icon: icon
+      icon: {
+        url: icon,
+        scaledSize: new google.maps.Size(20, 20) // Ajusta el tamaño aquí (ancho, alto)
+      }
     });
     // Guardamos la propiedad nativamente en el marcador de Google Maps
     marker.set('comprador', comprador);
     this.markers.push(marker);
+  }
+
+  AgregarBanderaAuto(latLng: google.maps.LatLng) {
+    const flagIcon = 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+    const marker = new google.maps.Marker({
+      position: latLng,
+      map: this.map,
+      icon: flagIcon,
+      animation: google.maps.Animation.DROP,
+      draggable: true
+    });
+    this.autoSearchMarkers.push(marker);
   }
 
 }

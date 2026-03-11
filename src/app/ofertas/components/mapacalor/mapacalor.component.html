@@ -1,47 +1,120 @@
 <div class="Fondo">
-    <div class="container ">
-        <br><br>
-        <div class="row">
-            <div class="col-sm-3">
-                <label>Metros a la redonda:</label>
-                <input type="number" class="form-control" [(ngModel)]="metrosRedonda" placeholder="Ej: 1000">
-            </div>
-            <div class="col-sm-3">
-                <label>Sector:</label>
-                <select class="form-control" [(ngModel)]="sectorSeleccionado">
-                    <option *ngFor="let sector of sectores" [value]="sector.id">{{sector.nombre}}</option>
-                </select>
-            </div>
-            <div class="col-sm-3">
-                <label>Filtro Compradores:</label>
-                <select class="form-control" [(ngModel)]="tipoComprador">
-                    <option value="0">Seleccionar</option>
-                    <option value="1">Compradores</option>
-                    <option value="2">No Compradores</option>
-                </select>
-            </div>
-            <div class="col-sm-3 d-flex align-items-end">
-                <button class="btn btn-primary w-100" (click)="Buscar()">Buscar</button>
-            </div>
-        </div>
+    <div class="container">
+        <h1>Mapa de Calor</h1>
         <br>
-        <label>Número de usuarios en el mapa de calor: {{numeroUsuarios}}</label>
-        <br>
-        <div *ngIf="!isCalculating">
-            <label>Usuarios en el radio seleccionado: <strong style="color: blue;">{{usuariosEnRadio}}</strong></label>
-            <ul style="list-style: none; padding-left: 20px;">
-                <li><strong style="color: green;">Compradores:</strong> {{compradoresEnRadio}}</li>
-                <li><strong style="color: red;">No Compradores:</strong> {{noCompradoresEnRadio}}</li>
-            </ul>
+
+        <!-- Tab Navigation -->
+        <ul class="nav nav-pills custom-tabs mb-4">
+            <li class="nav-item">
+                <a class="nav-link" [class.active]="activeTab === 1" (click)="changeTab(1)">Búsqueda manual radio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [class.active]="activeTab === 2" (click)="changeTab(2)">Búsqueda manual polígono</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [class.active]="activeTab === 3" (click)="changeTab(3)">Búsqueda automática</a>
+            </li>
+        </ul>
+
+        <!-- Tab 1: Búsqueda manual radio -->
+        <div [hidden]="activeTab !== 1">
+            <div class="alert alert-info py-2" style="font-size: 13px; line-height: 1.4;">
+                <i class="fa fa-info-circle"></i>
+                Esta sección permite visualizar usuarios por sector y estado de compra. 
+                <strong>Haz clic en el mapa</strong> para calcular la densidad de usuarios dentro de un radio específico; 
+                puedes ajustar el alcance modificando la casilla de <strong>"Metros a la redonda"</strong>.
+                <br>
+                <strong style="color: #d9534f;"><i class="fa fa-exclamation-triangle"></i> ¡Importante!</strong> 
+                Para el cálculo del radio, asegúrate de hacer clic directamente sobre la superficie del <strong>mapa</strong> y no sobre los pines de los usuarios.
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <label style="font-size: 11px;">Sector:</label>
+                    <select class="form-control form-control-sm" [(ngModel)]="sectorSeleccionado">
+                        <option *ngFor="let sector of sectores" [value]="sector.id">{{sector.nombre}}</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <label style="font-size: 11px;">Filtro Compradores:</label>
+                    <select class="form-control form-control-sm" [(ngModel)]="tipoComprador">
+                        <option value="0">Seleccionar</option>
+                        <option value="1">Compradores</option>
+                        <option value="2">No Compradores</option>
+                    </select>
+                </div>
+                <div class="col-sm-3 d-flex align-items-end">
+                    <button class="btn btn-primary btn-sm w-100" (click)="Buscar()">Buscar</button>
+                </div>
+                <div class="col-sm-12">
+                    <label style="font-size: 12px; color: green; font-weight: bold;">Número de usuarios en el mapa de
+                        calor: {{numeroUsuarios}}</label>
+                </div>
+            </div>
+            <br>
+            <div class="card p-2 bg-light shadow-sm border-0 mb-3">
+                <div class="row align-items-center g-2 text-center">
+                    <!-- Configuración de Radio -->
+                    <div class="col-md-3 border-end">
+                        <label class="d-block mb-1" style="font-size: 11px; font-weight: bold; color: #555;">Radio de búsqueda</label>
+                        <div class="input-group input-group-sm">
+                            <input type="number" class="form-control text-center" [(ngModel)]="metrosRedonda" placeholder="Ej: 1000">
+                            <span class="input-group-text">m</span>
+                        </div>
+                    </div>
+
+                    <!-- Resultados de Búsqueda -->
+                    <div class="col-md-9">
+                        <div *ngIf="!isCalculating" class="row align-items-center">
+                            <div class="col-sm-4">
+                                <small class="text-muted d-block" style="font-size: 10px;">Encontrados</small>
+                                <strong style="color: blue; font-size: 16px;">{{usuariosEnRadio}}</strong>
+                            </div>
+                            <div class="col-sm-4 border-start">
+                                <small class="text-muted d-block" style="font-size: 10px;">Compradores</small>
+                                <strong style="color: green; font-size: 14px;">{{compradoresEnRadio}}</strong>
+                            </div>
+                            <div class="col-sm-4 border-start">
+                                <small class="text-muted d-block" style="font-size: 10px;">No Compradores</small>
+                                <strong style="color: red; font-size: 14px;">{{noCompradoresEnRadio}}</strong>
+                            </div>
+                        </div>
+
+                        <!-- Indicador de Carga -->
+                        <div *ngIf="isCalculating" class="py-1">
+                            <strong style="color: grey; font-style: italic; font-size: 13px;">
+                                <i class="fa fa-spinner fa-spin"></i> Calculando densidad...
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div *ngIf="isCalculating">
-            <label>
-               Número de usuarios en el radio seleccionado: 
-               <strong style="color: grey; font-style: italic;">
-                  <i class="fa fa-spinner fa-spin"></i> Calculando...
-               </strong>
-            </label>
+
+        <!-- Tab 2: Búsqueda manual polígono -->
+        <div [hidden]="activeTab !== 2" class="p-3 border rounded text-center">
+            <h4>Búsqueda manual polígono</h4>
+            <p class="text-muted">Próximamente disponible...</p>
         </div>
+
+        <!-- Tab 3: Búsqueda automática -->
+        <div [hidden]="activeTab !== 3">
+            <div class="alert alert-success py-2" style="font-size: 13px; line-height: 1.4;">
+                <i class="fa fa-magic"></i>
+                <strong>Modo Búsqueda Automática:</strong> En este modo puedes marcar puntos de interés en el mapa para realizar un análisis optimizado de rutas o coberturas.
+                <br>
+                <i class="fa fa-mouse-pointer"></i> <strong>Haz clic en el mapa</strong> para colocar banderas azules. Puedes arrastrarlas para ajustar su posición.
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="m-0" style="font-size: 14px; font-weight: bold;">Puntos de Interés Marcados: {{autoSearchMarkers.length}}</h5>
+                <button class="btn btn-outline-danger btn-sm" (click)="LimpiarMapa()">
+                    <i class="fa fa-trash"></i> Limpiar Mapa
+                </button>
+            </div>
+            <div *ngIf="autoSearchMarkers.length === 0" class="p-4 border rounded text-center bg-light">
+                <p class="text-muted m-0">Haz clic en el mapa para empezar a marcar puntos.</p>
+            </div>
+        </div>
+
         <br>
         <div id="map" class="ShowMapaCalor"></div>
     </div>
