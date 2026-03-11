@@ -1,6 +1,40 @@
 <div class="Fondo">
     <div class="container ">
+        <br><br>
+        <div class="row">
+            <div class="col-sm-3">
+                <label>Metros a la redonda:</label>
+                <input type="number" class="form-control" [(ngModel)]="metrosRedonda" placeholder="Ej: 1000">
+            </div>
+            <div class="col-sm-3">
+                <label>Sector:</label>
+                <select class="form-control" [(ngModel)]="sectorSeleccionado">
+                    <option *ngFor="let sector of sectores" [value]="sector.id">{{sector.nombre}}</option>
+                </select>
+            </div>
+            <div class="col-sm-3 d-flex align-items-center">
+                <div class="form-check mt-4">
+                    <input class="form-check-input" type="checkbox" id="checkCompradores" [(ngModel)]="compradoresChecked">
+                    <label class="form-check-label" for="checkCompradores">
+                        Compradores
+                    </label>
+                </div>
+            </div>
+            <div class="col-sm-3 d-flex align-items-end">
+                <button class="btn btn-primary w-100" (click)="Buscar()">Buscar</button>
+            </div>
+        </div>
         <br>
-        <div id="map" class="ShowMapaCalor"></div>    
+        <label>Número de usuarios en el mapa de calor: {{numeroUsuarios}}</label>
+        <br>
+        <label>
+            Número de usuarios en el radio seleccionado: 
+            <strong *ngIf="!isCalculating" style="color: blue;">{{usuariosEnRadio}}</strong>
+            <strong *ngIf="isCalculating" style="color: grey; font-style: italic;">
+               <i class="fa fa-spinner fa-spin"></i> Calculando...
+            </strong>
+        </label>
+        <br><br>
+        <div id="map" class="ShowMapaCalor"></div>
     </div>
 </div>

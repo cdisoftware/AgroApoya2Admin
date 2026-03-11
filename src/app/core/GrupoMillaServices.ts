@@ -71,8 +71,8 @@ export class GrupoMillaServices {
     ConsultaPolygonosGrupoMilla(bandera: string, IdSector: string) {
         return this.http.get<any>(this.url_servidor + 'consAdMillaComprasSector/' + bandera + '/' + IdSector);
     }
-    consAdUserMapCalor(Bandera: string) {
-        return this.http.get<any>(this.url_servidor + 'consAdUserMapCalor/' + Bandera);
+    consAdUserMapCalor(Bandera: string, parametro: string) {
+        return this.http.get<any>(this.url_servidor + 'consAdUserMapCalor/' + Bandera + '/' + parametro);
     }
     ConsSectoresMilla(bandera: string, IdSector: string) {
         return this.http.get<any>(this.url_servidor + 'consAdMillaSectores/' + bandera + '/' + IdSector);
