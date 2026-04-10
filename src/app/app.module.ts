@@ -71,7 +71,8 @@ import { CarruselComponent } from './AgroVersionTres/carrusel/carrusel.component
 import { MenuLateralComponent } from './AgroVersionTres/menu-lateral/menu-lateral.component';
 import { InicioComponent } from './AgroVersionTres/inicio/inicio.component';
 import { ValidarUsuarioComponent } from './AgroVersionTres/usuario/validar-usuario/validar-usuario.component'
-import { MinimocompratotalComponent } from './ofertas/components/minimocompratotal/minimocompratotal.component'
+import { MinimocompratotalComponent } from './ofertas/components/minimocompratotal/minimocompratotal.component';
+import { AdminEmbajadoresComponent } from './ofertas/components/admin-embajadores/admin-embajadores.component'
 
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
@@ -133,7 +134,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     MenuLateralComponent,
     InicioComponent,
     ValidarUsuarioComponent,
-    MinimocompratotalComponent
+    MinimocompratotalComponent,
+    AdminEmbajadoresComponent
   
   ],
   imports: [

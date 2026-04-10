@@ -1,5 +1,6 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { GrupoMillaServices } from 'src/app/core/GrupoMillaServices';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-mapacalor',
@@ -36,6 +37,7 @@ export class MapacalorComponent implements OnInit {
   compradoresAuto: number = 0;
   noCompradoresAuto: number = 0;
   centroAutoCoord: string = '';
+  usuariosExportarAuto: any[] = [];
 
   sectores = [
     { id: '0', nombre: 'Seleccione' },
@@ -214,7 +216,7 @@ export class MapacalorComponent implements OnInit {
       }
 
       console.log('Termina agregar marcadores')
-      
+
       // Auto-centrar mapa en los pines resultantes conservando el zoom
       if (features.length > 0) {
         this.map.panTo(bounds.getCenter());
@@ -245,6 +247,8 @@ export class MapacalorComponent implements OnInit {
     });
 
     this.sevicesmilla.consAdUserMapCalor(this.sectorAuto, this.tipoCompradorAuto).subscribe(Resultado => {
+      console.log('resultado servicio')
+      console.log(Resultado)
       const features: any[] = [];
 
       for (let i = 0; i < Resultado.length; i++) {
@@ -253,7 +257,8 @@ export class MapacalorComponent implements OnInit {
         var long = parseFloat(auxsplit[1]);
         features.push({
           position: new google.maps.LatLng(lat, long),
-          comprador: Resultado[i].comprador
+          comprador: Resultado[i].comprador,
+          usuarioData: Resultado[i]
         });
       }
 
@@ -282,6 +287,7 @@ export class MapacalorComponent implements OnInit {
         let contTotal = 0;
         let contCompradores = 0;
         let contNoCompradores = 0;
+        let localUsuariosExportar: any[] = [];
 
         let centerLat = centerPos.lat();
         let centerLng = centerPos.lng();
@@ -314,6 +320,7 @@ export class MapacalorComponent implements OnInit {
             } else {
               contNoCompradores++;
             }
+            localUsuariosExportar.push(features[j].usuarioData);
           }
         }
 
@@ -322,6 +329,7 @@ export class MapacalorComponent implements OnInit {
           bestCenter = centerPos;
           bestCompradores = contCompradores;
           bestNoCompradores = contNoCompradores;
+          this.usuariosExportarAuto = localUsuariosExportar;
         }
       }
       console.log('Cálculo finalizado. Mejor centro:', bestCenter, 'con', maxContTotal, 'usuarios en radio.');
@@ -374,6 +382,27 @@ export class MapacalorComponent implements OnInit {
     });
   }
 
+  descargarExcel(): void {
+    if (!this.usuariosExportarAuto || this.usuariosExportarAuto.length === 0) {
+      alert('No hay datos para exportar.');
+      return;
+    }
+
+    const dataToExport = this.usuariosExportarAuto.map(u => ({
+      Usucodig: u.Usucodig,
+      NombrePersona: u.NombrePersona ? u.NombrePersona.trim() : '',
+      CoordenadaPersona: u.CoordenadaPersona,
+      CelularPersona: u.CelularPersona,
+      CorreoPersona: u.CorreoPersona,
+      Comprador: u.comprador !== '0' ? 'Sí' : 'No'
+    }));
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'UsuariosRadiodeBusqueda');
+    XLSX.writeFile(wb, 'Reporte_Mapa_Calo.xlsx');
+  }
+
   changeTab(tab: number): void {
     this.activeTab = tab;
     if (tab === 1) {
@@ -411,6 +440,7 @@ export class MapacalorComponent implements OnInit {
     this.totalNoCompradoresSector = 0;
     this.centroManualCoord = '';
     this.centroAutoCoord = '';
+    this.usuariosExportarAuto = [];
   }
 
 

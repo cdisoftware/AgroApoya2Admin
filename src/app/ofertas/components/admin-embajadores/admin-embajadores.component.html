@@ -1,0 +1,52 @@
+<div class="Fondo">
+    <br><br>
+    <div class="container bg-white CardRedonda">
+        <br>
+        <h1>Administración Embajadores</h1>
+        <hr>
+        <div class="row">
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Fecha Inicio</label>
+                <input type="date" class="form-control form-control-sm textBox" [(ngModel)]="fechaInicio">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Fecha Fin</label>
+                <input type="date" class="form-control form-control-sm textBox" [(ngModel)]="fechaFin">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Correo Embajador</label>
+                <input type="text" class="form-control form-control-sm textBox" placeholder="Ej: correo@ejemplo.com" [(ngModel)]="correoEmbajador">
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Teléfono Embajador</label>
+                <input type="text" class="form-control form-control-sm textBox" placeholder="Ej: 3001234567" [(ngModel)]="telefonoEmbajador">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Correo Vecino</label>
+                <input type="text" class="form-control form-control-sm textBox" placeholder="Ej: vecino@ejemplo.com" [(ngModel)]="correoVecino">
+            </div>
+            <div class="col-sm-4">
+                <label class="col-sm-12 Llave">Teléfono Vecino</label>
+                <input type="text" class="form-control form-control-sm textBox" placeholder="Ej: 3109876543" [(ngModel)]="telefonoVecino">
+            </div>
+        </div>
+        <br>
+        <div class="row justify-content-center">
+            <div class="col-sm-3">
+                <button class="btn btn-agro-prin w-100" (click)="Buscar()">
+                    <i class="fa fa-search"></i> Buscar
+                </button>
+            </div>
+            <div class="col-sm-3">
+                <button class="btn btn-agro-sec w-100" (click)="Limpiar()">
+                    <i class="fa fa-eraser"></i> Limpiar
+                </button>
+            </div>
+        </div>
+        <br>
+    </div>
+    <br><br>
+</div>

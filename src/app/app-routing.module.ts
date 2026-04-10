@@ -61,6 +61,7 @@ import { MenuLateralComponent } from './AgroVersionTres/menu-lateral/menu-latera
 import { InicioComponent } from './AgroVersionTres/inicio/inicio.component';
 import { ValidarUsuarioComponent } from './AgroVersionTres/usuario/validar-usuario/validar-usuario.component';
 import { MinimocompratotalComponent } from './ofertas/components/minimocompratotal/minimocompratotal.component';
+import { AdminEmbajadoresComponent } from './ofertas/components/admin-embajadores/admin-embajadores.component';
 
 
 const routes: Routes = [
@@ -258,6 +259,10 @@ const routes: Routes = [
       {
         path: 'MapaCompras/:cdcnsctivo/:IdOferta',
         component: MapacompraofertasComponent
+      },
+      {
+        path: 'AdminEmbajadores',
+        component: AdminEmbajadoresComponent
       }
     ]
   },

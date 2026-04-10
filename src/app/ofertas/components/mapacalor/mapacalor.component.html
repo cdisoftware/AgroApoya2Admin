@@ -162,8 +162,11 @@
                     </div>
                 </div>
                 <div class="col-sm-3 d-flex align-items-end">
-                    <button class="btn btn-success btn-sm w-100 mb-1" (click)="BuscarAuto()">
-                        <i class="fa fa-search"></i> Buscar
+                    <button class="btn btn-success btn-sm w-50 mb-1 mr-1 me-1" (click)="BuscarAuto()" title="Buscar">
+                        <i class="fa fa-search"></i>
+                    </button>
+                    <button class="btn btn-primary btn-sm w-50 mb-1" (click)="descargarExcel()" [disabled]="usuariosAuto === 0 || isCalculating" title="Descargar Excel">
+                        <i class="fa fa-file-excel-o"></i> Excel
                     </button>
                 </div>
             </div>
