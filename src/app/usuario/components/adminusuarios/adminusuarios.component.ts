@@ -31,9 +31,11 @@ export class AdminusuariosComponent implements OnInit {
   CedulaBuscar: string = '';
   TelefonoBuscar: string = '';
   CorreoBuscar: string = '';
-  TipoUsuarioBuscar: string = '0';
+  TipoUsuarioBuscar: string = '2';
 
   Respuesta: string = '';
+  loading: boolean = false;
+  FechaCreacion: string = '';
 
   TipoUsuario: string = '0';
   IdNombre: string = '0';
@@ -106,7 +108,7 @@ export class AdminusuariosComponent implements OnInit {
 
 
   BuscarPerfil(modalBuscar: any, modalmensaje: any) {
-
+    this.loading = true;
     const body = {
       CD_TPO_PRSNA: this.TipoUsuarioBuscar,
       CORREO_PERSONA: this.CorreoBuscar,
@@ -115,6 +117,7 @@ export class AdminusuariosComponent implements OnInit {
       NOMBRES_PERSONA: this.IdNombre
     }
     this.serviciosreportes.ConsultaListaPersona('3', body).subscribe(Resultado => {
+      this.loading = false;
       if (Resultado.length == 0) {
         this.Respuesta = 'No hay resultados.';
         this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -122,11 +125,16 @@ export class AdminusuariosComponent implements OnInit {
         this.arregloListaPerfil = Resultado;
         this.modalService.open(modalBuscar, { ariaLabelledBy: 'modal-basic-title', size: 'lg' })
       }
+    }, error => {
+      this.loading = false;
+      this.Respuesta = 'Ocurrió un error al buscar.';
+      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     })
   }
 
   //Carga los filtros de usuario
   ConsultaPerfilUser(arregloPerfil: any) {
+    console.log('---------------------------------------------')
     console.log(arregloPerfil)
     this.UsucodigConsulta = arregloPerfil.USUCODIG;
     this.modalService.dismissAll();
@@ -156,15 +164,15 @@ export class AdminusuariosComponent implements OnInit {
       this.INPEdad = Resultado[0].FechaNacimiento;
       this.INPVereda = Resultado[0].Vereda;
       this.INPFinca = Resultado[0].NombreFinca
-      this.IdUsuario = Resultado[0].USUCODIG
-      if (Resultado[0].Imagen == null || Resultado[0].Imagen == '') {
-        this.ImagenAdd = '../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png';
-      } else {
-        this.ImagenAdd = this.RutaImagenes + Resultado[0].Imagen;
-      }
+      this.IdUsuario = Resultado[0].USUCODIG;
+      this.FechaCreacion = Resultado[0].FECHA_CREACION;
       this.NomImagen1 = Resultado[0].Imagen;
-      this.ConsultaImagenes(Resultado[0].USUCODIG)
       this.ValidaMostrar = '1';
+
+      this.ServiciosOferta.ConsultaCiudad(this.IdDepartamento).subscribe(Resultado => {
+        this.ArrayCiud = Resultado;
+      })
+
     })
   }
 
@@ -186,11 +194,7 @@ export class AdminusuariosComponent implements OnInit {
   CargarUbicaciones() {
     this.ServiciosOferta.ConsultaDepartamento('5').subscribe(Resultado => {
       this.ArrayDepa = Resultado;
-      this.IdDepartamento = '269';
-      this.ServiciosOferta.ConsultaCiudad(this.IdDepartamento).subscribe(Resultado => {
-        this.ArrayCiud = Resultado;
-        this.IdCiudad = '0';
-      })
+      this.IdDepartamento = '0';
     })
   }
 
@@ -227,12 +231,6 @@ export class AdminusuariosComponent implements OnInit {
     } else if (this.INPCelular == undefined || this.INPCelular == null || this.INPCelular == '') {
       this.Respuesta = 'El campo número celular es obligatorio.';
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.INPDescUno == undefined || this.INPDescUno == null || this.INPDescUno == '') {
-      this.Respuesta = 'El campo descripción uno es obligatorio.';
-      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.INPDescDos == undefined || this.INPDescDos == null || this.INPDescDos == '') {
-      this.Respuesta = 'El campo descripción dos es obligatorio.';
-      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else if (this.INPComentario == undefined || this.INPComentario == null || this.INPComentario == '') {
       this.Respuesta = 'El campo comentario es obligatorio.';
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
@@ -244,9 +242,6 @@ export class AdminusuariosComponent implements OnInit {
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else if (this.IdCiudad == undefined || this.IdCiudad == null || this.IdCiudad == '') {
       this.Respuesta = 'El campo ciudad es obligatorio.';
-      this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
-    } else if (this.ImagenAdd == '../../../../assets/ImagenesAgroApoya2Adm/SubirImagen.png') {
-      this.Respuesta = 'El campo imagen es obligatorio.';
       this.modalService.open(modalmensaje, { ariaLabelledBy: 'modal-basic-title', size: 'md' })
     } else {
       const BodyInsert = {
