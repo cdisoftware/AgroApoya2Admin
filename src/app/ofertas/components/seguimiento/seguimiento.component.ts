@@ -477,18 +477,12 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
       this.ValorDomicilio += Number(this.ArrayConsultaSeg[i].ValorDomicilio);
     }
     this.TotalCosolidado = this.TotalCosolidado + this.ValorDomicilio;
+
     for (let i = 0; i < features.length; i++) {
       var icon;
-      var LabelOption;
-      //alert(features[i].Estado)
+
       if (features[i].Estado == '1') {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/Entregado.png';
-        // LabelOption = {
-        //   text: "" + (i + 1),
-        //   color: "#D35400",
-        //   fontSize: "15px",
-        //   fontWeight: "bold"
-        // }
       } else if (features[i].Estado == '2') {
         icon = '../../../../assets/ImagenesAgroApoya2Adm/Devuelto.png';
       } else if (features[i].Estado == '4') {
@@ -504,12 +498,11 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
         map: this.map,
         icon: icon,
         zIndex: i,
-        label: LabelOption
       });
+
       this.markers.push(marker);
-      const infoWindow = new google.maps.InfoWindow();
-      this.markers[i].addListener("click", () => {
-        this.InfoWindow(this.markers[i].getZIndex());
+      marker.addListener("click", () => {
+        this.InfoWindow(i);
       });
     }
 
@@ -539,103 +532,50 @@ export class SeguimientoComponent implements AfterContentInit, OnInit {
   InfoWindow(i: any) {
 
     this.infoWindow.close();
+    console.log(this.ArrayConsultaSeg[i])
+
     var NomCliente: string = '' + this.ArrayConsultaSeg[i].NOMBRES_PERSONA + ' ' + this.ArrayConsultaSeg[i].APELLIDOS_PERSONA;
-    var FechaEntrega: string = '' + this.ArrayConsultaSeg[i].fecha_entrega + ' : ' + this.ArrayConsultaSeg[i].hora_entrega;
-    var Direccion: string = '' + this.ArrayConsultaSeg[i].DRCCION;
+    var DRCCION: string = this.ArrayConsultaSeg[i].DRCCION;
+    var CELULAR_PERSONA: string = this.ArrayConsultaSeg[i].CELULAR_PERSONA;
 
-    var Producto: string = '';
-    if (this.ArrayConsultaSeg[i].unidadesEntregar > 0) {
-      Producto = '' + this.ArrayConsultaSeg[i].Producto_ppal + ': ' + this.ArrayConsultaSeg[i].unidadesEntregar + ' und x ' + this.ArrayConsultaSeg[i].VlorProductoPrincipal;
-    }
+    this.ServiciosValorar.ConsultaDetalleEntregas('1', this.ArrayConsultaSeg[i].ID).subscribe(Resultado => {
+      console.log(Resultado);
+      this.TotalEsperado = 0;
+      this.TotalReal = 0;
+      this.NumProductos = 0;
 
-    var toppings: string = "";
-    if (this.ArrayConsultaSeg[i].producto_add != '' && this.ArrayConsultaSeg[i].producto_add != null && this.ArrayConsultaSeg[i].producto_add != undefined) {
-      toppings = '' + this.ArrayConsultaSeg[i].producto_addBr.replaceAll("|", "<br>");
-    }
+      let listadoProductos = '';
+      for (let k = 0; k < Resultado.length; k++) {
+        this.NumProductos = this.NumProductos + Resultado[k].Cantidad;
+        this.TotalEsperado = this.TotalEsperado + Number(Resultado[k].valor);
+        this.TotalReal = this.TotalReal + Number(Resultado[k].ValorReal);
+        listadoProductos += `<li>${Resultado[k].Cantidad} &nbsp; ${Resultado[k].Producto} &nbsp;${this.FormatoValores('USD', Resultado[k].valor)} </li>`;
+      }
 
-    var Img: string = '';
-    if (this.ArrayConsultaSeg[i].imagen_evidencia != null && this.ArrayConsultaSeg[i].imagen_evidencia != '' && this.ArrayConsultaSeg[i].imagen_evidencia != undefined) {
-      Img = this.ArrayConsultaSeg[i].imagen_evidencia;
-    } else {
-      Img = '../../../../assets/ImagenesAgroApoya2Adm/PendienteEntrega.jpg';
-    }
+      let Html = `
+        <div style="font-family: Arial, sans-serif; padding: 10px; width: 500px;">
+          <h5 style="margin: 0 0 10px 0; color: #397c97;">Detalle de Entrega</h5>
+          <p style="margin: 5px 0;"><strong>Cliente:</strong> ${NomCliente}</p>
+          <p style="margin: 5px 0;"><strong>Dirección:</strong> ${DRCCION}</p>
+          <p style="margin: 5px 0;"><strong>Celular:</strong> ${CELULAR_PERSONA}</p>
+          <hr style="border: 0; border-top: 1px solid #ccc; margin: 10px 0;">
+          <p style="margin: 5px 0;"><strong>Num. Productos:</strong> ${this.NumProductos}</p>
+          <p style="margin: 5px 0;"><strong>Total Esperado:</strong> ${this.FormatoValores('USD', this.TotalEsperado)}</p>
+          <p style="margin: 5px 0;"><strong>Total Real:</strong> ${this.FormatoValores('USD', this.TotalReal)}</p>
+          <hr style="border: 0; border-top: 1px solid #ccc; margin: 10px 0;">
+          <p style="margin: 5px 0;"><strong>Productos:</strong></p>
+          <ul style="padding-left: 20px; font-size: 12px; margin-top: 5px;">
+            ${listadoProductos}
+          </ul>
+        </div> `;
 
-    var TotalPagar: string = this.ArrayConsultaSeg[i].Vlor_PagarForm;
-
-
-    var Pago: string = this.ArrayConsultaSeg[i].descTipoPago
-    var Telefono: string = '' + this.ArrayConsultaSeg[i].CELULAR_PERSONA;
-    var ValorAPagar: string = '' + this.ArrayConsultaSeg[i].Vlor_PagarForm;
-    var Estado: string = '' + this.ArrayConsultaSeg[i].descEstado;
-
-    var Observaciones: string = '';
-
-    if (this.ArrayConsultaSeg[i].observacionesCliente != null && this.ArrayConsultaSeg[i].observacionesCliente != '' && this.ArrayConsultaSeg[i].observacionesCliente != undefined) {
-      Observaciones = this.ArrayConsultaSeg[i].observacionesCliente;
-    } else {
-      Observaciones = 'Pendiente';
-    }
-
-    let Html =
-      '<div>' +
-      '<div class="row col-12" style="overflow: auto; max-height: 320px; width: 630px;">' +
-      '<div class="col-sm-12">' +
-      '<h1 id="firstHeading" class="firstHeading">' + NomCliente + '</h1>' +
-      '<h2 id="firstHeading" class="firstHeading">' + Estado + '</h2>' +
-      '</div>' +
-      '<hr>' +
-      '<div class="col-sm-6">' +
-      '<div id="content">' +
-      '<div id="bodyContent">' +
-      '<p style="font-size: 14px;">' +
-      '<b>Dirección: </b> ' + Direccion + '' +
-      '<br>' +
-      '<b>Valor A Pagar: </b>' + ValorAPagar + '' +
-      '<br>' +
-      '<b>Fecha Entrega: </b>' + FechaEntrega + '' +
-      '<br>' +
-      '<b>Metodo de pago: </b>' + Pago + '' +
-      '<br>' +
-      '<b>Productos: </b>';
-    if (this.ArrayConsultaSeg[i].unidadesEntregar > 0) {
-      Html = Html + '<br>' + Producto + '';
-    }
-    if (this.ArrayConsultaSeg[i].producto_add != '' && this.ArrayConsultaSeg[i].producto_add != null && this.ArrayConsultaSeg[i].producto_add != undefined) {
-      Html = Html + '<br>' + toppings + '';
-    }
-
-    Html = Html +
-      '<br>' +
-      '<b style="font-weight: bold; font-size: 15px;">Total pago: </b> <span style="color: forestgreen; font-weight: bold; font-size: 15px;">' + TotalPagar + '</span>' +
-      '<br>' +
-      '<b>Numero de telefono: </b>' + Telefono + '';
-
-    if (this.ArrayConsultaSeg[i].observacionesCliente != null && this.ArrayConsultaSeg[i].observacionesCliente != '' && this.ArrayConsultaSeg[i].observacionesCliente != undefined) {
-      Html = Html + '<b>Observación: </b>' + Observaciones + '' +
-        '<br>';
-    }
-
-
-    Html = Html + '</p>' +
-      '</div>' +
-      '</div>' +
-      '</div>' +
-      '<div class="col-sm-6" style="height: 50%;">' +
-      '<img src="' + Img + '" style="width: 70%; height:200px; object-fit: cover;">' +
-      '</div>' +
-      '</div>' +
-      '</div>';
-
-
-
-    for (var x = 0; x < this.markers.length; x++) {
-      if (i == x) {
-
+      if (this.markers[i]) {
         this.infoWindow.close();
         this.infoWindow.setContent(Html);
         this.infoWindow.open(this.markers[i].getMap(), this.markers[i]);
       }
-    }
+    });
+
   }
 
 
