@@ -1961,7 +1961,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
       this.SmsError = "Define su valor referencia";
     } else if (Number(this.ValorReal) > Number(this.ValorReferencia)) {
       this.SmsError = "El valor real no puede ser mayor que el valor referencia";
-    } else {  
+    } else {
       this.SmsError = "";
       //Agrega la presentacion
       if (bandera == '2') {
@@ -1978,7 +1978,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
           UnidadesPeso: this.UniProdTpp,
           DefectoUnidadesPeso: this.DefectoUniProdTpp,
         }
-    
+
         this.serviciosvaloracion.modCRelacionProductoTopping('2', body).subscribe(Respu => {
           var split = Respu.toString().split("|");
           if (split[0] == "1") {
@@ -2079,7 +2079,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         AuxValDomicilio = this.VlrDomiI;
         valorDomicilio = true;
       }
-    } else if (this.IdDomicilio == '2') {
+    } else if (this.IdDomicilio == '2' || this.IdDomicilio == '4') {
       if (this.VlrDomiIValormenora == "" || this.Valorapartirde == "") {
         valorDomicilio = false;
       } else {
@@ -2437,7 +2437,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
         AuxValDomicilio = this.VlrDomiI;
         valorDomicilio = true;
       }
-    } else if (this.IdDomicilio == '2') {
+    } else if (this.IdDomicilio == '2' || this.IdDomicilio == '4') {
       if (this.ValorDomcilioGrupValorMenora == "" || this.Valorapartirde == "") {
         valorDomicilio = false;
       } else {
@@ -3043,7 +3043,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
 
     }
   }
-  
+
   EliminaDescuento(idValor: any) {
     const Body = {
       Cd_cnsctvo: idValor.Cd_cnsctvo,
@@ -3052,7 +3052,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
       PorceDescuento: idValor.Descuento
     }
     this.serviciosvaloracion.ModDescuento("2", Body).subscribe(ResultOper => {
-      this.Respuesta = '';     
+      this.Respuesta = '';
       var respuesta = ResultOper.split('|')
       this.Respuesta = respuesta[1];
       this.consultaDescuento();
@@ -3847,7 +3847,7 @@ export class ModificarOfertaPublicaComponent implements OnInit {
     this.PresentacionTopping = item.des_empaque;
     this.UniProdTpp = item.unidades;
     this.DefectoUniProdTpp = item.defecto;
-  
+
   }
   LimpiaPresentacionTopping() {
     this.PresentacionToppingSelect = "";

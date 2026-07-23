@@ -379,13 +379,13 @@
                                         [disabled]="MuestraGrupal == '1' " class="col-sm-12 form-control mt-1 textBox"
                                         [(ngModel)]="VlrDomiI">
                                 </div>
-                                <div class="col-sm-3" *ngIf="IdDomicilio == '2'">
+                                <div class="col-sm-3" *ngIf="IdDomicilio == '2' || IdDomicilio == '4'">
                                     <label class="col-sm-12 Llave">Por compras menores a</label>
                                     <input mask="separator" thousandSeparator="." type="text"
                                         [disabled]="MuestraGrupal == '1' " class="col-sm-12 form-control mt-1 textBox"
                                         [(ngModel)]="Valorapartirde">
                                 </div>
-                                <div class="col-sm-3" *ngIf="IdDomicilio == '2'">
+                                <div class="col-sm-3" *ngIf="IdDomicilio == '2' || IdDomicilio == '4'">
                                     <label class="col-sm-12 Llave">Valor domicilio</label>
                                     <input mask="separator" thousandSeparator="." type="text"
                                         [disabled]="MuestraGrupal == '1' " class="col-sm-12 form-control mt-1 textBox"
@@ -628,12 +628,12 @@
                                     <input mask="separator" thousandSeparator="." type="text"
                                         class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="ValorDomicilioGrup">
                                 </div>
-                                <div class="col-sm-3" *ngIf="IdDomicilio == '2'">
+                                <div class="col-sm-3" *ngIf="IdDomicilio == '2' || IdDomicilio == '4'">
                                     <label class="col-sm-12 Llave">Por compras menores a</label>
                                     <input mask="separator" thousandSeparator="." type="text"
                                         class="col-sm-12 form-control mt-1 textBox" [(ngModel)]="Valorapartirde">
                                 </div>
-                                <div class="col-sm-3" *ngIf="IdDomicilio == '2'">
+                                <div class="col-sm-3" *ngIf="IdDomicilio == '2' || IdDomicilio == '4'">
                                     <label class="col-sm-12 Llave">Valor domicilio</label>
                                     <input mask="separator" thousandSeparator="." type="text"
                                         class="col-sm-12 form-control mt-1 textBox"
@@ -687,10 +687,10 @@
                                         class="col-sm-12 form-control mt-1 textBox">
                                 </div>
                                 <div class="col-sm-1 position-relative">
-                                    <button class="SinEstilo position-absolute bottom-0 start-0" title="Agregar unidades"
-                                        (click)="AgregarDescuento()">
-                                        <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/mas.png" width="30px"
-                                            height="30px">
+                                    <button class="SinEstilo position-absolute bottom-0 start-0"
+                                        title="Agregar unidades" (click)="AgregarDescuento()">
+                                        <img src=".../../../../../../../assets/ImagenesAgroApoya2Adm/mas.png"
+                                            width="30px" height="30px">
                                     </button>
                                 </div>
                             </div>
@@ -708,7 +708,8 @@
                                             <td>
                                                 <button class="SinEstilo" title="Eliminar amparado"
                                                     (click)="EliminaDescuento(val)">
-                                                    <img src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
+                                                    <img
+                                                        src="./../../../../../assets/ImagenesAgroApoya2Adm/basurarojo.png">
                                                 </button>
                                             </td>
                                         </tr>

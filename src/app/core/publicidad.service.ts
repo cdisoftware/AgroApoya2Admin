@@ -47,6 +47,9 @@ export class PublicidadService {
     return this.http.post<any>(this.url_servidor + 'AsignarCampoUserManyChat', Body)
   }
   CManyChatFlows(Body: any) {
+    console.log('--------------------------------------------');
+    console.log('Body', Body);
+    console.log('url_servidor', this.url_servidor);
     return this.http.post<any>(this.url_servidor + 'CManyChatFlows', Body)
   }
   modProcesoEnvioManychat(Bandera: string, Body: any){
