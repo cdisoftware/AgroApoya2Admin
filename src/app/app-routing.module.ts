@@ -45,6 +45,7 @@ import { DashboardComponent } from './ofertas/components/reportes/dashboard/dash
 import { RegistroUserexcelComponent } from './usuario/components/registro-userexcel/registro-userexcel.component';
 import { MapacompraofertasComponent } from './ofertas/components/reportes/mapacompraofertas/mapacompraofertas.component';
 import { EnviosmsofertaComponent } from './ofertas/components/sms-envio/enviosmsoferta/enviosmsoferta.component';
+import { InfoUsuarioComponent } from './usuario/components/infoUsuario/info-usuario.component';
 
 
 //Version 3 AgroApoyados
@@ -263,6 +264,10 @@ const routes: Routes = [
       {
         path: 'AdminEmbajadores',
         component: AdminEmbajadoresComponent
+      },
+      {
+        path: 'infoUsuario',
+        component: InfoUsuarioComponent
       }
     ]
   },

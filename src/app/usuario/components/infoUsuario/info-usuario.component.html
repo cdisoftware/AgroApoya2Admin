@@ -1,0 +1,246 @@
+<div class="container mt-4 mb-5">
+    <h3 class="mb-4 text-center">Búsqueda de Usuarios en Manychat</h3>
+    
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fa fa-filter"></i> Filtros de Búsqueda BD</h5>
+                    <div class="row">
+                        <div class="col-sm-4 mb-3">
+                            <label class="col-sm-12 Llave fw-bold">Sector</label>
+                            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" (selected)='selectSector($event)'
+                                (inputCleared)="LimpiaSector('')" [itemTemplate]="templateSector"
+                                [notFoundTemplate]="templateVacioSector" [(ngModel)]="Sector"
+                                placeholder="Seleccione un sector...">
+                            </ng-autocomplete>
+                            <ng-template #templateSector let-item>
+                                <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+                            </ng-template>
+                            <ng-template #templateVacioSector let-SinRegistro>
+                                <label for="">Sin registros</label>
+                            </ng-template>
+                        </div>
+                        <div class="col-sm-4 mb-3">
+                            <label class="col-sm-12 Llave fw-bold">Compradores</label>
+                            <select class="form-control" [(ngModel)]="FiltroCompradores">
+                                <option value="0">Sin Seleccionar</option>
+                                <option value="1">Compradores</option>
+                                <option value="2">No Compradores</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-4 mb-3">
+                            <label class="col-sm-12 Llave fw-bold">Id Manychat</label>
+                            <select class="form-control" [(ngModel)]="FiltroIdManychat">
+                                <option value="0">Sin Seleccionar</option>
+                                <option value="1">Con Id Manychat</option>
+                                <option value="2">Sin Id Manychat</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-sm-12">
+                            <button class="btn btn-primary" (click)="ConstruirYConsultarQuery()" [disabled]="cargando">
+                                <i class="fa fa-database"></i> {{ cargando ? 'Buscando en BD...' : 'Buscar en BD' }}
+                            </button>
+                            <button class="btn btn-secondary ms-2" (click)="limpiar()">
+                                <i class="fa fa-eraser"></i> Limpiar Filtros
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resultados Tabla BD -->
+    <div class="row mb-4" *ngIf="DataQuery.length > 0">
+        <div class="col-md-12">
+            <div class="card shadow-sm border-info">
+                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                    <div>
+                        <i class="fa fa-table"></i> Resultados BD ({{DataQuery.length}} usuarios)
+                    </div>
+                    <button class="btn btn-sm btn-light text-primary" (click)="ProcesarUsuariosTabla()" [disabled]="cargando">
+                        <i class="fa fa-cogs"></i> <span style="font-weight: 500;">{{ cargando ? 'Procesando...' : 'Procesar hacia Manychat' }}</span>
+                    </button>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-striped table-hover mb-0">
+                            <thead class="table-light sticky-top" style="position: sticky; top: 0; z-index: 1;">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nombre</th>
+                                    <th>Correo</th>
+                                    <th>IdManyChat</th>
+                                    <th>Usucodig</th>
+                                    <th>Telefono</th>
+                                    <th>Sector</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of DataQuery; let i = index">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>{{data.USUARIO}}</td>
+                                    <td>{{data.CORREO_PERSONA}}</td>
+                                    <td>{{data.ID_MANYCHAT}}</td>
+                                    <td>{{data.USUCODIG}}</td>
+                                    <td>{{data.CELULAR}}</td>
+                                    <td>{{data.IDSECTOR}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Resultados -->
+    <div class="row mt-4" *ngIf="usuariosEncontrados.length > 0 || telefonosNoEncontrados.length > 0">
+        
+        <!-- Encontrados -->
+        <div class="col-md-6 mb-4">
+            <div class="card border-success shadow-sm h-100">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                    <div>
+                        <i class="fa fa-check-circle"></i> Usuarios Encontrados ({{ usuariosEncontrados.length }})
+                    </div>
+                    <button class="btn btn-sm btn-light" (click)="actualizarBD()" [disabled]="actualizandoBD || usuariosEncontrados.length === 0">
+                        <i class="fa fa-database"></i> <span style="font-weight: 500;">{{ actualizandoBD ? 'Actualizando...' : 'Guardar en BD' }}</span>
+                    </button>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-striped table-hover mb-0">
+                            <thead class="table-light sticky-top" style="position: sticky; top: 0; z-index: 1;">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Datos Ingresados</th>
+                                    <th>Id Manychat</th>
+                                    <th>Estado BD</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let user of usuariosEncontrados; let i = index">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>
+                                        <strong>{{ user.datoOriginal }}</strong><br>
+                                        <small class="text-muted">
+                                            <span *ngIf="user.nombreBusqueda">Nombre: {{ user.nombreBusqueda }}<br></span>
+                                            <span *ngIf="user.emailBusqueda">Correo: {{ user.emailBusqueda }}</span>
+                                        </small>
+                                    </td>
+                                    <td><span class="badge" style="background-color: #397c97;">{{ user.idManychat }}</span></td>
+                                    <td><small>{{ user.actualizadoBD }}</small></td>
+                                </tr>
+                                <tr *ngIf="usuariosEncontrados.length === 0">
+                                    <td colspan="4" class="text-center text-muted py-3">No se encontraron usuarios.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- No Encontrados -->
+        <div class="col-md-6 mb-4">
+            <div class="card border-danger shadow-sm h-100">
+                <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="mb-2 mb-md-0">
+                        <i class="fa fa-times-circle"></i> No Encontrados ({{ telefonosNoEncontrados.length }})
+                        <div class="mt-1" style="font-size: 0.85rem;" *ngIf="telefonosNoEncontrados.length > 0">
+                            <span class="badge bg-light text-dark me-1" *ngIf="getResumenCreacion().pendientes > 0">Pendientes: {{ getResumenCreacion().pendientes }}</span>
+                            <span class="badge bg-success me-1" *ngIf="getResumenCreacion().exitosos > 0">Éxitos: {{ getResumenCreacion().exitosos }}</span>
+                            <span class="badge bg-warning text-dark" *ngIf="getResumenCreacion().conError > 0">Errores: {{ getResumenCreacion().conError }}</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-sm btn-light text-danger" (click)="crearUsuariosManychat()" [disabled]="creandoUsuarios || telefonosNoEncontrados.length === 0 || getResumenCreacion().pendientes === 0">
+                        <i class="fa fa-user-plus"></i> <span style="font-weight: 500;">{{ creandoUsuarios ? 'Creando...' : 'Crear en Manychat' }}</span>
+                    </button>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                        <table class="table table-striped table-hover mb-0">
+                            <thead class="table-light sticky-top" style="position: sticky; top: 0; z-index: 1;">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Datos Ingresados</th>
+                                    <th>Buscado Como</th>
+                                    <th (click)="ordenarPorEstado()" style="cursor: pointer;" title="Clic para ordenar">
+                                        Estado Creación <i class="fa" [ngClass]="ordenAscendente ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'"></i>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let tel of telefonosNoEncontrados; let i = index">
+                                    <td>{{ i + 1 }}</td>
+                                    <td>
+                                        <strong>{{ tel.datoOriginal }}</strong><br>
+                                        <small class="text-muted">
+                                            <span *ngIf="tel.nombreBusqueda">Nombre: {{ tel.nombreBusqueda }}<br></span>
+                                            <span *ngIf="tel.emailBusqueda">Correo: {{ tel.emailBusqueda }}</span>
+                                        </small>
+                                    </td>
+                                    <td class="text-danger">{{ tel.telefonoBusqueda }}</td>
+                                    <td><small>{{ tel.estadoCreacion }}</small></td>
+                                </tr>
+                                <tr *ngIf="telefonosNoEncontrados.length === 0">
+                                    <td colspan="4" class="text-center text-muted py-3">Todos los usuarios fueron encontrados.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- Modal para Errores Acumulados -->
+    <ng-template #modalErrores let-modal>
+        <div class="modal-header bg-warning">
+            <h5 class="modal-title text-dark"><i class="fa fa-exclamation-triangle"></i> Usuarios No Creados (Acumulado)</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+        </div>
+        <div class="modal-body">
+            <p>Estos usuarios no pudieron ser creados durante tus últimas ejecuciones. Puedes descargar esta lista para revisarlos.</p>
+            
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                <table class="table table-bordered table-striped table-sm">
+                    <thead class="table-light sticky-top">
+                        <tr>
+                            <th>Correo</th>
+                            <th>Teléfono</th>
+                            <th>Nombre</th>
+                            <th>Motivo del Error</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let fallo of usuariosFallidosAcumulados">
+                            <td>{{ fallo.user.emailBusqueda }}</td>
+                            <td>{{ fallo.user.telefonoRaw }}</td>
+                            <td>{{ fallo.user.nombreBusqueda }}</td>
+                            <td class="text-danger">{{ fallo.motivo }}</td>
+                        </tr>
+                        <tr *ngIf="usuariosFallidosAcumulados.length === 0">
+                            <td colspan="4" class="text-center">No hay errores acumulados.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" (click)="limpiarErroresAcumulados()">
+                <i class="fa fa-trash"></i> Limpiar Lista
+            </button>
+            <button type="button" class="btn btn-success" (click)="descargarErroresCSV()">
+                <i class="fa fa-download"></i> Descargar CSV
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="modal.close()">Cerrar</button>
+        </div>
+    </ng-template>
+
+</div>

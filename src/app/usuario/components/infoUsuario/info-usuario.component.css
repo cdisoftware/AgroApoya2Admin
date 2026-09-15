@@ -1,0 +1,21 @@
+.card {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table-responsive {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.bg-success {
+    background-color: #28a745 !important;
+}
+
+.bg-danger {
+    background-color: #dc3545 !important;
+}

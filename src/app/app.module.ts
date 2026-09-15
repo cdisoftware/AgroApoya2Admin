@@ -73,6 +73,7 @@ import { InicioComponent } from './AgroVersionTres/inicio/inicio.component';
 import { ValidarUsuarioComponent } from './AgroVersionTres/usuario/validar-usuario/validar-usuario.component'
 import { MinimocompratotalComponent } from './ofertas/components/minimocompratotal/minimocompratotal.component';
 import { AdminEmbajadoresComponent } from './ofertas/components/admin-embajadores/admin-embajadores.component'
+import { InfoUsuarioComponent } from './usuario/components/infoUsuario/info-usuario.component';
 
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
@@ -135,7 +136,8 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) = {};
     InicioComponent,
     ValidarUsuarioComponent,
     MinimocompratotalComponent,
-    AdminEmbajadoresComponent
+    AdminEmbajadoresComponent,
+    InfoUsuarioComponent
   
   ],
   imports: [
