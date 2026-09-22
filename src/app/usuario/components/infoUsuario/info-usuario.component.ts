@@ -23,6 +23,7 @@ export class InfoUsuarioComponent implements OnInit {
   IdSector: any = '0';
   FiltroCompradores: string = '0';
   FiltroIdManychat: string = '0';
+  FiltroUsuCodig: string = '';
   DataQuery: any[] = [];
 
   constructor(
@@ -79,6 +80,18 @@ export class InfoUsuarioComponent implements OnInit {
       query += ` and a.usucodig in (select pras.usucodig from agro_carrocompras pras) `;
     } else if (this.FiltroCompradores === '2') { // No compradores
       query += ` and a.usucodig not in (select pras.usucodig from agro_carrocompras pras) `;
+    }
+
+    // Filtro UsuCodig
+    if (this.FiltroUsuCodig && this.FiltroUsuCodig.trim() !== '') {
+      const codigos = this.FiltroUsuCodig
+        .split(',')
+        .map(c => c.trim())
+        .filter(c => c !== '' && !isNaN(Number(c)));
+
+      if (codigos.length > 0) {
+        query += ` and a.usucodig in (${codigos.join(',')}) `;
+      }
     }
 
     const Body = {
@@ -302,6 +315,7 @@ export class InfoUsuarioComponent implements OnInit {
     this.Sector = '';
     this.FiltroCompradores = '0';
     this.FiltroIdManychat = '0';
+    this.FiltroUsuCodig = '';
     this.actualizandoBD = false;
     this.creandoUsuarios = false;
   }

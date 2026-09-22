@@ -1,0 +1,274 @@
+<div class="container mt-4 mb-5">
+    <h3 class="mb-4 text-center">Actualización de Campos de Usuario en ManyChat</h3>
+
+    <!-- Mensaje de alerta -->
+    <div class="alert alert-{{ tipoAlerta }} alert-dismissible fade show" role="alert" *ngIf="mensajeAlerta">
+        <i class="fa fa-info-circle me-2"></i> {{ mensajeAlerta }}
+        <button type="button" class="btn-close" (click)="mensajeAlerta = ''" aria-label="Close"></button>
+    </div>
+
+    <!-- Filtros de Búsqueda BD (Opcional/Colapsable) -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <span class="fw-bold text-secondary"><i class="fa fa-filter"></i> Filtros de Búsqueda BD (Opcional)</span>
+                    <small class="text-muted">Puedes buscar manualmente o cargar directamente pegando los códigos abajo</small>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <label class="col-sm-12 Llave fw-bold">Sector</label>
+                            <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" (selected)='selectSector($event)'
+                                (inputCleared)="LimpiaSector('')" [itemTemplate]="templateSector"
+                                [notFoundTemplate]="templateVacioSector" [(ngModel)]="Sector"
+                                placeholder="Seleccione un sector...">
+                            </ng-autocomplete>
+                            <ng-template #templateSector let-item>
+                                <a [innerHTML]="item.DSCRPCION_SCTOR"></a>
+                            </ng-template>
+                            <ng-template #templateVacioSector let-SinRegistro>
+                                <label for="">Sin registros</label>
+                            </ng-template>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <label class="col-sm-12 Llave fw-bold">Compradores</label>
+                            <select class="form-control" [(ngModel)]="FiltroCompradores">
+                                <option value="0">Sin Seleccionar</option>
+                                <option value="1">Compradores</option>
+                                <option value="2">No Compradores</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <label class="col-sm-12 Llave fw-bold">Id Manychat</label>
+                            <select class="form-control" [(ngModel)]="FiltroIdManychat">
+                                <option value="0">Sin Seleccionar</option>
+                                <option value="1">Con Id Manychat</option>
+                                <option value="2">Sin Id Manychat</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <label class="col-sm-12 Llave fw-bold">UsuCodig (separados por ,)</label>
+                            <input type="text" class="form-control" [(ngModel)]="FiltroUsuCodig" 
+                                placeholder="Ej: 1,12,31,35" (keyup.enter)="ConstruirYConsultarQuery()">
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-sm-12">
+                            <button class="btn btn-primary" (click)="ConstruirYConsultarQuery()" [disabled]="cargando || procesandoManychat">
+                                <i class="fa fa-database"></i> {{ cargando ? 'Buscando en BD...' : 'Buscar en BD' }}
+                            </button>
+                            <button class="btn btn-secondary ms-2" (click)="limpiar()" [disabled]="cargando || procesandoManychat">
+                                <i class="fa fa-eraser"></i> Limpiar Todo
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel de Configuración de Actualización en ManyChat -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm border-primary">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center flex-wrap">
+                    <div>
+                        <i class="fa fa-cogs me-1"></i> <strong>Actualización Masiva en Manychat</strong>
+                    </div>
+                    <div class="btn-group btn-group-sm mt-2 mt-md-0" role="group">
+                        <button type="button" class="btn" 
+                            [ngClass]="modoActualizacion === 'personalizado' ? 'btn-light text-primary fw-bold' : 'btn-outline-light'"
+                            (click)="modoActualizacion = 'personalizado'">
+                            <i class="fa fa-list-alt"></i> Valores Diferentes por Usuario
+                        </button>
+                        <button type="button" class="btn" 
+                            [ngClass]="modoActualizacion === 'unico' ? 'btn-light text-primary fw-bold' : 'btn-outline-light'"
+                            (click)="modoActualizacion = 'unico'">
+                            <i class="fa fa-clone"></i> Mismo Valor para Todos
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <!-- Fila común: ID del campo -->
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="fw-bold text-secondary">
+                                <i class="fa fa-tag"></i> ID del Campo en ManyChat (Numérico)
+                            </label>
+                            <input type="number" class="form-control" [(ngModel)]="campoManychat" 
+                                placeholder="Ej: 9844106" [disabled]="procesandoManychat">
+                            <small class="text-muted">ID numérico del Custom Field en ManyChat que deseas actualizar.</small>
+                        </div>
+                        
+                        <!-- Si el modo es 'único' -->
+                        <div class="col-md-4" *ngIf="modoActualizacion === 'unico'">
+                            <label class="fw-bold text-secondary">
+                                <i class="fa fa-pencil"></i> Valor a Asignar
+                            </label>
+                            <input type="text" class="form-control" [(ngModel)]="valorCampo" 
+                                placeholder="Ej: AA2, Activo, 1..." [disabled]="procesandoManychat"
+                                (keyup.enter)="ejecutarActualizacionManychat()">
+                            <small class="text-muted">Este mismo valor se asignará a todos los seleccionados.</small>
+                        </div>
+
+                        <div class="col-md-4 d-flex align-items-end" *ngIf="modoActualizacion === 'unico'">
+                            <button class="btn btn-success w-100 py-2" (click)="ejecutarActualizacionManychat()" 
+                                [disabled]="procesandoManychat">
+                                <i class="fa fa-cloud-upload"></i> 
+                                {{ procesandoManychat ? 'Actualizando (' + progresoActual + '/' + totalAProcesar + ')...' : 'Actualizar en Manychat' }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Si el modo es 'personalizado': Textarea con Mapeo -->
+                    <div *ngIf="modoActualizacion === 'personalizado'" class="p-3 bg-light rounded border">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="fw-bold text-dark m-0">
+                                <i class="fa fa-keyboard-o"></i> Pega aquí los usuarios y sus valores (Formato: <code>usucodig - valor;</code>)
+                            </label>
+                            <small class="text-muted">Separa con <code>;</code> o saltos de línea entre usuarios</small>
+                        </div>
+                        <textarea class="form-control font-monospace" rows="4" [(ngModel)]="textoMapeo" [disabled]="procesandoManychat"
+                            placeholder="6895 - campoanurbok remkinoda; 685 - otro valor remkinoda;"></textarea>
+                        
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-3">
+                            <div>
+                                <button class="btn btn-primary" (click)="cargarUsuariosDesdeMapeo()" [disabled]="cargando || procesandoManychat || !textoMapeo">
+                                    <i class="fa fa-search"></i> 1. Cargar Usuarios desde Texto
+                                </button>
+                                <button class="btn btn-outline-secondary ms-2" (click)="aplicarMapeoATabla()" [disabled]="procesandoManychat || DataQuery.length === 0 || !textoMapeo">
+                                    <i class="fa fa-refresh"></i> Aplicar a Tabla Actual
+                                </button>
+                            </div>
+
+                            <button class="btn btn-success px-4 py-2" (click)="ejecutarActualizacionManychat()" 
+                                [disabled]="procesandoManychat">
+                                <i class="fa fa-cloud-upload"></i> 
+                                {{ procesandoManychat ? 'Actualizando (' + progresoActual + '/' + totalAProcesar + ')...' : '2. Actualizar en Manychat (' + cantidadSeleccionados + ')' }}
+                            </button>
+                        </div>
+
+                        <!-- Advertencia de códigos no encontrados -->
+                        <div class="alert alert-warning mt-3 py-2 mb-0" *ngIf="codigosNoEncontrados.length > 0">
+                            <i class="fa fa-exclamation-triangle me-1"></i>
+                            <strong>Atención:</strong> Los siguientes códigos ingresados no se encontraron en la BD:
+                            <span class="badge bg-danger ms-1" *ngFor="let c of codigosNoEncontrados">{{ c }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Barra de Progreso -->
+                    <div class="mt-4" *ngIf="totalAProcesar > 0">
+                        <div class="d-flex justify-content-between mb-1" style="font-size: 0.9rem;">
+                            <span><strong>Progreso:</strong> {{ progresoActual }} de {{ totalAProcesar }}</span>
+                            <span>
+                                <span class="badge bg-success me-1">Exitosos: {{ resumenProceso.exitosos }}</span>
+                                <span class="badge bg-danger">Errores: {{ resumenProceso.conError }}</span>
+                            </span>
+                        </div>
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
+                                role="progressbar" 
+                                [style.width.%]="(progresoActual / totalAProcesar) * 100">
+                                {{ ((progresoActual / totalAProcesar) * 100) | number:'1.0-0' }}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resultados Tabla BD -->
+    <div class="row mb-4" *ngIf="DataQuery.length > 0">
+        <div class="col-md-12">
+            <div class="card shadow-sm border-info">
+                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center flex-wrap">
+                    <div>
+                        <i class="fa fa-table"></i> <strong>Usuarios para Actualizar ({{ DataQuery.length }} registros)</strong>
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="badge bg-light text-primary">
+                            {{ cantidadSeleccionados }} seleccionados
+                        </span>
+                        <div class="form-check form-switch text-white m-0">
+                            <input class="form-check-input" type="checkbox" id="checkTodos" 
+                                [(ngModel)]="todosSeleccionados" (change)="toggleSeleccionarTodos()" [disabled]="procesandoManychat">
+                            <label class="form-check-label fw-bold" for="checkTodos">Seleccionar Todos</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                        <table class="table table-striped table-hover align-middle mb-0">
+                            <thead class="table-light sticky-top" style="position: sticky; top: 0; z-index: 1;">
+                                <tr>
+                                    <th style="width: 40px;" class="text-center">Sel.</th>
+                                    <th>#</th>
+                                    <th>UsuCodig</th>
+                                    <th>Nombre</th>
+                                    <th>IdManyChat</th>
+                                    <th>Teléfono</th>
+                                    <th style="min-width: 200px;">Valor a Asignar en ManyChat</th>
+                                    <th>Estado Actualización</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of DataQuery; let i = index" [class.table-light]="!data.seleccionado">
+                                    <td class="text-center">
+                                        <input type="checkbox" class="form-check-input" 
+                                            [(ngModel)]="data.seleccionado" 
+                                            (change)="actualizarSeleccionIndividual()"
+                                            [disabled]="procesandoManychat || !data.ID_MANYCHAT || data.ID_MANYCHAT === '00'">
+                                    </td>
+                                    <td>{{ i + 1 }}</td>
+                                    <td><strong>{{ data.USUCODIG }}</strong></td>
+                                    <td>
+                                        {{ data.USUARIO }}<br>
+                                        <small class="text-muted" *ngIf="data.CORREO_PERSONA">{{ data.CORREO_PERSONA }}</small>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-secondary" *ngIf="data.ID_MANYCHAT && data.ID_MANYCHAT !== '00'">
+                                            {{ data.ID_MANYCHAT }}
+                                        </span>
+                                        <span class="badge bg-warning text-dark" *ngIf="!data.ID_MANYCHAT || data.ID_MANYCHAT === '00'">
+                                            ⚠️ Sin ManyChat
+                                        </span>
+                                    </td>
+                                    <td>{{ data.CELULAR }}</td>
+                                    <td>
+                                        <div *ngIf="modoActualizacion === 'personalizado'">
+                                            <input type="text" class="form-control form-control-sm" 
+                                                [(ngModel)]="data.valorPersonalizado" 
+                                                placeholder="Sin valor asignado"
+                                                [disabled]="procesandoManychat">
+                                        </div>
+                                        <div *ngIf="modoActualizacion === 'unico'">
+                                            <span class="badge bg-light text-dark border">{{ valorCampo || '(Mismo valor)' }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="badge" 
+                                            [ngClass]="{
+                                                'bg-success': data.estadoActualizacion === '✅ Exitoso',
+                                                'bg-danger': data.estadoActualizacion === '❌ Error',
+                                                'bg-info text-dark': data.estadoActualizacion === 'Actualizando...',
+                                                'bg-secondary': data.estadoActualizacion === 'Pendiente',
+                                                'bg-warning text-dark': data.estadoActualizacion.includes('Sin ManyChat') || data.estadoActualizacion.includes('Sin valor')
+                                            }">
+                                            {{ data.estadoActualizacion }}
+                                        </span>
+                                        <div *ngIf="data.detalleRespuesta" style="font-size: 0.75rem;" class="text-muted mt-1">
+                                            {{ data.detalleRespuesta }}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

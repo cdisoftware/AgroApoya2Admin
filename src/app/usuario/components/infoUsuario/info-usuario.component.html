@@ -7,7 +7,7 @@
                 <div class="card-body">
                     <h5 class="card-title"><i class="fa fa-filter"></i> Filtros de Búsqueda BD</h5>
                     <div class="row">
-                        <div class="col-sm-4 mb-3">
+                        <div class="col-md-3 col-sm-6 mb-3">
                             <label class="col-sm-12 Llave fw-bold">Sector</label>
                             <ng-autocomplete [data]="DataSectores" [searchKeyword]="keywordSec" (selected)='selectSector($event)'
                                 (inputCleared)="LimpiaSector('')" [itemTemplate]="templateSector"
@@ -21,7 +21,7 @@
                                 <label for="">Sin registros</label>
                             </ng-template>
                         </div>
-                        <div class="col-sm-4 mb-3">
+                        <div class="col-md-3 col-sm-6 mb-3">
                             <label class="col-sm-12 Llave fw-bold">Compradores</label>
                             <select class="form-control" [(ngModel)]="FiltroCompradores">
                                 <option value="0">Sin Seleccionar</option>
@@ -29,13 +29,18 @@
                                 <option value="2">No Compradores</option>
                             </select>
                         </div>
-                        <div class="col-sm-4 mb-3">
+                        <div class="col-md-3 col-sm-6 mb-3">
                             <label class="col-sm-12 Llave fw-bold">Id Manychat</label>
                             <select class="form-control" [(ngModel)]="FiltroIdManychat">
                                 <option value="0">Sin Seleccionar</option>
                                 <option value="1">Con Id Manychat</option>
                                 <option value="2">Sin Id Manychat</option>
                             </select>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <label class="col-sm-12 Llave fw-bold">UsuCodig (separados por ,)</label>
+                            <input type="text" class="form-control" [(ngModel)]="FiltroUsuCodig" 
+                                placeholder="Ej: 1,12,31,35" (keyup.enter)="ConstruirYConsultarQuery()">
                         </div>
                     </div>
                     <div class="row mt-2">

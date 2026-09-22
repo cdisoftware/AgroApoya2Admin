@@ -1,0 +1,22 @@
+.card {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table-responsive {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.table th {
+    font-weight: 600;
+}
+
+.badge {
+    font-size: 0.85rem;
+    padding: 0.35em 0.65em;
+}
+
+.progress {
+    border-radius: 10px;
+}

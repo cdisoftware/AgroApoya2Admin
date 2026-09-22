@@ -46,6 +46,7 @@ import { RegistroUserexcelComponent } from './usuario/components/registro-userex
 import { MapacompraofertasComponent } from './ofertas/components/reportes/mapacompraofertas/mapacompraofertas.component';
 import { EnviosmsofertaComponent } from './ofertas/components/sms-envio/enviosmsoferta/enviosmsoferta.component';
 import { InfoUsuarioComponent } from './usuario/components/infoUsuario/info-usuario.component';
+import { ActualizacionInfoUsuarioManychatComponent } from './usuario/components/actualizacion-info-usuario-manychat/actualizacion-info-usuario-manychat.component';
 
 
 //Version 3 AgroApoyados
@@ -268,6 +269,10 @@ const routes: Routes = [
       {
         path: 'infoUsuario',
         component: InfoUsuarioComponent
+      },
+      {
+        path: 'actualizacionInfoUsuarioManychat',
+        component: ActualizacionInfoUsuarioManychatComponent
       }
     ]
   },
